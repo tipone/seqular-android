@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class GlobalUserPreferences{
+	public static boolean originalColors;
 	public static boolean playGifs;
 	public static boolean useCustomTabs;
 	public static boolean trueBlackTheme;
@@ -15,12 +16,13 @@ public class GlobalUserPreferences{
 	public static boolean disableMarquee;
 	public static ThemePreference theme;
 
-    private static SharedPreferences getPrefs(){
+	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
 
 	public static void load(){
 		SharedPreferences prefs=getPrefs();
+		originalColors=prefs.getBoolean("originalColors", false);
 		playGifs=prefs.getBoolean("playGifs", true);
 		useCustomTabs=prefs.getBoolean("useCustomTabs", true);
 		trueBlackTheme=prefs.getBoolean("trueBlackTheme", false);
@@ -35,6 +37,7 @@ public class GlobalUserPreferences{
 
 	public static void save(){
 		getPrefs().edit()
+				.putBoolean("originalColors", originalColors)
 				.putBoolean("playGifs", playGifs)
 				.putBoolean("useCustomTabs", useCustomTabs)
 				.putBoolean("showReplies", showReplies)
@@ -54,3 +57,4 @@ public class GlobalUserPreferences{
 		DARK
 	}
 }
+

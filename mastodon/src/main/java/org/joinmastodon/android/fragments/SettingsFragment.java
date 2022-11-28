@@ -99,6 +99,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.disableMarquee=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.enable_mastodon_original_colors, R.drawable.bg_button_green, GlobalUserPreferences.originalColors, this::onOriginalColorChanged));
+
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.settings_gif, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{
@@ -238,6 +240,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(UiUtils.isDarkTheme()){
 			restartActivityToApplyNewTheme();
 		}
+	}
+
+	private void onOriginalColorChanged(SwitchItem item){
+		GlobalUserPreferences.originalColors=item.checked;
+		GlobalUserPreferences.save();
+		restartActivityToApplyNewTheme();
 	}
 
 	private void restartActivityToApplyNewTheme(){

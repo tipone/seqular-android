@@ -655,13 +655,16 @@ public class UiUtils{
 	}
 
 	public static void setUserPreferredTheme(Context context){
+		boolean isDarkTheme = isDarkTheme();
 		context.setTheme(switch(GlobalUserPreferences.theme){
-			case AUTO -> GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack : R.style.Theme_Mastodon_AutoLightDark;
-			case LIGHT -> R.style.Theme_Mastodon_Light;
-			case DARK -> GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_Dark_TrueBlack : R.style.Theme_Mastodon_Dark;
+			case AUTO ->
+					GlobalUserPreferences.originalColors ? (GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack_Original : (isDarkTheme ? R.style.Theme_Mastodon_Dark_Original : R.style.Theme_Mastodon_AutoLightDark_Original)) : (GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack : R.style.Theme_Mastodon_AutoLightDark);
+			case LIGHT ->
+					GlobalUserPreferences.originalColors ? R.style.Theme_Mastodon_Light_Original : R.style.Theme_Mastodon_Light;
+			case DARK ->
+					GlobalUserPreferences.trueBlackTheme ? (GlobalUserPreferences.originalColors ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack_Original : R.style.Theme_Mastodon_Dark_TrueBlack) : (GlobalUserPreferences.originalColors ? R.style.Theme_Mastodon_Dark_Original : R.style.Theme_Mastodon_Dark);
 		});
 	}
-
 	public static boolean isDarkTheme(){
 		if(GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.AUTO)
 			return (MastodonApp.context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK)==Configuration.UI_MODE_NIGHT_YES;
