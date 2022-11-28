@@ -135,7 +135,7 @@
 	</style>
 
 	<style name="Theme.Mastodon.AutoLightDark.Original" parent="Theme.Mastodon.Light.Original"/>
-	<style name="Theme.Mastodon.AutoLightDark.TrueBlack.Original" parent="Theme.Mastodon.Dark.TrueBlack.Original"/>
+	<style name="Theme.Mastodon.AutoLightDark.TrueBlack.Original" parent="Theme.Mastodon.Light.Original"/>
 
 
 	<style name="Theme.Mastodon.Toolbar" parent="android:ThemeOverlay.Material.ActionBar">

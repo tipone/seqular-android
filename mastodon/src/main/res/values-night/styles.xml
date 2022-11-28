@@ -2,4 +2,7 @@
 <resources>
 	<style name="Theme.Mastodon.AutoLightDark" parent="Theme.Mastodon.Dark"/>
 	<style name="Theme.Mastodon.AutoLightDark.TrueBlack" parent="Theme.Mastodon.Dark.TrueBlack"/>
+
+	<style name="Theme.Mastodon.AutoLightDark.Original" parent="Theme.Mastodon.Dark.Original"/>
+	<style name="Theme.Mastodon.AutoLightDark.TrueBlack.Original" parent="Theme.Mastodon.Dark.TrueBlack.Original"/>
 </resources>
