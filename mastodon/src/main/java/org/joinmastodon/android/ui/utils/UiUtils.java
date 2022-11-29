@@ -662,7 +662,7 @@ public class UiUtils{
 			case LIGHT ->
 					GlobalUserPreferences.originalColors ? R.style.Theme_Mastodon_Light_Original : R.style.Theme_Mastodon_Light;
 			case DARK ->
-					GlobalUserPreferences.originalColors ? (GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack_Original : R.style.Theme_Mastodon_Dark_Original) : (GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_Dark);
+					GlobalUserPreferences.originalColors ? (GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack_Original : R.style.Theme_Mastodon_Dark_Original) : (GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_Dark_TrueBlack : R.style.Theme_Mastodon_Dark);
 		});
 	}
 	public static boolean isDarkTheme(){
