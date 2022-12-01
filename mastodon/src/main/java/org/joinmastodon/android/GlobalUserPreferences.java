@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 public class GlobalUserPreferences{
-	public static boolean originalColors;
 	public static boolean playGifs;
 	public static boolean useCustomTabs;
 	public static boolean trueBlackTheme;
@@ -15,6 +14,7 @@ public class GlobalUserPreferences{
 	public static boolean alwaysExpandContentWarnings;
 	public static boolean disableMarquee;
 	public static ThemePreference theme;
+	public static ColorPreference color;
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -22,7 +22,6 @@ public class GlobalUserPreferences{
 
 	public static void load(){
 		SharedPreferences prefs=getPrefs();
-		originalColors=prefs.getBoolean("originalColors", false);
 		playGifs=prefs.getBoolean("playGifs", true);
 		useCustomTabs=prefs.getBoolean("useCustomTabs", true);
 		trueBlackTheme=prefs.getBoolean("trueBlackTheme", false);
@@ -33,11 +32,11 @@ public class GlobalUserPreferences{
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
+		color=ColorPreference.values()[prefs.getInt("color", 0)];
 	}
 
 	public static void save(){
 		getPrefs().edit()
-				.putBoolean("originalColors", originalColors)
 				.putBoolean("playGifs", playGifs)
 				.putBoolean("useCustomTabs", useCustomTabs)
 				.putBoolean("showReplies", showReplies)
@@ -48,7 +47,13 @@ public class GlobalUserPreferences{
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
 				.putBoolean("disableMarquee", disableMarquee)
 				.putInt("theme", theme.ordinal())
+				.putInt("color", color.ordinal())
 				.apply();
+	}
+
+	public enum ColorPreference{
+		PINK,
+		PURPLE
 	}
 
 	public enum ThemePreference{
