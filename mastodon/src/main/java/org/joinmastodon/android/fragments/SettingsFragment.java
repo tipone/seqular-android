@@ -679,7 +679,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 					return false;
 				return true;
 			});
-			UiUtils.enablePopupMenuIcons(getActivity(), popupMenu);
+//			UiUtils.enablePopupMenuIcons(getActivity(), popupMenu);
 			button.setOnTouchListener(popupMenu.getDragToOpenListener());
 			button.setOnClickListener(v->popupMenu.show());
 		}
