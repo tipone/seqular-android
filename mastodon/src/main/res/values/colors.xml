@@ -43,6 +43,25 @@
 	<color name="original_primary_800">#2f0c7a</color>
 	<color name="original_primary_900">#17063b</color>
 
+	<color name="green_primary_25">#fafaff</color>
+	<color name="green_primary_50">#d1feaf</color>
+	<color name="green_primary_100">#bbf294</color>
+	<color name="green_primary_200">#a0d57b</color>
+	<color name="green_primary_300">#85b962</color>
+	<color name="green_primary_400">#6c9e4b</color>
+	<color name="green_primary_500">#528232</color>
+	<color name="green_primary_600">#3b6a1c</color>
+	<color name="green_primary_700">#245103</color>
+	<color name="green_primary_800">#163800</color>
+	<color name="green_primary_900">#0a2100</color>
+
+	<color name="green_gray_900">#1b1b1b</color>
+	<color name="green_gray_800t">#303030</color>
+	<color name="green_gray_800">#303030</color>
+	<color name="green_gray_700">#474747</color>
+	<color name="green_gray_600">#5e5e5e</color>
+	<color name="green_gray_500">#767676</color>
+
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>
 	<color name="error_100">#FEE4E2</color>
@@ -98,6 +117,8 @@
 	<color name="purple_700">#5925DC</color>
 	<color name="purple_800">#4A1FB8</color>
 	<color name="purple_900">#3E1C96</color>
+
+
 
 	<color name="fab_icon">#282C37</color>
 	<color name="navigation_bar_bg">#282C37</color>

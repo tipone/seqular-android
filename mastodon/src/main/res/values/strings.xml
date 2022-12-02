@@ -431,4 +431,5 @@
 	<string name="settings_color_picker">Color theme:</string>
 	<string name="pink_color">Pink</string>
 	<string name="purple_color">Purple</string>
+	<string name="green_color">Green</string>
 </resources>

@@ -678,6 +678,17 @@ public class UiUtils{
 							GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_Dark_TrueBlack_Original : R.style.Theme_Mastodon_Dark_Original;
 				});
 				break;
+			case GREEN:
+				context.setTheme(switch(GlobalUserPreferences.theme){
+					case AUTO ->
+							GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_AutoLightDark_TrueBlack_Green : R.style.Theme_Mastodon_AutoLightDark_Green;
+					case LIGHT ->
+							R.style.Theme_Mastodon_Light_Green;
+					case DARK ->
+							GlobalUserPreferences.trueBlackTheme ? R.style.Theme_Mastodon_Dark_TrueBlack_Green : R.style.Theme_Mastodon_Dark_Green;
+				});
+				break;
+
 		}
 
 	}

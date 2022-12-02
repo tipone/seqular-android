@@ -675,6 +675,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 					pref = GlobalUserPreferences.ColorPreference.PURPLE;
 					onColorPreferenceClick(pref);
 				}
+				else if(id==R.id.green_color) {
+					pref = GlobalUserPreferences.ColorPreference.GREEN;
+					onColorPreferenceClick(pref);
+				}
 				else
 					return false;
 				return true;
@@ -689,6 +693,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			button.setText(switch(GlobalUserPreferences.color){
 				case PINK -> R.string.pink_color;
 				case PURPLE -> R.string.purple_color;
+				case GREEN -> R.string.green_color;
 			});
 		}
 	}
