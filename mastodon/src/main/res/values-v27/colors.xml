@@ -2,4 +2,5 @@
 <resources>
 	<color name="navigation_bar_bg">@color/gray_50</color>
 	<color name="green_navigation_bar_bg">@color/green_gray_50</color>
+	<color name="blue_navigation_bar_bg">@color/blue_gray_50</color>
 </resources>

@@ -54,7 +54,8 @@ public class GlobalUserPreferences{
 	public enum ColorPreference{
 		PINK,
 		PURPLE,
-		GREEN
+		GREEN,
+		BLUE
 	}
 
 	public enum ThemePreference{
