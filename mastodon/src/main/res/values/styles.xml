@@ -47,6 +47,7 @@
 		<item name="android:actionOverflowMenuStyle">@style/Widget.Mastodon.PopupMenu</item>
 	</style>
 
+
 	<style name="Theme.Mastodon.Dark" parent="Theme.AppKit">
 		<!-- needed to disable scrim on API 29+ -->
 		<item name="android:enforceNavigationBarContrast" tools:ignore="NewApi">false</item>

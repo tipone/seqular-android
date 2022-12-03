@@ -55,12 +55,12 @@
 	<color name="green_primary_800">#163800</color>
 	<color name="green_primary_900">#0a2100</color>
 
-	<color name="green_gray_900">#1b1b1b</color>
-	<color name="green_gray_800t">#303030</color>
-	<color name="green_gray_800">#303030</color>
-	<color name="green_gray_700">#474747</color>
-	<color name="green_gray_600">#5e5e5e</color>
-	<color name="green_gray_500">#767676</color>
+	<color name="green_gray_900">#000000</color>
+	<color name="green_gray_800t">#171717</color>
+	<color name="green_gray_800">#171717</color>
+	<color name="green_gray_700">#191919</color>
+	<color name="green_gray_600">#212121</color>
+	<color name="green_gray_500">#242424</color>
 
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>
