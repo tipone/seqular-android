@@ -61,6 +61,13 @@
 	<color name="green_gray_700">#191919</color>
 	<color name="green_gray_600">#212121</color>
 	<color name="green_gray_500">#242424</color>
+	<color name="green_gray_400">#8f918e</color>
+	<color name="green_gray_300">#a9aca8</color>
+	<color name="green_gray_200">#c5c7c3</color>
+	<color name="green_gray_100">#e1e3df</color>
+	<color name="green_gray_50t">#eff1ed</color>
+	<color name="green_gray_50">#eff1ed</color>
+	<color name="green_gray_25">#f7f8fa</color>
 
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>
