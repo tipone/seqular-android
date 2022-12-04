@@ -82,12 +82,12 @@
 	<color name="green_gray_50">#eff1ed</color>
 	<color name="green_gray_25">#f7f8fa</color>
 
-	<color name="blue_gray_400">#cee5ff</color>
-	<color name="blue_gray_300">#e8f2ff</color>
-	<color name="blue_gray_200">#e8f2ff</color>
-	<color name="blue_gray_100">#e8f2ff</color>
-	<color name="blue_gray_50t">#e8f2ff</color>
-	<color name="blue_gray_50">#e8f2ff</color>
+	<color name="blue_gray_400">#919191</color>
+	<color name="blue_gray_300">#ababab</color>
+	<color name="blue_gray_200">#c6c6c6</color>
+	<color name="blue_gray_100">#e2e2e2</color>
+	<color name="blue_gray_50t">#f1f1f1</color>
+	<color name="blue_gray_50">#f1f1f1</color>
 	<color name="blue_gray_25">#f7f8fa</color>
 
 	<color name="error_25">#FFFBFA</color>
