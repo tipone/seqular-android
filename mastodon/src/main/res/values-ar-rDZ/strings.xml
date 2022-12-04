@@ -475,4 +475,14 @@
     <string name="confirm_delete_and_redraft_title">حذف وإعادة صياغة الرسالة</string>
     <string name="pin_post">تدبيس على الصفحة الشخصية</string>
     <string name="confirm_pin_post_title">تدبيس الرسالة على الصفحة الشخصية</string>
+    <string name="settings_show_federated_timeline">إظهار الخيط الفديرالي</string>
+    <string name="settings_contribute_fork">المساهمة في Megalodon</string>
+    <string name="accept_follow_request">قبول طلب المتابعة</string>
+    <string name="reject_follow_request">رفض طلب المتابعة</string>
+    <string name="lists_with_user">قوائم بها %s</string>
+    <string name="text_copied">تم النسخ إلى الحافظة</string>
+    <string name="add_bookmark">إضافة إلى الفواصل المرجعية</string>
+    <string name="remove_bookmark">إزالة من الفواصل المرجعية</string>
+    <string name="bookmarks">الفواصل المرجعية</string>
+    <string name="your_favorites">مفضلاتك</string>
 </resources>

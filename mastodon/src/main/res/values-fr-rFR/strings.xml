@@ -406,4 +406,9 @@
     <string name="mark_media_as_sensitive">Marquer le média comme sensible</string>
     <string name="check_for_update">Vérification de mise à jour</string>
     <string name="no_update_available">Aucune mise à jour disponible</string>
+    <string name="confirm_pin_post">Voulez-vous épingler ce message à votre profil \?</string>
+    <string name="button_bookmark">Ajouter aux signets</string>
+    <string name="remove_bookmark">Retirer le signet</string>
+    <string name="add_bookmark">Ajouter aux signets</string>
+    <string name="text_copied">Copié vers le presse-papier</string>
 </resources>
