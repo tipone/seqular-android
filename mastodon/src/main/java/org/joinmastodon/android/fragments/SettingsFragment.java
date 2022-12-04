@@ -657,10 +657,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private class ColorPickerViewHolder extends BindableViewHolder<ColorPicker>{
 		private final Button button;
 		private final PopupMenu popupMenu;
+		private final ImageView icon;
 
 		@SuppressLint("ClickableViewAccessibility")
 		public ColorPickerViewHolder(){
 			super(getActivity(), R.layout.item_settings_color_picker, list);
+			icon=findViewById(R.id.icon);
 			button=findViewById(R.id.color_picker_button);
 			popupMenu=new PopupMenu(getActivity(), button, Gravity.CENTER_HORIZONTAL);
 			popupMenu.inflate(R.menu.color_picker);
@@ -694,6 +696,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 		@Override
 		public void onBind(ColorPicker item){
+			icon.setImageResource(R.drawable.ic_color_theme_preference);
 			button.setText(switch(GlobalUserPreferences.color){
 				case PINK -> R.string.pink_color;
 				case PURPLE -> R.string.purple_color;
