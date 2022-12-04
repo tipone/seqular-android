@@ -143,10 +143,18 @@
 		<item name="colorSearchField">@color/custom_gray_700</item>
 	</style>
 
-	<style name="Theme.Mastodon.Dark.TrueBlack.CustomBase" parent="Theme.Mastodon.Dark.TrueBlack">
+	<style name="Theme.Mastodon.Dark.TrueBlack.CustomBase">
 		<item name="colorPollVoted">@color/custom_gray_800</item>
 		<item name="colorSearchField">@color/custom_gray_900</item>
 		<item name="colorBackgroundPopup">@color/custom_gray_900</item>
+		<item name="android:navigationBarColor">@color/black</item>
+		<item name="android:colorBackground">@color/black</item>
+		<item name="android:statusBarColor">@color/black</item>
+		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
+		<item name="colorBackgroundLight">@color/black</item>
+		<item name="colorWindowBackground">@color/black</item>
+		<item name="colorButtonText">@color/black</item>
+		<item name="colorBackgroundLightest">@color/black</item>
 	</style>
 
 	<style name="Theme.Mastodon.Light.Green" parent="Theme.Mastodon.Light.CustomBase">
@@ -182,12 +190,24 @@
 		<item name="colorSecondary">@color/green_gray_50</item>
 	</style>
 
-	<style name="Theme.Mastodon.Dark.TrueBlack.Green" parent="Theme.Mastodon.Dark.TrueBlack.CustomBase">
+	<style name="Theme.Mastodon.Dark.TrueBlack.Green" parent="Theme.Mastodon.Dark.Green">
 		<item name="android:colorAccent">@color/green_primary_400</item>
 		<item name="colorPollMostVoted">@color/green_primary_700</item>
 		<item name="colorAccentLight">@color/green_primary_600</item>
 		<item name="colorAccentLightest">@color/green_primary_800</item>
 		<item name="colorSecondary">@color/green_gray_50</item>
+
+		<item name="colorPollVoted">@color/custom_gray_800</item>
+		<item name="colorSearchField">@color/custom_gray_900</item>
+		<item name="colorBackgroundPopup">@color/custom_gray_900</item>
+		<item name="android:navigationBarColor">@color/black</item>
+		<item name="android:colorBackground">@color/black</item>
+		<item name="android:statusBarColor">@color/black</item>
+		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
+		<item name="colorBackgroundLight">@color/black</item>
+		<item name="colorWindowBackground">@color/black</item>
+		<item name="colorButtonText">@color/black</item>
+		<item name="colorBackgroundLightest">@color/black</item>
 	</style>
 
 	<style name="Theme.Mastodon.AutoLightDark.Green" parent="Theme.Mastodon.Light.Green"/>
@@ -261,12 +281,24 @@
 		<item name="colorSecondary">@color/blue_gray_50</item>
 	</style>
 
-	<style name="Theme.Mastodon.Dark.TrueBlack.Blue" parent="Theme.Mastodon.Dark.TrueBlack.CustomBase">
+	<style name="Theme.Mastodon.Dark.TrueBlack.Blue" parent="Theme.Mastodon.Dark.Blue">
 		<item name="android:colorAccent">@color/blue_primary_400</item>
 		<item name="colorPollMostVoted">@color/blue_primary_700</item>
 		<item name="colorAccentLight">@color/blue_primary_600</item>
 		<item name="colorAccentLightest">@color/blue_primary_800</item>
 		<item name="colorSecondary">@color/blue_gray_50</item>
+
+		<item name="colorPollVoted">@color/custom_gray_800</item>
+		<item name="colorSearchField">@color/custom_gray_900</item>
+		<item name="colorBackgroundPopup">@color/custom_gray_900</item>
+		<item name="android:navigationBarColor">@color/black</item>
+		<item name="android:colorBackground">@color/black</item>
+		<item name="android:statusBarColor">@color/black</item>
+		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
+		<item name="colorBackgroundLight">@color/black</item>
+		<item name="colorWindowBackground">@color/black</item>
+		<item name="colorButtonText">@color/black</item>
+		<item name="colorBackgroundLightest">@color/black</item>
 	</style>
 
 	<style name="Theme.Mastodon.AutoLightDark.Blue" parent="Theme.Mastodon.Light.Blue"/>
@@ -339,12 +371,24 @@
 		<item name="colorSecondary">@color/orange_gray_50</item>
 	</style>
 
-	<style name="Theme.Mastodon.Dark.TrueBlack.Orange" parent="Theme.Mastodon.Dark.TrueBlack.CustomBase">
+	<style name="Theme.Mastodon.Dark.TrueBlack.Orange" parent="Theme.Mastodon.Dark.Orange">
 		<item name="android:colorAccent">@color/orange_primary_400</item>
 		<item name="colorPollMostVoted">@color/orange_primary_700</item>
 		<item name="colorAccentLight">@color/orange_primary_600</item>
 		<item name="colorAccentLightest">@color/orange_primary_800</item>
 		<item name="colorSecondary">@color/orange_gray_50</item>
+
+		<item name="colorPollVoted">@color/custom_gray_800</item>
+		<item name="colorSearchField">@color/custom_gray_900</item>
+		<item name="colorBackgroundPopup">@color/custom_gray_900</item>
+		<item name="android:navigationBarColor">@color/black</item>
+		<item name="android:colorBackground">@color/black</item>
+		<item name="android:statusBarColor">@color/black</item>
+		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
+		<item name="colorBackgroundLight">@color/black</item>
+		<item name="colorWindowBackground">@color/black</item>
+		<item name="colorButtonText">@color/black</item>
+		<item name="colorBackgroundLightest">@color/black</item>
 	</style>
 
 	<style name="Theme.Mastodon.AutoLightDark.Orange" parent="Theme.Mastodon.Light.Orange"/>
@@ -418,12 +462,24 @@
 		<item name="colorSecondary">@color/yellow_gray_50</item>
 	</style>
 
-	<style name="Theme.Mastodon.Dark.TrueBlack.Yellow" parent="Theme.Mastodon.Dark.TrueBlack.CustomBase">
+	<style name="Theme.Mastodon.Dark.TrueBlack.Yellow" parent="Theme.Mastodon.Dark.Yellow">
 		<item name="android:colorAccent">@color/yellow_primary_400</item>
 		<item name="colorPollMostVoted">@color/yellow_primary_700</item>
 		<item name="colorAccentLight">@color/yellow_primary_600</item>
 		<item name="colorAccentLightest">@color/yellow_primary_800</item>
 		<item name="colorSecondary">@color/yellow_gray_50</item>
+
+		<item name="colorPollVoted">@color/custom_gray_800</item>
+		<item name="colorSearchField">@color/custom_gray_900</item>
+		<item name="colorBackgroundPopup">@color/custom_gray_900</item>
+		<item name="android:navigationBarColor">@color/black</item>
+		<item name="android:colorBackground">@color/black</item>
+		<item name="android:statusBarColor">@color/black</item>
+		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
+		<item name="colorBackgroundLight">@color/black</item>
+		<item name="colorWindowBackground">@color/black</item>
+		<item name="colorButtonText">@color/black</item>
+		<item name="colorBackgroundLightest">@color/black</item>
 	</style>
 
 	<style name="Theme.Mastodon.AutoLightDark.Yellow" parent="Theme.Mastodon.Light.Yellow"/>
