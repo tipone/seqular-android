@@ -67,6 +67,18 @@
 	<color name="blue_primary_800">#003354</color>
 	<color name="blue_primary_900">#001d33</color>
 
+	<color name="orange_primary_25">#fafaff</color>
+	<color name="orange_primary_50">#ffeedf</color>
+	<color name="orange_primary_100">#ffdcbb</color>
+	<color name="orange_primary_200">#ffb869</color>
+	<color name="orange_primary_300">#e89a3b</color>
+	<color name="orange_primary_400">#c98121</color>
+	<color name="orange_primary_500">#a96700</color>
+	<color name="orange_primary_600">#885200</color>
+	<color name="orange_primary_700">#673d00</color>
+	<color name="orange_primary_800">#482900</color>
+	<color name="orange_primary_900">#2b1700</color>
+
 	<color name="custom_gray_900">#000000</color>
 	<color name="custom_gray_800t">#171717</color>
 	<color name="custom_gray_800">#171717</color>
@@ -74,21 +86,46 @@
 	<color name="custom_gray_600">#212121</color>
 	<color name="custom_gray_500">#242424</color>
 
-	<color name="green_gray_400">#8f918e</color>
-	<color name="green_gray_300">#a9aca8</color>
-	<color name="green_gray_200">#c5c7c3</color>
-	<color name="green_gray_100">#e1e3df</color>
-	<color name="green_gray_50t">#eff1ed</color>
-	<color name="green_gray_50">#eff1ed</color>
+<!--	Old Colors:-->
+<!--	<color name="green_gray_400">#8f918e</color>-->
+<!--	<color name="green_gray_300">#a9aca8</color>-->
+<!--	<color name="green_gray_200">#c5c7c3</color>-->
+<!--	<color name="green_gray_100">#e1e3df</color>-->
+<!--	<color name="green_gray_50t">#eff1ed</color>-->
+<!--	<color name="green_gray_50">#eff1ed</color>-->
+<!--	<color name="green_gray_25">#f7f8fa</color>-->
+
+<!--	<color name="blue_gray_400">#919191</color>-->
+<!--	<color name="blue_gray_300">#ababab</color>-->
+<!--	<color name="blue_gray_200">#c6c6c6</color>-->
+<!--	<color name="blue_gray_100">#e2e2e2</color>-->
+<!--	<color name="blue_gray_50t">#f1f1f1</color>-->
+<!--	<color name="blue_gray_50">#f1f1f1</color>-->
+<!--	<color name="blue_gray_25">#f7f8fa</color>-->
+
+	<color name="green_gray_400">#a2b095</color>
+	<color name="green_gray_300">#bdcbaf</color>
+	<color name="green_gray_200">#d9e7ca</color>
+	<color name="green_gray_100">#d9e7ca</color>
+	<color name="green_gray_50t">#e8f8d8</color>
+	<color name="green_gray_50">#e8f5d8</color>
 	<color name="green_gray_25">#f7f8fa</color>
 
-	<color name="blue_gray_400">#919191</color>
-	<color name="blue_gray_300">#ababab</color>
-	<color name="blue_gray_200">#c6c6c6</color>
-	<color name="blue_gray_100">#e2e2e2</color>
-	<color name="blue_gray_50t">#f1f1f1</color>
-	<color name="blue_gray_50">#f1f1f1</color>
+	<color name="blue_gray_400">#9eadbe</color>
+	<color name="blue_gray_300">#b9c8da</color>
+	<color name="blue_gray_200">#d5e4f7</color>
+	<color name="blue_gray_100">#e8f2ff</color>
+	<color name="blue_gray_50t">#e8f2ff</color>
+	<color name="blue_gray_50">#e8f2ff</color>
 	<color name="blue_gray_25">#f7f8fa</color>
+
+	<color name="orange_gray_400">#c3a689</color>
+	<color name="orange_gray_300">#e0c1a3</color>
+	<color name="orange_gray_200">#feddbd</color>
+	<color name="orange_gray_100">#ffeedf</color>
+	<color name="orange_gray_50t">#ffeedf</color>
+	<color name="orange_gray_50">#ffeedf</color>
+	<color name="orange_gray_25">#f7f8fa</color>
 
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>

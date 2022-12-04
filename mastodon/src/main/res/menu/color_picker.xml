@@ -4,4 +4,5 @@
     <item android:id="@+id/purple_color" android:title="@string/purple_color"/>
     <item android:id="@+id/green_color" android:title="@string/green_color"/>
     <item android:id="@+id/blue_color" android:title="@string/blue_color"/>
+    <item android:id="@+id/orange_color" android:title="@string/orange_color"/>
 </menu>
