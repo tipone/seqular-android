@@ -14,4 +14,7 @@
 
 	<style name="Theme.Mastodon.AutoLightDark.Orange" parent="Theme.Mastodon.Dark.Orange"/>
 	<style name="Theme.Mastodon.AutoLightDark.TrueBlack.Orange" parent="Theme.Mastodon.Dark.TrueBlack.Orange"/>
+
+	<style name="Theme.Mastodon.AutoLightDark.Yellow" parent="Theme.Mastodon.Dark.Yellow"/>
+	<style name="Theme.Mastodon.AutoLightDark.TrueBlack.Yellow" parent="Theme.Mastodon.Dark.TrueBlack.Yellow"/>
 </resources>

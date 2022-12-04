@@ -79,6 +79,18 @@
 	<color name="orange_primary_800">#482900</color>
 	<color name="orange_primary_900">#2b1700</color>
 
+	<color name="yellow_primary_25">#fafaff</color>
+	<color name="yellow_primary_50">#fff0ca</color>
+	<color name="yellow_primary_100">#ffe084</color>
+	<color name="yellow_primary_200">#e8c349</color>
+	<color name="yellow_primary_300">#cba82f</color>
+	<color name="yellow_primary_400">#ae8d10</color>
+	<color name="yellow_primary_500">#8f7300</color>
+	<color name="yellow_primary_600">#735c00</color>
+	<color name="yellow_primary_700">#574500</color>
+	<color name="yellow_primary_800">#3c2f00</color>
+	<color name="yellow_primary_900">#231b00</color>
+
 	<color name="custom_gray_900">#000000</color>
 	<color name="custom_gray_800t">#171717</color>
 	<color name="custom_gray_800">#171717</color>
@@ -126,6 +138,14 @@
 	<color name="orange_gray_50t">#ffeedf</color>
 	<color name="orange_gray_50">#ffeedf</color>
 	<color name="orange_gray_25">#f7f8fa</color>
+
+	<color name="yellow_gray_400">#b8aa87</color>
+	<color name="yellow_gray_300">#d4c5a1</color>
+	<color name="yellow_gray_200">#f1e1bb</color>
+	<color name="yellow_gray_100">#fff0ca</color>
+	<color name="yellow_gray_50t">#fff0ca</color>
+	<color name="yellow_gray_50">#fff0ca</color>
+	<color name="yellow_gray_25">#f7f8fa</color>
 
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>
