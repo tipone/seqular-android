@@ -130,7 +130,7 @@
 		<item name="colorButtonText">@color/custom_gray_800</item>
 		<item name="colorBackgroundLight">@color/custom_gray_700</item>
 		<item name="colorBackgroundLightest">@color/custom_gray_900</item>
-		<item name="colorBackgroundPopup">?colorBackgroundLightest</item>
+		<item name="colorBackgroundPopup">@color/custom_gray_900</item>
 		<item name="colorDarkIcon">@color/gray_25</item>
 		<item name="colorWindowBackground">@color/custom_gray_800</item>
 		<item name="android:statusBarColor">@color/custom_gray_800</item>
@@ -568,14 +568,14 @@
 	</style>
 
 	<style name="Theme.Mastodon.Toolbar.Profile">
-		<item name="android:textColorPrimary">@color/gray_50</item>
-		<item name="android:textColorSecondary">@color/gray_50</item>
-		<item name="android:drawableTint">@color/gray_50</item>
-		<item name="android:popupTheme">@style/Theme.Mastodon.AutoLightDark</item>
+		<item name="android:textColorPrimary">?android:colorPrimary</item>
+		<item name="android:textColorSecondary">?android:colorPrimary</item>
+		<item name="android:drawableTint">?android:colorPrimary</item>
+		<item name="android:popupTheme">?android:actionBarTheme</item>
 		<item name="android:titleTextAppearance">@style/m3_title_medium</item>
-		<item name="android:titleTextColor">@color/gray_50</item>
+		<item name="android:titleTextColor">?android:colorPrimary</item>
 		<item name="android:subtitleTextAppearance">@style/m3_body_medium</item>
-		<item name="android:subtitleTextColor">@color/gray_50</item>
+		<item name="android:subtitleTextColor">?android:colorPrimary</item>
 	</style>
 
 	<style name="Widget.Mastodon.Button" parent="android:Widget.Material.Button">
