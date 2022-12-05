@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -56,7 +58,7 @@ import me.grishka.appkit.utils.V;
 
 public class HomeTimelineFragment extends StatusListFragment{
 	private ImageButton fab;
-	private TextView toolbarLogo;
+	private ImageView toolbarLogo;
 	private Button toolbarShowNewPostsBtn;
 	private boolean newPostsBtnShown;
 	private AnimatorSet currentNewPostsAnim;
@@ -315,9 +317,13 @@ public class HomeTimelineFragment extends StatusListFragment{
 	}
 
 	private void updateToolbarLogo(){
-		toolbarLogo =new TextView(getActivity());
-		toolbarLogo.setText(getString(R.string.app_name).toLowerCase(Locale.getDefault()));
-		toolbarLogo.setTextAppearance(R.style.app_title);
+		toolbarLogo=new ImageView(getActivity());
+		toolbarLogo.setScaleType(ImageView.ScaleType.CENTER);
+		toolbarLogo.setImageResource(R.drawable.logo);
+		toolbarLogo.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorPrimary)));
+//		toolbarLogo =new TextView(getActivity());
+//		toolbarLogo.setText(getString(R.string.app_name).toLowerCase(Locale.getDefault()));
+//		toolbarLogo.setTextAppearance(R.style.app_title);
 
 		toolbarShowNewPostsBtn=new Button(getActivity());
 		toolbarShowNewPostsBtn.setTextAppearance(R.style.m3_title_medium);
