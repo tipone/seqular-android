@@ -111,7 +111,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 
 	private void actuallyCheckForUpdates(){
 		Request req=new Request.Builder()
-				.url("https://api.github.com/repos/sk22/megalodon/releases/latest")
+				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases/latest")
 				.build();
 		Call call=MastodonAPIController.getHttpClient().newCall(req);
 		try(Response resp=call.execute()){
