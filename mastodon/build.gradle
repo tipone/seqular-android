@@ -6,7 +6,7 @@ android {
 	compileSdk 33
 	defaultConfig {
 		archivesBaseName = "megalodon"
-		applicationId "org.joinmastodon.android.sk"
+		applicationId "org.joinmastodon.android.moshinda"
 		minSdk 23
 		targetSdk 33
 		versionCode 52
