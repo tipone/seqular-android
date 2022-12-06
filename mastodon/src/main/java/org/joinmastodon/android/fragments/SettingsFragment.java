@@ -152,7 +152,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			checkForUpdateItem = new TextItem(R.string.check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
-		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon")));
+		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 

@@ -32,7 +32,7 @@ public class GlobalUserPreferences{
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
-		color=ColorPreference.values()[prefs.getInt("color", 0)];
+		color=ColorPreference.values()[prefs.getInt("color", 1)];
 	}
 
 	public static void save(){

@@ -6,5 +6,5 @@ dependencyResolutionManagement {
 		mavenLocal()
 	}
 }
-rootProject.name = "Megalodon"
+rootProject.name = "Moshidon"
 include ':mastodon'
