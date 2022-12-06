@@ -1,8 +1,8 @@
 ![Pink logo with pink shark](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
 
-# Megalodon
+# Moshidon
 
-> A fork of the [official Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app and possibly won’t ever be implemented, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
+> A fork of [megalodon](https://github.com/sk22/megalodon) which is a fork of [official Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app and possibly won’t ever be implemented, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
 
 **Warning! [The last version's integrated updater was broken](https://github.com/sk22/megalodon/issues/106) – I already published a fixed version! If you're not updating through Izzy's F-Droid repository (more sources to come, hopefully!), you'll have to download the current release manually. Sorry about that!**
 
