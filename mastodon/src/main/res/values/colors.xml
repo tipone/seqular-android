@@ -212,6 +212,5 @@
 	<color name="bookmark_selected">@color/success_500</color>
 	<color name="boost_selected">?android:colorPrimary</color>
 
-	<color name="shortcut_icon_background">?android:colorBackground</color>
-	<color name="shortcut_icon_foreground">?android:colorAccent</color>
+	<color name="shortcut_icon_background">#282C37</color>
 </resources>
