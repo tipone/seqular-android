@@ -6,7 +6,7 @@
 
 [//]: # (**Warning! [The last version's integrated updater was broken]&#40;https://github.com/sk22/megalodon/issues/106&#41; – I already published a fixed version! If you're not updating through Izzy's F-Droid repository &#40;more sources to come, hopefully!&#41;, you'll have to download the current release manually. Sorry about that!**)
 
-[![Download latest release](https://img.shields.io/badge/dynamic/json?color=d92aad&label=download%20apk&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fsk22%2Fmastodon-android-fork%2Freleases%2Flatest&style=for-the-badge)](https://github.com/sk22/megalodon/releases/latest/download/megalodon.apk)
+[![Download latest release](https://img.shields.io/badge/dynamic/json?color=d92aad&label=download%20apk&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2Fsk22%2Fmastodon-android-fork%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)
 
 ---
 
