@@ -13,6 +13,10 @@
 
 ## Key features
 
+### **Color themes**
+
+**Allows you to change theme within the app. Supports Purple, pink, green, blue, orange and yellow!**
+
 ### **Unlisted posting**
 
 **Allows you to post publicly without having your post show up in trends, hashtags or public timelines (i.e., in the tabs “Local”, “Community” and “Posts”).**
