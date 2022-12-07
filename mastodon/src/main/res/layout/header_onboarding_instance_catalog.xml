@@ -44,18 +44,19 @@
 
 	<EditText
 		android:id="@+id/search_edit"
+		style="@android:style/Widget.EditText"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:inputType="textFilter|textNoSuggestions"
-		android:singleLine="true"
-		android:imeOptions="actionGo"
 		android:layout_marginLeft="16dp"
-		android:layout_marginRight="16dp"
 		android:layout_marginTop="19dp"
+		android:layout_marginRight="16dp"
 		android:layout_marginBottom="3dp"
 		android:drawableStart="@drawable/ic_fluent_search_20_regular"
 		android:drawablePadding="8dp"
 		android:drawableTint="?android:textColorSecondary"
-		android:hint="@string/search_communities"/>
+		android:hint="@string/search_communities"
+		android:imeOptions="actionGo"
+		android:inputType="textFilter|textNoSuggestions"
+		android:singleLine="true" />
 
 </LinearLayout>
