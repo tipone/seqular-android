@@ -110,7 +110,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.useCustomTabs=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.settings_show_interaction_counts, R.drawable.ic_fluent_number_row_24_regular, GlobalUserPreferences.showInteractionCounts, i->{
+		items.add(new SwitchItem(R.string.sk_settings_show_interaction_counts, R.drawable.ic_fluent_number_row_24_regular, GlobalUserPreferences.showInteractionCounts, i->{
 			GlobalUserPreferences.showInteractionCounts=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -120,15 +120,15 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}));
 
 		items.add(new HeaderItem(R.string.home_timeline));
-		items.add(new SwitchItem(R.string.settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
+		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
 			GlobalUserPreferences.showReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.settings_show_boosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, GlobalUserPreferences.showBoosts, i->{
+		items.add(new SwitchItem(R.string.sk_settings_show_boosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, GlobalUserPreferences.showBoosts, i->{
 			GlobalUserPreferences.showBoosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.settings_load_new_posts, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.loadNewPosts, i->{
+		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.loadNewPosts, i->{
 			GlobalUserPreferences.loadNewPosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -154,7 +154,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 		items.add(new RedHeaderItem(R.string.settings_spicy));
 		if (GithubSelfUpdater.needSelfUpdating()) {
-			checkForUpdateItem = new TextItem(R.string.check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
 		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon")));
@@ -396,7 +396,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 
 		if (ev.state == GithubSelfUpdater.UpdateState.NO_UPDATE) {
-			Toast.makeText(getActivity(), R.string.no_update_available, Toast.LENGTH_SHORT).show();
+			Toast.makeText(getActivity(), R.string.sk_no_update_available, Toast.LENGTH_SHORT).show();
 		}
 	}
 
@@ -717,12 +717,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		public void onBind(ColorPicker item){
 			icon.setImageResource(R.drawable.ic_color_theme_preference);
 			button.setText(switch(GlobalUserPreferences.color){
-				case PINK -> R.string.pink_color;
-				case PURPLE -> R.string.purple_color;
-				case GREEN -> R.string.green_color;
-				case BLUE -> R.string.blue_color;
-				case ORANGE -> R.string.orange_color;
-				case YELLOW -> R.string.yellow_color;
+				case PINK -> R.string.sk_color_theme_pink;
+				case PURPLE -> R.string.sk_color_theme_purple;
+				case GREEN -> R.string.sk_color_theme_green;
+				case BLUE -> R.string.sk_color_theme_blue;
+				case ORANGE -> R.string.sk_color_theme_brown;
+				case YELLOW -> R.string.sk_color_theme_yellow;
 			});
 		}
 	}

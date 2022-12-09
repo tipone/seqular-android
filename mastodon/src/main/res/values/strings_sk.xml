@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-  <string name="sk_app_name">Megalodon</string>
+  <string name="sk_app_name" translatable="false">Moshidon</string>
   <string name="sk_pinned_posts">Pinned</string>
   <string name="sk_delete_and_redraft">Delete and re-draft</string>
   <string name="sk_confirm_delete_and_redraft_title">Delete and re-draft Post</string>
@@ -25,8 +25,8 @@
   <string name="sk_user_post_notifications_off">Turned off post notifications for %s</string>
   <string name="sk_federated_timeline">Federation</string>
   <string name="sk_federated_timeline_info_banner">These are the most recent posts by the people in your federation.</string>
-  <string name="sk_update_available">Megalodon %s is ready to download.</string>
-  <string name="sk_update_ready">Megalodon %s is downloaded and ready to install.</string>
+  <string name="sk_update_available">Moshidon %s is ready to download.</string>
+  <string name="sk_update_ready">Moshidon %s is downloaded and ready to install.</string>
   <string name="sk_check_for_update">Check for update</string>
   <string name="sk_no_update_available">No update available</string>
   <string name="sk_list_timelines">Lists</string>
@@ -45,6 +45,6 @@
   <string name="sk_color_theme_purple">Purple</string>
   <string name="sk_color_theme_green">Green</string>
   <string name="sk_color_theme_blue">Blue</string>
-  <string name="sk_color_theme_brown">Brown</string>
+  <string name="sk_color_theme_brown">Orange</string>
   <string name="sk_color_theme_yellow">Yellow</string>
 </resources>
