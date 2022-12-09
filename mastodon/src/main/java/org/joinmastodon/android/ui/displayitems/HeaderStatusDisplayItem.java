@@ -23,6 +23,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.statuses.GetStatusSourceText;
+import org.joinmastodon.android.api.requests.statuses.GetStatusTranslation;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
@@ -33,6 +34,7 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusTranslation;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -212,6 +214,21 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					UiUtils.confirmToggleBlockDomain(activity, item.parentFragment.getAccountID(), account.getDomain(), relationship!=null && relationship.domainBlocking, ()->{});
 				}else if(id==R.id.bookmark){
 					AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked);
+				}else if(id==R.id.translate){
+					new GetStatusTranslation(item.status.id)
+							.setCallback(new Callback<StatusTranslation>(){
+								@Override
+								public void onSuccess(StatusTranslation status){
+									System.out.println(status.getStrippedText());
+								}
+								@Override
+								public void onError(ErrorResponse error){
+									error.showToast(item.parentFragment.getActivity());
+								}
+
+					})
+					.wrapProgress(item.parentFragment.getActivity(), R.string.loading, true)
+					.exec(item.parentFragment.getAccountID());
 				}
 				return true;
 			});
