@@ -463,7 +463,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	protected void revealTranslation(Status status, String itemID){
-		status.wantsTranslation=true;
+		status.wantsTranslation=!status.wantsTranslation;
 		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
 		if(text!=null)
 			adapter.notifyItemChanged(text.getAbsoluteAdapterPosition()-getMainAdapterOffset());

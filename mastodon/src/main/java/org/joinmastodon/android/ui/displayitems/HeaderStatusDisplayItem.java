@@ -62,6 +62,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	private SpannableStringBuilder parsedName;
 	public final Status status;
 	private boolean hasVisibilityToggle;
+	private boolean hasTranslateToggle;
 	boolean needBottomPadding;
 	private String extraText;
 
@@ -76,6 +77,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		HtmlParser.parseCustomEmoji(parsedName, user.emojis);
 		emojiHelper.setText(parsedName);
 		if(status!=null){
+			hasTranslateToggle=true;
 			hasVisibilityToggle=status.sensitive || !TextUtils.isEmpty(status.spoilerText);
 			if(!hasVisibilityToggle && !status.mediaAttachments.isEmpty()){
 				for(Attachment att:status.mediaAttachments){
@@ -217,24 +219,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				}else if(id==R.id.bookmark){
 					AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked);
 				}
-//				else if(id==R.id.translate){
-//					item.status.wantsTranslation = !item.status.wantsTranslation;
-
-//					new GetStatusTranslation(item.status.id)
-//							.setCallback(new Callback<StatusTranslation>(){
-//								@Override
-//								public void onSuccess(StatusTranslation status){
-//									System.out.println(status.getStrippedText());
-//								}
-//								@Override
-//								public void onError(ErrorResponse error){
-//									error.showToast(item.parentFragment.getActivity());
-//								}
-//
-//					})
-//					.wrapProgress(item.parentFragment.getActivity(), R.string.loading, true)
-//					.exec(item.parentFragment.getAccountID());
-//				}
 				return true;
 			});
 		}
@@ -248,12 +232,16 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			else
 				timestamp.setText(item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt)));
 			visibility.setVisibility(item.hasVisibilityToggle && !item.inset ? View.VISIBLE : View.GONE);
+			translate.setVisibility(item.hasTranslateToggle ? View.VISIBLE : View.GONE);
 			if(item.hasVisibilityToggle){
 				visibility.setImageResource(item.status.spoilerRevealed ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
 				visibility.setContentDescription(item.parentFragment.getString(item.status.spoilerRevealed ? R.string.hide_content : R.string.reveal_content));
 				if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 					visibility.setTooltipText(visibility.getContentDescription());
 				}
+			}
+			if(item.hasTranslateToggle){
+				translate.setImageResource(item.status.wantsTranslation ? R.drawable.ic_translate_on : R.drawable.ic_translate_off);
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 			if(TextUtils.isEmpty(item.extraText)){
