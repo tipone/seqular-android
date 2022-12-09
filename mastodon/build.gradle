@@ -32,9 +32,11 @@ android {
 		githubRelease{
 			initWith release
 		}
-		noFederatedRelease{
+		playRelease{
 			initWith release
-			versionNameSuffix '-nofederated'
+			minifyEnabled true
+			shrinkResources true
+			versionNameSuffix '-play'
 		}
 	}
 	compileOptions {

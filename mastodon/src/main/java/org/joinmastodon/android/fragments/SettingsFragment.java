@@ -9,14 +9,12 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -71,6 +69,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private NotificationPolicyItem notificationPolicyItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
+	private boolean needAppRestart;
 	private PushSubscription pushSubscription;
 
 	private ImageView themeTransitionWindowView;
@@ -133,6 +132,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.loadNewPosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
+			GlobalUserPreferences.showFederatedTimeline=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
 
 		items.add(new HeaderItem(R.string.settings_notifications));
 		items.add(notificationPolicyItem=new NotificationPolicyItem());
@@ -141,6 +145,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.notify_follow, R.drawable.ic_fluent_person_add_24_regular, pushSubscription.alerts.follow, i->onNotificationsChanged(PushNotification.Type.FOLLOW, i.checked)));
 		items.add(new SwitchItem(R.string.notify_reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, pushSubscription.alerts.reblog, i->onNotificationsChanged(PushNotification.Type.REBLOG, i.checked)));
 		items.add(new SwitchItem(R.string.notify_mention, R.drawable.ic_at_symbol, pushSubscription.alerts.mention, i->onNotificationsChanged(PushNotification.Type.MENTION, i.checked)));
+		items.add(new SwitchItem(R.string.sk_notify_posts, R.drawable.ic_fluent_alert_24_regular, pushSubscription.alerts.status, i->onNotificationsChanged(PushNotification.Type.STATUS, i.checked)));
 
 		items.add(new HeaderItem(R.string.settings_boring));
 		items.add(new TextItem(R.string.settings_account, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit")));
@@ -152,7 +157,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			checkForUpdateItem = new TextItem(R.string.check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
-		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
+		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
@@ -203,6 +208,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		super.onDestroy();
 		if(needUpdateNotificationSettings && PushSubscriptionManager.arePushNotificationsAvailable()){
 			AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().updatePushSettings(pushSubscription);
+		}
+		if(needAppRestart){
+			Intent intent = Intent.makeRestartActivityTask(MastodonApp.context.getPackageManager().getLaunchIntentForPackage(MastodonApp.context.getPackageName()).getComponent());
+			MastodonApp.context.startActivity(intent);
+			Runtime.getRuntime().exit(0);
 		}
 	}
 
@@ -291,6 +301,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			case FOLLOW -> subscription.alerts.follow=enabled;
 			case REBLOG -> subscription.alerts.reblog=enabled;
 			case MENTION -> subscription.alerts.mention=subscription.alerts.poll=enabled;
+			case STATUS -> subscription.alerts.status=enabled;
 		}
 		needUpdateNotificationSettings=true;
 	}
