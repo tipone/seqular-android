@@ -348,8 +348,9 @@ public class HomeTimelineFragment extends StatusListFragment{
 		}
 
 		FrameLayout logoWrap=new FrameLayout(getActivity());
-		logoWrap.setPadding(0, V.dp(5), 0, 0);
-		logoWrap.addView(toolbarLogo, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER));
+		FrameLayout.LayoutParams logoParams=new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.CENTER);
+		logoParams.setMargins(0, V.dp(2), 0, 0);
+		logoWrap.addView(toolbarLogo, logoParams);
 		logoWrap.addView(toolbarShowNewPostsBtn, new FrameLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, V.dp(32), Gravity.CENTER));
 
 		Toolbar toolbar=getToolbar();
