@@ -63,25 +63,25 @@ public class StatusTranslation extends BaseModel implements DisplayItemsParent{
     @Override
     public void postprocess() throws ObjectValidationException{
         super.postprocess();
-        if(application!=null)
-            application.postprocess();
-        for(Mention m:mentions)
-            m.postprocess();
-        for(Hashtag t:tags)
-            t.postprocess();
-        for(Emoji e:emojis)
-            e.postprocess();
-        for(Attachment a:mediaAttachments)
-            a.postprocess();
-        account.postprocess();
-        if(poll!=null)
-            poll.postprocess();
-        if(card!=null)
-            card.postprocess();
-        if(reblog!=null)
-            reblog.postprocess();
+//        if(application!=null)
+//            application.postprocess();
+//        for(Mention m:mentions)
+//            m.postprocess();
+//        for(Hashtag t:tags)
+//            t.postprocess();
+//        for(Emoji e:emojis)
+//            e.postprocess();
+//        for(Attachment a:mediaAttachments)
+//            a.postprocess();
+//        account.postprocess();
+//        if(poll!=null)
+//            poll.postprocess();
+//        if(card!=null)
+//            card.postprocess();
+//        if(reblog!=null)
+//            reblog.postprocess();
 
-        spoilerRevealed=GlobalUserPreferences.alwaysExpandContentWarnings || !sensitive;
+//        spoilerRevealed=GlobalUserPreferences.alwaysExpandContentWarnings || !sensitive;
     }
 
     @Override
