@@ -34,6 +34,18 @@
 		android:tint="?android:textColorSecondary" />
 
 	<ImageView
+		android:id="@+id/translate"
+		android:layout_width="36dp"
+		android:layout_height="36dp"
+		android:layout_marginTop="-6dp"
+		android:layout_marginRight="6dp"
+		android:layout_toLeftOf="@id/visibility"
+		android:background="?android:selectableItemBackgroundBorderless"
+		android:scaleType="center"
+		android:src="@drawable/ic_visibility"
+		android:tint="?android:textColorSecondary" />
+
+	<ImageView
 		android:id="@+id/avatar"
 		android:layout_width="46dp"
 		android:layout_height="46dp"

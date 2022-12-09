@@ -109,7 +109,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText;
-		private final ImageView avatar, more, visibility;
+		private final ImageView avatar, more, visibility, translate;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -123,6 +123,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_header, parent);
+			translate=findViewById(R.id.translate);
 			name=findViewById(R.id.name);
 			username=findViewById(R.id.username);
 			timestamp=findViewById(R.id.timestamp);
@@ -135,6 +136,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			avatar.setClipToOutline(true);
 			more.setOnClickListener(this::onMoreClick);
 			visibility.setOnClickListener(v->item.parentFragment.onVisibilityIconClick(this));
+			translate.setOnClickListener(v->item.parentFragment.onRevealTranslationClick(this));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
@@ -214,22 +216,25 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					UiUtils.confirmToggleBlockDomain(activity, item.parentFragment.getAccountID(), account.getDomain(), relationship!=null && relationship.domainBlocking, ()->{});
 				}else if(id==R.id.bookmark){
 					AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked);
-				}else if(id==R.id.translate){
-					new GetStatusTranslation(item.status.id)
-							.setCallback(new Callback<StatusTranslation>(){
-								@Override
-								public void onSuccess(StatusTranslation status){
-									System.out.println(status.getStrippedText());
-								}
-								@Override
-								public void onError(ErrorResponse error){
-									error.showToast(item.parentFragment.getActivity());
-								}
-
-					})
-					.wrapProgress(item.parentFragment.getActivity(), R.string.loading, true)
-					.exec(item.parentFragment.getAccountID());
 				}
+//				else if(id==R.id.translate){
+//					item.status.wantsTranslation = !item.status.wantsTranslation;
+
+//					new GetStatusTranslation(item.status.id)
+//							.setCallback(new Callback<StatusTranslation>(){
+//								@Override
+//								public void onSuccess(StatusTranslation status){
+//									System.out.println(status.getStrippedText());
+//								}
+//								@Override
+//								public void onError(ErrorResponse error){
+//									error.showToast(item.parentFragment.getActivity());
+//								}
+//
+//					})
+//					.wrapProgress(item.parentFragment.getActivity(), R.string.loading, true)
+//					.exec(item.parentFragment.getAccountID());
+//				}
 				return true;
 			});
 		}

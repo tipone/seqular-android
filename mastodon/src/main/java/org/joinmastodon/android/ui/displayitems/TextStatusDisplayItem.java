@@ -8,17 +8,22 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.statuses.GetStatusTranslation;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusTranslation;
 import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.MovieDrawable;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -35,6 +40,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		super(parentID, parentFragment);
 		this.text=text;
 		this.status=status;
+//		this.wantsTranslation=wantsTranslation;
 		emojiHelper.setText(text);
 		if(!TextUtils.isEmpty(status.spoilerText)){
 			parsedSpoilerText=HtmlParser.parseCustomEmoji(status.spoilerText, status.emojis);
@@ -68,6 +74,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		private final TextView spoilerTitle, spoilerTitleInline;
 		private final View spoilerOverlay, borderTop, borderBottom;
 		private final Drawable backgroundColor, borderColor;
+		private final Button translateToggle;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_text, parent);
@@ -77,6 +84,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerHeader=findViewById(R.id.spoiler_header);
 			spoilerOverlay=findViewById(R.id.spoiler_overlay);
 			borderTop=findViewById(R.id.border_top);
+			translateToggle=findViewById(R.id.translate);
 			borderBottom=findViewById(R.id.border_bottom);
 			itemView.setOnClickListener(v->item.parentFragment.onRevealSpoilerClick(this));
 
@@ -91,7 +99,24 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(TextStatusDisplayItem item){
-			text.setText(item.text);
+			if(item.status.wantsTranslation){
+				new GetStatusTranslation(item.status.id)
+						.setCallback(new Callback<StatusTranslation>(){
+							@Override
+							public void onSuccess(StatusTranslation status){
+								text.setText(status.getStrippedText());
+							}
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(item.parentFragment.getActivity());
+							}
+
+						})
+						.wrapProgress(item.parentFragment.getActivity(), R.string.loading, true)
+						.exec(item.parentFragment.getAccountID());
+			}else{
+				text.setText(item.text);
+			}
 			text.setTextIsSelectable(item.textSelectable);
 			spoilerTitleInline.setTextIsSelectable(item.textSelectable);
 			text.setInvalidateOnEveryFrame(false);

@@ -40,6 +40,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public long favouritesCount;
 	public long repliesCount;
 	public Instant editedAt;
+	public boolean wantsTranslation;
 
 	public String url;
 	public String inReplyToId;

@@ -31,8 +31,9 @@
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
 				android:textAppearance="@style/m3_title_medium"
-				android:background="?colorBackgroundLight"
+				android:background="@color/error_900"
 				tools:text="CW title"/>
+
 
 			<View
 				android:id="@+id/border_bottom"
@@ -49,6 +50,22 @@
 			android:textSize="16sp"
 			android:textAppearance="@style/m3_body_large"
 			tools:text="setting up my mstdn"/>
+
+<!--		<Button-->
+<!--			android:id="@+id/translate"-->
+<!--			android:layout_width="wrap_content"-->
+<!--			android:layout_height="32dp"-->
+<!--			android:background="@drawable/bg_inline_button"-->
+<!--			android:elevation="0dp"-->
+<!--			android:ellipsize="middle"-->
+<!--			android:fontFamily="sans-serif-medium"-->
+<!--			android:singleLine="true"-->
+<!--			android:stateListAnimator="@null"-->
+<!--			android:textColor="?android:textColorPrimary"-->
+<!--			android:textSize="16sp"-->
+<!--			tools:text="@string/pink_color" />-->
+
+
 	</LinearLayout>
 
 
