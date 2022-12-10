@@ -1,6 +1,6 @@
 ![Pink logo with pink shark](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
 
-# Moshidon
+# Moshidon, the material you mastodon client! 
 
 > A fork of [megalodon](https://github.com/sk22/megalodon) which is a fork of [official Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app and possibly won’t ever be implemented, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
 
@@ -11,6 +11,8 @@
 
 
 ## Key features
+
+### **Material you theme support on Android 12+ devices!**
 
 ### **Translate button**
 
