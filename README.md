@@ -61,17 +61,12 @@ To bookmark a post, press the button between the Favorite and Share buttons on t
 
 ## Installation
 
-**Press the download button above to download the APK. Open the downloaded file on your Android device to install it. Megalodon will automatically notify you about new updates inside the app.**
+**Press the download button above to download the APK. Open the downloaded file on your Android device to install it. Moshidon will automatically notify you about new updates inside the app.**
 
-To install this app on your Android device, download the [latest release from GitHub](https://github.com/sk22/megalodon/releases/latest/download/megalodon.apk) and open it. You might have to accept installing APK files from your browser when trying to install it. You can also take a look at all releases on the [Releases](https://github.com/sk22/megalodon/releases) page.
+To install this app on your Android device, download the [latest release from GitHub](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk) and open it. You might have to accept installing APK files from your browser when trying to install it. You can also take a look at all releases on the [Releases](https://github.com/LucasGGamerM/moshidon/releases) page.
 
 Megalodon makes use of [Mastodon for Android](https://github.com/mastodon/mastodon-android)’s automatic update checker. Megalodon will check for new updates available on GitHub and offer to download and install them. You can also manually press “Check for updates” at the bottom of the settings page!
 
-### Other sources
-
-* **[Izzy's F-Droid repository](https://apt.izzysoft.de/fdroid/repo)**: https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.sk
-
----
 
 
 ## Release variants
@@ -80,7 +75,7 @@ All downloads can be found on the [Releases](https://github.com/LucasGGamerM/mos
 
 **`moshidon.apk`**
 
-Variant with an integrated updater. If you download Megalodon from here (and not from an app store), just download the regular `megalodon.apk`.
+Variant with an integrated updater. If you download Moshidon from here (and not from an app store), just download the regular `moshidon.apk`.
 
 ---
 
