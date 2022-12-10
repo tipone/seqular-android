@@ -74,7 +74,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		private final TextView spoilerTitle, spoilerTitleInline;
 		private final View spoilerOverlay, borderTop, borderBottom;
 		private final Drawable backgroundColor, borderColor;
-		private final Button translateToggle;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_text, parent);
@@ -84,7 +83,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerHeader=findViewById(R.id.spoiler_header);
 			spoilerOverlay=findViewById(R.id.spoiler_overlay);
 			borderTop=findViewById(R.id.border_top);
-			translateToggle=findViewById(R.id.translate);
 			borderBottom=findViewById(R.id.border_bottom);
 			itemView.setOnClickListener(v->item.parentFragment.onRevealSpoilerClick(this));
 
@@ -108,6 +106,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 							}
 							@Override
 							public void onError(ErrorResponse error){
+								item.status.wantsTranslation=false;
+								text.setText(item.text);
 								error.showToast(item.parentFragment.getActivity());
 							}
 
