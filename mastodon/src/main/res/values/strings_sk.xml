@@ -47,4 +47,6 @@
   <string name="sk_color_theme_blue">Blue</string>
   <string name="sk_color_theme_brown">Orange</string>
   <string name="sk_color_theme_yellow">Yellow</string>
+  <string name="sk_color_theme_material_you">Material You</string>
+  <string name="sk_not_supported">Not supported on your device</string>
 </resources>
