@@ -20,6 +20,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
+import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -42,6 +43,7 @@ import me.grishka.appkit.views.FragmentRootLinearLayout;
 public class HomeFragment extends AppKitFragment implements OnBackPressedListener{
 	private FragmentRootLinearLayout content;
 	private HomeTimelineFragment homeTimelineFragment;
+	private ListTimelinesFragment listTimelinesFragment;
 	private NotificationsFragment notificationsFragment;
 	private DiscoverFragment searchFragment;
 	private ProfileFragment profileFragment;
@@ -71,6 +73,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			args.putBoolean("noAutoLoad", true);
 			searchFragment=new DiscoverFragment();
 			searchFragment.setArguments(args);
+			listTimelinesFragment =new ListTimelinesFragment();
+			listTimelinesFragment.setArguments(args);
 			notificationsFragment=new NotificationsFragment();
 			notificationsFragment.setArguments(args);
 			args=new Bundle(args);
@@ -112,6 +116,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			getChildFragmentManager().beginTransaction()
 					.add(R.id.fragment_wrap, homeTimelineFragment)
 					.add(R.id.fragment_wrap, searchFragment).hide(searchFragment)
+					.add(R.id.fragment_wrap, listTimelinesFragment).hide(listTimelinesFragment)
 					.add(R.id.fragment_wrap, notificationsFragment).hide(notificationsFragment)
 					.add(R.id.fragment_wrap, profileFragment).hide(profileFragment)
 					.commit();
@@ -191,6 +196,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			return homeTimelineFragment;
 		}else if(tab==R.id.tab_search){
 			return searchFragment;
+		}else if(tab==R.id.tab_lists) {
+			return listTimelinesFragment;
 		}else if(tab==R.id.tab_notifications){
 			return notificationsFragment;
 		}else if(tab==R.id.tab_profile){
