@@ -88,11 +88,11 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			tabView.setId(switch(switchIndex){
 				case 0 -> R.id.discover_local_timeline;
 				case 1 -> R.id.discover_federated_timeline;
-				case 2 -> R.id.discover_hashtags;
-				case 3 -> R.id.discover_posts;
-				case 4 -> R.id.discover_news;
-				case 5 -> R.id.discover_users;
-				case 6 -> R.id.discover_lists;
+				case 2 -> R.id.discover_lists;
+				case 3 -> R.id.discover_hashtags;
+				case 4 -> R.id.discover_posts;
+				case 5 -> R.id.discover_news;
+				case 6 -> R.id.discover_users;
 				default -> throw new IllegalStateException("Unexpected value: "+switchIndex);
 			});
 			tabView.setVisibility(View.GONE);
@@ -165,11 +165,12 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 				tab.setText(switch(position){
 					case 0 -> R.string.local_timeline;
 					case 1 -> R.string.sk_federated_timeline;
-					case 2 -> R.string.hashtags;
-					case 3 -> R.string.posts;
-					case 4 -> R.string.news;
-					case 5 -> R.string.for_you;
-					case 6 -> R.string.sk_list_timelines;
+					case 2 -> R.string.sk_list_timelines;
+					case 3 -> R.string.hashtags;
+					case 4 -> R.string.posts;
+					case 5 -> R.string.news;
+					case 6 -> R.string.for_you;
+
 					default -> throw new IllegalStateException("Unexpected value: "+position);
 				});
 				tab.view.textView.setAllCaps(true);
