@@ -1,6 +1,5 @@
 package org.joinmastodon.android.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -9,13 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
@@ -23,8 +20,6 @@ import org.joinmastodon.android.api.requests.lists.AddAccountsToList;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.lists.RemoveAccountsFromList;
 import org.joinmastodon.android.model.ListTimeline;
-import org.joinmastodon.android.ui.tabs.TabLayout;
-import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -42,11 +37,6 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> implements ScrollableToTop {
-    private TabLayout tabLayout;
-    private ViewPager2 pager;
-    private FrameLayout[] tabViews;
-    private TabLayoutMediator tabLayoutMediator;
-
     private String accountId;
     private String profileAccountId;
     private String profileDisplayUsername;
@@ -79,13 +69,6 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             loadData();
     }
 
-    @Override
-    public void onAttach(Activity activity){
-        super.onAttach(activity);
-        setHasOptionsMenu(true);
-        setTitle(R.string.sk_list_timelines);
-    }
-
 //    @Override
 //    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 //        Button saveButton=new Button(getActivity());
@@ -110,7 +93,6 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             public void onSuccess(Object o) {}
         }).exec(accountId);
     }
-
 
     @Override
     protected void doLoadData(int offset, int count){
