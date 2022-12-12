@@ -63,14 +63,14 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args=getArguments();
-//        setTitle(R.string.sk_list_timelines);
+        setTitle(R.string.sk_list_timelines);
         accountId=args.getString("account");
 
         if(args.containsKey("profileAccount")){
             profileAccountId=args.getString("profileAccount");
             profileDisplayUsername=args.getString("profileDisplayUsername");
             setTitle(getString(R.string.sk_lists_with_user, profileDisplayUsername));
-            setHasOptionsMenu(true);
+//            setHasOptionsMenu(true);
         }
 //        toolbarTitle=new TextView(getActivity());
 //        toolbarTitle.setText(R.string.sk_list_timelines);
@@ -85,24 +85,27 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             loadData();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Button saveButton=new Button(getActivity());
-        saveButton.setText(R.string.save);
-        saveButton.setOnClickListener(this::onSaveClick);
-        LinearLayout wrap=new LinearLayout(getActivity());
-        wrap.setOrientation(LinearLayout.HORIZONTAL);
-        wrap.addView(saveButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
-        wrap.setClipToPadding(false);
-        MenuItem item=menu.add(R.string.save);
-        item.setActionView(wrap);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-    }
+//    @Override
+//    public void onAttach(Activity activity){
+//        super.onAttach(activity);
+//        setHasOptionsMenu(false);
+//        setTitle(R.string.sk_list_timelines);
+//    }
 
-    private void onSaveClick(View view) {
-        System.out.println("Save");
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        Button saveButton=new Button(getActivity());
+//        saveButton.setText(R.string.save);
+//        saveButton.setOnClickListener(this::onSaveClick);
+//        LinearLayout wrap=new LinearLayout(getActivity());
+//        wrap.setOrientation(LinearLayout.HORIZONTAL);
+//        wrap.addView(saveButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
+//        wrap.setClipToPadding(false);
+//        MenuItem item=menu.add(R.string.save);
+//        item.setActionView(wrap);
+//        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//    }
 
     private void saveListMembership(String listId, boolean isMember) {
         userInList.put(listId, isMember);
