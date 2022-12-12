@@ -2,7 +2,6 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -11,10 +10,8 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +26,6 @@ import org.joinmastodon.android.model.ListTimeline;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -46,8 +42,11 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> implements ScrollableToTop {
+    private TabLayout tabLayout;
+    private ViewPager2 pager;
+    private FrameLayout[] tabViews;
+    private TabLayoutMediator tabLayoutMediator;
 
-    private TextView toolbarTitle;
     private String accountId;
     private String profileAccountId;
     private String profileDisplayUsername;
@@ -63,7 +62,6 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args=getArguments();
-        setTitle(R.string.sk_list_timelines);
         accountId=args.getString("account");
 
         if(args.containsKey("profileAccount")){
@@ -72,10 +70,6 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             setTitle(getString(R.string.sk_lists_with_user, profileDisplayUsername));
 //            setHasOptionsMenu(true);
         }
-//        toolbarTitle=new TextView(getActivity());
-//        toolbarTitle.setText(R.string.sk_list_timelines);
-//        Toolbar toolbar = getToolbar();
-//        toolbar.addView(toolbarTitle);
     }
 
     @Override
@@ -85,12 +79,12 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             loadData();
     }
 
-//    @Override
-//    public void onAttach(Activity activity){
-//        super.onAttach(activity);
-//        setHasOptionsMenu(false);
-//        setTitle(R.string.sk_list_timelines);
-//    }
+    @Override
+    public void onAttach(Activity activity){
+        super.onAttach(activity);
+        setHasOptionsMenu(true);
+        setTitle(R.string.sk_list_timelines);
+    }
 
 //    @Override
 //    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
