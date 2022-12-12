@@ -18,7 +18,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.requests.lists.AddAccountsToList;
-import org.joinmastodon.android.api.requests.lists.DeleteList;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.lists.RemoveAccountsFromList;
 import org.joinmastodon.android.model.ListTimeline;
@@ -33,7 +32,6 @@ import java.util.List;
 import java.util.Map;
 
 import me.grishka.appkit.Nav;
-import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
@@ -182,8 +180,8 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             } else {
                 listToggle.setVisibility(View.GONE);
             }
-            edit.setOnClickListener(v -> this.editListName(item.id));
-            delete.setOnClickListener(v -> this.deleteList(item.id));
+//            edit.setOnClickListener();
+//            delete.setOnClickListener();
         }
 
         private void onClickToggle(View view) {
@@ -195,35 +193,12 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             UiUtils.openListTimeline(getActivity(), accountId, item);
         }
 
-        private void editListName(String listId){
-            new M3AlertDialogBuilder(getActivity())
-                    .setTitle(R.string.edit_text_edited)
+//        private void editListName(){
+//            new M3AlertDialogBuilder(getActivity())
+//                    .setTitle(R.string.edit_text_edited)
 //                    .setPositiveButton(R.string.discard, (dialog, which)-> )
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
-        }
-
-        private void deleteList(String listId){
-            new M3AlertDialogBuilder(getActivity())
-                    .setTitle(R.string.sk_delete_list_dialog_title)
-                    .setPositiveButton(R.string.delete, (dialog, which)-> new DeleteList(listId))
-                    .setNegativeButton(R.string.cancel, null)
-                    .show();
-        }
-
-        private void actuallyDeleteList(String listId){
-            new DeleteList(listId).setCallback(new Callback<Object>() {
-
-                @Override
-                public void onSuccess(Object result) {
-                    loadData();
-                }
-
-                @Override
-                public void onError(ErrorResponse error) {
-                    error.showToast(getActivity());
-                }
-            });
-        }
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .show();
+//        }
     }
 }
