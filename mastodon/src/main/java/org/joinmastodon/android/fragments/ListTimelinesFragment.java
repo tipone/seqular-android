@@ -1,6 +1,5 @@
 package org.joinmastodon.android.fragments;
 
-import android.app.ListFragment;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -16,17 +15,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.requests.lists.AddAccountsToList;
 import org.joinmastodon.android.api.requests.lists.DeleteList;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.lists.RemoveAccountsFromList;
-import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.model.ListTimeline;
-import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -211,25 +206,24 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
         private void deleteList(String listId){
             new M3AlertDialogBuilder(getActivity())
                     .setTitle(R.string.sk_delete_list_dialog_title)
-                    .setPositiveButton(R.string.delete, (dialog, which)-> actuallyDeleteList(listId))
+                    .setPositiveButton(R.string.delete, (dialog, which)-> new DeleteList(listId))
                     .setNegativeButton(R.string.cancel, null)
                     .show();
         }
 
         private void actuallyDeleteList(String listId){
-            new DeleteList(listId)
-                    .setCallback(new Callback<>(){
-                        @Override
-                        public void onSuccess(ListFragment result){
-                            System.out.println("All okay");
-                        }
+            new DeleteList(listId).setCallback(new Callback<Object>() {
 
-                        @Override
-                        public void onError(ErrorResponse error){
-                            error.showToast(getActivity());
-                        }
-                    })
-                    .wrapProgress(getActivity(), R.string.deleting, false);
+                @Override
+                public void onSuccess(Object result) {
+                    loadData();
+                }
+
+                @Override
+                public void onError(ErrorResponse error) {
+                    error.showToast(getActivity());
+                }
+            });
         }
     }
 }
