@@ -1,8 +1,6 @@
 package org.joinmastodon.android.fragments;
 
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -10,15 +8,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
@@ -26,10 +21,8 @@ import org.joinmastodon.android.api.requests.lists.AddAccountsToList;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.lists.RemoveAccountsFromList;
 import org.joinmastodon.android.model.ListTimeline;
-import org.joinmastodon.android.ui.tabs.TabLayout;
-import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -38,6 +31,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
@@ -46,8 +40,6 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> implements ScrollableToTop {
-
-    private TextView toolbarTitle;
     private String accountId;
     private String profileAccountId;
     private String profileDisplayUsername;
@@ -63,19 +55,14 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args=getArguments();
-//        setTitle(R.string.sk_list_timelines);
         accountId=args.getString("account");
 
         if(args.containsKey("profileAccount")){
             profileAccountId=args.getString("profileAccount");
             profileDisplayUsername=args.getString("profileDisplayUsername");
             setTitle(getString(R.string.sk_lists_with_user, profileDisplayUsername));
-            setHasOptionsMenu(true);
+//            setHasOptionsMenu(true);
         }
-//        toolbarTitle=new TextView(getActivity());
-//        toolbarTitle.setText(R.string.sk_list_timelines);
-//        Toolbar toolbar = getToolbar();
-//        toolbar.addView(toolbarTitle);
     }
 
     @Override
@@ -85,24 +72,20 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             loadData();
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        Button saveButton=new Button(getActivity());
-        saveButton.setText(R.string.save);
-        saveButton.setOnClickListener(this::onSaveClick);
-        LinearLayout wrap=new LinearLayout(getActivity());
-        wrap.setOrientation(LinearLayout.HORIZONTAL);
-        wrap.addView(saveButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
-        wrap.setClipToPadding(false);
-        MenuItem item=menu.add(R.string.save);
-        item.setActionView(wrap);
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-    }
-
-    private void onSaveClick(View view) {
-        System.out.println("Save");
-    }
+//    @Override
+//    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+//        Button saveButton=new Button(getActivity());
+//        saveButton.setText(R.string.save);
+//        saveButton.setOnClickListener(this::onSaveClick);
+//        LinearLayout wrap=new LinearLayout(getActivity());
+//        wrap.setOrientation(LinearLayout.HORIZONTAL);
+//        wrap.addView(saveButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//        wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
+//        wrap.setClipToPadding(false);
+//        MenuItem item=menu.add(R.string.save);
+//        item.setActionView(wrap);
+//        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+//    }
 
     private void saveListMembership(String listId, boolean isMember) {
         userInList.put(listId, isMember);
@@ -113,7 +96,6 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             public void onSuccess(Object o) {}
         }).exec(accountId);
     }
-
 
     @Override
     protected void doLoadData(int offset, int count){
@@ -178,11 +160,14 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
     private class ListViewHolder extends BindableViewHolder<ListTimeline> implements UsableRecyclerView.Clickable{
         private final TextView title;
         private final CheckBox listToggle;
+        private final ImageView edit, delete;
 
         public ListViewHolder(){
             super(getActivity(), R.layout.item_list_timeline, list);
             title=findViewById(R.id.title);
             listToggle=findViewById(R.id.list_toggle);
+            edit=findViewById(R.id.edit);
+            delete=findViewById(R.id.delete);
         }
 
         @Override
@@ -195,6 +180,8 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
             } else {
                 listToggle.setVisibility(View.GONE);
             }
+//            edit.setOnClickListener();
+//            delete.setOnClickListener();
         }
 
         private void onClickToggle(View view) {
@@ -205,5 +192,13 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
         public void onClick() {
             UiUtils.openListTimeline(getActivity(), accountId, item);
         }
+
+//        private void editListName(){
+//            new M3AlertDialogBuilder(getActivity())
+//                    .setTitle(R.string.edit_text_edited)
+//                    .setPositiveButton(R.string.discard, (dialog, which)-> )
+//                    .setNegativeButton(R.string.cancel, null)
+//                    .show();
+//        }
     }
 }
