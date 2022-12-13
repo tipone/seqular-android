@@ -19,7 +19,7 @@
   <string name="sk_settings_show_boosts">Show boosts</string>
   <string name="sk_settings_load_new_posts">Automatically load new posts</string>
   <string name="sk_settings_show_interaction_counts">Show interaction counts</string>
-  <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
+  <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
   <string name="sk_mark_media_as_sensitive">Mark media as sensitive</string>
   <string name="sk_user_post_notifications_on">Turned on post notifications for %s</string>
   <string name="sk_user_post_notifications_off">Turned off post notifications for %s</string>
@@ -36,7 +36,7 @@
   <string name="sk_lists_with_user">Lists with %s</string>
   <string name="sk_settings_always_reveal_content_warnings">Always reveal content warnings</string>
   <string name="sk_disable_marquee">Disable scrolling text in title bars</string>
-  <string name="sk_settings_contribute">Contribute to Megalodon</string>
+  <string name="sk_settings_contribute">Contribute to Moshidon</string>
   <string name="sk_settings_show_federated_timeline">Show federated timeline</string>
   <string name="sk_notification_type_status">Posts</string>
   <string name="sk_notify_posts">Post notifications</string>
@@ -49,4 +49,16 @@
   <string name="sk_color_theme_yellow">Yellow</string>
   <string name="sk_color_theme_material_you">Material You</string>
   <string name="sk_not_supported">Not supported on your device</string>
+  <string name="sk_poll_allow_multiple">Allow multiple choices</string>
+  <string name="sk_translate_post">Translate</string>
+  <string name="sk_translate_show_original">Show original</string>
+  <string name="sk_translated_using">Translated using %s</string>
+  <string name="sk_post_language">Language: %s</string>
+  <string name="sk_available_languages">Available languages</string>
+  <string name="sk_language_name">%s (%s)</string>
+  <string name="sk_clear_recent_languages">Clear recent languages</string>
+  <string name="sk_confirm_clear_recent_languages">Are you sure you want to clear your recently used languages?</string>
+  <string name="sk_welcome_title">Welcome to Moshidon!</string>
+  <string name="sk_welcome_text">To get started, please enter your home instance’s domain name below.</string>
+  <string name="sk_example_domain">example.social</string>
 </resources>
