@@ -106,13 +106,13 @@ public class InstanceChooserLoginFragment extends InstanceCatalogFragment{
 				.execNoAuth("");
 	}
 
-	@Override
-	protected void onUpdateToolbar(){
-		super.onUpdateToolbar();
-		Toolbar toolbar=getToolbar();
-		toolbar.setElevation(0);
-		toolbar.setBackground(null);
-	}
+//	@Override
+//	protected void onUpdateToolbar(){
+//		super.onUpdateToolbar();
+//		Toolbar toolbar=getToolbar();
+//		toolbar.setElevation(0);
+//		toolbar.setBackground(null);
+//	}
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
