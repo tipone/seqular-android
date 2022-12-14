@@ -667,7 +667,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		languageButton.setCompoundDrawableTintList(languageButton.getTextColors());
 		languageButton.setCompoundDrawablePadding(V.dp(6));
 
-		updateLanguage(languageResolver.getDefault());
+		updateLanguage(languageResolver.getDefault(accountID));
 		languagePopup=new PopupMenu(getActivity(), languageButton);
 		languageButton.setOnTouchListener(languagePopup.getDragToOpenListener());
 		languageButton.setOnClickListener(v->languagePopup.show());
@@ -692,6 +692,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		});
 
 		return languageButton;
+	}
+
+	private void setDefaultLanguage(String language) {
+		GlobalUserPreferences.defaultLanguages.put(accountID, language);
 	}
 
 	@Override
@@ -850,6 +854,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			newRecentLanguages.remove(language);
 			newRecentLanguages.add(0, language);
 			recentLanguages.put(accountID, newRecentLanguages.stream().limit(4).collect(Collectors.toList()));
+			setDefaultLanguage(language);
 			GlobalUserPreferences.save();
 		}
 	}
