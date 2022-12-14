@@ -180,7 +180,7 @@
 						android:layout_weight="1"
 						android:textSize="16sp"
 						android:singleLine="true"
-						android:text="@string/poll_allow_multiple" />
+						android:text="@string/sk_poll_allow_multiple" />
 				</LinearLayout>
 			</LinearLayout>
 
