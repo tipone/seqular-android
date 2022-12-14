@@ -7,6 +7,7 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.LocaleList;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.model.Instance;
 
 import java.util.ArrayList;
@@ -94,8 +95,11 @@ public class MastodonLanguage {
 		}
 
 		public MastodonLanguage getDefault(String accountID) {
-
+			if(GlobalUserPreferences.defaultLanguages.get(accountID)==null){
+				GlobalUserPreferences.defaultLanguages.put(accountID, Locale.getDefault().getLanguage());
 				return from(Locale.getDefault().getLanguage());
+			}
+			return from(GlobalUserPreferences.defaultLanguages.get(accountID));
 		}
 	}
 }
