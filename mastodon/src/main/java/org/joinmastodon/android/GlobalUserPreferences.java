@@ -29,7 +29,9 @@ public class GlobalUserPreferences{
 	public static ColorPreference color;
 
 	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
+	private final static Type defaultLanguagesType = new TypeToken<Map<String, String>>() {}.getType();
 	public static Map<String, List<String>> recentLanguages;
+	public static Map<String, String> defaultLanguages;
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -55,6 +57,7 @@ public class GlobalUserPreferences{
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
+		defaultLanguages=fromJson(prefs.getString("defaultLanguages", "{}"), defaultLanguagesType, new HashMap<>());
 		color=ColorPreference.values()[prefs.getInt("color", 1)];
 	}
 
@@ -72,6 +75,7 @@ public class GlobalUserPreferences{
 				.putBoolean("disableMarquee", disableMarquee)
 				.putInt("theme", theme.ordinal())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
+				.putString("defaultLanguages", gson.toJson(defaultLanguages))
 				.putInt("color", color.ordinal())
 				.apply();
 	}
