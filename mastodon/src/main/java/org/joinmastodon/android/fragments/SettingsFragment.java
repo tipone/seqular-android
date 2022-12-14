@@ -48,6 +48,7 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
@@ -159,6 +160,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
+		items.add(new TextItem(R.string.clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.clear_recent_languages, R.string.confirm_clear_recent_languages, R.string.clear, ()->{
+			GlobalUserPreferences.recentLanguages.remove(accountID);
+			GlobalUserPreferences.save();
+		})));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		items.add(new FooterItem(getString(R.string.settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
