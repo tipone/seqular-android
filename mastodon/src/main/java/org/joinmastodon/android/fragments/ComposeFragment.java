@@ -1,5 +1,9 @@
 package org.joinmastodon.android.fragments;
 
+import static org.joinmastodon.android.GlobalUserPreferences.recentLanguages;
+import static org.joinmastodon.android.utils.MastodonLanguage.allLanguages;
+import static org.joinmastodon.android.utils.MastodonLanguage.defaultRecentLanguages;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -29,11 +33,13 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -55,6 +61,7 @@ import android.widget.Toast;
 import com.twitter.twittertext.TwitterTextEmojiRegex;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
@@ -95,6 +102,7 @@ import org.joinmastodon.android.ui.views.ComposeEditText;
 import org.joinmastodon.android.ui.views.ComposeMediaLayout;
 import org.joinmastodon.android.ui.views.ReorderableLinearLayout;
 import org.joinmastodon.android.ui.views.SizeListenerLinearLayout;
+import org.joinmastodon.android.utils.MastodonLanguage;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 
@@ -105,6 +113,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -145,7 +154,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private String accountID;
 	private int charCount, charLimit, trimmedCharCount;
 
-	private Button publishButton;
+	private Button publishButton, languageButton;
+	private PopupMenu languagePopup;
 	private ImageButton mediaBtn, pollBtn, emojiBtn, spoilerBtn, visibilityBtn;
 	private ImageView sensitiveIcon;
 	private ComposeMediaLayout attachmentsView;
@@ -190,6 +200,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private boolean ignoreSelectionChanges=false;
 	private Runnable updateUploadEtaRunnable;
 
+	private String language;
+	private MastodonLanguage.LanguageResolver languageResolver;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -201,6 +214,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		instanceDomain=session.domain;
 		customEmojis=AccountSessionManager.getInstance().getCustomEmojis(instanceDomain);
 		instance=AccountSessionManager.getInstance().getInstanceInfo(instanceDomain);
+		languageResolver=new MastodonLanguage.LanguageResolver(instance);
 		if(getArguments().containsKey("editStatus")){
 			editingStatus=Parcels.unwrap(getArguments().getParcelable("editStatus"));
 			redraftStatus=getArguments().getBoolean("redraftStatus");
@@ -403,6 +417,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 		outState.putBoolean("sensitive", sensitive);
 		outState.putBoolean("hasSpoiler", hasSpoiler);
+		outState.putString("language", language);
 		if(!attachments.isEmpty()){
 			ArrayList<Parcelable> serializedAttachments=new ArrayList<>(attachments.size());
 			for(DraftMediaAttachment att:attachments){
@@ -542,6 +557,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					spoilerEdit.setText(replyTo.spoilerText);
 					spoilerBtn.setSelected(true);
 				}
+				if (replyTo.language != null && !replyTo.language.isEmpty()) updateLanguage(replyTo.language);
 			}
 		}else{
 			replyText.setVisibility(View.GONE);
@@ -553,6 +569,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				ignoreSelectionChanges=true;
 				mainEditText.setSelection(mainEditText.length());
 				ignoreSelectionChanges=false;
+				updateLanguage(editingStatus.language);
 				if(!editingStatus.mediaAttachments.isEmpty()){
 					attachmentsView.setVisibility(View.VISIBLE);
 					for(Attachment att:editingStatus.mediaAttachments){
@@ -615,6 +632,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		sendError.setVisibility(View.GONE);
 		sendProgress.setVisibility(View.GONE);
 
+		LinearLayout.LayoutParams langParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		langParams.setMarginEnd(V.dp(8));
+		wrap.addView(buildLanguageSelector(), langParams);
+
 		wrap.addView(publishButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
 		wrap.setClipToPadding(false);
@@ -622,6 +643,59 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		item.setActionView(wrap);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		updatePublishButtonState();
+	}
+
+	private void updateLanguage(String lang) {
+		updateLanguage(languageResolver.from(lang));
+	}
+
+	private void updateLanguage(MastodonLanguage loc) {
+		language = loc.getLanguage();
+		languageButton.setText(loc.getLanguageName());
+		languageButton.setContentDescription(getActivity().getString(R.string.post_language, loc.getDefaultName()));
+	}
+
+	@SuppressLint("ClickableViewAccessibility")
+	private Button buildLanguageSelector() {
+		languageButton=new Button(getActivity());
+		TypedValue typedValue = new TypedValue();
+		getActivity().getTheme().resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+		languageButton.setTextColor(typedValue.data);
+		languageButton.setBackground(getActivity().getDrawable(R.drawable.bg_text_button));
+		languageButton.setPadding(V.dp(8), 0, V.dp(8), 0);
+		languageButton.setCompoundDrawablesRelativeWithIntrinsicBounds(getActivity().getDrawable(R.drawable.ic_fluent_local_language_16_regular), null, null, null);
+		languageButton.setCompoundDrawableTintList(languageButton.getTextColors());
+		languageButton.setCompoundDrawablePadding(V.dp(6));
+
+		updateLanguage(languageResolver.getDefault(accountID));
+		languagePopup=new PopupMenu(getActivity(), languageButton);
+		languageButton.setOnTouchListener(languagePopup.getDragToOpenListener());
+		languageButton.setOnClickListener(v->languagePopup.show());
+
+		Menu languageMenu = languagePopup.getMenu();
+
+		for (String recentLanguage : Optional.ofNullable(recentLanguages.get(accountID)).orElse(defaultRecentLanguages)) {
+			MastodonLanguage l = languageResolver.from(recentLanguage);
+			languageMenu.add(0, allLanguages.indexOf(l), Menu.NONE, getActivity().getString(R.string.language_name, l.getDefaultName(), l.getLanguageName()));
+		}
+
+		SubMenu allLanguagesMenu = languageMenu.addSubMenu(R.string.available_languages);
+		for (int i = 0; i < allLanguages.size(); i++) {
+			MastodonLanguage l = allLanguages.get(i);
+			allLanguagesMenu.add(0, i, Menu.NONE, getActivity().getString(R.string.language_name, l.getDefaultName(), l.getLanguageName()));
+		}
+
+		languagePopup.setOnMenuItemClickListener(i->{
+			if (i.hasSubMenu()) return false;
+			updateLanguage(allLanguages.get(i.getItemId()));
+			return true;
+		});
+
+		return languageButton;
+	}
+
+	private void setDefaultLanguage(String language) {
+		GlobalUserPreferences.defaultLanguages.put(accountID, language);
 	}
 
 	@Override
@@ -697,6 +771,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		req.status=text;
 		req.visibility=statusVisibility;
 		req.sensitive=sensitive;
+		req.language=language;
 		if(!attachments.isEmpty()){
 			req.mediaIds=attachments.stream().map(a->a.serverAttachment.id).collect(Collectors.toList());
 		}
@@ -772,6 +847,15 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			new CreateStatus(req, uuid)
 					.setCallback(resCallback)
 					.exec(accountID);
+		}
+
+		if (replyTo == null) {
+			List<String> newRecentLanguages = new ArrayList<>(Optional.ofNullable(recentLanguages.get(accountID)).orElse(defaultRecentLanguages));
+			newRecentLanguages.remove(language);
+			newRecentLanguages.add(0, language);
+			recentLanguages.put(accountID, newRecentLanguages.stream().limit(4).collect(Collectors.toList()));
+//			setDefaultLanguage(language);
+			GlobalUserPreferences.save();
 		}
 	}
 
@@ -1362,6 +1446,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					public void onSuccess(Preferences result){
 						// Only override the reply visibility if our preference is more private
 						if (result.postingDefaultVisibility.isLessVisibleThan(statusVisibility)) {
+							// Map unlisted from the API onto public, because we don't have unlisted in the UI
 							statusVisibility = switch (result.postingDefaultVisibility) {
 								case PUBLIC -> StatusPrivacy.PUBLIC;
 								case UNLISTED -> StatusPrivacy.UNLISTED;

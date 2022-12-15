@@ -1,7 +1,17 @@
 package org.joinmastodon.android;
 
+import static org.joinmastodon.android.api.MastodonAPIController.gson;
+
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Type;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class GlobalUserPreferences{
 	public static boolean playGifs;
@@ -18,8 +28,17 @@ public class GlobalUserPreferences{
 	public static ThemePreference theme;
 	public static ColorPreference color;
 
+	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
+	public static Map<String, List<String>> recentLanguages;
+	public static Map<String, String> defaultLanguages;
+
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
+	}
+
+	private static <T> T fromJson(String json, Type type, T orElse) {
+		try { return gson.fromJson(json, type); }
+		catch (JsonSyntaxException ignored) { return orElse; }
 	}
 
 	public static void load(){
@@ -36,6 +55,7 @@ public class GlobalUserPreferences{
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
+		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
 		color=ColorPreference.values()[prefs.getInt("color", 1)];
 	}
 
@@ -52,6 +72,7 @@ public class GlobalUserPreferences{
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
 				.putBoolean("disableMarquee", disableMarquee)
 				.putInt("theme", theme.ordinal())
+				.putString("recentLanguages", gson.toJson(recentLanguages))
 				.putInt("color", color.ordinal())
 				.apply();
 	}
