@@ -854,7 +854,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			newRecentLanguages.remove(language);
 			newRecentLanguages.add(0, language);
 			recentLanguages.put(accountID, newRecentLanguages.stream().limit(4).collect(Collectors.toList()));
-			setDefaultLanguage(language);
+//			setDefaultLanguage(language);
 			GlobalUserPreferences.save();
 		}
 	}
