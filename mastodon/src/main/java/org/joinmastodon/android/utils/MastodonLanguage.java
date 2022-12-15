@@ -95,7 +95,7 @@ public class MastodonLanguage {
 		}
 
 		public MastodonLanguage getDefault(String accountID) {
-
+			return from(Locale.getDefault().getLanguage());
 		}
 	}
 }
