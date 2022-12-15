@@ -694,6 +694,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		return languageButton;
 	}
 
+	private void setDefaultLanguage(String language) {
+		GlobalUserPreferences.defaultLanguages.put(accountID, language);
+	}
+
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		return true;
@@ -850,6 +854,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			newRecentLanguages.remove(language);
 			newRecentLanguages.add(0, language);
 			recentLanguages.put(accountID, newRecentLanguages.stream().limit(4).collect(Collectors.toList()));
+			setDefaultLanguage(language);
 			GlobalUserPreferences.save();
 		}
 	}
