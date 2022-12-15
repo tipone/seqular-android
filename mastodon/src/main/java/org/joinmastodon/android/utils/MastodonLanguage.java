@@ -95,11 +95,7 @@ public class MastodonLanguage {
 		}
 
 		public MastodonLanguage getDefault(String accountID) {
-			if(GlobalUserPreferences.defaultLanguages.get(accountID)==null){
-				GlobalUserPreferences.defaultLanguages.put(accountID, Locale.getDefault().getLanguage());
-				return from(Locale.getDefault().getLanguage());
-			}
-			return from(GlobalUserPreferences.defaultLanguages.get(accountID));
+
 		}
 	}
 }
