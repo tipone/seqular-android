@@ -36,11 +36,11 @@ import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class MoshidonLoginFragment extends InstanceCatalogFragment {
+public class CustomLoginFragment extends InstanceCatalogFragment {
 	private View headerView;
 
-	public MoshidonLoginFragment() {
-		super(R.layout.fragment_moshidon_welcome, 1);
+	public CustomLoginFragment() {
+		super(R.layout.fragment_welcome_custom, 1);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class MoshidonLoginFragment extends InstanceCatalogFragment {
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
-		headerView=getActivity().getLayoutInflater().inflate(R.layout.header_moshidon_welcome, list, false);
+		headerView=getActivity().getLayoutInflater().inflate(R.layout.header_welcome_custom, list, false);
 		searchEdit=headerView.findViewById(R.id.search_edit);
 		searchEdit.setOnEditorActionListener(this::onSearchEnterPressed);
 
@@ -203,7 +203,7 @@ public class MoshidonLoginFragment extends InstanceCatalogFragment {
 		private final RadioButton radioButton;
 
 		public InstanceViewHolder(){
-			super(getActivity(), R.layout.item_moshidon_instance, list);
+			super(getActivity(), R.layout.item_instance_custom, list);
 
 //			itemView.setPadding(V.dp(16), V.dp(16), V.dp(16), V.dp(16));
 //			TypedValue value = new TypedValue();
