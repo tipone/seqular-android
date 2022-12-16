@@ -163,9 +163,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private ReorderableLinearLayout pollOptionsView;
 	private View pollWrap;
 	private View addPollOptionBtn;
+	private View sensitiveItem;
 	private View pollAllowMultipleItem;
 	private CheckBox pollAllowMultipleCheckbox;
-	private View sensitiveItem;
 	private TextView pollDurationView;
 
 	private ArrayList<DraftPollOption> pollOptions=new ArrayList<>();
@@ -233,8 +233,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			charLimit=instance.configuration.statuses.maxCharacters;
 		else
 			charLimit=500;
-
-		loadDefaultStatusVisibility(savedInstanceState);
 	}
 
 	@Override
@@ -389,6 +387,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			statusVisibility=editingStatus.visibility;
 		}
 
+		loadDefaultStatusVisibility(savedInstanceState);
 		updateVisibilityIcon();
 
 		autocompleteViewController=new ComposeAutocompleteViewController(getActivity(), accountID);
@@ -509,14 +508,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		spoilerEdit.addTextChangedListener(new SimpleTextWatcher(e->updateCharCounter()));
 		if(replyTo!=null){
 			replyText.setText(getString(R.string.in_reply_to, replyTo.account.displayName));
-			int visibilityNameRes = switch (statusVisibility) {
+			int visibilityNameRes = switch (replyTo.visibility) {
 				case PUBLIC -> R.string.visibility_public;
 				case UNLISTED -> R.string.sk_visibility_unlisted;
 				case PRIVATE -> R.string.visibility_followers_only;
 				case DIRECT -> R.string.visibility_private;
 			};
 			replyText.setContentDescription(getString(R.string.in_reply_to, replyTo.account.displayName) + ". " + getString(R.string.post_visibility) + ": " + getString(visibilityNameRes));
-			Drawable visibilityIcon = getActivity().getDrawable(switch(statusVisibility){
+			Drawable visibilityIcon = getActivity().getDrawable(switch(replyTo.visibility){
 				case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
 				case UNLISTED -> R.drawable.ic_fluent_people_community_20_regular;
 				case PRIVATE -> R.drawable.ic_fluent_people_checkmark_20_regular;
@@ -551,7 +550,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				ignoreSelectionChanges=true;
 				mainEditText.setSelection(mainEditText.length());
 				ignoreSelectionChanges=false;
-				if(!TextUtils.isEmpty(replyTo.spoilerText) && AccountSessionManager.getInstance().isSelf(accountID, replyTo.account)){
+				if(!TextUtils.isEmpty(replyTo.spoilerText)){
 					hasSpoiler=true;
 					spoilerEdit.setVisibility(View.VISIBLE);
 					spoilerEdit.setText(replyTo.spoilerText);
@@ -559,7 +558,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				}
 				if (replyTo.language != null && !replyTo.language.isEmpty()) updateLanguage(replyTo.language);
 			}
-		}else{
+		}else if (editingStatus==null || editingStatus.inReplyToId==null){
+			// TODO: remove workaround after https://github.com/mastodon/mastodon-android/issues/341 gets fixed
 			replyText.setVisibility(View.GONE);
 		}
 		if(savedInstanceState==null){
@@ -652,14 +652,15 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private void updateLanguage(MastodonLanguage loc) {
 		language = loc.getLanguage();
 		languageButton.setText(loc.getLanguageName());
-		languageButton.setContentDescription(getActivity().getString(R.string.post_language, loc.getDefaultName()));
+		languageButton.setContentDescription(getActivity().getString(R.string.sk_post_language, loc.getDefaultName()));
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
 	private Button buildLanguageSelector() {
-		languageButton=new Button(getActivity());
 		TypedValue typedValue = new TypedValue();
 		getActivity().getTheme().resolveAttribute(android.R.attr.textColorSecondary, typedValue, true);
+
+		languageButton=new Button(getActivity());
 		languageButton.setTextColor(typedValue.data);
 		languageButton.setBackground(getActivity().getDrawable(R.drawable.bg_text_button));
 		languageButton.setPadding(V.dp(8), 0, V.dp(8), 0);
@@ -667,22 +668,25 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		languageButton.setCompoundDrawableTintList(languageButton.getTextColors());
 		languageButton.setCompoundDrawablePadding(V.dp(6));
 
-		updateLanguage(languageResolver.getDefault(accountID));
 		languagePopup=new PopupMenu(getActivity(), languageButton);
 		languageButton.setOnTouchListener(languagePopup.getDragToOpenListener());
 		languageButton.setOnClickListener(v->languagePopup.show());
 
-		Menu languageMenu = languagePopup.getMenu();
+		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
+		updateLanguage(prefs != null && prefs.postingDefaultLanguage != null && prefs.postingDefaultLanguage.length() > 0
+				? languageResolver.from(prefs.postingDefaultLanguage)
+				: languageResolver.getDefault());
 
+		Menu languageMenu = languagePopup.getMenu();
 		for (String recentLanguage : Optional.ofNullable(recentLanguages.get(accountID)).orElse(defaultRecentLanguages)) {
 			MastodonLanguage l = languageResolver.from(recentLanguage);
-			languageMenu.add(0, allLanguages.indexOf(l), Menu.NONE, getActivity().getString(R.string.language_name, l.getDefaultName(), l.getLanguageName()));
+			languageMenu.add(0, allLanguages.indexOf(l), Menu.NONE, getActivity().getString(R.string.sk_language_name, l.getDefaultName(), l.getLanguageName()));
 		}
 
-		SubMenu allLanguagesMenu = languageMenu.addSubMenu(R.string.available_languages);
+		SubMenu allLanguagesMenu = languageMenu.addSubMenu(R.string.sk_available_languages);
 		for (int i = 0; i < allLanguages.size(); i++) {
 			MastodonLanguage l = allLanguages.get(i);
-			allLanguagesMenu.add(0, i, Menu.NONE, getActivity().getString(R.string.language_name, l.getDefaultName(), l.getLanguageName()));
+			allLanguagesMenu.add(0, i, Menu.NONE, getActivity().getString(R.string.sk_language_name, l.getDefaultName(), l.getLanguageName()));
 		}
 
 		languagePopup.setOnMenuItemClickListener(i->{
@@ -692,10 +696,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		});
 
 		return languageButton;
-	}
-
-	private void setDefaultLanguage(String language) {
-		GlobalUserPreferences.defaultLanguages.put(accountID, language);
 	}
 
 	@Override
@@ -781,6 +781,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if(!pollOptions.isEmpty()){
 			req.poll=new CreateStatus.Request.Poll();
 			req.poll.expiresIn=pollDuration;
+			req.poll.multiple=pollAllowMultipleItem.isSelected();
 			for(DraftPollOption opt:pollOptions)
 				req.poll.options.add(opt.edit.getText().toString());
 		}
@@ -854,7 +855,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			newRecentLanguages.remove(language);
 			newRecentLanguages.add(0, language);
 			recentLanguages.put(accountID, newRecentLanguages.stream().limit(4).collect(Collectors.toList()));
-//			setDefaultLanguage(language);
 			GlobalUserPreferences.save();
 		}
 	}
@@ -1440,35 +1440,23 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
 		}
 
-		new GetPreferences()
-				.setCallback(new Callback<>(){
-					@Override
-					public void onSuccess(Preferences result){
-						// Only override the reply visibility if our preference is more private
-						if (result.postingDefaultVisibility.isLessVisibleThan(statusVisibility)) {
-							// Map unlisted from the API onto public, because we don't have unlisted in the UI
-							statusVisibility = switch (result.postingDefaultVisibility) {
-								case PUBLIC -> StatusPrivacy.PUBLIC;
-								case UNLISTED -> StatusPrivacy.UNLISTED;
-								case PRIVATE -> StatusPrivacy.PRIVATE;
-								case DIRECT -> StatusPrivacy.DIRECT;
-							};
-						}
+		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
+		if (prefs != null) {
+			// Only override the reply visibility if our preference is more private
+			if (prefs.postingDefaultVisibility.isLessVisibleThan(statusVisibility)) {
+				statusVisibility = switch (prefs.postingDefaultVisibility) {
+					case PUBLIC -> StatusPrivacy.PUBLIC;
+					case UNLISTED -> StatusPrivacy.UNLISTED;
+					case PRIVATE -> StatusPrivacy.PRIVATE;
+					case DIRECT -> StatusPrivacy.DIRECT;
+				};
+			}
 
-						// A saved privacy setting from a previous compose session wins over all
-						if(savedInstanceState !=null){
-							statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
-						}
-
-						updateVisibilityIcon ();
-					}
-
-					@Override
-					public void onError(ErrorResponse error){
-						Log.w(TAG, "Unable to get user preferences to set default post privacy");
-					}
-				})
-				.exec(accountID);
+			// A saved privacy setting from a previous compose session wins over all
+			if(savedInstanceState !=null){
+				statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
+			}
+		}
 	}
 
 	private void updateVisibilityIcon(){
