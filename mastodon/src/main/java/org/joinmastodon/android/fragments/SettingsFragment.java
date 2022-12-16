@@ -738,7 +738,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case BLUE -> R.string.sk_color_theme_blue;
 				case ORANGE -> R.string.sk_color_theme_brown;
 				case YELLOW -> R.string.sk_color_theme_yellow;
-				case MATERIAL3 -> R.string.sk_color_theme_material_you;
+				case MATERIAL3 -> R.string.sk_color_theme_material3;
 			});
 		}
 	}
