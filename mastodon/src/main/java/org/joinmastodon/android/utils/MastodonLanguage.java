@@ -94,7 +94,7 @@ public class MastodonLanguage {
 					.orElse(fallbackLanguage);
 		}
 
-		public MastodonLanguage getDefault(String accountID) {
+		public MastodonLanguage getDefault() {
 			return from(Locale.getDefault().getLanguage());
 		}
 	}
