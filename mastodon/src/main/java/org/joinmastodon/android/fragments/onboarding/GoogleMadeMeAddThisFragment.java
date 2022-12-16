@@ -115,9 +115,9 @@ public class GoogleMadeMeAddThisFragment extends ToolbarFragment{
 		view.setBackgroundColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
 	}
 
-	@Override
+//	@Override
 	protected void onUpdateToolbar(){
-		super.onUpdateToolbar();
+//		super.onUpdateToolbar();
 		getToolbar().setBackground(null);
 		getToolbar().setElevation(0);
 	}
