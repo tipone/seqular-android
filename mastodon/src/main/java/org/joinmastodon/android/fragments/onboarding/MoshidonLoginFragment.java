@@ -131,7 +131,7 @@ public class MoshidonLoginFragment extends InstanceCatalogFragment {
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
-		headerView=getActivity().getLayoutInflater().inflate(R.layout.header_megalodon_welcome, list, false);
+		headerView=getActivity().getLayoutInflater().inflate(R.layout.header_moshidon_welcome, list, false);
 		searchEdit=headerView.findViewById(R.id.search_edit);
 		searchEdit.setOnEditorActionListener(this::onSearchEnterPressed);
 
