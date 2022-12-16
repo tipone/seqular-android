@@ -203,7 +203,7 @@ public class MoshidonLoginFragment extends InstanceCatalogFragment {
 		private final RadioButton radioButton;
 
 		public InstanceViewHolder(){
-			super(getActivity(), R.layout.item_megalodon_instance, list);
+			super(getActivity(), R.layout.item_moshidon_instance, list);
 
 //			itemView.setPadding(V.dp(16), V.dp(16), V.dp(16), V.dp(16));
 //			TypedValue value = new TypedValue();

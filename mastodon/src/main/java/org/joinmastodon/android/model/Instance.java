@@ -176,4 +176,19 @@ public class Instance extends BaseModel{
 		public int minExpiration;
 		public int maxExpiration;
 	}
+
+	@Parcel
+	public static class V2 extends BaseModel {
+		public V2.Configuration configuration;
+
+		@Parcel
+		public static class Configuration {
+			public TranslationConfiguration translation;
+		}
+
+		@Parcel
+		public static class TranslationConfiguration{
+			public boolean enabled;
+		}
+	}
 }
