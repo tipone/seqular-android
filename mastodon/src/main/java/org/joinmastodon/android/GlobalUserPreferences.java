@@ -4,6 +4,7 @@ import static org.joinmastodon.android.api.MastodonAPIController.gson;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -56,7 +57,12 @@ public class GlobalUserPreferences{
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
-		color=ColorPreference.values()[prefs.getInt("color", 1)];
+		if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+			color=ColorPreference.values()[prefs.getInt("color", 0)];
+		}else{
+			color=ColorPreference.values()[prefs.getInt("color", 1)];
+		}
+
 	}
 
 	public static void save(){
@@ -78,13 +84,13 @@ public class GlobalUserPreferences{
 	}
 
 	public enum ColorPreference{
-		PINK,
+		MATERIAL3,
 		PURPLE,
+		PINK,
 		GREEN,
 		BLUE,
 		ORANGE,
-		YELLOW,
-		MATERIAL3
+		YELLOW
 	}
 
 	public enum ThemePreference{
