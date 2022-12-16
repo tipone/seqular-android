@@ -82,6 +82,8 @@ public class Instance extends BaseModel{
 	// non-standard field in some Mastodon forks
 	public int maxTootChars;
 
+	public V2 v2;
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
