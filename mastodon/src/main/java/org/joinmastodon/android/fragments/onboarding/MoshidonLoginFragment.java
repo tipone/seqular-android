@@ -137,7 +137,7 @@ public class MoshidonLoginFragment extends InstanceCatalogFragment {
 
 		headerView.findViewById(R.id.more).setVisibility(View.GONE);
 		headerView.findViewById(R.id.visibility).setVisibility(View.GONE);
-		((TextView) headerView.findViewById(R.id.username)).setText("@megalodon");
+		((TextView) headerView.findViewById(R.id.username)).setText("@moshidon");
 		((TextView) headerView.findViewById(R.id.name)).setText(R.string.sk_app_name);
 		((TextView) headerView.findViewById(R.id.timestamp)).setText(R.string.time_now);
 		((ImageView) headerView.findViewById(R.id.avatar)).setImageDrawable(getActivity().getDrawable(R.mipmap.ic_launcher));
