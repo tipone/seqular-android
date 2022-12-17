@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -31,6 +32,7 @@ import com.squareup.otto.Subscribe;
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -96,7 +98,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new HeaderItem(R.string.settings_theme));
 		items.add(themeItem=new ThemeItem());
 		items.add(new SwitchItem(R.string.theme_true_black, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
-		items.add(new SwitchItem(R.string.disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
+		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
 			GlobalUserPreferences.disableMarquee=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -115,7 +117,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.showInteractionCounts=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
+		items.add(new SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
 			GlobalUserPreferences.alwaysExpandContentWarnings=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -158,15 +160,15 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
-		items.add(new TextItem(R.string.settings_contribute_fork, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
+		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
-		items.add(new TextItem(R.string.clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.clear_recent_languages, R.string.confirm_clear_recent_languages, R.string.clear, ()->{
+		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
-		items.add(new FooterItem(getString(R.string.settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
+		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
 	}
 
 	@Override
@@ -724,6 +726,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				return true;
 			});
 //			UiUtils.enablePopupMenuIcons(getActivity(), popupMenu);
+			popupMenu.getMenu().findItem(R.id.m3_color).setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S);
+			popupMenu.setOnMenuItemClickListener(SettingsFragment.this::onColorPreferenceClick);
 			button.setOnTouchListener(popupMenu.getDragToOpenListener());
 			button.setOnClickListener(v->popupMenu.show());
 		}
@@ -858,10 +862,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			if (state == GithubSelfUpdater.UpdateState.CHECKING) return;
 			GithubSelfUpdater.UpdateInfo info=updater.getUpdateInfo();
 			if(state!=GithubSelfUpdater.UpdateState.DOWNLOADED){
-				text.setText(getString(R.string.update_available, info.version));
+				text.setText(getString(R.string.sk_update_available, info.version));
 				button.setText(getString(R.string.download_update, UiUtils.formatFileSize(getActivity(), info.size, false)));
 			}else{
-				text.setText(getString(R.string.update_ready, info.version));
+				text.setText(getString(R.string.sk_update_ready, info.version));
 				button.setText(R.string.install_update);
 			}
 			if(state==GithubSelfUpdater.UpdateState.DOWNLOADING){
