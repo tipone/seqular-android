@@ -712,6 +712,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 					pref = GlobalUserPreferences.ColorPreference.YELLOW;
 					onColorPreferenceClick(pref);
 				}
+				else if(id==R.id.red_color) {
+					pref = GlobalUserPreferences.ColorPreference.RED;
+					onColorPreferenceClick(pref);
+				}
 				else if(id==R.id.m3_color) {
 					if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 						pref = GlobalUserPreferences.ColorPreference.MATERIAL3;
@@ -741,6 +745,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case BLUE -> R.string.sk_color_theme_blue;
 				case ORANGE -> R.string.sk_color_theme_brown;
 				case YELLOW -> R.string.sk_color_theme_yellow;
+				case RED -> R.string.sk_color_theme_red;
 				case MATERIAL3 -> R.string.sk_color_theme_material3;
 			});
 		}

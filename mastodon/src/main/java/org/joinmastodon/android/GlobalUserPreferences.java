@@ -90,7 +90,8 @@ public class GlobalUserPreferences{
 		GREEN,
 		BLUE,
 		ORANGE,
-		YELLOW
+		YELLOW,
+		RED
 	}
 
 	public enum ThemePreference{
