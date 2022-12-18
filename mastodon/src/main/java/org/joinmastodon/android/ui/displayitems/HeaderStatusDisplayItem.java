@@ -31,8 +31,10 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
+import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -41,6 +43,7 @@ import org.parceler.Parcels;
 import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.APIRequest;
@@ -74,8 +77,13 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		this.status=status;
 		HtmlParser.parseCustomEmoji(parsedName, user.emojis);
 		emojiHelper.setText(parsedName);
+		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
 		if(status!=null){
-			hasTranslateToggle = status.language != ;
+			hasTranslateToggle = true;
+			if(status.language.equals(prefs.postingDefaultLanguage) || (status.visibility == StatusPrivacy.DIRECT || status.visibility == StatusPrivacy.PRIVATE)){
+				hasTranslateToggle = false;
+			}
+//			hasTranslateToggle = !status.language.equals(prefs.postingDefaultLanguage) || (status.visibility==StatusPrivacy.PRIVATE);
 			hasVisibilityToggle=status.sensitive || !TextUtils.isEmpty(status.spoilerText);
 			if(!hasVisibilityToggle && !status.mediaAttachments.isEmpty()){
 				for(Attachment att:status.mediaAttachments){
