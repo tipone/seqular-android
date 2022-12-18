@@ -42,8 +42,8 @@
 		android:layout_toStartOf="@id/visibility"
 		android:background="?android:selectableItemBackgroundBorderless"
 		android:scaleType="center"
-		android:src="@drawable/ic_visibility"
-		android:tint="?android:textColorSecondary" />
+		android:src="@drawable/ic_translate"
+		android:tint="@color/translate_icon" />
 
 	<ImageView
 		android:id="@+id/avatar"

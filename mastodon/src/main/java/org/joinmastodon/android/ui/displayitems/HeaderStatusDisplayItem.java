@@ -23,7 +23,6 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.statuses.GetStatusSourceText;
-import org.joinmastodon.android.api.requests.statuses.GetStatusTranslation;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
@@ -34,7 +33,6 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.model.StatusTranslation;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -241,7 +239,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				}
 			}
 			if(item.hasTranslateToggle){
-				translate.setImageResource(item.status.wantsTranslation ? R.drawable.ic_translate_on : R.drawable.ic_translate_off);
+				translate.setImageResource(R.drawable.ic_translate);
+				translate.setSelected(item.status.wantsTranslation);
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 			if(TextUtils.isEmpty(item.extraText)){
