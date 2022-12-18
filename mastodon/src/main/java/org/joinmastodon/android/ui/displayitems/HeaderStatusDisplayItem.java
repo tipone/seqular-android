@@ -79,10 +79,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		emojiHelper.setText(parsedName);
 		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
 		if(status!=null){
-			hasTranslateToggle = true;
-			if(status.language.equals(prefs.postingDefaultLanguage) || (status.visibility == StatusPrivacy.DIRECT || status.visibility == StatusPrivacy.PRIVATE)){
-				hasTranslateToggle = false;
-			}
+			hasTranslateToggle = !(Objects.equals(status.language, prefs.postingDefaultLanguage) || (status.visibility == StatusPrivacy.DIRECT || status.visibility == StatusPrivacy.PRIVATE));
 //			hasTranslateToggle = !status.language.equals(prefs.postingDefaultLanguage) || (status.visibility==StatusPrivacy.PRIVATE);
 			hasVisibilityToggle=status.sensitive || !TextUtils.isEmpty(status.spoilerText);
 			if(!hasVisibilityToggle && !status.mediaAttachments.isEmpty()){
