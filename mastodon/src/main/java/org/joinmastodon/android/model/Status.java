@@ -50,6 +50,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public Card card;
 	public String language;
 	public String text;
+	public String translation;
 
 	public boolean favourited;
 	public boolean reblogged;

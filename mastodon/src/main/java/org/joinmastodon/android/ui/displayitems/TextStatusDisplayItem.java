@@ -97,23 +97,28 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(TextStatusDisplayItem item){
-			if(item.status.wantsTranslation){
+			if(item.status.wantsTranslation && item.status.translation == null){
 				new GetStatusTranslation(item.status.id)
 						.setCallback(new Callback<StatusTranslation>(){
 							@Override
-							public void onSuccess(StatusTranslation status){
-								text.setText(status.getStrippedText());
+							public void onSuccess(StatusTranslation statusTranslation){
+								item.status.translation = statusTranslation.getStrippedText();
+								text.setText(item.status.translation);
 							}
 							@Override
 							public void onError(ErrorResponse error){
 								item.status.wantsTranslation=false;
-								text.setText(item.text);
 								error.showToast(item.parentFragment.getActivity());
 							}
-
 						})
 						.wrapProgress(item.parentFragment.getActivity(), R.string.loading, true)
 						.exec(item.parentFragment.getAccountID());
+			}
+			if(item.status.wantsTranslation){
+				if(item.status.translation != null)
+				{
+					text.setText(item.status.translation);
+				}
 			}else{
 				text.setText(item.text);
 			}
