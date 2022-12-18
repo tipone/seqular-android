@@ -4,9 +4,14 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -24,7 +29,7 @@ import org.parceler.Parcels;
 import java.text.DecimalFormat;
 
 import me.grishka.appkit.Nav;
-import me.grishka.appkit.utils.BindableViewHolder;
+import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
 public class FooterStatusDisplayItem extends StatusDisplayItem{
@@ -46,6 +51,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
 		private final TextView reply, boost, favorite, bookmark;
 		private final ImageView share;
+		private static final Animation opacityOut, opacityIn;
 
 		private final View.AccessibilityDelegate buttonAccessibilityDelegate=new View.AccessibilityDelegate(){
 			@Override
@@ -55,6 +61,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				info.setText(item.parentFragment.getString(descriptionForId(host.getId())));
 			}
 		};
+
+		static {
+			opacityOut = new AlphaAnimation(1, 0.5f);
+			opacityOut.setDuration(200);
+			opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
+			opacityOut.setFillAfter(true);
+			opacityIn = new AlphaAnimation(0.5f, 1);
+			opacityIn.setDuration(150);
+			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
+		}
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
@@ -74,14 +90,19 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			View favorite=findViewById(R.id.favorite_btn);
 			View share=findViewById(R.id.share_btn);
 			View bookmark=findViewById(R.id.bookmark_btn);
+			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
 			reply.setAccessibilityDelegate(buttonAccessibilityDelegate);
+			boost.setOnTouchListener(this::onButtonTouch);
 			boost.setOnClickListener(this::onBoostClick);
 			boost.setAccessibilityDelegate(buttonAccessibilityDelegate);
+			favorite.setOnTouchListener(this::onButtonTouch);
 			favorite.setOnClickListener(this::onFavoriteClick);
 			favorite.setAccessibilityDelegate(buttonAccessibilityDelegate);
+			bookmark.setOnTouchListener(this::onButtonTouch);
 			bookmark.setOnClickListener(this::onBookmarkClick);
 			bookmark.setAccessibilityDelegate(buttonAccessibilityDelegate);
+			share.setOnTouchListener(this::onButtonTouch);
 			share.setOnClickListener(this::onShareClick);
 			share.setAccessibilityDelegate(buttonAccessibilityDelegate);
 		}
@@ -115,21 +136,43 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 		}
 
+		private boolean onButtonTouch(View v, MotionEvent event){
+			int action = event.getAction();
+			// 20dp to center in middle of icon, because: (icon width = 24dp) / 2 + (paddingStart = 8dp)
+			v.setPivotX(V.dp(20));
+			if (action == MotionEvent.ACTION_UP || action == MotionEvent.ACTION_CANCEL) {
+				v.animate().scaleX(1).scaleY(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(100).start();
+				if (action == MotionEvent.ACTION_UP) v.performClick();
+			} else if (action == MotionEvent.ACTION_DOWN) {
+				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
+			}
+			return true;
+		}
+
 		private void onBoostClick(View v){
-			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged);
-			boost.setSelected(item.status.reblogged);
-			bindButton(boost, item.status.reblogsCount);
+			v.startAnimation(opacityOut);
+			boost.setSelected(!item.status.reblogged);
+			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, r->{
+				v.startAnimation(opacityIn);
+				bindButton(boost, r.reblogsCount);
+			});
 		}
 
 		private void onFavoriteClick(View v){
-			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited);
-			favorite.setSelected(item.status.favourited);
-			bindButton(favorite, item.status.favouritesCount);
+			v.startAnimation(opacityOut);
+			favorite.setSelected(!item.status.favourited);
+			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
+				v.startAnimation(opacityIn);
+				bindButton(favorite, r.favouritesCount);
+			});
 		}
 
 		private void onBookmarkClick(View v){
-			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked);
+			v.startAnimation(opacityOut);
 			bookmark.setSelected(item.status.bookmarked);
+			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked, r->{
+				v.startAnimation(opacityIn);
+			});
 		}
 
 		private void onShareClick(View v){
