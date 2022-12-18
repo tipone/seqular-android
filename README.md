@@ -1,4 +1,4 @@
-![Pink logo with pink shark](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
+![MoshidonLogo](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
 
 # Moshidon, the material you mastodon client! 
 
