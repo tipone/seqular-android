@@ -108,6 +108,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 							@Override
 							public void onError(ErrorResponse error){
 								item.status.wantsTranslation=false;
+								text.setText(item.text);
 								error.showToast(item.parentFragment.getActivity());
 							}
 						})

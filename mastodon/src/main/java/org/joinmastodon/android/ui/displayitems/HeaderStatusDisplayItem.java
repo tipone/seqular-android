@@ -75,7 +75,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		HtmlParser.parseCustomEmoji(parsedName, user.emojis);
 		emojiHelper.setText(parsedName);
 		if(status!=null){
-			hasTranslateToggle=true;
+			hasTranslateToggle = status.language != ;
 			hasVisibilityToggle=status.sensitive || !TextUtils.isEmpty(status.spoilerText);
 			if(!hasVisibilityToggle && !status.mediaAttachments.isEmpty()){
 				for(Attachment att:status.mediaAttachments){
@@ -136,7 +136,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			avatar.setClipToOutline(true);
 			more.setOnClickListener(this::onMoreClick);
 			visibility.setOnClickListener(v->item.parentFragment.onVisibilityIconClick(this));
-			translate.setOnClickListener(v->item.parentFragment.onRevealTranslationClick(this));
+			translate.setOnClickListener(v->item.parentFragment.onRevealTranslationClick(this, v));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
