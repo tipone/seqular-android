@@ -727,7 +727,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			});
 //			UiUtils.enablePopupMenuIcons(getActivity(), popupMenu);
 			popupMenu.getMenu().findItem(R.id.m3_color).setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S);
-			popupMenu.setOnMenuItemClickListener(SettingsFragment.this::onColorPreferenceClick);
 			button.setOnTouchListener(popupMenu.getDragToOpenListener());
 			button.setOnClickListener(v->popupMenu.show());
 		}
