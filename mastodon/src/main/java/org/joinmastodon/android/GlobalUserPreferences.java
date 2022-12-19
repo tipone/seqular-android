@@ -4,7 +4,8 @@ import static org.joinmastodon.android.api.MastodonAPIController.gson;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.os.Build;
+
+import androidx.annotation.NonNull;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -32,7 +33,6 @@ public class GlobalUserPreferences{
 
 	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
 	public static Map<String, List<String>> recentLanguages;
-	public static Map<String, String> defaultLanguages;
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -59,12 +59,13 @@ public class GlobalUserPreferences{
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
-		if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-			color=ColorPreference.values()[prefs.getInt("color", 0)];
-		}else{
-			color=ColorPreference.values()[prefs.getInt("color", 1)];
-		}
 
+		try {
+			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
+		} catch (IllegalArgumentException|ClassCastException ignored) {
+			// invalid color name or color was previously saved as integer
+			color=ColorPreference.PINK;
+		}
 	}
 
 	public static void save(){
@@ -81,15 +82,15 @@ public class GlobalUserPreferences{
 				.putBoolean("disableMarquee", disableMarquee)
 				.putBoolean("disableSwipe", disableSwipe)
 				.putInt("theme", theme.ordinal())
+				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
-				.putInt("color", color.ordinal())
 				.apply();
 	}
 
 	public enum ColorPreference{
 		MATERIAL3,
-		PURPLE,
 		PINK,
+		PURPLE,
 		GREEN,
 		BLUE,
 		ORANGE,
@@ -103,3 +104,4 @@ public class GlobalUserPreferences{
 		DARK
 	}
 }
+
