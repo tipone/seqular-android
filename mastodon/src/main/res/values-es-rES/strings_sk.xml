@@ -11,7 +11,7 @@
     <string name="sk_unpin_post">Desanclar del perfil</string>
     <string name="sk_confirm_unpin_post_title">Desanclar publicación del perfil</string>
     <string name="sk_confirm_unpin_post">¿Confirma que quiere desanclar esta publicación\?</string>
-    <string name="sk_app_name">Megalodon</string>
+    <string name="sk_app_name">Moshidon</string>
     <string name="sk_unpinning">Desanclando publicación…</string>
     <string name="sk_image_description">Descripción de la imagen</string>
     <string name="sk_visibility_unlisted">Descatalogada</string>
@@ -24,8 +24,8 @@
     <string name="sk_user_post_notifications_off">Desactivadas las notificaciones de posts para %s</string>
     <string name="sk_federated_timeline">Federación</string>
     <string name="sk_federated_timeline_info_banner">Estas son las publicaciones más recientes de las personas de su federación.</string>
-    <string name="sk_update_available">Megalodon %s está listo para descargar.</string>
-    <string name="sk_update_ready">Megalodon %s se ha descargado y está listo para instalarse.</string>
+    <string name="sk_update_available">Moshidon %s está listo para descargar.</string>
+    <string name="sk_update_ready">Moshidon %s se ha descargado y está listo para instalarse.</string>
     <string name="sk_check_for_update">Buscar actualizaciones</string>
     <string name="sk_no_update_available">No hay actualizaciones disponibles</string>
     <string name="sk_list_timelines">Listas</string>
@@ -35,9 +35,9 @@
     <string name="sk_lists_with_user">Listas con %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Mostrar siempre advertencias de contenido</string>
     <string name="sk_disable_marquee">Desactivar desplazamiento de texto en barras del título</string>
-    <string name="sk_settings_contribute">Contribuir a Megalodon</string>
+    <string name="sk_settings_contribute">Contribuir a Moshidon</string>
     <string name="sk_settings_show_federated_timeline">Mostrar cronología federada</string>
-    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
+    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
     <string name="sk_notification_type_status">Publicaciones</string>
     <string name="sk_notify_posts">Publicar notificaciones</string>
     <string name="sk_settings_color_palette">Colores para los temas</string>

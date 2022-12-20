@@ -32,10 +32,10 @@
     <string name="sk_lists_with_user">%s 님이 포함된 리스트</string>
     <string name="sk_settings_always_reveal_content_warnings">열람주의 게시물을 항상 펼치기</string>
     <string name="sk_disable_marquee">제목 표시줄의 텍스트 스크롤 비활성화</string>
-    <string name="sk_app_name">Megalodon</string>
-    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
-    <string name="sk_update_available">Megalodon %s 버전을 다운로드할 수 있습니다.</string>
-    <string name="sk_update_ready">Megalodon %s 버전을 다운로드하였으며 설치할 수 있습니다.</string>
+    <string name="sk_app_name">Moshidon</string>
+    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
+    <string name="sk_update_available">Moshidon %s 버전을 다운로드할 수 있습니다.</string>
+    <string name="sk_update_ready">Moshidon %s 버전을 다운로드하였으며 설치할 수 있습니다.</string>
     <string name="sk_settings_show_federated_timeline">연합 타임라인 표시</string>
     <string name="sk_notification_type_status">게시물</string>
     <string name="sk_notify_posts">게시물 알림</string>
@@ -46,7 +46,7 @@
     <string name="sk_color_palette_blue">파란색</string>
     <string name="sk_color_palette_brown">갈색</string>
     <string name="sk_color_palette_yellow">노란색</string>
-    <string name="sk_settings_contribute">Megalodon에 기여</string>
+    <string name="sk_settings_contribute">Moshidon에 기여</string>
     <string name="sk_poll_allow_multiple">다중 선택 허용</string>
     <string name="sk_translate_post">번역하기</string>
     <string name="sk_translate_show_original">원본 보기</string>
