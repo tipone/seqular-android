@@ -463,22 +463,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		revealSpoiler(status, holder.getItemID());
 	}
 
-	public void onRevealTranslationClick(HeaderStatusDisplayItem.Holder holder, View v){
-		Status status=holder.getItem().status;
-		revealTranslation(status, holder.getItemID(), v);
-	}
-
-	protected void revealTranslation(Status status, String itemID, View v){
-		status.wantsTranslation=!status.wantsTranslation;
-		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
-		if(text!=null)
-			adapter.notifyItemChanged(text.getAbsoluteAdapterPosition()-getMainAdapterOffset());
-		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
-		if(header!=null)
-			header.rebind();
-		updateImagesSpoilerState(status, itemID);
-	}
-
 	protected void revealSpoiler(Status status, String itemID){
 		status.spoilerRevealed=true;
 		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);

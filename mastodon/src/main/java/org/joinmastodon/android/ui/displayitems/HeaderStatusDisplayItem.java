@@ -63,7 +63,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	private SpannableStringBuilder parsedName;
 	public final Status status;
 	private boolean hasVisibilityToggle;
-	private boolean hasTranslateToggle;
 	boolean needBottomPadding;
 	private String extraText;
 
@@ -77,10 +76,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		this.status=status;
 		HtmlParser.parseCustomEmoji(parsedName, user.emojis);
 		emojiHelper.setText(parsedName);
-		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
 		if(status!=null){
-			hasTranslateToggle = !(Objects.equals(status.language, prefs.postingDefaultLanguage) || (status.visibility == StatusPrivacy.DIRECT || status.visibility == StatusPrivacy.PRIVATE));
-//			hasTranslateToggle = !status.language.equals(prefs.postingDefaultLanguage) || (status.visibility==StatusPrivacy.PRIVATE);
 			hasVisibilityToggle=status.sensitive || !TextUtils.isEmpty(status.spoilerText);
 			if(!hasVisibilityToggle && !status.mediaAttachments.isEmpty()){
 				for(Attachment att:status.mediaAttachments){
@@ -114,7 +110,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText;
-		private final ImageView avatar, more, visibility, translate;
+		private final ImageView avatar, more, visibility;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -128,7 +124,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_header, parent);
-			translate=findViewById(R.id.translate);
 			name=findViewById(R.id.name);
 			username=findViewById(R.id.username);
 			timestamp=findViewById(R.id.timestamp);
@@ -141,7 +136,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			avatar.setClipToOutline(true);
 			more.setOnClickListener(this::onMoreClick);
 			visibility.setOnClickListener(v->item.parentFragment.onVisibilityIconClick(this));
-			translate.setOnClickListener(v->item.parentFragment.onRevealTranslationClick(this, v));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
@@ -235,17 +229,12 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			else
 				timestamp.setText(item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt)));
 			visibility.setVisibility(item.hasVisibilityToggle && !item.inset ? View.VISIBLE : View.GONE);
-			translate.setVisibility(item.hasTranslateToggle ? View.VISIBLE : View.GONE);
 			if(item.hasVisibilityToggle){
 				visibility.setImageResource(item.status.spoilerRevealed ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
 				visibility.setContentDescription(item.parentFragment.getString(item.status.spoilerRevealed ? R.string.hide_content : R.string.reveal_content));
 				if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 					visibility.setTooltipText(visibility.getContentDescription());
 				}
-			}
-			if(item.hasTranslateToggle){
-				translate.setImageResource(R.drawable.ic_translate);
-				translate.setSelected(item.status.wantsTranslation);
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 			if(TextUtils.isEmpty(item.extraText)){
