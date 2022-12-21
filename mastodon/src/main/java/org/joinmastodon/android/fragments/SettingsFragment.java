@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.TypedValue;
  import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,8 +20,11 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -43,6 +47,7 @@ import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -86,6 +91,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		setTitle(R.string.settings);
 		accountID=getArguments().getString("account");
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
+		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 
 		if(GithubSelfUpdater.needSelfUpdating()){
 			GithubSelfUpdater updater=GithubSelfUpdater.getInstance();
@@ -123,6 +129,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}));
 
 		items.add(new HeaderItem(R.string.settings_behavior));
+		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
+			GlobalUserPreferences.showFederatedTimeline=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
 		items.add(new SwitchItem(R.string.settings_gif, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{
 			GlobalUserPreferences.playGifs=i.checked;
 			GlobalUserPreferences.save();
@@ -150,9 +161,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.sk_enable_delete_notifications, R.drawable.ic_fluent_delete_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
+			GlobalUserPreferences.enableDeleteNotifications=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
 		items.add(new SwitchItem(R.string.sk_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
 			GlobalUserPreferences.relocatePublishButton=i.checked;
 			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_hide_translate_in_timeline, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
+			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
 		}));
 
 		items.add(new HeaderItem(R.string.home_timeline));
@@ -167,11 +188,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.loadNewPosts, i->{
 			GlobalUserPreferences.loadNewPosts=i.checked;
 			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
-			GlobalUserPreferences.showFederatedTimeline=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
 		}));
 
 		items.add(new HeaderItem(R.string.settings_notifications));
@@ -188,7 +204,20 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")));
 
-		items.add(new RedHeaderItem(R.string.settings_spicy));
+		items.add(new HeaderItem(instance != null ? instance.title : session.domain));
+		items.add(new TextItem(R.string.sk_settings_rules, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/about"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
+		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
+		items.add(new SmallTextItem(getString(translationAvailable ?
+				R.string.sk_settings_translation_availability_note_available :
+				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
+
+
+		items.add(new HeaderItem(R.string.sk_settings_about));
+		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://ko-fi.com/xsk22"), R.drawable.ic_fluent_heart_24_regular));
 		if (GithubSelfUpdater.needSelfUpdating()) {
 			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
@@ -475,6 +504,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.text=getString(text);
 		}
 
+		public HeaderItem(String text) {
+			this.text=text;
+		}
+
 		@Override
 		public int getViewType(){
 			return 0;
@@ -546,6 +579,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		@Override
 		public int getViewType(){
 			return 3;
+		}
+	}
+
+	private class SmallTextItem extends Item {
+		private String text;
+
+		public SmallTextItem(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public int getViewType() {
+			return 9;
 		}
 	}
 
@@ -628,6 +674,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case 6 -> new FooterViewHolder();
 				case 7 -> new UpdateViewHolder();
 				case 8 -> new ButtonViewHolder();
+				case 9 -> new SmallTextViewHolder();
 				default -> throw new IllegalStateException("Unexpected value: "+viewType);
 			};
 		}
@@ -843,6 +890,26 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		@Override
 		public void onClick(){
 			item.onClick.run();
+		}
+	}
+
+	private class SmallTextViewHolder extends BindableViewHolder<SmallTextItem> {
+		private final TextView text;
+;
+
+		public SmallTextViewHolder(){
+			super(getActivity(), R.layout.item_settings_text, list);
+			text = itemView.findViewById(R.id.text);
+		}
+
+		@Override
+		public void onBind(SmallTextItem item){
+			text.setText(item.text);
+			TypedValue val = new TypedValue();
+			getContext().getTheme().resolveAttribute(android.R.attr.textColorSecondary, val, true);
+			text.setTextColor(getResources().getColor(val.resourceId, getContext().getTheme()));
+			text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		}
 	}
 
