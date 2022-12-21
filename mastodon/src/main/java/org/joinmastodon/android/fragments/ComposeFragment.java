@@ -233,6 +233,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			charLimit=instance.configuration.statuses.maxCharacters;
 		else
 			charLimit=500;
+
+		if (editingStatus == null) loadDefaultStatusVisibility(savedInstanceState);
 	}
 
 	@Override
