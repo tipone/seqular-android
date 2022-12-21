@@ -32,18 +32,6 @@
 	<color name="primary_800">#ae218a</color>
 	<color name="primary_900">#6d1556</color>
 
-	<color name="purple_primary_25">#fafaff</color>
-	<color name="purple_primary_50">#f4f3ff</color>
-	<color name="purple_primary_100">#ebebff</color>
-	<color name="purple_primary_200">#d7d7ff</color>
-	<color name="purple_primary_300">#c2c2ff</color>
-	<color name="purple_primary_400">#9999ff</color>
-	<color name="purple_primary_500">#6364ff</color>
-	<color name="purple_primary_600">#562cfc</color>
-	<color name="purple_primary_700">#431cbb</color>
-	<color name="purple_primary_800">#2f0c7a</color>
-	<color name="purple_primary_900">#17063b</color>
-
 
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>
