@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name" translatable="false">Moshidon</string>
+	<string name="app_name" translatable="false">Mastodon</string>
 
-	<string name="get_started">Get started</string>
+	<string name="get_started">Create account</string>
 	<string name="already_have_account">I already have an account</string>
 	<string name="log_in">Log in</string>
 	<string name="next">Next</string>
@@ -398,17 +398,6 @@
 	<string name="remove_bookmark">Remove bookmark</string>
 	<string name="bookmarks">Bookmarks</string>
 	<string name="your_favorites">Your Favorites</string>
-	<string name="settings_always_reveal_content_warnings">Always reveal content warnings</string>
-	<string name="disable_marquee">Disable scrolling text in title bars</string>
-	<string name="settings_contribute_fork">Contribute to Moshidon</string>
-<!--	<string name="settings_color_picker">Color theme:</string>-->
-<!--	<string name="pink_color">Pink</string>-->
-<!--	<string name="purple_color">Purple</string>-->
-<!--	<string name="green_color">Green</string>-->
-<!--	<string name="blue_color">Blue</string>-->
-<!--	<string name="orange_color">Orange</string>-->
-<!--	<string name="yellow_color">Yellow</string>-->
-	<string name="translate">Translate</string>
 	<string name="login_title">Welcome Back</string>
 	<string name="login_subtitle">Log in with the server where you created your account.</string>
 	<string name="server_url">Server URL</string>
@@ -433,9 +422,5 @@
 	<string name="not_accepting_new_members">Not accepting new members</string>
 	<string name="category_special_interests">Special Interests</string>
 	<string name="signup_passwords_dont_match">Passwords don\'t match</string>
-	<string name="post_language">Language: %s</string>
-	<string name="available_languages">Available languages</string>
-	<string name="language_name">%s (%s)</string>
-	<string name="clear_recent_languages">Clear recent languages</string>
-	<string name="confirm_clear_recent_languages">Are you sure you want to clear your recently used languages?</string>
+	<string name="loading_fediverse_resource_title">Looking it up on the Fediverse…</string>
 </resources>
