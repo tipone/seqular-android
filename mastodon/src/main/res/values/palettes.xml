@@ -233,7 +233,7 @@
 		<item name="colorGray25">@color/red_gray_25</item>
 	</style>
 
-	<style name="ColorPalette.Blueish">
+	<style name="ColorPalette.Nord">
 		<item name="colorPrimary25">@color/nord_primary_25</item>
 		<item name="colorPrimary50">@color/nord_primary_50</item>
 		<item name="colorPrimary100">@color/nord_primary_100</item>

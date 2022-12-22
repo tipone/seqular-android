@@ -49,6 +49,7 @@
     <string name="sk_color_palette_brown">Brown</string>
     <string name="sk_color_palette_red">Red</string>
     <string name="sk_color_palette_yellow">Yellow</string>
+    <string name="sk_color_palette_nord">Nord</string>
     <string name="sk_poll_allow_multiple">Allow multiple choices</string>
     <string name="sk_translate_post">Translate</string>
     <string name="sk_translate_show_original">Show original</string>

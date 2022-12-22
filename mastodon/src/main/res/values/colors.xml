@@ -292,4 +292,25 @@
 	<color name="red_gray_50t">#ffede6ca</color>
 	<color name="red_gray_50">#ffede6</color>
 	<color name="red_gray_25">#f7f8fa</color>
+
+
+	<color name="nord_primary_25">#fafaff</color>
+	<color name="nord_primary_50">#eff0ff</color>
+	<color name="nord_primary_100">#dfe1f2</color>
+	<color name="nord_primary_200">#c3c6d6</color>
+	<color name="nord_primary_300">#a8aaba</color>
+	<color name="nord_primary_400">#8f909f</color>
+	<color name="nord_primary_500">#727584</color>
+	<color name="nord_primary_600">#5b5e6c</color>
+	<color name="nord_primary_700">#434654</color>
+	<color name="nord_primary_800">#2d303d</color>
+	<color name="nord_primary_900">#181b27</color>
+
+	<color name="nord_gray_400">#aaaab4</color>
+	<color name="nord_gray_300">#c5c6d0</color>
+	<color name="nord_gray_200">#e2e2ec</color>
+	<color name="nord_gray_100">#eff0ff</color>
+	<color name="nord_gray_50t">#f0f0faca</color>
+	<color name="nord_gray_50">#f0f0fa</color>
+	<color name="nord_gray_25">#f7f8fa</color>
 </resources>
