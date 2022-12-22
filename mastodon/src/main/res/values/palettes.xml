@@ -232,4 +232,34 @@
 		<item name="colorGray50">@color/red_gray_50</item>
 		<item name="colorGray25">@color/red_gray_25</item>
 	</style>
+
+	<style name="ColorPalette.Blueish">
+		<item name="colorPrimary25">@color/nord_primary_25</item>
+		<item name="colorPrimary50">@color/nord_primary_50</item>
+		<item name="colorPrimary100">@color/nord_primary_100</item>
+		<item name="colorPrimary200">@color/nord_primary_200</item>
+		<item name="colorPrimary300">@color/nord_primary_300</item>
+		<item name="colorPrimary400">@color/nord_primary_400</item>
+		<item name="colorPrimary500">@color/nord_primary_500</item>
+		<item name="colorPrimary600">@color/nord_primary_600</item>
+		<item name="colorPrimary700">@color/nord_primary_700</item>
+		<item name="colorPrimary800">@color/nord_primary_800</item>
+		<item name="colorPrimary900">@color/nord_primary_900</item>
+
+		<item name="colorGray900">@color/brownish_gray_900</item>
+		<item name="colorGray800t">@color/brownish_gray_800t</item>
+		<item name="colorGray800">@color/brownish_gray_800</item>
+		<item name="colorGray700">@color/brownish_gray_700</item>
+		<item name="colorGray600">@color/brownish_gray_600</item>
+		<item name="colorGray500">@color/brownish_gray_500</item>
+
+		<item name="colorGray400">@color/nord_gray_400</item>
+		<item name="colorGray300">@color/nord_gray_300</item>
+		<item name="colorGray200">@color/nord_gray_200</item>
+		<item name="colorGray100">@color/nord_gray_100</item>
+		<item name="colorGray50t">@color/nord_gray_50t</item>
+		<item name="colorGray50">@color/nord_gray_50</item>
+		<item name="colorGray25">@color/nord_gray_25</item>
+	</style>
+
 </resources>
