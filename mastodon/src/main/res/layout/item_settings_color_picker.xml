@@ -27,7 +27,7 @@
         android:textSize="16sp"
         android:singleLine="true"
         android:ellipsize="end"
-        android:text="@string/sk_settings_color_picker"/>
+        android:text="@string/sk_settings_color_palette"/>
 
     <Button
         android:id="@+id/color_picker_button"

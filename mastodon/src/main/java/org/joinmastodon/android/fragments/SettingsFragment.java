@@ -725,9 +725,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 					if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
 						pref = GlobalUserPreferences.ColorPreference.MATERIAL3;
 						onColorPreferenceClick(pref);
-					}else{
-						Toast.makeText(getActivity(), R.string.sk_not_supported,
-								Toast.LENGTH_LONG).show();
 					}
 				}
 				else
@@ -742,16 +739,16 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 		@Override
 		public void onBind(ColorPicker item){
-			icon.setImageResource(R.drawable.ic_color_theme_preference);
+			icon.setImageResource(R.drawable.ic_fluent_color_24_regular);
 			button.setText(switch(GlobalUserPreferences.color){
-				case PINK -> R.string.sk_color_theme_pink;
-				case PURPLE -> R.string.sk_color_theme_purple;
-				case GREEN -> R.string.sk_color_theme_green;
-				case BLUE -> R.string.sk_color_theme_blue;
-				case BROWN -> R.string.sk_color_theme_brown;
-				case YELLOW -> R.string.sk_color_theme_yellow;
-				case RED -> R.string.sk_color_theme_red;
-				case MATERIAL3 -> R.string.sk_color_theme_material3;
+				case PINK -> R.string.sk_color_palette_pink;
+				case PURPLE -> R.string.sk_color_palette_purple;
+				case GREEN -> R.string.sk_color_palette_green;
+				case BLUE -> R.string.sk_color_palette_blue;
+				case BROWN -> R.string.sk_color_palette_brown;
+				case YELLOW -> R.string.sk_color_palette_yellow;
+				case RED -> R.string.sk_color_palette_red;
+				case MATERIAL3 -> R.string.sk_color_palette_material3;
 			});
 		}
 	}
