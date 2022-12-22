@@ -4,6 +4,7 @@ import static org.joinmastodon.android.api.MastodonAPIController.gson;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -59,7 +60,11 @@ public class GlobalUserPreferences{
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
 
 		try {
-			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
+			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
+			}else{
+				color=ColorPreference.PURPLE;
+			}
 		} catch (IllegalArgumentException|ClassCastException ignored) {
 			// invalid color name or color was previously saved as integer
 			color=ColorPreference.PURPLE;
