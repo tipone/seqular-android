@@ -59,10 +59,10 @@ public class GlobalUserPreferences{
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
 
 		try {
-			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
+			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
 		} catch (IllegalArgumentException|ClassCastException ignored) {
 			// invalid color name or color was previously saved as integer
-			color=ColorPreference.PINK;
+			color=ColorPreference.PURPLE;
 		}
 	}
 
