@@ -293,7 +293,6 @@
 	<color name="red_gray_50">#ffede6</color>
 	<color name="red_gray_25">#f7f8fa</color>
 
-
 	<color name="nord_primary_25">#fafaff</color>
 	<color name="nord_primary_50">#eff0ff</color>
 	<color name="nord_primary_100">#dfe1f2</color>
@@ -306,11 +305,18 @@
 	<color name="nord_primary_800">#2d303d</color>
 	<color name="nord_primary_900">#181b27</color>
 
-	<color name="nord_gray_400">#aaaab4</color>
+	<color name="nord_gray_900">#110c10</color>
+	<color name="nord_gray_800t">#cc2D343F</color>
+	<color name="nord_gray_800">#2D343F</color>
+	<color name="nord_gray_700">#3A4250</color>
+	<color name="nord_gray_600">#404C5C</color>
+	<color name="nord_gray_500">#495668</color>
+
+	<color name="nord_gray_400">#c5c6d0</color>
 	<color name="nord_gray_300">#c5c6d0</color>
-	<color name="nord_gray_200">#e2e2ec</color>
-	<color name="nord_gray_100">#eff0ff</color>
-	<color name="nord_gray_50t">#f0f0faca</color>
-	<color name="nord_gray_50">#f0f0fa</color>
+	<color name="nord_gray_200">#D5DCE6</color>
+	<color name="nord_gray_100">#E2E7EE</color>
+	<color name="nord_gray_50t">#EAEDF2</color>
+	<color name="nord_gray_50">#EAEDF2</color>
 	<color name="nord_gray_25">#f7f8fa</color>
 </resources>

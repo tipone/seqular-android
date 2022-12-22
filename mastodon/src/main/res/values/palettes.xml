@@ -246,12 +246,12 @@
 		<item name="colorPrimary800">@color/nord_primary_800</item>
 		<item name="colorPrimary900">@color/nord_primary_900</item>
 
-		<item name="colorGray900">@color/brownish_gray_900</item>
-		<item name="colorGray800t">@color/brownish_gray_800t</item>
-		<item name="colorGray800">@color/brownish_gray_800</item>
-		<item name="colorGray700">@color/brownish_gray_700</item>
-		<item name="colorGray600">@color/brownish_gray_600</item>
-		<item name="colorGray500">@color/brownish_gray_500</item>
+		<item name="colorGray900">@color/nord_gray_900</item>
+		<item name="colorGray800t">@color/nord_gray_800t</item>
+		<item name="colorGray800">@color/nord_gray_800</item>
+		<item name="colorGray700">@color/nord_gray_700</item>
+		<item name="colorGray600">@color/nord_gray_600</item>
+		<item name="colorGray500">@color/nord_gray_500</item>
 
 		<item name="colorGray400">@color/nord_gray_400</item>
 		<item name="colorGray300">@color/nord_gray_300</item>
