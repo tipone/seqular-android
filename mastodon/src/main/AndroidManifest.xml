@@ -20,7 +20,7 @@
 		android:localeConfig="@xml/locales_config"
 		android:icon="@mipmap/ic_launcher"
 		android:roundIcon="@mipmap/ic_launcher_round"
-		android:theme="@style/Theme.Mastodon.AutoLightDark.Original"
+		android:theme="@style/Theme.Mastodon.AutoLightDark"
 		android:largeHeap="true">
 
 		<activity android:name=".MainActivity" android:exported="true" android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustResize" android:launchMode="singleTask">
