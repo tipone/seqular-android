@@ -726,7 +726,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 						pref = GlobalUserPreferences.ColorPreference.MATERIAL3;
 						onColorPreferenceClick(pref);
 					}else{
-						Toast.makeText(getActivity(), R.string.sk_not_support,
+						Toast.makeText(getActivity(), R.string.sk_not_supported,
 								Toast.LENGTH_LONG).show();
 					}
 				}

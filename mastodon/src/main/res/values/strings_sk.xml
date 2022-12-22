@@ -63,5 +63,4 @@
     <string name="sk_example_domain">example.social</string>
     <string name="sk_app_username" translatable="false">\@megalodon</string>
     <string name="sk_tabs_disable_swipe">Disable swiping between tabs</string>
-    <string name="sk_not_support">Not supported on your device</string>
 </resources>
