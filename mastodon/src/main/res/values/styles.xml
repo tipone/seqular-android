@@ -37,6 +37,7 @@
 		<item name="colorTabInactive">?colorGray400</item>
 		<item name="colorAccentLightest">?colorPrimary100</item>
 		<item name="profileHeaderBackground">?colorGray500</item>
+		<item name="toolbarBackground">?colorGray50</item>
 
 		<item name="buttonBackground">@drawable/bg_button_primary_dark_on_light</item>
 		<item name="android:editTextBackground">@drawable/bg_edittext_light</item>
@@ -45,7 +46,7 @@
 		<item name="android:windowLightNavigationBar" tools:ignore="NewApi">true</item>
 		<item name="android:popupMenuStyle">@style/Widget.Mastodon.PopupMenu</item>
 		<item name="android:actionOverflowMenuStyle">@style/Widget.Mastodon.PopupMenu</item>
-		
+
 		<!-- M3 colors -->
 		<item name="colorM3Primary">@color/m3_sys_light_primary</item>
 		<item name="colorM3OnPrimary">@color/m3_sys_light_on_primary</item>
@@ -72,6 +73,24 @@
 		<item name="colorM3OnError">#FFF</item>
 		<item name="colorM3ErrorContainer">#F9DEDC</item>
 		<item name="colorM3OnErrorContainer">#410E0B</item>
+
+		<!-- colors for button_bg|text_primary|secondary_dark|light_on_light|dark.xml -->
+		<item name="colorButtonBackgroundPrimaryDarkOnLight">?colorGray800</item>
+		<item name="colorButtonBackgroundPrimaryDarkOnLightDisabled">?colorGray300</item>
+		<item name="colorButtonTextPrimaryDarkOnLight">?colorGray50</item>
+		<item name="colorButtonTextPrimaryDarkOnLightDisabled">?colorGray400</item>
+		<item name="colorButtonBackgroundPrimaryLightOnDark">?colorGray100</item>
+		<item name="colorButtonBackgroundPrimaryLightOnDarkDisabled">?colorGray500</item>
+		<item name="colorButtonTextPrimaryLightOnDark">?colorGray800</item>
+		<item name="colorButtonTextPrimaryLightOnDarkDisabled">?colorGray400</item>
+		<item name="colorButtonBackgroundSecondaryDarkOnLight">?colorGray25</item>
+		<item name="colorButtonBackgroundSecondaryDarkOnLightDisabled">?colorGray100</item>
+		<item name="colorButtonTextSecondaryDarkOnLight">?colorGray800</item>
+		<item name="colorButtonTextSecondaryDarkOnLightDisabled">?colorGray400</item>
+		<item name="colorButtonBackgroundSecondaryLightOnDark">?colorGray600</item>
+		<item name="colorButtonBackgroundSecondaryLightOnDarkDisabled">?colorGray300</item>
+		<item name="colorButtonTextSecondaryLightOnDark">?colorGray50</item>
+		<item name="colorButtonTextSecondaryLightOnDarkDisabled">?colorGray400</item>
 	</style>
 
 
@@ -112,6 +131,7 @@
 		<item name="profileHeaderBackground">?colorWindowBackground</item>
 		<item name="colorSearchField">?colorGray700</item>
 		<item name="colorSearchHint">?colorGray300</item>
+		<item name="toolbarBackground">?colorGray800</item>
 
 		<item name="buttonBackground">@drawable/bg_button_primary_light_on_dark</item>
 		<item name="android:editTextBackground">@drawable/bg_edittext_dark</item>
@@ -147,6 +167,24 @@
 		<item name="colorM3OnError">#601410</item>
 		<item name="colorM3ErrorContainer">#8C1D18</item>
 		<item name="colorM3OnErrorContainer">#F9DEDC</item>
+
+		<!-- colors for button_bg|text_primary|secondary_dark|light_on_light|dark.xml -->
+		<item name="colorButtonBackgroundPrimaryDarkOnLight">?colorGray800</item>
+		<item name="colorButtonBackgroundPrimaryDarkOnLightDisabled">?colorGray300</item>
+		<item name="colorButtonTextPrimaryDarkOnLight">?colorGray50</item>
+		<item name="colorButtonTextPrimaryDarkOnLightDisabled">?colorGray400</item>
+		<item name="colorButtonBackgroundPrimaryLightOnDark">?colorGray100</item>
+		<item name="colorButtonBackgroundPrimaryLightOnDarkDisabled">?colorGray500</item>
+		<item name="colorButtonTextPrimaryLightOnDark">?colorGray800</item>
+		<item name="colorButtonTextPrimaryLightOnDarkDisabled">?colorGray400</item>
+		<item name="colorButtonBackgroundSecondaryDarkOnLight">?colorGray25</item>
+		<item name="colorButtonBackgroundSecondaryDarkOnLightDisabled">?colorGray100</item>
+		<item name="colorButtonTextSecondaryDarkOnLight">?colorGray800</item>
+		<item name="colorButtonTextSecondaryDarkOnLightDisabled">?colorGray400</item>
+		<item name="colorButtonBackgroundSecondaryLightOnDark">?colorGray600</item>
+		<item name="colorButtonBackgroundSecondaryLightOnDarkDisabled">?colorGray300</item>
+		<item name="colorButtonTextSecondaryLightOnDark">?colorGray50</item>
+		<item name="colorButtonTextSecondaryLightOnDarkDisabled">?colorGray400</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark.TrueBlack">
@@ -156,28 +194,28 @@
 		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
 		<item name="colorBackgroundLight">@color/black</item>
 		<item name="colorButtonText">@color/black</item>
-		<item name="colorPollVoted">?colorGray800</item>
+		<item name="colorPollVoted">?colorGray700</item>
 		<item name="colorSearchField">?colorGray900</item>
 		<item name="colorBackgroundLightest">@color/black</item>
 		<item name="colorBackgroundPopup">?colorGray900</item>
 		<item name="colorWindowBackground">@color/black</item>
 
 		<item name="colorM3Background">#000</item>
-<!--		<item name="colorButtonBackgroundPrimaryLightOnDarkDisabled">?colorGray900</item>-->
+		<!--		<item name="colorButtonBackgroundPrimaryLightOnDarkDisabled">?colorGray900</item>-->
 	</style>
 
 	<style name="Theme.Mastodon.AutoLightDark" parent="Theme.Mastodon.Light"/>
 	<style name="Theme.Mastodon.AutoLightDark.TrueBlack" parent="Theme.Mastodon.Light"/>
 
 	<style name="Theme.Mastodon.Toolbar" parent="android:ThemeOverlay.Material.ActionBar">
-		<item name="android:colorPrimary">?colorGray50</item>
+		<item name="android:colorPrimary">?toolbarBackground</item>
 		<item name="android:toolbarStyle">@style/Widget.Mastodon.Toolbar</item>
 		<item name="android:textColorPrimary">?colorGray800</item>
 		<item name="android:textColorSecondary">?colorGray800</item>
 	</style>
 
 	<style name="Theme.Mastodon.Toolbar.Dark" parent="android:ThemeOverlay.Material.Dark.ActionBar">
-		<item name="android:colorPrimary">?colorGray800</item>
+		<item name="android:colorPrimary">?toolbarBackground</item>
 		<item name="android:textColorPrimary">?colorGray50</item>
 		<item name="android:textColorSecondary">?colorGray50</item>
 		<item name="android:toolbarStyle">@style/Widget.Mastodon.Toolbar</item>
@@ -188,14 +226,14 @@
 	</style>
 
 	<style name="Theme.Mastodon.Toolbar.Profile">
-		<item name="android:textColorPrimary">?android:colorPrimary</item>
-		<item name="android:textColorSecondary">?android:colorPrimary</item>
-		<item name="android:drawableTint">?android:colorPrimary</item>
+		<item name="android:textColorPrimary">?colorGray25</item>
+		<item name="android:textColorSecondary">?colorGray25</item>
+		<item name="android:drawableTint">?colorGray25</item>
 		<item name="android:popupTheme">?android:actionBarTheme</item>
 		<item name="android:titleTextAppearance">@style/m3_title_medium</item>
-		<item name="android:titleTextColor">?android:colorPrimary</item>
+		<item name="android:titleTextColor">?colorGray25</item>
 		<item name="android:subtitleTextAppearance">@style/m3_body_medium</item>
-		<item name="android:subtitleTextColor">?android:colorPrimary</item>
+		<item name="android:subtitleTextColor">?colorGray25</item>
 	</style>
 
 	<style name="Widget.Mastodon.Button" parent="android:Widget.Material.Button">
