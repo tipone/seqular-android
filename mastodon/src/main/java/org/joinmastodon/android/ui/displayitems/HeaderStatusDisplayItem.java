@@ -135,6 +135,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			avatar.setOutlineProvider(roundCornersOutline);
 			avatar.setClipToOutline(true);
 			more.setOnClickListener(this::onMoreClick);
+			more.setOnLongClickListener((v) -> { openWithAccount(); return true; });
 			visibility.setOnClickListener(v->item.parentFragment.onVisibilityIconClick(this));
 
 			optionsMenu=new PopupMenu(activity, more);
@@ -182,8 +183,11 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					}
 				}else if(id==R.id.delete){
 					UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{});
-				}else if(id==R.id.pin || id==R.id.unpin){
-					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
+				}else if(id==R.id.pin || id==R.id.unpin) {
+					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s -> {
+					});
+				}else if(id==R.id.open_with_account) {
+					openWithAccount();
 				}else if(id==R.id.mute){
 					UiUtils.confirmToggleMuteUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.muting, r->{});
 				}else if(id==R.id.block){
@@ -218,6 +222,13 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				}
 				return true;
 			});
+		}
+
+		private void openWithAccount() {
+			UiUtils.pickAccount(item.parentFragment.getActivity(), (session, dialog) -> {
+				UiUtils.openURL(item.parentFragment.getActivity(), session.getID(), item.status.url);
+				return true;
+			}, R.string.sk_open_in_account);
 		}
 
 		@Override
