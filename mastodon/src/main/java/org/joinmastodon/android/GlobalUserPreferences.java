@@ -65,7 +65,7 @@ public class GlobalUserPreferences{
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
 				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
 			}else{
-				color=ColorPreference.PURPLE;
+				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PURPLE.name()));
 			}
 		} catch (IllegalArgumentException|ClassCastException ignored) {
 			// invalid color name or color was previously saved as integer
