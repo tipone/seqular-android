@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -18,8 +19,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -52,7 +51,6 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 
 import java.util.ArrayList;
-import java.util.Objects;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
@@ -146,6 +144,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showDifferentiatedPushNoticationIcons, this::onNotificationStyleChanged));
+
 
 		items.add(new HeaderItem(R.string.home_timeline));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
@@ -354,6 +354,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 		needUpdateNotificationSettings=true;
 	}
+
+	private void onNotificationStyleChanged(SwitchItem item){
+		GlobalUserPreferences.showDifferentiatedPushNoticationIcons=item.checked;
+		GlobalUserPreferences.save();
+	}
+
 
 	private void onNotificationsPolicyChanged(PushSubscription.Policy policy){
 		PushSubscription subscription=getPushSubscription();

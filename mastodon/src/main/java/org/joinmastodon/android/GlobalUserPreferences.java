@@ -27,6 +27,7 @@ public class GlobalUserPreferences{
 	public static boolean disableMarquee;
 	public static boolean disableSwipe;
 	public static boolean voteButtonForSingleChoice;
+	public static boolean showDifferentiatedPushNoticationIcons;
 	public static ThemePreference theme;
 	public static ColorPreference color;
 
@@ -50,6 +51,7 @@ public class GlobalUserPreferences{
 		showReplies=prefs.getBoolean("showReplies", true);
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
+		showDifferentiatedPushNoticationIcons=prefs.getBoolean("showDifferentiatedPushNoticationIcons", false);
 		showFederatedTimeline=prefs.getBoolean("showFederatedTimeline", !BuildConfig.BUILD_TYPE.equals("playRelease"));
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
@@ -84,6 +86,7 @@ public class GlobalUserPreferences{
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
 				.putBoolean("disableMarquee", disableMarquee)
 				.putBoolean("disableSwipe", disableSwipe)
+				.putBoolean("showDifferentiatedPushNoticationIcons", showDifferentiatedPushNoticationIcons)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

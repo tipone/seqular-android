@@ -143,14 +143,19 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
 				.setColor(context.getColor(R.color.shortcut_icon_background));
-		switch (pn.notificationType) {
-			case FAVORITE -> builder.setSmallIcon(R.drawable.ic_fluent_star_24_filled);
-			case REBLOG -> builder.setSmallIcon(R.drawable.ic_fluent_arrow_repeat_all_24_filled);
-			case FOLLOW -> builder.setSmallIcon(R.drawable.ic_fluent_person_add_24_filled);
-			case MENTION -> builder.setSmallIcon(R.drawable.ic_fluent_mention_24_filled);
-			case POLL -> builder.setSmallIcon(R.drawable.ic_fluent_poll_24_filled);
-			default -> builder.setSmallIcon(R.drawable.ic_ntf_logo);
+		if(GlobalUserPreferences.showDifferentiatedPushNoticationIcons){
+			switch (pn.notificationType) {
+				case FAVORITE -> builder.setSmallIcon(R.drawable.ic_fluent_star_24_filled);
+				case REBLOG -> builder.setSmallIcon(R.drawable.ic_fluent_arrow_repeat_all_24_filled);
+				case FOLLOW -> builder.setSmallIcon(R.drawable.ic_fluent_person_add_24_filled);
+				case MENTION -> builder.setSmallIcon(R.drawable.ic_fluent_mention_24_filled);
+				case POLL -> builder.setSmallIcon(R.drawable.ic_fluent_poll_24_filled);
+				default -> builder.setSmallIcon(R.drawable.ic_ntf_logo);
+			}
+		}else{
+			builder.setSmallIcon(R.drawable.ic_ntf_logo);
 		}
+
 		if(avatar!=null){
 			builder.setLargeIcon(UiUtils.getBitmapFromDrawable(avatar));
 		}

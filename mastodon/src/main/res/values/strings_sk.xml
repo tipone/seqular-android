@@ -78,6 +78,7 @@
     <string name="sk_clear_all_notifications_confirm_action">Delete all</string>
     <string name="sk_clear_all_notifications_confirm">Are you sure you want to clear all notifications\?</string>
     <string name="sk_enable_delete_notifications">Enable deleting notifications</string>
+    <string name="sk_settings_show_differentiated_notification_icons">Custom icons for interactions</string>
     <string name="sk_settings_publish_button_text">Publish button text</string>
     <string name="sk_settings_publish_button_text_title">Customize Publish button text</string>
     <string name="sk_settings_hide_translate_in_timeline">Hide translate button in timeline</string>
