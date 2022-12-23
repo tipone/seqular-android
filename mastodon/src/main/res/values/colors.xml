@@ -298,10 +298,10 @@
 	<color name="nord_primary_100">#eceff4</color>
 	<color name="nord_primary_200">#e5e9f0</color>
 	<color name="nord_primary_300">#d8dee9</color>
-	<color name="nord_primary_400">#8f909f</color>
+	<color name="nord_primary_400">#88c0d0</color>
 	<color name="nord_primary_500">#4c566a</color>
 	<color name="nord_primary_600">#4c566a</color>
-	<color name="nord_primary_700">#434c5e</color>
+	<color name="nord_primary_700">#81a1c1</color>
 	<color name="nord_primary_800">#3b4252</color>
 	<color name="nord_primary_900">#2e3440</color>
 
