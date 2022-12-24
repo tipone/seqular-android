@@ -312,6 +312,9 @@
 	<color name="nord_gray_600">#404C5C</color>
 	<color name="nord_gray_500">#8C96B4</color>
 
+	<color name="nord_favorite_selected">#ebcb8b</color>
+	<color name="nord_bookmark_selected">#a3be8c</color>
+
 	<color name="nord_gray_400">#8C96B4</color>
 	<color name="nord_gray_300">#c5c6d0</color>
 	<color name="nord_gray_200">#D5DCE6</color>
