@@ -894,7 +894,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				progress.setVisibility(View.GONE);
 				progress.removeCallbacks(progressUpdater);
 			}
-			changelog.setText(getString(R.string.sk_changelog, info.changelog));
+			changelog.setText(info.changelog);
+//			changelog.setText(getString(R.string.sk_changelog, info.changelog));
 		}
 
 		private void updateProgress(){

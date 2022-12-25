@@ -79,6 +79,17 @@
 		</LinearLayout>
 
 		<TextView
+			android:id="@+id/changelog_header"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:textColor="?android:textColorPrimary"
+			android:textStyle="bold"
+			android:textSize="16dp"
+			android:paddingStart="16dp"
+			android:paddingBottom="8dp"
+			android:text="@string/sk_changelog" />
+
+		<TextView
 			android:id="@+id/changelog"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
