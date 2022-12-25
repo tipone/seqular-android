@@ -3,7 +3,6 @@ package org.joinmastodon.android.fragments;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -268,9 +267,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	}
 
 	private void onGetChangelogClick(){
-		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
-		alertDialogBuilder.setTitle("Something TODO remove this");
-		alertDialogBuilder.setMessage(GithubSelfUpdater.getInstance().getChangelog());
+		GithubSelfUpdater.getInstance().getChangelog();
 	}
 
 	private void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
