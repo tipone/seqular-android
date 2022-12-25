@@ -89,4 +89,5 @@
     <string name="sk_reblog_with_visibility">Reblog with visibility</string>
     <string name="sk_quote_post">Post about this</string>
     <string name="sk_hashtags_you_follow">Hashtags you follow</string>
+    <string name="sk_get_changelog">Get changelog</string>
 </resources>

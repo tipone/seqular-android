@@ -187,7 +187,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			items.add(checkForUpdateItem);
 		}
 //		TODO fix this up tomorrow, by probably just making another method for chacking and displaying the new changelog
-		items.add(new TextItem(R.string.get_changelog, GithubSelfUpdater.getInstance()::getChangelog);
+		items.add(new TextItem(R.string.sk_get_changelog, this::onGetChangelogClick));
 
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
@@ -264,6 +264,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		super.onDestroyView();
 		if(GithubSelfUpdater.needSelfUpdating())
 			E.unregister(this);
+	}
+
+	private void onGetChangelogClick(){
+		GithubSelfUpdater.getInstance().getChangelog();
 	}
 
 	private void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
