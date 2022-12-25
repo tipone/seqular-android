@@ -173,6 +173,27 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}
 	}
 
+	public String getChangelog(){
+		String changelog = null;
+		Request req=new Request.Builder()
+				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases/latest")
+				.build();
+		Call call=MastodonAPIController.getHttpClient().newCall(req);
+		try(Response resp=call.execute()){
+			JsonObject obj=JsonParser.parseReader(resp.body().charStream()).getAsJsonObject();
+			changelog=obj.get("body").getAsString();
+			if(changelog == null){
+				Log.w(TAG, "No changelog available");
+				return null;
+			}
+			return changelog;
+		}catch(Exception x){
+			Log.w(TAG, "getChangelog: ", x);
+		}
+		return changelog;
+	}
+
+
 	private void setState(UpdateState state){
 		this.state=state;
 		E.post(new SelfUpdateStateChangedEvent(state));
