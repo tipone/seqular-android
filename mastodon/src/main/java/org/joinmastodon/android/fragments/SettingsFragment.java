@@ -49,7 +49,6 @@ import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -186,9 +185,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
-//		TODO fix this up tomorrow, by probably just making another method for chacking and displaying the new changelog
-		items.add(new TextItem(R.string.get_changelog, GithubSelfUpdater.getInstance()::getChangelog);
-
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{

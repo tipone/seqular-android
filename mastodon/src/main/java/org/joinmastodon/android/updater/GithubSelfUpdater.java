@@ -39,8 +39,6 @@ public abstract class GithubSelfUpdater{
 
 	public abstract void cancelDownload();
 
-	public abstract String getChangelog();
-
 	public abstract void handleIntentFromInstaller(Intent intent, Activity activity);
 
 	public enum UpdateState{
