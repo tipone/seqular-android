@@ -3,6 +3,7 @@ package org.joinmastodon.android.fragments;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -49,6 +50,7 @@ import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.function.Consumer;
@@ -185,6 +187,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
+//		TODO fix this up tomorrow, by probably just making another method for chacking and displaying the new changelog
+		items.add(new TextItem(R.string.sk_get_changelog, this::onGetChangelogClick));
+
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{
@@ -260,6 +265,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		super.onDestroyView();
 		if(GithubSelfUpdater.needSelfUpdating())
 			E.unregister(this);
+	}
+
+	private void onGetChangelogClick(){
+		AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+		alertDialogBuilder.setTitle("Something TODO remove this");
+		alertDialogBuilder.setMessage(GithubSelfUpdater.getInstance().getChangelog());
 	}
 
 	private void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){

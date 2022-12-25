@@ -40,6 +40,7 @@ import okhttp3.Response;
 public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 	private static final long CHECK_PERIOD=6*3600*1000L;
 	private static final String TAG="GithubSelfUpdater";
+	private static String changelog;
 
 	private UpdateState state=UpdateState.NO_UPDATE;
 	private UpdateInfo info;
@@ -109,6 +110,11 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		MastodonAPIController.runInBackground(this::actuallyCheckForUpdates);
 	}
 
+	@Override
+	public void getChangelog(){
+		MastodonAPIController.runInBackground(this::actuallyGetChangelog);
+	}
+
 	private void actuallyCheckForUpdates(){
 		Request req=new Request.Builder()
 				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases/latest")
@@ -173,6 +179,35 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}finally{
 			setState(info==null ? UpdateState.NO_UPDATE : UpdateState.UPDATE_AVAILABLE);
 		}
+	}
+
+	public void actuallyGetChangelog(){
+		String changelog = null;
+		Request req=new Request.Builder()
+				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases/latest")
+				.build();
+		Call call=MastodonAPIController.getHttpClient().newCall(req);
+		try(Response resp=call.execute()){
+			JsonObject obj=JsonParser.parseReader(resp.body().charStream()).getAsJsonObject();
+			changelog=obj.get("body").getAsString();
+			if(changelog == null){
+				Log.w(TAG, "No changelog available");
+				return;
+			}
+		}catch(Exception x){
+			Log.w(TAG, "getChangelog: ", x);
+		}finally{
+//			setState(changelog==null ? UpdateState.NO_UPDATE : UpdateState.UPDATE_AVAILABLE);
+			setChangelog(changelog);
+		}
+	}
+
+	private void setChangelog(String changelog){
+		this.changelog = changelog;
+	}
+
+	public String getChangelogText(){
+		return changelog;
 	}
 
 	private void setState(UpdateState state){
