@@ -116,6 +116,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		Call call=MastodonAPIController.getHttpClient().newCall(req);
 		try(Response resp=call.execute()){
 			JsonObject obj=JsonParser.parseReader(resp.body().charStream()).getAsJsonObject();
+			String changelog=obj.get("body").getAsString();
 			String tag=obj.get("tag_name").getAsString();
 			Pattern pattern=Pattern.compile("v?(\\d+)\\.(\\d+)\\.(\\d+)\\+fork\\.(\\d+)");
 			Matcher matcher=pattern.matcher(tag);
@@ -151,6 +152,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 						UpdateInfo info=new UpdateInfo();
 						info.size=size;
 						info.version=version;
+						info.changelog=changelog;
 						this.info=info;
 
 						getPrefs().edit()
