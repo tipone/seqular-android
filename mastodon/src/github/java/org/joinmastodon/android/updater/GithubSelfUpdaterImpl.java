@@ -61,6 +61,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 			info=new UpdateInfo();
 			info.version=prefs.getString("version", null);
 			info.size=prefs.getLong("apkSize", 0);
+			info.changelog=prefs.getString("changelog", null);
 			downloadID=prefs.getLong("downloadID", 0);
 			if(downloadID==0 || !getUpdateApkFile().exists()){
 				state=UpdateState.UPDATE_AVAILABLE;
@@ -84,6 +85,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 					.remove("apkURL")
 					.remove("checkedByBuild")
 					.remove("downloadID")
+					.remove("changelog")
 					.apply();
 		}
 	}
@@ -160,6 +162,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 								.putString("version", version)
 								.putString("apkURL", url)
 								.putInt("checkedByBuild", BuildConfig.VERSION_CODE)
+								.putString("changelog", changelog)
 								.remove("downloadID")
 								.apply();
 

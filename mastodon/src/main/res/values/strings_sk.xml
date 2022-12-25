@@ -27,6 +27,7 @@
     <string name="sk_federated_timeline_info_banner">These are the most recent posts by the people in your federation.</string>
     <string name="sk_update_available">Moshidon %s is ready to download.</string>
     <string name="sk_update_ready">Moshidon %s is downloaded and ready to install.</string>
+    <string name="sk_changelog">Changelog: \n%s</string>
     <string name="sk_check_for_update">Check for update</string>
     <string name="sk_no_update_available">No update available</string>
     <string name="sk_list_timelines">Lists</string>

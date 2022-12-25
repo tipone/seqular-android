@@ -839,7 +839,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 	private class UpdateViewHolder extends BindableViewHolder<UpdateItem>{
 
-		private final TextView text;
+		private final TextView text, changelog;
 		private final Button button;
 		private final ImageButton cancelBtn;
 		private final ProgressBar progress;
@@ -850,6 +850,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		public UpdateViewHolder(){
 			super(getActivity(), R.layout.item_settings_update, list);
 			text=findViewById(R.id.text);
+			changelog=findViewById(R.id.changelog);
 			button=findViewById(R.id.button);
 			cancelBtn=findViewById(R.id.cancel_btn);
 			progress=findViewById(R.id.progress);
@@ -893,6 +894,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				progress.setVisibility(View.GONE);
 				progress.removeCallbacks(progressUpdater);
 			}
+			changelog.setText(getString(R.string.sk_changelog, info.changelog));
 		}
 
 		private void updateProgress(){
