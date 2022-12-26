@@ -145,7 +145,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			needAppRestart=true;
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showDifferentiatedPushNoticationIcons, this::onNotificationStyleChanged));
-		items.add(new SwitchItem(R.string.sk_disable_dividers, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableDividers, i->{
+		items.add(new SwitchItem(R.string.sk_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
 			GlobalUserPreferences.disableDividers=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
