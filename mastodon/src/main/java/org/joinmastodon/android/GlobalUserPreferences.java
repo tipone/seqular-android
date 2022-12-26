@@ -26,6 +26,7 @@ public class GlobalUserPreferences{
 	public static boolean alwaysExpandContentWarnings;
 	public static boolean disableMarquee;
 	public static boolean disableSwipe;
+	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
 	public static boolean showDifferentiatedPushNoticationIcons;
 	public static ThemePreference theme;
@@ -57,6 +58,7 @@ public class GlobalUserPreferences{
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		disableSwipe=prefs.getBoolean("disableSwipe", false);
+		disableDividers=prefs.getBoolean("disableDividers", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
@@ -86,6 +88,7 @@ public class GlobalUserPreferences{
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
 				.putBoolean("disableMarquee", disableMarquee)
 				.putBoolean("disableSwipe", disableSwipe)
+				.putBoolean("disableDividers", disableDividers)
 				.putBoolean("showDifferentiatedPushNoticationIcons", showDifferentiatedPushNoticationIcons)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
