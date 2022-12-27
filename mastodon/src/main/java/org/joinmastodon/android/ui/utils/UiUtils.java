@@ -5,6 +5,7 @@ import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -33,6 +34,7 @@ import android.provider.OpenableColumns;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,12 +48,14 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
 import org.joinmastodon.android.api.requests.accounts.SetDomainBlocked;
 import org.joinmastodon.android.api.requests.accounts.AuthorizeFollowRequest;
 import org.joinmastodon.android.api.requests.accounts.RejectFollowRequest;
+import org.joinmastodon.android.api.requests.notifications.DismissNotification;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
@@ -64,13 +68,16 @@ import org.joinmastodon.android.events.NotificationDeletedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUnpinnedEvent;
+import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.ListTimeline;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
@@ -93,6 +100,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import androidx.annotation.AttrRes;
@@ -472,6 +480,25 @@ public class UiUtils{
 		);
 	}
 
+	public static void confirmDeleteNotification(Activity activity, String accountID, Notification notification, Runnable callback) {
+		showConfirmationAlert(activity,
+				notification == null ? R.string.sk_clear_all_notifications : R.string.sk_delete_notification,
+				notification == null ? R.string.sk_clear_all_notifications_confirm : R.string.sk_delete_notification_confirm,
+				notification == null ? R.string.sk_clear_all_notifications_confirm_action : R.string.sk_delete_notification_confirm_action,
+				()-> new DismissNotification(notification != null ? notification.id : null).setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(Object o) {
+						callback.run();
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(activity);
+					}
+				}).exec(accountID)
+		);
+	}
+
 	public static void setRelationshipToActionButton(Relationship relationship, Button button){
 		setRelationshipToActionButton(relationship, button, false);
 	}
@@ -727,16 +754,93 @@ public class UiUtils{
 				it.matches("^/o/[a-f0-9]+$");
 	}
 
-	public static void openURL(Context context, String accountID, String url){
-		Consumer<ProgressDialog> transformDialogForLookup = dialog -> {
-			dialog.setTitle(R.string.loading_fediverse_resource_title);
-			dialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (d, which) -> d.cancel());
+	public static String getInstanceName(String accountID) {
+		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		return instance != null && !instance.title.isBlank() ? instance.title : session.domain;
+	}
+
+	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {
+		List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts()
+				.stream().filter(s->!s.getID().equals(exceptFor)).collect(Collectors.toList());
+
+		AlertDialog.Builder builder = new M3AlertDialogBuilder(context)
+				.setItems(
+						sessions.stream().map(AccountSession::getFullUsername).toArray(String[]::new),
+						(dialog, which) -> sessionConsumer.accept(sessions.get(which))
+				)
+				.setTitle(titleRes == 0 ? R.string.choose_account : titleRes)
+				.setIcon(iconRes);
+		if (transformDialog != null) transformDialog.accept(builder);
+		builder.show();
+	}
+
+	@FunctionalInterface
+	public interface InteractionPerformer {
+		void interact(StatusInteractionController ic, Status status, Consumer<Status> resultConsumer);
+	}
+
+	public static void pickInteractAs(Context context, String accountID, Status sourceStatus, Predicate<Status> checkInteracted, InteractionPerformer interactionPerformer, @StringRes int interactAsRes, @StringRes int interactedAsAccountRes, @StringRes int alreadyInteractedRes, @DrawableRes int iconRes) {
+		pickAccount(context, accountID, interactAsRes, iconRes, session -> {
+			lookupStatus(context, sourceStatus, session.getID(), accountID, status -> {
+				if (checkInteracted.test(status)) {
+					Toast.makeText(context, alreadyInteractedRes, Toast.LENGTH_SHORT).show();
+					return;
+				}
+
+				StatusInteractionController ic = AccountSessionManager.getInstance().getAccount(session.getID()).getRemoteStatusInteractionController();
+				interactionPerformer.interact(ic, status, s -> {
+					if (checkInteracted.test(s)) {
+						Toast.makeText(context, context.getString(interactedAsAccountRes, session.getFullUsername()), Toast.LENGTH_SHORT).show();
+					}
+				});
+			});
+		}, null);
+	}
+
+	public static void lookupStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> statusConsumer) {
+		if (sourceAccountID != null && targetAccountID.startsWith(sourceAccountID.substring(0, sourceAccountID.indexOf('_')))) {
+			statusConsumer.accept(queryStatus);
+			return;
+		}
+
+		new GetSearchResults(queryStatus.url, GetSearchResults.Type.STATUSES, true).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(SearchResults results) {
+				if (!results.statuses.isEmpty()) statusConsumer.accept(results.statuses.get(0));
+				else Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(context);
+			}
+		})
+				.wrapProgress((Activity)context, R.string.loading, true,
+						d -> transformDialogForLookup(context, targetAccountID, null, d))
+				.exec(targetAccountID);
+	}
+
+	public static void openURL(Context context, String accountID, String url) {
+		openURL(context, accountID, url, true);
+	}
+
+	private static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
+		if (accountID != null) {
+			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, getInstanceName(accountID)));
+		} else {
+			dialog.setTitle(R.string.sk_loading_fediverse_resource_title);
+		}
+		dialog.setButton(DialogInterface.BUTTON_NEGATIVE, context.getString(R.string.cancel), (d, which) -> d.cancel());
+		if (url != null) {
 			dialog.setButton(DialogInterface.BUTTON_POSITIVE, context.getString(R.string.open_in_browser), (d, which) -> {
 				d.cancel();
 				launchWebBrowser(context, url);
 			});
-		};
+		}
+	}
 
+	public static void openURL(Context context, String accountID, String url, boolean launchBrowser){
 		Uri uri=Uri.parse(url);
 		List<String> path=uri.getPathSegments();
 		if(accountID!=null && "https".equals(uri.getScheme())){
@@ -754,10 +858,11 @@ public class UiUtils{
 							@Override
 							public void onError(ErrorResponse error){
 								error.showToast(context);
-								launchWebBrowser(context, url);
+								if (launchBrowser) launchWebBrowser(context, url);
 							}
 						})
-						.wrapProgress((Activity)context, R.string.loading, true, transformDialogForLookup)
+						.wrapProgress((Activity)context, R.string.loading, true,
+								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
 				return;
 			} else if (looksLikeMastodonUrl(url)) {
@@ -774,17 +879,19 @@ public class UiUtils{
 									args.putParcelable("profileAccount", Parcels.wrap(results.accounts.get(0)));
 									Nav.go((Activity) context, ProfileFragment.class, args);
 								} else {
-									launchWebBrowser(context, url);
+									if (launchBrowser) launchWebBrowser(context, url);
+									else Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
 								}
 							}
 
 							@Override
 							public void onError(ErrorResponse error) {
 								error.showToast(context);
-								launchWebBrowser(context, url);
+								if (launchBrowser) launchWebBrowser(context, url);
 							}
 						})
-						.wrapProgress((Activity)context, R.string.loading, true, transformDialogForLookup)
+						.wrapProgress((Activity)context, R.string.loading, true,
+								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
 				return;
 			}
@@ -792,14 +899,13 @@ public class UiUtils{
 		launchWebBrowser(context, url);
 	}
 
-	public static void copyText(Context context, String text) {
+	public static void copyText(View v, String text) {
+		Context context = v.getContext();
 		context.getSystemService(ClipboardManager.class).setPrimaryClip(ClipData.newPlainText(null, text));
 		if(Build.VERSION.SDK_INT<Build.VERSION_CODES.TIRAMISU || UiUtils.isMIUI()){ // Android 13+ SystemUI shows its own thing when you put things into the clipboard
 			Toast.makeText(context, R.string.text_copied, Toast.LENGTH_SHORT).show();
 		}
-		Vibrator vibrator = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) vibrator.vibrate(VibrationEffect.createOneShot(50, VibrationEffect.DEFAULT_AMPLITUDE));
-		else vibrator.vibrate(50);
+		v.performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK);
 	}
 
 	private static String getSystemProperty(String key){
@@ -813,6 +919,20 @@ public class UiUtils{
 
 	public static boolean isMIUI(){
 		return !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.code"));
+	}
+
+	public static boolean pickAccountForCompose(Activity activity, String accountID, String prefilledText){
+		if (AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1) {
+			UiUtils.pickAccount(activity, accountID, 0, 0, session -> {
+				Bundle args=new Bundle();
+				args.putString("account", session.getID());
+				if (prefilledText != null) args.putString("prefilledText", prefilledText);
+				Nav.go(activity, ComposeFragment.class, args);
+			}, null);
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public static void pickAccount(Context context, BiPredicate<AccountSession, DialogInterface> pick, @StringRes int title) {
