@@ -445,10 +445,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		name.setText(ssb);
 		setTitle(ssb);
 
-		if(isOwnProfile){
-			noteEdit.setVisibility(View.GONE);
-		}
-
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
 		if(account.locked){
@@ -475,6 +471,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			bio.setVisibility(View.VISIBLE);
 			bio.setText(parsedBio);
 		}
+
+		if(isOwnProfile){
+			noteEdit.setVisibility(View.GONE);
+		}
+
+
+
+
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
 		postsCount.setText(UiUtils.abbreviateNumber(account.statusesCount));
@@ -671,6 +675,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		notifyProgress.setIndeterminateTintList(notifyButton.getTextColors());
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
+		noteEdit.setText(relationship.note);
 		if (getActivity() != null) notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
 	}
 
