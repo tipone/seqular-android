@@ -294,6 +294,7 @@
 						android:layout_marginLeft="16dp"
 						android:layout_marginTop="8dp"
 						android:layout_marginRight="16dp"
+						android:layout_marginBottom="4dp"
 						android:textAppearance="@style/m3_body_large"
 						android:textSize="16sp"
 						android:background="@drawable/edit_text_border"

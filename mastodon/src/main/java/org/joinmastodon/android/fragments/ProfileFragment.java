@@ -117,7 +117,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private CoverOverlayGradientDrawable coverGradient=new CoverOverlayGradientDrawable();
 	private float titleTransY;
 	private View postsBtn, followersBtn, followingBtn;
-	private EditText nameEdit, bioEdit;
+	private EditText nameEdit, bioEdit, noteEdit;
 	private ProgressBar actionProgress, notifyProgress;
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
@@ -180,6 +180,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		name=content.findViewById(R.id.name);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
+		noteEdit=content.findViewById(R.id.note_edit);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
 		followersBtn=content.findViewById(R.id.followers_btn);
@@ -443,6 +444,52 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		HtmlParser.parseCustomEmoji(ssb, account.emojis);
 		name.setText(ssb);
 		setTitle(ssb);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		if(isOwnProfile){
+			noteEdit.setVisibility(View.GONE);
+		}
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
