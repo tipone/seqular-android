@@ -256,12 +256,38 @@
 						android:textColor="?android:textColorSecondary"
 						tools:text="\@Gargron" />
 
+                    <FrameLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/note_edit_wrapper"
+                        android:layout_below="@id/username"
+                        android:layout_marginTop="0dp"
+                        android:padding="0dp">
 
-					<org.joinmastodon.android.ui.views.LinkedTextView
+                        <EditText
+                            android:id="@+id/note_edit"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="16dp"
+                            android:layout_marginTop="8dp"
+                            android:layout_marginRight="16dp"
+                            android:layout_marginBottom="4dp"
+                            android:textAppearance="@style/m3_body_large"
+                            android:textSize="16sp"
+                            android:background="@drawable/edit_text_border"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:elevation="0dp"
+                            android:hint="@string/sk_personal_note"
+                            android:textColorHint="?android:textColorSecondaryInverseNoDisable"
+                            tools:text="Founder, CEO and lead developer @Mastodon, Germany." />
+
+                    </FrameLayout>
+
+                    <org.joinmastodon.android.ui.views.LinkedTextView
 						android:id="@+id/bio"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_below="@id/note_edit"
+						android:layout_below="@id/note_edit_wrapper"
 						android:layout_marginLeft="16dp"
 						android:layout_marginTop="4dp"
 						android:layout_marginRight="16dp"
@@ -285,24 +311,6 @@
 						android:visibility="gone"
 						android:elevation="0dp"
 						tools:text="Eugen" />
-
-					<EditText
-						android:id="@+id/note_edit"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_below="@id/username"
-						android:layout_marginLeft="16dp"
-						android:layout_marginTop="8dp"
-						android:layout_marginRight="16dp"
-						android:layout_marginBottom="4dp"
-						android:textAppearance="@style/m3_body_large"
-						android:textSize="16sp"
-						android:background="@drawable/edit_text_border"
-						android:inputType="textMultiLine|textCapSentences"
-						android:elevation="0dp"
-						android:hint="@string/sk_personal_note"
-						android:textColorHint="?android:textColorSecondaryInverseNoDisable"
-						tools:text="Founder, CEO and lead developer @Mastodon, Germany." />
 
 					<EditText
 						android:id="@+id/bio_edit"
