@@ -9,7 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
+ import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -190,6 +190,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			items.add(checkForUpdateItem);
 		}
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon")));
+		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
@@ -548,15 +549,25 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		private String text;
 		private Runnable onClick;
 		private boolean loading;
+		private int icon;
 
 		public TextItem(@StringRes int text, Runnable onClick) {
-			this(text, onClick, false);
+			this(text, onClick, false, 0);
 		}
 
-		public TextItem(@StringRes int text, Runnable onClick, boolean loading){
+		public TextItem(@StringRes int text, Runnable onClick, boolean loading) {
+			this(text, onClick, loading, 0);
+		}
+
+		public TextItem(@StringRes int text, Runnable onClick, @DrawableRes int icon) {
+			this(text, onClick, false, icon);
+		}
+
+		public TextItem(@StringRes int text, Runnable onClick, boolean loading, @DrawableRes int icon){
 			this.text=getString(text);
 			this.onClick=onClick;
 			this.loading=loading;
+			this.icon=icon;
 		}
 
 		@Override
@@ -809,17 +820,20 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private class TextViewHolder extends BindableViewHolder<TextItem> implements UsableRecyclerView.Clickable{
 		private final TextView text;
 		private final ProgressBar progress;
+		private final ImageView icon;
 
 		public TextViewHolder(){
 			super(getActivity(), R.layout.item_settings_text, list);
 			text = itemView.findViewById(R.id.text);
 			progress = itemView.findViewById(R.id.progress);
+			icon = itemView.findViewById(R.id.icon);
 		}
 
 		@Override
 		public void onBind(TextItem item){
 			text.setText(item.text);
 			progress.animate().alpha(item.loading ? 1 : 0);
+			if (item.icon != 0) icon.setImageDrawable(getActivity().getTheme().getDrawable(item.icon));
 		}
 
 		@Override
