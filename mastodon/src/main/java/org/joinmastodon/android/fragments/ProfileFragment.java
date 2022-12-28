@@ -53,6 +53,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
+import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
@@ -61,6 +62,7 @@ import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Attachment;
+import org.joinmastodon.android.model.PrivateNote;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.SingleImagePhotoViewerListener;
@@ -306,7 +308,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void onClickNoteSave() {
-		noteEdit.getText().toString();
+		Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
+		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<PrivateNote>(this) {
+			@Override
+			public void onSuccess(PrivateNote result) {
+				Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	@Override
