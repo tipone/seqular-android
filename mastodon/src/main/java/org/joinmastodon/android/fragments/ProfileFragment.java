@@ -37,6 +37,7 @@ import android.view.WindowInsets;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -116,8 +117,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private SwipeRefreshLayout refreshLayout;
 	private CoverOverlayGradientDrawable coverGradient=new CoverOverlayGradientDrawable();
 	private float titleTransY;
-	private View postsBtn, followersBtn, followingBtn, noteEditConfirm, noteEditWrapper;
+	private View postsBtn, followersBtn, followingBtn, noteEditWrapper;
 	private EditText nameEdit, bioEdit, noteEdit;
+	private ImageButton noteEditConfirm;
 	private ProgressBar actionProgress, notifyProgress;
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
@@ -182,6 +184,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bio=content.findViewById(R.id.bio);
 		noteEdit=content.findViewById(R.id.note_edit);
 		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
+		noteEditConfirm.setOnClickListener(v->onClickNoteSave());
 		noteEditWrapper=content.findViewById(R.id.note_edit_wrapper);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
@@ -300,6 +303,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		});
 
 		return sizeWrapper;
+	}
+
+	private void onClickNoteSave() {
+		noteEdit.getText().toString();
 	}
 
 	@Override
@@ -476,6 +483,16 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		if(isOwnProfile){
 			noteEditWrapper.setVisibility(View.GONE);
+		}
+
+		if(noteEdit.getText().toString() == null){
+			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_regular);
+			noteEditConfirm.setClickable(false);
+			noteEditConfirm.setAlpha(.50f);
+		}else{
+			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_filled);
+			noteEditConfirm.setClickable(true);
+			noteEditConfirm.setAlpha(1.0f);
 		}
 
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
