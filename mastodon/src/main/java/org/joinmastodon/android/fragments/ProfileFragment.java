@@ -445,12 +445,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
-		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
-			if(!hasFocus){
-//					Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
-				savePrivateNote();
-			}
-		});
+//		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
+//			if(!hasFocus){
+////					Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
+//				savePrivateNote();
+////				noteEdit.setOnFocusChangeListener(savePrivateNote());
+//			}
+//		});
+		noteEdit.setOnClickListener(v->savePrivateNote());
 
 		if(account.locked){
 			ssb=new SpannableStringBuilder("@");
@@ -470,6 +472,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			username.setText('@'+account.acct+(isSelf ? ('@'+AccountSessionManager.getInstance().getAccount(accountID).domain) : ""));
 		}
 		CharSequence parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
+		bio.setOnClickListener(v->savePrivateNote());
 		if(TextUtils.isEmpty(parsedBio)){
 			bio.setVisibility(View.GONE);
 		}else{
@@ -994,7 +997,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void savePrivateNote(){
-		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<>(this) {
+		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<>(this) {
 			@Override
 			public void onSuccess(Relationship result) {
 				relationship=result;
