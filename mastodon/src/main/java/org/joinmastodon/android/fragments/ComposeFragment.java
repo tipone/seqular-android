@@ -299,6 +299,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		sensitiveItem=view.findViewById(R.id.sensitive_item);
 		replyText=view.findViewById(R.id.reply_text);
 
+		publishButton=view.findViewById(R.id.publish);
+		publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+		publishButton.setOnClickListener(this::onPublishClick);
+
 		mediaBtn.setOnClickListener(v->openFilePicker());
 		pollBtn.setOnClickListener(v->togglePoll());
 		emojiBtn.setOnClickListener(v->emojiKeyboard.toggleKeyboardPopup(mainEditText));
@@ -632,9 +636,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		publishButton=new Button(getActivity());
-		publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
-		publishButton.setOnClickListener(this::onPublishClick);
+//		publishButton=new Button(getActivity());
+//		publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+//		publishButton.setOnClickListener(this::onPublishClick);
 		LinearLayout wrap=new LinearLayout(getActivity());
 		wrap.setOrientation(LinearLayout.HORIZONTAL);
 
@@ -657,7 +661,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		langParams.setMarginEnd(V.dp(8));
 		wrap.addView(buildLanguageSelector(), langParams);
 
-		wrap.addView(publishButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+//		wrap.addView(publishButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 		wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
 		wrap.setClipToPadding(false);
 		MenuItem item=menu.add(editingStatus==null ? R.string.publish : R.string.save);

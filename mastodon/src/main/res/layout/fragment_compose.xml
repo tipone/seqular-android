@@ -316,6 +316,13 @@
 			android:textColor="?android:textColorSecondary"
 			tools:text="500"/>
 
+		<Button
+			android:id="@+id/publish"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="8dp"
+			/>
+
 	</LinearLayout>
 
 </org.joinmastodon.android.ui.views.SizeListenerLinearLayout>
