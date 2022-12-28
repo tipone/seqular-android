@@ -54,7 +54,6 @@ import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Attachment;
-import org.joinmastodon.android.model.PrivateNote;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.SingleImagePhotoViewerListener;
@@ -177,25 +176,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
 		noteEdit=content.findViewById(R.id.note_edit);
-		noteEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-			@Override
-			public void onFocusChange(View v, boolean hasFocus) {
-				if(!hasFocus){
-					Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
-					currentRequest = new SetPrivateNote(account.id, noteEdit.getText().toString()).setCallback(new Callback<>() {
-						@Override
-						public void onSuccess(PrivateNote result) {
-							Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
-						}
-
-						@Override
-						public void onError(ErrorResponse error) {
-							Toast.makeText(getActivity(), "Error, not success", Toast.LENGTH_LONG).show();
-						}
-					});
-				}
-			}
-		});
 //		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
 //		noteEditConfirm.setOnClickListener(v->onClickNoteSave());
 		noteEditWrapper=content.findViewById(R.id.note_edit_wrap);
@@ -464,6 +444,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		setTitle(ssb);
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
+
+		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
+			if(!hasFocus){
+//					Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
+				savePrivateNote();
+			}
+		});
 
 		if(account.locked){
 			ssb=new SpannableStringBuilder("@");
@@ -1004,6 +991,17 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void scrollToTop(){
 		getScrollableRecyclerView().scrollToPosition(0);
 		scrollView.smoothScrollTo(0, 0);
+	}
+
+	private void savePrivateNote(){
+		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<>(this) {
+			@Override
+			public void onSuccess(Relationship result) {
+				relationship=result;
+				updateRelationship();
+				Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+			}
+		});
 	}
 
 	private void onFollowersOrFollowingClick(View v){
