@@ -60,7 +60,7 @@ public class GlobalUserPreferences{
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		disableSwipe=prefs.getBoolean("disableSwipe", false);
 		disableDividers=prefs.getBoolean("disableDividers", true);
-		relocatePublishButton=prefs.getBoolean("relocatePublishButton", false);
+		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
