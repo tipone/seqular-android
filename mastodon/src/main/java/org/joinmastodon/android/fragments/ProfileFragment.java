@@ -116,7 +116,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private SwipeRefreshLayout refreshLayout;
 	private CoverOverlayGradientDrawable coverGradient=new CoverOverlayGradientDrawable();
 	private float titleTransY;
-	private View postsBtn, followersBtn, followingBtn;
+	private View postsBtn, followersBtn, followingBtn, noteEditConfirm, noteEditWrapper;
 	private EditText nameEdit, bioEdit, noteEdit;
 	private ProgressBar actionProgress, notifyProgress;
 	private FrameLayout[] tabViews;
@@ -181,6 +181,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
 		noteEdit=content.findViewById(R.id.note_edit);
+		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
+		noteEditWrapper=content.findViewById(R.id.note_edit_wrapper);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
 		followersBtn=content.findViewById(R.id.followers_btn);
@@ -473,11 +475,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 
 		if(isOwnProfile){
-			noteEdit.setVisibility(View.GONE);
+			noteEditWrapper.setVisibility(View.GONE);
 		}
-
-
-
 
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));

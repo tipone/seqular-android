@@ -262,7 +262,7 @@
                         android:id="@+id/note_edit_wrapper"
                         android:layout_below="@id/username"
                         android:layout_marginTop="0dp"
-                        android:padding="0dp">
+                        android:padding="2dp">
 
                         <EditText
                             android:id="@+id/note_edit"
@@ -278,8 +278,16 @@
                             android:inputType="textMultiLine|textCapSentences"
                             android:elevation="0dp"
                             android:hint="@string/sk_personal_note"
-                            android:textColorHint="?android:textColorSecondaryInverseNoDisable"
-                            tools:text="Founder, CEO and lead developer @Mastodon, Germany." />
+                            android:textColorHint="?android:textColorSecondaryInverseNoDisable" />
+
+						<Button
+							android:id="@+id/note_edit_confirm"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:background="@drawable/ic_fluent_checkmark_24_regular"
+							android:layout_marginTop="2dp"
+							android:layout_marginEnd="20dp"
+							android:layout_gravity="right|center_vertical" />
 
                     </FrameLayout>
 
