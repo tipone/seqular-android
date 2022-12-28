@@ -150,6 +150,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.sk_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
+			GlobalUserPreferences.relocatePublishButton=i.checked;
+			GlobalUserPreferences.save();
+		}));
 
 		items.add(new HeaderItem(R.string.home_timeline));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
