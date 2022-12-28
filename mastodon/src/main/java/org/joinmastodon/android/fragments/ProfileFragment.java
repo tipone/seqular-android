@@ -1,16 +1,11 @@
 package org.joinmastodon.android.fragments;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Outline;
@@ -19,8 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
@@ -39,7 +32,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -185,9 +177,28 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
 		noteEdit=content.findViewById(R.id.note_edit);
-		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
-		noteEditConfirm.setOnClickListener(v->onClickNoteSave());
-		noteEditWrapper=content.findViewById(R.id.note_edit_wrapper);
+		noteEdit.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+			@Override
+			public void onFocusChange(View v, boolean hasFocus) {
+				if(!hasFocus){
+					Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
+					currentRequest = new SetPrivateNote(account.id, noteEdit.getText().toString()).setCallback(new Callback<>() {
+						@Override
+						public void onSuccess(PrivateNote result) {
+							Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+						}
+
+						@Override
+						public void onError(ErrorResponse error) {
+							Toast.makeText(getActivity(), "Error, not success", Toast.LENGTH_LONG).show();
+						}
+					});
+				}
+			}
+		});
+//		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
+//		noteEditConfirm.setOnClickListener(v->onClickNoteSave());
+		noteEditWrapper=content.findViewById(R.id.note_edit_wrap);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
 		followersBtn=content.findViewById(R.id.followers_btn);
@@ -305,16 +316,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		});
 
 		return sizeWrapper;
-	}
-
-	private void onClickNoteSave() {
-		Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
-		currentRequest = new SetPrivateNote(account.id, noteEdit.getText().toString()).setCallback(new SimpleCallback<PrivateNote>(this) {
-			@Override
-			public void onSuccess(PrivateNote result) {
-				Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
-			}
-		});
 	}
 
 	@Override
@@ -493,15 +494,15 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			noteEditWrapper.setVisibility(View.GONE);
 		}
 
-		if(noteEdit.getText().toString() == null){
-			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_regular);
-			noteEditConfirm.setClickable(false);
-			noteEditConfirm.setAlpha(.50f);
-		}else{
-			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_filled);
-			noteEditConfirm.setClickable(true);
-			noteEditConfirm.setAlpha(1.0f);
-		}
+//		if(noteEdit.getText().toString() == null){
+//			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_regular);
+//			noteEditConfirm.setClickable(false);
+//			noteEditConfirm.setAlpha(.50f);
+//		}else{
+//			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_filled);
+//			noteEditConfirm.setClickable(true);
+//			noteEditConfirm.setAlpha(1.0f);
+//		}
 
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
