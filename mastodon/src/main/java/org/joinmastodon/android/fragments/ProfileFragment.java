@@ -309,7 +309,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private void onClickNoteSave() {
 		Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
-		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<PrivateNote>(this) {
+		currentRequest = new SetPrivateNote(account.id, noteEdit.getText().toString()).setCallback(new SimpleCallback<PrivateNote>(this) {
 			@Override
 			public void onSuccess(PrivateNote result) {
 				Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
