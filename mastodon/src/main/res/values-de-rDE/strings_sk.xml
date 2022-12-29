@@ -38,11 +38,12 @@
     <string name="sk_settings_always_reveal_content_warnings">Inhaltswarnungen immer ausklappen</string>
     <string name="sk_disable_marquee">Laufschrift in Titelleisten deaktivieren</string>
     <string name="sk_disable_dividers">Tröt Trennung deaktivieren</string>
+    <string name="sk_relocate_publish_button">Schaltfläche Veröffentlichen verschieben</string>
     <string name="sk_settings_contribute">Zu Moshidon beitragen</string>
     <string name="sk_settings_show_federated_timeline">Föderierte Timeline anzeigen</string>
     <string name="sk_notification_type_status">Beiträge</string>
     <string name="sk_notify_posts">Beitrags-Benachrichtigungen</string>
-    <string name="sk_settings_color_picker">Farbschema</string>
+    <string name="sk_settings_color_palette">Farbschema</string>
     <string name="sk_color_palette_material3">System</string>
     <string name="sk_color_palette_pink">Pink</string>
     <string name="sk_color_palette_purple">Violett</string>
