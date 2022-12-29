@@ -302,14 +302,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		boolean smallStyle = getContext().getResources().getBoolean(R.bool.show_small_publish_button);
 
 		if(GlobalUserPreferences.relocatePublishButton){
-			if(smallStyle){
-				publishButton=view.findViewById(R.id.publishSmall);
-//				publishButton.
-			}else{
-				publishButton=view.findViewById(R.id.publish);
-				publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
-			}
+			publishButton=view.findViewById(R.id.publish);
+			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+			publishButton.setEllipsize(TextUtils.TruncateAt.END);
 			publishButton.setOnClickListener(this::onPublishClick);
+			publishButton.setSingleLine(true);
 			publishButton.setVisibility(View.VISIBLE);
 		}
 

@@ -317,21 +317,12 @@
 			tools:text="500"/>
 
 		<Button
-			android:id="@+id/publishSmall"
-			android:layout_width="48dp"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
-			android:drawableLeft="@drawable/ic_fluent_send_24_regular"
-			android:visibility="gone"
-			/>
-
-
-		<Button
 			android:id="@+id/publish"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
 			android:visibility="gone"
+			android:autoSizeTextType="uniform"
 			/>
 
 	</LinearLayout>
