@@ -1045,6 +1045,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			if(!existingMediaIDs.equals(attachments.stream().map(a->a.serverAttachment.id).collect(Collectors.toList())))
 				return true;
 			if(!statusVisibility.equals(editingStatus.visibility)) return true;
+			if(scheduledStatus != null && !scheduledStatus.scheduledAt.equals(scheduledAt)) return true;
 			return pollChanged;
 		}
 		boolean pollFieldsHaveContent=false;
@@ -1096,7 +1097,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		new M3AlertDialogBuilder(getActivity())
 				.setTitle(editingStatus != null ? R.string.sk_save_changes : R.string.sk_save_draft)
 				.setPositiveButton(R.string.save, (d, w) -> {
-					updateScheduledAt(getDraftInstant());
+					updateScheduledAt(scheduledAt == null ? getDraftInstant() : scheduledAt);
 					publish();
 				})
 				.setNegativeButton(R.string.discard, (d, w) -> Nav.finish(this))
