@@ -322,7 +322,8 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
 			android:visibility="gone"
-			android:autoSizeTextType="uniform"
+			android:tooltipText="@string/publish"
+			android:drawableStart="@drawable/ic_fluent_send_24_selector"
 			/>
 
 	</LinearLayout>

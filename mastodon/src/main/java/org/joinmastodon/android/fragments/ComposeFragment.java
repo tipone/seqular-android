@@ -299,11 +299,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		sensitiveItem=view.findViewById(R.id.sensitive_item);
 		replyText=view.findViewById(R.id.reply_text);
 
-		boolean smallStyle = getContext().getResources().getBoolean(R.bool.show_small_publish_button);
-
 		if(GlobalUserPreferences.relocatePublishButton){
 			publishButton=view.findViewById(R.id.publish);
-			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+//			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
 			publishButton.setEllipsize(TextUtils.TruncateAt.END);
 			publishButton.setOnClickListener(this::onPublishClick);
 			publishButton.setSingleLine(true);
