@@ -301,8 +301,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		if(GlobalUserPreferences.relocatePublishButton){
 			publishButton=view.findViewById(R.id.publish);
-			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+//			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+			publishButton.setEllipsize(TextUtils.TruncateAt.END);
 			publishButton.setOnClickListener(this::onPublishClick);
+			publishButton.setSingleLine(true);
 			publishButton.setVisibility(View.VISIBLE);
 		}
 
