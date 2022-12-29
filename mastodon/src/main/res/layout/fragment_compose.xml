@@ -294,7 +294,7 @@
 			android:id="@+id/btn_visibility"
 			android:layout_width="24dp"
 			android:layout_height="24dp"
-			android:layout_marginEnd="24dp"
+			android:layout_marginEnd="16dp"
 			android:background="?android:attr/selectableItemBackgroundBorderless"
 			android:padding="0px"
 			android:tint="@color/compose_button"
