@@ -55,6 +55,7 @@ import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
 import org.joinmastodon.android.api.requests.accounts.SetDomainBlocked;
 import org.joinmastodon.android.api.requests.accounts.AuthorizeFollowRequest;
 import org.joinmastodon.android.api.requests.accounts.RejectFollowRequest;
+//import org.joinmastodon.android.api.requests.notification.DismissNotification;
 import org.joinmastodon.android.api.requests.notifications.DismissNotification;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
