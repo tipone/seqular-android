@@ -8,7 +8,7 @@
 	<string name="error">Fehler</string>
 	<string name="not_a_mastodon_instance">%s scheint kein Mastodon-Server zu sein.</string>
 	<string name="ok">OK</string>
-	<string name="preparing_auth">Authentifizierung wird vorbereitet …</string>
+	<string name="preparing_auth">Authentifizierung wird vorbereitet …</string>
 	<string name="finishing_auth">Authentifizierung wird abgeschlossen …</string>
 	<string name="user_boosted">%s hat diesen Beitrag geteilt</string>
 	<string name="in_reply_to">Als Antwort auf %s</string>
@@ -62,7 +62,7 @@
 	</plurals>
 	<string name="profile_joined">Beigetreten</string>
 	<string name="done">Fertig</string>
-	<string name="loading">Wird geladen …</string>
+	<string name="loading">Wird geladen …</string>
 	<string name="field_label">Beschriftung</string>
 	<string name="field_content">Inhalt</string>
 	<string name="saving">wird gespeichert …</string>
@@ -205,7 +205,7 @@
 	<string name="resent_email">Bestätigung per E-Mail zugeschickt</string>
 	<string name="compose_hint">Was gibt\'s Neues? Was geht dir durch den Kopf? Was liegt dir am Herzen?</string>
 	<string name="content_warning">Inhaltswarnung</string>
-	<string name="add_image_description">Bildbeschreibung hinzufügen …</string>
+	<string name="add_image_description">Bildbeschreibung hinzufügen …</string>
 	<string name="retry_upload">Erneut hochladen</string>
 	<string name="edit_image">Bild bearbeiten</string>
 	<string name="save">Speichern</string>
@@ -299,7 +299,7 @@
 	<string name="open_settings">Einstellungen öffnen</string>
 	<string name="error_saving_file">Fehler beim Speichern der Datei</string>
 	<string name="file_saved">Datei gespeichert</string>
-	<string name="downloading">wird heruntergeladen …</string>
+	<string name="downloading">wird heruntergeladen …</string>
 	<string name="no_app_to_handle_action">Es gibt keine App, um diese Aktion auszuführen</string>
 	<string name="local_timeline">Lokal</string>
 	<string name="trending_posts_info_banner">Dies sind Beiträge, die auf deinem Mastodon-Server gerade angesagt sind.</string>
@@ -344,7 +344,7 @@
 		<item quantity="other">vor %d Sekunden</item>
 	</plurals>
 	<plurals name="x_minutes_ago">
-		<item quantity="one">vor %d Minute</item>
+		<item quantity="one">vor %d Minute</item>
 		<item quantity="other">vor %d Minuten</item>
 	</plurals>
 	<string name="edited_timestamp">bearbeitet %s</string>
@@ -372,7 +372,7 @@
 	<string name="file_upload_progress">%1$s von %2$s</string>
 	<string name="file_upload_time_remaining">%s verbleibend</string>
 	<string name="upload_error_connection_lost">Dein Gerät hat gerade keinen Zugang zum Internet</string>
-	<string name="upload_processing">Wird verarbeitet …</string>
+	<string name="upload_processing">Wird verarbeitet …</string>
 	<!-- %s is version like 1.2.3 -->
 	<string name="update_available">Mastodon für Android %s ist zum Herunterladen bereit.</string>
 	<!-- %s is version like 1.2.3 -->
