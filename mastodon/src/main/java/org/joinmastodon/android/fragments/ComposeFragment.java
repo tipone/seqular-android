@@ -22,6 +22,7 @@ import android.graphics.PixelFormat;
 import android.graphics.RenderEffect;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.icu.text.BreakIterator;
 import android.media.MediaMetadataRetriever;
@@ -38,6 +39,7 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -167,7 +169,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private String accountID;
 	private int charCount, charLimit, trimmedCharCount;
 
-	private Button publishButton, languageButton, scheduleTimeBtn;
+	private Button publishButton, languageButton, scheduleTimeBtn, draftsBtn;
 	private PopupMenu languagePopup, visibilityPopup, moreOptionsPopup;
 	private ImageButton mediaBtn, pollBtn, emojiBtn, spoilerBtn, visibilityBtn, moreBtn, scheduleDraftDismiss;
 	private ImageView sensitiveIcon;
@@ -259,8 +261,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			charLimit=instance.configuration.statuses.maxCharacters;
 		else
 			charLimit=500;
-
-		if (editingStatus == null) loadDefaultStatusVisibility(savedInstanceState);
 	}
 
 	@Override
@@ -325,15 +325,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		sensitiveIcon=view.findViewById(R.id.sensitive_icon);
 		sensitiveItem=view.findViewById(R.id.sensitive_item);
 		replyText=view.findViewById(R.id.reply_text);
-
-		if(GlobalUserPreferences.relocatePublishButton){
-			publishButton=view.findViewById(R.id.publish);
-//			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
-			publishButton.setEllipsize(TextUtils.TruncateAt.END);
-			publishButton.setOnClickListener(this::onPublishClick);
-			publishButton.setSingleLine(true);
-			publishButton.setVisibility(View.VISIBLE);
-		}
 
 		mediaBtn.setOnClickListener(v->openFilePicker());
 		pollBtn.setOnClickListener(v->togglePoll());
@@ -680,6 +671,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		updateSensitive();
+		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
 
 		if(editingStatus!=null){
 			updateCharCounter();
@@ -689,45 +681,32 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		if(!GlobalUserPreferences.relocatePublishButton){
-			publishButton=new Button(getActivity());
-			resetPublishButtonText();
-			publishButton.setSingleLine();
-			publishButton.setEllipsize(TextUtils.TruncateAt.END);
-			publishButton.setOnClickListener(this::onPublishClick);
-		}
-		LinearLayout wrap=new LinearLayout(getActivity());
-		wrap.setOrientation(LinearLayout.HORIZONTAL);
-
-		sendProgress=new ProgressBar(getActivity());
-		LinearLayout.LayoutParams progressLP=new LinearLayout.LayoutParams(V.dp(24), V.dp(24));
-		progressLP.setMarginEnd(V.dp(16));
-		progressLP.gravity=Gravity.CENTER_VERTICAL;
-		wrap.addView(sendProgress, progressLP);
-
-		sendError=new ImageView(getActivity());
-		sendError.setImageResource(R.drawable.ic_fluent_error_circle_24_regular);
-		sendError.setImageTintList(getResources().getColorStateList(R.color.error_600));
-		sendError.setScaleType(ImageView.ScaleType.CENTER);
-		wrap.addView(sendError, progressLP);
-
-		sendError.setVisibility(View.GONE);
-		sendProgress.setVisibility(View.GONE);
-
-		LinearLayout.LayoutParams langParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		langParams.setMarginEnd(V.dp(8));
-		wrap.addView(buildLanguageSelector(), langParams);
-
-		if(!GlobalUserPreferences.relocatePublishButton){
-			wrap.addView(publishButton, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-		}
-
-		wrap.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(8));
-		wrap.setClipToPadding(false);
 		MenuItem item=menu.add(editingStatus==null ? R.string.publish : R.string.save);
+		LinearLayout wrap=new LinearLayout(getActivity());
+		getActivity().getLayoutInflater().inflate(R.layout.compose_action, wrap);
 		item.setActionView(wrap);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+		publishButton = wrap.findViewById(R.id.publish_btn);
+		draftsBtn = wrap.findViewById(R.id.drafts_btn);
+		languageButton = wrap.findViewById(R.id.language_btn);
+		sendProgress = wrap.findViewById(R.id.send_progress);
+		sendError = wrap.findViewById(R.id.send_error);
+
+		publishButton.setOnClickListener(this::onPublishClick);
+		draftsBtn.setOnClickListener(this::onDraftsClick);
 		updatePublishButtonState();
+		buildLanguageSelector(languageButton);
+	}
+
+	private void onDraftsClick(View v) {
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
+		imm.hideSoftInputFromWindow(draftsBtn.getWindowToken(), 0);
+		Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
+		// TODO: figure out a better way to handle the back stack
+//			if (!hasDraft()) content.postDelayed(()->Nav.finish(this), 200);
 	}
 
 	private void updateLanguage(String lang) {
@@ -741,18 +720,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	@SuppressLint("ClickableViewAccessibility")
-	private Button buildLanguageSelector() {
-		languageButton=new Button(getActivity());
-		languageButton.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorSecondary));
-		languageButton.setBackground(getActivity().getDrawable(R.drawable.bg_text_button));
-		languageButton.setPadding(V.dp(8), 0, V.dp(8), 0);
-		languageButton.setCompoundDrawablesRelativeWithIntrinsicBounds(getActivity().getDrawable(R.drawable.ic_fluent_local_language_16_regular), null, null, null);
-		languageButton.setCompoundDrawableTintList(languageButton.getTextColors());
-		languageButton.setCompoundDrawablePadding(V.dp(6));
-
+	private void buildLanguageSelector(Button btn) {
 		languagePopup=new PopupMenu(getActivity(), languageButton);
-		languageButton.setOnTouchListener(languagePopup.getDragToOpenListener());
-		languageButton.setOnClickListener(v->languagePopup.show());
+		btn.setOnTouchListener(languagePopup.getDragToOpenListener());
+		btn.setOnClickListener(v->languagePopup.show());
 
 		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
 		updateLanguage(prefs != null && prefs.postingDefaultLanguage != null && prefs.postingDefaultLanguage.length() > 0
@@ -776,8 +747,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			updateLanguage(allLanguages.get(i.getItemId()));
 			return true;
 		});
-
-		return languageButton;
 	}
 
 	@Override
@@ -816,13 +785,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	private void resetPublishButtonText() {
 		int publishText = editingStatus==null || redraftStatus ? R.string.publish : R.string.save;
-//		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
-//			publishButton.setText(GlobalUserPreferences.publishButtonText);
-//		} else {
-		if(!GlobalUserPreferences.relocatePublishButton){
+		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
+			publishButton.setText(GlobalUserPreferences.publishButtonText);
+		} else {
 			publishButton.setText(publishText);
 		}
-//		}
 	}
 
 	private void updatePublishButtonState(){
@@ -852,25 +819,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	@Override
 	protected void updateToolbar(){
 		super.updateToolbar();
-		if (replyTo != null || hasDraft()) return;
-		Button draftsBtn=new Button(getActivity());
-		draftsBtn.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorSecondary));
-		draftsBtn.setBackground(getActivity().getDrawable(R.drawable.bg_text_button));
-		draftsBtn.setPadding(V.dp(8), 0, V.dp(8), 0);
-		draftsBtn.setCompoundDrawablesRelativeWithIntrinsicBounds(getActivity().getDrawable(R.drawable.ic_fluent_drafts_20_regular), null, null, null);
-		draftsBtn.setCompoundDrawableTintList(draftsBtn.getTextColors());
-		draftsBtn.setContentDescription(getString(R.string.sk_unsent_posts));
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) draftsBtn.setTooltipText(getString(R.string.sk_unsent_posts));
-		draftsBtn.setOnClickListener(v->{
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
-			imm.hideSoftInputFromWindow(draftsBtn.getWindowToken(), 0);
-			Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
-			// TODO: figure out a better way to handle the back stack
-//			if (!hasDraft()) content.postDelayed(()->Nav.finish(this), 200);
-		});
-		getToolbar().addView(draftsBtn);
 		getToolbar().setNavigationIcon(R.drawable.ic_fluent_dismiss_24_regular);
 	}
 
@@ -1598,13 +1546,17 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			if (scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)) {
 				scheduleTimeBtn.setVisibility(View.GONE);
 				scheduleDraftText.setText(R.string.sk_compose_draft);
-				publishButton.setText(scheduledStatus != null ? R.string.save : R.string.sk_draft);
+				scheduleDraftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_drafts_20_regular, 0, 0, 0);
+				publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
+						? R.string.save : R.string.sk_draft);
 			} else {
 				String at = scheduledAt.atZone(ZoneId.systemDefault()).format(formatter);
 				scheduleTimeBtn.setVisibility(View.VISIBLE);
 				scheduleTimeBtn.setText(at);
 				scheduleDraftText.setText(R.string.sk_compose_scheduled);
-				publishButton.setText(scheduledStatus != null ? R.string.save : R.string.sk_schedule);
+				scheduleDraftText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
+				publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.equals(scheduledAt)
+						? R.string.save : R.string.sk_schedule);
 			}
 		} else {
 			resetPublishButtonText();
