@@ -553,7 +553,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags);
+//		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags);
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getDisplayUsername()));
 		if(isOwnProfile)
 			return;
