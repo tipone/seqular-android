@@ -176,7 +176,7 @@ public abstract class StatusDisplayItem{
 		}
 
 		public Holder(Context context, int layout, ViewGroup parent){
- 			super(context, layout, parent);
+			super(context, layout, parent);
 		}
 
 		public String getItemID(){

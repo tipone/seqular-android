@@ -683,7 +683,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		updateSensitive();
-		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
 
 		if(editingStatus!=null){
 			updateCharCounter();
@@ -819,12 +818,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void resetPublishButtonText() {
-		int publishText = editingStatus==null || redraftStatus ? R.string.publish : R.string.save;
-		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
-			publishButton.setText(GlobalUserPreferences.publishButtonText);
-		} else {
-			publishButton.setText(publishText);
-		}
+//		int publishText = editingStatus==null || redraftStatus ? R.string.publish : R.string.save;
+//		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
+//			publishButton.setText(GlobalUserPreferences.publishButtonText);
+//		} else {
+//			publishButton.setText(publishText);
+//		}
 	}
 
 	private void updatePublishButtonState(){
