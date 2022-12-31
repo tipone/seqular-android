@@ -818,11 +818,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void resetPublishButtonText() {
-//		int publishText = editingStatus==null || redraftStatus ? R.string.publish : R.string.save;
+		int publishText = editingStatus==null || redraftStatus ? R.string.publish : R.string.save;
 //		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
 //			publishButton.setText(GlobalUserPreferences.publishButtonText);
 //		} else {
-//			publishButton.setText(publishText);
+		publishButton.setText(publishText);
 //		}
 	}
 
