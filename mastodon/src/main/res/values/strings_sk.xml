@@ -107,4 +107,5 @@
     <string name="sk_reply_as">Reply with other account</string>
     <string name="sk_resource_not_found">Resource could not be found</string>
     <string name="sk_loading_resource_on_instance_title">Looking it up on %s</string>
+    <string name="sk_settings_uniform_icon_for_notifications">Uniform icon for all notifications</string>
 </resources>

@@ -28,7 +28,7 @@ public class GlobalUserPreferences{
 	public static boolean disableSwipe;
 	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
-	public static boolean showDifferentiatedPushNoticationIcons;
+	public static boolean showUniformPushNoticationIcons;
 	public static boolean relocatePublishButton;
 	public static boolean enableDeleteNotifications;
 	public static ThemePreference theme;
@@ -54,7 +54,7 @@ public class GlobalUserPreferences{
 		showReplies=prefs.getBoolean("showReplies", true);
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
-		showDifferentiatedPushNoticationIcons=prefs.getBoolean("showDifferentiatedPushNoticationIcons", false);
+		showUniformPushNoticationIcons=prefs.getBoolean("showUniformPushNotificationIcons", true);
 		showFederatedTimeline=prefs.getBoolean("showFederatedTimeline", !BuildConfig.BUILD_TYPE.equals("playRelease"));
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
@@ -94,7 +94,7 @@ public class GlobalUserPreferences{
 				.putBoolean("disableSwipe", disableSwipe)
 				.putBoolean("disableDividers", disableDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
-				.putBoolean("showDifferentiatedPushNoticationIcons", showDifferentiatedPushNoticationIcons)
+				.putBoolean("showUniformPushNotificationIcons", showUniformPushNoticationIcons)
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())

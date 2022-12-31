@@ -8,9 +8,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -143,7 +141,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
 				.setColor(context.getColor(R.color.shortcut_icon_background));
-		if(GlobalUserPreferences.showDifferentiatedPushNoticationIcons){
+		if(!GlobalUserPreferences.showUniformPushNoticationIcons){
 			switch (pn.notificationType) {
 				case FAVORITE -> builder.setSmallIcon(R.drawable.ic_fluent_star_24_filled);
 				case REBLOG -> builder.setSmallIcon(R.drawable.ic_fluent_arrow_repeat_all_24_filled);

@@ -10,7 +10,6 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.TypedValue;
- import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -20,8 +19,6 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -131,6 +128,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case NORD -> R.string.sk_color_palette_nord;
 			});
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
@@ -159,7 +157,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showDifferentiatedPushNoticationIcons, this::onNotificationStyleChanged));
+//		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
 		items.add(new SwitchItem(R.string.sk_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
 			GlobalUserPreferences.disableDividers=i.checked;
 			GlobalUserPreferences.save();
@@ -237,7 +235,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
-		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
+//		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
 	}
@@ -402,7 +400,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	}
 
 	private void onNotificationStyleChanged(SwitchItem item){
-		GlobalUserPreferences.showDifferentiatedPushNoticationIcons=item.checked;
+		GlobalUserPreferences.showUniformPushNoticationIcons=item.checked;
 		GlobalUserPreferences.save();
 	}
 
