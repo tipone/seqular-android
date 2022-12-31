@@ -29,8 +29,10 @@ public class GlobalUserPreferences{
 	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
 	public static boolean showUniformPushNoticationIcons;
-	public static boolean relocatePublishButton;
 	public static boolean enableDeleteNotifications;
+	public static boolean relocatePublishButton;
+	public static boolean reduceMotion;
+	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
 
@@ -96,6 +98,8 @@ public class GlobalUserPreferences{
 				.putBoolean("relocatePublishButton", relocatePublishButton)
 				.putBoolean("showUniformPushNotificationIcons", showUniformPushNoticationIcons)
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("reduceMotion", reduceMotion)
+				.putString("publishButtonText", publishButtonText)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

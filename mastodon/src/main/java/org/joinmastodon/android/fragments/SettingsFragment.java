@@ -93,6 +93,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		accountID=getArguments().getString("account");
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		String instanceName = UiUtils.getInstanceName(accountID);
 
 		if(GithubSelfUpdater.needSelfUpdating()){
 			GithubSelfUpdater updater=GithubSelfUpdater.getInstance();
@@ -129,6 +130,41 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			});
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
+		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b->{
+			updatePublishText(b);
+
+			b.setOnClickListener(l->{
+				FrameLayout inputWrap = new FrameLayout(getContext());
+				EditText input = new EditText(getContext());
+				input.setHint(R.string.publish);
+				input.setText(GlobalUserPreferences.publishButtonText.trim());
+				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+				params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+				input.setLayoutParams(params);
+				inputWrap.addView(input);
+				new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
+						.setPositiveButton(R.string.save, (d, which) -> {
+							GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
+							GlobalUserPreferences.save();
+							updatePublishText(b);
+						})
+						.setNeutralButton(R.string.clear, (d, which) -> {
+							GlobalUserPreferences.publishButtonText = "";
+							GlobalUserPreferences.save();
+							updatePublishText(b);
+						})
+						.setNegativeButton(R.string.cancel, (d, which) -> {})
+						.show();
+			});
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
+			GlobalUserPreferences.uniformNotificationIcon=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
+			GlobalUserPreferences.reduceMotion=i.checked;
+			GlobalUserPreferences.save();
+		}));
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
@@ -171,6 +207,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.sk_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
 			GlobalUserPreferences.relocatePublishButton=i.checked;
 			GlobalUserPreferences.save();
+			needAppRestart=true;
 		}));
 //		items.add(new SwitchItem(R.string.sk_settings_hide_translate_in_timeline, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
 //			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
@@ -201,12 +238,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.notify_mention, R.drawable.ic_fluent_mention_24_regular, pushSubscription.alerts.mention, i->onNotificationsChanged(PushNotification.Type.MENTION, i.checked)));
 		items.add(new SwitchItem(R.string.sk_notify_posts, R.drawable.ic_fluent_alert_24_regular, pushSubscription.alerts.status, i->onNotificationsChanged(PushNotification.Type.STATUS, i.checked)));
 
-		items.add(new HeaderItem(R.string.settings_boring));
-		items.add(new TextItem(R.string.settings_account, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit")));
-		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")));
-		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")));
+		items.add(new HeaderItem(R.string.settings_account));
+		items.add(new TextItem(R.string.sk_settings_profile, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/settings/profile"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.sk_settings_posting, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/settings/preferences/other"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.sk_settings_filters, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/filters"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.sk_settings_auth, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit"), R.drawable.ic_fluent_open_24_regular));
 
-		items.add(new HeaderItem(instance != null ? instance.title : session.domain));
+		items.add(new HeaderItem(instanceName));
 		items.add(new TextItem(R.string.sk_settings_rules, ()->{
 			Bundle args=new Bundle();
 			args.putParcelable("instance", Parcels.wrap(instance));
@@ -238,6 +276,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 //		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
+	}
+
+	private void updatePublishText(Button btn) {
+		if (GlobalUserPreferences.publishButtonText.isBlank()) btn.setText(R.string.publish);
+		else btn.setText(GlobalUserPreferences.publishButtonText);
 	}
 
 	@Override
