@@ -822,7 +822,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 //		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
 //			publishButton.setText(GlobalUserPreferences.publishButtonText);
 //		} else {
-		publishButton.setText(publishText);
+		if(!GlobalUserPreferences.relocatePublishButton){
+			publishButton.setText(publishText);
+		}
 //		}
 	}
 
