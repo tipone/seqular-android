@@ -19,6 +19,8 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -129,7 +131,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case NORD -> R.string.sk_color_palette_nord;
 			});
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
 		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b->{
 			updatePublishText(b);
 
@@ -443,7 +444,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	}
 
 	private void onNotificationStyleChanged(SwitchItem item){
-		GlobalUserPreferences.showUniformPushNoticationIcons=item.checked;
+		GlobalUserPreferences.uniformNotificationIcon=item.checked;
 		GlobalUserPreferences.save();
 	}
 

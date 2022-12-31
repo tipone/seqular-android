@@ -28,7 +28,7 @@ public class GlobalUserPreferences{
 	public static boolean disableSwipe;
 	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
-	public static boolean showUniformPushNoticationIcons;
+	public static boolean uniformNotificationIcon;
 	public static boolean enableDeleteNotifications;
 	public static boolean relocatePublishButton;
 	public static boolean reduceMotion;
@@ -56,7 +56,7 @@ public class GlobalUserPreferences{
 		showReplies=prefs.getBoolean("showReplies", true);
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
-		showUniformPushNoticationIcons=prefs.getBoolean("showUniformPushNotificationIcons", true);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", true);
 		showFederatedTimeline=prefs.getBoolean("showFederatedTimeline", !BuildConfig.BUILD_TYPE.equals("playRelease"));
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
@@ -68,6 +68,7 @@ public class GlobalUserPreferences{
 		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
+		publishButtonText=prefs.getString("publishButtonText", "");
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -96,7 +97,7 @@ public class GlobalUserPreferences{
 				.putBoolean("disableSwipe", disableSwipe)
 				.putBoolean("disableDividers", disableDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
-				.putBoolean("showUniformPushNotificationIcons", showUniformPushNoticationIcons)
+				.putBoolean("uniformNotificationIcon", uniformNotificationIcon)
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putBoolean("reduceMotion", reduceMotion)
 				.putString("publishButtonText", publishButtonText)
