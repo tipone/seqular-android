@@ -1267,7 +1267,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	private void uploadMediaAttachment(DraftMediaAttachment attachment){
 		if(areThereAnyUploadingAttachments()){
-			 throw new IllegalStateException("there is already an attachment being uploaded");
+			throw new IllegalStateException("there is already an attachment being uploaded");
 		}
 		attachment.state=AttachmentUploadState.UPLOADING;
 		attachment.progressBar.setVisibility(View.VISIBLE);
