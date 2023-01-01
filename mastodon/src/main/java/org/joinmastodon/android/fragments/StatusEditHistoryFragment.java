@@ -54,7 +54,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null);
 		int idx=data.indexOf(s);
 		if(idx>=0){
 			String date=UiUtils.DATE_TIME_FORMATTER.format(s.createdAt.atZone(ZoneId.systemDefault()));
@@ -139,7 +139,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 					action=getString(R.string.edit_multiple_changed);
 				}
 			}
-			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" · "+date, Collections.emptyList(), 0, null));
+			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" · "+date, Collections.emptyList(), 0, null, null));
 		}
 		return items;
 	}

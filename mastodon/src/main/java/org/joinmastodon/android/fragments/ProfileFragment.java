@@ -138,6 +138,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
+	private String prefilledText;
 
 	public ProfileFragment(){
 		super(R.layout.loader_fragment_overlay_toolbar);
@@ -162,6 +163,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(!getArguments().getBoolean("noAutoLoad", false))
 				loadData();
 		}
+
+		prefilledText = AccountSessionManager.getInstance().isSelf(accountID, account) ? null : '@'+account.acct+' ';
 	}
 
 	@Override
@@ -275,6 +278,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover.setOnClickListener(this::onCoverClick);
 		refreshLayout.setOnRefreshListener(this);
 		fab.setOnClickListener(this::onFabClick);
+		fab.setOnLongClickListener(v->UiUtils.pickAccountForCompose(getActivity(), accountID, prefilledText));
 
 		if(loaded){
 			bindHeaderView();
@@ -288,11 +292,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 
 		username.setOnLongClickListener(v->{
-			String username=account.acct;
-			if(!username.contains("@")){
-				username+="@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
+			String usernameString=account.acct;
+			if(!usernameString.contains("@")){
+				usernameString+="@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 			}
-			UiUtils.copyText(getActivity(), '@'+username);
+			UiUtils.copyText(username, '@'+usernameString);
 			return true;
 		});
 
@@ -549,16 +553,24 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
+//		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags);
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getDisplayUsername()));
 		if(isOwnProfile)
 			return;
 
-		menu.findItem(R.id.mute).setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getDisplayUsername()));
+		MenuItem mute = menu.findItem(R.id.mute);
+		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getDisplayUsername()));
+		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_mute_24_regular);
+		UiUtils.insetPopupMenuIcon(getContext(), mute);
+
 		menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getDisplayUsername()));
 		menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getDisplayUsername()));
 		MenuItem manageUserLists=menu.findItem(R.id.manage_user_lists);
 		if(relationship.following) {
-			menu.findItem(R.id.hide_boosts).setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getDisplayUsername()));
+			MenuItem hideBoosts = menu.findItem(R.id.hide_boosts);
+			hideBoosts.setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getDisplayUsername()));
+			hideBoosts.setIcon(relationship.showingReblogs ? R.drawable.ic_fluent_arrow_repeat_all_off_24_regular : R.drawable.ic_fluent_arrow_repeat_all_24_regular);
+			UiUtils.insetPopupMenuIcon(getContext(), hideBoosts);
 			manageUserLists.setTitle(getString(R.string.sk_lists_with_user, account.getDisplayUsername()));
 			manageUserLists.setVisible(true);
 		}else {
@@ -628,6 +640,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			Nav.go(getActivity(), FollowedHashtagsFragment.class, args);
+		}else if(id==R.id.scheduled){
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
 		}
 		return true;
 	}
@@ -939,9 +955,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		if(!AccountSessionManager.getInstance().isSelf(accountID, account)){
-			args.putString("prefilledText", '@'+account.acct+' ');
-		}
+		if(prefilledText != null) args.putString("prefilledText", prefilledText);
 		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 

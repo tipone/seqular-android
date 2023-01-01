@@ -3,6 +3,7 @@ package org.joinmastodon.android.ui.text;
 import android.content.Context;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
+import android.view.View;
 
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -13,12 +14,14 @@ public class LinkSpan extends CharacterStyle {
 	private String link;
 	private Type type;
 	private String accountID;
+	private String text;
 
-	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID){
+	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, String text){
 		this.listener=listener;
 		this.link=link;
 		this.type=type;
 		this.accountID=accountID;
+		this.text=text;
 	}
 
 	public int getColor(){
@@ -37,6 +40,11 @@ public class LinkSpan extends CharacterStyle {
 			case HASHTAG -> UiUtils.openHashtagTimeline(context, accountID, link, null);
 		}
 	}
+
+	public void onLongClick(View view) {
+		UiUtils.copyText(view, getType() == Type.URL ? link : text);
+	}
+
 
 	public String getLink(){
 		return link;

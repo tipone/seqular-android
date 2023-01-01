@@ -28,8 +28,11 @@ public class GlobalUserPreferences{
 	public static boolean disableSwipe;
 	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
-	public static boolean showDifferentiatedPushNoticationIcons;
+	public static boolean uniformNotificationIcon;
+	public static boolean enableDeleteNotifications;
 	public static boolean relocatePublishButton;
+	public static boolean reduceMotion;
+	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
 
@@ -53,7 +56,7 @@ public class GlobalUserPreferences{
 		showReplies=prefs.getBoolean("showReplies", true);
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
-		showDifferentiatedPushNoticationIcons=prefs.getBoolean("showDifferentiatedPushNoticationIcons", false);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", true);
 		showFederatedTimeline=prefs.getBoolean("showFederatedTimeline", !BuildConfig.BUILD_TYPE.equals("playRelease"));
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
@@ -62,8 +65,10 @@ public class GlobalUserPreferences{
 		disableDividers=prefs.getBoolean("disableDividers", true);
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
+		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
+		publishButtonText=prefs.getString("publishButtonText", "");
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -92,7 +97,10 @@ public class GlobalUserPreferences{
 				.putBoolean("disableSwipe", disableSwipe)
 				.putBoolean("disableDividers", disableDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
-				.putBoolean("showDifferentiatedPushNoticationIcons", showDifferentiatedPushNoticationIcons)
+				.putBoolean("uniformNotificationIcon", uniformNotificationIcon)
+				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("reduceMotion", reduceMotion)
+				.putString("publishButtonText", publishButtonText)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

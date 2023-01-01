@@ -9,6 +9,7 @@ import org.joinmastodon.android.api.requests.statuses.SetStatusFavorited;
 import org.joinmastodon.android.api.requests.statuses.SetStatusReblogged;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 
 import java.util.HashMap;
 import java.util.function.Consumer;
@@ -18,12 +19,18 @@ import me.grishka.appkit.api.ErrorResponse;
 
 public class StatusInteractionController{
 	private final String accountID;
+	private final boolean updateCounters;
 	private final HashMap<String, SetStatusFavorited> runningFavoriteRequests=new HashMap<>();
 	private final HashMap<String, SetStatusReblogged> runningReblogRequests=new HashMap<>();
 	private final HashMap<String, SetStatusBookmarked> runningBookmarkRequests=new HashMap<>();
 
-	public StatusInteractionController(String accountID){
+	public StatusInteractionController(String accountID, boolean updateCounters) {
 		this.accountID=accountID;
+		this.updateCounters=updateCounters;
+	}
+
+	public StatusInteractionController(String accountID){
+		this(accountID, true);
 	}
 
 	public void setFavorited(Status status, boolean favorited, Consumer<Status> cb){
@@ -41,7 +48,7 @@ public class StatusInteractionController{
 						runningFavoriteRequests.remove(status.id);
 						result.favouritesCount = Math.max(0, status.favouritesCount) + (favorited ? 1 : -1);
 						cb.accept(result);
-						E.post(new StatusCountersUpdatedEvent(result));
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(result));
 					}
 
 					@Override
@@ -50,16 +57,16 @@ public class StatusInteractionController{
 						error.showToast(MastodonApp.context);
 						status.favourited=!favorited;
 						cb.accept(status);
-						E.post(new StatusCountersUpdatedEvent(status));
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 					}
 				})
 				.exec(accountID);
 		runningFavoriteRequests.put(status.id, req);
 		status.favourited=favorited;
-		E.post(new StatusCountersUpdatedEvent(status));
+		if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 	}
 
-	public void setReblogged(Status status, boolean reblogged, Consumer<Status> cb){
+	public void setReblogged(Status status, boolean reblogged, StatusPrivacy visibility, Consumer<Status> cb){
 		if(!Looper.getMainLooper().isCurrentThread())
 			throw new IllegalStateException("Can only be called from main thread");
 
@@ -67,7 +74,7 @@ public class StatusInteractionController{
 		if(current!=null){
 			current.cancel();
 		}
-		SetStatusReblogged req=(SetStatusReblogged) new SetStatusReblogged(status.id, reblogged)
+		SetStatusReblogged req=(SetStatusReblogged) new SetStatusReblogged(status.id, reblogged, visibility)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(Status reblog){
@@ -75,7 +82,7 @@ public class StatusInteractionController{
 						runningReblogRequests.remove(status.id);
 						result.reblogsCount = Math.max(0, status.reblogsCount) + (reblogged ? 1 : -1);
 						cb.accept(result);
-						E.post(new StatusCountersUpdatedEvent(result));
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(result));
 					}
 
 					@Override
@@ -84,13 +91,13 @@ public class StatusInteractionController{
 						error.showToast(MastodonApp.context);
 						status.reblogged=!reblogged;
 						cb.accept(status);
-						E.post(new StatusCountersUpdatedEvent(status));
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 					}
 				})
 				.exec(accountID);
 		runningReblogRequests.put(status.id, req);
 		status.reblogged=reblogged;
-		E.post(new StatusCountersUpdatedEvent(status));
+		if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 	}
 
 	public void setBookmarked(Status status, boolean bookmarked){
@@ -111,7 +118,7 @@ public class StatusInteractionController{
 					public void onSuccess(Status result){
 						runningBookmarkRequests.remove(status.id);
 						cb.accept(result);
-						E.post(new StatusCountersUpdatedEvent(result));
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(result));
 					}
 
 					@Override
@@ -120,12 +127,12 @@ public class StatusInteractionController{
 						error.showToast(MastodonApp.context);
 						status.bookmarked=!bookmarked;
 						cb.accept(status);
-						E.post(new StatusCountersUpdatedEvent(status));
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 					}
 				})
 				.exec(accountID);
 		runningBookmarkRequests.put(status.id, req);
 		status.bookmarked=bookmarked;
-		E.post(new StatusCountersUpdatedEvent(status));
+		if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 	}
 }
