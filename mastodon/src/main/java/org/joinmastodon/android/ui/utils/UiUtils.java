@@ -19,7 +19,6 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
@@ -28,8 +27,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.provider.OpenableColumns;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
@@ -55,7 +52,6 @@ import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
 import org.joinmastodon.android.api.requests.accounts.SetDomainBlocked;
 import org.joinmastodon.android.api.requests.accounts.AuthorizeFollowRequest;
 import org.joinmastodon.android.api.requests.accounts.RejectFollowRequest;
-//import org.joinmastodon.android.api.requests.notification.DismissNotification;
 import org.joinmastodon.android.api.requests.notifications.DismissNotification;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
@@ -422,7 +418,7 @@ public class UiUtils{
 		showConfirmationAlert(activity, activity.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title),
 				activity.getString(currentlyMuted ? R.string.confirm_unmute : R.string.confirm_mute, account.displayName),
 				activity.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute),
-				currentlyMuted ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_mute_28_regular,
+				currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular,
 				()->{
 					new SetAccountMuted(account.id, !currentlyMuted)
 							.setCallback(new Callback<>(){
@@ -871,17 +867,17 @@ public class UiUtils{
 		}
 
 		new GetSearchResults(queryStatus.url, GetSearchResults.Type.STATUSES, true).setCallback(new Callback<>() {
-			@Override
-			public void onSuccess(SearchResults results) {
-				if (!results.statuses.isEmpty()) statusConsumer.accept(results.statuses.get(0));
-				else Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
-			}
+					@Override
+					public void onSuccess(SearchResults results) {
+						if (!results.statuses.isEmpty()) statusConsumer.accept(results.statuses.get(0));
+						else Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+					}
 
-			@Override
-			public void onError(ErrorResponse error) {
-				error.showToast(context);
-			}
-		})
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(context);
+					}
+				})
 				.wrapProgress((Activity)context, R.string.loading, true,
 						d -> transformDialogForLookup(context, targetAccountID, null, d))
 				.exec(targetAccountID);
@@ -1007,13 +1003,5 @@ public class UiUtils{
 		} else {
 			return false;
 		}
-	}
-
-	public static void pickAccount(Context context, BiPredicate<AccountSession, DialogInterface> pick, @StringRes int title) {
-		List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
-		new M3AlertDialogBuilder(context)
-				.setItems(sessions.stream().map(as->"@"+as.self.username+"@"+as.domain).toArray(String[]::new), (d, which)->pick.test(sessions.get(which), d))
-				.setTitle(title == 0 ? R.string.choose_account : title)
-				.show();
 	}
 }
