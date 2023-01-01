@@ -208,7 +208,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.sk_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
 			GlobalUserPreferences.relocatePublishButton=i.checked;
 			GlobalUserPreferences.save();
-			needAppRestart=true;
 		}));
 //		items.add(new SwitchItem(R.string.sk_settings_hide_translate_in_timeline, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
 //			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
