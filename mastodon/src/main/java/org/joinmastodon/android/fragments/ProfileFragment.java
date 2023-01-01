@@ -1,16 +1,11 @@
 package org.joinmastodon.android.fragments;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Outline;
@@ -19,11 +14,10 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -38,11 +32,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -104,6 +96,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private static final int COVER_RESULT=343;
 
 	private ImageView avatar;
+	private TextView botIcon;
 	private CoverImageView cover;
 	private View avatarBorder;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel, postsCount, postsLabel;
@@ -180,6 +173,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		avatar=content.findViewById(R.id.avatar);
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
+		botIcon=content.findViewById(R.id.bot_icon);
 		name=content.findViewById(R.id.name);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
@@ -271,6 +265,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				outline.setEmpty();
 			}
 		});
+
+		botIcon.setVisibility(account.bot ? View.VISIBLE : View.GONE);
 
 		actionButton.setOnClickListener(this::onActionButtonClick);
 		notifyButton.setOnClickListener(this::onNotifyButtonClick);
