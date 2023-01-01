@@ -1644,9 +1644,15 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				scheduleDraftText.setText(R.string.sk_compose_draft);
 				scheduleDraftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_drafts_20_regular, 0, 0, 0);
 				scheduleDraftDismiss.setContentDescription(getString(R.string.sk_compose_no_draft));
-				draftsBtn.setCompoundDrawablesWithIntrinsicBounds(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_drafts_24_filled : R.drawable.ic_fluent_drafts_20_filled, 0, 0, 0);
-				publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
-						? R.string.save : R.string.sk_draft);
+				draftsBtn.setCompoundDrawablesWithIntrinsicBounds(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_drafts_24_regular : R.drawable.ic_fluent_drafts_20_filled, 0, 0, 0);
+
+				if(GlobalUserPreferences.relocatePublishButton){
+					publishButton.setCompoundDrawablesWithIntrinsicBounds(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
+						? R.drawable.ic_fluent_save_24_filled : R.drawable.ic_fluent_drafts_24_selector, 0, 0, 0);
+				}else{
+					publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
+							? R.string.save : R.string.sk_draft);
+				}
 			} else {
 				scheduleMenuItem.setVisible(false);
 				unscheduleMenuItem.setVisible(true);
