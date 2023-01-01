@@ -35,6 +35,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -96,7 +97,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private static final int COVER_RESULT=343;
 
 	private ImageView avatar;
-	private TextView botIcon;
+	private Button botIcon;
 	private CoverImageView cover;
 	private View avatarBorder;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel, postsCount, postsLabel;
@@ -174,6 +175,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
 		botIcon=content.findViewById(R.id.bot_icon);
+		botIcon.setOnClickListener(v ->{
+			Toast.makeText(getActivity(), R.string.sk_bot_account,
+					Toast.LENGTH_LONG).show();
+		});
 		name=content.findViewById(R.id.name);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
