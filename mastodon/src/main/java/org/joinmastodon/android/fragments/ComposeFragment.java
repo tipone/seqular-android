@@ -291,6 +291,19 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		emojiKeyboard.setListener(this::onCustomEmojiClick);
 
 		View view=inflater.inflate(R.layout.fragment_compose, container, false);
+
+		if(GlobalUserPreferences.relocatePublishButton){
+			publishButton=view.findViewById(R.id.publish);
+//			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
+			publishButton.setEllipsize(TextUtils.TruncateAt.END);
+			publishButton.setOnClickListener(this::onPublishClick);
+			publishButton.setSingleLine(true);
+			publishButton.setVisibility(View.VISIBLE);
+
+			draftsBtn=view.findViewById(R.id.drafts_btn);
+			draftsBtn.setVisibility(View.VISIBLE);
+		}
+
 		mainEditText=view.findViewById(R.id.toot_text);
 		mainEditTextWrap=view.findViewById(R.id.toot_text_wrap);
 		charCounter=view.findViewById(R.id.char_counter);
@@ -729,7 +742,16 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		item.setActionView(wrap);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 
-		draftsBtn = wrap.findViewById(R.id.drafts_btn);
+		if(!GlobalUserPreferences.relocatePublishButton){
+			publishButton = wrap.findViewById(R.id.publish_btn);
+			publishButton.setOnClickListener(this::onPublishClick);
+			publishButton.setVisibility(View.VISIBLE);
+
+			draftsBtn = wrap.findViewById(R.id.drafts_btn);
+			draftsBtn.setVisibility(View.VISIBLE);
+		}
+
+//		draftsBtn = wrap.findViewById(R.id.drafts_btn);
 		draftOptionsPopup = new PopupMenu(getContext(), draftsBtn);
 		draftOptionsPopup.inflate(R.menu.compose_more);
 		draftMenuItem = draftOptionsPopup.getMenu().findItem(R.id.draft);
@@ -746,12 +768,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		});
 		UiUtils.enablePopupMenuIcons(getContext(), draftOptionsPopup);
 
-		publishButton = wrap.findViewById(R.id.publish_btn);
+
 		languageButton = wrap.findViewById(R.id.language_btn);
 		sendProgress = wrap.findViewById(R.id.send_progress);
 		sendError = wrap.findViewById(R.id.send_error);
 
-		publishButton.setOnClickListener(this::onPublishClick);
 		draftsBtn.setOnClickListener(v-> draftOptionsPopup.show());
 		draftsBtn.setOnTouchListener(draftOptionsPopup.getDragToOpenListener());
 		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
@@ -850,6 +871,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	private void resetPublishButtonText() {
 		int publishText = editingStatus==null || redraftStatus ? R.string.publish : R.string.save;
+		if(GlobalUserPreferences.relocatePublishButton){
+			return;
+		}
 		if (publishText == R.string.publish && !GlobalUserPreferences.publishButtonText.isEmpty()) {
 			publishButton.setText(GlobalUserPreferences.publishButtonText);
 		} else {
@@ -1620,7 +1644,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				scheduleDraftText.setText(R.string.sk_compose_draft);
 				scheduleDraftText.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_drafts_20_regular, 0, 0, 0);
 				scheduleDraftDismiss.setContentDescription(getString(R.string.sk_compose_no_draft));
-				draftsBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_drafts_20_filled, 0, 0, 0);
+				draftsBtn.setCompoundDrawablesWithIntrinsicBounds(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_drafts_24_filled : R.drawable.ic_fluent_drafts_20_filled, 0, 0, 0);
 				publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
 						? R.string.save : R.string.sk_draft);
 			} else {
@@ -1637,7 +1661,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 						? R.string.save : R.string.sk_schedule);
 			}
 		} else {
-			draftsBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_clock_20_regular, 0, 0, 0);
+			draftsBtn.setCompoundDrawablesWithIntrinsicBounds(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_clock_24_regular : R.drawable.ic_fluent_clock_20_regular, 0, 0, 0);
 			resetPublishButtonText();
 		}
 	}

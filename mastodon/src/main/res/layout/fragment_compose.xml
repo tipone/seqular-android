@@ -381,6 +381,20 @@
 				android:tooltipText="@string/post_visibility"
 				android:src="@drawable/ic_fluent_earth_24_regular"/>
 
+			<Button
+				android:id="@+id/drafts_btn"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:padding="0px"
+				android:layout_marginEnd="12dp"
+				android:drawableStart="@drawable/ic_fluent_clock_24_regular"
+				android:drawableTint="@color/compose_button"
+				android:textColor="?android:textColorSecondary"
+				android:background="?android:attr/selectableItemBackgroundBorderless"
+				android:visibility="gone"
+				android:contentDescription="@string/sk_schedule_or_draft"
+				android:tooltipText="@string/sk_schedule_or_draft" />
+
 			<Space
 				android:layout_width="0px"
 				android:layout_height="1px"
@@ -413,7 +427,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="12dp"
-				android:visibility="visible"
+				android:visibility="gone"
 				android:tooltipText="@string/publish"
 				android:drawableStart="@drawable/ic_fluent_send_24_selector"
 				/>

@@ -48,6 +48,7 @@
         android:drawableTint="?android:textColorSecondary"
         android:textColor="?android:textColorSecondary"
         android:background="@drawable/bg_text_button"
+        android:visibility="gone"
         android:contentDescription="@string/sk_schedule_or_draft"
         android:tooltipText="@string/sk_schedule_or_draft" />
 
@@ -56,6 +57,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:singleLine="true"
-        android:ellipsize="end" />
+        android:ellipsize="end"
+        android:visibility="gone"
+        />
 
 </LinearLayout>
