@@ -1648,7 +1648,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 				if(GlobalUserPreferences.relocatePublishButton){
 					publishButton.setCompoundDrawablesWithIntrinsicBounds(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
-						? R.drawable.ic_fluent_save_24_filled : R.drawable.ic_fluent_drafts_24_selector, 0, 0, 0);
+						? R.drawable.ic_fluent_save_24_selector : R.drawable.ic_fluent_drafts_24_selector, 0, 0, 0);
 				}else{
 					publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
 							? R.string.save : R.string.sk_draft);
@@ -1662,12 +1662,21 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				scheduleDraftText.setText(R.string.sk_compose_scheduled);
 				scheduleDraftText.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0);
 				scheduleDraftDismiss.setContentDescription(getString(R.string.sk_compose_no_schedule));
-				draftsBtn.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_clock_20_filled, 0, 0, 0);
-				publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.equals(scheduledAt)
-						? R.string.save : R.string.sk_schedule);
+				draftsBtn.setCompoundDrawablesWithIntrinsicBounds(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_clock_24_filled : R.drawable.ic_fluent_clock_20_filled, 0, 0, 0);
+				if(GlobalUserPreferences.relocatePublishButton)
+				{
+					publishButton.setCompoundDrawablesWithIntrinsicBounds(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
+							? R.drawable.ic_fluent_save_24_selector : R.drawable.ic_fluent_clock_24_selector, 0, 0, 0);
+				}else{
+					publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.equals(scheduledAt)
+							? R.string.save : R.string.sk_schedule);
+				}
 			}
 		} else {
 			draftsBtn.setCompoundDrawablesWithIntrinsicBounds(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_clock_24_regular : R.drawable.ic_fluent_clock_20_regular, 0, 0, 0);
+			if(GlobalUserPreferences.relocatePublishButton){
+				publishButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_send_24_selector, 0, 0, 0);
+			}
 			resetPublishButtonText();
 		}
 	}
