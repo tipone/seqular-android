@@ -263,10 +263,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new HeaderItem(R.string.sk_settings_about));
 //		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
 //		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://ko-fi.com/xsk22"), R.drawable.ic_fluent_heart_24_regular));
-//		if (GithubSelfUpdater.needSelfUpdating()) {
-//			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
-//			items.add(checkForUpdateItem);
-//		}
+		if (GithubSelfUpdater.needSelfUpdating()) {
+			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+			items.add(checkForUpdateItem);
+		}
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
 		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
