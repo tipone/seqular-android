@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sk_app_name">Megalodon</string>
+    <string name="sk_app_name">Moshidon</string>
     <string name="sk_pinned_posts">Pinned</string>
     <string name="sk_delete_and_redraft">Delete and re-draft</string>
     <string name="sk_confirm_delete_and_redraft_title">Delete and re-draft Post</string>
