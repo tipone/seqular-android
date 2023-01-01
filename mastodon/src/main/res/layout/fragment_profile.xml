@@ -173,15 +173,6 @@
 						android:layout_below="@id/profile_counters"
 						android:layout_alignParentEnd="true">
 
-						<Button
-							android:id="@+id/bot_icon"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="center"
-							android:paddingHorizontal="8dp"
-							android:drawableStart="@drawable/ic_fluent_bot_24_regular"
-							/>
-
 						<FrameLayout
 							android:clipToPadding="false"
 							android:paddingVertical="16dp"
@@ -194,8 +185,9 @@
 								android:id="@+id/notify_btn"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
+								android:drawableStart="@drawable/ic_fluent_alert_24_selector"
 								android:paddingHorizontal="8dp"
-								android:drawableStart="@drawable/ic_fluent_alert_24_selector" />
+								tools:ignore="SpeakableTextPresentCheck" />
 
 							<ProgressBar
 								android:id="@+id/notify_progress"
@@ -239,26 +231,44 @@
 						</FrameLayout>
 					</LinearLayout>
 
-					<TextView
-						android:id="@+id/name"
-						android:layout_width="match_parent"
+					<LinearLayout
+						android:id="@id/name_wrap"
+						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_below="@id/avatar_border"
 						android:layout_alignParentStart="true"
-						android:layout_marginStart="16dp"
-						android:layout_marginTop="17dp"
-						android:layout_marginBottom="0.4dp"
 						android:layout_toStartOf="@id/profile_action_btn_wrap"
-						android:textAlignment="viewStart"
-						android:textAppearance="@style/m3_headline_small"
-						tools:text="Eugen" />
+						android:layout_alignParentEnd="true">
+
+						<TextView
+							android:id="@+id/name"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginStart="16dp"
+							android:layout_marginTop="17dp"
+							android:layout_marginBottom="0.4dp"
+							android:layout_marginEnd="0dp"
+							android:textAlignment="viewStart"
+							android:textAppearance="@style/m3_headline_small"
+							tools:text="Eugen" />
+
+						<Button
+							android:id="@+id/bot_icon"
+							android:layout_width="wrap_content"
+							android:layout_height="28dp"
+							android:layout_marginTop="14dp"
+							android:paddingHorizontal="8dp"
+							android:background="?colorWindowBackground"
+							android:drawableStart="@drawable/ic_fluent_bot_24_regular"
+							/>
+					</LinearLayout>
 
 					<TextView
 						android:id="@+id/username"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginStart="16dp"
-						android:layout_below="@id/name"
+						android:layout_below="@id/name_wrap"
 						android:paddingTop="4dp"
 						android:paddingBottom="8dp"
 						android:textAppearance="@style/m3_title_medium"
