@@ -84,7 +84,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
 			opacityOut.setFillAfter(true);
 			opacityIn = new AlphaAnimation(0.55f, 1);
-			opacityIn.setDuration(500);
+			opacityIn.setDuration(400);
 			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
 		}
 
@@ -133,6 +133,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			bindButton(reply, item.status.repliesCount);
 			bindButton(boost, item.status.reblogsCount);
 			bindButton(favorite, item.status.favouritesCount);
+			reply.setSelected(item.status.repliesCount > 0);
 			boost.setSelected(item.status.reblogged);
 			favorite.setSelected(item.status.favourited);
 			bookmark.setSelected(item.status.bookmarked);
