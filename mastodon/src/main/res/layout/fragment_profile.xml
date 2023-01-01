@@ -72,6 +72,22 @@
 							android:contentDescription="@string/profile_picture"
 							tools:src="#0f0" />
 
+
+						<TextView
+							android:id="@+id/bot_icon"
+							android:layout_width="wrap_content"
+							android:layout_height="30dp"
+							android:layout_gravity="end|top"
+							android:drawableStart="@drawable/ic_fluent_bot"
+							android:drawablePadding="8dp"
+							android:paddingTop="-14dp"
+							android:paddingEnd="-12dp"
+							android:drawableTint="?colorPrimary400"
+							android:gravity="center_vertical"
+							android:textAppearance="@style/m3_label_large"
+							tools:text="123"/>
+
+
 					</FrameLayout>
 
 					<LinearLayout
