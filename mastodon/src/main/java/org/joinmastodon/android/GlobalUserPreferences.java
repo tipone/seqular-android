@@ -9,8 +9,6 @@ import android.os.Build;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
-import org.joinmastodon.android.model.Emoji;
-
 import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.List;
