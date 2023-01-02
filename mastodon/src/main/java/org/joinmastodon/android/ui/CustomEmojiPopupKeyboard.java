@@ -48,7 +48,8 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class CustomEmojiPopupKeyboard extends PopupKeyboard{
-	private static final int NEW_RECENT=15;
+	//determines how many emoji need to be clicked, before it disappears from the recent emojis
+	private static final int NEW_RECENT_VALUE=15;
 
 	private List<EmojiCategory> emojis;
 	private UsableRecyclerView list;
@@ -138,10 +139,9 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		if (usageCount != null) {
 			recentEmojis.put(emoji.shortcode, usageCount + 1);
 		} else {
-			recentEmojis.put(emoji.shortcode, NEW_RECENT);
+			recentEmojis.put(emoji.shortcode, NEW_RECENT_VALUE);
 		}
 
-		Log.e("Emojis", "increaseEmojiCount: " + recentEmojis);
 		recentEmojis.entrySet().removeIf(e -> e.getValue() <= 0);
 		recentEmojis.replaceAll((k, v) -> v - 1);
 		GlobalUserPreferences.save();
