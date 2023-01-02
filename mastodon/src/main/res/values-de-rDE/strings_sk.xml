@@ -129,6 +129,6 @@
     <string name="sk_compose_no_schedule">Nicht planen</string>
     <string name="sk_compose_no_draft">Nicht entwerfen</string>
     <string name="sk_settings_reduce_motion">Bewegungen in Animationen reduzieren</string>
-    <string name="sk_no_image_desc_title"Keine Bildbeschreibung</string>
+    <string name="sk_no_image_desc_title">Keine Bildbeschreibung</string>
     <string name="sk_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte fügen Sie eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
 </resources>
