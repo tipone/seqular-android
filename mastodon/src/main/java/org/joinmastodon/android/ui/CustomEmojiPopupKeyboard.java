@@ -1,8 +1,9 @@
 package org.joinmastodon.android.ui;
 
+import static org.joinmastodon.android.GlobalUserPreferences.recentEmojis;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -12,8 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.squareup.otto.Subscribe;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiUpdatedEvent;
@@ -21,13 +27,13 @@ import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiCategory;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.ListImageLoaderWrapper;
@@ -40,6 +46,9 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class CustomEmojiPopupKeyboard extends PopupKeyboard{
+	//determines how many emoji need to be clicked, before it disappears from the recent emojis
+	private static final int NEW_RECENT_VALUE=15;
+
 	private List<EmojiCategory> emojis;
 	private UsableRecyclerView list;
 	private ListImageLoaderWrapper imgLoader;
@@ -82,6 +91,17 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		list.setLayoutManager(lm);
 		imgLoader=new ListImageLoaderWrapper(activity, list, new RecyclerViewDelegate(list), null);
 
+		// inject category with last used emojis
+		if (!recentEmojis.isEmpty()) {
+			List<Emoji> allAvailableEmojis =  emojis.stream().flatMap(category -> category.emojis.stream()).collect(Collectors.toList());
+			List<Emoji> recentEmojiList = new ArrayList<>();
+			for (String emojiCode : recentEmojis.keySet().stream().sorted(Comparator.comparingInt(GlobalUserPreferences.recentEmojis::get).reversed()).collect(Collectors.toList())) {
+				Optional<Emoji> element = allAvailableEmojis.stream().filter(e -> e.shortcode.equals(emojiCode)).findFirst();
+				element.ifPresent(recentEmojiList::add);
+			}
+			emojis.add(0, new EmojiCategory(activity.getString(R.string.sk_emoji_recent), recentEmojiList));
+		}
+
 		for(EmojiCategory category:emojis)
 			adapter.addAdapter(new SingleCategoryAdapter(category));
 		list.setAdapter(adapter);
@@ -100,11 +120,29 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		list.setBackgroundColor(UiUtils.getThemeColor(activity, android.R.attr.colorBackground));
 		list.setSelector(null);
 
+		//remove recently used afterwards, it would get duplicated otherwise
+		if (!recentEmojis.isEmpty()) {
+			emojis.remove(0);
+		}
+
 		return list;
 	}
 
 	public void setListener(Consumer<Emoji> listener){
 		this.listener=listener;
+	}
+
+	private void increaseEmojiCount(Emoji emoji) {
+		Integer usageCount = recentEmojis.get(emoji.shortcode);
+		if (usageCount != null) {
+			recentEmojis.put(emoji.shortcode, usageCount + 1);
+		} else {
+			recentEmojis.put(emoji.shortcode, NEW_RECENT_VALUE);
+		}
+
+		recentEmojis.entrySet().removeIf(e -> e.getValue() <= 0);
+		recentEmojis.replaceAll((k, v) -> v - 1);
+		GlobalUserPreferences.save();
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
@@ -203,6 +241,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		@Override
 		public void onClick(){
+			increaseEmojiCount(item);
 			listener.accept(item);
 		}
 	}
