@@ -129,6 +129,9 @@
     <string name="sk_compose_no_schedule">Nicht planen</string>
     <string name="sk_compose_no_draft">Nicht entwerfen</string>
     <string name="sk_settings_reduce_motion">Bewegungen in Animationen reduzieren</string>
+    <string name="sk_bot_account">Dies ist ein Bot-Konto</string>
     <string name="sk_no_image_desc_title">Keine Bildbeschreibung</string>
     <string name="sk_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
+    <string name="sk_emoji_recent">Kürzlich verwendet</string>
+    <string name="sk_clear_recent_emoji">Kürzlich verwendetes Emoji löschen</string>
 </resources>
