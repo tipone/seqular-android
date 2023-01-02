@@ -1,11 +1,16 @@
 package org.joinmastodon.android.fragments;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Outline;
@@ -14,10 +19,11 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -32,9 +38,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -96,9 +104,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private static final int COVER_RESULT=343;
 
 	private ImageView avatar;
-	private TextView botIcon;
 	private CoverImageView cover;
 	private View avatarBorder;
+	private Button botIcon;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel, postsCount, postsLabel;
 	private ProgressBarButton actionButton, notifyButton;
 	private ViewPager2 pager;
@@ -131,7 +139,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
-	private String prefilledText;
 
 	public ProfileFragment(){
 		super(R.layout.loader_fragment_overlay_toolbar);
@@ -156,8 +163,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(!getArguments().getBoolean("noAutoLoad", false))
 				loadData();
 		}
+	}
 
-		prefilledText = AccountSessionManager.getInstance().isSelf(accountID, account) ? null : '@'+account.acct+' ';
+	private String getPrefilledText() {
+		return account == null || AccountSessionManager.getInstance().isSelf(accountID, account)
+				? null : '@'+account.acct+' ';
 	}
 
 	@Override
@@ -173,7 +183,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		avatar=content.findViewById(R.id.avatar);
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
-		botIcon=content.findViewById(R.id.bot_icon);
 		name=content.findViewById(R.id.name);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
@@ -183,6 +192,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingCount=content.findViewById(R.id.following_count);
 		followingLabel=content.findViewById(R.id.following_label);
 		followingBtn=content.findViewById(R.id.following_btn);
+
 		postsCount=content.findViewById(R.id.posts_count);
 		postsLabel=content.findViewById(R.id.posts_label);
 		postsBtn=content.findViewById(R.id.posts_btn);
@@ -266,15 +276,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		});
 
-		botIcon.setVisibility(account.bot ? View.VISIBLE : View.GONE);
-
 		actionButton.setOnClickListener(this::onActionButtonClick);
 		notifyButton.setOnClickListener(this::onNotifyButtonClick);
 		avatar.setOnClickListener(this::onAvatarClick);
 		cover.setOnClickListener(this::onCoverClick);
 		refreshLayout.setOnRefreshListener(this);
 		fab.setOnClickListener(this::onFabClick);
-		fab.setOnLongClickListener(v->UiUtils.pickAccountForCompose(getActivity(), accountID, prefilledText));
+		fab.setOnLongClickListener(v->UiUtils.pickAccountForCompose(getActivity(), accountID, getPrefilledText()));
 
 		if(loaded){
 			bindHeaderView();
@@ -549,25 +557,28 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
-//		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags);
-		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getDisplayUsername()));
+		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled, R.id.share, R.id.bot_icon);
+		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
 		if(isOwnProfile)
 			return;
 
+		MenuItem botIcon = menu.findItem(R.id.bot_icon);
+		botIcon.setVisible(account.bot);
+
 		MenuItem mute = menu.findItem(R.id.mute);
-		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getDisplayUsername()));
-		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_mute_24_regular);
+		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 		UiUtils.insetPopupMenuIcon(getContext(), mute);
 
-		menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getDisplayUsername()));
-		menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getDisplayUsername()));
+		menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
+		menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getShortUsername()));
 		MenuItem manageUserLists=menu.findItem(R.id.manage_user_lists);
 		if(relationship.following) {
 			MenuItem hideBoosts = menu.findItem(R.id.hide_boosts);
-			hideBoosts.setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getDisplayUsername()));
+			hideBoosts.setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getShortUsername()));
 			hideBoosts.setIcon(relationship.showingReblogs ? R.drawable.ic_fluent_arrow_repeat_all_off_24_regular : R.drawable.ic_fluent_arrow_repeat_all_24_regular);
 			UiUtils.insetPopupMenuIcon(getContext(), hideBoosts);
-			manageUserLists.setTitle(getString(R.string.sk_lists_with_user, account.getDisplayUsername()));
+			manageUserLists.setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername()));
 			manageUserLists.setVisible(true);
 		}else {
 			menu.findItem(R.id.hide_boosts).setVisible(false);
@@ -640,6 +651,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
+		}else if(id==R.id.bot_icon){
+			Toast.makeText(getActivity(), R.string.sk_bot_account, Toast.LENGTH_LONG).show();
 		}
 		return true;
 	}
@@ -951,7 +964,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		if(prefilledText != null) args.putString("prefilledText", prefilledText);
+		if(getPrefilledText() != null) args.putString("prefilledText", getPrefilledText());
 		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 

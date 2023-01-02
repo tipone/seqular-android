@@ -32,7 +32,7 @@ public class LinkSpan extends CharacterStyle {
 	public void updateDrawState(TextPaint tp) {
 		tp.setColor(color=tp.linkColor);
 	}
-	
+
 	public void onClick(Context context){
 		switch(getType()){
 			case URL -> UiUtils.openURL(context, accountID, link);
@@ -44,7 +44,6 @@ public class LinkSpan extends CharacterStyle {
 	public void onLongClick(View view) {
 		UiUtils.copyText(view, getType() == Type.URL ? link : text);
 	}
-
 
 	public String getLink(){
 		return link;
