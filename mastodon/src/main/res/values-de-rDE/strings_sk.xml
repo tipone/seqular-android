@@ -75,7 +75,7 @@
     <string name="sk_settings_donate">Spenden</string>
     <string name="sk_delete_notification">Benachrichtigung löschen</string>
     <string name="sk_delete_notification_confirm_action">Benachrichtigung löschen</string>
-    <string name="sk_delete_notification_confirm">Benachrichtigung wirklich löschen\?</string>
+    <string name="sk_delete_notification_confirm">Benachrichtigung wirklich löschen?</string>
     <string name="sk_clear_all_notifications">Alle Benachrichtigungen löschen</string>
     <string name="sk_clear_all_notifications_confirm_action">Alle löschen</string>
     <string name="sk_clear_all_notifications_confirm">Wirklich alle Benachrichtigungen löschen?</string>
@@ -111,9 +111,9 @@
     <string name="sk_draft">Entwurf</string>
     <string name="sk_schedule">Planen</string>
     <string name="sk_confirm_delete_draft_title">Entwurf löschen</string>
-    <string name="sk_confirm_delete_draft">Möchtest du diesen entworfenen Beitrag wirklich löschen\?</string>
+    <string name="sk_confirm_delete_draft">Möchtest du diesen entworfenen Beitrag wirklich löschen?</string>
     <string name="sk_confirm_delete_scheduled_post_title">Geplanten Beitrag löschen</string>
-    <string name="sk_confirm_delete_scheduled_post">Möchtest du diesen geplanten Beitrag wirklich löschen\?</string>
+    <string name="sk_confirm_delete_scheduled_post">Möchtest du diesen geplanten Beitrag wirklich löschen?</string>
     <string name="sk_draft_or_schedule">Entwurf oder Planen</string>
     <string name="sk_compose_draft">Beitrag wird als Entwurf gespeichert.</string>
     <string name="sk_compose_scheduled">Geplant für</string>
@@ -130,5 +130,5 @@
     <string name="sk_compose_no_draft">Nicht entwerfen</string>
     <string name="sk_settings_reduce_motion">Bewegungen in Animationen reduzieren</string>
     <string name="sk_no_image_desc_title">Keine Bildbeschreibung</string>
-    <string name="sk_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte fügen Sie eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
+    <string name="sk_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
 </resources>
