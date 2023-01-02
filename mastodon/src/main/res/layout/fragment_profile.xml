@@ -176,18 +176,16 @@
 						<FrameLayout
 							android:clipToPadding="false"
 							android:paddingVertical="16dp"
-							android:paddingLeft="8dp"
+							android:paddingLeft="16dp"
 							android:paddingRight="4dp"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content">
-
 							<org.joinmastodon.android.ui.views.ProgressBarButton
 								android:id="@+id/notify_btn"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
-								android:drawableStart="@drawable/ic_fluent_alert_24_selector"
 								android:paddingHorizontal="8dp"
-								tools:ignore="SpeakableTextPresentCheck" />
+								android:drawableStart="@drawable/ic_fluent_alert_24_selector" />
 
 							<ProgressBar
 								android:id="@+id/notify_progress"
@@ -200,7 +198,6 @@
 								android:indeterminateTint="?colorButtonText"
 								android:outlineProvider="none"
 								android:visibility="gone" />
-
 						</FrameLayout>
 
 						<FrameLayout
@@ -210,7 +207,6 @@
 							android:paddingLeft="4dp"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content">
-
 							<org.joinmastodon.android.ui.views.ProgressBarButton
 								android:id="@+id/profile_action_btn"
 								android:layout_width="wrap_content"
@@ -231,43 +227,26 @@
 						</FrameLayout>
 					</LinearLayout>
 
-					<LinearLayout
-						android:id="@id/name_wrap"
+					<TextView
+						android:id="@+id/name"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_below="@id/avatar_border"
 						android:layout_alignParentStart="true"
+						android:layout_marginStart="16dp"
+						android:layout_marginTop="17dp"
+						android:layout_marginBottom="0.4dp"
 						android:layout_toStartOf="@id/profile_action_btn_wrap"
-						android:layout_alignParentEnd="true">
-
-						<TextView
-							android:id="@+id/name"
-							android:layout_width="match_parent"
-							android:layout_height="wrap_content"
-							android:layout_marginStart="16dp"
-							android:layout_marginTop="17dp"
-							android:layout_marginBottom="0.4dp"
-							android:layout_marginEnd="0dp"
-							android:textAlignment="viewStart"
-							android:textAppearance="@style/m3_headline_small"
-							tools:text="Eugen" />
-						<Button
-							android:id="@+id/bot_icon"
-							android:layout_width="wrap_content"
-							android:layout_height="28dp"
-							android:layout_marginTop="14dp"
-							android:paddingHorizontal="8dp"
-							android:background="?colorWindowBackground"
-							android:drawableStart="@drawable/ic_fluent_bot_24_regular"
-							/>
-					</LinearLayout>
+						android:textAlignment="viewStart"
+						android:textAppearance="@style/m3_headline_small"
+						tools:text="Eugen" />
 
 					<TextView
 						android:id="@+id/username"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginStart="16dp"
-						android:layout_below="@id/name_wrap"
+						android:layout_below="@id/name"
 						android:paddingTop="4dp"
 						android:paddingBottom="8dp"
 						android:textAppearance="@style/m3_title_medium"
