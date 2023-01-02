@@ -273,6 +273,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
+		items.add(new TextItem(R.string.sk_clear_recent_emoji, ()-> {
+			GlobalUserPreferences.recentEmojis.clear();
+			GlobalUserPreferences.save();
+		}));
 //		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));

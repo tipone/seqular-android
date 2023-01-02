@@ -131,4 +131,5 @@
     <string name="sk_compose_no_draft">Don’t draft</string>
     <string name="sk_settings_reduce_motion">Reduce motion in animations</string>
     <string name="sk_emoji_recent">Recently used</string>
+    <string name="sk_clear_recent_emoji">Clear recently used emoji</string>
 </resources>
