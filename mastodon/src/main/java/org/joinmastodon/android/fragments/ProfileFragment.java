@@ -557,10 +557,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled, R.id.share);
+		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled, R.id.share, R.id.bot_icon);
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
 		if(isOwnProfile)
 			return;
+
+		MenuItem botIcon = menu.findItem(R.id.bot_icon);
+		botIcon.setVisible(account.bot);
 
 		MenuItem mute = menu.findItem(R.id.mute);
 		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
@@ -648,6 +651,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
+		}else if(id==R.id.bot_icon){
+			Toast.makeText(getActivity(), R.string.sk_bot_account, Toast.LENGTH_LONG).show();
 		}
 		return true;
 	}
