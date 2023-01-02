@@ -133,5 +133,5 @@
     <string name="sk_no_image_desc_title">Keine Bildbeschreibung</string>
     <string name="sk_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
     <string name="sk_emoji_recent">Kürzlich verwendet</string>
-    <string name="sk_clear_recent_emoji">Kürzlich verwendetes Emoji löschen</string>
+    <string name="sk_clear_recent_emoji">Kürzlich verwendete Emojis löschen</string>
 </resources>
