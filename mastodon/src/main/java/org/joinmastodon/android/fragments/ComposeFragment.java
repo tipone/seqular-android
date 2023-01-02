@@ -131,6 +131,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -917,7 +918,18 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void onPublishClick(View v){
-		publish();
+		if (!attachments.isEmpty()
+				&& statusVisibility != StatusPrivacy.DIRECT
+				&& !attachments.stream().allMatch(attachment -> attachment.description != null && !attachment.description.isBlank())) {
+			new M3AlertDialogBuilder(getActivity())
+					.setTitle(R.string.sk_no_image_desc_title)
+					.setMessage(R.string.sk_no_image_desc)
+					.setNegativeButton(R.string.cancel, null)
+					.setPositiveButton(R.string.publish, (dialog, i)-> publish())
+					.show();
+		} else {
+			publish();
+		}
 	}
 
 	private void publishErrorCallback(ErrorResponse error) {
@@ -1029,6 +1041,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				publishErrorCallback(error);
 			}
 		};
+
 
 		if(editingStatus!=null && !redraftStatus){
 			new EditStatus(req, editingStatus.id)
