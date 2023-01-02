@@ -39,6 +39,9 @@ public class GlobalUserPreferences{
 	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
 	public static Map<String, List<String>> recentLanguages;
 
+	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
+	public static Map<String, Integer> recentEmojis;
+
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
@@ -68,6 +71,7 @@ public class GlobalUserPreferences{
 		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", true);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
+		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
 		publishButtonText=prefs.getString("publishButtonText", "");
 
 		try {
@@ -104,6 +108,7 @@ public class GlobalUserPreferences{
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
+				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.apply();
 	}
 
