@@ -235,6 +235,11 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			new AccountSwitcherSheet(getActivity()).show();
 			return true;
 		}
+		if(tab==R.id.tab_search){
+			searchFragment.selectSearch(true);
+			onTabSelected(tab);
+		}
+
 		return false;
 	}
 

@@ -2,6 +2,8 @@ package org.joinmastodon.android.fragments.discover;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.hardware.input.InputManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -46,6 +48,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private TabLayoutMediator tabLayoutMediator;
 	private EditText searchEdit;
 	private boolean searchActive;
+	private boolean wasTriggeredByLongPress = false;
 	private FrameLayout searchView;
 	private ImageButton searchBack, searchClear;
 	private ProgressBar searchProgress;
@@ -358,4 +361,12 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			return position;
 		}
 	}
+
+	public void selectSearch(boolean selectSearch){
+		wasTriggeredByLongPress=selectSearch;
+		searchEdit.requestFocus();
+		onSearchEditFocusChanged(searchEdit, selectSearch);
+		getActivity().getSystemService(InputMethodManager.class).showSoftInput(searchEdit, 0);
+	}
+
 }
