@@ -208,6 +208,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		}
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
 		maybeTriggerLoading(newFragment);
+//		if(tab == currentTab && tab == R.id.tab_search){
+//			searchFragment.selectSearch();
+//		}
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
 	}
@@ -236,8 +239,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			return true;
 		}
 		if(tab==R.id.tab_search){
-			searchFragment.selectSearch(true);
-			onTabSelected(tab);
+			searchFragment.selectSearch();
+			onTabSelected(R.id.tab_search);
 		}
 
 		return false;

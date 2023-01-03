@@ -19,6 +19,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -48,7 +49,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private TabLayoutMediator tabLayoutMediator;
 	private EditText searchEdit;
 	private boolean searchActive;
-	public boolean wasTriggeredByLongPress = false;
 	private FrameLayout searchView;
 	private ImageButton searchBack, searchClear;
 	private ProgressBar searchProgress;
@@ -362,11 +362,9 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		}
 	}
 
-	public void selectSearch(boolean selectSearch){
-		wasTriggeredByLongPress=selectSearch;
+	public void selectSearch(){
 		searchEdit.requestFocus();
-		onSearchEditFocusChanged(searchEdit, selectSearch);
+		onSearchEditFocusChanged(searchEdit, true);
 		getActivity().getSystemService(InputMethodManager.class).showSoftInput(searchEdit, 0);
 	}
-
 }
