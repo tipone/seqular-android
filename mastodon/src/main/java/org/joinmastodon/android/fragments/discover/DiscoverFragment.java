@@ -48,7 +48,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private TabLayoutMediator tabLayoutMediator;
 	private EditText searchEdit;
 	private boolean searchActive;
-	private boolean wasTriggeredByLongPress = false;
+	public boolean wasTriggeredByLongPress = false;
 	private FrameLayout searchView;
 	private ImageButton searchBack, searchClear;
 	private ProgressBar searchProgress;
