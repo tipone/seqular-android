@@ -1,16 +1,11 @@
 package org.joinmastodon.android.fragments;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Outline;
@@ -19,8 +14,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
@@ -38,12 +31,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
@@ -83,10 +79,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager2.widget.ViewPager2;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -106,7 +98,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ImageView avatar;
 	private CoverImageView cover;
 	private View avatarBorder;
-	private Button botIcon;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel, postsCount, postsLabel;
 	private ProgressBarButton actionButton, notifyButton;
 	private ViewPager2 pager;
@@ -294,6 +285,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		followersBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
+
+		if (account != null && account.bot) {
+			name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_bot_24_filled, 0, 0, 0);
+		}
 
 		username.setOnLongClickListener(v->{
 			String usernameString=account.acct;
@@ -557,13 +552,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled, R.id.share, R.id.bot_icon);
+		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled);
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
 		if(isOwnProfile)
 			return;
-
-		MenuItem botIcon = menu.findItem(R.id.bot_icon);
-		botIcon.setVisible(account.bot);
 
 		MenuItem mute = menu.findItem(R.id.mute);
 		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
@@ -651,8 +643,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
-		}else if(id==R.id.bot_icon){
-			Toast.makeText(getActivity(), R.string.sk_bot_account, Toast.LENGTH_LONG).show();
 		}
 		return true;
 	}
