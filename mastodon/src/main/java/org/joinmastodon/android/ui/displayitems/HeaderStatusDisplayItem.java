@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -267,6 +268,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		public void onBind(HeaderStatusDisplayItem item){
 			name.setText(item.parsedName);
 			username.setText('@'+item.user.acct);
+
+			username.setCompoundDrawablesWithIntrinsicBounds(item.user.bot ? R.drawable.ic_fluent_bot_24_filled : 0, 0, 0, 0);
+
 			if (item.scheduledStatus!=null)
 				if (item.scheduledStatus.scheduledAt.isAfter(CreateStatus.DRAFTS_AFTER_INSTANT)) {
 					timestamp.setText(R.string.sk_draft);
