@@ -287,7 +287,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 
 		if (account != null && account.bot) {
-			name.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_bot_24_filled, 0, 0, 0);
+			username.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_bot_24_filled, 0, 0, 0);
 		}
 
 		username.setOnLongClickListener(v->{
