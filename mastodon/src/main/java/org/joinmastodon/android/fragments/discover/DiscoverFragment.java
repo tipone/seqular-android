@@ -358,4 +358,10 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			return position;
 		}
 	}
+
+	public void selectSearch(){
+		searchEdit.requestFocus();
+		onSearchEditFocusChanged(searchEdit, true);
+		getActivity().getSystemService(InputMethodManager.class).showSoftInput(searchEdit, 0);
+	}
 }
