@@ -131,10 +131,15 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case NORD -> R.string.sk_color_palette_nord;
 			});
 		}));
-		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b->{
+		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
 			updatePublishText(b);
-
-			b.setOnClickListener(l->{
+			if (GlobalUserPreferences.relocatePublishButton) {
+				b.setOnClickListener(l -> {
+					Toast.makeText(getActivity(), R.string.sk_disable_relocate_publish_button_to_enable_customization,
+							Toast.LENGTH_LONG).show();
+				});
+			} else {
+			b.setOnClickListener(l -> {
 				FrameLayout inputWrap = new FrameLayout(getContext());
 				EditText input = new EditText(getContext());
 				input.setHint(R.string.publish);
@@ -154,9 +159,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 							GlobalUserPreferences.save();
 							updatePublishText(b);
 						})
-						.setNegativeButton(R.string.cancel, (d, which) -> {})
+						.setNegativeButton(R.string.cancel, (d, which) -> {
+						})
 						.show();
-			});
+			});}
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
 			GlobalUserPreferences.uniformNotificationIcon=i.checked;

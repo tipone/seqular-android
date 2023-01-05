@@ -135,4 +135,5 @@
     <string name="sk_no_image_desc">The included images have no description. Please consider adding one, to allow visually impaired people to participate.</string>
     <string name="sk_emoji_recent">Recently used</string>
     <string name="sk_clear_recent_emoji">Clear recently used emoji</string>
+    <string name="sk_disable_relocate_publish_button_to_enable_customization">Disable "Relocate publish button" to allow customization</string>
 </resources>
