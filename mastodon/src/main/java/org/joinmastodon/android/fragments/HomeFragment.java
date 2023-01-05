@@ -202,15 +202,23 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
+			if(tab == R.id.tab_search){
+				if(newFragment instanceof ScrollableToTop scrollable)
+					scrollable.scrollToTop();
+				searchFragment.selectSearch();
+				return;
+			}
+			if(newFragment instanceof ScrollableToTop scrollable)
+				scrollable.scrollToTop();
+			return;
+		}
+		if(tab==currentTab && tab == R.id.tab_search){
 			if(newFragment instanceof ScrollableToTop scrollable)
 				scrollable.scrollToTop();
 			return;
 		}
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
 		maybeTriggerLoading(newFragment);
-//		if(tab == currentTab && tab == R.id.tab_search){
-//			searchFragment.selectSearch();
-//		}
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
 	}
@@ -239,10 +247,11 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			return true;
 		}
 		if(tab==R.id.tab_search){
-			searchFragment.selectSearch();
 			onTabSelected(R.id.tab_search);
+			tabBar.selectTab(R.id.tab_search);
+			searchFragment.selectSearch();
+			return true;
 		}
-
 		return false;
 	}
 

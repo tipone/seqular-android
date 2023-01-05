@@ -2,8 +2,6 @@ package org.joinmastodon.android.fragments.discover;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Context;
-import android.hardware.input.InputManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,7 +17,6 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.GlobalUserPreferences;
