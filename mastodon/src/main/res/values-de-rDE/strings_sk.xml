@@ -4,14 +4,14 @@
     <string name="sk_pinned_posts">Angeheftet</string>
     <string name="sk_delete_and_redraft">Löschen und neu erstellen</string>
     <string name="sk_confirm_delete_and_redraft_title">Beitrag löschen und neu erstellen</string>
-    <string name="sk_confirm_delete_and_redraft">Bist du dir sicher, dass du diesen Beitrag löschen und neu erstellen möchtest?</string>
+    <string name="sk_confirm_delete_and_redraft">Bist du dir sicher, dass du diesen Beitrag löschen und neu erstellen möchtest\?</string>
     <string name="sk_pin_post">An Profil anheften</string>
     <string name="sk_confirm_pin_post_title">Beitrag an Profil anheften</string>
     <string name="sk_confirm_pin_post">Möchtest du den Beitrag an dein Profil anheften?</string>
     <string name="sk_pinning">Wird angeheftet…</string>
     <string name="sk_unpin_post">Von Profil lösen</string>
     <string name="sk_confirm_unpin_post_title">Angehefteten Beitrag von Profil lösen</string>
-    <string name="sk_confirm_unpin_post">Bist du dir sicher, dass du den angehefteten Beitrag von deinem Profil lösen möchtest?</string>
+    <string name="sk_confirm_unpin_post">Bist du dir sicher, dass du den angehefteten Beitrag von deinem Profil lösen möchtest\?</string>
     <string name="sk_unpinning">Wird vom Profil gelöst…</string>
     <string name="sk_image_description">Bildbeschreibung</string>
     <string name="sk_visibility_unlisted">Nicht gelistet</string>
@@ -37,7 +37,7 @@
     <string name="sk_lists_with_user">Listen mit %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Inhaltswarnungen immer ausklappen</string>
     <string name="sk_disable_marquee">Laufschrift in Titelleisten deaktivieren</string>
-    <string name="sk_disable_dividers">Tröt Trennung deaktivieren</string>
+    <string name="sk_disable_dividers">Beitrags Trennung deaktivieren</string>
     <string name="sk_relocate_publish_button">Veröffentlichen Schaltfläche verschieben</string>
     <string name="sk_settings_contribute">Zu Moshidon beitragen</string>
     <string name="sk_settings_show_federated_timeline">Föderierte Timeline anzeigen</string>
@@ -75,10 +75,10 @@
     <string name="sk_settings_donate">Spenden</string>
     <string name="sk_delete_notification">Benachrichtigung löschen</string>
     <string name="sk_delete_notification_confirm_action">Benachrichtigung löschen</string>
-    <string name="sk_delete_notification_confirm">Benachrichtigung wirklich löschen?</string>
+    <string name="sk_delete_notification_confirm">Benachrichtigung wirklich löschen\?</string>
     <string name="sk_clear_all_notifications">Alle Benachrichtigungen löschen</string>
     <string name="sk_clear_all_notifications_confirm_action">Alle löschen</string>
-    <string name="sk_clear_all_notifications_confirm">Wirklich alle Benachrichtigungen löschen?</string>
+    <string name="sk_clear_all_notifications_confirm">Wirklich alle Benachrichtigungen löschen\?</string>
     <string name="sk_enable_delete_notifications">Löschen von Benachrichtigungen aktivieren</string>
     <string name="sk_settings_publish_button_text">Veröffentlichen-Button-Text</string>
     <string name="sk_settings_publish_button_text_title">Veröffentlichen-Button-Text anpassen</string>
@@ -111,9 +111,9 @@
     <string name="sk_draft">Entwurf</string>
     <string name="sk_schedule">Planen</string>
     <string name="sk_confirm_delete_draft_title">Entwurf löschen</string>
-    <string name="sk_confirm_delete_draft">Möchtest du diesen entworfenen Beitrag wirklich löschen?</string>
+    <string name="sk_confirm_delete_draft">Möchtest du diesen entworfenen Beitrag wirklich löschen\?</string>
     <string name="sk_confirm_delete_scheduled_post_title">Geplanten Beitrag löschen</string>
-    <string name="sk_confirm_delete_scheduled_post">Möchtest du diesen geplanten Beitrag wirklich löschen?</string>
+    <string name="sk_confirm_delete_scheduled_post">Möchtest du diesen geplanten Beitrag wirklich löschen\?</string>
     <string name="sk_draft_or_schedule">Entwurf oder Planen</string>
     <string name="sk_compose_draft">Beitrag wird als Entwurf gespeichert.</string>
     <string name="sk_compose_scheduled">Geplant für</string>
@@ -134,4 +134,5 @@
     <string name="sk_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
     <string name="sk_emoji_recent">Kürzlich verwendet</string>
     <string name="sk_clear_recent_emoji">Kürzlich verwendete Emojis löschen</string>
+    <string name="sk_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion "Veröffentlichen Schaltfläche verschieben", um eine Anpassung zu ermöglichen.</string>
 </resources>
