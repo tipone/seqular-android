@@ -13,10 +13,12 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.accounts.GetWordFilters;
 import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
@@ -25,6 +27,9 @@ import org.joinmastodon.android.model.TranslatedStatus;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.views.LinkedTextView;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
+
+import java.util.List;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -43,12 +48,23 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public boolean translated = false;
 	public TranslatedStatus translation = null;
 	private AccountSession session;
+	private static StatusFilterPredicate statusFilterPredicate;
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status){
 		super(parentID, parentFragment);
 		this.text=text;
 		this.status=status;
 		emojiHelper.setText(text);
+		new GetWordFilters().setCallback(new Callback<List<Filter>>() {
+			@Override
+			public void onSuccess(List<Filter> result) {
+				statusFilterPredicate = new StatusFilterPredicate(result);
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+			}
+		});
 		if(!TextUtils.isEmpty(status.spoilerText)){
 			parsedSpoilerText=HtmlParser.parseCustomEmoji(status.spoilerText, status.emojis);
 			spoilerEmojiHelper=new CustomEmojiHelper();
@@ -111,6 +127,9 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(TextStatusDisplayItem item){
+			if(statusFilterPredicate!=null){
+				statusFilterPredicate.test(item.status);
+			}
 			text.setText(item.translated
 							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
 							: item.text);
@@ -181,7 +200,12 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					rebind();
 				}
 			});
-		}
+			if(statusFilterPredicate!=null){
+				if(!statusFilterPredicate.test(item.status)){
+					text.setText("Filtered");
+				}
+			}
+	}
 
 		@Override
 		public void setImage(int index, Drawable image){
