@@ -102,10 +102,10 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 				case DIRECT -> R.drawable.ic_fluent_mention_24_regular;
 			});
 
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-				visibility.setTooltipText(UiUtils.getVisibilityText(s));
-			}
 			visibility.setContentDescription(UiUtils.getVisibilityText(s));
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				visibility.setTooltipText(visibility.getContentDescription());
+			}
 		}
 
 		@Override

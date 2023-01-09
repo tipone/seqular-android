@@ -130,7 +130,7 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 				playPauseBtn.setImageResource(playing ? R.drawable.ic_fluent_pause_circle_24_filled : R.drawable.ic_fluent_play_circle_24_filled);
 				playPauseBtn.setContentDescription(MastodonApp.context.getResources().getString(playing ? R.string.pause : R.string.play));
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-					playPauseBtn.setTooltipText(MastodonApp.context.getResources().getString(playing ? R.string.pause : R.string.play));
+					playPauseBtn.setTooltipText(playPauseBtn.getContentDescription());
 				}
 				if(!playing){
 					lastRemainingSeconds=-1;
