@@ -139,5 +139,4 @@
 
     <!--    accessibility labels-->
     <string name="sk_poll_option_add">Add new poll option</string>
-    <string name="sk_remove_attachment">Remove attachment</string>
 </resources>
