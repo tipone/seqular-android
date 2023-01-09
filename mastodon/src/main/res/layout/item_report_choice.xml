@@ -11,6 +11,7 @@
 		android:layout_height="24dp"
 		android:layout_alignParentStart="true"
 		android:layout_centerVertical="true"
+		android:importantForAccessibility="no"
 		android:tint="?android:textColorSecondary"
 		android:src="@drawable/ic_round_checkbox"/>
 
