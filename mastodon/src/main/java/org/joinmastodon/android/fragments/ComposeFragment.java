@@ -651,6 +651,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 			replyText.setText(getString(R.string.in_reply_to, replyTo.account.displayName));
 			replyText.setContentDescription(getString(R.string.in_reply_to, replyTo.account.displayName) + ". " + getString(R.string.post_visibility) + ": " + UiUtils.getVisibilityText(replyTo));
+			replyText.setOnClickListener(v->{
+				scrollView.smoothScrollTo(0, 0);
+			});
 
 			ArrayList<String> mentions=new ArrayList<>();
 			String ownID=AccountSessionManager.getInstance().getAccount(accountID).self.id;
