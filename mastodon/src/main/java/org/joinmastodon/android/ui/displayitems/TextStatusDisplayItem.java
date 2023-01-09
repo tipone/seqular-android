@@ -116,10 +116,12 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(TextStatusDisplayItem item){
-//			System.out.println(item.status.filtered.size());
 			text.setText(item.translated
 							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
 							: item.text);
+			if(item.status.filtered.size() > 0){
+				text.setText("Filtered");
+			}
 			text.setTextIsSelectable(item.textSelectable);
 			spoilerTitleInline.setTextIsSelectable(item.textSelectable);
 			text.setInvalidateOnEveryFrame(false);
