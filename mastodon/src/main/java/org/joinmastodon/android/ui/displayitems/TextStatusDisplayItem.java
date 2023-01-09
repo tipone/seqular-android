@@ -48,23 +48,12 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public boolean translated = false;
 	public TranslatedStatus translation = null;
 	private AccountSession session;
-	private static StatusFilterPredicate statusFilterPredicate;
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status){
 		super(parentID, parentFragment);
 		this.text=text;
 		this.status=status;
 		emojiHelper.setText(text);
-		new GetWordFilters().setCallback(new Callback<List<Filter>>() {
-			@Override
-			public void onSuccess(List<Filter> result) {
-				statusFilterPredicate = new StatusFilterPredicate(result);
-			}
-
-			@Override
-			public void onError(ErrorResponse error) {
-			}
-		});
 		if(!TextUtils.isEmpty(status.spoilerText)){
 			parsedSpoilerText=HtmlParser.parseCustomEmoji(status.spoilerText, status.emojis);
 			spoilerEmojiHelper=new CustomEmojiHelper();
@@ -127,9 +116,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(TextStatusDisplayItem item){
-			if(statusFilterPredicate!=null){
-				statusFilterPredicate.test(item.status);
-			}
+//			System.out.println(item.status.filtered.size());
 			text.setText(item.translated
 							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
 							: item.text);
@@ -200,11 +187,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					rebind();
 				}
 			});
-			if(statusFilterPredicate!=null){
-				if(!statusFilterPredicate.test(item.status)){
-					text.setText("Filtered");
-				}
-			}
 	}
 
 		@Override
