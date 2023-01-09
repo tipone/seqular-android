@@ -18,6 +18,8 @@
 
     <ImageView
         android:id="@+id/send_error"
+        android:tooltipText="@string/sk_sending_error"
+        android:contentDescription="@string/sk_sending_error"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"

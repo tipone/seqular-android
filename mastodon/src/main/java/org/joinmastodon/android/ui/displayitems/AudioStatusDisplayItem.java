@@ -1,6 +1,7 @@
 package org.joinmastodon.android.ui.displayitems;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.SystemClock;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import org.joinmastodon.android.AudioPlayerService;
+import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Attachment;
@@ -126,6 +128,10 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 				lastKnownPositionTime=SystemClock.uptimeMillis();
 				this.playing=playing;
 				playPauseBtn.setImageResource(playing ? R.drawable.ic_fluent_pause_circle_24_filled : R.drawable.ic_fluent_play_circle_24_filled);
+				playPauseBtn.setContentDescription(MastodonApp.context.getResources().getString(playing ? R.string.pause : R.string.play));
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+					playPauseBtn.setTooltipText(playPauseBtn.getContentDescription());
+				}
 				if(!playing){
 					lastRemainingSeconds=-1;
 					time.setText(formatDuration((int) item.attachment.getDuration()));
