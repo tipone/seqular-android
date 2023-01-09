@@ -160,6 +160,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, NOTIFICATION_ID, builder.build());
+		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : (int)System.currentTimeMillis(), builder.build());
 	}
 }
