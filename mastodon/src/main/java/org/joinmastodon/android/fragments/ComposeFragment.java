@@ -307,12 +307,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 			draftsBtn=view.findViewById(R.id.drafts_btn);
 			draftsBtn.setVisibility(View.VISIBLE);
+		} else {
+			charCounter=view.findViewById(R.id.char_counter);
+			charCounter.setVisibility(View.VISIBLE);
+			charCounter.setText(String.valueOf(charLimit));
 		}
 
 		mainEditText=view.findViewById(R.id.toot_text);
 		mainEditTextWrap=view.findViewById(R.id.toot_text_wrap);
-		charCounter=view.findViewById(R.id.char_counter);
-		charCounter.setText(String.valueOf(charLimit));
 		scrollView=view.findViewById(R.id.scroll_view);
 
 		selfName=view.findViewById(R.id.self_name);
@@ -588,10 +590,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 						scrollView.post(() -> {
 							int bottom = scrollView.getChildAt(0).getBottom();
 							int delta = bottom - (scrollView.getScrollY() + scrollView.getHeight());
-							int space = GlobalUserPreferences.reduceMotion ? 0 : Math.min(V.dp(120), delta);
+							int space = GlobalUserPreferences.reduceMotion ? 0 : Math.min(V.dp(70), delta);
 							scrollView.scrollBy(0, delta - space);
 							if (!GlobalUserPreferences.reduceMotion) {
-								scrollView.postDelayed(() -> scrollView.smoothScrollBy(0, space), 100);
+								scrollView.postDelayed(() -> scrollView.smoothScrollBy(0, space), 130);
 							}
 						});
 					}
@@ -621,6 +623,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				Bundle args=new Bundle();
 				args.putString("account", accountID);
 				args.putParcelable("profileAccount", Parcels.wrap(replyTo.account));
+				imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 				Nav.go(getActivity(), ProfileFragment.class, args);
 			});
 
@@ -651,6 +654,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 			replyText.setText(getString(R.string.in_reply_to, replyTo.account.displayName));
 			replyText.setContentDescription(getString(R.string.in_reply_to, replyTo.account.displayName) + ". " + getString(R.string.post_visibility) + ": " + UiUtils.getVisibilityText(replyTo));
+			replyText.setOnClickListener(v->{
+				scrollView.smoothScrollTo(0, 0);
+			});
 
 			ArrayList<String> mentions=new ArrayList<>();
 			String ownID=AccountSessionManager.getInstance().getAccount(accountID).self.id;
@@ -748,6 +754,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 			draftsBtn = wrap.findViewById(R.id.drafts_btn);
 			draftsBtn.setVisibility(View.VISIBLE);
+		}else{
+			charCounter = wrap.findViewById(R.id.char_counter);
+			charCounter.setVisibility(View.VISIBLE);
+			charCounter.setText(String.valueOf(charLimit));
 		}
 
 //		draftsBtn = wrap.findViewById(R.id.drafts_btn);

@@ -16,7 +16,8 @@ import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
-import org.joinmastodon.android.fragments.onboarding.CustomLoginFragment;
+import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
+import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
@@ -33,7 +34,7 @@ public class MainActivity extends FragmentStackActivity{
 
 		if(savedInstanceState==null){
 			if(AccountSessionManager.getInstance().getLoggedInAccounts().isEmpty()){
-				showFragmentClearingBackStack(new CustomLoginFragment());
+				showFragmentClearingBackStack(new CustomWelcomeFragment());
 			}else{
 				AccountSessionManager.getInstance().maybeUpdateLocalInfo();
 				AccountSession session;
