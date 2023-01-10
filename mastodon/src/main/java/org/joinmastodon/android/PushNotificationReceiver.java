@@ -130,14 +130,14 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
 		contentIntent.putExtra("accountID", accountID);
-		contentIntent.putExtra("notificationID", notificationID);
+		contentIntent.putExtra("notificationID", notificationId);
 		if(notification!=null){
 			contentIntent.putExtra("notification", Parcels.wrap(notification));
 		}
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
 				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
-				.setContentIntent(PendingIntent.getActivity(context, notificationID, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
+				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
 				.setWhen(notification==null ? System.currentTimeMillis() : notification.createdAt.toEpochMilli())
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
