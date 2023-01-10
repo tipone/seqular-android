@@ -142,10 +142,12 @@
     <string name="sk_keep_only_latest_notification">Keep only latest notification</string>
     <string name="sk_announcements">Announcements</string>
     <string name="sk_mark_as_read">Mark as read</string>
+    <string name="sk_settings_about_instance">About instance</string>
 
     <!--    accessibility labels-->
     <string name="sk_poll_option_add">Add new poll option</string>
     <string name="sk_fab_compose">Compose</string>
     <string name="sk_sending_error">Error publishing</string>
+
 
 </resources>
