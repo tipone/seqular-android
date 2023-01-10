@@ -137,6 +137,6 @@
     <string name="sk_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion "Veröffentlichen Schaltfläche verschieben", um eine Anpassung zu ermöglichen.</string>
     <string name="sk_keep_only_latest_notification">Nur neueste Benachrichtigung behalten</string>
     <string name="sk_poll_option_add">Neue Umfrageoption hinzufügen</string>
-    <string name="sk_fab_compose">Fehler beim Veröffentlichen</string>
+    <string name="sk_fab_compose">Verfassen</string>
     <string name="sk_sending_error">Fehler beim Veröffentlichen</string>
 </resources>
