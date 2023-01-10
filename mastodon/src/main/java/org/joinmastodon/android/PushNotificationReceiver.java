@@ -37,8 +37,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String TAG="PushNotificationReceive";
 
 	public static final int NOTIFICATION_ID=178;
-
-	private static int notificationID;
+	private static int notificationId = 0;
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -127,9 +126,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		}
 		Drawable avatar=ImageCache.getInstance(context).get(new UrlImageLoaderRequest(pn.icon, V.dp(50), V.dp(50)));
-
-		notificationID = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : (int)System.currentTimeMillis();
-
 		Intent contentIntent=new Intent(context, MainActivity.class);
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
@@ -166,6 +162,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, notificationID, builder.build());
+		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());
 	}
 }
