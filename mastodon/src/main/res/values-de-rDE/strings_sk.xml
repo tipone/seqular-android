@@ -136,6 +136,8 @@
     <string name="sk_clear_recent_emoji">Kürzlich verwendete Emojis löschen</string>
     <string name="sk_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion "Veröffentlichen Schaltfläche verschieben", um eine Anpassung zu ermöglichen.</string>
     <string name="sk_keep_only_latest_notification">Nur neueste Benachrichtigung behalten</string>
+    <string name="sk_announcements">Ankündigungen</string>
+    <string name="sk_mark_as_read">Als gelesen markieren</string>
     <string name="sk_poll_option_add">Neue Umfrageoption hinzufügen</string>
     <string name="sk_fab_compose">Verfassen</string>
     <string name="sk_sending_error">Fehler beim Veröffentlichen</string>
