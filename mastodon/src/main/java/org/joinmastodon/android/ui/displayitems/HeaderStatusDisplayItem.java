@@ -11,6 +11,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -353,7 +354,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				desc = item.parentFragment.getString(R.string.sk_mark_as_read);
 				more.animate().alpha(alpha);
 				unreadIndicator.animate().alpha(alpha);
+				more.setEnabled(!item.announcement.read);
 				more.setOnClickListener(v -> {
+					if (item.announcement.read) return;
 					new DismissAnnouncement(item.announcement.id).setCallback(new Callback<>() {
 						@Override
 						public void onSuccess(Object o) {
