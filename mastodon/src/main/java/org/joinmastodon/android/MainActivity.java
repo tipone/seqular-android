@@ -57,7 +57,7 @@ public class MainActivity extends FragmentStackActivity{
 				fragment.setArguments(args);
 				showFragmentClearingBackStack(fragment);
 				if(intent.getBooleanExtra("fromNotification", false) && intent.hasExtra("notification")){
-					Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"+intent.getParcelableExtra("notificationID")));
+					Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
 					showFragmentForNotification(notification, session.getID());
 				}else if(intent.getBooleanExtra("compose", false)){
 					showCompose();
