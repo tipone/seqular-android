@@ -38,6 +38,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 	public static final int NOTIFICATION_ID=178;
 
+	private static int notificationID;
+
 	@Override
 	public void onReceive(Context context, Intent intent){
 		if(BuildConfig.DEBUG){
@@ -125,12 +127,16 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		}
 		Drawable avatar=ImageCache.getInstance(context).get(new UrlImageLoaderRequest(pn.icon, V.dp(50), V.dp(50)));
+
+		notificationID = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : (int)System.currentTimeMillis();
+
 		Intent contentIntent=new Intent(context, MainActivity.class);
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
 		contentIntent.putExtra("accountID", accountID);
+		contentIntent.putExtra("notificationID", notificationID);
 		if(notification!=null){
-			contentIntent.putExtra("notification", Parcels.wrap(notification));
+			contentIntent.putExtra("notification" + notificationID, Parcels.wrap(notification));
 		}
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
@@ -160,6 +166,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : (int)System.currentTimeMillis(), builder.build());
+		nm.notify(accountID, notificationID, builder.build());
 	}
 }
