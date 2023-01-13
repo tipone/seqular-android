@@ -55,9 +55,9 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private DiscoverNewsFragment newsFragment;
 	private DiscoverAccountsFragment accountsFragment;
 	private SearchFragment searchFragment;
-//	private LocalTimelineFragment localTimelineFragment;
-//	private FederatedTimelineFragment federatedTimelineFragment;
-//	private ListTimelinesFragment listTimelinesFragment;
+	private LocalTimelineFragment localTimelineFragment;
+	private FederatedTimelineFragment federatedTimelineFragment;
+	private ListTimelinesFragment listTimelinesFragment;
 
 	private String accountID;
 	private Runnable searchDebouncer=this::onSearchChangedDebounced;

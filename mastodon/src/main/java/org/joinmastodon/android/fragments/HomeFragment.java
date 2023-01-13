@@ -316,7 +316,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		} else {
 			return homeTabFragment.onBackPressed();
 		}
-		return false;
 	}
 
 	@Override
