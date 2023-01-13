@@ -482,7 +482,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 
 		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
-			noteEditConfirm.setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
+			if (hasFocus) {
+				noteEditConfirm.setVisibility(View.VISIBLE);
+				noteEditConfirm.animate()
+						.alpha(1.0f)
+						.setDuration(400);
+
+			} else {
+				noteEditConfirm.setVisibility(View.INVISIBLE);
+				noteEditConfirm.animate()
+						.alpha(0.0f)
+						.setDuration(400);
+
+			}
 		});
 
 		noteEditConfirm.setOnClickListener((v -> {
