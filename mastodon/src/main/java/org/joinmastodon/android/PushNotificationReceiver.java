@@ -37,6 +37,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String TAG="PushNotificationReceive";
 
 	public static final int NOTIFICATION_ID=178;
+	private static final int SUMMARY_ID = 791;
 	private static int notificationId = 0;
 
 	@Override
@@ -98,6 +99,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		String accountName="@"+self.username+"@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 		Notification.Builder builder;
+		Notification.Builder summaryNotification;
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 			boolean hasGroup=false;
 			List<NotificationChannelGroup> channelGroups=nm.getNotificationChannelGroups();
@@ -120,8 +122,12 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				nm.createNotificationChannels(channels);
 			}
 			builder=new Notification.Builder(context, accountID+"_"+pn.notificationType);
+			summaryNotification=new Notification.Builder(context, accountID);
 		}else{
 			builder=new Notification.Builder(context)
+					.setPriority(Notification.PRIORITY_DEFAULT)
+					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+			summaryNotification=new Notification.Builder(context)
 					.setPriority(Notification.PRIORITY_DEFAULT)
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		}
@@ -134,14 +140,19 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(notification!=null){
 			contentIntent.putExtra("notification", Parcels.wrap(notification));
 		}
+
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
-				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
+				.setContentTitle(pn.title)
+				.setStyle(new Notification.InboxStyle()
+						.addLine(pn.body)
+						.setSummaryText(accountName))
 				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
 				.setWhen(notification==null ? System.currentTimeMillis() : notification.createdAt.toEpochMilli())
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
+				.setGroup(accountID)
 				.setColor(context.getColor(R.color.shortcut_icon_background));
 		if(!GlobalUserPreferences.uniformNotificationIcon){
 			switch (pn.notificationType) {
@@ -162,6 +173,28 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());
+
+		 summaryNotification.setContentTitle(accountName)
+				//set content text to support devices running API level < 24
+				.setContentText(accountName)
+				 .setSmallIcon(R.drawable.ic_ntf_logo)
+				 //build summary info into InboxStyle template
+				.setStyle(new Notification.InboxStyle()
+						.addLine(pn.title)
+						.setBigContentTitle("2 new messages")
+						.setSummaryText(accountName))
+				//specify which group this notification belongs to
+				.setGroup(accountID)
+				//set this notification as the summary for the group
+				.setGroupSummary(true)
+				.build();
+
+
+
+		notificationId++;
+//		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
+		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
+		nm.notify(SUMMARY_ID, summaryNotification.build());
+
 	}
 }
