@@ -4,7 +4,9 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/refresh_layout"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent">
+	android:layout_height="match_parent"
+	android:focusableInTouchMode="true"
+	android:focusable="true">
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -282,15 +284,19 @@
 							android:elevation="0dp"
 							android:hint="@string/sk_personal_note"/>
 
-<!--						<ImageButton-->
-<!--							android:id="@+id/note_edit_confirm"-->
-<!--							android:layout_width="wrap_content"-->
-<!--							android:layout_height="wrap_content"-->
-<!--							android:src="@drawable/ic_fluent_checkmark_24_regular"-->
-<!--							android:backgroundTint="#00000000"-->
-<!--							android:layout_marginTop="2dp"-->
-<!--							android:layout_marginEnd="10dp"-->
-<!--							android:layout_gravity="right|center_vertical" />-->
+						<ImageButton
+							android:id="@+id/note_edit_confirm"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:src="@drawable/ic_fluent_checkmark_24_filled"
+							android:backgroundTint="#00000000"
+							android:layout_marginTop="2dp"
+							android:visibility="invisible"
+							android:layout_marginEnd="20dp"
+							android:layout_gravity="right|center_vertical"
+							android:tooltipText="@string/sk_personal_note_confirm"
+							android:contentDescription="@string/sk_personal_note_confirm" />
+
 
                     </FrameLayout>
 

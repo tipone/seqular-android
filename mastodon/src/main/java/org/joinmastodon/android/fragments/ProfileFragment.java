@@ -4,8 +4,10 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Outline;
@@ -14,19 +16,24 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -176,8 +183,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
 		noteEdit=content.findViewById(R.id.note_edit);
-//		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
-//		noteEditConfirm.setOnClickListener(v->onClickNoteSave());
+		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
 		noteEditWrapper=content.findViewById(R.id.note_edit_wrap);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
@@ -445,14 +451,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
-//		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
-//			if(!hasFocus){
-////					Toast.makeText(getActivity(), "Its going here", Toast.LENGTH_LONG).show();
-//				savePrivateNote();
-////				noteEdit.setOnFocusChangeListener(savePrivateNote());
-//			}
-//		});
-		noteEdit.setOnClickListener(v->savePrivateNote());
 
 		if(account.locked){
 			ssb=new SpannableStringBuilder("@");
@@ -472,7 +470,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			username.setText('@'+account.acct+(isSelf ? ('@'+AccountSessionManager.getInstance().getAccount(accountID).domain) : ""));
 		}
 		CharSequence parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
-		bio.setOnClickListener(v->savePrivateNote());
+//		bio.setOnClickListener(v->savePrivateNote());
 		if(TextUtils.isEmpty(parsedBio)){
 			bio.setVisibility(View.GONE);
 		}else{
@@ -483,6 +481,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(isOwnProfile){
 			noteEditWrapper.setVisibility(View.GONE);
 		}
+
+		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
+			noteEditConfirm.setVisibility(hasFocus ? View.VISIBLE : View.INVISIBLE);
+		});
+
+		noteEditConfirm.setOnClickListener((v -> {
+			if (!noteEdit.getText().toString().trim().equals(account.note)) {
+				savePrivateNote();
+			}
+			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
+			noteEdit.clearFocus();
+		}));
 
 //		if(noteEdit.getText().toString() == null){
 //			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_regular);
@@ -1000,11 +1011,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<>(this) {
 			@Override
 			public void onSuccess(Relationship result) {
-				relationship=result;
-				updateRelationship();
-				Toast.makeText(getActivity(), "Success", Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), "Successfully updated note", Toast.LENGTH_LONG).show();
 			}
-		});
+		}).exec(accountID);
 	}
 
 	private void onFollowersOrFollowingClick(View v){
