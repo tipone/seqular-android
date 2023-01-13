@@ -5,6 +5,10 @@ import android.app.NotificationManager;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
+import android.service.notification.StatusBarNotification;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -312,6 +316,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		} else {
 			return homeTabFragment.onBackPressed();
 		}
+		return false;
 	}
 
 	@Override
@@ -319,10 +324,16 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		super.onSaveInstanceState(outState);
 		outState.putInt("selectedTab", currentTab);
 
-		if (homeTabFragment.isAdded()) getChildFragmentManager().putFragment(outState, "homeTabFragment", homeTabFragment);
-		if (searchFragment.isAdded()) getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
-		if (notificationsFragment.isAdded()) getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
-		if (profileFragment.isAdded()) getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+		try {
+			getChildFragmentManager().putFragment(outState, "homeTabFragment", homeTabFragment);
+			getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
+			getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
+			getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+		} catch (IllegalStateException ex) {
+			// java.lang.IllegalStateException: Fragment HomeTabFragment{3447cad} is not currently in the FragmentManager
+			// no idea how to fix this :/
+			Log.e(HomeFragment.class.getSimpleName(), ex.getMessage());
+		}
 
 //		getChildFragmentManager().putFragment(outState, "homeTimelineFragment", homeTimelineFragment);
 //		getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
