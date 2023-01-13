@@ -470,7 +470,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			username.setText('@'+account.acct+(isSelf ? ('@'+AccountSessionManager.getInstance().getAccount(accountID).domain) : ""));
 		}
 		CharSequence parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
-//		bio.setOnClickListener(v->savePrivateNote());
 		if(TextUtils.isEmpty(parsedBio)){
 			bio.setVisibility(View.GONE);
 		}else{
@@ -494,16 +493,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
 			noteEdit.clearFocus();
 		}));
-
-//		if(noteEdit.getText().toString() == null){
-//			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_regular);
-//			noteEditConfirm.setClickable(false);
-//			noteEditConfirm.setAlpha(.50f);
-//		}else{
-//			noteEditConfirm.setImageResource(R.drawable.ic_fluent_checkmark_24_filled);
-//			noteEditConfirm.setClickable(true);
-//			noteEditConfirm.setAlpha(1.0f);
-//		}
 
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
@@ -1008,10 +997,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void savePrivateNote(){
-		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new SimpleCallback<>(this) {
+		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(Relationship result) {
-				Toast.makeText(getActivity(), "Successfully updated note", Toast.LENGTH_LONG).show();
+			}
+
+			@Override
+			public void onError(ErrorResponse result) {
+				Toast.makeText(getActivity(), getString(R.string.sk_personal_note_update_failed), Toast.LENGTH_LONG).show();
 			}
 		}).exec(accountID);
 	}
