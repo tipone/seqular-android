@@ -104,13 +104,11 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 				noteEditConfirm.animate()
 						.alpha(1.0f)
 						.setDuration(700);
-
 			} else {
-				noteEditConfirm.setVisibility(View.INVISIBLE);
 				noteEditConfirm.animate()
 						.alpha(0.0f)
 						.setDuration(700);
-
+				noteEditConfirm.setVisibility(View.INVISIBLE);
 			}
 		});
 
