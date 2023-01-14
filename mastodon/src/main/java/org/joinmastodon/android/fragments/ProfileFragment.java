@@ -27,16 +27,13 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -51,7 +48,6 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
-import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
@@ -112,9 +108,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private SwipeRefreshLayout refreshLayout;
 	private CoverOverlayGradientDrawable coverGradient=new CoverOverlayGradientDrawable();
 	private float titleTransY;
-	private View postsBtn, followersBtn, followingBtn, noteEditWrapper;
-	private EditText nameEdit, bioEdit, noteEdit;
-	private ImageButton noteEditConfirm;
+	private View postsBtn, followersBtn, followingBtn;
+	private EditText nameEdit, bioEdit;
 	private ProgressBar actionProgress, notifyProgress;
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
@@ -177,9 +172,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		name=content.findViewById(R.id.name);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
-		noteEdit=content.findViewById(R.id.note_edit);
-		noteEditConfirm=content.findViewById(R.id.note_edit_confirm);
-		noteEditWrapper=content.findViewById(R.id.note_edit_wrap);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
 		followersBtn=content.findViewById(R.id.followers_btn);
@@ -472,34 +464,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			bio.setText(parsedBio);
 		}
 
-		if(isOwnProfile){
-			noteEditWrapper.setVisibility(View.GONE);
-		}
-
-		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
-			if (hasFocus) {
-				noteEditConfirm.setVisibility(View.VISIBLE);
-				noteEditConfirm.animate()
-						.alpha(1.0f)
-						.setDuration(700);
-
-			} else {
-				noteEditConfirm.setVisibility(View.INVISIBLE);
-				noteEditConfirm.animate()
-						.alpha(0.0f)
-						.setDuration(700);
-
-			}
-		});
-
-		noteEditConfirm.setOnClickListener((v -> {
-			if (!noteEdit.getText().toString().trim().equals(account.note)) {
-				savePrivateNote();
-			}
-			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
-			noteEdit.clearFocus();
-		}));
 
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
@@ -697,7 +661,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		notifyProgress.setIndeterminateTintList(notifyButton.getTextColors());
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
-		noteEdit.setText(relationship.note);
+		if (!isOwnProfile) {
+			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
+		}
 		if (getActivity() != null) notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
 	}
 
@@ -1001,19 +967,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void scrollToTop(){
 		getScrollableRecyclerView().scrollToPosition(0);
 		scrollView.smoothScrollTo(0, 0);
-	}
-
-	private void savePrivateNote(){
-		currentRequest = new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
-			@Override
-			public void onSuccess(Relationship result) {
-			}
-
-			@Override
-			public void onError(ErrorResponse result) {
-				Toast.makeText(getActivity(), getString(R.string.sk_personal_note_update_failed), Toast.LENGTH_LONG).show();
-			}
-		}).exec(accountID);
 	}
 
 	private void onFollowersOrFollowingClick(View v){
