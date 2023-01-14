@@ -20,7 +20,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public Instant createdAt;
 	@RequiredField
 	public Account account;
-//	@RequiredField
+	//	@RequiredField
 	public String content;
 	@RequiredField
 	public StatusPrivacy visibility;
@@ -40,7 +40,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public long favouritesCount;
 	public long repliesCount;
 	public Instant editedAt;
-	public boolean wantsTranslation;
+	public List<FilterResult> filtered;
 
 	public String url;
 	public String inReplyToId;
@@ -50,7 +50,6 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public Card card;
 	public String language;
 	public String text;
-	public String translation;
 
 	public boolean favourited;
 	public boolean reblogged;

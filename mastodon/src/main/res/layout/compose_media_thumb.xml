@@ -28,6 +28,8 @@
 			android:layout_marginTop="2dp"
 			android:layout_marginStart="2dp"
 			android:background="?android:selectableItemBackgroundBorderless"
+			android:contentDescription="@string/delete"
+			android:tooltipText="@string/delete"
 			android:tint="#D92C2C"
 			android:src="@drawable/ic_fluent_delete_20_regular"/>
 
@@ -105,7 +107,7 @@
 				android:layout_below="@id/retry_or_cancel_upload"
 				android:layout_marginTop="16dp"
 				android:textColor="?colorGray200"
-				android:textSize="14dp"
+				android:textSize="14sp"
 				android:gravity="center_horizontal"
 				android:singleLine="true"
 				android:ellipsize="end"
@@ -137,6 +139,7 @@
 			android:background="?android:selectableItemBackgroundBorderless"
 			android:tint="#D92C2C"
 			android:contentDescription="@string/delete"
+			android:tooltipText="@string/delete"
 			android:src="@drawable/ic_fluent_delete_20_regular"/>
 
 	</FrameLayout>

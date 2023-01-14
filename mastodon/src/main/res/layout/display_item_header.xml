@@ -14,11 +14,25 @@
 		android:layout_alignParentTop="true"
 		android:layout_alignParentEnd="true"
 		android:layout_marginTop="-6dp"
-		android:layout_marginRight="-8dp"
+		android:layout_marginEnd="-8dp"
 		android:background="?android:selectableItemBackgroundBorderless"
 		android:contentDescription="@string/more_options"
 		android:scaleType="center"
-		android:src="@drawable/ic_post_more"
+		android:src="@drawable/ic_fluent_more_vertical_20_filled"
+		android:tint="?android:textColorSecondary" />
+
+	<ImageView
+		android:id="@+id/delete_notification"
+		android:layout_width="36dp"
+		android:layout_height="36dp"
+		android:layout_marginTop="-6dp"
+		android:layout_marginEnd="2dp"
+		android:layout_toStartOf="@id/more"
+		android:visibility="gone"
+		android:background="?android:selectableItemBackgroundBorderless"
+		android:contentDescription="@string/sk_delete_notification"
+		android:scaleType="center"
+		android:src="@drawable/ic_fluent_dismiss_20_filled"
 		android:tint="?android:textColorSecondary" />
 
 	<ImageView
@@ -26,17 +40,28 @@
 		android:layout_width="36dp"
 		android:layout_height="36dp"
 		android:layout_marginTop="-6dp"
-		android:layout_marginRight="6dp"
-		android:layout_toLeftOf="@id/more"
+		android:layout_marginEnd="2dp"
+		android:layout_toStartOf="@id/delete_notification"
 		android:background="?android:selectableItemBackgroundBorderless"
 		android:scaleType="center"
 		android:src="@drawable/ic_visibility"
 		android:tint="?android:textColorSecondary" />
 
 	<ImageView
+		android:id="@+id/unread_indicator"
+		android:layout_width="36dp"
+		android:layout_height="36dp"
+		android:layout_marginTop="-6dp"
+		android:layout_toStartOf="@id/visibility"
+		android:visibility="gone"
+		android:tint="?android:colorAccent"
+		android:scaleType="center"
+		android:src="@drawable/ic_fluent_circle_small_20_filled" />
+
+	<ImageView
 		android:id="@+id/avatar"
-		android:layout_width="46dp"
-		android:layout_height="46dp"
+		android:layout_width="46sp"
+		android:layout_height="46sp"
 		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
 		android:layout_marginEnd="12dp" />
@@ -44,15 +69,17 @@
 	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/name_wrap"
 		android:layout_width="match_parent"
-		android:layout_height="24dp"
-		android:layout_marginEnd="8dp"
-		android:layout_toStartOf="@id/visibility"
-		android:layout_toEndOf="@id/avatar">
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="12dp"
+		android:layout_marginTop="2sp"
+		android:layout_toStartOf="@id/unread_indicator"
+		android:layout_toEndOf="@id/avatar"
+		android:minHeight="24sp">
 
 		<TextView
 			android:id="@+id/name"
 			android:layout_width="wrap_content"
-			android:layout_height="24dp"
+			android:layout_height="wrap_content"
 			android:ellipsize="end"
 			android:singleLine="true"
 			android:textAlignment="viewStart"
@@ -62,7 +89,7 @@
 		<TextView
 			android:id="@+id/extra_text"
 			android:layout_width="wrap_content"
-			android:layout_height="24dp"
+			android:layout_height="wrap_content"
 			android:layout_marginStart="8dp"
 			android:ellipsize="end"
 			android:fontFamily="sans-serif"
@@ -75,18 +102,19 @@
 
 	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="20dp"
+		android:layout_height="wrap_content"
 		android:layout_below="@id/name_wrap"
 		android:layout_marginEnd="8dp"
-		android:layout_toStartOf="@id/visibility"
+		android:layout_toStartOf="@id/unread_indicator"
 		android:layout_toEndOf="@id/avatar"
 		android:layoutDirection="locale"
+		android:minHeight="20sp"
 		android:orientation="horizontal">
 
 		<TextView
 			android:id="@+id/username"
 			android:layout_width="wrap_content"
-			android:layout_height="20dp"
+			android:layout_height="wrap_content"
 			android:ellipsize="end"
 			android:singleLine="true"
 			android:textAppearance="@style/m3_title_small"
@@ -95,9 +123,9 @@
 		<TextView
 			android:id="@+id/separator"
 			android:layout_width="wrap_content"
-			android:layout_height="20dp"
-			android:layout_marginLeft="4dp"
-			android:layout_marginRight="4dp"
+			android:layout_height="wrap_content"
+			android:layout_marginLeft="4sp"
+			android:layout_marginRight="4sp"
 			android:importantForAccessibility="no"
 			android:text="·"
 			android:textAppearance="@style/m3_title_small" />
@@ -105,7 +133,7 @@
 		<TextView
 			android:id="@+id/timestamp"
 			android:layout_width="wrap_content"
-			android:layout_height="20dp"
+			android:layout_height="wrap_content"
 			android:singleLine="true"
 			android:textAppearance="@style/m3_title_small"
 			tools:text="3h" />

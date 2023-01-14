@@ -156,6 +156,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 	}
 
+	private String getPrefilledText() {
+		return account == null || AccountSessionManager.getInstance().isSelf(accountID, account)
+				? null : '@'+account.acct+' ';
+	}
+
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
@@ -178,6 +183,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingCount=content.findViewById(R.id.following_count);
 		followingLabel=content.findViewById(R.id.following_label);
 		followingBtn=content.findViewById(R.id.following_btn);
+
 		postsCount=content.findViewById(R.id.posts_count);
 		postsLabel=content.findViewById(R.id.posts_label);
 		postsBtn=content.findViewById(R.id.posts_btn);
@@ -267,6 +273,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover.setOnClickListener(this::onCoverClick);
 		refreshLayout.setOnRefreshListener(this);
 		fab.setOnClickListener(this::onFabClick);
+		fab.setOnLongClickListener(v->UiUtils.pickAccountForCompose(getActivity(), accountID, getPrefilledText()));
 
 		if(loaded){
 			bindHeaderView();
@@ -279,12 +286,16 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followersBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 
+		if (account != null && account.bot) {
+			username.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_bot_24_filled, 0, 0, 0);
+		}
+
 		username.setOnLongClickListener(v->{
-			String username=account.acct;
-			if(!username.contains("@")){
-				username+="@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
+			String usernameString=account.acct;
+			if(!usernameString.contains("@")){
+				usernameString+="@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 			}
-			UiUtils.copyText(getActivity(), '@'+username);
+			UiUtils.copyText(username, '@'+usernameString);
 			return true;
 		});
 
@@ -544,17 +555,29 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
-		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getDisplayUsername()));
+		if(isOwnProfile){
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled, R.id.share);
+		}else{
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled);
+		}
+		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
 		if(isOwnProfile)
 			return;
 
-		menu.findItem(R.id.mute).setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getDisplayUsername()));
-		menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getDisplayUsername()));
-		menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getDisplayUsername()));
+		MenuItem mute = menu.findItem(R.id.mute);
+		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
+		UiUtils.insetPopupMenuIcon(getContext(), mute);
+
+		menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
+		menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getShortUsername()));
 		MenuItem manageUserLists=menu.findItem(R.id.manage_user_lists);
 		if(relationship.following) {
-			menu.findItem(R.id.hide_boosts).setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getDisplayUsername()));
-			manageUserLists.setTitle(getString(R.string.sk_lists_with_user, account.getDisplayUsername()));
+			MenuItem hideBoosts = menu.findItem(R.id.hide_boosts);
+			hideBoosts.setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getShortUsername()));
+			hideBoosts.setIcon(relationship.showingReblogs ? R.drawable.ic_fluent_arrow_repeat_all_off_24_regular : R.drawable.ic_fluent_arrow_repeat_all_24_regular);
+			UiUtils.insetPopupMenuIcon(getContext(), hideBoosts);
+			manageUserLists.setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername()));
 			manageUserLists.setVisible(true);
 		}else {
 			menu.findItem(R.id.hide_boosts).setVisible(false);
@@ -623,6 +646,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			Nav.go(getActivity(), FollowedHashtagsFragment.class, args);
+		}else if(id==R.id.scheduled){
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			Nav.go(getActivity(), ScheduledStatusListFragment.class, args);
 		}
 		return true;
 	}
@@ -937,9 +964,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		if(!AccountSessionManager.getInstance().isSelf(accountID, account)){
-			args.putString("prefilledText", '@'+account.acct+' ');
-		}
+		if(getPrefilledText() != null) args.putString("prefilledText", getPrefilledText());
 		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 

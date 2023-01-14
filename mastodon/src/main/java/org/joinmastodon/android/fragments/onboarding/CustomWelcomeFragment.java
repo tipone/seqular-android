@@ -36,10 +36,10 @@ import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class CustomLoginFragment extends InstanceCatalogFragment {
+public class CustomWelcomeFragment extends InstanceCatalogFragment {
 	private View headerView;
 
-	public CustomLoginFragment() {
+	public CustomWelcomeFragment() {
 		super(R.layout.fragment_welcome_custom, 1);
 	}
 
@@ -55,9 +55,9 @@ public class CustomLoginFragment extends InstanceCatalogFragment {
 		dataLoaded();
 	}
 
-//	@Override
+	@Override
 	protected void onUpdateToolbar(){
-//		super.onUpdateToolbar();
+		super.onUpdateToolbar();
 
 		if (!canGoBack()) {
 			ImageView toolbarLogo=new ImageView(getActivity());
@@ -137,9 +137,11 @@ public class CustomLoginFragment extends InstanceCatalogFragment {
 
 		headerView.findViewById(R.id.more).setVisibility(View.GONE);
 		headerView.findViewById(R.id.visibility).setVisibility(View.GONE);
-		((TextView) headerView.findViewById(R.id.username)).setText("@moshidon");
+		headerView.findViewById(R.id.separator).setVisibility(View.GONE);
+		headerView.findViewById(R.id.timestamp).setVisibility(View.GONE);
+		headerView.findViewById(R.id.unread_indicator).setVisibility(View.GONE);
+		((TextView) headerView.findViewById(R.id.username)).setText(R.string.sk_app_username);
 		((TextView) headerView.findViewById(R.id.name)).setText(R.string.sk_app_name);
-		((TextView) headerView.findViewById(R.id.timestamp)).setText(R.string.time_now);
 		((ImageView) headerView.findViewById(R.id.avatar)).setImageDrawable(getActivity().getDrawable(R.mipmap.ic_launcher));
 		((FragmentStackActivity) getActivity()).invalidateSystemBarColors(this);
 
@@ -168,7 +170,7 @@ public class CustomLoginFragment extends InstanceCatalogFragment {
 		return mergeAdapter;
 	}
 
-	private class InstancesAdapter extends UsableRecyclerView.Adapter<InstanceViewHolder>{
+	private class InstancesAdapter extends UsableRecyclerView.Adapter<InstanceViewHolder> {
 		public InstancesAdapter(){
 			super(imgLoader);
 		}
@@ -204,11 +206,6 @@ public class CustomLoginFragment extends InstanceCatalogFragment {
 
 		public InstanceViewHolder(){
 			super(getActivity(), R.layout.item_instance_custom, list);
-
-//			itemView.setPadding(V.dp(16), V.dp(16), V.dp(16), V.dp(16));
-//			TypedValue value = new TypedValue();
-//			getActivity().getTheme().resolveAttribute(android.R.attr.selectableItemBackground, value, true);
-//			itemView.setBackground(getActivity().getTheme().getDrawable(R.drawable.bg_search_field));
 			title=findViewById(R.id.title);
 			description=findViewById(R.id.description);
 			userCount=findViewById(R.id.user_count);

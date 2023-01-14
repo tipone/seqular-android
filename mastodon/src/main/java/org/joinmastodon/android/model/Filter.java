@@ -6,12 +6,14 @@ import com.google.gson.annotations.SerializedName;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
+import org.parceler.Parcel;
 
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Parcel
 public class Filter extends BaseModel{
 	@RequiredField
 	public String id;
@@ -21,6 +23,7 @@ public class Filter extends BaseModel{
 	public Instant expiresAt;
 	public boolean irreversible;
 	public boolean wholeWord;
+	public FilterAction filterAction;
 
 	@SerializedName("context")
 	private List<FilterContext> _context;
@@ -75,5 +78,12 @@ public class Filter extends BaseModel{
 		PUBLIC,
 		@SerializedName("thread")
 		THREAD
+	}
+
+	public enum FilterAction{
+		@SerializedName("hide")
+		HIDE,
+		@SerializedName("warn")
+		WARN
 	}
 }

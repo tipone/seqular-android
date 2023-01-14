@@ -37,7 +37,8 @@
     <string name="sk_lists_with_user">Lists with %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Always reveal content warnings</string>
     <string name="sk_disable_marquee">Disable scrolling text in title bars</string>
-    <string name="sk_disable_dividers">Disable toot dividers</string>
+    <string name="sk_disable_dividers">Disable post dividers</string>
+    <string name="sk_relocate_publish_button">Relocate publish button</string>
     <string name="sk_settings_contribute">Contribute to Moshidon</string>
     <string name="sk_settings_show_federated_timeline">Show federated timeline</string>
     <string name="sk_notification_type_status">Posts</string>
@@ -64,7 +65,7 @@
     <string name="sk_welcome_title">Welcome!</string>
     <string name="sk_welcome_text">The shark salutes you! To get started, please enter your home instance’s domain name below.</string>
     <string name="sk_example_domain">example.social</string>
-    <string name="sk_app_username" translatable="false">\@megalodon</string>
+    <string name="sk_app_username" translatable="false">\@moshidon</string>
     <string name="sk_tabs_disable_swipe">Disable swiping between tabs</string>
     <string name="sk_settings_profile">Set up profile</string>
     <string name="sk_personal_note">Add a note about this profile</string>
@@ -83,15 +84,68 @@
     <string name="sk_clear_all_notifications_confirm_action">Delete all</string>
     <string name="sk_clear_all_notifications_confirm">Are you sure you want to clear all notifications\?</string>
     <string name="sk_enable_delete_notifications">Enable deleting notifications</string>
-    <string name="sk_settings_show_differentiated_notification_icons">Custom icons for interactions</string>
     <string name="sk_settings_publish_button_text">Publish button text</string>
     <string name="sk_settings_publish_button_text_title">Customize Publish button text</string>
-    <string name="sk_settings_hide_translate_in_timeline">Hide translate button in timeline</string>
+    <string name="sk_settings_translate_only_opened">Only translate opened posts</string>
     <string name="sk_settings_translation_availability_note_available">%s supports translation!</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s does not appear to support translation.</string>
-    <string name="sk_loading_fediverse_resource_title">Looking it up on the Fediverse…</string>
+    <string name="sk_loading_fediverse_resource_title">Looking it up on the Fediverse</string>
+    <string name="sk_loading_resource_on_instance_title">Looking it up on %s</string>
     <string name="sk_undo_reblog">Undo reblog</string>
     <string name="sk_reblog_with_visibility">Reblog with visibility</string>
     <string name="sk_quote_post">Post about this</string>
     <string name="sk_hashtags_you_follow">Hashtags you follow</string>
+    <string name="sk_copy_link_to_post">Copy link to post</string>
+    <string name="sk_open_in_account">Open in other account</string>
+    <string name="sk_open_with_account">Open with other account</string>
+    <string name="sk_resource_not_found">Resource could not be found</string>
+    <string name="sk_bookmark_as">Bookmark with other account</string>
+    <string name="sk_bookmarked_as">Bookmarked as %s</string>
+    <string name="sk_already_bookmarked">Already bookmarked</string>
+    <string name="sk_favorite_as">Favorite with other account</string>
+    <string name="sk_favorited_as">Favorited as %s</string>
+    <string name="sk_already_favorited">Already favorited</string>
+    <string name="sk_reblog_as">Reblog with other account</string>
+    <string name="sk_reblogged_as">Reblogged as %s</string>
+    <string name="sk_already_reblogged">Already reblogged</string>
+    <string name="sk_reply_as">Reply with other account</string>
+    <string name="sk_settings_uniform_icon_for_notifications">Uniform icon for all notifications</string>
+    <string name="sk_forward_report_to">Forward to %s</string>
+    <string name="sk_unsent_posts">Unsent posts</string>
+    <string name="sk_draft">Draft</string>
+    <string name="sk_schedule">Schedule</string>
+    <string name="sk_confirm_delete_draft_title">Delete draft</string>
+    <string name="sk_confirm_delete_draft">Are you sure you want to delete this drafted post?</string>
+    <string name="sk_confirm_delete_scheduled_post_title">Delete scheduled post</string>
+    <string name="sk_confirm_delete_scheduled_post">Are you sure you want to delete this scheduled post?</string>
+    <string name="sk_draft_or_schedule">Draft or schedule</string>
+    <string name="sk_compose_draft">Post will be saved as a draft.</string>
+    <string name="sk_compose_scheduled">Scheduled for</string>
+    <string name="sk_draft_saved">Draft saved</string>
+    <string name="sk_post_scheduled">Post scheduled</string>
+    <string name="sk_scheduled_too_soon_title">Scheduled time is too soon</string>
+    <string name="sk_scheduled_too_soon">Post must be scheduled at least 10 minutes in the future.</string>
+    <string name="sk_confirm_save_draft">Save draft?</string>
+    <string name="sk_confirm_save_changes">Save changes?</string>
+    <string name="sk_mark_as_draft">Mark as draft</string>
+    <string name="sk_schedule_post">Schedule post</string>
+    <string name="sk_schedule_or_draft">Schedule or draft</string>
+    <string name="sk_compose_no_schedule">Don’t schedule</string>
+    <string name="sk_compose_no_draft">Don’t draft</string>
+    <string name="sk_settings_reduce_motion">Reduce motion in animations</string>
+    <string name="sk_bot_account">This is a bot account</string>
+    <string name="sk_no_image_desc_title">No Image description</string>
+    <string name="sk_no_image_desc">The included images have no description. Please consider adding one, to allow visually impaired people to participate.</string>
+    <string name="sk_emoji_recent">Recently used</string>
+    <string name="sk_clear_recent_emoji">Clear recently used emoji</string>
+    <string name="sk_disable_relocate_publish_button_to_enable_customization">Disable "Relocate publish button" to allow customization</string>
+    <string name="sk_keep_only_latest_notification">Keep only latest notification</string>
+    <string name="sk_announcements">Announcements</string>
+    <string name="sk_mark_as_read">Mark as read</string>
+
+    <!--    accessibility labels-->
+    <string name="sk_poll_option_add">Add new poll option</string>
+    <string name="sk_fab_compose">Compose</string>
+    <string name="sk_sending_error">Error publishing</string>
+
 </resources>

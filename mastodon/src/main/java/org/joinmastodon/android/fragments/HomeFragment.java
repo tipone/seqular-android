@@ -202,6 +202,17 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
+			if(tab == R.id.tab_search){
+				if(newFragment instanceof ScrollableToTop scrollable)
+					scrollable.scrollToTop();
+				searchFragment.selectSearch();
+				return;
+			}
+			if(newFragment instanceof ScrollableToTop scrollable)
+				scrollable.scrollToTop();
+			return;
+		}
+		if(tab==currentTab && tab == R.id.tab_search){
 			if(newFragment instanceof ScrollableToTop scrollable)
 				scrollable.scrollToTop();
 			return;
@@ -233,6 +244,12 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
 			new AccountSwitcherSheet(getActivity()).show();
+			return true;
+		}
+		if(tab==R.id.tab_search){
+			onTabSelected(R.id.tab_search);
+			tabBar.selectTab(R.id.tab_search);
+			searchFragment.selectSearch();
 			return true;
 		}
 		return false;

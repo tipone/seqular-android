@@ -1,7 +1,6 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
-import android.media.MediaRouter;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,6 +11,7 @@ import android.widget.ImageButton;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.timelines.GetListTimeline;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.List;
 
@@ -69,6 +69,7 @@ public class ListTimelineFragment extends StatusListFragment {
         super.onViewCreated(view, savedInstanceState);
         fab=view.findViewById(R.id.fab);
         fab.setOnClickListener(this::onFabClick);
+        fab.setOnLongClickListener(v -> UiUtils.pickAccountForCompose(getActivity(), accountID));
     }
 
     private void onFabClick(View v){

@@ -19,18 +19,22 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.announcements.GetAnnouncements;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
+import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
@@ -43,12 +47,9 @@ import org.joinmastodon.android.utils.StatusFilterPredicate;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -57,11 +58,14 @@ import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
 public class HomeTimelineFragment extends StatusListFragment{
+	private static final int ANNOUNCEMENTS_RESULT = 654;
+
 	private ImageButton fab;
 	private ImageView toolbarLogo;
 	private Button toolbarShowNewPostsBtn;
 	private boolean newPostsBtnShown;
 	private AnimatorSet currentNewPostsAnim;
+	private MenuItem announcements;
 
 	private String maxID;
 
@@ -106,6 +110,8 @@ public class HomeTimelineFragment extends StatusListFragment{
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
 		fab.setOnClickListener(this::onFabClick);
+		fab.setOnLongClickListener(v->UiUtils.pickAccountForCompose(getActivity(), accountID));
+
 		updateToolbarLogo();
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
@@ -125,14 +131,38 @@ public class HomeTimelineFragment extends StatusListFragment{
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.home, menu);
+		announcements = menu.findItem(R.id.announcements);
+
+		new GetAnnouncements(false).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(List<Announcement> result) {
+				boolean hasUnread = result.stream().anyMatch(a -> !a.read);
+				announcements.setIcon(hasUnread ? R.drawable.ic_announcements_24_badged : R.drawable.ic_fluent_megaphone_24_regular);
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
+			}
+		}).exec(accountID);
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		Nav.go(getActivity(), SettingsFragment.class, args);
+		if (item.getItemId() == R.id.settings) Nav.go(getActivity(), SettingsFragment.class, args);
+		if (item.getItemId() == R.id.announcements) {
+			Nav.goForResult(getActivity(), AnnouncementsFragment.class, args, ANNOUNCEMENTS_RESULT, this);
+		}
 		return true;
+	}
+
+	@Override
+	public void onFragmentResult(int reqCode, boolean noMoreUnread, Bundle result){
+		if (reqCode == ANNOUNCEMENTS_RESULT && noMoreUnread) {
+			announcements.setIcon(R.drawable.ic_fluent_megaphone_24_regular);
+		}
 	}
 
 	@Override
@@ -187,10 +217,8 @@ public class HomeTimelineFragment extends StatusListFragment{
 							result.get(result.size()-1).hasGapAfter=true;
 							toAdd=result;
 						}
-						List<Filter> filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(Filter.FilterContext.HOME)).collect(Collectors.toList());
-						if(!filters.isEmpty()){
-							toAdd=toAdd.stream().filter(new StatusFilterPredicate(filters)).collect(Collectors.toList());
-						}
+						StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, Filter.FilterContext.HOME);
+						toAdd=toAdd.stream().filter(filterPredicate).collect(Collectors.toList());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
 							showNewPostsButton();
@@ -264,18 +292,14 @@ public class HomeTimelineFragment extends StatusListFragment{
 							List<StatusDisplayItem> targetList=displayItems.subList(gapPos, gapPos+1);
 							targetList.clear();
 							List<Status> insertedPosts=data.subList(gapPostIndex+1, gapPostIndex+1);
-							List<Filter> filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(Filter.FilterContext.HOME)).collect(Collectors.toList());
-							outer:
+							StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, Filter.FilterContext.HOME);
 							for(Status s:result){
 								if(idsBelowGap.contains(s.id))
 									break;
-								for(Filter filter:filters){
-									if(filter.matches(s)){
-										continue outer;
-									}
+								if(filterPredicate.test(s)){
+									targetList.addAll(buildDisplayItems(s));
+									insertedPosts.add(s);
 								}
-								targetList.addAll(buildDisplayItems(s));
-								insertedPosts.add(s);
 							}
 							if(targetList.isEmpty()){
 								// oops. We didn't add new posts, but at least we know there are none.

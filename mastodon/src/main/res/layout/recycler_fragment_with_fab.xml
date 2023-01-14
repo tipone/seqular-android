@@ -21,18 +21,9 @@
 			android:id="@+id/empty"/>
 
 		<ImageButton
+			android:contentDescription="@string/sk_fab_compose"
+			android:tooltipText="@string/sk_fab_compose"
 			android:id="@+id/fab"
-			android:layout_width="64dp"
-			android:layout_height="64dp"
-			android:layout_gravity="end|bottom"
-			android:layout_marginEnd="16dp"
-			android:layout_marginBottom="24dp"
-			android:background="@drawable/bg_fab"
-			android:tint="@color/fab_icon"
-			android:scaleType="center"
-			android:stateListAnimator="@animator/fab_shadow"
-			android:contentDescription="@string/new_post"
-			android:src="@drawable/ic_edit_34"/>
-
+			style="@style/Widget.Mastodon.Button.Compose"/>
 	</FrameLayout>
 </me.grishka.appkit.views.RecursiveSwipeRefreshLayout>

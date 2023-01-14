@@ -9,8 +9,10 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -22,28 +24,37 @@ import android.widget.Toast;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
+import org.joinmastodon.android.api.requests.announcements.DismissAnnouncement;
+import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusSourceText;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
+import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Attachment;
-import org.joinmastodon.android.model.Preferences;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
+import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.List;
-import java.util.Objects;
+import java.util.Locale;
+import java.util.function.Consumer;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.APIRequest;
@@ -65,15 +76,22 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	private boolean hasVisibilityToggle;
 	boolean needBottomPadding;
 	private String extraText;
+	private Notification notification;
+	private ScheduledStatus scheduledStatus;
+	private Announcement announcement;
+	private Consumer<String> consumeReadAnnouncement;
 
-	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, String extraText){
+	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, String extraText, Notification notification, ScheduledStatus scheduledStatus){
 		super(parentID, parentFragment);
+		user=scheduledStatus != null ? AccountSessionManager.getInstance().getAccount(accountID).self : user;
 		this.user=user;
 		this.createdAt=createdAt;
 		avaRequest=new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? user.avatar : user.avatarStatic, V.dp(50), V.dp(50));
 		this.accountID=accountID;
 		parsedName=new SpannableStringBuilder(user.displayName);
 		this.status=status;
+		this.notification=notification;
+		this.scheduledStatus=scheduledStatus;
 		HtmlParser.parseCustomEmoji(parsedName, user.emojis);
 		emojiHelper.setText(parsedName);
 		if(status!=null){
@@ -88,6 +106,13 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			}
 		}
 		this.extraText=extraText;
+	}
+
+	public static HeaderStatusDisplayItem fromAnnouncement(Announcement a, Status fakeStatus, Account instanceUser, BaseStatusListFragment parentFragment, String accountID, Consumer<String> consumeReadID) {
+		HeaderStatusDisplayItem item = new HeaderStatusDisplayItem(a.id, instanceUser, a.startsAt, parentFragment, accountID, fakeStatus, null, null, null);
+		item.announcement = a;
+		item.consumeReadAnnouncement = consumeReadID;
+		return item;
 	}
 
 	@Override
@@ -109,8 +134,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final TextView name, username, timestamp, extraText;
-		private final ImageView avatar, more, visibility;
+		private final TextView name, username, timestamp, extraText, separator;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -126,22 +151,31 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			super(activity, R.layout.display_item_header, parent);
 			name=findViewById(R.id.name);
 			username=findViewById(R.id.username);
+			separator=findViewById(R.id.separator);
 			timestamp=findViewById(R.id.timestamp);
 			avatar=findViewById(R.id.avatar);
 			more=findViewById(R.id.more);
 			visibility=findViewById(R.id.visibility);
+			deleteNotification=findViewById(R.id.delete_notification);
+			unreadIndicator=findViewById(R.id.unread_indicator);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
 			avatar.setClipToOutline(true);
 			more.setOnClickListener(this::onMoreClick);
 			visibility.setOnClickListener(v->item.parentFragment.onVisibilityIconClick(this));
+			deleteNotification.setOnClickListener(v->UiUtils.confirmDeleteNotification(activity, item.parentFragment.getAccountID(), item.notification, ()->{
+				if (item.parentFragment instanceof NotificationsListFragment fragment) {
+					fragment.removeNotification(item.notification);
+				}
+			}));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
 			optionsMenu.setOnMenuItemClickListener(menuItem->{
 				Account account=item.user;
 				int id=menuItem.getItemId();
+
 				if(id==R.id.edit || id==R.id.delete_and_redraft) {
 					final Bundle args=new Bundle();
 					args.putString("account", item.parentFragment.getAccountID());
@@ -155,6 +189,12 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 						}
 					}
 					if(TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText)){
+						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
+					}else if(item.scheduledStatus!=null){
+						args.putString("sourceText", item.status.text);
+						args.putString("sourceSpoiler", item.status.spoilerText);
+						args.putBoolean("redraftStatus", true);
+						args.putParcelable("scheduledStatus", Parcels.wrap(item.scheduledStatus));
 						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 					}else{
 						new GetStatusSourceText(item.status.id)
@@ -181,8 +221,12 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 								.exec(item.parentFragment.getAccountID());
 					}
 				}else if(id==R.id.delete){
-					UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{});
-				}else if(id==R.id.pin || id==R.id.unpin){
+					if (item.scheduledStatus != null) {
+						UiUtils.confirmDeleteScheduledPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.scheduledStatus, ()->{});
+					} else {
+						UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{});
+					}
+				}else if(id==R.id.pin || id==R.id.unpin) {
 					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
 				}else if(id==R.id.mute){
 					UiUtils.confirmToggleMuteUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.muting, r->{});
@@ -194,8 +238,10 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					args.putParcelable("status", Parcels.wrap(item.status));
 					args.putParcelable("reportAccount", Parcels.wrap(item.status.account));
 					Nav.go(item.parentFragment.getActivity(), ReportReasonChoiceFragment.class, args);
-				}else if(id==R.id.open_in_browser){
+				}else if(id==R.id.open_in_browser) {
 					UiUtils.launchWebBrowser(activity, item.status.url);
+				}else if(id==R.id.copy_link){
+					UiUtils.copyText(parent, item.status.url);
 				}else if(id==R.id.follow){
 					if(relationship==null)
 						return true;
@@ -209,7 +255,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 							progress.dismiss();
 					}, rel->{
 						relationship=rel;
-						Toast.makeText(activity, activity.getString(rel.following ? R.string.followed_user : R.string.unfollowed_user, account.getDisplayUsername()), Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, activity.getString(rel.following ? R.string.followed_user : R.string.unfollowed_user, account.getShortUsername()), Toast.LENGTH_SHORT).show();
 					});
 				}else if(id==R.id.block_domain){
 					UiUtils.confirmToggleBlockDomain(activity, item.parentFragment.getAccountID(), account.getDomain(), relationship!=null && relationship.domainBlocking, ()->{});
@@ -218,17 +264,46 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				}
 				return true;
 			});
+			UiUtils.enablePopupMenuIcons(activity, optionsMenu);
+		}
+
+		private void populateAccountsMenu(Menu menu) {
+			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
+			sessions.stream().filter(s -> !s.getID().equals(item.accountID)).forEach(s -> {
+				String username = "@"+s.self.username+"@"+s.domain;
+				menu.add(username).setOnMenuItemClickListener(c->{
+					UiUtils.openURL(item.parentFragment.getActivity(), s.getID(), item.status.url, false);
+					return true;
+				});
+			});
 		}
 
 		@Override
 		public void onBind(HeaderStatusDisplayItem item){
 			name.setText(item.parsedName);
 			username.setText('@'+item.user.acct);
-			if(item.status==null || item.status.editedAt==null)
+			separator.setVisibility(View.VISIBLE);
+
+
+			username.setCompoundDrawablesWithIntrinsicBounds(item.user.bot ? R.drawable.ic_fluent_bot_24_filled : 0, 0, 0, 0);
+
+			if (item.scheduledStatus!=null)
+				if (item.scheduledStatus.scheduledAt.isAfter(CreateStatus.DRAFTS_AFTER_INSTANT)) {
+					timestamp.setText(R.string.sk_draft);
+				} else {
+					DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
+					timestamp.setText(item.scheduledStatus.scheduledAt.atZone(ZoneId.systemDefault()).format(formatter));
+				}
+			else if ((item.status==null || item.status.editedAt==null) && item.createdAt != null)
 				timestamp.setText(UiUtils.formatRelativeTimestamp(itemView.getContext(), item.createdAt));
-			else
+			else if (item.status != null && item.status.editedAt != null)
 				timestamp.setText(item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt)));
+			else {
+				separator.setVisibility(View.GONE);
+				timestamp.setText("");
+			}
 			visibility.setVisibility(item.hasVisibilityToggle && !item.inset ? View.VISIBLE : View.GONE);
+			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification!=null && !item.inset ? View.VISIBLE : View.GONE);
 			if(item.hasVisibilityToggle){
 				visibility.setImageResource(item.status.spoilerRevealed ? R.drawable.ic_visibility_off : R.drawable.ic_visibility);
 				visibility.setContentDescription(item.parentFragment.getString(item.status.spoilerRevealed ? R.string.hide_content : R.string.reveal_content));
@@ -250,6 +325,42 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				currentRelationshipRequest.cancel();
 			}
 			relationship=null;
+
+			String desc;
+			if (item.announcement != null) {
+				if (unreadIndicator.getVisibility() == View.GONE) {
+					more.setAlpha(0f);
+					unreadIndicator.setAlpha(0f);
+					unreadIndicator.setVisibility(View.VISIBLE);
+				}
+				float alpha = item.announcement.read ? 0 : 1;
+				more.setImageResource(R.drawable.ic_fluent_checkmark_20_filled);
+				desc = item.parentFragment.getString(R.string.sk_mark_as_read);
+				more.animate().alpha(alpha);
+				unreadIndicator.animate().alpha(alpha);
+				more.setOnClickListener(v -> {
+					new DismissAnnouncement(item.announcement.id).setCallback(new Callback<>() {
+						@Override
+						public void onSuccess(Object o) {
+							item.consumeReadAnnouncement.accept(item.announcement.id);
+							item.announcement.read = true;
+							rebind();
+						}
+
+						@Override
+						public void onError(ErrorResponse error) {
+							error.showToast(item.parentFragment.getActivity());
+						}
+					}).exec(item.accountID);
+				});
+			} else {
+				more.setImageResource(R.drawable.ic_fluent_more_vertical_20_filled);
+				desc = item.parentFragment.getString(R.string.more_options);
+				more.setOnClickListener(this::onMoreClick);
+			}
+
+			more.setContentDescription(desc);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) more.setTooltipText(desc);
 		}
 
 		@Override
@@ -270,6 +381,10 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onAvaClick(View v){
+			if (item.announcement != null) {
+				UiUtils.openURL(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.user.url);
+				return;
+			}
 			Bundle args=new Bundle();
 			args.putString("account", item.accountID);
 			args.putParcelable("profileAccount", Parcels.wrap(item.user));
@@ -301,15 +416,31 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void updateOptionsMenu(){
-			Account account=item.user;
+			if (item.announcement != null) return;
+			boolean hasMultipleAccounts = AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
 			Menu menu=optionsMenu.getMenu();
+
+			MenuItem openWithAccounts = menu.findItem(R.id.open_with_account);
+			SubMenu accountsMenu = openWithAccounts != null ? openWithAccounts.getSubMenu() : null;
+			if (hasMultipleAccounts && accountsMenu != null) {
+				openWithAccounts.setVisible(true);
+				accountsMenu.clear();
+				populateAccountsMenu(accountsMenu);
+			} else if (openWithAccounts != null) {
+				openWithAccounts.setVisible(false);
+			}
+
+			Account account=item.user;
 			boolean isOwnPost=AccountSessionManager.getInstance().isSelf(item.parentFragment.getAccountID(), account);
+			boolean isPostScheduled=item.scheduledStatus!=null;
+			menu.findItem(R.id.open_with_account).setVisible(!isPostScheduled && hasMultipleAccounts);
 			menu.findItem(R.id.edit).setVisible(item.status!=null && isOwnPost);
 			menu.findItem(R.id.delete).setVisible(item.status!=null && isOwnPost);
-			menu.findItem(R.id.delete_and_redraft).setVisible(item.status!=null && isOwnPost);
-			menu.findItem(R.id.pin).setVisible(item.status!=null && isOwnPost && !item.status.pinned);
-			menu.findItem(R.id.unpin).setVisible(item.status!=null && isOwnPost && item.status.pinned);
-			menu.findItem(R.id.open_in_browser).setVisible(item.status!=null);
+			menu.findItem(R.id.delete_and_redraft).setVisible(!isPostScheduled && item.status!=null && isOwnPost);
+			menu.findItem(R.id.pin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && !item.status.pinned);
+			menu.findItem(R.id.unpin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && item.status.pinned);
+			menu.findItem(R.id.open_in_browser).setVisible(!isPostScheduled && item.status!=null);
+			menu.findItem(R.id.copy_link).setVisible(!isPostScheduled && item.status!=null);
 			MenuItem blockDomain=menu.findItem(R.id.block_domain);
 			MenuItem mute=menu.findItem(R.id.mute);
 			MenuItem block=menu.findItem(R.id.block);
@@ -325,7 +456,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				bookmark.setVisible(false);
 			}
 			*/
-			if(isOwnPost){
+			if(isPostScheduled || isOwnPost){
 				mute.setVisible(false);
 				block.setVisible(false);
 				report.setVisible(false);
@@ -336,16 +467,22 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				block.setVisible(true);
 				report.setVisible(true);
 				follow.setVisible(relationship==null || relationship.following || (!relationship.blocking && !relationship.blockedBy && !relationship.domainBlocking && !relationship.muting));
-				mute.setTitle(item.parentFragment.getString(relationship!=null && relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getDisplayUsername()));
-				block.setTitle(item.parentFragment.getString(relationship!=null && relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getDisplayUsername()));
-				report.setTitle(item.parentFragment.getString(R.string.report_user, account.getDisplayUsername()));
-				if(!account.isLocal()){
-					blockDomain.setVisible(true);
-					blockDomain.setTitle(item.parentFragment.getString(relationship!=null && relationship.domainBlocking ? R.string.unblock_domain : R.string.block_domain, account.getDomain()));
-				}else{
+				mute.setTitle(item.parentFragment.getString(relationship!=null && relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+				mute.setIcon(relationship!=null && relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
+				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), mute);
+				block.setTitle(item.parentFragment.getString(relationship!=null && relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
+				report.setTitle(item.parentFragment.getString(R.string.report_user, account.getShortUsername()));
+				// disabled in megalodon. domain blocks from a post clutters the context menu and looks out of place
+//				if(!account.isLocal()){
+//					blockDomain.setVisible(true);
+//					blockDomain.setTitle(item.parentFragment.getString(relationship!=null && relationship.domainBlocking ? R.string.unblock_domain : R.string.block_domain, account.getDomain()));
+//				}else{
 					blockDomain.setVisible(false);
-				}
-				follow.setTitle(item.parentFragment.getString(relationship!=null && relationship.following ? R.string.unfollow_user : R.string.follow_user, account.getDisplayUsername()));
+//				}
+				boolean following = relationship!=null && relationship.following;
+				follow.setTitle(item.parentFragment.getString(following ? R.string.unfollow_user : R.string.follow_user, account.getShortUsername()));
+				follow.setIcon(following ? R.drawable.ic_fluent_person_delete_24_regular : R.drawable.ic_fluent_person_add_24_regular);
+				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), follow);
 			}
 		}
 	}

@@ -28,12 +28,20 @@ public class GlobalUserPreferences{
 	public static boolean disableSwipe;
 	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
-	public static boolean showDifferentiatedPushNoticationIcons;
+	public static boolean uniformNotificationIcon;
+	public static boolean enableDeleteNotifications;
+	public static boolean relocatePublishButton;
+	public static boolean reduceMotion;
+	public static boolean keepOnlyLatestNotification;
+	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
 
 	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
 	public static Map<String, List<String>> recentLanguages;
+
+	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
+	public static Map<String, Integer> recentEmojis;
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -52,16 +60,22 @@ public class GlobalUserPreferences{
 		showReplies=prefs.getBoolean("showReplies", true);
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
-		showDifferentiatedPushNoticationIcons=prefs.getBoolean("showDifferentiatedPushNoticationIcons", false);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", true);
 		showFederatedTimeline=prefs.getBoolean("showFederatedTimeline", !BuildConfig.BUILD_TYPE.equals("playRelease"));
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		disableSwipe=prefs.getBoolean("disableSwipe", false);
 		disableDividers=prefs.getBoolean("disableDividers", true);
+		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
+		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", true);
+		reduceMotion=prefs.getBoolean("reduceMotion", false);
+		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
+		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
+		publishButtonText=prefs.getString("publishButtonText", "");
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -89,10 +103,16 @@ public class GlobalUserPreferences{
 				.putBoolean("disableMarquee", disableMarquee)
 				.putBoolean("disableSwipe", disableSwipe)
 				.putBoolean("disableDividers", disableDividers)
-				.putBoolean("showDifferentiatedPushNoticationIcons", showDifferentiatedPushNoticationIcons)
+				.putBoolean("relocatePublishButton", relocatePublishButton)
+				.putBoolean("uniformNotificationIcon", uniformNotificationIcon)
+				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("reduceMotion", reduceMotion)
+				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
+				.putString("publishButtonText", publishButtonText)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
+				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.apply();
 	}
 

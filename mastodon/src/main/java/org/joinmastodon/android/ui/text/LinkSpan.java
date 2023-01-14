@@ -1,8 +1,11 @@
 package org.joinmastodon.android.ui.text;
 
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
+import android.util.Log;
+import android.view.View;
 
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -13,12 +16,14 @@ public class LinkSpan extends CharacterStyle {
 	private String link;
 	private Type type;
 	private String accountID;
+	private String text;
 
-	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID){
+	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, String text){
 		this.listener=listener;
 		this.link=link;
 		this.type=type;
 		this.accountID=accountID;
+		this.text=text;
 	}
 
 	public int getColor(){
@@ -29,12 +34,23 @@ public class LinkSpan extends CharacterStyle {
 	public void updateDrawState(TextPaint tp) {
 		tp.setColor(color=tp.linkColor);
 	}
-	
+
 	public void onClick(Context context){
 		switch(getType()){
 			case URL -> UiUtils.openURL(context, accountID, link);
 			case MENTION -> UiUtils.openProfileByID(context, accountID, link);
 			case HASHTAG -> UiUtils.openHashtagTimeline(context, accountID, link, null);
+		}
+	}
+
+	public void onLongClick(View view) {
+		if (getType() == Type.URL) {
+            Intent shareIntent = new Intent(Intent.ACTION_SEND)
+                    .setType("text/plain")
+                    .putExtra(Intent.EXTRA_TEXT, link);
+			view.getContext().startActivity(Intent.createChooser(shareIntent, null));
+		} else {
+			UiUtils.copyText(view, text);
 		}
 	}
 

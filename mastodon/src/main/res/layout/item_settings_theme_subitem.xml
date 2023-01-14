@@ -10,6 +10,7 @@
 		android:layout_width="100dp"
 		android:layout_height="121dp"
 		android:elevation="1dp"
+		android:importantForAccessibility="no"
 		android:foreground="?android:selectableItemBackground"
 		android:duplicateParentState="true"
 		tools:src="@drawable/theme_auto"/>

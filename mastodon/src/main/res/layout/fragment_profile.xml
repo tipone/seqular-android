@@ -4,9 +4,7 @@
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:id="@+id/refresh_layout"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:focusableInTouchMode="true"
-	android:focusable="true">
+	android:layout_height="match_parent">
 
 	<FrameLayout
 		android:layout_width="match_parent"
@@ -47,7 +45,7 @@
 						android:textColor="?colorGray50t"
 						android:textAllCaps="true"
 						android:fontFamily="sans-serif-medium"
-						android:textSize="14dp"
+						android:textSize="14sp"
 						android:gravity="center"
 						android:background="@drawable/bg_profile_follows_you"
 						android:visibility="gone"
@@ -243,28 +241,24 @@
 						android:textAppearance="@style/m3_headline_small"
 						tools:text="Eugen" />
 
-
 					<TextView
 						android:id="@+id/username"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
-						android:layout_marginTop="2dp"
+						android:layout_marginStart="16dp"
 						android:layout_below="@id/name"
-						android:paddingHorizontal="16dp"
-						android:paddingTop="2dp"
-						android:paddingBottom="4dp"
-						android:background="?android:selectableItemBackground"
+						android:paddingTop="4dp"
+						android:paddingBottom="8dp"
 						android:textAppearance="@style/m3_title_medium"
 						android:textColor="?android:textColorSecondary"
 						tools:text="\@Gargron" />
 
-                    <org.joinmastodon.android.ui.views.LinkedTextView
+					<org.joinmastodon.android.ui.views.LinkedTextView
 						android:id="@+id/bio"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_below="@id/username"
 						android:layout_marginLeft="16dp"
-						android:layout_marginTop="4dp"
 						android:layout_marginRight="16dp"
 						android:textAppearance="@style/m3_body_large"
 						android:textSize="16sp"
@@ -293,7 +287,6 @@
 						android:layout_height="wrap_content"
 						android:layout_below="@id/username"
 						android:layout_marginLeft="16dp"
-						android:layout_marginTop="8dp"
 						android:layout_marginRight="16dp"
 						android:textAppearance="@style/m3_body_large"
 						android:textSize="16sp"
@@ -326,19 +319,10 @@
 		</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
 
 		<ImageButton
+			android:tooltipText="@string/sk_fab_compose"
+			android:contentDescription="@string/sk_fab_compose"
 			android:id="@+id/fab"
-			android:layout_width="64dp"
-			android:layout_height="64dp"
-			android:layout_gravity="end|bottom"
-			android:layout_marginEnd="16dp"
-			android:layout_marginBottom="24dp"
-			android:background="@drawable/bg_fab"
-			android:scaleType="center"
-			android:src="@drawable/ic_edit_34"
-			android:stateListAnimator="@animator/fab_shadow"
-			android:tint="@color/fab_icon"
-			tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck" />
-
+			style="@style/Widget.Mastodon.Button.Compose"/>
 	</FrameLayout>
 
 </me.grishka.appkit.views.RecursiveSwipeRefreshLayout>

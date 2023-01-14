@@ -8,9 +8,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -39,6 +37,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String TAG="PushNotificationReceive";
 
 	public static final int NOTIFICATION_ID=178;
+
+	private static int notificationID;
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -127,23 +127,27 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		}
 		Drawable avatar=ImageCache.getInstance(context).get(new UrlImageLoaderRequest(pn.icon, V.dp(50), V.dp(50)));
+
+		notificationID = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : (int)System.currentTimeMillis();
+
 		Intent contentIntent=new Intent(context, MainActivity.class);
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
 		contentIntent.putExtra("accountID", accountID);
+		contentIntent.putExtra("notificationID", notificationID);
 		if(notification!=null){
 			contentIntent.putExtra("notification", Parcels.wrap(notification));
 		}
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
 				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
-				.setContentIntent(PendingIntent.getActivity(context, accountID.hashCode() & 0xFFFF, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
+				.setContentIntent(PendingIntent.getActivity(context, notificationID, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
 				.setWhen(notification==null ? System.currentTimeMillis() : notification.createdAt.toEpochMilli())
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
 				.setColor(context.getColor(R.color.shortcut_icon_background));
-		if(GlobalUserPreferences.showDifferentiatedPushNoticationIcons){
+		if(!GlobalUserPreferences.uniformNotificationIcon){
 			switch (pn.notificationType) {
 				case FAVORITE -> builder.setSmallIcon(R.drawable.ic_fluent_star_24_filled);
 				case REBLOG -> builder.setSmallIcon(R.drawable.ic_fluent_arrow_repeat_all_24_filled);
@@ -162,6 +166,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, NOTIFICATION_ID, builder.build());
+		nm.notify(accountID, notificationID, builder.build());
 	}
 }

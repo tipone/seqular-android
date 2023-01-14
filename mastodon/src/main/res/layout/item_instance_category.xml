@@ -11,6 +11,7 @@
 		android:id="@+id/emoji"
 		android:layout_width="24dp"
 		android:layout_height="24dp"
+		android:importantForAccessibility="no"
 		android:layout_marginBottom="6dp"
 		android:layout_gravity="center_horizontal"/>
 
@@ -22,7 +23,7 @@
 		android:textAllCaps="true"
 		android:textColor="?android:textColorPrimary"
 		android:fontFamily="sans-serif-medium"
-		android:textSize="14dp"
+		android:textSize="14sp"
 		android:gravity="center_vertical"
 		android:singleLine="true"
 		android:ellipsize="end"
