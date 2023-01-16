@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -12,11 +13,23 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.model.AccountField;
+import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
@@ -26,11 +39,8 @@ import org.joinmastodon.android.ui.views.LinkedTextView;
 import java.util.Collections;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.ItemTouchHelper;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.WindowInsetsAwareFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
@@ -46,6 +56,11 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 	private static final int MAX_FIELDS=4;
 
 	public UsableRecyclerView list;
+	public FrameLayout noteWrap;
+	public EditText noteEdit;
+	private String accountID;
+	private String profileAccountID;
+	private String note;
 	private List<AccountField> fields=Collections.emptyList();
 	private AboutAdapter adapter;
 	private Paint dividerPaint=new Paint();
@@ -64,11 +79,49 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 			adapter.notifyDataSetChanged();
 	}
 
+	public void setNote(String note, String accountID, String profileAccountID){
+		this.note=note;
+		this.accountID=accountID;
+		this.profileAccountID=profileAccountID;
+		noteWrap.setVisibility(View.VISIBLE);
+		noteEdit.setVisibility(View.VISIBLE);
+		noteEdit.setText(note);
+	}
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState){
-		list=new UsableRecyclerView(getActivity());
-		list.setId(R.id.list);
+		View view = inflater.inflate(R.layout.fragment_profile_about, null);
+
+		noteEdit = view.findViewById(R.id.note_edit);
+		noteWrap = view.findViewById(R.id.note_edit_wrap);
+		ImageButton noteEditConfirm = view.findViewById(R.id.note_edit_confirm);
+
+
+		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
+			if (hasFocus) {
+				noteEditConfirm.setVisibility(View.VISIBLE);
+				noteEditConfirm.animate()
+						.alpha(1.0f)
+						.setDuration(700);
+			} else {
+				noteEditConfirm.animate()
+						.alpha(0.0f)
+						.setDuration(700);
+				noteEditConfirm.setVisibility(View.INVISIBLE);
+			}
+		});
+
+		noteEditConfirm.setOnClickListener((v -> {
+			if (!noteEdit.getText().toString().trim().equals(note)) {
+				savePrivateNote();
+			}
+			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
+			noteEdit.clearFocus();
+		}));
+
+		list = view.findViewById(R.id.list);
 		list.setItemAnimator(new BetterItemAnimator());
 		list.setDrawSelectorOnTop(true);
 		list.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -95,8 +148,20 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 				}
 			}
 		});
-		return list;
+		return view;
 	}
+	private void savePrivateNote(){
+		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Relationship result) {}
+
+			@Override
+			public void onError(ErrorResponse result) {
+				Toast.makeText(getActivity(), getString(R.string.sk_personal_note_update_failed), Toast.LENGTH_LONG).show();
+			}
+		}).exec(accountID);
+	}
+
 
 	public void enterEditMode(List<AccountField> editableFields){
 		isInEditMode=true;

@@ -68,6 +68,9 @@
     <string name="sk_app_username" translatable="false">\@moshidon</string>
     <string name="sk_tabs_disable_swipe">Disable swiping between tabs</string>
     <string name="sk_settings_profile">Set up profile</string>
+    <string name="sk_personal_note">Add a note about this profile</string>
+    <string name="sk_personal_note_confirm">Confirm changes to note</string>
+    <string name="sk_personal_note_update_failed">Failed to save note</string>
     <string name="sk_settings_posting">Posting preferences</string>
     <string name="sk_settings_filters">Configure filters</string>
     <string name="sk_settings_auth">Security settings</string>
