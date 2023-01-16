@@ -38,6 +38,6 @@ public class FederatedTimelineFragment extends FabStatusListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
-		bannerHelper.maybeAddBanner(contentWrap);
+//		bannerHelper.maybeAddBanner(contentWrap);
 	}
 }

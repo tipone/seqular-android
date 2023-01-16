@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class LocalTimelineFragment extends FabStatusListFragment {
-	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.LOCAL_TIMELINE);
+//	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.LOCAL_TIMELINE);
 	private String maxID;
 
 	@Override
@@ -38,6 +38,6 @@ public class LocalTimelineFragment extends FabStatusListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
-		bannerHelper.maybeAddBanner(contentWrap);
+//		bannerHelper.maybeAddBanner(contentWrap);
 	}
 }
