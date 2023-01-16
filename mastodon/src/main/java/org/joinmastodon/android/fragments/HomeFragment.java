@@ -153,8 +153,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void onViewStateRestored(Bundle savedInstanceState){
 		super.onViewStateRestored(savedInstanceState);
 
-		if(savedInstanceState==null || homeTabFragment !=null)
-			return;
+		if(savedInstanceState==null) return;
 
 //		if(savedInstanceState==null || homeTimelineFragment!=null)
 //			return;
