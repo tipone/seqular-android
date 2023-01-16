@@ -13,7 +13,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -286,7 +285,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
 
-				if (fab!=null && !GlobalUserPreferences.disableFab) {
+				if (fab!=null && GlobalUserPreferences.disableFabAutoHide) {
 					if (dy > 0 /*&& !isFirstLaunch*/) {
 						if (isScrollingUp /*&& !isFirstLaunch*/) {
 							fab.setVisibility(View.INVISIBLE);
