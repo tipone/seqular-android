@@ -286,10 +286,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followersBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 
-		if (account != null && account.bot) {
-			username.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_bot_24_filled, 0, 0, 0);
-		}
-
 		username.setOnLongClickListener(v->{
 			String usernameString=account.acct;
 			if(!usernameString.contains("@")){
@@ -462,6 +458,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			lock.setBounds(0, 0, lock.getIntrinsicWidth(), lock.getIntrinsicHeight());
 			lock.setTint(username.getCurrentTextColor());
 			ssb.append(getString(R.string.manually_approves_followers), new ImageSpan(lock, ImageSpan.ALIGN_BASELINE), 0);
+			username.setText(ssb);
+		}else if(account.bot){
+			ssb=new SpannableStringBuilder("@");
+			ssb.append(account.acct);
+			if(isSelf){
+				ssb.append('@');
+				ssb.append(AccountSessionManager.getInstance().getAccount(accountID).domain);
+			}
+			ssb.append(" ");
+			Drawable botIcon=username.getResources().getDrawable(R.drawable.ic_bot, getActivity().getTheme()).mutate();
+			botIcon.setBounds(0, 0, botIcon.getIntrinsicWidth(), botIcon.getIntrinsicHeight());
+			botIcon.setTint(username.getCurrentTextColor());
+			ssb.append(getString(R.string.manually_approves_followers), new ImageSpan(botIcon, ImageSpan.ALIGN_BASELINE), 0);
 			username.setText(ssb);
 		}else{
 			// noinspection SetTextI18n
