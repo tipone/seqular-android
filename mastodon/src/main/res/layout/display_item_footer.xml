@@ -20,6 +20,7 @@
 			android:drawableStart="@drawable/ic_fluent_chat_multiple_24_selector_text"
 			android:drawablePadding="8dp"
 			android:drawableTint="?android:textColorSecondary"
+			android:tooltipText="@string/button_reply"
 			android:gravity="center_vertical"
 			android:textAppearance="@style/m3_label_large"
 			tools:text="123"/>
@@ -67,6 +68,7 @@
 			android:drawableStart="@drawable/ic_fluent_star_24_selector"
 			android:drawablePadding="8dp"
 			android:drawableTint="@color/favorite_icon"
+			android:tooltipText="@string/button_favorite"
 			android:textColor="@color/favorite_icon"
 			android:gravity="center_vertical"
 			android:textAppearance="@style/m3_label_large"
@@ -92,6 +94,7 @@
 			android:drawablePadding="8dp"
 			android:drawableTint="@color/bookmark_icon"
 			android:gravity="center_vertical"
+			android:tooltipText="@string/add_bookmark"
 			android:textAppearance="@style/m3_label_large" />
 	</FrameLayout>
 
