@@ -112,6 +112,14 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.disableMarquee=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
+			GlobalUserPreferences.uniformNotificationIcon=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
+			GlobalUserPreferences.reduceMotion=i.checked;
+			GlobalUserPreferences.save();
+		}));
 		items.add(new ButtonItem(R.string.sk_settings_color_palette, R.drawable.ic_fluent_color_24_regular, b->{
 			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
 			popupMenu.inflate(R.menu.color_palettes);
@@ -139,39 +147,32 @@ public class SettingsFragment extends MastodonToolbarFragment{
 							Toast.LENGTH_LONG).show();
 				});
 			} else {
-			b.setOnClickListener(l -> {
-				FrameLayout inputWrap = new FrameLayout(getContext());
-				EditText input = new EditText(getContext());
-				input.setHint(R.string.publish);
-				input.setText(GlobalUserPreferences.publishButtonText.trim());
-				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-				params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
-				input.setLayoutParams(params);
-				inputWrap.addView(input);
-				new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
-						.setPositiveButton(R.string.save, (d, which) -> {
-							GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
-							GlobalUserPreferences.save();
-							updatePublishText(b);
-						})
-						.setNeutralButton(R.string.clear, (d, which) -> {
-							GlobalUserPreferences.publishButtonText = "";
-							GlobalUserPreferences.save();
-							updatePublishText(b);
-						})
-						.setNegativeButton(R.string.cancel, (d, which) -> {
-						})
-						.show();
-			});}
+				b.setOnClickListener(l -> {
+					FrameLayout inputWrap = new FrameLayout(getContext());
+					EditText input = new EditText(getContext());
+					input.setHint(R.string.publish);
+					input.setText(GlobalUserPreferences.publishButtonText.trim());
+					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+					params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+					input.setLayoutParams(params);
+					inputWrap.addView(input);
+					new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
+							.setPositiveButton(R.string.save, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNeutralButton(R.string.clear, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = "";
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNegativeButton(R.string.cancel, (d, which) -> {
+							})
+							.show();
+				});}
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
-			GlobalUserPreferences.uniformNotificationIcon=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
-			GlobalUserPreferences.reduceMotion=i.checked;
-			GlobalUserPreferences.save();
-		}));
+
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
