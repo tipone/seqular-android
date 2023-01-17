@@ -13,9 +13,12 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.E;
@@ -71,6 +74,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
 	protected PhotoViewer currentPhotoViewer;
+	protected ImageButton fab;
+	protected boolean isScrollingUp = false;
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
@@ -273,11 +278,42 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		fab=view.findViewById(R.id.fab);
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
+
+				if (fab!=null) {
+					if (dy > 0 ) {
+						if (isScrollingUp) {
+							fab.setVisibility(View.INVISIBLE);
+							TranslateAnimation animate = new TranslateAnimation(
+									0,
+									0,
+									0,
+									fab.getHeight() * 2);
+							animate.setDuration(300);
+							animate.setFillAfter(true);
+							fab.startAnimation(animate);
+							isScrollingUp = false;
+						}
+					} else {
+						if (!isScrollingUp) {
+							fab.setVisibility(View.VISIBLE);
+							TranslateAnimation animate = new TranslateAnimation(
+									0,
+									0,
+									fab.getHeight() * 2,
+									0);
+							animate.setDuration(300);
+							animate.setFillAfter(true);
+							fab.startAnimation(animate);
+							isScrollingUp = true;
+						}
+					}
+				}
 			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
