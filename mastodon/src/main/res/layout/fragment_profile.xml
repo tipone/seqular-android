@@ -266,7 +266,7 @@
 							android:layout_height="wrap_content"
 							android:paddingVertical="16dp"
 							android:layout_marginTop="4dp"
-							android:layout_marginBottom="8dp"
+							android:layout_marginBottom="16dp"
 							android:layout_marginHorizontal="16dp"
 							android:inputType="textMultiLine|textCapSentences"
 							android:singleLine="false"
