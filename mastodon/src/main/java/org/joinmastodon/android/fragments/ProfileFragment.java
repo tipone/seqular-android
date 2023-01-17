@@ -27,13 +27,16 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -48,6 +51,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
+import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
@@ -115,6 +119,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private TabLayoutMediator tabLayoutMediator;
 	private TextView followsYouView;
 
+	public FrameLayout noteWrap;
+	public EditText noteEdit;
+	private String note;
 	private Account account;
 	private String accountID;
 	private Relationship relationship;
@@ -200,6 +207,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		fab=content.findViewById(R.id.fab);
 		followsYouView=content.findViewById(R.id.follows_you);
 
+		noteEdit = content.findViewById(R.id.note_edit);
+		noteWrap = content.findViewById(R.id.note_edit_wrap);
+		ImageButton noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
+
 		avatar.setOutlineProvider(new ViewOutlineProvider(){
 			@Override
 			public void getOutline(View view, Outline outline){
@@ -207,6 +218,29 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		});
 		avatar.setClipToOutline(true);
+
+		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
+			if (hasFocus) {
+				noteEditConfirm.setVisibility(View.VISIBLE);
+				noteEditConfirm.animate()
+						.alpha(1.0f)
+						.setDuration(700);
+			} else {
+				noteEditConfirm.animate()
+						.alpha(0.0f)
+						.setDuration(700);
+				noteEditConfirm.setVisibility(View.INVISIBLE);
+			}
+		});
+
+		noteEditConfirm.setOnClickListener((v -> {
+			if (!noteEdit.getText().toString().trim().equals(note)) {
+				savePrivateNote();
+			}
+			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
+			noteEdit.clearFocus();
+		}));
 
 		FrameLayout sizeWrapper=new FrameLayout(getActivity()){
 			@Override
@@ -296,6 +330,25 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		});
 
 		return sizeWrapper;
+	}
+
+	public void setNote(String note){
+		this.note=note;
+		noteWrap.setVisibility(View.VISIBLE);
+		noteEdit.setVisibility(View.VISIBLE);
+		noteEdit.setText(note);
+	}
+
+	private void savePrivateNote(){
+		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Relationship result) {}
+
+			@Override
+			public void onError(ErrorResponse result) {
+				Toast.makeText(getActivity(), getString(R.string.sk_personal_note_update_failed), Toast.LENGTH_LONG).show();
+			}
+		}).exec(accountID);
 	}
 
 	@Override
@@ -698,6 +751,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
 		if (!isOwnProfile) {
+			setNote(relationship.note);
 			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
 		}
 		if (getActivity() != null) notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));

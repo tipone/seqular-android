@@ -253,11 +253,52 @@
 						android:textColor="?android:textColorSecondary"
 						tools:text="\@Gargron" />
 
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/username"
+						android:id="@+id/note_edit_wrap"
+						android:visibility="gone">
+
+						<EditText
+							android:id="@+id/note_edit"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingVertical="16dp"
+							android:layout_marginTop="4dp"
+							android:layout_marginBottom="8dp"
+							android:layout_marginHorizontal="16dp"
+							android:inputType="textMultiLine|textCapSentences"
+							android:singleLine="false"
+							android:drawableStart="@drawable/ic_fluent_notepad_20_regular"
+							android:drawablePadding="12dp"
+							android:drawableTint="?android:textColorSecondary"
+							android:background="@drawable/bg_note_edit"
+							android:paddingHorizontal="16dp"
+							android:elevation="0dp"
+							android:visibility="gone"
+							android:hint="@string/sk_personal_note"/>
+
+						<ImageButton
+							android:id="@+id/note_edit_confirm"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:src="@drawable/ic_fluent_checkmark_24_filled"
+							android:backgroundTint="#00000000"
+							android:layout_marginTop="2dp"
+							android:visibility="invisible"
+							android:layout_marginEnd="20dp"
+							android:layout_gravity="right|center_vertical"
+							android:tooltipText="@string/sk_personal_note_confirm"
+							android:contentDescription="@string/sk_personal_note_confirm" />
+
+					</FrameLayout>
+
 					<org.joinmastodon.android.ui.views.LinkedTextView
 						android:id="@+id/bio"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_below="@id/username"
+						android:layout_below="@id/note_edit_wrap"
 						android:layout_marginLeft="16dp"
 						android:layout_marginRight="16dp"
 						android:textAppearance="@style/m3_body_large"
