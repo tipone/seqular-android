@@ -8,9 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/note_edit_wrap"
-        android:layout_marginTop="0dp"
-        android:visibility="gone"
-        android:padding="2dp">
+        android:visibility="gone">
 
         <EditText
             android:id="@+id/note_edit"
@@ -25,7 +23,7 @@
             android:drawableStart="@drawable/ic_fluent_notepad_20_regular"
             android:drawablePadding="12dp"
             android:drawableTint="?android:textColorSecondary"
-            android:background="@drawable/bg_search_field"
+            android:background="@drawable/bg_note_edit"
             android:paddingHorizontal="16dp"
             android:elevation="0dp"
             android:visibility="gone"
