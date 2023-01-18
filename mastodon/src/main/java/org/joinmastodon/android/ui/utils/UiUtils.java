@@ -52,6 +52,7 @@ import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
 import org.joinmastodon.android.api.requests.accounts.SetDomainBlocked;
 import org.joinmastodon.android.api.requests.accounts.AuthorizeFollowRequest;
 import org.joinmastodon.android.api.requests.accounts.RejectFollowRequest;
+import org.joinmastodon.android.api.requests.lists.DeleteList;
 import org.joinmastodon.android.api.requests.notifications.DismissNotification;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
@@ -339,14 +340,6 @@ public class UiUtils{
 		Nav.go((Activity)context, HashtagTimelineFragment.class, args);
 	}
 
-	public static void openListTimeline(Context context, String accountID, ListTimeline list){
-		Bundle args=new Bundle();
-		args.putString("account", accountID);
-		args.putString("listID", list.id);
-		args.putString("listTitle", list.title);
-		Nav.go((Activity)context, ListTimelineFragment.class, args);
-	}
-
 	public static void showConfirmationAlert(Context context, @StringRes int title, @StringRes int message, @StringRes int confirmButton, Runnable onConfirmed){
 		showConfirmationAlert(context, title, message, confirmButton, 0, onConfirmed);
 	}
@@ -369,7 +362,7 @@ public class UiUtils{
 		showConfirmationAlert(activity, activity.getString(currentlyBlocked ? R.string.confirm_unblock_title : R.string.confirm_block_title),
 				activity.getString(currentlyBlocked ? R.string.confirm_unblock : R.string.confirm_block, account.displayName),
 				activity.getString(currentlyBlocked ? R.string.do_unblock : R.string.do_block),
-				currentlyBlocked ? R.drawable.ic_fluent_person_28_regular : R.drawable.ic_fluent_person_prohibited_28_regular,
+				R.drawable.ic_fluent_person_prohibited_28_regular,
 				()->{
 					new SetAccountBlocked(account.id, !currentlyBlocked)
 							.setCallback(new Callback<>(){
@@ -389,6 +382,38 @@ public class UiUtils{
 							.wrapProgress(activity, R.string.loading, false)
 							.exec(accountID);
 				});
+	}
+
+	public static void confirmSoftBlockUser(Activity activity, String accountID, Account account, Consumer<Relationship> resultCallback){
+		showConfirmationAlert(activity,
+				activity.getString(R.string.sk_remove_follower),
+				activity.getString(R.string.sk_remove_follower_confirm, account.displayName),
+				activity.getString(R.string.sk_do_remove_follower),
+				R.drawable.ic_fluent_person_delete_24_regular,
+				() -> new SetAccountBlocked(account.id, true).setCallback(new Callback<>() {
+						@Override
+						public void onSuccess(Relationship relationship) {
+							new SetAccountBlocked(account.id, false).setCallback(new Callback<>() {
+								@Override
+								public void onSuccess(Relationship relationship) {
+									Toast.makeText(activity, R.string.sk_remove_follower_success, Toast.LENGTH_SHORT).show();
+									resultCallback.accept(relationship);
+								}
+
+								@Override
+								public void onError(ErrorResponse error) {
+									error.showToast(activity);
+									resultCallback.accept(relationship);
+								}
+							}).exec(accountID);
+						}
+
+						@Override
+						public void onError(ErrorResponse error) {
+							error.showToast(activity);
+						}
+					}).exec(accountID)
+		);
 	}
 
 	public static void confirmToggleBlockDomain(Activity activity, String accountID, String domain, boolean currentlyBlocked, Runnable resultCallback){
@@ -498,7 +523,7 @@ public class UiUtils{
 				pinned ? R.string.sk_confirm_pin_post_title : R.string.sk_confirm_unpin_post_title,
 				pinned ? R.string.sk_confirm_pin_post : R.string.sk_confirm_unpin_post,
 				pinned ? R.string.sk_pin_post : R.string.sk_unpin_post,
-				pinned ? R.drawable.ic_fluent_pin_off_28_regular : R.drawable.ic_fluent_pin_28_regular,
+				pinned ? R.drawable.ic_fluent_pin_28_regular : R.drawable.ic_fluent_pin_off_28_regular,
 				()->{
 					new SetStatusPinned(status.id, pinned)
 							.setCallback(new Callback<>() {
@@ -539,6 +564,27 @@ public class UiUtils{
 					}
 				}).exec(accountID)
 		);
+	}
+
+	public static void confirmDeleteList(Activity activity, String accountID, String listID, String listTitle, Runnable callback) {
+		showConfirmationAlert(activity,
+				activity.getString(R.string.sk_delete_list),
+				activity.getString(R.string.sk_delete_list_confirm, listTitle),
+				activity.getString(R.string.delete),
+				R.drawable.ic_fluent_delete_28_regular,
+				() -> new DeleteList(listID).setCallback(new Callback<>() {
+							@Override
+							public void onSuccess(Object o) {
+								callback.run();
+							}
+
+							@Override
+							public void onError(ErrorResponse error) {
+								error.showToast(activity);
+							}
+						})
+						.wrapProgress(activity, R.string.deleting, false)
+						.exec(accountID));
 	}
 
 	public static void setRelationshipToActionButton(Relationship relationship, Button button){
@@ -1003,5 +1049,14 @@ public class UiUtils{
 		} else {
 			return false;
 		}
+	}
+
+	public static String getVisibilityText(Status status) {
+		return MastodonApp.context.getString(switch (status.visibility) {
+			case PUBLIC -> R.string.visibility_public;
+			case UNLISTED -> R.string.sk_visibility_unlisted;
+			case PRIVATE -> R.string.visibility_followers_only;
+			case DIRECT -> R.string.visibility_private;
+		});
 	}
 }

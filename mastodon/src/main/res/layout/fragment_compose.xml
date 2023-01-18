@@ -56,10 +56,10 @@
 
 				<TextView
 					android:id="@+id/reply_text"
-					android:layout_width="match_parent"
+					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginBottom="-12dp"
-					android:paddingHorizontal="16dp"
+					android:layout_marginStart="16dp"
 					android:paddingTop="16dp"
 					android:paddingBottom="6dp"
 					android:textAppearance="@style/m3_title_small"
@@ -68,8 +68,7 @@
 					android:drawableTint="?android:textColorSecondary"
 					android:drawablePadding="6dp"
 					android:singleLine="true"
-					android:ellipsize="end"
-					android:background="?android:selectableItemBackground"/>
+					android:ellipsize="end"/>
 
 				<RelativeLayout
 					android:layout_width="match_parent"
@@ -80,8 +79,8 @@
 
 					<ImageView
 						android:id="@+id/self_avatar"
-						android:layout_width="46dp"
-						android:layout_height="46dp"
+						android:layout_width="46sp"
+						android:layout_height="46sp"
 						android:layout_alignParentStart="true"
 						android:layout_alignParentTop="true"
 						android:layout_marginEnd="12dp" />
@@ -89,8 +88,10 @@
 					<TextView
 						android:id="@+id/self_name"
 						android:layout_width="match_parent"
-						android:layout_height="24dp"
+						android:layout_height="wrap_content"
 						android:layout_toEndOf="@id/self_avatar"
+						android:layout_marginTop="2sp"
+						android:minHeight="24sp"
 						android:ellipsize="end"
 						android:singleLine="true"
 						android:textAppearance="@style/m3_title_medium"
@@ -99,9 +100,10 @@
 					<TextView
 						android:id="@+id/self_username"
 						android:layout_width="match_parent"
-						android:layout_height="20dp"
+						android:layout_height="wrap_content"
 						android:layout_below="@id/self_name"
 						android:layout_toEndOf="@id/self_avatar"
+						android:minHeight="20sp"
 						android:ellipsize="end"
 						android:singleLine="true"
 						android:textAppearance="@style/m3_title_small"
@@ -153,6 +155,7 @@
 						android:layout_marginBottom="8dp"
 						android:background="@drawable/bg_poll_option_clickable"
 						android:outlineProvider="background"
+						android:contentDescription="@string/sk_poll_option_add"
 						android:elevation="2dp">
 						<ImageView
 							android:id="@+id/add_poll_option_icon"
@@ -160,6 +163,7 @@
 							android:layout_height="24dp"
 							android:layout_margin="16dp"
 							android:tint="?colorDarkIcon"
+							android:importantForAccessibility="no"
 							android:src="@drawable/ic_fluent_add_circle_24_regular"/>
 					</LinearLayout>
 					<TextView
@@ -420,6 +424,7 @@
 				android:layout_height="wrap_content"
 				android:textAppearance="@style/m3_body_large"
 				android:textColor="?android:textColorSecondary"
+				android:visibility="gone"
 				tools:text="500"/>
 
 			<Button
@@ -429,6 +434,7 @@
 				android:layout_marginStart="12dp"
 				android:visibility="gone"
 				android:tooltipText="@string/publish"
+				android:contentDescription="@string/publish"
 				android:drawableStart="@drawable/ic_fluent_send_24_selector"
 				/>
 

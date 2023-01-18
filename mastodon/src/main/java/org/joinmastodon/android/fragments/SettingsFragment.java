@@ -53,6 +53,7 @@ import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
@@ -84,7 +85,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private PushSubscription pushSubscription;
 
 	private ImageView themeTransitionWindowView;
-	private TextItem checkForUpdateItem;
+	private TextItem checkForUpdateItem, clearImageCacheItem;
+	private ImageCache imageCache;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -92,6 +94,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 		setTitle(R.string.settings);
+		imageCache = ImageCache.getInstance(getActivity());
 		accountID=getArguments().getString("account");
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
@@ -110,6 +113,14 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.theme_true_black, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
 		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
 			GlobalUserPreferences.disableMarquee=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
+			GlobalUserPreferences.uniformNotificationIcon=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
+			GlobalUserPreferences.reduceMotion=i.checked;
 			GlobalUserPreferences.save();
 		}));
 		items.add(new ButtonItem(R.string.sk_settings_color_palette, R.drawable.ic_fluent_color_24_regular, b->{
@@ -139,39 +150,32 @@ public class SettingsFragment extends MastodonToolbarFragment{
 							Toast.LENGTH_LONG).show();
 				});
 			} else {
-			b.setOnClickListener(l -> {
-				FrameLayout inputWrap = new FrameLayout(getContext());
-				EditText input = new EditText(getContext());
-				input.setHint(R.string.publish);
-				input.setText(GlobalUserPreferences.publishButtonText.trim());
-				FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-				params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
-				input.setLayoutParams(params);
-				inputWrap.addView(input);
-				new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
-						.setPositiveButton(R.string.save, (d, which) -> {
-							GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
-							GlobalUserPreferences.save();
-							updatePublishText(b);
-						})
-						.setNeutralButton(R.string.clear, (d, which) -> {
-							GlobalUserPreferences.publishButtonText = "";
-							GlobalUserPreferences.save();
-							updatePublishText(b);
-						})
-						.setNegativeButton(R.string.cancel, (d, which) -> {
-						})
-						.show();
-			});}
+				b.setOnClickListener(l -> {
+					FrameLayout inputWrap = new FrameLayout(getContext());
+					EditText input = new EditText(getContext());
+					input.setHint(R.string.publish);
+					input.setText(GlobalUserPreferences.publishButtonText.trim());
+					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+					params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+					input.setLayoutParams(params);
+					inputWrap.addView(input);
+					new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
+							.setPositiveButton(R.string.save, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNeutralButton(R.string.clear, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = "";
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNegativeButton(R.string.cancel, (d, which) -> {
+							})
+							.show();
+				});}
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
-			GlobalUserPreferences.uniformNotificationIcon=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
-			GlobalUserPreferences.reduceMotion=i.checked;
-			GlobalUserPreferences.save();
-		}));
+
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
@@ -243,7 +247,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.notify_reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, pushSubscription.alerts.reblog, i->onNotificationsChanged(PushNotification.Type.REBLOG, i.checked)));
 		items.add(new SwitchItem(R.string.notify_mention, R.drawable.ic_fluent_mention_24_regular, pushSubscription.alerts.mention, i->onNotificationsChanged(PushNotification.Type.MENTION, i.checked)));
 		items.add(new SwitchItem(R.string.sk_notify_posts, R.drawable.ic_fluent_alert_24_regular, pushSubscription.alerts.status, i->onNotificationsChanged(PushNotification.Type.STATUS, i.checked)));
-		items.add(new SwitchItem(R.string.sk_keep_only_latest_notification, R.drawable.ic_fluent_custom_alert_latest_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
+		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
 			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -260,6 +264,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			args.putParcelable("instance", Parcels.wrap(instance));
 			Nav.go(getActivity(), InstanceRulesFragment.class, args);
 		}, R.drawable.ic_fluent_task_list_ltr_24_regular));
+		items.add(new TextItem(R.string.sk_settings_about_instance	, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/about"), R.drawable.ic_fluent_info_24_regular));
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
@@ -278,7 +283,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
-		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
+//		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
+		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), imageCache.getDiskCache().size(), true), this::clearImageCache, 0);
+		items.add(clearImageCacheItem);
 		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
@@ -527,9 +534,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private void clearImageCache(){
 		MastodonAPIController.runInBackground(()->{
 			Activity activity=getActivity();
-			ImageCache.getInstance(getActivity()).clear();
+			imageCache.clear();
 			Toast.makeText(activity, R.string.media_cache_cleared, Toast.LENGTH_SHORT).show();
 		});
+		if (list.findViewHolderForAdapterPosition(items.indexOf(clearImageCacheItem)) instanceof TextViewHolder tvh) {
+			clearImageCacheItem.secondaryText = UiUtils.formatFileSize(getContext(), 0, true);
+			tvh.rebind();
+		}
 	}
 
 	@Subscribe
@@ -660,27 +671,29 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 	private class TextItem extends Item{
 		private String text;
+		private String secondaryText;
 		private Runnable onClick;
 		private boolean loading;
 		private int icon;
 
 		public TextItem(@StringRes int text, Runnable onClick) {
-			this(text, onClick, false, 0);
-		}
-
-		public TextItem(@StringRes int text, Runnable onClick, boolean loading) {
-			this(text, onClick, loading, 0);
+			this(text, null, onClick, false, 0);
 		}
 
 		public TextItem(@StringRes int text, Runnable onClick, @DrawableRes int icon) {
-			this(text, onClick, false, icon);
+			this(text, null, onClick, false, icon);
 		}
 
-		public TextItem(@StringRes int text, Runnable onClick, boolean loading, @DrawableRes int icon){
+		public TextItem(@StringRes int text, String secondaryText, Runnable onClick, @DrawableRes int icon) {
+			this(text, secondaryText, onClick, false, icon);
+		}
+
+		public TextItem(@StringRes int text, String secondaryText, Runnable onClick, boolean loading, @DrawableRes int icon){
 			this.text=getString(text);
 			this.onClick=onClick;
 			this.loading=loading;
 			this.icon=icon;
+			this.secondaryText = secondaryText;
 		}
 
 		@Override
@@ -932,22 +945,27 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	}
 
 	private class TextViewHolder extends BindableViewHolder<TextItem> implements UsableRecyclerView.Clickable{
-		private final TextView text;
+		private final TextView text, secondaryText;
 		private final ProgressBar progress;
 		private final ImageView icon;
 
 		public TextViewHolder(){
 			super(getActivity(), R.layout.item_settings_text, list);
 			text = itemView.findViewById(R.id.text);
+			secondaryText = itemView.findViewById(R.id.secondary_text);
 			progress = itemView.findViewById(R.id.progress);
 			icon = itemView.findViewById(R.id.icon);
 		}
 
 		@Override
 		public void onBind(TextItem item){
+			icon.setVisibility(item.icon != 0 ? View.VISIBLE : View.GONE);
+			secondaryText.setVisibility(item.secondaryText != null ? View.VISIBLE : View.GONE);
+
 			text.setText(item.text);
 			progress.animate().alpha(item.loading ? 1 : 0);
-			if (item.icon != 0) icon.setImageDrawable(getActivity().getTheme().getDrawable(item.icon));
+			icon.setImageResource(item.icon);
+			secondaryText.setText(item.secondaryText);
 		}
 
 		@Override

@@ -2,6 +2,7 @@ package org.joinmastodon.android.ui.displayitems;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -100,6 +101,11 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 				case PRIVATE -> R.drawable.ic_fluent_people_checkmark_20_regular;
 				case DIRECT -> R.drawable.ic_fluent_mention_24_regular;
 			});
+
+			visibility.setContentDescription(UiUtils.getVisibilityText(s));
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				visibility.setTooltipText(visibility.getContentDescription());
+			}
 		}
 
 		@Override

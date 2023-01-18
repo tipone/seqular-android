@@ -34,7 +34,7 @@
     <string name="sk_follow_requests">Follow requests</string>
     <string name="sk_accept_follow_request">Accept follow request</string>
     <string name="sk_reject_follow_request">Reject follow request</string>
-    <string name="sk_lists_with_user">Lists with %s</string>
+    <string name="sk_lists_with_user">Edit lists with %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Always reveal content warnings</string>
     <string name="sk_disable_marquee">Disable scrolling text in title bars</string>
     <string name="sk_disable_dividers">Disable post dividers</string>
@@ -68,6 +68,9 @@
     <string name="sk_app_username" translatable="false">\@moshidon</string>
     <string name="sk_tabs_disable_swipe">Disable swiping between tabs</string>
     <string name="sk_settings_profile">Set up profile</string>
+    <string name="sk_personal_note">Add a note about this profile</string>
+    <string name="sk_personal_note_confirm">Confirm changes to note</string>
+    <string name="sk_personal_note_update_failed">Failed to save note</string>
     <string name="sk_settings_posting">Posting preferences</string>
     <string name="sk_settings_filters">Configure filters</string>
     <string name="sk_settings_auth">Security settings</string>
@@ -137,4 +140,34 @@
     <string name="sk_clear_recent_emoji">Clear recently used emoji</string>
     <string name="sk_disable_relocate_publish_button_to_enable_customization">Disable "Relocate publish button" to allow customization</string>
     <string name="sk_keep_only_latest_notification">Keep only latest notification</string>
+    <string name="sk_announcements">Announcements</string>
+    <string name="sk_mark_as_read">Mark as read</string>
+    <string name="sk_settings_about_instance">About instance</string>
+    <string name="sk_settings_single_notification">Only show one notification</string>
+    <string name="sk_create">Create</string>
+    <string name="sk_create_list_title">Create list</string>
+    <string name="sk_list_name_hint">List name</string>
+    <string name="sk_list_replies_policy">Show replies to</string>
+    <string name="sk_list_replies_policy_list">list members</string>
+    <string name="sk_list_replies_policy_followed">followed users</string>
+    <string name="sk_list_replies_policy_none">no one</string>
+    <string name="sk_delete_list">Delete list</string>
+    <string name="sk_delete_list_confirm">Are you sure you want to delete the list “%s”?</string>
+    <string name="sk_edit_list_title">Edit list</string>
+    <string name="sk_your_lists">Your lists</string>
+    <string name="sk_timeline_home">Home</string>
+    <string name="sk_timeline_local">Local</string>
+    <string name="sk_timeline_federated">Federation</string>
+    <string name="sk_recent_searches_placeholder">Type something to start searching</string>
+    <string name="sk_remove_follower">Remove as follower</string>
+    <string name="sk_remove_follower_confirm">Remove %s as a follower by blocking and immediately unblocking them?</string>
+    <string name="sk_do_remove_follower">Remove</string>
+    <string name="sk_remove_follower_success">Successfully removed follower</string>
+
+    <!--    accessibility labels-->
+    <string name="sk_poll_option_add">Add new poll option</string>
+    <string name="sk_fab_compose">Compose</string>
+    <string name="sk_sending_error">Error publishing</string>
+
+
 </resources>

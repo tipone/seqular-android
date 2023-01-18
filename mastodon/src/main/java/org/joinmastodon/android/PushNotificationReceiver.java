@@ -37,6 +37,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String TAG="PushNotificationReceive";
 
 	public static final int NOTIFICATION_ID=178;
+	private static int notificationId = 0;
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -129,13 +130,14 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
 		contentIntent.putExtra("accountID", accountID);
+		contentIntent.putExtra("notificationID", notificationId);
 		if(notification!=null){
 			contentIntent.putExtra("notification", Parcels.wrap(notification));
 		}
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
 				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
-				.setContentIntent(PendingIntent.getActivity(context, accountID.hashCode() & 0xFFFF, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
+				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
 				.setWhen(notification==null ? System.currentTimeMillis() : notification.createdAt.toEpochMilli())
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
@@ -160,6 +162,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : (int)System.currentTimeMillis(), builder.build());
+		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());
 	}
 }

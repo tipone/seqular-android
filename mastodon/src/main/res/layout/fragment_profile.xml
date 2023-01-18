@@ -45,7 +45,7 @@
 						android:textColor="?colorGray50t"
 						android:textAllCaps="true"
 						android:fontFamily="sans-serif-medium"
-						android:textSize="14dp"
+						android:textSize="14sp"
 						android:gravity="center"
 						android:background="@drawable/bg_profile_follows_you"
 						android:visibility="gone"
@@ -253,11 +253,53 @@
 						android:textColor="?android:textColorSecondary"
 						tools:text="\@Gargron" />
 
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/username"
+						android:id="@+id/note_edit_wrap"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="16dp"
+						android:layout_marginHorizontal="16dp"
+						android:visibility="gone">
+
+						<EditText
+							android:id="@+id/note_edit"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingVertical="16dp"
+							android:inputType="textMultiLine|textCapSentences"
+							android:singleLine="false"
+							android:drawableStart="@drawable/ic_fluent_notepad_20_regular"
+							android:drawablePadding="12dp"
+							android:drawableTint="?android:textColorSecondary"
+							android:background="@drawable/bg_note_edit"
+							android:paddingEnd="48dp"
+							android:paddingHorizontal="16dp"
+							android:elevation="0dp"
+							android:visibility="gone"
+							android:hint="@string/sk_personal_note"/>
+
+						<Button
+							android:id="@+id/note_edit_confirm"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginEnd="8dp"
+							android:paddingHorizontal="8dp"
+							android:visibility="invisible"
+							android:backgroundTint="?colorBackgroundLightest"
+							android:layout_gravity="right|center_vertical"
+							android:tooltipText="@string/sk_personal_note_confirm"
+							android:contentDescription="@string/sk_personal_note_confirm"
+							android:drawableStart="@drawable/ic_fluent_checkmark_24_regular"
+							/>
+					</FrameLayout>
+
 					<org.joinmastodon.android.ui.views.LinkedTextView
 						android:id="@+id/bio"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_below="@id/username"
+						android:layout_below="@id/note_edit_wrap"
 						android:layout_marginLeft="16dp"
 						android:layout_marginRight="16dp"
 						android:textAppearance="@style/m3_body_large"
@@ -318,7 +360,11 @@
 			</LinearLayout>
 		</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
 
-		<ImageButton android:id="@+id/fab" style="@style/Widget.Mastodon.Button.Compose"/>
+		<ImageButton
+			android:tooltipText="@string/sk_fab_compose"
+			android:contentDescription="@string/sk_fab_compose"
+			android:id="@+id/fab"
+			style="@style/Widget.Mastodon.Button.Compose"/>
 	</FrameLayout>
 
 </me.grishka.appkit.views.RecursiveSwipeRefreshLayout>
