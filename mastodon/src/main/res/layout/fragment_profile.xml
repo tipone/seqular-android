@@ -274,6 +274,7 @@
 							android:drawablePadding="12dp"
 							android:drawableTint="?android:textColorSecondary"
 							android:background="@drawable/bg_note_edit"
+							android:paddingEnd="48dp"
 							android:paddingHorizontal="16dp"
 							android:elevation="0dp"
 							android:visibility="gone"
