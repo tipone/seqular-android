@@ -209,7 +209,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		noteEdit = content.findViewById(R.id.note_edit);
 		noteWrap = content.findViewById(R.id.note_edit_wrap);
-		ImageButton noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
+		Button noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
 
 		avatar.setOutlineProvider(new ViewOutlineProvider(){
 			@Override
@@ -221,11 +221,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
 			if (hasFocus) {
+				fab.setVisibility(View.GONE);
 				noteEditConfirm.setVisibility(View.VISIBLE);
 				noteEditConfirm.animate()
 						.alpha(1.0f)
 						.setDuration(700);
 			} else {
+				fab.setVisibility(View.VISIBLE);
 				noteEditConfirm.animate()
 						.alpha(0.0f)
 						.setDuration(700);
@@ -978,6 +980,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	@Override
 	public boolean onBackPressed(){
+		if(noteEdit.hasFocus()) {
+			savePrivateNote();
+		}
 		if(isInEditMode){
 			exitEditMode();
 			return true;

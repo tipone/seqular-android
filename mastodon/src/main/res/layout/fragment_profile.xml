@@ -258,6 +258,9 @@
 						android:layout_height="wrap_content"
 						android:layout_below="@id/username"
 						android:id="@+id/note_edit_wrap"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="16dp"
+						android:layout_marginHorizontal="16dp"
 						android:visibility="gone">
 
 						<EditText
@@ -265,9 +268,6 @@
 							android:layout_width="match_parent"
 							android:layout_height="wrap_content"
 							android:paddingVertical="16dp"
-							android:layout_marginTop="4dp"
-							android:layout_marginBottom="16dp"
-							android:layout_marginHorizontal="16dp"
 							android:inputType="textMultiLine|textCapSentences"
 							android:singleLine="false"
 							android:drawableStart="@drawable/ic_fluent_notepad_20_regular"
@@ -279,18 +279,32 @@
 							android:visibility="gone"
 							android:hint="@string/sk_personal_note"/>
 
-						<ImageButton
+						<Button
 							android:id="@+id/note_edit_confirm"
 							android:layout_width="wrap_content"
 							android:layout_height="wrap_content"
-							android:src="@drawable/ic_fluent_checkmark_24_filled"
-							android:backgroundTint="#00000000"
-							android:layout_marginTop="2dp"
+							android:layout_marginEnd="8dp"
+							android:paddingHorizontal="8dp"
 							android:visibility="invisible"
-							android:layout_marginEnd="20dp"
 							android:layout_gravity="right|center_vertical"
 							android:tooltipText="@string/sk_personal_note_confirm"
-							android:contentDescription="@string/sk_personal_note_confirm" />
+							android:contentDescription="@string/sk_personal_note_confirm"
+							android:drawableStart="@drawable/ic_fluent_checkmark_24_filled"
+							android:drawableTint="?colorButtonText"
+							/>
+
+<!--						<ImageButton-->
+<!--							android:id="@+id/note_edit_confirm"-->
+<!--							android:layout_width="wrap_content"-->
+<!--							android:layout_height="wrap_content"-->
+<!--							android:src="@drawable/ic_fluent_checkmark_24_filled"-->
+<!--							android:backgroundTint="#00000000"-->
+<!--							android:layout_marginTop="2dp"-->
+<!--							android:visibility="invisible"-->
+<!--							android:layout_marginEnd="20dp"-->
+<!--							android:layout_gravity="right|center_vertical"-->
+<!--							android:tooltipText="@string/sk_personal_note_confirm"-->
+<!--							android:contentDescription="@string/sk_personal_note_confirm" />-->
 
 					</FrameLayout>
 
