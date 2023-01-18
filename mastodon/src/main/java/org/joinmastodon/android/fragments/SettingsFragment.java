@@ -283,7 +283,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
-		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
+//		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), imageCache.getDiskCache().size(), true), this::clearImageCache, 0);
 		items.add(clearImageCacheItem);
 		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{
