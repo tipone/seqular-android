@@ -13,12 +13,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.accounts.GetWordFilters;
 import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
@@ -27,9 +25,6 @@ import org.joinmastodon.android.model.TranslatedStatus;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.views.LinkedTextView;
-import org.joinmastodon.android.utils.StatusFilterPredicate;
-
-import java.util.List;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -43,7 +38,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	private CharSequence text;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper(), spoilerEmojiHelper;
 	private CharSequence parsedSpoilerText;
-	private boolean showFiltered = false;
 	public boolean textSelectable;
 	public final Status status;
 	public boolean disableTranslate;
@@ -120,8 +114,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(TextStatusDisplayItem item){
 			text.setText(item.translated
-							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
-							: item.text);
+					? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
+					: item.text);
 			text.setTextIsSelectable(item.textSelectable);
 			spoilerTitleInline.setTextIsSelectable(item.textSelectable);
 			text.setInvalidateOnEveryFrame(false);
@@ -129,81 +123,26 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerTitleInline.setPadding(spoilerTitleInline.getPaddingLeft(), item.inset ? 0 : V.dp(14), spoilerTitleInline.getPaddingRight(), item.inset ? 0 : V.dp(14));
 			borderTop.setBackground(item.inset ? null : borderColor);
 			borderBottom.setBackground(item.inset ? null : borderColor);
-
-//			if(!TextUtils.isEmpty(item.status.spoilerText)){
-//				spoilerTitle.setText(item.parsedSpoilerText);
-//				spoilerTitleInline.setText(item.parsedSpoilerText);
-//				if(item.status.spoilerRevealed){
-//					spoilerOverlay.setVisibility(View.GONE);
-//					spoilerHeader.setVisibility(View.VISIBLE);
-//					textWrap.setVisibility(View.VISIBLE);
-//					itemView.setClickable(false);
-//				}else{
-//					spoilerOverlay.setVisibility(View.VISIBLE);
-//					spoilerHeader.setVisibility(View.GONE);
-//					textWrap.setVisibility(View.GONE);
-//					itemView.setClickable(true);
-//				}
-//			}else{
-//				spoilerOverlay.setVisibility(View.GONE);
-//				spoilerHeader.setVisibility(View.GONE);
-//				textWrap.setVisibility(View.VISIBLE);
-//				itemView.setClickable(false);
-//			}
-
-			if(!item.showFiltered){
-				if(item.status.filtered.size() > 0){
-					spoilerTitle.setText("Filtered");
-					spoilerTitleInline.setText(item.parsedSpoilerText);
-//				if(item.status.spoilerRevealed){
-//					spoilerOverlay.setVisibility(View.GONE);
-//					spoilerHeader.setVisibility(View.VISIBLE);
-//					textWrap.setVisibility(View.VISIBLE);
-//					itemView.setClickable(false);
-//				}else{
+			if(!TextUtils.isEmpty(item.status.spoilerText)){
+				spoilerTitle.setText(item.parsedSpoilerText);
+				spoilerTitleInline.setText(item.parsedSpoilerText);
+				if(item.status.spoilerRevealed){
+					spoilerOverlay.setVisibility(View.GONE);
+					spoilerHeader.setVisibility(View.VISIBLE);
+					textWrap.setVisibility(View.VISIBLE);
+					itemView.setClickable(false);
+				}else{
 					spoilerOverlay.setVisibility(View.VISIBLE);
 					spoilerHeader.setVisibility(View.GONE);
 					textWrap.setVisibility(View.GONE);
 					itemView.setClickable(true);
 				}
 			}else{
-				if(!TextUtils.isEmpty(item.status.spoilerText)){
-					spoilerTitle.setText(item.parsedSpoilerText);
-					spoilerTitleInline.setText(item.parsedSpoilerText);
-					if(item.status.spoilerRevealed){
-						spoilerOverlay.setVisibility(View.GONE);
-						spoilerHeader.setVisibility(View.VISIBLE);
-						textWrap.setVisibility(View.VISIBLE);
-						itemView.setClickable(false);
-					}else{
-						spoilerOverlay.setVisibility(View.VISIBLE);
-						spoilerHeader.setVisibility(View.GONE);
-						textWrap.setVisibility(View.GONE);
-						itemView.setClickable(true);
-					}
-				}else{
-					spoilerOverlay.setVisibility(View.GONE);
-					spoilerHeader.setVisibility(View.GONE);
-					textWrap.setVisibility(View.VISIBLE);
-					itemView.setClickable(false);
-				}
+				spoilerOverlay.setVisibility(View.GONE);
+				spoilerHeader.setVisibility(View.GONE);
+				textWrap.setVisibility(View.VISIBLE);
+				itemView.setClickable(false);
 			}
-
-//			else{
-//				spoilerOverlay.setVisibility(View.GONE);
-//				spoilerHeader.setVisibility(View.GONE);
-//				textWrap.setVisibility(View.VISIBLE);
-//				itemView.setClickable(false);
-//			}
-
-
-//			if(item.status.filtered.size() > 0){
-////				text.setText("Filtered");
-//				spoilerOverlay.setVisibility(View.VISIBLE);
-//				spoilerHeader.setVisibility(View.VISIBLE);
-//				textWrap.setVisibility(View.GONE);
-//				itemView.setClickable(false);
-//			}
 
 			Instance instanceInfo = AccountSessionManager.getInstance().getInstanceInfo(item.session.domain);
 			boolean translateEnabled = !item.disableTranslate && instanceInfo.v2 != null &&
@@ -245,7 +184,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					rebind();
 				}
 			});
-	}
+		}
 
 		@Override
 		public void setImage(int index, Drawable image){
