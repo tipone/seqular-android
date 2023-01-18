@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sk_app_name">Megalodon</string>
+    <string name="sk_app_name">Moshidon</string>
     <string name="sk_delete_and_redraft">Eliminar e rescribir</string>
     <string name="sk_confirm_delete_and_redraft">Tes a certeza de querere eliminar e rescribir esta publicación\?</string>
     <string name="sk_pinned_posts">Fixado</string>
@@ -20,14 +20,14 @@
     <string name="sk_settings_show_boosts">Mostrar promocións</string>
     <string name="sk_settings_load_new_posts">Cargar automáticamente novas publicacións</string>
     <string name="sk_settings_show_interaction_counts">Mostrar contadores de interaccións</string>
-    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
+    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
     <string name="sk_mark_media_as_sensitive">Marcar multimedia como sensible</string>
     <string name="sk_user_post_notifications_on">Acender notificación de publicación para %s</string>
     <string name="sk_user_post_notifications_off">Apagar notificación de publicación para %s</string>
     <string name="sk_federated_timeline">Federación</string>
     <string name="sk_federated_timeline_info_banner">Estas son as publicacións máis recentes das persoas da túa federación.</string>
-    <string name="sk_update_available">Megalodon %s está lista para descargar.</string>
-    <string name="sk_update_ready">Megalodon %s foi descargada e está lista para instalar.</string>
+    <string name="sk_update_available">Moshidon %s está lista para descargar.</string>
+    <string name="sk_update_ready">Moshidon %s foi descargada e está lista para instalar.</string>
     <string name="sk_check_for_update">Comprobar actualizacións</string>
     <string name="sk_no_update_available">Non hai actualizacións</string>
     <string name="sk_list_timelines">Listas</string>

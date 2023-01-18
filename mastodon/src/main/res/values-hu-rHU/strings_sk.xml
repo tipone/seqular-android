@@ -19,14 +19,14 @@
     <string name="sk_unpinning">Unpinning poszt…</string>
     <string name="sk_settings_show_replies">Válaszok megjelenítése</string>
     <string name="sk_visibility_unlisted">Felsorolatlan</string>
-    <string name="sk_app_name">Megalodon</string>
+    <string name="sk_app_name">Moshidon</string>
     <string name="sk_settings_load_new_posts">Automatikusan töltse be az új hozzászólásokat</string>
-    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
+    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
     <string name="sk_user_post_notifications_on">Bekapcsoltuk a postai értesítéseket %s számára</string>
     <string name="sk_user_post_notifications_off">Kikapcsoltam a postai értesítéseket %s számára</string>
     <string name="sk_mark_media_as_sensitive">A média érzékenynek jelölése</string>
     <string name="sk_federated_timeline">Föderáció</string>
-    <string name="sk_update_ready">A Megalodon %s letöltődött és telepítésre kész.</string>
+    <string name="sk_update_ready">A Moshidon %s letöltődött és telepítésre kész.</string>
     <string name="sk_disable_marquee">A görgethető szöveg kikapcsolása a címsorokban</string>
     <string name="sk_check_for_update">Frissítés ellenőrzése</string>
     <string name="sk_no_update_available">Nincs frissítés elérhető</string>
@@ -35,7 +35,7 @@
     <string name="sk_accept_follow_request">Követési kérés elfogadása</string>
     <string name="sk_lists_with_user">%s-t tartalmazó listák</string>
     <string name="sk_settings_always_reveal_content_warnings">Mindig fedje fel a tartalmi figyelmeztetéseket</string>
-    <string name="sk_settings_contribute">Hozzájárulni Megalodon</string>
+    <string name="sk_settings_contribute">Hozzájárulni Moshidon</string>
     <string name="sk_settings_show_federated_timeline">Összevont idővonal megjelenítése</string>
     <string name="sk_confirm_clear_recent_languages">Biztos, hogy törölni szeretné a nemrég használt nyelveket\?</string>
     <string name="sk_available_languages">Elérhető nyelvek</string>
@@ -115,7 +115,7 @@
     <string name="sk_welcome_text">A cápa tiszteleg előtted! A kezdéshez kérjük, adja meg az alábbiakban az otthoni domain nevét.</string>
     <string name="sk_federated_timeline_info_banner">Ezek a szövetséged tagjainak legfrissebb bejegyzései.</string>
     <string name="sk_confirm_delete_and_redraft">Biztos, hogy törölni és újrafogalmazni akarod ezt a hozzászólást\?</string>
-    <string name="sk_update_available">Megalodon %s készen áll a letöltésre.</string>
+    <string name="sk_update_available">Moshidon %s készen áll a letöltésre.</string>
     <string name="sk_confirm_delete_and_redraft_title">Törlés és újraszövegezés Hozzászólás</string>
     <string name="sk_image_description">Kép leírása</string>
     <string name="sk_settings_show_boosts">Show boostok</string>
