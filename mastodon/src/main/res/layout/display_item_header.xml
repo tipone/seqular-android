@@ -120,6 +120,14 @@
 			android:textAppearance="@style/m3_title_small"
 			tools:text="\@Gargron" />
 
+		<ImageView
+			android:id="@+id/bot_icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:importantForAccessibility="no"
+			android:layout_marginTop="2dp"
+			android:src="@drawable/ic_fluent_bot_16_filled" />
+
 		<TextView
 			android:id="@+id/separator"
 			android:layout_width="wrap_content"

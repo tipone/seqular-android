@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -135,7 +136,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, botIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -158,6 +159,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			visibility=findViewById(R.id.visibility);
 			deleteNotification=findViewById(R.id.delete_notification);
 			unreadIndicator=findViewById(R.id.unread_indicator);
+			botIcon=findViewById(R.id.bot_icon);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
@@ -282,10 +284,23 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		public void onBind(HeaderStatusDisplayItem item){
 			name.setText(item.parsedName);
 			username.setText('@'+item.user.acct);
+			botIcon.setVisibility(item.user.bot ? View.VISIBLE : View.GONE);
+			botIcon.setColorFilter(username.getCurrentTextColor());
 			separator.setVisibility(View.VISIBLE);
 
+//			if(item.user.bot){
+//				SpannableStringBuilder ssb = new SpannableStringBuilder();
+//				ssb.append('@'+item.user.acct);
+//				ssb.append(" ");
+//				Drawable botIcon=username.getResources().getDrawable(R.drawable.ic_bot, itemView.getContext().getTheme()).mutate();
+//				botIcon.setBounds(0, 0, botIcon.getIntrinsicWidth(), botIcon.getIntrinsicHeight());
+//				botIcon.setTint(username.getCurrentTextColor());
+//				ssb.append(itemView.getContext().getString(R.string.manually_approves_followers), new ImageSpan(botIcon, ImageSpan.ALIGN_BASELINE), 0);
+//				username.setPaddingRelative(0,0,16,0);
+//				username.setText(ssb);
+//			}
 
-			username.setCompoundDrawablesWithIntrinsicBounds(item.user.bot ? R.drawable.ic_fluent_bot_24_filled : 0, 0, 0, 0);
+//			username.setCompoundDrawablesWithIntrinsicBounds(item.user.bot ? R.drawable.ic_fluent_bot_24_filled : 0, 0, 0, 0);
 
 			if (item.scheduledStatus!=null)
 				if (item.scheduledStatus.scheduledAt.isAfter(CreateStatus.DRAFTS_AFTER_INSTANT)) {
