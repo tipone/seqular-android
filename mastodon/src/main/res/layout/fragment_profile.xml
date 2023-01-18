@@ -286,11 +286,11 @@
 							android:layout_marginEnd="8dp"
 							android:paddingHorizontal="8dp"
 							android:visibility="invisible"
+							android:backgroundTint="?colorBackgroundLightest"
 							android:layout_gravity="right|center_vertical"
 							android:tooltipText="@string/sk_personal_note_confirm"
 							android:contentDescription="@string/sk_personal_note_confirm"
-							android:drawableStart="@drawable/ic_fluent_checkmark_24_filled"
-							android:drawableTint="?colorButtonText"
+							android:drawableStart="@drawable/ic_fluent_checkmark_24_regular"
 							/>
 
 <!--						<ImageButton-->
