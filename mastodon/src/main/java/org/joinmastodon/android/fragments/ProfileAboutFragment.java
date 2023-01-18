@@ -83,9 +83,9 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 		this.note=note;
 		this.accountID=accountID;
 		this.profileAccountID=profileAccountID;
-		noteWrap.setVisibility(View.VISIBLE);
-		noteEdit.setVisibility(View.VISIBLE);
-		noteEdit.setText(note);
+//		noteWrap.setVisibility(View.VISIBLE);
+//		noteEdit.setVisibility(View.VISIBLE);
+//		noteEdit.setText(note);
 	}
 
 	@Nullable
