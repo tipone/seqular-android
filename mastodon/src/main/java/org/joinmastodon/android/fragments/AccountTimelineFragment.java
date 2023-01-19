@@ -3,6 +3,10 @@ package org.joinmastodon.android.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.animation.TranslateAnimation;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
@@ -67,6 +71,7 @@ public class AccountTimelineFragment extends StatusListFragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		fab = ((ProfileFragment) getParentFragment()).getFab();
 	}
 
 	@Override

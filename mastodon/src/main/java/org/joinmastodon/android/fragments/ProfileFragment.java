@@ -17,17 +17,20 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
+import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -133,10 +136,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private Uri editNewAvatar, editNewCover;
 	private String profileAccountID;
 	private boolean refreshing;
-	private View fab;
+	private ImageButton fab;
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
+	private boolean isScrollingUp = false;
 
 	public ProfileFragment(){
 		super(R.layout.loader_fragment_overlay_toolbar);
@@ -760,6 +764,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
 		}
 		if (getActivity() != null) notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
+	}
+
+	public ImageButton getFab() {
+		return fab;
 	}
 
 	private void onScrollChanged(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY){
