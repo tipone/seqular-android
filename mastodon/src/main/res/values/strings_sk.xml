@@ -168,9 +168,4 @@
     <string name="sk_poll_option_add">Add new poll option</string>
     <string name="sk_fab_compose">Compose</string>
     <string name="sk_sending_error">Error publishing</string>
-
-
-    <string name="sk_timeline_home">Home</string>
-    <string name="sk_timeline_local">Local</string>
-    <string name="sk_timeline_federated">Federation</string>
 </resources>
