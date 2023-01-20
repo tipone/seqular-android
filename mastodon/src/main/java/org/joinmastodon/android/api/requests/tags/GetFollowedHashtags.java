@@ -9,10 +9,6 @@ import org.joinmastodon.android.model.Hashtag;
 import java.util.List;
 
 public class GetFollowedHashtags extends HeaderPaginationRequest<Hashtag> {
-    public GetFollowedHashtags() {
-        this(null, null, -1, null);
-    }
-
     public GetFollowedHashtags(String maxID, String minID, int limit, String sinceID){
         super(HttpMethod.GET, "/followed_tags", new TypeToken<>(){});
         if(maxID!=null)
