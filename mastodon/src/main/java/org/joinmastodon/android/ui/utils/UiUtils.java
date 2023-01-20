@@ -88,7 +88,6 @@ import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.parceler.Parcels;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
