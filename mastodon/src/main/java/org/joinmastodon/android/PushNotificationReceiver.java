@@ -122,7 +122,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				nm.createNotificationChannels(channels);
 			}
 			builder=new Notification.Builder(context, accountID+"_"+pn.notificationType);
-			summaryNotification=new Notification.Builder(context, accountID);
+//			summaryNotification=new Notification.Builder(context, accountID);
 		}else{
 			builder=new Notification.Builder(context)
 					.setPriority(Notification.PRIORITY_DEFAULT)
@@ -145,8 +145,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setContentText(pn.body)
 				.setContentTitle(pn.title)
 				.setStyle(new Notification.InboxStyle()
-						.addLine(pn.body)
-						.setSummaryText(accountName))
+						.addLine(pn.body))
 				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
 				.setWhen(notification==null ? System.currentTimeMillis() : notification.createdAt.toEpochMilli())
 				.setShowWhen(true)
@@ -174,27 +173,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 			builder.setSubText(accountName);
 		}
 
-		 summaryNotification.setContentTitle(accountName)
-				//set content text to support devices running API level < 24
-				.setContentText(accountName)
-				 .setSmallIcon(R.drawable.ic_ntf_logo)
-				 //build summary info into InboxStyle template
-				.setStyle(new Notification.InboxStyle()
-						.addLine(pn.title)
-						.setBigContentTitle("2 new messages")
-						.setSummaryText(accountName))
-				//specify which group this notification belongs to
-				.setGroup(accountID)
-				//set this notification as the summary for the group
-				.setGroupSummary(true)
-				.build();
-
-
-
 		notificationId++;
-//		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
 		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
-		nm.notify(Integer.parseInt(accountID), summaryNotification.build());
 
 	}
 }
