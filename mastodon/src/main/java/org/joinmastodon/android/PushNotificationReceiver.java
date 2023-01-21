@@ -194,7 +194,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		notificationId++;
 //		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
 		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
-		nm.notify(SUMMARY_ID, summaryNotification.build());
+		nm.notify(Integer.parseInt(accountID), summaryNotification.build());
 
 	}
 }
