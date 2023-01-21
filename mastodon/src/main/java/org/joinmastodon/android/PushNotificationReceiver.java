@@ -160,6 +160,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				case FOLLOW -> builder.setSmallIcon(R.drawable.ic_fluent_person_add_24_filled);
 				case MENTION -> builder.setSmallIcon(R.drawable.ic_fluent_mention_24_filled);
 				case POLL -> builder.setSmallIcon(R.drawable.ic_fluent_poll_24_filled);
+				case STATUS -> R.drawable.ic_fluent_chat_24_filled;
+
 				default -> builder.setSmallIcon(R.drawable.ic_ntf_logo);
 			}
 		}else{
