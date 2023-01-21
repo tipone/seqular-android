@@ -144,28 +144,26 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
 				.setContentTitle(pn.title)
-				.setStyle(new Notification.InboxStyle()
-						.addLine(pn.body))
+				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
+				.setSmallIcon(R.drawable.ic_ntf_logo)
 				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
 				.setWhen(notification==null ? System.currentTimeMillis() : notification.createdAt.toEpochMilli())
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
-				.setGroup(accountID)
-				.setColor(context.getColor(R.color.shortcut_icon_background));
-		if(!GlobalUserPreferences.uniformNotificationIcon){
-			switch (pn.notificationType) {
-				case FAVORITE -> builder.setSmallIcon(R.drawable.ic_fluent_star_24_filled);
-				case REBLOG -> builder.setSmallIcon(R.drawable.ic_fluent_arrow_repeat_all_24_filled);
-				case FOLLOW -> builder.setSmallIcon(R.drawable.ic_fluent_person_add_24_filled);
-				case MENTION -> builder.setSmallIcon(R.drawable.ic_fluent_mention_24_filled);
-				case POLL -> builder.setSmallIcon(R.drawable.ic_fluent_poll_24_filled);
-				case STATUS -> builder.setSmallIcon(R.drawable.ic_fluent_chat_24_filled);
+				.setColor(context.getColor(R.color.primary_700))
+				.setGroup(accountID);
 
-				default -> builder.setSmallIcon(R.drawable.ic_ntf_logo);
-			}
-		}else{
-			builder.setSmallIcon(R.drawable.ic_ntf_logo);
+		if (!GlobalUserPreferences.uniformNotificationIcon) {
+			builder.setSmallIcon(switch (pn.notificationType) {
+				case FAVORITE -> R.drawable.ic_fluent_star_24_filled;
+				case REBLOG -> R.drawable.ic_fluent_arrow_repeat_all_24_filled;
+				case FOLLOW -> R.drawable.ic_fluent_person_add_24_filled;
+				case MENTION -> R.drawable.ic_fluent_mention_24_filled;
+				case POLL -> R.drawable.ic_fluent_poll_24_filled;
+				case STATUS -> R.drawable.ic_fluent_chat_24_filled;
+				case UPDATE -> R.drawable.ic_fluent_history_24_filled;
+			});
 		}
 
 		if(avatar!=null){
