@@ -76,6 +76,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected PhotoViewer currentPhotoViewer;
 	protected ImageButton fab;
 	protected boolean isScrollingUp = false;
+//	protected boolean isFirstLaunch = true;
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
@@ -286,8 +287,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null) {
-					if (dy > 0 ) {
-						if (isScrollingUp) {
+					if (dy > 0 /*&& !isFirstLaunch*/) {
+						if (isScrollingUp /*&& !isFirstLaunch*/) {
 							fab.setVisibility(View.INVISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
