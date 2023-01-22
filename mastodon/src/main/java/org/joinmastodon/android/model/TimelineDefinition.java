@@ -177,6 +177,7 @@ public class TimelineDefinition {
         ACADEMIC_CAP(R.drawable.ic_fluent_hat_graduation_24_regular, R.string.sk_icon_academic_cap),
         BOT(R.drawable.ic_fluent_bot_24_regular, R.string.sk_icon_bot),
         IMPORTANT(R.drawable.ic_fluent_important_24_regular, R.string.sk_icon_important),
+        PIN(R.drawable.ic_fluent_pin_24_regular, R.string.sk_icon_pin),
         SHIELD(R.drawable.ic_fluent_shield_24_regular, R.string.sk_icon_shield),
         CHAT(R.drawable.ic_fluent_chat_multiple_24_regular, R.string.sk_icon_chat),
         TAG(R.drawable.ic_fluent_tag_24_regular, R.string.sk_icon_tag),
