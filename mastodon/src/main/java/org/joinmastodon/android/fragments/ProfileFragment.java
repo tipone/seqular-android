@@ -225,13 +225,31 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
 			if (hasFocus) {
-				fab.setVisibility(View.GONE);
+				fab.setVisibility(View.INVISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						0,
+						fab.getHeight() * 2);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+
 				noteEditConfirm.setVisibility(View.VISIBLE);
 				noteEditConfirm.animate()
 						.alpha(1.0f)
 						.setDuration(700);
 			} else {
 				fab.setVisibility(View.VISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						fab.getHeight() * 2,
+						0);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+
 				noteEditConfirm.animate()
 						.alpha(0.0f)
 						.setDuration(700);
