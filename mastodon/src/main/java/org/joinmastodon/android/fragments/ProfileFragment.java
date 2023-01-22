@@ -386,11 +386,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 							if(mediaFragment.loaded)
 								mediaFragment.onRefresh();
 						}
-//						if(noteEdit.hasFocus()){
-//							V.setVisibilityAnimated(fab, View.GONE);
-//						}else{
-//							V.setVisibilityAnimated(fab, View.VISIBLE);
-//						}
+						V.setVisibilityAnimated(fab, View.VISIBLE);
 					}
 				})
 				.exec(accountID);

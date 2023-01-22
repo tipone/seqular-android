@@ -286,7 +286,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null) {
-					if (dy >= 0 ) {
+					if (dy > 0 ) {
 						if (isScrollingUp) {
 							fab.setVisibility(View.INVISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
