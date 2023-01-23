@@ -17,11 +17,11 @@
     <string name="sk_user_post_notifications_off">Wyłączono powiadomienia dla wpisu %s</string>
     <string name="sk_federated_timeline">fediwersum</string>
     <string name="sk_federated_timeline_info_banner">To są najnowsze wpisy z wszystkich serwerów z którymi twoja instancja jest sfederowana.</string>
-    <string name="sk_update_available">Moshidon %s jest dostępny do pobrania.</string>
-    <string name="sk_update_ready">Moshidon %s został pobrany i jest gotowy do instalacji.</string>
+    <string name="mo_update_available">Megalodon %s jest dostępny do pobrania.</string>
+    <string name="mo_update_ready">Megalodon %s został pobrany i jest gotowy do instalacji.</string>
     <string name="sk_check_for_update">Sprawdź dostępność aktualizacji</string>
     <string name="sk_no_update_available">Brak dostępnych aktualizacji</string>
-    <string name="sk_app_name">Moshidon</string>
+    <string name="mo_app_name">Megalodon</string>
     <string name="sk_pinned_posts">Przypięte</string>
     <string name="sk_confirm_delete_and_redraft">Jesteś pewien, że chcesz usunąć wpis i utworzyć jego kopię roboczą\?</string>
     <string name="sk_confirm_unpin_post">Jesteś pewien, że chcesz odpiąć ten wpis\?</string>
@@ -34,9 +34,9 @@
     <string name="sk_lists_with_user">Edytuj listy z %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Zawsze odkrywaj ostrzeżenia o zawartości</string>
     <string name="sk_disable_marquee">Wyłącz tekst przewijany w paskach tytułowych</string>
-    <string name="sk_settings_contribute">Wspomóż Moshidon</string>
+    <string name="mo_settings_contribute">Wspomóż Megalodon</string>
     <string name="sk_settings_show_federated_timeline">Pokaż globalną oś czasu</string>
-    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
+    <string name="mo_settings_app_version">Megalodon v%1$s (%2$d)</string>
     <string name="sk_visibility_unlisted">Niewidoczny</string>
     <string name="sk_notification_type_status">Wpisy</string>
     <string name="sk_notify_posts">Powiadomienia wpisów</string>
@@ -58,7 +58,7 @@
     <string name="sk_clear_recent_languages">Wyczyść ostatnio użyte języki</string>
     <string name="sk_example_domain">przykład.social</string>
     <string name="sk_welcome_title">Witaj!</string>
-    <string name="sk_welcome_text">Rekin się kłania! Aby zacząć, wpisz adres swojej instancji poniżej.</string>
+    <string name="mo_welcome_text">Rekin się kłania! Aby zacząć, wpisz adres swojej instancji poniżej.</string>
     <string name="sk_timeline_local">Lokalne</string>
     <string name="sk_timeline_federated">Federacja</string>
     <string name="sk_announcements">Ogłoszenia</string>

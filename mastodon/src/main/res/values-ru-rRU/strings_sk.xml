@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sk_app_name">Moshidon</string>
+    <string name="mo_app_name">Megalodon</string>
     <string name="sk_pinned_posts">Закрепленные</string>
     <string name="sk_delete_and_redraft">Удалить и исправить</string>
     <string name="sk_confirm_delete_and_redraft_title">Удалить и исправить пост</string>
@@ -14,7 +14,7 @@
     <string name="sk_image_description">Описание изображения</string>
     <string name="sk_visibility_unlisted">Скрытый</string>
     <string name="sk_mark_media_as_sensitive">Отметить медиафайл как деликатный</string>
-    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
+    <string name="mo_settings_app_version">Megalodon v%1$s (%2$d)</string>
     <string name="sk_notification_type_status">Публикации</string>
     <string name="sk_notify_posts">Уведомдения о</string>
     <string name="sk_settings_color_palette">Цветовая схема</string>
@@ -31,8 +31,8 @@
     <string name="sk_settings_load_new_posts">Автоматически загружать новые посты</string>
     <string name="sk_settings_show_replies">Показать ответы</string>
     <string name="sk_federated_timeline">Федерация</string>
-    <string name="sk_update_available">Moshidon %s готов к скачиванию.</string>
-    <string name="sk_update_ready">Moshidon %s скачан и готов к установке новой версии.</string>
+    <string name="mo_update_available">Megalodon %s готов к скачиванию.</string>
+    <string name="mo_update_ready">Megalodon %s скачан и готов к установке новой версии.</string>
     <string name="sk_check_for_update">Проверить обновления</string>
     <string name="sk_follow_requests">Запросы на подписку</string>
     <string name="sk_lists_with_user">Списки с %s</string>
@@ -44,7 +44,7 @@
     <string name="sk_accept_follow_request">Принять запрос на подписку</string>
     <string name="sk_reject_follow_request">Отклонить заявку на подписку</string>
     <string name="sk_settings_always_reveal_content_warnings">Всегда раскрывать предупреждения о непристойном контенте</string>
-    <string name="sk_settings_contribute">Внести свой код в Moshidon</string>
+    <string name="mo_settings_contribute">Внести свой код в Megalodon</string>
     <string name="sk_settings_show_federated_timeline">Показывать федеративную временную шкалу</string>
     <string name="sk_color_palette_green">Зелёный</string>
     <string name="sk_color_palette_blue">Синий</string>
@@ -52,7 +52,7 @@
     <string name="sk_post_language">Язык: %s</string>
     <string name="sk_clear_recent_languages">Очистить недавно использованные языки</string>
     <string name="sk_confirm_clear_recent_languages">Вы точно хотите очистить недавно использованные языки\?</string>
-    <string name="sk_welcome_text">Акула приветствует вас! Чтобы начать, пожалуйста, введите домен своего домашнего сервера (инстанса) ниже.</string>
+    <string name="mo_welcome_text">Акула приветствует вас! Чтобы начать, пожалуйста, введите домен своего домашнего сервера (инстанса) ниже.</string>
     <string name="sk_poll_allow_multiple">Разрешить несколько вариантов ответа</string>
     <string name="sk_user_post_notifications_on">Уведомления о постах %s включены</string>
     <string name="sk_user_post_notifications_off">Уведомления о новых постах %s отключены</string>

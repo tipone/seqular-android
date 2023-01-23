@@ -12,7 +12,7 @@
     <string name="sk_mark_media_as_sensitive">Označite medij kot občutljiv</string>
     <string name="sk_federated_timeline">Federacija</string>
     <string name="sk_clear_recent_languages">Izbriši nazadnje uporabljene jezike</string>
-    <string name="sk_app_name">Moshidon</string>
+    <string name="mo_app_name">Megalodon</string>
     <string name="sk_pinned_posts">Pripeto</string>
     <string name="sk_confirm_delete_and_redraft_title">Izbriši ter ponovno izdelaj objavo</string>
     <string name="sk_confirm_delete_and_redraft">Ali ste prepričani, da želite objavo izbrisati in jo ponovno izdelati\?</string>
@@ -20,5 +20,5 @@
     <string name="sk_confirm_unpin_post">Ali ste prepričani, da želite odpeti to objavo\?</string>
     <string name="sk_unpinning">Odpenjanje objave…</string>
     <string name="sk_settings_load_new_posts">Samodejno naloži nove objave</string>
-    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
+    <string name="mo_settings_app_version">Megalodon v%1$s (%2$d)</string>
 </resources>

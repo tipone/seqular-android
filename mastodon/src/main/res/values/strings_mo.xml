@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mo_app_name" translatable="false">Megalodon</string>
+
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_app_username" translatable="false">\@moshidon</string>
+    <string name="mo_disable_dividers">Disable post dividers</string>
+    <string name="mo_relocate_publish_button">Relocate publish button</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Hide compose button while scrolling</string>
+    <string name="mo_welcome_text">To get started, please enter your home instance’s domain name below.</string>
+
+    <!--    Setting this as non-translatable as it simply doesnt change with language-->
+    <string name="mo_settings_app_version" translatable="false">Megalodon v%1$s (%2$d)</string>
+    
+    <string name="mo_settings_contribute">Contribute to Megalodon</string>
+    <string name="mo_update_available">Megalodon %s is ready to download.</string>
+    <string name="mo_update_ready">Megalodon %s is downloaded and ready to install.</string>
+
+    <!--    accessibility labels-->
+    <string name="mo_poll_option_add">Add new poll option</string>
+    <string name="mo_fab_compose">Compose</string>
+    <string name="mo_sending_error">Error publishing</string>
+
+</resources>

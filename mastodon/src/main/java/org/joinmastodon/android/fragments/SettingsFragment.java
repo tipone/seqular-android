@@ -53,7 +53,6 @@ import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
@@ -140,7 +139,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case BROWN -> R.string.sk_color_palette_brown;
 				case RED -> R.string.sk_color_palette_red;
 				case YELLOW -> R.string.sk_color_palette_yellow;
-				case NORD -> R.string.sk_color_palette_nord;
+				case NORD -> R.string.mo_color_palette_nord;
 			});
 		}));
 		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
@@ -206,12 +205,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			needAppRestart=true;
 		}));
 //		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
-		items.add(new SwitchItem(R.string.sk_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
+		items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
 			GlobalUserPreferences.disableDividers=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.disableFab, i->{
+		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.disableFab, i->{
 			GlobalUserPreferences.disableFab=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
@@ -221,7 +220,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 //			GlobalUserPreferences.save();
 //			needAppRestart=true;
 //		}));
-		items.add(new SwitchItem(R.string.sk_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
+		items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
 			GlobalUserPreferences.relocatePublishButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -287,7 +286,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
 		}
-		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.mo_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
 //		items.add(new TextItem(R.string.settings_clear_cache, this::clearImageCache));
 		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), imageCache.getDiskCache().size(), true), this::clearImageCache, 0);
@@ -302,7 +301,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}));
 //		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
-		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
+		items.add(new FooterItem(getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
 	}
 
 	private void updatePublishText(Button btn) {
@@ -1051,10 +1050,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			if (state == GithubSelfUpdater.UpdateState.CHECKING) return;
 			GithubSelfUpdater.UpdateInfo info=updater.getUpdateInfo();
 			if(state!=GithubSelfUpdater.UpdateState.DOWNLOADED){
-				text.setText(getString(R.string.sk_update_available, info.version));
+				text.setText(getString(R.string.mo_update_available, info.version));
 				button.setText(getString(R.string.download_update, UiUtils.formatFileSize(getActivity(), info.size, false)));
 			}else{
-				text.setText(getString(R.string.sk_update_ready, info.version));
+				text.setText(getString(R.string.mo_update_ready, info.version));
 				button.setText(R.string.install_update);
 			}
 			if(state==GithubSelfUpdater.UpdateState.DOWNLOADING){

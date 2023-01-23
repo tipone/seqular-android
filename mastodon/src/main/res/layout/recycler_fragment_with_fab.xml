@@ -21,8 +21,8 @@
 			android:id="@+id/empty"/>
 
 		<ImageButton
-			android:contentDescription="@string/sk_fab_compose"
-			android:tooltipText="@string/sk_fab_compose"
+			android:contentDescription="@string/mo_fab_compose"
+			android:tooltipText="@string/mo_fab_compose"
 			android:id="@+id/fab"
 			style="@style/Widget.Mastodon.Button.Compose"/>
 	</FrameLayout>

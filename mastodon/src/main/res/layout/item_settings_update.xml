@@ -29,7 +29,7 @@
 				android:layout_marginBottom="16dp"
 				android:layout_weight="1"
 				android:textAppearance="@style/m3_body_medium"
-				tools:text="@string/sk_update_available" />
+				tools:text="@string/mo_update_available" />
 
 			<FrameLayout
 				android:layout_width="wrap_content"

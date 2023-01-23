@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="app_name" translatable="false">Moshidon</string>
+	<string name="app_name" translatable="false">Megalodon</string>
 
 	<string name="get_started">Create account</string>
 	<string name="already_have_account">I already have an account</string>
