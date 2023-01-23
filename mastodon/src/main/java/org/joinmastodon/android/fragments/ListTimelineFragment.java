@@ -2,16 +2,15 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.Toast;
 
-import org.joinmastodon.android.GlobalUserPreferences;
+import androidx.annotation.Nullable;
+
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.lists.GetList;
 import org.joinmastodon.android.api.requests.lists.UpdateList;
@@ -23,7 +22,6 @@ import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ListTimelineEditor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import me.grishka.appkit.Nav;
@@ -36,9 +34,9 @@ import me.grishka.appkit.utils.V;
 public class ListTimelineFragment extends PinnableStatusListFragment {
     private String listID;
     private String listTitle;
+    @Nullable
     private ListTimeline.RepliesPolicy repliesPolicy;
     private ImageButton fab;
-    private Bundle resultArgs = new Bundle();
 
     public ListTimelineFragment() {
         setListLayoutId(R.layout.recycler_fragment_with_fab);
@@ -51,7 +49,6 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
         listID = args.getString("listID");
         listTitle = args.getString("listTitle");
         repliesPolicy = ListTimeline.RepliesPolicy.values()[args.getInt("repliesPolicy", 0)];
-        resultArgs.putString("listID", listID);
 
         setTitle(listTitle);
         setHasOptionsMenu(true);
@@ -61,7 +58,9 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
             public void onSuccess(ListTimeline listTimeline) {
                 // TODO: save updated info
                 if (!listTimeline.title.equals(listTitle)) setTitle(listTimeline.title);
-                if (!listTimeline.repliesPolicy.equals(repliesPolicy)) repliesPolicy = listTimeline.repliesPolicy;
+                if (listTimeline.repliesPolicy != null && !listTimeline.repliesPolicy.equals(repliesPolicy)) {
+                    repliesPolicy = listTimeline.repliesPolicy;
+                }
             }
 
             @Override
@@ -88,39 +87,37 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
                     .setTitle(R.string.sk_edit_list_title)
                     .setIcon(R.drawable.ic_fluent_people_list_28_regular)
                     .setView(editor)
-                    .setPositiveButton(R.string.save, (d, which) -> {
-                        new UpdateList(listID, editor.getTitle(), editor.getRepliesPolicy()).setCallback(new Callback<>() {
-                            @Override
-                            public void onSuccess(ListTimeline list) {
-                                setTitle(list.title);
-                                listTitle = list.title;
-                                repliesPolicy = list.repliesPolicy;
-                                resultArgs.putString("listTitle", listTitle);
-                                resultArgs.putInt("repliesPolicy", repliesPolicy.ordinal());
-                                setResult(true, resultArgs);
-                            }
+                    .setPositiveButton(R.string.save, (d, which) ->
+                            new UpdateList(listID, editor.getTitle(), editor.getRepliesPolicy()).setCallback(new Callback<>() {
+                                @Override
+                                public void onSuccess(ListTimeline list) {
+                                    setTitle(list.title);
+                                    listTitle = list.title;
+                                    repliesPolicy = list.repliesPolicy;
+                                    Bundle result = new Bundle();
+                                    result.putString("listID", listID);
+                                    result.putString("listTitle", listTitle);
+                                    if (repliesPolicy != null) result.putInt("repliesPolicy", repliesPolicy.ordinal());
+                                    setResult(true, result);
+                                }
 
-                            @Override
-                            public void onError(ErrorResponse error) {
-                                error.showToast(getContext());
-                            }
-                        }).exec(accountID);
-                    })
+                                @Override
+                                public void onError(ErrorResponse error) {
+                                    error.showToast(getContext());
+                                }
+                            }).exec(accountID))
                     .setNegativeButton(R.string.cancel, (d, which) -> {})
                     .show();
         } else if (item.getItemId() == R.id.delete) {
             UiUtils.confirmDeleteList(getActivity(), accountID, listID, listTitle, () -> {
-                resultArgs.putBoolean("deleted", true);
-                setResult(true, resultArgs);
+                Bundle result = new Bundle();
+                result.putBoolean("deleted", true);
+                result.putString("listID", listID);
+                setResult(true, result);
                 Nav.finish(this);
             });
         }
         return true;
-    }
-
-    @Override
-    public Bundle getResultArgs() {
-        return resultArgs;
     }
 
     @Override
