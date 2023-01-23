@@ -278,7 +278,7 @@
 							android:paddingHorizontal="16dp"
 							android:elevation="0dp"
 							android:visibility="gone"
-							android:hint="@string/sk_personal_note"/>
+							android:hint="@string/mo_personal_note"/>
 
 						<Button
 							android:id="@+id/note_edit_confirm"
@@ -289,8 +289,8 @@
 							android:visibility="invisible"
 							android:backgroundTint="?colorBackgroundLightest"
 							android:layout_gravity="right|center_vertical"
-							android:tooltipText="@string/sk_personal_note_confirm"
-							android:contentDescription="@string/sk_personal_note_confirm"
+							android:tooltipText="@string/mo_personal_note_confirm"
+							android:contentDescription="@string/mo_personal_note_confirm"
 							android:drawableStart="@drawable/ic_fluent_checkmark_24_regular"
 							/>
 					</FrameLayout>

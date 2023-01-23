@@ -99,7 +99,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 				Optional<Emoji> element = allAvailableEmojis.stream().filter(e -> e.shortcode.equals(emojiCode)).findFirst();
 				element.ifPresent(recentEmojiList::add);
 			}
-			emojis.add(0, new EmojiCategory(activity.getString(R.string.sk_emoji_recent), recentEmojiList));
+			emojis.add(0, new EmojiCategory(activity.getString(R.string.mo_emoji_recent), recentEmojiList));
 		}
 
 		for(EmojiCategory category:emojis)

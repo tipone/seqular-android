@@ -146,7 +146,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			updatePublishText(b);
 			if (GlobalUserPreferences.relocatePublishButton) {
 				b.setOnClickListener(l -> {
-					Toast.makeText(getActivity(), R.string.sk_disable_relocate_publish_button_to_enable_customization,
+					Toast.makeText(getActivity(), R.string.mo_disable_relocate_publish_button_to_enable_customization,
 							Toast.LENGTH_LONG).show();
 				});
 			} else {
@@ -295,7 +295,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
-		items.add(new TextItem(R.string.sk_clear_recent_emoji, ()-> {
+		items.add(new TextItem(R.string.mo_clear_recent_emoji, ()-> {
 			GlobalUserPreferences.recentEmojis.clear();
 			GlobalUserPreferences.save();
 		}));

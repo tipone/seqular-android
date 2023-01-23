@@ -948,8 +948,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				&& statusVisibility != StatusPrivacy.DIRECT
 				&& !attachments.stream().allMatch(attachment -> attachment.description != null && !attachment.description.isBlank())) {
 			new M3AlertDialogBuilder(getActivity())
-					.setTitle(R.string.sk_no_image_desc_title)
-					.setMessage(R.string.sk_no_image_desc)
+					.setTitle(R.string.mo_no_image_desc_title)
+					.setMessage(R.string.mo_no_image_desc)
 					.setNegativeButton(R.string.cancel, null)
 					.setPositiveButton(R.string.publish, (dialog, i)-> publish())
 					.show();

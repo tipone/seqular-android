@@ -157,7 +157,7 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 
 			@Override
 			public void onError(ErrorResponse result) {
-				Toast.makeText(getActivity(), getString(R.string.sk_personal_note_update_failed), Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), getString(R.string.mo_personal_note_update_failed), Toast.LENGTH_LONG).show();
 			}
 		}).exec(accountID);
 	}

@@ -17,13 +17,11 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -371,7 +369,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 			@Override
 			public void onError(ErrorResponse result) {
-				Toast.makeText(getActivity(), getString(R.string.sk_personal_note_update_failed), Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), getString(R.string.mo_personal_note_update_failed), Toast.LENGTH_LONG).show();
 			}
 		}).exec(accountID);
 	}
