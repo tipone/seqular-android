@@ -286,7 +286,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
 
-				if (fab!=null) {
+				if (fab!=null && !GlobalUserPreferences.disableFab) {
 					if (dy > 0 /*&& !isFirstLaunch*/) {
 						if (isScrollingUp /*&& !isFirstLaunch*/) {
 							fab.setVisibility(View.INVISIBLE);
