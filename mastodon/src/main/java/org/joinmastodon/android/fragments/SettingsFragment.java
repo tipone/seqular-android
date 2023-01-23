@@ -175,7 +175,24 @@ public class SettingsFragment extends MastodonToolbarFragment{
 							.show();
 				});}
 		}));
-
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
+			GlobalUserPreferences.uniformNotificationIcon=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
+			GlobalUserPreferences.disableMarquee=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
+			GlobalUserPreferences.reduceMotion=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_alt_indicator, R.drawable.ic_fluent_scan_text_24_regular, GlobalUserPreferences.showAltIndicator, i->{
+			GlobalUserPreferences.showAltIndicator=i.checked;
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
+			GlobalUserPreferences.showNoAltIndicator=i.checked;
+		}));
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.settings_gif, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{

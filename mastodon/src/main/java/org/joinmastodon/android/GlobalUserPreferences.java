@@ -36,6 +36,8 @@ public class GlobalUserPreferences{
 	public static boolean keepOnlyLatestNotification;
 	public static boolean enableFabAutoHide;
 	public static boolean disableAltTextReminder;
+	public static boolean showAltIndicator;
+	public static boolean showNoAltIndicator;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -79,6 +81,9 @@ public class GlobalUserPreferences{
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		enableFabAutoHide=prefs.getBoolean("enableFabAutoHide", true);
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
+		showAltIndicator =prefs.getBoolean("showAltIndicator", true);
+		showNoAltIndicator =prefs.getBoolean("showNoAltIndicator", true);
+		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
 		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
@@ -117,6 +122,8 @@ public class GlobalUserPreferences{
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
 				.putBoolean("enableFabAutoHide", enableFabAutoHide)
 				.putBoolean("disableAltTextReminder", disableAltTextReminder)
+				.putBoolean("showAltIndicator", showAltIndicator)
+				.putBoolean("showNoAltIndicator", showNoAltIndicator)
 				.putString("publishButtonText", publishButtonText)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
