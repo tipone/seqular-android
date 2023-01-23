@@ -35,6 +35,7 @@ import me.grishka.appkit.utils.V;
 public class HomeTimelineFragment extends FabStatusListFragment {
 	private HomeTabFragment parent;
 	private String maxID;
+	private String lastSavedMarkerID;
 
 	@Override
 	public void onAttach(Activity activity){
