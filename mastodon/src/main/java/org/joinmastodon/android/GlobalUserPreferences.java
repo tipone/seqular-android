@@ -23,6 +23,7 @@ public class GlobalUserPreferences{
 	public static boolean showReplies;
 	public static boolean showBoosts;
 	public static boolean loadNewPosts;
+	public static boolean showNewPostsButton;
 	public static boolean showInteractionCounts;
 	public static boolean alwaysExpandContentWarnings;
 	public static boolean disableMarquee;
@@ -69,6 +70,7 @@ public class GlobalUserPreferences{
 		showReplies=prefs.getBoolean("showReplies", true);
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
+		showNewPostsButton=prefs.getBoolean("showNewPostsButton", true);
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", true);
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
@@ -111,6 +113,7 @@ public class GlobalUserPreferences{
 				.putBoolean("showReplies", showReplies)
 				.putBoolean("showBoosts", showBoosts)
 				.putBoolean("loadNewPosts", loadNewPosts)
+				.putBoolean("showNewPostsButton", showNewPostsButton)
 				.putBoolean("trueBlackTheme", trueBlackTheme)
 				.putBoolean("showInteractionCounts", showInteractionCounts)
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
