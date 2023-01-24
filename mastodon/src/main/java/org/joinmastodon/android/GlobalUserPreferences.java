@@ -13,8 +13,10 @@ import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class GlobalUserPreferences{
 	public static boolean playGifs;
@@ -48,6 +50,8 @@ public class GlobalUserPreferences{
 	private final static Type pinnedTimelinesType = new TypeToken<Map<String, List<TimelineDefinition>>>() {}.getType();
 	public static Map<String, List<String>> recentLanguages;
 	public static Map<String, List<TimelineDefinition>> pinnedTimelines;
+	public static Set<String> accountsWithLocalOnlySupport;
+	public static Set<String> accountsInGlitchMode;
 
 	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
 	public static Map<String, Integer> recentEmojis;
@@ -93,6 +97,8 @@ public class GlobalUserPreferences{
 		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
 		publishButtonText=prefs.getString("publishButtonText", "");
 		pinnedTimelines=fromJson(prefs.getString("pinnedTimelines", null), pinnedTimelinesType, new HashMap<>());
+		accountsWithLocalOnlySupport=prefs.getStringSet("accountsWithLocalOnlySupport", new HashSet<>());
+		accountsInGlitchMode=prefs.getStringSet("accountsInGlitchMode", new HashSet<>());
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -136,6 +142,8 @@ public class GlobalUserPreferences{
 				.putString("recentLanguages", gson.toJson(recentLanguages))
 				.putString("pinnedTimelines", gson.toJson(pinnedTimelines))
 				.putString("recentEmojis", gson.toJson(recentEmojis))
+				.putStringSet("accountsWithLocalOnlySupport", accountsWithLocalOnlySupport)
+				.putStringSet("accountsInGlitchMode", accountsInGlitchMode)
 				.apply();
 	}
 

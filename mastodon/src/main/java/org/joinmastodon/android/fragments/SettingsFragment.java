@@ -78,7 +78,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
 	private NotificationPolicyItem notificationPolicyItem;
-	private SwitchItem loadNewPostsItem, showNewPostsButtonItem;
+	private SwitchItem showNewPostsButtonItem, glitchModeItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
 	private boolean needAppRestart;
@@ -246,7 +246,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.showBoosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(loadNewPostsItem = new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_sync_24_regular, GlobalUserPreferences.loadNewPosts, i->{
+		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_sync_24_regular, GlobalUserPreferences.loadNewPosts, i->{
 			GlobalUserPreferences.loadNewPosts=i.checked;
 			showNewPostsButtonItem.enabled = i.checked;
 			if (!i.checked) {
@@ -260,7 +260,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.showNewPostsButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		showNewPostsButtonItem.enabled = GlobalUserPreferences.loadNewPosts;
 
 		items.add(new HeaderItem(R.string.settings_notifications));
 		items.add(notificationPolicyItem=new NotificationPolicyItem());
@@ -293,6 +292,25 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				R.string.sk_settings_translation_availability_note_available :
 				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
 
+		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
+			glitchModeItem.enabled = i.checked;
+			if (i.checked) {
+				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
+			} else {
+				GlobalUserPreferences.accountsWithLocalOnlySupport.remove(accountID);
+			}
+			if (list.findViewHolderForAdapterPosition(items.indexOf(glitchModeItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			GlobalUserPreferences.save();
+		}));
+		items.add(glitchModeItem = new SwitchItem(R.string.sk_settings_glitch_instance, 0, GlobalUserPreferences.accountsInGlitchMode.contains(accountID), i->{
+			if (i.checked) {
+				GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+			} else {
+				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);
+			}
+			GlobalUserPreferences.save();
+		}));
+		glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
 
 		items.add(new HeaderItem(R.string.sk_settings_about));
 //		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
