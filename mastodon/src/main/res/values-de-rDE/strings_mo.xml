@@ -1,17 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mo_app_name" translatable="false">Moshidon</string>
-
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_app_username" translatable="false">\@moshidon</string>
     <string name="mo_disable_dividers">Beitrags Trennung deaktivieren</string>
-    <string name="mo_relocate_publish_button">Veröffentlichen Schaltfläche verschieben</string>
+    <string name="mo_relocate_publish_button">Veröffentlichen-Schaltfläche verschieben</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Veröffentlichen Schaltfläche beim scrollen ausblenden</string>
     <string name="mo_welcome_text">Moshidon sagt Hi! gib den Domain-Namen deiner Heimat-Instanz unten ein.</string>
-
     <!--    Setting this as non-translatable as it simply doesnt change with language-->
     <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
-
     <string name="mo_personal_note">Notiz zu diesem Profil hinzufügen</string>
     <string name="mo_personal_note_confirm">Änderungen der Notiz bestätigen</string>
     <string name="mo_personal_note_update_failed">Speichern der Notiz fehlgeschlagen</string>
@@ -22,11 +19,9 @@
     <string name="mo_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
     <string name="mo_emoji_recent">Kürzlich verwendet</string>
     <string name="mo_clear_recent_emoji">Kürzlich verwendete Emojis löschen</string>
-    <string name="mo_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion "Veröffentlichen Schaltfläche verschieben", um eine Anpassung zu ermöglichen.</string>
-
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion Veröffentlichen-Schaltfläche verschieben, um eine Anpassung zu ermöglichen</string>
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Neue Umfrageoption hinzufügen</string>
     <string name="mo_fab_compose">Verfassen</string>
     <string name="mo_sending_error">Fehler beim Veröffentlichen</string>
-
 </resources>
