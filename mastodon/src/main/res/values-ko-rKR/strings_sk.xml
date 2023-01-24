@@ -32,10 +32,10 @@
     <string name="sk_lists_with_user">%s 님이 포함된 리스트 수정</string>
     <string name="sk_settings_always_reveal_content_warnings">열람주의 게시물을 항상 펼치기</string>
     <string name="sk_disable_marquee">제목 표시줄의 텍스트 스크롤 비활성화</string>
-    <string name="mo_app_name">Megalodon</string>
-    <string name="mo_settings_app_version">Megalodon v%1$s (%2$d)</string>
-    <string name="mo_update_available">Megalodon %s 버전을 다운로드할 수 있습니다.</string>
-    <string name="mo_update_ready">Megalodon %s 버전을 다운로드하였으며 설치할 수 있습니다.</string>
+    <string name="sk_app_name">Megalodon</string>
+    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
+    <string name="sk_update_available">Megalodon %s 버전을 다운로드할 수 있습니다.</string>
+    <string name="sk_update_ready">Megalodon %s 버전을 다운로드하였으며 설치할 수 있습니다.</string>
     <string name="sk_settings_show_federated_timeline">연합 타임라인 표시</string>
     <string name="sk_notification_type_status">게시물</string>
     <string name="sk_notify_posts">게시물 알림</string>
@@ -46,7 +46,7 @@
     <string name="sk_color_palette_blue">파란색</string>
     <string name="sk_color_palette_brown">갈색</string>
     <string name="sk_color_palette_yellow">노란색</string>
-    <string name="mo_settings_contribute">Megalodon에 기여</string>
+    <string name="sk_settings_contribute">Megalodon에 기여</string>
     <string name="sk_poll_allow_multiple">다중 선택 허용</string>
     <string name="sk_translate_post">번역하기</string>
     <string name="sk_translate_show_original">원본 보기</string>
@@ -58,7 +58,7 @@
     <string name="sk_confirm_clear_recent_languages">정말로 최근 사용한 언어를 지우시겠습니까\?</string>
     <string name="sk_example_domain">example.social</string>
     <string name="sk_welcome_title">환영합니다!</string>
-    <string name="mo_welcome_text">상어가 당신을 맞이합니다! 시작하기 위해, 아래에 사용하시는 인스턴스의 도메인 이름을 입력해주세요.</string>
+    <string name="sk_welcome_text">상어가 당신을 맞이합니다! 시작하기 위해, 아래에 사용하시는 인스턴스의 도메인 이름을 입력해주세요.</string>
     <string name="sk_color_palette_material3">시스템</string>
     <string name="sk_color_palette_red">빨간색</string>
     <string name="sk_settings_profile">프로필 설정</string>

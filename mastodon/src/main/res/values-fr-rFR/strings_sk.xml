@@ -13,12 +13,12 @@
     <string name="sk_settings_show_replies">Afficher les réponses</string>
     <string name="sk_settings_show_boosts">Afficher les boosts</string>
     <string name="sk_settings_load_new_posts">Charger automatiquement les nouveaux messages</string>
-    <string name="mo_settings_app_version">Megalodon v%1$s (%2$d)</string>
+    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
     <string name="sk_mark_media_as_sensitive">Marquer le média comme sensible</string>
     <string name="sk_user_post_notifications_on">Notifications de message activées pour %s</string>
     <string name="sk_user_post_notifications_off">Désactivation des notifications de message pour %s</string>
-    <string name="mo_update_available">Megalodon %s est prête à être téléchargée.</string>
-    <string name="mo_update_ready">Megalodon %s est téléchargée et prête à être installée.</string>
+    <string name="sk_update_available">Megalodon %s est prête à être téléchargée.</string>
+    <string name="sk_update_ready">Megalodon %s est téléchargée et prête à être installée.</string>
     <string name="sk_check_for_update">Vérifier les mises à jour</string>
     <string name="sk_no_update_available">Pas de mise a jour disponible</string>
     <string name="sk_list_timelines">Listes</string>
@@ -28,9 +28,9 @@
     <string name="sk_lists_with_user">Modifier les listes avec %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Toujours afficher les avertissements de contenu</string>
     <string name="sk_disable_marquee">Désactiver le défilement du texte dans les barres de titre</string>
-    <string name="mo_settings_contribute">Contribuez à Megalodon</string>
+    <string name="sk_settings_contribute">Contribuez à Megalodon</string>
     <string name="sk_settings_show_federated_timeline">Afficher la timeline fédérée</string>
-    <string name="mo_app_name">Megalodon</string>
+    <string name="sk_app_name">Megalodon</string>
     <string name="sk_delete_and_redraft">Supprimer et rééditer</string>
     <string name="sk_pin_post">Épingler au profil</string>
     <string name="sk_confirm_pin_post_title">Épingler le message au profil</string>
@@ -58,7 +58,7 @@
     <string name="sk_clear_recent_languages">Effacer les langues récemment utilisées</string>
     <string name="sk_example_domain">exemple.social</string>
     <string name="sk_welcome_title">Bienvenue !</string>
-    <string name="mo_welcome_text">Le requin vous salue ! Pour commencer, veuillez entrer le nom de domaine de votre instance personnelle ci-dessous.</string>
+    <string name="sk_welcome_text">Le requin vous salue ! Pour commencer, veuillez entrer le nom de domaine de votre instance personnelle ci-dessous.</string>
     <string name="sk_color_palette_material3">Système</string>
     <string name="sk_color_palette_red">Rouge</string>
     <string name="sk_settings_profile">Configurer le profil</string>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_app_name">Megalodon</string>
+    <string name="sk_app_name">Megalodon</string>
     <string name="sk_delete_and_redraft">ဖျက်ပြီး ပြန်ရေးမည်</string>
     <string name="sk_pin_post">ပရိုဖိုင်းတွင် ပင်တွဲမည်</string>
     <string name="sk_pinning">ပင်တွဲနေသည်…</string>
@@ -10,12 +10,12 @@
     <string name="sk_image_description">ပုံတွင်ပါဝင်သော အကြောင်းအရာ</string>
     <string name="sk_visibility_unlisted">စာရင်းမလုပ်</string>
     <string name="sk_settings_show_boosts">Boost များကို ပြသမည်</string>
-    <string name="mo_settings_app_version">Megalodon - ဗားရှင်း %1$s (%2$d)</string>
+    <string name="sk_settings_app_version">Megalodon - ဗားရှင်း %1$s (%2$d)</string>
     <string name="sk_mark_media_as_sensitive">ပုံ/ဗီဒီယိုအား ထိရှလွယ်သည်အဖြစ် မှတ်သားသည်</string>
     <string name="sk_user_post_notifications_off">%s အတွက် ပို့စ်နိုတီများကို ပိတ်လိုက်သည်</string>
     <string name="sk_federated_timeline">ဖက်ဒရေးရှင်း</string>
-    <string name="mo_update_available">Megalodon %s ကို ဒေါင်းလုဒ်ဆွဲလို့ရပါပြီ။</string>
-    <string name="mo_update_ready">Megalodon %s ကို ဒေါင်းလုဒ်ဆွဲပြီးပြီမလို့ အင်စတောလုပ်နိုင်ပါပြီ။</string>
+    <string name="sk_update_available">Megalodon %s ကို ဒေါင်းလုဒ်ဆွဲလို့ရပါပြီ။</string>
+    <string name="sk_update_ready">Megalodon %s ကို ဒေါင်းလုဒ်ဆွဲပြီးပြီမလို့ အင်စတောလုပ်နိုင်ပါပြီ။</string>
     <string name="sk_no_update_available">မည်သည့်အပ်ဒိတ်မျှ မရှိသေးပါ</string>
     <string name="sk_follow_requests">ဖော်လိုဝါအဖြစ် တောင်းဆိုမှုများ</string>
     <string name="sk_accept_follow_request">ဖော်လိုဝါအဖြစ်တောင်းဆိုမှုကို လက်ခံမည်</string>
@@ -96,7 +96,7 @@
     <string name="sk_translate_show_original">မူရင်းပို့စ်ကို ပြသမည်</string>
     <string name="sk_settings_translate_only_opened">ဖွင့်ထားသည့်ပို့စ်များကိုသာ ဘာသာပြန်မည်</string>
     <string name="sk_confirm_clear_recent_languages">အခုနောက်ပိုင်းသုံးထားတဲ့ ဘာသာစကားတွေကို ရှင်းလင်းမှာ သေချာပြီလား</string>
-    <string name="mo_welcome_text">ငါးမန်းလေးက သင့်ကိုအလေးပြုကြိုဆိုပါတယ်။ စတင်ဖို့အတွက် Home instance ရဲ့ဒိုမိန်းနာမည်ကိုအောက်တွင် ရိုက်ထည့်ပါ။</string>
+    <string name="sk_welcome_text">ငါးမန်းလေးက သင့်ကိုအလေးပြုကြိုဆိုပါတယ်။ စတင်ဖို့အတွက် Home instance ရဲ့ဒိုမိန်းနာမည်ကိုအောက်တွင် ရိုက်ထည့်ပါ။</string>
     <string name="sk_scheduled_too_soon_title">စီစဉ်ထားသည့်အချိန်မှာ စောလွန်းနေသည်</string>
     <string name="sk_scheduled_too_soon">စီစဉ်ထားသည့်ပို့စ်သည် လက်ရှိအချိန်နှင့် အနည်းဆုံး ၁၀ မိနစ်ကွာရမည်။</string>
 </resources>
