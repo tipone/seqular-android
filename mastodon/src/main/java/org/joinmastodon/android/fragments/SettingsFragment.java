@@ -298,6 +298,14 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
+		if (GithubSelfUpdater.needSelfUpdating()) {
+			items.add(new SwitchItem(R.string.sk_updater_enable_pre_releases, 0, GlobalUserPreferences.enablePreReleases, i->{
+				GlobalUserPreferences.enablePreReleases=i.checked;
+				GlobalUserPreferences.save();
+			}));
+			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+			items.add(checkForUpdateItem);
+		}
 		items.add(new TextItem(R.string.mo_clear_recent_emoji, ()-> {
 			GlobalUserPreferences.recentEmojis.clear();
 			GlobalUserPreferences.save();
@@ -806,7 +814,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		@Override
 		public void onBind(SwitchItem item){
 			text.setText(item.text);
-			icon.setImageResource(item.icon);
+			if (item.icon == 0) {
+				icon.setVisibility(View.GONE);
+			} else {
+				icon.setVisibility(View.VISIBLE);
+				icon.setImageResource(item.icon);
+			}
 			checkbox.setChecked(item.checked && item.enabled);
 			checkbox.setEnabled(item.enabled);
 		}
