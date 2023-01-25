@@ -278,7 +278,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.sk_settings_auth, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit"), R.drawable.ic_fluent_open_24_regular));
 
 		items.add(new HeaderItem(instanceName));
-		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
 		items.add(new TextItem(R.string.sk_settings_rules, ()->{
 			Bundle args=new Bundle();
 			args.putParcelable("instance", Parcels.wrap(instance));
@@ -289,6 +288,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
 
+		items.add(new HeaderItem(R.string.sk_instance_features));
 		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
 			glitchModeItem.enabled = i.checked;
 			if (i.checked) {
@@ -298,9 +298,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				GlobalUserPreferences.accountsWithLocalOnlySupport.remove(accountID);
 				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);
 			}
+			glitchModeItem.checked = GlobalUserPreferences.accountsInGlitchMode.contains(accountID);
 			if (list.findViewHolderForAdapterPosition(items.indexOf(glitchModeItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_local_only_explanation)));
 		items.add(glitchModeItem = new SwitchItem(R.string.sk_settings_glitch_instance, 0, GlobalUserPreferences.accountsInGlitchMode.contains(accountID), i->{
 			if (i.checked) {
 				GlobalUserPreferences.accountsInGlitchMode.add(accountID);
@@ -310,7 +312,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 		}));
 		glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
-		items.add(new SmallTextItem(getString(R.string.sk_settings_local_only_explanation)));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_glitch_mode_explanation)));
 
 
 		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
@@ -1028,21 +1030,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 	private class SmallTextViewHolder extends BindableViewHolder<SmallTextItem> {
 		private final TextView text;
-;
 
 		public SmallTextViewHolder(){
 			super(getActivity(), R.layout.item_settings_text, list);
 			text = itemView.findViewById(R.id.text);
+			text.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorSecondary));
+			text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+			text.setPaddingRelative(text.getPaddingStart(), 0, text.getPaddingEnd(), text.getPaddingBottom());
 		}
 
 		@Override
 		public void onBind(SmallTextItem item){
 			text.setText(item.text);
-			TypedValue val = new TypedValue();
-			getContext().getTheme().resolveAttribute(android.R.attr.textColorSecondary, val, true);
-			text.setTextColor(getResources().getColor(val.resourceId, getContext().getTheme()));
-			text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		}
 	}
 
