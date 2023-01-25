@@ -1,4 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_disable_dividers">Desactivar divisores de publicaciones</string>
+    <string name="mo_relocate_publish_button">Recolocar botón de publicación</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Esconder botón de escritura al deslizar</string>
+    <string name="mo_welcome_text">Para empezar introduce el nombre del dominio de tu instancia debajo, por favor.</string>
+    <string name="mo_personal_note">Añade una nota sobre este perfil</string>
+    <string name="mo_personal_note_confirm">Confirmar cambios en la nota</string>
+    <string name="mo_personal_note_update_failed">Fallo al guardar la nota</string>
+    <string name="mo_update_available">Moshidon %s se puede descargar.</string>
+    <string name="mo_update_ready">Moshidon %s se ha descargado y se puede instalar.</string>
+    <string name="mo_no_image_desc_title">Sin descripción de imagen</string>
+    <string name="mo_emoji_recent">Usados recientemente</string>
+    <string name="mo_clear_recent_emoji">Borrar emojis usados recientemente</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Desactiva \"Recolocar botón de publicación\" para poder personalizar</string>
+    <string name="mo_poll_option_add">Añadir nueva opción en la encuesta</string>
+    <string name="mo_fab_compose">Componer</string>
+    <string name="mo_sending_error">Error al publicar</string>
+    <string name="mo_settings_contribute">Contribuir en Moshidon</string>
+    <string name="mo_no_image_desc">Las imágenes incluidas no tienen descripción. Por favor, piénsate añadir una para permitir a las personas con discapacidad participar.</string>
 </resources>
