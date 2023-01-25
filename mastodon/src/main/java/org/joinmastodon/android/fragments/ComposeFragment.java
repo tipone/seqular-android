@@ -937,6 +937,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if(hasSpoiler){
 			charCount+=spoilerEdit.length();
 		}
+		if (localOnly && GlobalUserPreferences.accountsInGlitchMode.contains(accountID)) {
+			charCount -= GLITCH_LOCAL_ONLY_SUFFIX.length();
+		}
 		charCounter.setText(String.valueOf(charLimit-charCount));
 		trimmedCharCount=text.toString().trim().length();
 		updatePublishButtonState();
@@ -1854,7 +1857,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		Menu m=visibilityPopup.getMenu();
 		MenuItem localOnlyItem = visibilityPopup.getMenu().findItem(R.id.local_only);
 		boolean prefsSaysSupported = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
-		if (localOnly || prefsSaysSupported) {
+		if (instance.pleroma != null) {
+			m.findItem(R.id.vis_local).setVisible(true);
+		} else if (localOnly || prefsSaysSupported) {
+			localOnlyItem.setVisible(true);
 			localOnlyItem.setChecked(localOnly);
 			Status status = editingStatus != null ? editingStatus : replyTo;
 			if (!prefsSaysSupported) {
@@ -1864,8 +1870,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				}
 				GlobalUserPreferences.save();
 			}
-		} else {
-			localOnlyItem.setVisible(false);
 		}
 		UiUtils.enablePopupMenuIcons(getActivity(), visibilityPopup);
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) m.setGroupDividerEnabled(true);
@@ -1881,6 +1885,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					statusVisibility=StatusPrivacy.PRIVATE;
 				}else if(id==R.id.vis_private){
 					statusVisibility=StatusPrivacy.DIRECT;
+				}else if(id==R.id.vis_local){
+					statusVisibility=StatusPrivacy.LOCAL;
 				}
 				if (id == R.id.local_only) {
 					localOnly = !item.isChecked();
