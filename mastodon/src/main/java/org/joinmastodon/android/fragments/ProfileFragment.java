@@ -463,6 +463,29 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		});
 
 		scrollView.setOnScrollChangeListener(this::onScrollChanged);
+		scrollView.setNestedScrollListener((target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed) -> {
+			if (dyConsumed > 0) {
+				fab.setVisibility(View.INVISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						0,
+						fab.getHeight() * 2);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+			} else {
+				fab.setVisibility(View.VISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						fab.getHeight() * 2,
+						0);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+			}
+		});
 		titleTransY=getToolbar().getLayoutParams().height;
 		if(toolbarTitleView!=null){
 			toolbarTitleView.setTranslationY(titleTransY);
