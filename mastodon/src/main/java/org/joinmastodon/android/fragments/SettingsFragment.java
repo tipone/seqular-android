@@ -278,6 +278,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.sk_settings_auth, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit"), R.drawable.ic_fluent_open_24_regular));
 
 		items.add(new HeaderItem(instanceName));
+		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
 		items.add(new TextItem(R.string.sk_settings_rules, ()->{
 			Bundle args=new Bundle();
 			args.putParcelable("instance", Parcels.wrap(instance));
@@ -292,8 +293,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			glitchModeItem.enabled = i.checked;
 			if (i.checked) {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
+				if (instance.pleroma == null) GlobalUserPreferences.accountsInGlitchMode.add(accountID);
 			} else {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.remove(accountID);
+				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);
 			}
 			if (list.findViewHolderForAdapterPosition(items.indexOf(glitchModeItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
@@ -307,6 +310,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 		}));
 		glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
+		items.add(new SmallTextItem(getString(R.string.sk_settings_local_only_explanation)));
 
 
 		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
