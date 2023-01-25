@@ -71,7 +71,7 @@ public class AccountTimelineFragment extends StatusListFragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
-		fab = ((ProfileFragment) getParentFragment()).getFab();
+//		fab = ((ProfileFragment) getParentFragment()).getFab();
 	}
 
 	@Override

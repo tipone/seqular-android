@@ -75,7 +75,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected String accountID;
 	protected PhotoViewer currentPhotoViewer;
 	protected ImageButton fab;
-	protected boolean isScrollingUp = false;
+	protected int scrollDiff = 0;
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
@@ -286,21 +286,19 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null) {
-					if (dy > 0 ) {
-						if (isScrollingUp) {
-							fab.setVisibility(View.INVISIBLE);
-							TranslateAnimation animate = new TranslateAnimation(
-									0,
-									0,
-									0,
-									fab.getHeight() * 2);
-							animate.setDuration(300);
-							animate.setFillAfter(true);
-							fab.startAnimation(animate);
-							isScrollingUp = false;
-						}
-					} else {
-						if (!isScrollingUp) {
+					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+						TranslateAnimation animate = new TranslateAnimation(
+								0,
+								0,
+								0,
+								fab.getHeight() * 2);
+						animate.setDuration(300);
+						animate.setFillAfter(true);
+						fab.startAnimation(animate);
+						fab.setVisibility(View.INVISIBLE);
+						scrollDiff = 0;
+					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+						if (scrollDiff > 400) {
 							fab.setVisibility(View.VISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
@@ -310,7 +308,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 							animate.setDuration(300);
 							animate.setFillAfter(true);
 							fab.startAnimation(animate);
-							isScrollingUp = true;
+							scrollDiff = 0;
+						} else {
+							scrollDiff += Math.abs(dy);
 						}
 					}
 				}
