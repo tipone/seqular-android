@@ -14,7 +14,7 @@
     <string name="sk_app_name">Megalodon</string>
     <string name="sk_unpinning">Desanclando publicación…</string>
     <string name="sk_image_description">Descripción de la imagen</string>
-    <string name="sk_visibility_unlisted">Descatalogada</string>
+    <string name="sk_visibility_unlisted">No listada</string>
     <string name="sk_settings_show_replies">Mostrar respuestas</string>
     <string name="sk_settings_show_boosts">Mostrar impulsos</string>
     <string name="sk_settings_load_new_posts">Cargar publicaciones nuevas automáticamente</string>
@@ -153,7 +153,7 @@
     <string name="sk_alt_text_missing_title">Falta texto alternativo</string>
     <string name="sk_alt_text_missing">Por lo menos un elemento anexado no contiene descripción.</string>
     <string name="sk_publish_anyway">Publicar de todas formas</string>
-    <string name="sk_settings_disable_alt_text_reminder">Deshabilitar el recordatorio de texto alternativo</string>
+    <string name="sk_settings_disable_alt_text_reminder">Desactivar recordatorio para añadir texto alternativo</string>
     <string name="sk_notify_posts_info_banner">Si tienes habilitadas las notificaciones de publicación para algunas personas, sus nuevas publicaciones aparecerán aquí.</string>
     <string name="sk_timelines">Cronologías</string>
     <string name="sk_icon_city">Ciudad</string>
@@ -248,4 +248,6 @@
     <string name="sk_reported">reportado</string>
     <string name="sk_sign_ups">Registro de usuarios</string>
     <string name="sk_new_reports">Nuevos informes</string>
+    <string name="sk_settings_server_version">Versión de servidor: %s</string>
+    <string name="sk_notify_poll_results">Resultado de la encuesta</string>
 </resources>
