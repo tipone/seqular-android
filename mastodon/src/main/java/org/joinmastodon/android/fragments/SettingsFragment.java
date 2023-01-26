@@ -210,8 +210,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.disableFabAutoHide, i->{
-			GlobalUserPreferences.disableFabAutoHide =i.checked;
+		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.enableFabAutoHide, i->{
+			GlobalUserPreferences.enableFabAutoHide =i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
