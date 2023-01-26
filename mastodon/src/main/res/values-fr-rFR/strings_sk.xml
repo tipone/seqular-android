@@ -172,7 +172,7 @@
     <string name="sk_post_edited">édité</string>
     <string name="sk_edit_timeline">Modifier la timeline</string>
     <string name="sk_notify_update">Modifie un article reposté</string>
-    <string name="sk_settings_disable_alt_text_reminder">Désactiver le rappel de texte alternatif</string>
+    <string name="sk_settings_disable_alt_text_reminder">Désactiver le rappel pour ajouter du texte alternatif</string>
     <string name="sk_notification_type_update">Messages modifiés</string>
     <string name="sk_icon_code">Code</string>
     <string name="sk_icon_city">Ville</string>
@@ -249,4 +249,6 @@
     <string name="sk_settings_see_new_posts_button">Bouton \"Afficher les nouveaux messages\"</string>
     <string name="sk_instance_features">Fonctionnalités des instances</string>
     <string name="sk_settings_local_only_explanation">Votre instance locale doit prendre en charge la publication locale uniquement pour que cela fonctionne. La plupart des versions modifiées de Mastodon le font, mais pas Mastodon.</string>
+    <string name="sk_notify_poll_results">Résultats du sondage</string>
+    <string name="sk_settings_server_version">Version du serveur : %s</string>
 </resources>
