@@ -284,7 +284,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
-
 				if (fab!=null && GlobalUserPreferences.disableFabAutoHide) {
 					if (dy > 0 /*&& !isFirstLaunch*/) {
 						if (isScrollingUp /*&& !isFirstLaunch*/) {
