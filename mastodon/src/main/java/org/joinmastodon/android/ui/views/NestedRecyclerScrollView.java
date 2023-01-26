@@ -10,12 +10,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class NestedRecyclerScrollView extends CustomScrollView{
-
-	public interface NestedScrollListener{
-		public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed);
-	}
 	private Supplier<RecyclerView> scrollableChildSupplier;
-	private NestedScrollListener nestedScrollListener;
 
 	public NestedRecyclerScrollView(Context context){
 		super(context);
@@ -27,18 +22,6 @@ public class NestedRecyclerScrollView extends CustomScrollView{
 
 	public NestedRecyclerScrollView(Context context, AttributeSet attrs, int defStyleAttr){
 		super(context, attrs, defStyleAttr);
-	}
-
-	@Override
-	public void onNestedScroll(View target, int dxConsumed, int dyConsumed, int dxUnconsumed, int dyUnconsumed) {
-		super.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-		if (nestedScrollListener != null) {
-			nestedScrollListener.onNestedScroll(target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
-		}
-	}
-
-	public void setNestedScrollListener(NestedScrollListener listener) {
-		this.nestedScrollListener = listener;
 	}
 
 	@Override
