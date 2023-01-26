@@ -1101,14 +1101,14 @@ public class UiUtils{
 		}
 	}
 
-	public static String getVisibilityText(Status status) {
-		return MastodonApp.context.getString(switch (status.visibility) {
-			case PUBLIC -> R.string.visibility_public;
-			case UNLISTED -> R.string.sk_visibility_unlisted;
-			case PRIVATE -> R.string.visibility_followers_only;
-			case DIRECT -> R.string.visibility_private;
-		});
-	}
+//	public static String getVisibilityText(Status status) {
+//		return MastodonApp.context.getString(switch (status.visibility) {
+//			case PUBLIC -> R.string.visibility_public;
+//			case UNLISTED -> R.string.sk_visibility_unlisted;
+//			case PRIVATE -> R.string.visibility_followers_only;
+//			case DIRECT -> R.string.visibility_private;;
+//		});
+//	}
 
 	// https://github.com/tuskyapp/Tusky/pull/3148
 	public static void reduceSwipeSensitivity(ViewPager2 pager) {
