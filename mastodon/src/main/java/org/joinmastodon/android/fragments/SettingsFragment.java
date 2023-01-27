@@ -287,10 +287,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
-		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
-		items.add(new SmallTextItem(getString(translationAvailable ?
-				R.string.sk_settings_translation_availability_note_available :
-				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
 
 		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
 			glitchModeItem.enabled = i.checked;
@@ -311,6 +307,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 		}));
 		glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
+
+
+		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
+		items.add(new SmallTextItem(getString(translationAvailable ?
+				R.string.sk_settings_translation_availability_note_available :
+				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
+
 
 		items.add(new HeaderItem(R.string.sk_settings_about));
 //		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
