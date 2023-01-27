@@ -151,7 +151,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
-				.setColor(context.getColor(R.color.primary_700))
+				.setColor(context.getColor(R.color.shortcut_icon_background))
 				.setGroup(accountID);
 
 		if (!GlobalUserPreferences.uniformNotificationIcon) {
