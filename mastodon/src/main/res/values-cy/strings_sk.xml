@@ -146,14 +146,14 @@
     <string name="sk_compose_no_schedule">Peidiwch ag amserlennu</string>
     <string name="sk_settings_reduce_motion">Lleihau mudiant mewn animeiddiadau</string>
     <string name="sk_delete_list_confirm">Ydych chi\'n sicr eich bod eisiau dileu\'r rhestr %s\?</string>
-    <string name="sk_recent_searches_placeholder">Teipiwch rhywbeth i ddechrau chwilio</string>
+    <string name="sk_recent_searches_placeholder">Teipiwch i ddechrau chwilio</string>
     <string name="sk_remove_follower_confirm">Tynnu %s fel dilynwr drwy eu rhwystro a\'i ddadrwystro ar unwaith\?</string>
-    <string name="sk_edit_timelines">Golygu ffrydiau…</string>
+    <string name="sk_edit_timelines">Golygu ffrydiau</string>
     <string name="sk_alt_button">ALT</string>
     <string name="sk_alt_text_missing_title">Dim testun alt</string>
     <string name="sk_alt_text_missing">O leiaf un atodiad heb ei ddisgrifio.</string>
     <string name="sk_publish_anyway">Cyhoeddi beth bynnag</string>
-    <string name="sk_settings_disable_alt_text_reminder">Analluogi nodyn atgoffa testun alt</string>
+    <string name="sk_settings_disable_alt_text_reminder">Analluogi nodyn atgoffa i ychwanegu testun alt</string>
     <string name="sk_post_edited">Wedi\'i olygu</string>
     <string name="sk_notification_type_update">Negeseuon wedi\'u golygu</string>
     <string name="sk_notify_posts_info_banner">Os ydych chi\'n galluogi hysbysiadau post ar gyfer rhai pobl, bydd eu postiadau newydd yn ymddangos yma.</string>
@@ -226,4 +226,7 @@
     <string name="sk_icon_pin">Pin</string>
     <string name="sk_notify_update">Golygu neges wedi\'i hybu</string>
     <string name="sk_icon_bicycle">Beic</string>
+    <string name="sk_searching">Chwilio…</string>
+    <string name="sk_no_results">Dim atebion</string>
+    <string name="sk_save_draft">Cadw drafft\?</string>
 </resources>
