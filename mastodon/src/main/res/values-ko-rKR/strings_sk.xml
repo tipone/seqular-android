@@ -52,7 +52,7 @@
     <string name="sk_translate_show_original">원본 보기</string>
     <string name="sk_post_language">언어: %s</string>
     <string name="sk_language_name">%s (%s)</string>
-    <string name="sk_translated_using">%s에서 번역함</string>
+    <string name="sk_translated_using">%s를 통해 번역함</string>
     <string name="sk_available_languages">모든 언어</string>
     <string name="sk_clear_recent_languages">최근 사용한 언어 지우기</string>
     <string name="sk_confirm_clear_recent_languages">정말로 최근 사용한 언어를 지우시겠습니까\?</string>
@@ -65,7 +65,7 @@
     <string name="sk_settings_posting">게시물 설정</string>
     <string name="sk_settings_filters">필터 설정</string>
     <string name="sk_settings_auth">보안 설정</string>
-    <string name="sk_settings_rules">인스턴스 규칙</string>
+    <string name="sk_settings_rules">규칙</string>
     <string name="sk_settings_about">이 앱에 관하여</string>
     <string name="sk_settings_donate">기부</string>
     <string name="sk_delete_notification_confirm_action">알림 삭제</string>
@@ -234,4 +234,5 @@
     <string name="sk_save_draft_message">변경 사항을 초안으로 저장하거나 지금 게시하시겠습니까\?</string>
     <string name="sk_settings_show_no_alt_indicator">대체 텍스트 누락 여부 표시</string>
     <string name="sk_settings_show_alt_indicator">대체 텍스트 설정 여부 표시</string>
+    <string name="sk_notify_poll_results">투표 결과</string>
 </resources>
