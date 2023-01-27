@@ -972,7 +972,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				nonDoneAttachmentCount++;
 		}
 		publishButton.setEnabled((trimmedCharCount>0 || !attachments.isEmpty()) && charCount<=charLimit && nonDoneAttachmentCount==0 && (pollOptions.isEmpty() || nonEmptyPollOptionsCount>1));
-		sendError.setVisibility(View.GONE);
+//		sendError.setVisibility(View.GONE);
 	}
 
 	private void onCustomEmojiClick(Emoji emoji){

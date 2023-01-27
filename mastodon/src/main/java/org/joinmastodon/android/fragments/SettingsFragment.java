@@ -127,13 +127,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			needAppRestart=true;
 		}));
 
-		items.add(new SwitchItem(R.string.sk_settings_show_alt_indicator, R.drawable.ic_fluent_scan_text_24_regular, GlobalUserPreferences.showAltIndicator, i->{
-			GlobalUserPreferences.showAltIndicator=i.checked;
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
-			GlobalUserPreferences.showNoAltIndicator=i.checked;
-		}));
-
 
 		items.add(new ButtonItem(R.string.sk_settings_color_palette, R.drawable.ic_fluent_color_24_regular, b->{
 			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
@@ -239,7 +232,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 //			needAppRestart=true;
 //		}));
 
-		items.add(new HeaderItem(R.string.home_timeline));
+		items.add(new HeaderItem(R.string.sk_timelines));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
 			GlobalUserPreferences.showReplies=i.checked;
 			GlobalUserPreferences.save();
@@ -262,6 +255,14 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.showNewPostsButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
+
+		items.add(new SwitchItem(R.string.sk_settings_show_alt_indicator, R.drawable.ic_fluent_scan_text_24_regular, GlobalUserPreferences.showAltIndicator, i->{
+			GlobalUserPreferences.showAltIndicator=i.checked;
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
+			GlobalUserPreferences.showNoAltIndicator=i.checked;
+		}));
+
 
 		items.add(new HeaderItem(R.string.settings_notifications));
 		items.add(notificationPolicyItem=new NotificationPolicyItem());
@@ -338,8 +339,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			}));
 		}
 
-		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
-		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://ko-fi.com/xsk22"), R.drawable.ic_fluent_heart_24_regular));
+		items.add(new TextItem(R.string.mo_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
+
 		LruCache<?, ?> cache = imageCache == null ? null : imageCache.getLruCache();
 		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), cache != null ? cache.size() : 0, true), this::clearImageCache, 0);
 		items.add(clearImageCacheItem);
