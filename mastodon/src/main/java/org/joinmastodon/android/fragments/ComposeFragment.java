@@ -1995,6 +1995,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			}
 		});
 	}
+	private void editMediaDescription(DraftMediaAttachment att) {
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putString("attachment", att.serverAttachment.id);
+		args.putParcelable("uri", att.uri);
+		args.putString("existingDescription", att.description);
+		Nav.goForResult(getActivity(), ComposeImageDescriptionFragment.class, args, IMAGE_DESCRIPTION_RESULT, this);
+	}
 
 	@Override
 	public CharSequence getTitle(){
