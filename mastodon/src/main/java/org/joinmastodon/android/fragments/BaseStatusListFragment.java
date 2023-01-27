@@ -286,6 +286,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
+					if(dy > 0){
+						scrollDiff = 0;
+					}
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						TranslateAnimation animate = new TranslateAnimation(
 								0,
