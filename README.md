@@ -5,7 +5,7 @@
 > A fork of [megalodon](https://github.com/sk22/megalodon) which is a fork of [official Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app and possibly won’t ever be implemented, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
 
 
-[![Download latest release](https://img.shields.io/badge/dynamic/json?color=d92aad&label=download%20apk&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)
+[![Download latest release](https://img.shields.io/badge/dynamic/json?color=282C37&label=download%20apk&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)
 
 ---
 
@@ -13,15 +13,6 @@
 ## Key features
 
 ### **Material you theme support on Android 12+ devices!**
-
-### **Translate button**
-
-**Allows you to translate posts in instances with the translate feature!**
-
-**Screenshots**
-
-![Screenshot_20221209-135457_1](https://user-images.githubusercontent.com/71328265/206753830-cdb8bc65-7732-4a6a-8bcd-bbc4ca311d19.png)
-![Screenshot_20221209-135409_1](https://user-images.githubusercontent.com/71328265/206753831-7af92a48-d7a5-4780-9beb-90acef4e141b.png)
 
 ### **Color themes**
 
@@ -88,7 +79,12 @@ Variant with an integrated updater. If you download Moshidon from here (and not 
 
 * [Add “Unlisted” as a post visibility option](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/enable-unlisted)
   ([Pull request](https://github.com/mastodon/mastodon-android/pull/103))
-* [Add “Federation” tab and change Discover tab order](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/add-federated-timeline) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/8))
+* Adding a useful private profile note box!*
+* Auto hiding the compose button on scroll!*
+* Adding the hability to remind yourself to add alt text to images!*
+* Adding the ability to have drafts!*
+* Also adding the ability to view announcements from your instance!*
+* Adding the ability to post for local timeline only (Only on instances that support it!)*
 * [Add image description button and viewer](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/display-alt-text) ([Pull request](https://github.com/mastodon/mastodon-android/pull/129))
 * [Implement pinning posts and displaying pinned posts](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/pin-posts) ([Pull request](https://github.com/mastodon/mastodon-android/pull/140))
 * [Implement deleting and re-drafting](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/delete-redraft) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/21))
