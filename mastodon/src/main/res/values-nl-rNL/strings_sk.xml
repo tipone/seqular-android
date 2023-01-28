@@ -233,4 +233,13 @@
     <string name="sk_separator">·</string>
     <string name="sk_sign_ups">Gebruikers die zich aanmelden</string>
     <string name="sk_settings_see_new_posts_button">\"Zie nieuwe berichten\" knop</string>
+    <string name="sk_inline_local_only">alleen-lokaal</string>
+    <string name="sk_local_only">Alleen lokale instance</string>
+    <string name="sk_settings_glitch_instance">Glitch alleen-lokaal modus</string>
+    <string name="sk_instance_features">Instance mogelijkheden</string>
+    <string name="sk_settings_support_local_only">Server ondersteunt alleen-lokaal berichten plaatsing</string>
+    <string name="sk_settings_server_version">Serverversie: %s</string>
+    <string name="sk_notify_poll_results">Peiling uitslagen</string>
+    <string name="sk_pinned_timeline">Vastgemaakt aan Home</string>
+    <string name="sk_unpinned_timeline">Losgemaakt van Home</string>
 </resources>
