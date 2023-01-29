@@ -100,11 +100,8 @@ public abstract class StatusDisplayItem{
 
 		List<Filter> filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(Filter.FilterContext.HOME)).collect(Collectors.toList());
 		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
-		if(!filterPredicate.testWithWarning(status)){
-			if(!status.filterRevealed){
-				items.add(new WarningFilteredStatusDisplayItem(parentID, fragment, status));
-			}
-		}
+
+		statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
 
 		if(status.reblog!=null){
 			boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
@@ -141,9 +138,9 @@ public abstract class StatusDisplayItem{
 
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
-		if(!TextUtils.isEmpty(statusForContent.content))
+		if(!TextUtils.isEmpty(statusForContent.content)){
 			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
-		else
+		} else
 			header.needBottomPadding=true;
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
@@ -175,14 +172,19 @@ public abstract class StatusDisplayItem{
 		}
 		if(addFooter){
 			items.add(new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID));
-			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
+			if(status.hasGapAfter && !(fragment instanceof ThreadFragment)){
 				items.add(new GapStatusDisplayItem(parentID, fragment));
+			}
 		}
 
 		int i=1;
 		for(StatusDisplayItem item:items){
 			item.inset=inset;
 			item.index=i++;
+		}
+
+		if(!statusForContent.filterRevealed){
+			items.add(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent));
 		}
 
 

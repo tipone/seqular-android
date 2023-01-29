@@ -526,13 +526,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	protected void revealFiltered(Status status, String itemID){
 		status.filterRevealed=true;
-		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
-		if(text!=null)
-			adapter.notifyItemChanged(text.getAbsoluteAdapterPosition()-getMainAdapterOffset());
-		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
-		if(header!=null)
-			header.rebind();
-		updateImagesSpoilerState(status, itemID);
+
 	}
 
 
@@ -567,10 +561,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warningItem){
-//		Status status = warningItem.getItem().status;
-//		String itemID = warningItem.getItemID();
-		warningItem.itemView.setVisibility(View.GONE);
-//		adapter.notifyItemChanged();
+		adapter.notifyItemChanged(warningItem.getAbsoluteAdapterPosition());
 	}
 
 	public String getAccountID(){

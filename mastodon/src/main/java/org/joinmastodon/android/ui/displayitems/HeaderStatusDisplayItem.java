@@ -145,6 +145,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
 
+		ViewGroup.LayoutParams params;
+
 		private static final ViewOutlineProvider roundCornersOutline=new ViewOutlineProvider(){
 			@Override
 			public void getOutline(View view, Outline outline){
@@ -278,7 +280,23 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				return true;
 			});
 			UiUtils.enablePopupMenuIcons(activity, optionsMenu);
+
+//			if(!item.status.filterRevealed){
+//				this.itemView.setVisibility(View.GONE);
+//				params = this.itemView.getLayoutParams();
+//				params.height = 0;
+//				params.width = 0;
+//				this.itemView.setLayoutParams(params);
+//			}
 		}
+
+//		public void setFilteredShown(){
+//			this.itemView.setVisibility(View.VISIBLE);
+//			params = this.itemView.getLayoutParams();
+//			params.height = 0;
+//			params.width = 0;
+//			this.itemView.setLayoutParams(params);
+//		}
 
 		private void populateAccountsMenu(Menu menu) {
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();

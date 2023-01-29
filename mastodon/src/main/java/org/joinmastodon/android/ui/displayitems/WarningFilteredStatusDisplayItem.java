@@ -6,6 +6,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Status;
@@ -41,11 +43,16 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 
         @Override
         public void onBind(WarningFilteredStatusDisplayItem item){
-            text.setVisibility(item.loading ? View.GONE : View.VISIBLE);
+
         }
 
         @Override
         public void onClick(){
+            this.itemView.setVisibility(View.GONE);
+            ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
+            params.height = 0;
+            params.width = 0;
+            this.itemView.setLayoutParams(params);
             item.parentFragment.onWarningClick(this);
         }
     }
