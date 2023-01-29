@@ -142,7 +142,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
-	private boolean isScrollingUp = false;
+	protected int scrollDiff = 0;
 
 	public ProfileFragment(){
 		super(R.layout.loader_fragment_overlay_toolbar);
@@ -729,6 +729,36 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 		if(currentPhotoViewer!=null){
 			currentPhotoViewer.offsetView(0, oldScrollY-scrollY);
+		}
+
+		int dy = scrollY - oldScrollY;
+
+		if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+			TranslateAnimation animate = new TranslateAnimation(
+					0,
+					0,
+					0,
+					fab.getHeight() * 2);
+			animate.setDuration(300);
+			animate.setFillAfter(true);
+			fab.startAnimation(animate);
+			fab.setVisibility(View.INVISIBLE);
+			scrollDiff = 0;
+		} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+			if (scrollDiff > 400) {
+				fab.setVisibility(View.VISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						fab.getHeight() * 2,
+						0);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+				scrollDiff = 0;
+			} else {
+				scrollDiff += Math.abs(dy);
+			}
 		}
 	}
 
