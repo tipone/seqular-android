@@ -187,7 +187,6 @@ public abstract class StatusDisplayItem{
 			items.add(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent));
 		}
 
-
 		return items;
 	}
 

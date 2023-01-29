@@ -529,6 +529,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	}
 
+//	public void notifyItemsChanged(int adapterPosition){
+//		adapter.notifyItemChanged(adapterPosition);
+//	}
+
 
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder){
 		Status status=holder.getItem().status;

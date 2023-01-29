@@ -156,6 +156,9 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
 			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, item.translation.provider) : "");
+
+
+
 			translateButton.setOnClickListener(v->{
 				if (item.translation == null) {
 					translateProgress.setVisibility(View.VISIBLE);
@@ -186,6 +189,15 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					rebind();
 				}
 			});
+
+			if(!item.status.filterRevealed){
+				this.itemView.setVisibility(View.GONE);
+				ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
+				params.height = 0;
+				params.width = 0;
+				this.itemView.setLayoutParams(params);
+//					item.parentFragment.notifyItemsChanged(this.getAbsoluteAdapterPosition());
+			}
 		}
 
 		@Override
