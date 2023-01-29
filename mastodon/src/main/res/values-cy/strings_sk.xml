@@ -229,4 +229,25 @@
     <string name="sk_searching">Chwilio…</string>
     <string name="sk_no_results">Dim atebion</string>
     <string name="sk_save_draft">Cadw drafft\?</string>
+    <string name="sk_save_draft_message">Dych chi eisiau cadw eich newidiadau i\'r drafft hwn neu gyhoeddi fe nawr\?</string>
+    <string name="sk_no_alt_text">Dim testun alt ar gael</string>
+    <string name="sk_settings_show_alt_indicator">Dangosydd ar gyfer testunau alt</string>
+    <string name="sk_settings_show_no_alt_indicator">Dangosydd ar gyfer testunau alt ar goll</string>
+    <string name="sk_updater_enable_pre_releases">Galluogi rhag-rhyddhad</string>
+    <string name="sk_inline_local_only">Lleol yn unig</string>
+    <string name="sk_inline_direct">crybwylliadau yn unig</string>
+    <string name="sk_separator">·</string>
+    <string name="sk_instance_features">Nodweddion y gweinydd</string>
+    <string name="sk_settings_support_local_only">Gweinydd yn cefnogi postio yn lleol yn unig</string>
+    <string name="sk_settings_local_only_explanation">Rhaid i\'ch gweinydd gefnogi postio yn lleol yn unig er mwyn i hyn weithio. Mae\'r rhan fwyaf o fersiynau wedi\'u haddasu o Mastodon yn gwneud hynny, ond nid yw Mastodon yn gwneud hynny.</string>
+    <string name="sk_settings_glitch_instance">Modd lleol yn unig Glitch</string>
+    <string name="sk_settings_glitch_mode_explanation">Galluogi hyn os yw eich gweinydd yn rhedeg ar Glitch. Nid oes ei angen ar gyfer Hometown neu Akkoma.</string>
+    <string name="sk_signed_up">Wedi ymuno</string>
+    <string name="sk_reported">Wedi\'i adrodd</string>
+    <string name="sk_sign_ups">Defnyddwyr yn ymuno</string>
+    <string name="sk_new_reports">Adroddiadau newydd</string>
+    <string name="sk_local_only">Gweinydd lleol yn unig</string>
+    <string name="sk_settings_see_new_posts_button">Botwm \"Gweld negeseuon newydd\"</string>
+    <string name="sk_settings_server_version">Fersiwn y gweinydd: %s</string>
+    <string name="sk_notify_poll_results">Canlyniadau\'r pôl</string>
 </resources>
