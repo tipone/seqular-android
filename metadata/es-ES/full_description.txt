@@ -12,4 +12,4 @@ Moshidon es una versión modificada de <a href="https://github.com/mastodon/mast
 -<b>Seguir hashtags</b>: Sigue hashtags para ver las nuevas publicaciones de hashtags específicos directamente en tu cronología.
 -<b>Peticiones de seguimiento</b>: Acepta o rechaza peticiones de seguimiento desde las notificaciones o la lista dedicada.
 -<b>Borrar y reescribir</b>: La característica más buscada, que te permite editar.
--<b>Extras</b>: Incluye varios extras en la interfaz, como iconos específicos en las notificaciones o corrección de molestias de la interfaz original.
+-<b>Extras</b>: Incluye varios extras en la interfaz, como iconos específicos en las notificaciones o corrección de molestias de la interfaz original!
