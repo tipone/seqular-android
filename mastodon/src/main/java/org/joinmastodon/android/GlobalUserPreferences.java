@@ -39,6 +39,7 @@ public class GlobalUserPreferences{
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
 	public static boolean enablePreReleases;
+	public static boolean bottomEncoding;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -83,6 +84,7 @@ public class GlobalUserPreferences{
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
 		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
+		bottomEncoding=prefs.getBoolean("bottomEncoding", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", null), recentLanguagesType, new HashMap<>());
@@ -121,6 +123,7 @@ public class GlobalUserPreferences{
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
 				.putBoolean("enablePreReleases", enablePreReleases)
 				.putString("publishButtonText", publishButtonText)
+				.putBoolean("bottomEncoding", bottomEncoding)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
