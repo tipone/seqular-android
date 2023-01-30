@@ -62,7 +62,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private String accountID;
 	private Runnable searchDebouncer=this::onSearchChangedDebounced;
 
-	private final boolean noFederated = !GlobalUserPreferences.showFederatedTimeline;
+//	private final boolean noFederated = !GlobalUserPreferences.showFederatedTimeline;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -324,7 +324,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	private Fragment getFragmentForPage(int page){
-		if (noFederated && page > 0) page++;
+//		if (noFederated && page > 0) page++;
 
 //		return switch(page){
 //			case 0 -> localTimelineFragment;

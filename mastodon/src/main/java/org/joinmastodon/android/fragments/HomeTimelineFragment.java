@@ -58,8 +58,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 				.getHomeTimeline(offset>0 ? maxID : null, count, refreshing, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(CacheablePaginatedResponse<List<Status>> result){
-						if(getActivity()==null)
-							return;
+						if (getActivity() == null) return;
 						List<Status> filteredItems = filterPosts(result.items);
 						onDataLoaded(filteredItems, !result.items.isEmpty());
 						maxID=result.maxID;
@@ -150,7 +149,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 						toAdd=toAdd.stream().filter(filterPredicate).collect(Collectors.toList());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
-							if (parent != null) parent.showNewPostsButton();
+							if (parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAdd, false);
 						}
 					}

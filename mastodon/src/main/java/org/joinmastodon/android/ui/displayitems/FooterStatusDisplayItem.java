@@ -151,7 +151,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			boost.setSelected(item.status.reblogged);
 			favorite.setSelected(item.status.favourited);
 			bookmark.setSelected(item.status.bookmarked);
-			boost.setEnabled(item.status.visibility==StatusPrivacy.PUBLIC || item.status.visibility==StatusPrivacy.UNLISTED
+			boost.setEnabled(item.status.visibility==StatusPrivacy.PUBLIC || item.status.visibility==StatusPrivacy.UNLISTED || item.status.visibility==StatusPrivacy.LOCAL
 					|| (item.status.visibility==StatusPrivacy.PRIVATE && item.status.account.id.equals(AccountSessionManager.getInstance().getAccount(item.accountID).self.id)));
 		}
 
@@ -253,8 +253,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			Drawable checkMark = ctx.getDrawable(R.drawable.ic_fluent_checkmark_circle_20_regular);
 			Drawable publicDrawable = ctx.getDrawable(R.drawable.ic_fluent_earth_24_regular);
-			Drawable unlistedDrawable = ctx.getDrawable(R.drawable.ic_fluent_people_community_24_regular);
-			Drawable followersDrawable = ctx.getDrawable(R.drawable.ic_fluent_people_checkmark_24_regular);
+			Drawable unlistedDrawable = ctx.getDrawable(R.drawable.ic_fluent_lock_open_24_regular);
+			Drawable followersDrawable = ctx.getDrawable(R.drawable.ic_fluent_lock_closed_24_regular);
 
 			StatusPrivacy defaultVisibility = session.preferences != null ? session.preferences.postingDefaultVisibility : null;
 			// e.g. post visibility is unlisted, but default is public

@@ -21,6 +21,7 @@ public class DiscoverPostsFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if (getActivity() == null) return;
 						onDataLoaded(result, !result.isEmpty());
 					}
 				}).exec(accountID);

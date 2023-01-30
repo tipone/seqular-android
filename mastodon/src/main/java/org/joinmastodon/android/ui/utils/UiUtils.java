@@ -1,5 +1,6 @@
 package org.joinmastodon.android.ui.utils;
 
+import static android.view.Menu.NONE;
 import static org.joinmastodon.android.GlobalUserPreferences.theme;
 import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 
@@ -35,9 +36,12 @@ import android.util.Log;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.SubMenu;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -71,18 +75,17 @@ import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUnpinnedEvent;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
-import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Instance;
-import org.joinmastodon.android.model.ListTimeline;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.parceler.Parcels;
@@ -97,6 +100,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -372,6 +376,7 @@ public class UiUtils{
 							.setCallback(new Callback<>(){
 								@Override
 								public void onSuccess(Relationship result){
+									if (activity == null) return;
 									resultCallback.accept(result);
 									if(!currentlyBlocked){
 										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
@@ -400,6 +405,7 @@ public class UiUtils{
 							new SetAccountBlocked(account.id, false).setCallback(new Callback<>() {
 								@Override
 								public void onSuccess(Relationship relationship) {
+									if (activity == null) return;
 									Toast.makeText(activity, R.string.sk_remove_follower_success, Toast.LENGTH_SHORT).show();
 									resultCallback.accept(relationship);
 								}
@@ -507,7 +513,7 @@ public class UiUtils{
 				() -> new DeleteStatus.Scheduled(status.id)
 						.setCallback(new Callback<>(){
 							@Override
-							public void onSuccess(Object nothing){
+							public void onSuccess(Object o){
 								resultCallback.run();
 								E.post(new ScheduledStatusDeletedEvent(status.id, accountID));
 							}
@@ -772,11 +778,20 @@ public class UiUtils{
 		item.setTitle(ssb);
 	}
 
+	public static void resetPopupItemTint(MenuItem item) {
+		if(Build.VERSION.SDK_INT>=26) {
+			item.setIconTintList(null);
+		} else {
+			Drawable icon=item.getIcon().mutate();
+			icon.setTintList(null);
+			item.setIcon(icon);
+		}
+	}
+
 	public static void enableOptionsMenuIcons(Context context, Menu menu, @IdRes int... asAction) {
 		if(menu.getClass().getSimpleName().equals("MenuBuilder")){
 			try {
-				Method m = menu.getClass().getDeclaredMethod(
-						"setOptionalIconsVisible", Boolean.TYPE);
+				Method m = menu.getClass().getDeclaredMethod("setOptionalIconsVisible", Boolean.TYPE);
 				m.setAccessible(true);
 				m.invoke(menu, true);
 				enableMenuIcons(context, menu, asAction);
@@ -789,6 +804,8 @@ public class UiUtils{
 		ColorStateList iconTint=ColorStateList.valueOf(UiUtils.getThemeColor(context, android.R.attr.textColorSecondary));
 		for(int i=0;i<m.size();i++){
 			MenuItem item=m.getItem(i);
+			SubMenu subMenu = item.getSubMenu();
+			if (subMenu != null) enableMenuIcons(context, subMenu, exclude);
 			if (item.getIcon() == null || Arrays.stream(exclude).anyMatch(id -> id == item.getItemId())) continue;
 			insetPopupMenuIcon(item, iconTint);
 		}
@@ -885,6 +902,35 @@ public class UiUtils{
 				.setIcon(iconRes);
 		if (transformDialog != null) transformDialog.accept(builder);
 		builder.show();
+	}
+
+	public static void restartApp() {
+		Intent intent = Intent.makeRestartActivityTask(MastodonApp.context.getPackageManager().getLaunchIntentForPackage(MastodonApp.context.getPackageName()).getComponent());
+		MastodonApp.context.startActivity(intent);
+		Runtime.getRuntime().exit(0);
+	}
+
+	public static MenuItem makeBackItem(Menu m) {
+		MenuItem back = m.add(0, R.id.menu_back, NONE, R.string.back);
+		back.setIcon(R.drawable.ic_fluent_arrow_left_24_regular);
+		return back;
+	}
+
+	public static boolean setExtraTextInfo(Context ctx, TextView extraText, StatusPrivacy visibility, boolean localOnly) {
+		List<String> extraParts = new ArrayList<>();
+		if (localOnly || (visibility != null && visibility.equals(StatusPrivacy.LOCAL)))
+			extraParts.add(ctx.getString(R.string.sk_inline_local_only));
+		if (visibility != null && visibility.equals(StatusPrivacy.DIRECT))
+			extraParts.add(ctx.getString(R.string.sk_inline_direct));
+		if (!extraParts.isEmpty()) {
+			String sep = ctx.getString(R.string.sk_separator);
+			extraText.setText(String.join(" " + sep + " ", extraParts));
+			extraText.setVisibility(View.VISIBLE);
+			return true;
+		} else {
+			extraText.setVisibility(View.GONE);
+			return false;
+		}
 	}
 
 	@FunctionalInterface
@@ -1055,14 +1101,14 @@ public class UiUtils{
 		}
 	}
 
-	public static String getVisibilityText(Status status) {
-		return MastodonApp.context.getString(switch (status.visibility) {
-			case PUBLIC -> R.string.visibility_public;
-			case UNLISTED -> R.string.sk_visibility_unlisted;
-			case PRIVATE -> R.string.visibility_followers_only;
-			case DIRECT -> R.string.visibility_private;
-		});
-	}
+//	public static String getVisibilityText(Status status) {
+//		return MastodonApp.context.getString(switch (status.visibility) {
+//			case PUBLIC -> R.string.visibility_public;
+//			case UNLISTED -> R.string.sk_visibility_unlisted;
+//			case PRIVATE -> R.string.visibility_followers_only;
+//			case DIRECT -> R.string.visibility_private;;
+//		});
+//	}
 
 	// https://github.com/tuskyapp/Tusky/pull/3148
 	public static void reduceSwipeSensitivity(ViewPager2 pager) {
@@ -1077,5 +1123,51 @@ public class UiUtils{
 		} catch (Exception ex) {
 			Log.e("reduceSwipeSensitivity", Log.getStackTraceString(ex));
 		}
+	}
+
+	public static View makeOverflowActionView(Context ctx) {
+		// container needs tooltip, content description
+		LinearLayout container = new LinearLayout(ctx, null, 0, R.style.Widget_Mastodon_ActionButton_Overflow) {
+			@Override
+			public CharSequence getAccessibilityClassName() {
+				return Button.class.getName();
+			}
+		};
+		// image needs, well, the image, and the paddings
+		ImageView image = new ImageView(ctx, null, 0, R.style.Widget_Mastodon_ActionButton_Overflow);
+
+		image.setDuplicateParentStateEnabled(true);
+		image.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+		image.setClickable(false);
+		image.setFocusable(false);
+		image.setEnabled(false);
+
+		// problem: as per overflow action button defaults, the padding on left and right is unequal
+		// so (however the native overflow button manages this), the ripple background is off-center
+
+		// workaround: set both paddings to the smaller, left one…
+		int end = image.getPaddingEnd();
+		int start = image.getPaddingStart();
+		int paddingDiff = end - start; // what's missing to the long padding
+		image.setPaddingRelative(start, image.getPaddingTop(), start, image.getPaddingBottom());
+
+		// …and add the missing padding to the right on the container
+		container.setPaddingRelative(0, 0, paddingDiff, 0);
+		container.setBackground(null);
+		container.setClickable(true);
+		container.setFocusable(true);
+
+		container.addView(image);
+
+		// fucking finally
+		return container;
+	}
+
+	public static int alphaBlendColors(int color1, int color2, float alpha){
+		float alpha0=1f-alpha;
+		int r=Math.round(((color1 >> 16) & 0xFF)*alpha0+((color2 >> 16) & 0xFF)*alpha);
+		int g=Math.round(((color1 >> 8) & 0xFF)*alpha0+((color2 >> 8) & 0xFF)*alpha);
+		int b=Math.round((color1 & 0xFF)*alpha0+(color2 & 0xFF)*alpha);
+		return 0xFF000000 | (r << 16) | (g << 8) | b;
 	}
 }

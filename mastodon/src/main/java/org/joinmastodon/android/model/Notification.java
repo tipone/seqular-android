@@ -18,8 +18,8 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 	public Instant createdAt;
 	@RequiredField
 	public Account account;
-
 	public Status status;
+	public Report report;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -48,6 +48,19 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 		@SerializedName("poll")
 		POLL,
 		@SerializedName("status")
-		STATUS
+		STATUS,
+		@SerializedName("update")
+		UPDATE,
+		@SerializedName("admin.sign_up")
+		SIGN_UP,
+		@SerializedName("admin.report")
+		REPORT
+	}
+
+	@Parcel
+	public static class Report {
+		public String id;
+		public String comment;
+		public Account targetAccount;
 	}
 }

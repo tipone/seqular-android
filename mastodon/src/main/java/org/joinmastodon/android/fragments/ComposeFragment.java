@@ -152,6 +152,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private static final int IMAGE_DESCRIPTION_RESULT=363;
 	private static final int SCHEDULED_STATUS_OPENED_RESULT=161;
 	private static final int MAX_ATTACHMENTS=4;
+	private static final String GLITCH_LOCAL_ONLY_SUFFIX = "👁";
+	private static final Pattern GLITCH_LOCAL_ONLY_PATTERN = Pattern.compile("[\\s\\S]*" + GLITCH_LOCAL_ONLY_SUFFIX + "[\uFE00-\uFE0F]*");
 	private static final String TAG="ComposeFragment";
 
 	private static final Pattern MENTION_PATTERN=Pattern.compile("(^|[^\\/\\w])@(([a-z0-9_]+)@[a-z0-9\\.\\-]+[a-z0-9]+)", Pattern.CASE_INSENSITIVE);
@@ -164,7 +166,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private final BreakIterator breakIterator=BreakIterator.getCharacterInstance();
 
 	private SizeListenerLinearLayout contentView;
-	private TextView selfName, selfUsername;
+	private TextView selfName, selfUsername, selfExtraText, extraText;
 	private ImageView selfAvatar;
 	private Account self;
 	private String instanceDomain;
@@ -213,6 +215,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private View sendingOverlay;
 	private WindowManager wm;
 	private StatusPrivacy statusVisibility=StatusPrivacy.PUBLIC;
+	private boolean localOnly;
 	private ComposeAutocompleteSpan currentAutocompleteSpan;
 	private FrameLayout mainEditTextWrap;
 	private ComposeAutocompleteViewController autocompleteViewController;
@@ -247,9 +250,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		instance=AccountSessionManager.getInstance().getInstanceInfo(instanceDomain);
 		languageResolver=new MastodonLanguage.LanguageResolver(instance);
 		redraftStatus=getArguments().getBoolean("redraftStatus", false);
-		if(getArguments().containsKey("editStatus")){
+		if(getArguments().containsKey("editStatus"))
 			editingStatus=Parcels.unwrap(getArguments().getParcelable("editStatus"));
-		}
+		if(getArguments().containsKey("replyTo"))
+			replyTo=Parcels.unwrap(getArguments().getParcelable("replyTo"));
 		if(instance==null){
 			Nav.finish(this);
 			return;
@@ -323,6 +327,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		selfName=view.findViewById(R.id.self_name);
 		selfUsername=view.findViewById(R.id.self_username);
 		selfAvatar=view.findViewById(R.id.self_avatar);
+		selfExtraText=view.findViewById(R.id.self_extra_text);
 		HtmlParser.setTextWithCustomEmoji(selfName, self.displayName, self.emojis);
 		selfUsername.setText('@'+self.username+'@'+instanceDomain);
 		ViewImageLoader.load(selfAvatar, null, new UrlImageLoaderRequest(self.avatar));
@@ -348,10 +353,26 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		sensitiveItem=view.findViewById(R.id.sensitive_item);
 		replyText=view.findViewById(R.id.reply_text);
 
-		mediaBtn.setOnClickListener(v->openFilePicker());
+		if (isPhotoPickerAvailable()) {
+			PopupMenu attachPopup = new PopupMenu(getContext(), mediaBtn);
+			attachPopup.inflate(R.menu.attach);
+			attachPopup.setOnMenuItemClickListener(i -> {
+				openFilePicker(i.getItemId() == R.id.media);
+				return true;
+			});
+			UiUtils.enablePopupMenuIcons(getContext(), attachPopup);
+			mediaBtn.setOnClickListener(v->attachPopup.show());
+			mediaBtn.setOnTouchListener(attachPopup.getDragToOpenListener());
+		} else {
+			mediaBtn.setOnClickListener(v -> openFilePicker(false));
+		}
 		pollBtn.setOnClickListener(v->togglePoll());
 		emojiBtn.setOnClickListener(v->emojiKeyboard.toggleKeyboardPopup(mainEditText));
 		spoilerBtn.setOnClickListener(v->toggleSpoiler());
+
+		localOnly = savedInstanceState != null ? savedInstanceState.getBoolean("localOnly") :
+				editingStatus != null ? editingStatus.localOnly : replyTo != null && replyTo.localOnly;
+
 		buildVisibilityPopup(visibilityBtn);
 		visibilityBtn.setOnClickListener(v->visibilityPopup.show());
 		visibilityBtn.setOnTouchListener(visibilityPopup.getDragToOpenListener());
@@ -426,6 +447,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		spoilerBg.setDrawableByLayerId(R.id.right_drawable, new SpoilerStripesDrawable());
 		spoilerEdit.setBackground(spoilerBg);
 		if((savedInstanceState!=null && savedInstanceState.getBoolean("hasSpoiler", false)) || hasSpoiler){
+			hasSpoiler=true;
 			spoilerEdit.setVisibility(View.VISIBLE);
 			spoilerBtn.setSelected(true);
 		}else if(editingStatus!=null && !TextUtils.isEmpty(editingStatus.spoilerText)){
@@ -469,7 +491,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			case UNLISTED -> R.id.vis_unlisted;
 			case PRIVATE -> R.id.vis_followers;
 			case DIRECT -> R.id.vis_private;
+			case LOCAL -> R.id.vis_local;
 		}).setChecked(true);
+		visibilityPopup.getMenu().findItem(R.id.local_only).setChecked(localOnly);
 
 		autocompleteViewController=new ComposeAutocompleteViewController(getActivity(), accountID);
 		autocompleteViewController.setCompletionSelectedListener(this::onAutocompleteOptionSelected);
@@ -496,6 +520,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			outState.putBoolean("pollAllowMultiple", pollAllowMultipleItem.isSelected());
 		}
 		outState.putBoolean("sensitive", sensitive);
+		outState.putBoolean("localOnly", localOnly);
 		outState.putBoolean("hasSpoiler", hasSpoiler);
 		outState.putString("language", language);
 		if(!attachments.isEmpty()){
@@ -619,6 +644,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				}
 			});
 			View originalPost = view.findViewById(R.id.original_post);
+			extraText = view.findViewById(R.id.extra_text);
 			originalPost.setVisibility(View.VISIBLE);
 			originalPost.setOnClickListener(v->{
 				Bundle args=new Bundle();
@@ -651,9 +677,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			view.findViewById(R.id.visibility).setVisibility(View.GONE);
 			Drawable visibilityIcon = getActivity().getDrawable(switch(replyTo.visibility){
 				case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
-				case UNLISTED -> R.drawable.ic_fluent_people_community_20_regular;
-				case PRIVATE -> R.drawable.ic_fluent_people_checkmark_20_regular;
+				case UNLISTED -> R.drawable.ic_fluent_lock_open_20_regular;
+				case PRIVATE -> R.drawable.ic_fluent_lock_closed_20_filled;
 				case DIRECT -> R.drawable.ic_fluent_mention_20_regular;
+				case LOCAL -> R.drawable.ic_fluent_eye_20_regular;
 			});
 			ImageView moreBtn = view.findViewById(R.id.more);
 			moreBtn.setImageDrawable(visibilityIcon);
@@ -672,7 +699,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			else view.findViewById(R.id.display_item_text).setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(16)));
 
 			replyText.setText(getString(R.string.in_reply_to, replyTo.account.displayName));
-			replyText.setContentDescription(getString(R.string.in_reply_to, replyTo.account.displayName) + ". " + getString(R.string.post_visibility) + ": " + UiUtils.getVisibilityText(replyTo));
+			int visibilityNameRes = switch (replyTo.visibility) {
+				case PUBLIC -> R.string.visibility_public;
+				case UNLISTED -> R.string.sk_visibility_unlisted;
+				case PRIVATE -> R.string.visibility_followers_only;
+				case DIRECT -> R.string.visibility_private;
+				case LOCAL -> R.string.sk_local_only;
+			};
+			replyText.setContentDescription(getString(R.string.in_reply_to, replyTo.account.displayName) + ". " + getString(R.string.post_visibility) + ": " + getString(visibilityNameRes));
 			replyText.setOnClickListener(v->{
 				scrollView.smoothScrollTo(0, 0);
 			});
@@ -755,6 +789,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		updateSensitive();
+		updateHeaders();
 
 		if(editingStatus!=null){
 			updateCharCounter();
@@ -809,6 +844,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		draftsBtn.setOnTouchListener(draftOptionsPopup.getDragToOpenListener());
 		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
 		buildLanguageSelector(languageButton);
+
+		if (editingStatus != null && scheduledStatus == null) {
+			// editing an already published post
+			draftsBtn.setVisibility(View.GONE);
+		}
 	}
 
 	private void navigateToUnsentPosts() {
@@ -844,7 +884,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		btn.setOnClickListener(v->languagePopup.show());
 
 		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
-		updateLanguage(prefs != null && prefs.postingDefaultLanguage != null && prefs.postingDefaultLanguage.length() > 0
+		if (language != null) updateLanguage(language);
+		else updateLanguage(prefs != null && prefs.postingDefaultLanguage != null && prefs.postingDefaultLanguage.length() > 0
 				? languageResolver.from(prefs.postingDefaultLanguage)
 				: languageResolver.getDefault());
 
@@ -896,6 +937,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if(hasSpoiler){
 			charCount+=spoilerEdit.length();
 		}
+		if (localOnly && GlobalUserPreferences.accountsInGlitchMode.contains(accountID)) {
+			charCount -= GLITCH_LOCAL_ONLY_SUFFIX.length();
+		}
 		charCounter.setText(String.valueOf(charLimit-charCount));
 		trimmedCharCount=text.toString().trim().length();
 		updatePublishButtonState();
@@ -928,7 +972,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				nonDoneAttachmentCount++;
 		}
 		publishButton.setEnabled((trimmedCharCount>0 || !attachments.isEmpty()) && charCount<=charLimit && nonDoneAttachmentCount==0 && (pollOptions.isEmpty() || nonEmptyPollOptionsCount>1));
-		sendError.setVisibility(View.GONE);
+//		sendError.setVisibility(View.GONE);
 	}
 
 	private void onCustomEmojiClick(Emoji emoji){
@@ -996,15 +1040,49 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void publish(){
+		publish(false);
+	}
+
+	private void publish(boolean force){
 		String text=mainEditText.getText().toString();
 		CreateStatus.Request req=new CreateStatus.Request();
+		if (localOnly &&
+				GlobalUserPreferences.accountsInGlitchMode.contains(accountID) &&
+				!GLITCH_LOCAL_ONLY_PATTERN.matcher(text).matches()) {
+			text += " " + GLITCH_LOCAL_ONLY_SUFFIX;
+		}
 		req.status=text;
-		req.visibility=statusVisibility;
+		req.localOnly=localOnly;
+		req.visibility=localOnly && instance.pleroma != null ? StatusPrivacy.LOCAL : statusVisibility;
 		req.sensitive=sensitive;
 		req.language=language;
 		req.scheduledAt = scheduledAt;
 		if(!attachments.isEmpty()){
 			req.mediaIds=attachments.stream().map(a->a.serverAttachment.id).collect(Collectors.toList());
+			Optional<DraftMediaAttachment> withoutAltText = attachments.stream().filter(a -> a.description == null || a.description.isBlank()).findFirst();
+			boolean isDraft = scheduledAt != null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT);
+			if (!force && !GlobalUserPreferences.disableAltTextReminder && !isDraft && withoutAltText.isPresent()) {
+				new M3AlertDialogBuilder(getActivity())
+						.setTitle(R.string.sk_alt_text_missing_title)
+						.setMessage(R.string.sk_alt_text_missing)
+						.setPositiveButton(R.string.add_alt_text, (d, w) -> editMediaDescription(withoutAltText.get()))
+						.setNegativeButton(R.string.sk_publish_anyway, (d, w) -> publish(true))
+						.show();
+				return;
+			}
+		}
+		// ask whether to publish now when editing an existing draft
+		if (!force && editingStatus != null && scheduledAt != null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)) {
+			new M3AlertDialogBuilder(getActivity())
+					.setTitle(R.string.sk_save_draft)
+					.setMessage(R.string.sk_save_draft_message)
+					.setPositiveButton(R.string.save, (d, w) -> publish(true))
+					.setNegativeButton(R.string.publish, (d, w) -> {
+						updateScheduledAt(null);
+						publish();
+					})
+					.show();
+			return;
 		}
 		if(replyTo!=null || (editingStatus != null && editingStatus.inReplyToId!=null)){
 			req.inReplyToId=editingStatus!=null ? editingStatus.inReplyToId : replyTo.id;
@@ -1206,9 +1284,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	 *
 	 * <p>For earlier versions use the built in docs ui via {@link Intent#ACTION_GET_CONTENT}
 	 */
-	private void openFilePicker(){
+	private void openFilePicker(boolean photoPicker){
 		Intent intent;
-		boolean usePhotoPicker = isPhotoPickerAvailable();
+		boolean usePhotoPicker = photoPicker && isPhotoPickerAvailable();
 		if (usePhotoPicker) {
 			intent = new Intent(MediaStore.ACTION_PICK_IMAGES);
 			intent.putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, MediaStore.getPickImagesMaxLimit());
@@ -1646,18 +1724,20 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		menu.getMenu().add(0, 2, 0, getResources().getQuantityString(R.plurals.x_minutes, 30, 30));
 		menu.getMenu().add(0, 3, 0, getResources().getQuantityString(R.plurals.x_hours, 1, 1));
 		menu.getMenu().add(0, 4, 0, getResources().getQuantityString(R.plurals.x_hours, 6, 6));
-		menu.getMenu().add(0, 5, 0, getResources().getQuantityString(R.plurals.x_days, 1, 1));
-		menu.getMenu().add(0, 6, 0, getResources().getQuantityString(R.plurals.x_days, 3, 3));
-		menu.getMenu().add(0, 7, 0, getResources().getQuantityString(R.plurals.x_days, 7, 7));
+		menu.getMenu().add(0, 5, 0, getResources().getQuantityString(R.plurals.x_hours, 12, 12));
+		menu.getMenu().add(0, 6, 0, getResources().getQuantityString(R.plurals.x_days, 1, 1));
+		menu.getMenu().add(0, 7, 0, getResources().getQuantityString(R.plurals.x_days, 3, 3));
+		menu.getMenu().add(0, 8, 0, getResources().getQuantityString(R.plurals.x_days, 7, 7));
 		menu.setOnMenuItemClickListener(item->{
 			pollDuration=switch(item.getItemId()){
 				case 1 -> 5*60;
 				case 2 -> 30*60;
 				case 3 -> 3600;
 				case 4 -> 6*3600;
-				case 5 -> 24*3600;
-				case 6 -> 3*24*3600;
-				case 7 -> 7*24*3600;
+				case 5 -> 12*3600;
+				case 6 -> 24*3600;
+				case 7 -> 3*24*3600;
+				case 8 -> 7*24*3600;
 				default -> throw new IllegalStateException("Unexpected value: "+item.getItemId());
 			};
 			pollDurationView.setText(getString(R.string.compose_poll_duration, pollDurationStr=item.getTitle().toString()));
@@ -1766,12 +1846,33 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		return attachments.size();
 	}
 
+	private void updateHeaders() {
+		UiUtils.setExtraTextInfo(getContext(), selfExtraText, statusVisibility, localOnly);
+		if (replyTo != null) UiUtils.setExtraTextInfo(getContext(), extraText, replyTo.visibility, replyTo.localOnly);
+	}
+
 	private void buildVisibilityPopup(View v){
 		visibilityPopup=new PopupMenu(getActivity(), v);
 		visibilityPopup.inflate(R.menu.compose_visibility);
 		Menu m=visibilityPopup.getMenu();
+		MenuItem localOnlyItem = visibilityPopup.getMenu().findItem(R.id.local_only);
+		boolean prefsSaysSupported = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
+		if (instance.pleroma != null) {
+			m.findItem(R.id.vis_local).setVisible(true);
+		} else if (localOnly || prefsSaysSupported) {
+			localOnlyItem.setVisible(true);
+			localOnlyItem.setChecked(localOnly);
+			Status status = editingStatus != null ? editingStatus : replyTo;
+			if (!prefsSaysSupported) {
+				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
+				if (GLITCH_LOCAL_ONLY_PATTERN.matcher(status.getStrippedText()).matches()) {
+					GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+				}
+				GlobalUserPreferences.save();
+			}
+		}
 		UiUtils.enablePopupMenuIcons(getActivity(), visibilityPopup);
-		m.setGroupCheckable(0, true, true);
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) m.setGroupDividerEnabled(true);
 		visibilityPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 			@Override
 			public boolean onMenuItemClick(MenuItem item){
@@ -1784,41 +1885,44 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					statusVisibility=StatusPrivacy.PRIVATE;
 				}else if(id==R.id.vis_private){
 					statusVisibility=StatusPrivacy.DIRECT;
+				}else if(id==R.id.vis_local){
+					statusVisibility=StatusPrivacy.LOCAL;
 				}
-				item.setChecked(true);
+				if (id == R.id.local_only) {
+					localOnly = !item.isChecked();
+					item.setChecked(localOnly);
+				} else {
+					item.setChecked(true);
+				}
 				updateVisibilityIcon();
+				updateHeaders();
 				return true;
 			}
 		});
 	}
 
 	private void loadDefaultStatusVisibility(Bundle savedInstanceState) {
-		if(getArguments().containsKey("replyTo")){
-			replyTo=Parcels.unwrap(getArguments().getParcelable("replyTo"));
-			statusVisibility = replyTo.visibility;
-		}
+		if(replyTo != null) statusVisibility = replyTo.visibility;
 
 		// A saved privacy setting from a previous compose session wins over the reply visibility
 		if(savedInstanceState !=null){
 			statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
 		}
 
-		Preferences prefs = AccountSessionManager.getInstance().getAccount(accountID).preferences;
+		AccountSessionManager asm = AccountSessionManager.getInstance();
+		Preferences prefs = asm.getAccount(accountID).preferences;
 		if (prefs != null) {
 			// Only override the reply visibility if our preference is more private
-			if (prefs.postingDefaultVisibility.isLessVisibleThan(statusVisibility)) {
-				statusVisibility = switch (prefs.postingDefaultVisibility) {
-					case PUBLIC -> StatusPrivacy.PUBLIC;
-					case UNLISTED -> StatusPrivacy.UNLISTED;
-					case PRIVATE -> StatusPrivacy.PRIVATE;
-					case DIRECT -> StatusPrivacy.DIRECT;
-				};
+			// (and we're not replying to ourselves, or not at all)
+			if (prefs.postingDefaultVisibility.isLessVisibleThan(statusVisibility) &&
+					(replyTo == null || !asm.isSelf(accountID, replyTo.account))) {
+				statusVisibility = prefs.postingDefaultVisibility;
 			}
+		}
 
-			// A saved privacy setting from a previous compose session wins over all
-			if(savedInstanceState !=null){
-				statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
-			}
+		// A saved privacy setting from a previous compose session wins over all
+		if(savedInstanceState !=null){
+			statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
 		}
 	}
 
@@ -1828,9 +1932,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 		visibilityBtn.setImageResource(switch(statusVisibility){
 			case PUBLIC -> R.drawable.ic_fluent_earth_24_regular;
-			case UNLISTED -> R.drawable.ic_fluent_people_community_24_regular;
-			case PRIVATE -> R.drawable.ic_fluent_people_checkmark_24_regular;
+			case UNLISTED -> R.drawable.ic_fluent_lock_open_24_regular;
+			case PRIVATE -> R.drawable.ic_fluent_lock_closed_24_filled;
 			case DIRECT -> R.drawable.ic_fluent_mention_24_regular;
+			case LOCAL -> R.drawable.ic_fluent_eye_24_regular;
 		});
 	}
 
@@ -1951,6 +2056,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				Log.w(TAG, "loadVideoThumbIntoView: error getting video frame", x);
 			}
 		});
+	}
+	private void editMediaDescription(DraftMediaAttachment att) {
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putString("attachment", att.serverAttachment.id);
+		args.putParcelable("uri", att.uri);
+		args.putString("existingDescription", att.description);
+		Nav.goForResult(getActivity(), ComposeImageDescriptionFragment.class, args, IMAGE_DESCRIPTION_RESULT, this);
 	}
 
 	@Override

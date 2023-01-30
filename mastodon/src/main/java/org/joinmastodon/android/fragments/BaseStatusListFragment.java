@@ -13,7 +13,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -75,8 +74,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected String accountID;
 	protected PhotoViewer currentPhotoViewer;
 	protected ImageButton fab;
-	protected boolean isScrollingUp = false;
-//	protected boolean isFirstLaunch = true;
+	protected int scrollDiff = 0;
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
@@ -280,28 +278,30 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
+
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
 
-				if (fab!=null && !GlobalUserPreferences.disableFab) {
-					if (dy > 0 /*&& !isFirstLaunch*/) {
-						if (isScrollingUp /*&& !isFirstLaunch*/) {
-							fab.setVisibility(View.INVISIBLE);
-							TranslateAnimation animate = new TranslateAnimation(
-									0,
-									0,
-									0,
-									fab.getHeight() * 2);
-							animate.setDuration(300);
-							animate.setFillAfter(true);
-							fab.startAnimation(animate);
-							isScrollingUp = false;
-						}
-					} else {
-						if (!isScrollingUp) {
+				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
+					if(dy > 0){
+						scrollDiff = 0;
+					}
+					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+						TranslateAnimation animate = new TranslateAnimation(
+								0,
+								0,
+								0,
+								fab.getHeight() * 2);
+						animate.setDuration(300);
+						animate.setFillAfter(true);
+						fab.startAnimation(animate);
+						fab.setVisibility(View.INVISIBLE);
+						scrollDiff = 0;
+					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+						if (scrollDiff > 800) {
 							fab.setVisibility(View.VISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
@@ -311,7 +311,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 							animate.setDuration(300);
 							animate.setFillAfter(true);
 							fab.startAnimation(animate);
-							isScrollingUp = true;
+							scrollDiff = 0;
+						} else {
+							scrollDiff += Math.abs(dy);
 						}
 					}
 				}

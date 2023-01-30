@@ -1,6 +1,6 @@
 package org.joinmastodon.android.fragments;
 
-import static org.joinmastodon.android.GlobalUserPreferences.showFederatedTimeline;
+import static org.joinmastodon.android.GlobalUserPreferences.reduceMotion;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -41,21 +41,26 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.announcements.GetAnnouncements;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
+import org.joinmastodon.android.events.HashtagUpdatedEvent;
+import org.joinmastodon.android.events.ListDeletedEvent;
+import org.joinmastodon.android.events.ListUpdatedCreatedEvent;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
-import org.joinmastodon.android.fragments.discover.FederatedTimelineFragment;
-import org.joinmastodon.android.fragments.discover.LocalTimelineFragment;
 import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.ListTimeline;
+import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -69,14 +74,12 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private static final int ANNOUNCEMENTS_RESULT = 654;
 
 	private String accountID;
-	private MenuItem announcements;
-	//	private ImageView toolbarLogo;
+	private MenuItem announcements, announcementsAction, settings, settingsAction;
+//	private ImageView toolbarLogo;
 	private Button toolbarShowNewPostsBtn;
 	private boolean newPostsBtnShown;
 	private AnimatorSet currentNewPostsAnim;
 	private ViewPager2 pager;
-	private final List<Fragment> fragments = new ArrayList<>();
-	private final List<FrameLayout> tabViews = new ArrayList<>();
 	private View switcher;
 	private FrameLayout toolbarFrame;
 	private ImageView timelineIcon;
@@ -85,11 +88,29 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private PopupMenu switcherPopup;
 	private final Map<Integer, ListTimeline> listItems = new HashMap<>();
 	private final Map<Integer, Hashtag> hashtagsItems = new HashMap<>();
+	private List<TimelineDefinition> timelineDefinitions;
+	private int count;
+	private Fragment[] fragments;
+	private FrameLayout[] tabViews;
+	private TimelineDefinition[] timelines;
+	private final Map<Integer, TimelineDefinition> timelinesByMenuItem = new HashMap<>();
+	private SubMenu hashtagsMenu, listsMenu;
+	private PopupMenu overflowPopup;
+	private View overflowActionView = null;
+	private boolean announcementsBadged, settingsBadged;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		E.register(this);
 		accountID = getArguments().getString("account");
+		timelineDefinitions = GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.DEFAULT_TIMELINES);
+		assert timelineDefinitions != null;
+		if (timelineDefinitions.size() == 0) timelineDefinitions = List.of(TimelineDefinition.HOME_TIMELINE);
+		count = timelineDefinitions.size();
+		fragments = new Fragment[count];
+		tabViews = new FrameLayout[count];
+		timelines = new TimelineDefinition[count];
 	}
 
 	@Override
@@ -104,35 +125,39 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		pager = new ViewPager2(getContext());
 		toolbarFrame = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.home_toolbar, getToolbar(), false);
 
-		if (fragments.size() == 0) {
+		if (fragments[0] == null) {
 			Bundle args = new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
-
-			fragments.add(new HomeTimelineFragment());
-			fragments.add(new LocalTimelineFragment());
-			if (showFederatedTimeline) fragments.add(new FederatedTimelineFragment());
-			args=new Bundle(args);
 			args.putBoolean("onlyPosts", true);
-			NotificationsListFragment postsFragment=new NotificationsListFragment();
-			postsFragment.setArguments(args);
-			fragments.add(postsFragment);
+
+			for (int i = 0; i < timelineDefinitions.size(); i++) {
+				TimelineDefinition tl = timelineDefinitions.get(i);
+				fragments[i] = tl.getFragment();
+				timelines[i] = tl;
+			}
 
 			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
-			for (int i = 0; i < fragments.size(); i++) {
-				fragments.get(i).setArguments(args);
+			for (int i = 0; i < count; i++) {
+				fragments[i].setArguments(timelines[i].populateArguments(new Bundle(args)));
 				FrameLayout tabView = new FrameLayout(getActivity());
 				tabView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 				tabView.setVisibility(View.GONE);
 				tabView.setId(i + 1);
-				transaction.add(i + 1, fragments.get(i));
+				transaction.add(i + 1, fragments[i]);
 				view.addView(tabView);
-				tabViews.add(tabView);
+				tabViews[i] = tabView;
 			}
 			transaction.commit();
 		}
 
 		view.addView(pager, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+
+		overflowActionView = UiUtils.makeOverflowActionView(getContext());
+		overflowPopup = new PopupMenu(getContext(), overflowActionView);
+		overflowPopup.setOnMenuItemClickListener(this::onOptionsItemSelected);
+		overflowActionView.setOnClickListener(l -> overflowPopup.show());
+		overflowActionView.setOnTouchListener(overflowPopup.getDragToOpenListener());
 
 		return view;
 	}
@@ -147,37 +172,36 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		collapsedChevron = toolbarFrame.findViewById(R.id.collapsed_chevron);
 		switcher = toolbarFrame.findViewById(R.id.switcher_btn);
 		switcherPopup = new PopupMenu(getContext(), switcher);
-		switcherPopup.inflate(R.menu.home_switcher);
 		switcherPopup.setOnMenuItemClickListener(this::onSwitcherItemSelected);
 		UiUtils.enablePopupMenuIcons(getContext(), switcherPopup);
-		switcher.setOnClickListener(v->{
-			updateSwitcherMenu();
-			switcherPopup.show();
-		});
-		View.OnTouchListener listener = switcherPopup.getDragToOpenListener();
-		switcher.setOnTouchListener((v, m)-> {
-			updateSwitcherMenu();
-			return listener.onTouch(v, m);
-		});
+		switcher.setOnClickListener(v->switcherPopup.show());
+		switcher.setOnTouchListener(switcherPopup.getDragToOpenListener());
+		updateSwitcherMenu();
 
 		UiUtils.reduceSwipeSensitivity(pager);
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
 		pager.setAdapter(new HomePagerAdapter());
-		pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback(){
+		pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
 			@Override
 			public void onPageSelected(int position){
+				if (!reduceMotion) {
+					// setting this here because page transformer appears to fire too late so the
+					// animation can appear bumpy, especially when navigating to a further-away tab
+					switcher.setScaleY(0.85f);
+					switcher.setScaleX(0.85f);
+					switcher.setAlpha(0.65f);
+				}
 				updateSwitcherIcon(position);
-				if (position==0) return;
-				hideNewPostsButton();
-				if (fragments.get(position) instanceof BaseRecyclerFragment<?> page){
+				if (!timelines[position].equals(TimelineDefinition.HOME_TIMELINE)) hideNewPostsButton();
+				if (fragments[position] instanceof BaseRecyclerFragment<?> page){
 					if(!page.loaded && !page.isDataLoading()) page.loadData();
 				}
 			}
 		});
 
-		if (!GlobalUserPreferences.reduceMotion) {
+		if (!reduceMotion) {
 			pager.setPageTransformer((v, pos) -> {
-				if (tabViews.get(pager.getCurrentItem()) != v) return;
+				if (reduceMotion || tabViews[pager.getCurrentItem()] != v) return;
 				float scaleFactor = Math.max(0.85f, 1 - Math.abs(pos) * 0.06f);
 				switcher.setScaleY(scaleFactor);
 				switcher.setScaleX(scaleFactor);
@@ -187,15 +211,37 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 		updateToolbarLogo();
 
+		ViewTreeObserver vto = getToolbar().getViewTreeObserver();
+		if (vto.isAlive()) {
+			vto.addOnGlobalLayoutListener(() -> {
+				Toolbar t = getToolbar();
+				if (t == null) return;
+				int toolbarWidth = t.getWidth();
+				if (toolbarWidth == 0) return;
+
+				int toolbarFrameWidth = toolbarFrame.getWidth();
+				int padding = toolbarWidth - toolbarFrameWidth;
+				FrameLayout parent = ((FrameLayout) toolbarShowNewPostsBtn.getParent());
+				if (padding == parent.getPaddingStart()) return;
+
+				// toolbar frame goes from screen edge to beginning of right-aligned option buttons.
+				// centering button by applying the same space on the left
+				parent.setPaddingRelative(padding, 0, 0, 0);
+				toolbarShowNewPostsBtn.setMaxWidth(toolbarWidth - padding * 2);
+
+				switcher.setPivotX(V.dp(28)); // padding + half of icon
+				switcher.setPivotY(switcher.getHeight() / 2f);
+			});
+		}
+
 		if(GithubSelfUpdater.needSelfUpdating()){
-			E.register(this);
 			updateUpdateState(GithubSelfUpdater.getInstance().getState());
 		}
 
 		new GetLists().setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(List<ListTimeline> lists) {
-				addItemsToMap(lists, listItems);
+				updateList(lists, listItems);
 			}
 
 			@Override
@@ -207,7 +253,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		new GetFollowedHashtags().setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(HeaderPaginationList<Hashtag> hashtags) {
-				addItemsToMap(hashtags, hashtagsItems);
+				updateList(hashtags, hashtagsItems);
 			}
 
 			@Override
@@ -215,6 +261,47 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 				error.showToast(getContext());
 			}
 		}).exec(accountID);
+
+		new GetAnnouncements(false).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(List<Announcement> result) {
+				if (getActivity() == null) return;
+				if (result.stream().anyMatch(a -> !a.read)) {
+					announcementsBadged = true;
+					announcements.setVisible(false);
+					announcementsAction.setVisible(true);
+				}
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
+			}
+		}).exec(accountID);
+	}
+
+	private void addListsToOverflowMenu() {
+		Context ctx = getContext();
+		listsMenu.clear();
+		listsMenu.getItem().setVisible(listItems.size() > 0);
+		UiUtils.insetPopupMenuIcon(ctx, UiUtils.makeBackItem(listsMenu));
+		listItems.forEach((id, list) -> {
+			MenuItem item = listsMenu.add(Menu.NONE, id, Menu.NONE, list.title);
+			item.setIcon(R.drawable.ic_fluent_people_24_regular);
+			UiUtils.insetPopupMenuIcon(ctx, item);
+		});
+	}
+
+	private void addHashtagsToOverflowMenu() {
+		Context ctx = getContext();
+		hashtagsMenu.clear();
+		hashtagsMenu.getItem().setVisible(hashtagsItems.size() > 0);
+		UiUtils.insetPopupMenuIcon(ctx, UiUtils.makeBackItem(hashtagsMenu));
+		hashtagsItems.forEach((id, hashtag) -> {
+			MenuItem item = hashtagsMenu.add(Menu.NONE, id, Menu.NONE, hashtag.name);
+			item.setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
+			UiUtils.insetPopupMenuIcon(ctx, item);
+		});
 	}
 
 	public void updateToolbarLogo(){
@@ -228,11 +315,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		toolbar.setContentInsetsAbsolute(0, toolbar.getContentInsetRight());
 
 		updateSwitcherIcon(pager.getCurrentItem());
-
-//		toolbarLogo=new ImageView(getActivity());
-//		toolbarLogo.setScaleType(ImageView.ScaleType.CENTER);
-//		toolbarLogo.setImageResource(R.drawable.logo);
-//		toolbarLogo.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorPrimary)));
 
 		toolbarShowNewPostsBtn=toolbarFrame.findViewById(R.id.show_new_posts_btn);
 		toolbarShowNewPostsBtn.setCompoundDrawableTintList(toolbarShowNewPostsBtn.getTextColors());
@@ -254,118 +336,90 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 			toolbarShowNewPostsBtn.setScaleY(.8f);
 			timelineTitle.setVisibility(View.VISIBLE);
 		}
+	}
 
-		ViewTreeObserver vto = toolbar.getViewTreeObserver();
-		if (vto.isAlive()) {
-			vto.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-				@Override
-				public void onGlobalLayout() {
-					Toolbar t = getToolbar();
-					if (t == null) return;
-					int toolbarWidth = t.getWidth();
-					if (toolbarWidth == 0) return;
-					t.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+	private void updateOverflowMenu() {
+		if (getActivity() == null) return;
+		Menu m = overflowPopup.getMenu();
+		m.clear();
+		overflowPopup.inflate(R.menu.home_overflow);
+		announcements = m.findItem(R.id.announcements);
+		settings = m.findItem(R.id.settings);
+		hashtagsMenu = m.findItem(R.id.hashtags).getSubMenu();
+		listsMenu = m.findItem(R.id.lists).getSubMenu();
 
-					int toolbarFrameWidth = toolbarFrame.getWidth();
-					int padding = toolbarWidth - toolbarFrameWidth;
-					// toolbar frame goes from screen edge to beginning of right-aligned option buttons.
-					// centering button by applying the same space on the left
-					((FrameLayout) toolbarShowNewPostsBtn.getParent()).setPaddingRelative(padding, 0, 0, 0);
-					toolbarShowNewPostsBtn.setMaxWidth(toolbarWidth - padding * 2);
+		announcements.setVisible(!announcementsBadged);
+		announcementsAction.setVisible(announcementsBadged);
+		settings.setVisible(!settingsBadged);
+		settingsAction.setVisible(settingsBadged);
 
-					switcher.setPivotX(V.dp(28)); // padding + half of icon
-					switcher.setPivotY(switcher.getHeight() / 2f);
-					timelineTitle.setPivotX(timelineTitle.getWidth() - V.dp(8));
-					timelineTitle.setPivotY(timelineTitle.getHeight() / 2f);
-				}
-			});
+		UiUtils.enablePopupMenuIcons(getContext(), overflowPopup);
+
+		addListsToOverflowMenu();
+		addHashtagsToOverflowMenu();
+
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+			m.setGroupDividerEnabled(true);
 		}
 	}
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.home, menu);
-		announcements = menu.findItem(R.id.announcements);
 
-		new GetAnnouncements(false).setCallback(new Callback<>() {
-			@Override
-			public void onSuccess(List<Announcement> result) {
-				boolean hasUnread = result.stream().anyMatch(a -> !a.read);
-				announcements.setIcon(hasUnread ? R.drawable.ic_announcements_24_badged : R.drawable.ic_fluent_megaphone_24_regular);
-			}
+		menu.findItem(R.id.overflow).setActionView(overflowActionView);
+		announcementsAction = menu.findItem(R.id.announcements_action);
+		settingsAction = menu.findItem(R.id.settings_action);
 
-			@Override
-			public void onError(ErrorResponse error) {
-				error.showToast(getActivity());
-			}
-		}).exec(accountID);
+		updateOverflowMenu();
 	}
 
-	private <T> void addItemsToMap(List<T> addItems, Map<Integer, T> items) {
+	private <T> void updateList(List<T> addItems, Map<Integer, T> items) {
 		if (addItems.size() == 0) return;
 		for (int i = 0; i < addItems.size(); i++) items.put(View.generateViewId(), addItems.get(i));
-		updateSwitcherMenu();
+		updateOverflowMenu();
 	}
 
 	private void updateSwitcherMenu() {
-		Context context = getContext();
-		switcherPopup.getMenu().findItem(R.id.federated).setVisible(showFederatedTimeline);
+		Menu switcherMenu = switcherPopup.getMenu();
+		switcherMenu.clear();
+		timelinesByMenuItem.clear();
 
-		if (!listItems.isEmpty()) {
-			MenuItem listsItem = switcherPopup.getMenu().findItem(R.id.lists);
-			listsItem.setVisible(true);
-			SubMenu listsMenu = listsItem.getSubMenu();
-			listsMenu.clear();
-			listItems.forEach((id, list) -> {
-				MenuItem item = listsMenu.add(Menu.NONE, id, Menu.NONE, list.title);
-				item.setIcon(R.drawable.ic_fluent_people_list_24_regular);
-				UiUtils.insetPopupMenuIcon(context, item);
-			});
+		for (TimelineDefinition tl : timelines) {
+			int menuItemId = View.generateViewId();
+			timelinesByMenuItem.put(menuItemId, tl);
+			MenuItem item = switcherMenu.add(0, menuItemId, 0, tl.getTitle(getContext()));
+			item.setIcon(tl.getIcon().iconRes);
 		}
 
-		if (!hashtagsItems.isEmpty()) {
-			MenuItem hashtagsItem = switcherPopup.getMenu().findItem(R.id.followed_hashtags);
-			hashtagsItem.setVisible(true);
-			SubMenu hashtagsMenu = hashtagsItem.getSubMenu();
-			hashtagsMenu.clear();
-			hashtagsItems.forEach((id, hashtag) -> {
-				MenuItem item = hashtagsMenu.add(Menu.NONE, id, Menu.NONE, hashtag.name);
-				item.setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
-				UiUtils.insetPopupMenuIcon(context, item);
-			});
-		}
+		UiUtils.enablePopupMenuIcons(getContext(), switcherPopup);
 	}
 
 	private boolean onSwitcherItemSelected(MenuItem item) {
 		int id = item.getItemId();
-		ListTimeline list;
-		Hashtag hashtag;
-		if (id == R.id.home) {
-			navigateTo(0);
+
+		Bundle args = new Bundle();
+		args.putString("account", accountID);
+
+		if (id == R.id.menu_back) {
+			switcher.post(() -> switcherPopup.show());
 			return true;
-		} else if (id == R.id.local) {
-			navigateTo(1);
-			return true;
-		} else if (id == R.id.federated) {
-			navigateTo(2);
-			return true;
-		} else if (id == R.id.post_notifications) {
-			navigateTo(showFederatedTimeline ? 3 : 2);
-		} else if ((list = listItems.get(id)) != null) {
-			Bundle args = new Bundle();
-			args.putString("account", accountID);
-			args.putString("listID", list.id);
-			args.putString("listTitle", list.title);
-			args.putInt("repliesPolicy", list.repliesPolicy.ordinal());
-			Nav.go(getActivity(), ListTimelineFragment.class, args);
-		} else if ((hashtag = hashtagsItems.get(id)) != null) {
-			UiUtils.openHashtagTimeline(getActivity(), accountID, hashtag.name, hashtag.following);
 		}
+
+		TimelineDefinition tl = timelinesByMenuItem.get(id);
+		if (tl != null) {
+			for (int i = 0; i < timelines.length; i++) {
+				if (timelines[i] == tl) {
+					navigateTo(i);
+					return true;
+				}
+			}
+		}
+
 		return false;
 	}
-
 	private void navigateTo(int i) {
-		navigateTo(i, !GlobalUserPreferences.reduceMotion);
+		navigateTo(i, !reduceMotion);
 	}
 
 	private void navigateTo(int i, boolean smooth) {
@@ -374,38 +428,43 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	}
 
 	private void updateSwitcherIcon(int i) {
-		// todo: refactor when implementing pinned tabs
-		if (i == (showFederatedTimeline ? 3 : 2)) {
-			timelineIcon.setImageResource(R.drawable.ic_fluent_alert_24_regular);
-			timelineTitle.setText(R.string.sk_notify_posts);
-		} else {
-			timelineIcon.setImageResource(switch (i) {
-				default -> R.drawable.ic_fluent_home_24_regular;
-				case 1 -> R.drawable.ic_fluent_people_community_24_regular;
-				case 2 -> R.drawable.ic_fluent_earth_24_regular;
-			});
-			timelineTitle.setText(switch (i) {
-				default -> R.string.sk_timeline_home;
-				case 1 -> R.string.sk_timeline_local;
-				case 2 -> R.string.sk_timeline_federated;
-			});
-		}
+		timelineIcon.setImageResource(timelines[i].getIcon().iconRes);
+		timelineTitle.setText(timelines[i].getTitle(getContext()));
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		if (item.getItemId() == R.id.settings) Nav.go(getActivity(), SettingsFragment.class, args);
-		if (item.getItemId() == R.id.announcements) {
+		int id = item.getItemId();
+		ListTimeline list;
+		Hashtag hashtag;
+
+		if (item.getItemId() == R.id.menu_back) {
+			getToolbar().post(() -> overflowPopup.show());
+			return true;
+		} else if (id == R.id.settings || id == R.id.settings_action) {
+			Nav.go(getActivity(), SettingsFragment.class, args);
+		} else if (id == R.id.announcements || id == R.id.announcements_action) {
 			Nav.goForResult(getActivity(), AnnouncementsFragment.class, args, ANNOUNCEMENTS_RESULT, this);
+		} else if (id == R.id.edit_timelines) {
+			Nav.go(getActivity(), EditTimelinesFragment.class, args);
+		} else if ((list = listItems.get(id)) != null) {
+			args.putString("listID", list.id);
+			args.putString("listTitle", list.title);
+			if (list.repliesPolicy != null) args.putInt("repliesPolicy", list.repliesPolicy.ordinal());
+			Nav.go(getActivity(), ListTimelineFragment.class, args);
+		} else if ((hashtag = hashtagsItems.get(id)) != null) {
+			args.putString("hashtag", hashtag.name);
+			args.putBoolean("following", hashtag.following);
+			Nav.go(getActivity(), HashtagTimelineFragment.class, args);
 		}
 		return true;
 	}
 
 	@Override
 	public void scrollToTop(){
-		((ScrollableToTop) fragments.get(pager.getCurrentItem())).scrollToTop();
+		((ScrollableToTop) fragments[pager.getCurrentItem()]).scrollToTop();
 	}
 
 	public void hideNewPostsButton(){
@@ -426,7 +485,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 				ObjectAnimator.ofFloat(toolbarShowNewPostsBtn, View.SCALE_Y, .8f),
 				ObjectAnimator.ofFloat(collapsedChevron, View.ALPHA, 0f)
 		);
-		set.setDuration(GlobalUserPreferences.reduceMotion ? 0 : 300);
+		set.setDuration(reduceMotion ? 0 : 300);
 		set.setInterpolator(CubicBezierInterpolator.DEFAULT);
 		set.addListener(new AnimatorListenerAdapter(){
 			@Override
@@ -441,7 +500,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	}
 
 	public void showNewPostsButton(){
-		if(newPostsBtnShown || pager == null || pager.getCurrentItem() != 0)
+		if(newPostsBtnShown || pager == null || !timelines[pager.getCurrentItem()].equals(TimelineDefinition.HOME_TIMELINE))
 			return;
 		newPostsBtnShown=true;
 		if(currentNewPostsAnim!=null){
@@ -459,7 +518,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 				ObjectAnimator.ofFloat(toolbarShowNewPostsBtn, View.SCALE_Y, 1f),
 				ObjectAnimator.ofFloat(collapsedChevron, View.ALPHA, 1f)
 		);
-		set.setDuration(GlobalUserPreferences.reduceMotion ? 0 : 300);
+		set.setDuration(reduceMotion ? 0 : 300);
 		set.setInterpolator(CubicBezierInterpolator.DEFAULT);
 		set.addListener(new AnimatorListenerAdapter(){
 			@Override
@@ -484,15 +543,20 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	}
 
 	@Override
-	public void onFragmentResult(int reqCode, boolean noMoreUnread, Bundle result){
-		if (reqCode == ANNOUNCEMENTS_RESULT && noMoreUnread) {
-			announcements.setIcon(R.drawable.ic_fluent_megaphone_24_regular);
+	public void onFragmentResult(int reqCode, boolean success, Bundle result){
+		if (reqCode == ANNOUNCEMENTS_RESULT && success) {
+			announcementsBadged = false;
+			announcements.setVisible(true);
+			announcementsAction.setVisible(false);
 		}
 	}
 
 	private void updateUpdateState(GithubSelfUpdater.UpdateState state){
-		if(state!=GithubSelfUpdater.UpdateState.NO_UPDATE && state!=GithubSelfUpdater.UpdateState.CHECKING)
-			getToolbar().getMenu().findItem(R.id.settings).setIcon(R.drawable.ic_settings_24_badged);
+		if(state!=GithubSelfUpdater.UpdateState.NO_UPDATE && state!=GithubSelfUpdater.UpdateState.CHECKING) {
+			settingsBadged = true;
+			settingsAction.setVisible(true);
+			settings.setVisible(false);
+		}
 	}
 
 	@Subscribe
@@ -512,9 +576,24 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	@Override
 	public void onDestroyView(){
 		super.onDestroyView();
+		if (overflowPopup != null) {
+			overflowPopup.dismiss();
+			overflowPopup = null;
+		}
+		if (switcherPopup != null) {
+			switcherPopup.dismiss();
+			switcherPopup = null;
+		}
 		if(GithubSelfUpdater.needSelfUpdating()){
 			E.unregister(this);
 		}
+	}
+
+	@Override
+	protected void onShown() {
+		super.onShown();
+		Object pinnedTimelines = GlobalUserPreferences.pinnedTimelines.get(accountID);
+		if (pinnedTimelines != null && timelineDefinitions != pinnedTimelines) UiUtils.restartApp();
 	}
 
 	@Override
@@ -530,11 +609,59 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		outState.putInt("selectedTab", pager.getCurrentItem());
 	}
 
+	@Subscribe
+	public void onHashtagUpdatedEvent(HashtagUpdatedEvent event) {
+		handleListEvent(hashtagsItems, h -> h.name.equalsIgnoreCase(event.name), event.following, () -> {
+			Hashtag hashtag = new Hashtag();
+			hashtag.name = event.name;
+			hashtag.following = true;
+			return hashtag;
+		});
+	}
+
+	@Subscribe
+	public void onListDeletedEvent(ListDeletedEvent event) {
+		handleListEvent(listItems, l -> l.id.equals(event.id), false, null);
+	}
+
+	@Subscribe
+	public void onListUpdatedCreatedEvent(ListUpdatedCreatedEvent event) {
+		handleListEvent(listItems, l -> l.id.equals(event.id), true, () -> {
+			ListTimeline list = new ListTimeline();
+			list.id = event.id;
+			list.title = event.title;
+			list.repliesPolicy = event.repliesPolicy;
+			return list;
+		});
+	}
+
+	private <T> void handleListEvent(
+			Map<Integer, T> existingThings,
+			Predicate<T> matchExisting,
+			boolean shouldBeInList,
+			Supplier<T> makeNewThing
+	) {
+		Optional<Map.Entry<Integer, T>> existingThing = existingThings.entrySet().stream()
+				.filter(e -> matchExisting.test(e.getValue())).findFirst();
+		if (shouldBeInList) {
+			existingThings.put(existingThing.isPresent()
+					? existingThing.get().getKey() : View.generateViewId(), makeNewThing.get());
+			updateOverflowMenu();
+		} else if (existingThing.isPresent() && !shouldBeInList) {
+			existingThings.remove(existingThing.get().getKey());
+			updateOverflowMenu();
+		}
+	}
+
+	public Collection<Hashtag> getHashtags() {
+		return hashtagsItems.values();
+	}
+
 	private class HomePagerAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
 		@NonNull
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-			FrameLayout tabView = tabViews.get(viewType % getItemCount());
+			FrameLayout tabView = tabViews[viewType % getItemCount()];
 			((ViewGroup)tabView.getParent()).removeView(tabView);
 			tabView.setVisibility(View.VISIBLE);
 			return new SimpleViewHolder(tabView);
@@ -545,7 +672,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 		@Override
 		public int getItemCount(){
-			return fragments.size();
+			return count;
 		}
 
 		@Override

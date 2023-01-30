@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_disable_dividers">Desabilitar divisores de toots</string>
+    <string name="mo_relocate_publish_button">Relocalizar botão de postagem</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Ocultar compositor ao rolar a tela</string>
+    <string name="mo_welcome_text">Para começar, por favor, digite abaixo o nome de domínio de sua instância de origem.</string>
+    <string name="mo_personal_note">Adicionar nota sobre este perfil</string>
+    <string name="mo_personal_note_confirm">Confirmar mudanças na nota</string>
+    <string name="mo_personal_note_update_failed">Falha em salvar nota</string>
+    <string name="mo_settings_contribute">Contribua para o Moshidon</string>
+    <string name="mo_update_available">Moshidon %s está pronto para baixar.</string>
+    <string name="mo_update_ready">Moshidon %s está baixado e pronto para instalar.</string>
+    <string name="mo_no_image_desc_title">Nenhuma descrição de imagem</string>
+    <string name="mo_no_image_desc">As imagens incluídas não possuem descrição. Por favor considere adicionar uma, para permitir que as pessoas visualmente deficientes participem.</string>
+    <string name="mo_emoji_recent">Usado recentemente</string>
+    <string name="mo_clear_recent_emoji">Limpar emojis usados recentemente</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Desabilite Relocalizar botão de postagem para permitir modificações</string>
+    <string name="mo_fab_compose">Compor</string>
+    <string name="mo_sending_error">Erro ao publicar</string>
 </resources>

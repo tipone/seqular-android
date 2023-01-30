@@ -145,8 +145,9 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			}
 
 			Instance instanceInfo = AccountSessionManager.getInstance().getInstanceInfo(item.session.domain);
-			boolean translateEnabled = !item.disableTranslate && instanceInfo.v2 != null &&
-					instanceInfo.v2.configuration.translation != null && instanceInfo.v2.configuration.translation.enabled;
+			boolean translateEnabled = !item.disableTranslate && instanceInfo != null &&
+					instanceInfo.v2 != null && instanceInfo.v2.configuration.translation != null &&
+					instanceInfo.v2.configuration.translation.enabled;
 
 			translateWrap.setVisibility(translateEnabled &&
 					!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
@@ -165,6 +166,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 						public void onSuccess(TranslatedStatus translatedStatus) {
 							item.translation = translatedStatus;
 							item.translated = true;
+							if (item.parentFragment.getActivity() == null) return;
 							translateProgress.setVisibility(View.GONE);
 							translateButton.setClickable(true);
 							translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();

@@ -50,6 +50,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public Card card;
 	public String language;
 	public String text;
+	public boolean localOnly;
 
 	public boolean favourited;
 	public boolean reblogged;
@@ -83,6 +84,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 			reblog.postprocess();
 
 		spoilerRevealed=GlobalUserPreferences.alwaysExpandContentWarnings || !sensitive;
+		if (visibility.equals(StatusPrivacy.LOCAL)) localOnly = true;
 	}
 
 	@Override
@@ -143,5 +145,19 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		if(strippedText==null)
 			strippedText=HtmlParser.strip(content);
 		return strippedText;
+	}
+
+	public static Status ofFake(String id, String text, Instant createdAt) {
+		Status s = new Status();
+		s.id = id;
+		s.mediaAttachments = List.of();
+		s.createdAt = createdAt;
+		s.content = s.text = text;
+		s.spoilerText = "";
+		s.visibility = StatusPrivacy.PUBLIC;
+		s.mentions = List.of();
+		s.tags = List.of();
+		s.emojis = List.of();
+		return s;
 	}
 }
