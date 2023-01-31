@@ -51,17 +51,13 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
             filteredItems = item.filteredItems;
         }
 
-        public void hide(WarningFilteredStatusDisplayItem item){
-            filteredItems = item.filteredItems;
-        }
-
         @Override
         public void onClick(){
-            this.itemView.setVisibility(View.GONE);
-            ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
-            params.height = 0;
-            params.width = 0;
-            this.itemView.setLayoutParams(params);
+//            this.itemView.setVisibility(View.GONE);
+//            ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
+//            params.height = 0;
+//            params.width = 0;
+//            this.itemView.setLayoutParams(params);
             item.parentFragment.onWarningClick(this);
         }
     }

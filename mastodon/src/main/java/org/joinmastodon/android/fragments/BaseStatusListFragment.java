@@ -566,6 +566,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warningItem){
 		int i = warningItem.getAbsoluteAdapterPosition();
+		displayItems.remove(warningItem.getAbsoluteAdapterPosition());
 		for(StatusDisplayItem item:warningItem.filteredItems){
 			i++;
 			displayItems.add(i, item);
