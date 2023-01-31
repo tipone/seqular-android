@@ -93,6 +93,9 @@ public abstract class StatusDisplayItem{
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate){
 		String parentID=parentObject.getID();
 		ArrayList<StatusDisplayItem> items=new ArrayList<>();
+
+		ArrayList<StatusDisplayItem> filtered=new ArrayList<>();
+
 		Status statusForContent=status.getContentStatus();
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
@@ -184,7 +187,8 @@ public abstract class StatusDisplayItem{
 		}
 
 		if(!statusForContent.filterRevealed){
-			items.add(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent));
+			filtered.add(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items));
+			return filtered;
 		}
 
 		return items;

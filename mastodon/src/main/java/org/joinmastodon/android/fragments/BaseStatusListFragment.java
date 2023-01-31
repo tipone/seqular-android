@@ -521,10 +521,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public void onRevealFilteredClick(WarningFilteredStatusDisplayItem.Holder holder){
 		Status status=holder.getItem().status;
-		revealFiltered(status, holder.getItemID());
+//		revealFiltered(status, holder.getItemID());
 	}
 
-	protected void revealFiltered(Status status, String itemID){
+	protected void revealFiltered(Status status, ArrayList<StatusDisplayItem> showedItems){
 		status.filterRevealed=true;
 
 	}
@@ -565,6 +565,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warningItem){
+		int i = warningItem.getAbsoluteAdapterPosition();
+		for(StatusDisplayItem item:warningItem.filteredItems){
+			i++;
+			displayItems.add(i, item);
+		}
 		adapter.notifyItemChanged(warningItem.getAbsoluteAdapterPosition());
 	}
 

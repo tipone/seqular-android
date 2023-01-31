@@ -13,14 +13,18 @@ import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.SawtoothTearDrawable;
 
+import java.util.ArrayList;
+
 // Mind the gap!
 public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
     public boolean loading;
     public final Status status;
+    public ArrayList<StatusDisplayItem> filteredItems;
 
-    public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status){
+    public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status, ArrayList<StatusDisplayItem> items){
         super(parentID, parentFragment);
         this.status=status;
+        this.filteredItems = items;
     }
 
     @Override
@@ -32,6 +36,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
         public final View warningWrap;
         public final ProgressBar progress;
         public final TextView text;
+        public ArrayList<StatusDisplayItem> filteredItems;
 
         public Holder(Context context, ViewGroup parent){
             super(context, R.layout.display_item_warning, parent);
@@ -43,7 +48,11 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 
         @Override
         public void onBind(WarningFilteredStatusDisplayItem item){
+            filteredItems = item.filteredItems;
+        }
 
+        public void hide(WarningFilteredStatusDisplayItem item){
+            filteredItems = item.filteredItems;
         }
 
         @Override

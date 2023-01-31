@@ -85,14 +85,6 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 				didClear=false;
 			}
 
-			if(!item.status.filterRevealed){
-				this.itemView.setVisibility(View.GONE);
-				ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
-				params.height = 0;
-				params.width = 0;
-				this.itemView.setLayoutParams(params);
-//					item.parentFragment.notifyItemsChanged(this.getAbsoluteAdapterPosition());
-			}
 		}
 
 		@Override
