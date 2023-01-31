@@ -1,0 +1,4 @@
+Release 83 ger några mindre förbättringar, såsom:
+- Åtgärda kraschproblem när du klickar på omnämnanden
+- Omarbetar botikonen
+- Att lägga till en påminnelse om att lägga till en bildbeskrivning om du lägger upp en bilaga gör att synskadade kan delta bättre. Tack @FineFindus!

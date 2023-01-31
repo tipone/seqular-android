@@ -1,0 +1,5 @@
+Nya saker för 87:
+- En ny hemlayout från Megalodon, med möjligheten att växla mellan dem är WIP
+- Bättre hantering av aviseringar
+- En ny omarbetad bot-ikon
+– Ett gäng mindre förbättringar

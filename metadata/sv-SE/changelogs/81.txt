@@ -1,0 +1,2 @@
+Åtgärdar publiceringsknappen som klipps bort på låga DPI:er eller på längre språk. Det är nu en ikon när den är nåbar!
+Mindre korrigeringar av förhandsgranskningen av ändringsloggen
