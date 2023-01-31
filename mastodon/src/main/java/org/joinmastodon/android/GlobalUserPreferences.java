@@ -39,6 +39,7 @@ public class GlobalUserPreferences{
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
 	public static boolean enablePreReleases;
+	public static boolean prefixRepliesWithRe;
 	public static boolean bottomEncoding;
 	public static String publishButtonText;
 	public static ThemePreference theme;
@@ -84,6 +85,7 @@ public class GlobalUserPreferences{
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
 		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
+		prefixRepliesWithRe=prefs.getBoolean("prefixRepliesWithRe", false);
 		bottomEncoding=prefs.getBoolean("bottomEncoding", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
@@ -122,6 +124,7 @@ public class GlobalUserPreferences{
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
 				.putBoolean("enablePreReleases", enablePreReleases)
+				.putBoolean("prefixRepliesWithRe", prefixRepliesWithRe)
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putInt("theme", theme.ordinal())
