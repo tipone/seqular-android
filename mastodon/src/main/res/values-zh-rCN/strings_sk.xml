@@ -81,7 +81,7 @@
     <string name="sk_clear_all_notifications">清除所有通知</string>
     <string name="sk_clear_all_notifications_confirm_action">删除所有</string>
     <string name="sk_clear_all_notifications_confirm">您确定要清除所有通知吗？</string>
-    <string name="sk_loading_fediverse_resource_title">在 Fediverse 上查找它</string>
+    <string name="sk_loading_fediverse_resource_title">在联邦宇宙上查找它</string>
     <string name="sk_undo_reblog">撤销转发</string>
     <string name="sk_reblog_with_visibility">转发可见性</string>
     <string name="sk_quote_post">关于这个嘟文</string>
