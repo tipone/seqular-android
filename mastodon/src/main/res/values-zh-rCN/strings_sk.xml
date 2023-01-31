@@ -245,10 +245,10 @@
     <string name="sk_settings_support_local_only">服务器支持仅本地发布</string>
     <string name="sk_settings_local_only_explanation">您的家庭实例必须支持仅本地发布才能正常工作。大多数 Mastodon 的修改版本都可以，但 Mastodon 没有。</string>
     <string name="sk_settings_glitch_instance">Glitch 本地模式</string>
-    <string name="sk_settings_glitch_mode_explanation">如果您的家庭实例在 Glitch 上运行，请启用此功能。Hometown 或 Akkoma 不需要。</string>
+    <string name="sk_settings_glitch_mode_explanation">如果您的主实例在 Glitch 上运行，请启用此功能。Hometown 或 Akkoma 不需要。</string>
     <string name="sk_sign_ups">用户注册</string>
     <string name="sk_new_reports">新报告</string>
-    <string name="sk_settings_see_new_posts_button">“查看新都文”按钮</string>
+    <string name="sk_settings_see_new_posts_button">“查看新嘟文”按钮</string>
     <string name="sk_settings_server_version">服务器版本: %s</string>
     <string name="sk_notify_poll_results">投票结果</string>
 </resources>
