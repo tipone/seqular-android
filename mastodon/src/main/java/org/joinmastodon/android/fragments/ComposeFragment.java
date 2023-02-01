@@ -6,7 +6,6 @@ import static org.joinmastodon.android.api.requests.statuses.CreateStatus.getDra
 import static org.joinmastodon.android.ui.utils.UiUtils.isPhotoPickerAvailable;
 import static org.joinmastodon.android.utils.MastodonLanguage.allLanguages;
 import static org.joinmastodon.android.utils.MastodonLanguage.defaultRecentLanguages;
-import static android.os.ext.SdkExtensions.getExtensionVersion;
 
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
@@ -118,7 +117,7 @@ import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.ui.views.ReorderableLinearLayout;
 import org.joinmastodon.android.ui.views.SizeListenerLinearLayout;
 import org.joinmastodon.android.utils.MastodonLanguage;
-import org.joinmastodon.android.utils.StringEncoder;
+import org.joinmastodon.android.utils.StatusTextEncoder;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 
@@ -880,11 +879,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		btn.setOnLongClickListener(v->{
 			btn.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-			if (!GlobalUserPreferences.bottomEncoding) {
-				GlobalUserPreferences.bottomEncoding = true;
-				GlobalUserPreferences.save();
-				addBottomLanguage(allLanguagesMenu);
-			}
+			if (!GlobalUserPreferences.bottomEncoding) addBottomLanguage(allLanguagesMenu);
 			return false;
 		});
 
@@ -902,7 +897,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void addBottomLanguage(Menu menu) {
-		menu.add(0, allLanguages.size(), Menu.NONE, "bottom (\uD83E\uDD7A\uD83D\uDC49\uD83D\uDC48)");
+		if (menu.findItem(allLanguages.size()) == null) {
+			menu.add(0, allLanguages.size(), Menu.NONE, "bottom (\uD83E\uDD7A\uD83D\uDC49\uD83D\uDC48)");
+		}
 	}
 
 	@Override
@@ -1030,7 +1027,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		String text=mainEditText.getText().toString();
 		CreateStatus.Request req=new CreateStatus.Request();
 		if ("bottom".equals(encoding)) {
-			text = new StringEncoder(Bottom::encode).encode(text);
+			text = new StatusTextEncoder(Bottom::encode).encode(text);
 			req.spoilerText = "bottom-encoded emoji spam";
 		}
 		if (localOnly &&
@@ -1173,9 +1170,15 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if (replyTo == null) {
 			List<String> newRecentLanguages = new ArrayList<>(Optional.ofNullable(recentLanguages.get(accountID)).orElse(defaultRecentLanguages));
 			newRecentLanguages.remove(language);
-			newRecentLanguages.remove(encoding);
 			newRecentLanguages.add(0, language);
-			newRecentLanguages.add(0, encoding);
+			if (encoding != null) {
+				newRecentLanguages.remove(encoding);
+				newRecentLanguages.add(0, encoding);
+			}
+			if ("bottom".equals(encoding) && !GlobalUserPreferences.bottomEncoding) {
+				GlobalUserPreferences.bottomEncoding = true;
+				GlobalUserPreferences.save();
+			}
 			recentLanguages.put(accountID, newRecentLanguages.stream().limit(4).collect(Collectors.toList()));
 			GlobalUserPreferences.save();
 		}

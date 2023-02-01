@@ -28,7 +28,7 @@ import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
-import org.joinmastodon.android.utils.StringEncoder;
+import org.joinmastodon.android.utils.StatusTextEncoder;
 
 import java.util.regex.Pattern;
 
@@ -166,7 +166,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					if (isBottomText) {
 						try {
 							item.translation = new TranslatedStatus();
-							item.translation.content = new StringEncoder(Bottom::decode).decode(item.status.getStrippedText(), BOTTOM_TEXT_PATTERN);
+							item.translation.content = new StatusTextEncoder(Bottom::decode).decode(item.status.getStrippedText(), BOTTOM_TEXT_PATTERN);
 							item.translated = true;
 						} catch (TranslationError err) {
 							item.translation = null;

@@ -1,5 +1,7 @@
 package org.joinmastodon.android.utils;
 
+import android.text.TextUtils;
+
 import org.joinmastodon.android.fragments.ComposeFragment;
 
 import java.util.function.Function;
@@ -8,10 +10,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 // not a good class
-public class StringEncoder {
+public class StatusTextEncoder {
 	private final Function<String, String> fn;
 
-	public StringEncoder(Function<String, String> fn) {
+	// see ComposeFragment.HIGHLIGHT_PATTERN
+	private final static Pattern EXCLUDE_PATTERN = Pattern.compile("\\s*(?:@([a-zA-Z0-9_]+)(@[a-zA-Z0-9_.-]+)?|#([^\\s.]+))\\s*");
+
+	public StatusTextEncoder(Function<String, String> fn) {
 		this.fn = fn;
 	}
 
@@ -19,7 +24,7 @@ public class StringEncoder {
 	public String encode(String content) {
 		StringBuilder encodedString = new StringBuilder();
 		// matches mentions and hashtags
-		Matcher m = ComposeFragment.HIGHLIGHT_PATTERN.matcher(content);
+		Matcher m = EXCLUDE_PATTERN.matcher(content);
 		int previousEnd = 0;
 		while (m.find()) {
 			MatchResult res = m.toMatchResult();
