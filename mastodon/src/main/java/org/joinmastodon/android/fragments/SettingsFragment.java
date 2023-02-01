@@ -203,7 +203,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_prefix_replies_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
+		items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
 			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
 			GlobalUserPreferences.save();
 		}));
