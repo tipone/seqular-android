@@ -62,7 +62,6 @@ public class PhotoStatusDisplayItem extends ImageStatusDisplayItem{
 			altTextButton.setOnClickListener(this::onShowHideClick);
 			noAltTextButton.setOnClickListener(this::onShowHideClick);
 			altTextClose.setOnClickListener(this::onShowHideClick);
-			altText.setTextIsSelectable(true);
 //			altTextScroller.setNestedScrollingEnabled(true);
 		}
 
