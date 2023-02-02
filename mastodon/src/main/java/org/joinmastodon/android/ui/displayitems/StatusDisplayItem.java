@@ -104,7 +104,10 @@ public abstract class StatusDisplayItem{
 		List<Filter> filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(Filter.FilterContext.HOME)).collect(Collectors.toList());
 		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
 
-		statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
+		if(!statusForContent.filterRevealed){
+			statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
+		}
+
 
 		if(status.reblog!=null){
 			boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);

@@ -56,6 +56,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 		Status status=getContentStatusByID(id);
 		if(status==null)
 			return;
+		status.filterRevealed = true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putParcelable("status", Parcels.wrap(status));
