@@ -114,8 +114,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(TextStatusDisplayItem item){
 			text.setText(item.translated
-							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
-							: item.text);
+					? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
+					: item.text);
 			text.setTextIsSelectable(item.textSelectable);
 			spoilerTitleInline.setTextIsSelectable(item.textSelectable);
 			text.setInvalidateOnEveryFrame(false);

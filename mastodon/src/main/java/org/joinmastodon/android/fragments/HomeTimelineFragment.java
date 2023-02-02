@@ -45,6 +45,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 	}
 
 	private List<Status> filterPosts(List<Status> items) {
+		// This is the function I must use to solve the filters thing for real
 		return items.stream().filter(i ->
 				(GlobalUserPreferences.showReplies || i.inReplyToId == null) &&
 				(GlobalUserPreferences.showBoosts || i.reblog == null)
