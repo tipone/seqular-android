@@ -514,26 +514,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		updateImagesSpoilerState(status, itemID);
 	}
 
-//	public void onRevealFilteredClick(TextStatusDisplayItem.Holder holder){
-//		Status status=holder.getItem().status;
-//		revealFiltered(status, holder.getItemID());
-//	}
-
-	public void onRevealFilteredClick(WarningFilteredStatusDisplayItem.Holder holder){
-		Status status=holder.getItem().status;
-//		revealFiltered(status, holder.getItemID());
-	}
-
-	protected void revealFiltered(Status status, ArrayList<StatusDisplayItem> showedItems){
-		status.filterRevealed=true;
-
-	}
-
-//	public void notifyItemsChanged(int adapterPosition){
-//		adapter.notifyItemChanged(adapterPosition);
-//	}
-
-
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder){
 		Status status=holder.getItem().status;
 		status.spoilerRevealed=!status.spoilerRevealed;
