@@ -19,4 +19,5 @@
     <string name="mo_sending_error">Error al publicar</string>
     <string name="mo_settings_contribute">Contribuir en Moshidon</string>
     <string name="mo_no_image_desc">Las imágenes incluidas no tienen descripción. Por favor, piénsate añadir una para permitir a las personas con discapacidad participar.</string>
+    <string name="mo_filtered">Filtrado: %s</string>
 </resources>
