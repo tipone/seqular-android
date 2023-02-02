@@ -21,6 +21,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.events.FinishReportFragmentsEvent;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.displayitems.AudioStatusDisplayItem;
@@ -238,7 +239,7 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null, Filter.FilterContext.HOME);
 		for(StatusDisplayItem item:items){
 			if(item instanceof ImageStatusDisplayItem isdi){
 				isdi.horizontalInset=V.dp(40+32);

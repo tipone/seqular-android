@@ -13,6 +13,7 @@ import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.GetScheduledStatuses;
 import org.joinmastodon.android.events.ScheduledStatusCreatedEvent;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
@@ -69,7 +70,7 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(ScheduledStatus s) {
-		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, false, false, null, true);
+		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, false, false, null, true, Filter.FilterContext.HOME);
 	}
 
 	@Override
