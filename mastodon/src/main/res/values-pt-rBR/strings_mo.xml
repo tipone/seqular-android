@@ -18,4 +18,6 @@
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Desabilite Relocalizar botão de postagem para permitir modificações</string>
     <string name="mo_fab_compose">Compor</string>
     <string name="mo_sending_error">Erro ao publicar</string>
+    <string name="mo_poll_option_add">Adicionar nova opção de enquete</string>
+    <string name="mo_filtered">Filtrado: %s</string>
 </resources>
