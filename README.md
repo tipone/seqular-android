@@ -14,6 +14,8 @@
 
 ### **Material you theme support on Android 12+ devices!**
 
+### **Show posts filtered with a warning!**
+
 ### **Color themes**
 
 **Allows you to change theme within the app. Supports Purple, pink, green, blue, orange and yellow!**
