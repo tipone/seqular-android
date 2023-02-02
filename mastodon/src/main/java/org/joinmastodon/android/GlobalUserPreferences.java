@@ -54,8 +54,9 @@ public class GlobalUserPreferences{
 
 	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
 	public static Map<String, Integer> recentEmojis;
+    public static boolean enablePreReleases;
 
-	private static SharedPreferences getPrefs(){
+    private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
 
@@ -89,6 +90,7 @@ public class GlobalUserPreferences{
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
 		showAltIndicator =prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator =prefs.getBoolean("showNoAltIndicator", true);
+		enablePreReleases =prefs.getBoolean("enablePreReleases", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
@@ -133,6 +135,7 @@ public class GlobalUserPreferences{
 				.putBoolean("disableAltTextReminder", disableAltTextReminder)
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
+				.putBoolean("enablePreReleases", enablePreReleases)
 				.putString("publishButtonText", publishButtonText)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
