@@ -49,15 +49,11 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
         @Override
         public void onBind(WarningFilteredStatusDisplayItem item){
             filteredItems = item.filteredItems;
+            text.setText(item.parentFragment.getString(R.string.mo_filtered, item.status.filtered.get(item.status.filtered.size() -1).filter.title));
         }
 
         @Override
         public void onClick(){
-//            this.itemView.setVisibility(View.GONE);
-//            ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
-//            params.height = 0;
-//            params.width = 0;
-//            this.itemView.setLayoutParams(params);
             item.parentFragment.onWarningClick(this);
         }
     }
