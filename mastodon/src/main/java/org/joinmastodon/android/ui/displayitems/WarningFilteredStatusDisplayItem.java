@@ -3,6 +3,7 @@ package org.joinmastodon.android.ui.displayitems;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -34,14 +35,15 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 
     public static class Holder extends StatusDisplayItem.Holder<WarningFilteredStatusDisplayItem>{
         public final View warningWrap;
-        public final ProgressBar progress;
+        public final Button showBtn;
         public final TextView text;
         public ArrayList<StatusDisplayItem> filteredItems;
 
         public Holder(Context context, ViewGroup parent){
             super(context, R.layout.display_item_warning, parent);
             warningWrap=findViewById(R.id.warning_wrap);
-            progress=findViewById(R.id.progress);
+            showBtn=findViewById(R.id.reveal_btn);
+            showBtn.setOnClickListener(i -> item.parentFragment.onWarningClick(this));
             text=findViewById(R.id.text);
 //            itemView.setOnClickListener(v->item.parentFragment.onRevealFilteredClick(this));
         }
@@ -54,7 +56,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 
         @Override
         public void onClick(){
-            item.parentFragment.onWarningClick(this);
+
         }
     }
 }
