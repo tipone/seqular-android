@@ -73,6 +73,7 @@ public abstract class ImageStatusDisplayItem extends StatusDisplayItem{
 			photo.setImageDrawable(crossfadeDrawable);
 			photo.setContentDescription(TextUtils.isEmpty(item.attachment.description) ? item.parentFragment.getString(R.string.media_no_description) : item.attachment.description);
 			didClear=false;
+
 		}
 
 		@Override

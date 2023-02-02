@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -19,6 +20,7 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
@@ -26,6 +28,7 @@ import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -78,6 +81,7 @@ public abstract class StatusDisplayItem{
 			case ACCOUNT -> new AccountStatusDisplayItem.Holder(activity, parent);
 			case HASHTAG -> new HashtagStatusDisplayItem.Holder(activity, parent);
 			case GAP -> new GapStatusDisplayItem.Holder(activity, parent);
+			case WARNING -> new WarningFilteredStatusDisplayItem.Holder(activity, parent);
 			case EXTENDED_FOOTER -> new ExtendedFooterStatusDisplayItem.Holder(activity, parent);
 		};
 	}
@@ -89,10 +93,18 @@ public abstract class StatusDisplayItem{
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate){
 		String parentID=parentObject.getID();
 		ArrayList<StatusDisplayItem> items=new ArrayList<>();
+
+		ArrayList<StatusDisplayItem> filtered=new ArrayList<>();
+
 		Status statusForContent=status.getContentStatus();
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
+
+		List<Filter> filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(Filter.FilterContext.HOME)).collect(Collectors.toList());
+		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
+
+		statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
 
 		if(status.reblog!=null){
 			boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
@@ -126,11 +138,12 @@ public abstract class StatusDisplayItem{
 							}
 					)));
 		}
+
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
-		if(!TextUtils.isEmpty(statusForContent.content))
+		if(!TextUtils.isEmpty(statusForContent.content)){
 			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
-		else
+		} else
 			header.needBottomPadding=true;
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
@@ -162,14 +175,22 @@ public abstract class StatusDisplayItem{
 		}
 		if(addFooter){
 			items.add(new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID));
-			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
+			if(status.hasGapAfter && !(fragment instanceof ThreadFragment)){
 				items.add(new GapStatusDisplayItem(parentID, fragment));
+			}
 		}
+
 		int i=1;
 		for(StatusDisplayItem item:items){
 			item.inset=inset;
 			item.index=i++;
 		}
+
+		if(!statusForContent.filterRevealed){
+			filtered.add(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items));
+			return filtered;
+		}
+
 		return items;
 	}
 
@@ -196,6 +217,7 @@ public abstract class StatusDisplayItem{
 		ACCOUNT,
 		HASHTAG,
 		GAP,
+		WARNING,
 		EXTENDED_FOOTER
 	}
 

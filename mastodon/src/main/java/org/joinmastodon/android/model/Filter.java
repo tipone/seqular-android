@@ -18,6 +18,8 @@ public class Filter extends BaseModel{
 	@RequiredField
 	public String id;
 	@RequiredField
+	public String title;
+	@RequiredField
 	public String phrase;
 	public transient EnumSet<FilterContext> context=EnumSet.noneOf(FilterContext.class);
 	public Instant expiresAt;
@@ -61,6 +63,7 @@ public class Filter extends BaseModel{
 	public String toString(){
 		return "Filter{"+
 				"id='"+id+'\''+
+				", title='"+title+'\''+
 				", phrase='"+phrase+'\''+
 				", context="+context+
 				", expiresAt="+expiresAt+

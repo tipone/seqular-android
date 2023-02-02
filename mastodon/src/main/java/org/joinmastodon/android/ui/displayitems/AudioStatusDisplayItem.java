@@ -105,6 +105,7 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 			}else{
 				seekBar.setEnabled(false);
 			}
+
 		}
 
 		private void onPlayPauseClick(View v){

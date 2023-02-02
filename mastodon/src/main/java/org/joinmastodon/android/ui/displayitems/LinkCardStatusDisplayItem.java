@@ -84,6 +84,7 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 				photo.setImageDrawable(crossfadeDrawable);
 				didClear=false;
 			}
+
 		}
 
 		@Override

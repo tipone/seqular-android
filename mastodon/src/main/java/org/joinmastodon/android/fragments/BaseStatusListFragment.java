@@ -42,6 +42,7 @@ import org.joinmastodon.android.ui.displayitems.PollFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollOptionStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -513,6 +514,26 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		updateImagesSpoilerState(status, itemID);
 	}
 
+//	public void onRevealFilteredClick(TextStatusDisplayItem.Holder holder){
+//		Status status=holder.getItem().status;
+//		revealFiltered(status, holder.getItemID());
+//	}
+
+	public void onRevealFilteredClick(WarningFilteredStatusDisplayItem.Holder holder){
+		Status status=holder.getItem().status;
+//		revealFiltered(status, holder.getItemID());
+	}
+
+	protected void revealFiltered(Status status, ArrayList<StatusDisplayItem> showedItems){
+		status.filterRevealed=true;
+
+	}
+
+//	public void notifyItemsChanged(int adapterPosition){
+//		adapter.notifyItemChanged(adapterPosition);
+//	}
+
+
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder){
 		Status status=holder.getItem().status;
 		status.spoilerRevealed=!status.spoilerRevealed;
@@ -542,6 +563,16 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
+
+	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warningItem){
+		int i = warningItem.getAbsoluteAdapterPosition();
+		displayItems.remove(warningItem.getAbsoluteAdapterPosition());
+		for(StatusDisplayItem item:warningItem.filteredItems){
+			displayItems.add(i, item);
+			i++;
+		}
+		adapter.notifyItemChanged(warningItem.getAbsoluteAdapterPosition());
+	}
 
 	public String getAccountID(){
 		return accountID;
