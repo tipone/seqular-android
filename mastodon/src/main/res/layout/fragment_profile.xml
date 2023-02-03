@@ -221,7 +221,7 @@
 						android:layout_height="wrap_content"
 						android:paddingTop="4dp" />
 
-					<LinearLayout
+					<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
 						android:id="@+id/profile_counters"
 						android:background="?colorBackgroundLightest"
 						android:layout_below="@id/metadata"
@@ -312,7 +312,7 @@
 								android:ellipsize="middle"
 								tools:text="followers"/>
 						</LinearLayout>
-					</LinearLayout>
+					</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
 
 				</RelativeLayout>
 
