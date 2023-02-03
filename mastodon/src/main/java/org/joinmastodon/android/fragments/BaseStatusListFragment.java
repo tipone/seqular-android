@@ -511,6 +511,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		displayItems.addAll(startPos, warning.filteredItems);
 		adapter.notifyItemRangeInserted(startPos, warning.filteredItems.size() - 1);
 		if (startPos == 0) scrollToTop();
+		warning.getItem().status.filterRevealed = true;
 	}
 
 	public String getAccountID(){
