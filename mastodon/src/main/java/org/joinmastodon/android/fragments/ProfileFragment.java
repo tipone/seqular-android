@@ -849,6 +849,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 //		aboutFragment.enterEditMode(account.source.fields);
 
+		V.setVisibilityAnimated(fab, View.GONE);
 		metadataListData=account.source.fields;
 		adapter.notifyDataSetChanged();
 		dragHelper.attachToRecyclerView(list);
@@ -891,6 +892,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
 		imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
+		V.setVisibilityAnimated(fab, View.VISIBLE);
 		bindHeaderView();
 	}
 
