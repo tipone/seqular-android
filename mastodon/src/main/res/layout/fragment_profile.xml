@@ -303,8 +303,14 @@
 								android:ellipsize="middle"
 								tools:text="followers"/>
 						</LinearLayout>
-
 					</LinearLayout>
+
+					<me.grishka.appkit.views.UsableRecyclerView
+						android:id="@+id/metadata"
+						android:background="?colorBackgroundLightest"
+						android:layout_below="@id/profile_counters"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content" />
 
 				</RelativeLayout>
 
