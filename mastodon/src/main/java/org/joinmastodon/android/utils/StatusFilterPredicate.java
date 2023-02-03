@@ -39,7 +39,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		return true;
 	}
 
-	public boolean testWithWarning(Status status) {
+	public boolean testWithWarning(Status status, Filter.FilterContext filterContext) {
 		if(status.filtered!=null){
 			if (status.filtered.isEmpty()){
 				return true;
@@ -47,7 +47,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 			boolean matches=status.filtered.stream()
 					.map(filterResult->filterResult.filter)
 					.filter(filter->filter.expiresAt==null||filter.expiresAt.isAfter(Instant.now()))
-					.anyMatch(filter->filter.filterAction==Filter.FilterAction.WARN);
+					.anyMatch(filter->filter.filterAction==Filter.FilterAction.WARN && filter.context.contains(filterContext));
 			return !matches;
 		}
 		for(Filter filter:filters){
