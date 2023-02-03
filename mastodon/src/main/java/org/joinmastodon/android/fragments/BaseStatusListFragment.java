@@ -40,6 +40,7 @@ import org.joinmastodon.android.ui.displayitems.PollFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollOptionStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -503,6 +504,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
+
+	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
+		int startPos = warning.getAbsoluteAdapterPosition();
+		displayItems.remove(startPos);
+		displayItems.addAll(startPos, warning.filteredItems);
+		adapter.notifyItemRangeInserted(startPos, warning.filteredItems.size() - 1);
+		if (startPos == 0) scrollToTop();
+	}
 
 	public String getAccountID(){
 		return accountID;
