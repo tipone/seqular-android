@@ -213,14 +213,22 @@
 						android:layout_marginTop="16dp"
 						android:background="?attr/colorPollVoted"/>
 
-					<LinearLayout
-						android:id="@+id/profile_counters"
+					<me.grishka.appkit.views.UsableRecyclerView
+						android:id="@+id/metadata"
 						android:background="?colorBackgroundLightest"
 						android:layout_below="@id/border_top"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:paddingHorizontal="8dp"
-						android:paddingTop="8dp">
+						android:paddingTop="4dp" />
+
+					<LinearLayout
+						android:id="@+id/profile_counters"
+						android:background="?colorBackgroundLightest"
+						android:layout_below="@id/metadata"
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:paddingTop="8dp"
+						android:paddingHorizontal="8dp">
 
 						<LinearLayout
 							android:id="@+id/posts_btn"
@@ -306,14 +314,6 @@
 						</LinearLayout>
 					</LinearLayout>
 
-					<me.grishka.appkit.views.UsableRecyclerView
-						android:id="@+id/metadata"
-						android:background="?colorBackgroundLightest"
-						android:layout_below="@id/profile_counters"
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:paddingTop="6dp" />
-
 				</RelativeLayout>
 
 				<org.joinmastodon.android.ui.tabs.TabLayout
@@ -335,6 +335,7 @@
 					android:id="@+id/border_bottom"
 					android:layout_width="match_parent"
 					android:layout_height="0.5dp"
+					android:layout_marginTop="-0.5dp"
 					android:background="?attr/colorPollVoted"/>
 
 				<androidx.viewpager2.widget.ViewPager2
