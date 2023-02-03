@@ -24,4 +24,5 @@
     <string name="mo_poll_option_add">Neue Umfrageoption hinzufügen</string>
     <string name="mo_fab_compose">Verfassen</string>
     <string name="mo_sending_error">Fehler beim Veröffentlichen</string>
+    <string name="mo_filtered">Gefiltert: %s</string>
 </resources>
