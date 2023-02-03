@@ -253,4 +253,7 @@
     <string name="sk_notify_poll_results">Poll results</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Prefix reply CW with “re:”</string>
     <string name="sk_filtered">Filtered: %s</string>
+    <string name="sk_expand">Expand</string>
+    <string name="sk_collapse">Collapse</string>
+    <string name="sk_settings_collapse_long_posts">Collapse long posts</string>
 </resources>
