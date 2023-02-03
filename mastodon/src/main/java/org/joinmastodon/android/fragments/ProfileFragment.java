@@ -822,10 +822,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		pager.setUserInputEnabled(false);
 		actionButton.setText(R.string.done);
 		ArrayList<Animator> animators=new ArrayList<>();
-		for(int i=0;i<tabViews.length;i++){
-			animators.add(ObjectAnimator.ofFloat(tabbar.getTabAt(i).view, View.ALPHA, .3f));
-			tabbar.getTabAt(i).view.setEnabled(false);
-		}
 		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay).mutate();
 		avatar.setForeground(overlay);
 		animators.add(ObjectAnimator.ofInt(overlay, "alpha", 0, 255));
@@ -842,6 +838,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		animators.add(ObjectAnimator.ofFloat(bioEdit, View.ALPHA, 0f, 1f));
 		animators.add(ObjectAnimator.ofFloat(bio, View.ALPHA, 0f));
 		profileCounters.setVisibility(View.GONE);
+		pager.setVisibility(View.GONE);
+		tabbar.setVisibility(View.GONE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -864,14 +862,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		invalidateOptionsMenu();
 		ArrayList<Animator> animators=new ArrayList<>();
 		actionButton.setText(R.string.edit_profile);
-		for(int i=0;i<tabViews.length;i++){
-			animators.add(ObjectAnimator.ofFloat(tabbar.getTabAt(i).view, View.ALPHA, 1f));
-		}
 		animators.add(ObjectAnimator.ofInt(avatar.getForeground(), "alpha", 0));
 		animators.add(ObjectAnimator.ofFloat(nameEdit, View.ALPHA, 0f));
 		animators.add(ObjectAnimator.ofFloat(bioEdit, View.ALPHA, 0f));
 		animators.add(ObjectAnimator.ofFloat(bio, View.ALPHA, 1f));
 		profileCounters.setVisibility(View.VISIBLE);
+		pager.setVisibility(View.VISIBLE);
+		tabbar.setVisibility(View.VISIBLE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -880,9 +877,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		set.addListener(new AnimatorListenerAdapter(){
 			@Override
 			public void onAnimationEnd(Animator animation){
-				for(int i=0;i<tabViews.length;i++){
-					tabbar.getTabAt(i).view.setEnabled(true);
-				}
 				pager.setUserInputEnabled(true);
 				nameEdit.setVisibility(View.GONE);
 				bioEdit.setVisibility(View.GONE);
@@ -890,6 +884,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				lp.addRule(RelativeLayout.BELOW, R.id.name);
 				username.getParent().requestLayout();
 				avatar.setForeground(null);
+				scrollToTop();
 			}
 		});
 		set.start();
