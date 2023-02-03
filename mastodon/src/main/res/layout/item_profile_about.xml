@@ -11,7 +11,6 @@
 		android:layout_width="0dp"
 		android:layout_weight="1"
 		android:layout_height="wrap_content"
-		android:maxWidth="56dp"
 		android:textAppearance="@style/m3_label_medium"
 		android:textAllCaps="true"
 		android:textSize="12sp"

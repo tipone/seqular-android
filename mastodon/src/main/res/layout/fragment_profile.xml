@@ -219,7 +219,8 @@
 						android:layout_below="@id/border_top"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:padding="8dp">
+						android:paddingHorizontal="8dp"
+						android:paddingTop="8dp">
 
 						<LinearLayout
 							android:id="@+id/posts_btn"
@@ -310,7 +311,8 @@
 						android:background="?colorBackgroundLightest"
 						android:layout_below="@id/profile_counters"
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content" />
+						android:layout_height="wrap_content"
+						android:paddingTop="6dp" />
 
 				</RelativeLayout>
 

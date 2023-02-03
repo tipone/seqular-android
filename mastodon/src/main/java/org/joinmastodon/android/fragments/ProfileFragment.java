@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -117,12 +118,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ViewPager2 pager;
 	private NestedRecyclerScrollView scrollView;
 	private AccountTimelineFragment postsFragment, postsWithRepliesFragment, pinnedPostsFragment, mediaFragment;
-	private ProfileAboutFragment aboutFragment;
+//	private ProfileAboutFragment aboutFragment;
 	private TabLayout tabbar;
 	private SwipeRefreshLayout refreshLayout;
 	private CoverOverlayGradientDrawable coverGradient=new CoverOverlayGradientDrawable();
 	private float titleTransY;
-	private View postsBtn, followersBtn, followingBtn;
+	private View postsBtn, followersBtn, followingBtn, profileCounters;
 	private EditText nameEdit, bioEdit;
 	private ProgressBar actionProgress, notifyProgress;
 	private FrameLayout[] tabViews;
@@ -201,6 +202,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		name=content.findViewById(R.id.name);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
+		profileCounters=content.findViewById(R.id.profile_counters);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
 		followersBtn=content.findViewById(R.id.followers_btn);
@@ -242,7 +244,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		};
 
-		tabViews=new FrameLayout[5];
+		tabViews=new FrameLayout[4];
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
@@ -259,7 +261,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 
 		UiUtils.reduceSwipeSensitivity(pager);
-		pager.setOffscreenPageLimit(5);
+		pager.setOffscreenPageLimit(4);
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
 		pager.setAdapter(new ProfilePagerAdapter());
 		pager.getLayoutParams().height=getResources().getDisplayMetrics().heightPixels;
@@ -383,7 +385,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			postsWithRepliesFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.INCLUDE_REPLIES, false);
 			pinnedPostsFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.PINNED, false);
 			mediaFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.MEDIA, false);
-			aboutFragment=new ProfileAboutFragment();
+//			aboutFragment=new ProfileAboutFragment();
 			setFields(fields);
 		}
 		pager.getAdapter().notifyDataSetChanged();
@@ -754,7 +756,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			case 1 -> postsWithRepliesFragment;
 			case 2 -> pinnedPostsFragment;
 			case 3 -> mediaFragment;
-			case 4 -> aboutFragment;
+//			case 4 -> aboutFragment;
 			default -> throw new IllegalStateException();
 		};
 	}
@@ -819,9 +821,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		invalidateOptionsMenu();
 		pager.setUserInputEnabled(false);
 		actionButton.setText(R.string.done);
-		pager.setCurrentItem(4);
 		ArrayList<Animator> animators=new ArrayList<>();
-		for(int i=0;i<tabViews.length-1;i++){
+		for(int i=0;i<tabViews.length;i++){
 			animators.add(ObjectAnimator.ofFloat(tabbar.getTabAt(i).view, View.ALPHA, .3f));
 			tabbar.getTabAt(i).view.setEnabled(false);
 		}
@@ -840,10 +841,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bioEdit.setText(account.source.note);
 		animators.add(ObjectAnimator.ofFloat(bioEdit, View.ALPHA, 0f, 1f));
 		animators.add(ObjectAnimator.ofFloat(bio, View.ALPHA, 0f));
-
-		animators.add(ObjectAnimator.ofFloat(postsBtn, View.ALPHA, .3f));
-		animators.add(ObjectAnimator.ofFloat(followersBtn, View.ALPHA, .3f));
-		animators.add(ObjectAnimator.ofFloat(followingBtn, View.ALPHA, .3f));
+		profileCounters.setVisibility(View.GONE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -851,7 +849,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		set.setInterpolator(CubicBezierInterpolator.DEFAULT);
 		set.start();
 
-		aboutFragment.enterEditMode(account.source.fields);
+//		aboutFragment.enterEditMode(account.source.fields);
 
 		metadataListData=account.source.fields;
 		adapter.notifyDataSetChanged();
@@ -866,16 +864,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		invalidateOptionsMenu();
 		ArrayList<Animator> animators=new ArrayList<>();
 		actionButton.setText(R.string.edit_profile);
-		for(int i=0;i<tabViews.length-1;i++){
+		for(int i=0;i<tabViews.length;i++){
 			animators.add(ObjectAnimator.ofFloat(tabbar.getTabAt(i).view, View.ALPHA, 1f));
 		}
 		animators.add(ObjectAnimator.ofInt(avatar.getForeground(), "alpha", 0));
 		animators.add(ObjectAnimator.ofFloat(nameEdit, View.ALPHA, 0f));
 		animators.add(ObjectAnimator.ofFloat(bioEdit, View.ALPHA, 0f));
 		animators.add(ObjectAnimator.ofFloat(bio, View.ALPHA, 1f));
-		animators.add(ObjectAnimator.ofFloat(postsBtn, View.ALPHA, 1f));
-		animators.add(ObjectAnimator.ofFloat(followersBtn, View.ALPHA, 1f));
-		animators.add(ObjectAnimator.ofFloat(followingBtn, View.ALPHA, 1f));
+		profileCounters.setVisibility(View.VISIBLE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -884,7 +880,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		set.addListener(new AnimatorListenerAdapter(){
 			@Override
 			public void onAnimationEnd(Animator animation){
-				for(int i=0;i<tabViews.length-1;i++){
+				for(int i=0;i<tabViews.length;i++){
 					tabbar.getTabAt(i).view.setEnabled(true);
 				}
 				pager.setUserInputEnabled(true);
@@ -898,6 +894,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		});
 		set.start();
 
+		InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
+		imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
 		bindHeaderView();
 	}
 
@@ -905,7 +903,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(!isInEditMode)
 			throw new IllegalStateException();
 		setActionProgressVisible(true);
-		new UpdateAccountCredentials(nameEdit.getText().toString(), bioEdit.getText().toString(), editNewAvatar, editNewCover, aboutFragment.getFields())
+		new UpdateAccountCredentials(nameEdit.getText().toString(), bioEdit.getText().toString(), editNewAvatar, editNewCover, metadataListData)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(Account result){
@@ -1085,7 +1083,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			dragHelper.attachToRecyclerView(null);
 		}
 		if (adapter != null) adapter.notifyDataSetChanged();
-		if (aboutFragment != null) aboutFragment.setFields(fields);
 	}
 
 	private class MetadataAdapter extends UsableRecyclerView.Adapter<BaseViewHolder> implements ImageLoaderRecyclerAdapter {
