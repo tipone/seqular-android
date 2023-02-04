@@ -46,8 +46,8 @@ public class StatusFilterPredicate implements Predicate<Status>{
 			}
 			boolean matches=status.filtered.stream()
 					.map(filterResult->filterResult.filter)
-					.filter(filter->filter.expiresAt==null||filter.expiresAt.isAfter(Instant.now())&&filter.context.contains(filterContext))
-					.anyMatch(filter->filter.filterAction==Filter.FilterAction.WARN);
+					.filter(filter->filter.expiresAt==null||filter.expiresAt.isAfter(Instant.now()))
+					.anyMatch(filter->filter.filterAction==Filter.FilterAction.WARN && filter.context.contains(filterContext));
 			return !matches;
 		}
 		for(Filter filter:filters){
