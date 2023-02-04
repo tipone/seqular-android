@@ -72,7 +72,7 @@
     <string name="sk_delete_notification_confirm_action">Excluir notificação</string>
     <string name="sk_enable_delete_notifications">Habilitar a exclusão de notificações</string>
     <string name="sk_settings_publish_button_text_title">Customizar texto do botão publicar</string>
-    <string name="sk_settings_translate_only_opened">Esconder botão de tradução na linha do tempo</string>
+    <string name="sk_settings_translate_only_opened">Traduzir apenas publicações abertas</string>
     <string name="sk_settings_translation_availability_note_available">%s suporta tradução!</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s parece não suportar tradução.</string>
     <string name="sk_clear_all_notifications">Limpar todas as notificações</string>
@@ -196,7 +196,7 @@
     <string name="sk_icon_train">Trem</string>
     <string name="sk_alt_text_missing_title">Sem texto descritivo</string>
     <string name="sk_alt_text_missing">Pelo menos um anexo não contém uma descrição.</string>
-    <string name="sk_settings_disable_alt_text_reminder">Desativar lembrete de texto descritivo</string>
+    <string name="sk_settings_disable_alt_text_reminder">Desativar o lembrete para adicionar texto descritivo</string>
     <string name="sk_remove">Remover</string>
     <string name="sk_searching">Procurando…</string>
     <string name="sk_no_results">Sem resultados</string>
@@ -235,4 +235,14 @@
     <string name="sk_settings_show_alt_indicator">Indicador para textos descritivos</string>
     <string name="sk_settings_show_no_alt_indicator">Indicador para ausência de textos descritivos</string>
     <string name="sk_instance_features">Recursos da instância</string>
+    <string name="sk_separator">·</string>
+    <string name="sk_local_only">Apenas instância local</string>
+    <string name="sk_inline_local_only">apenas local</string>
+    <string name="sk_inline_direct">apenas mencionado</string>
+    <string name="sk_settings_support_local_only">O servidor suporta publicação somente local</string>
+    <string name="sk_settings_local_only_explanation">A sua instância inicial deve oferecer suporte a publicações somente locais para que isso funcione. A maioria das versões modificadas do Mastodon suporta, mas o próprio Mastodon não.</string>
+    <string name="sk_settings_glitch_instance">Glitch modo somente local</string>
+    <string name="sk_settings_see_new_posts_button">Botão “Ver novas publicações”</string>
+    <string name="sk_settings_server_version">Versão do servidor: %s</string>
+    <string name="sk_notify_poll_results">Resultados da enquete</string>
 </resources>
