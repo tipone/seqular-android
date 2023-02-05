@@ -19,4 +19,5 @@
     <string name="mo_personal_note">Engade unha nota para este perfil</string>
     <string name="mo_update_ready">Moshidon %s foi descargada e lista para instalar.</string>
     <string name="mo_no_image_desc">As imaxes incluídas non teñen descrición. Por favor, considera engadila para axudar ás persoas con dificultades visuais.</string>
+    <string name="mo_filtered">Filtrados: %s</string>
 </resources>
