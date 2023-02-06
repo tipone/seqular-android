@@ -51,7 +51,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public boolean translated = false;
 	public TranslatedStatus translation = null;
 	private AccountSession session;
-	private boolean textIsRevealed;
 	public static final Pattern BOTTOM_TEXT_PATTERN = Pattern.compile("(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️)(?:\uD83D\uDC49\uD83D\uDC48(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️))*\uD83D\uDC49\uD83D\uDC48");
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status, boolean disableTranslate){
@@ -123,7 +122,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			textCollapsedHeight=activity.getResources().getDimension(R.dimen.text_collapsed_height);
 			collapseParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) textCollapsedHeight);
 			wrapParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			readMore.setOnClickListener(this::onClickReadMore);
+			readMore.setOnClickListener(v -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
 		}
 
 		@Override
@@ -220,7 +219,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				}
 			});
 
-			readMore.setText(item.textIsRevealed ? R.string.sk_collapse : R.string.sk_expand);
+			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 			spaceBelowText.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 
 			if (!GlobalUserPreferences.collapseLongPosts) {
@@ -233,15 +232,12 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				boolean inTimeline = !item.textSelectable;
 				boolean hasSpoiler = !TextUtils.isEmpty(item.status.spoilerText);
 				boolean expandable = inTimeline && tooBig && !hasSpoiler;
-				readMore.setVisibility(expandable ? View.VISIBLE : View.GONE);
-				textScrollView.setLayoutParams(expandable && !item.textIsRevealed ? collapseParams : wrapParams);
-				if (expandable && !translateVisible) spaceBelowText.setVisibility(View.VISIBLE);
+				item.parentFragment.onEnableExpandable(this, expandable);
 			});
-		}
 
-		private void onClickReadMore(View v) {
-			item.textIsRevealed = !item.textIsRevealed;
-			rebind();
+			readMore.setVisibility(item.status.textExpandable && !item.status.textExpanded ? View.VISIBLE : View.GONE);
+			textScrollView.setLayoutParams(item.status.textExpandable && !item.status.textExpanded ? collapseParams : wrapParams);
+			if (item.status.textExpandable && !translateVisible) spaceBelowText.setVisibility(View.VISIBLE);
 		}
 
 		@Override

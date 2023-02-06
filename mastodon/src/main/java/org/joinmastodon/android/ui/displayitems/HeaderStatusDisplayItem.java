@@ -20,6 +20,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
@@ -137,7 +139,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtn;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -160,6 +162,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			visibility=findViewById(R.id.visibility);
 			deleteNotification=findViewById(R.id.delete_notification);
 			unreadIndicator=findViewById(R.id.unread_indicator);
+			collapseBtn=findViewById(R.id.collapse_btn);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
@@ -171,6 +174,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					fragment.removeNotification(item.notification);
 				}
 			}));
+			collapseBtn.setOnClickListener(l -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
@@ -373,6 +377,11 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 			more.setContentDescription(desc);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) more.setTooltipText(desc);
+
+			String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
+			collapseBtn.setVisibility(item.status.textExpandable && item.status.textExpanded ? View.VISIBLE : View.GONE);
+			collapseBtn.setContentDescription(collapseText);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
 		}
 
 		@Override

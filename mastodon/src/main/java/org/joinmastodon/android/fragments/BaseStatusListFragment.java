@@ -479,13 +479,30 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		Status status=holder.getItem().status;
 		status.spoilerRevealed=!status.spoilerRevealed;
 		if(!TextUtils.isEmpty(status.spoilerText)){
-			TextStatusDisplayItem.Holder text=findHolderOfType(holder.getItemID(), TextStatusDisplayItem.Holder.class);
+			TextStatusDisplayItem.Holder text = findHolderOfType(holder.getItemID(), TextStatusDisplayItem.Holder.class);
 			if(text!=null){
 				adapter.notifyItemChanged(text.getAbsoluteAdapterPosition());
 			}
 		}
 		holder.rebind();
 		updateImagesSpoilerState(status, holder.getItemID());
+	}
+
+	public void onEnableExpandable(TextStatusDisplayItem.Holder holder, boolean expandable) {
+		if (holder.getItem().status.textExpandable != expandable) {
+			holder.getItem().status.textExpandable = expandable;
+			HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
+			if (header != null) header.rebind();
+			holder.rebind();
+		}
+	}
+
+	public void onToggleExpanded(Status status, String itemID) {
+		status.textExpanded = !status.textExpanded;
+		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
+		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
+		if (text != null) text.rebind();
+		if (header != null) header.rebind();
 	}
 
 	protected void updateImagesSpoilerState(Status status, String itemID){
