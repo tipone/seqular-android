@@ -379,8 +379,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) more.setTooltipText(desc);
 
 			String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
-			collapseBtn.setVisibility(item.status.textExpandable && item.status.textExpanded ? View.VISIBLE : View.GONE);
+			collapseBtn.setVisibility(item.status.textExpandable ? View.VISIBLE : View.GONE);
 			collapseBtn.setContentDescription(collapseText);
+			collapseBtn.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
 		}
 

@@ -48,7 +48,7 @@
 		android:layout_toStartOf="@id/visibility"
 		android:background="?android:actionBarItemBackground"
 		android:scaleType="center"
-		android:src="@drawable/ic_fluent_chevron_up_20_filled"
+		android:src="@drawable/ic_fluent_chevron_down_20_filled"
 		android:visibility="gone"
 		android:tint="?android:textColorSecondary" />
 
