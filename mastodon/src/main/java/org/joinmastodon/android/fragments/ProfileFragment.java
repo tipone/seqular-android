@@ -8,11 +8,11 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -112,7 +112,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private ImageView avatar;
 	private CoverImageView cover;
-	private View avatarBorder;
+	private View avatarBorder, nameWrap;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel, postsCount, postsLabel;
 	private ProgressBarButton actionButton, notifyButton;
 	private ViewPager2 pager;
@@ -129,6 +129,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
 	private TextView followsYouView;
+	private ViewGroup rolesView;
 
 	private Account account;
 	private String accountID;
@@ -200,6 +201,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
 		name=content.findViewById(R.id.name);
+		nameWrap=content.findViewById(R.id.name_wrap);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
 		profileCounters=content.findViewById(R.id.profile_counters);
@@ -225,6 +227,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		fab=content.findViewById(R.id.fab);
 		followsYouView=content.findViewById(R.id.follows_you);
 		list=content.findViewById(R.id.metadata);
+		rolesView=content.findViewById(R.id.roles);
 
 		avatar.setOutlineProvider(new ViewOutlineProvider(){
 			@Override
@@ -478,6 +481,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		HtmlParser.parseCustomEmoji(ssb, account.emojis);
 		name.setText(ssb);
 		setTitle(ssb);
+
+		if (account.roles != null && !account.roles.isEmpty()) {
+			rolesView.setVisibility(View.VISIBLE);
+			rolesView.removeAllViews();
+			name.setPadding(0, 0, V.dp(12), 0);
+			for (Account.Role role : account.roles) {
+				TextView roleText = new TextView(getActivity(), null, 0, R.style.role_label);
+				roleText.setText(role.name);
+				GradientDrawable bg = (GradientDrawable) roleText.getBackground().mutate();
+				bg.setStroke(V.dp(2), Color.parseColor(role.color));
+				rolesView.addView(roleText);
+			}
+		}
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
@@ -738,8 +754,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		coverGradient.setTopOffset(scrollY);
 		cover.invalidate();
 		titleTransY=getToolbar().getHeight();
-		if(scrollY>name.getTop()-topBarsH){
-			titleTransY=Math.max(0f, titleTransY-(scrollY-(name.getTop()-topBarsH)));
+		if(scrollY>nameWrap.getTop()-topBarsH){
+			titleTransY=Math.max(0f, titleTransY-(scrollY-(nameWrap.getTop()-topBarsH)));
 		}
 		if(toolbarTitleView!=null){
 			toolbarTitleView.setTranslationY(titleTransY);
@@ -826,6 +842,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		avatar.setForeground(overlay);
 		animators.add(ObjectAnimator.ofInt(overlay, "alpha", 0, 255));
 
+		nameWrap.setVisibility(View.GONE);
 		nameEdit.setVisibility(View.VISIBLE);
 		nameEdit.setText(account.displayName);
 		RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) username.getLayoutParams();
@@ -870,6 +887,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		profileCounters.setVisibility(View.VISIBLE);
 		pager.setVisibility(View.VISIBLE);
 		tabbar.setVisibility(View.VISIBLE);
+		V.setVisibilityAnimated(nameWrap, View.VISIBLE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -882,7 +900,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				nameEdit.setVisibility(View.GONE);
 				bioEdit.setVisibility(View.GONE);
 				RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) username.getLayoutParams();
-				lp.addRule(RelativeLayout.BELOW, R.id.name);
+				lp.addRule(RelativeLayout.BELOW, R.id.name_wrap);
 				username.getParent().requestLayout();
 				avatar.setForeground(null);
 				scrollToTop();

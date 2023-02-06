@@ -133,6 +133,14 @@ public class Account extends BaseModel{
 	 */
 	public Instant muteExpiresAt;
 
+	public List<Role> roles;
+
+	@Parcel
+	public static class Role {
+		public String name;
+		/** #rrggbb */
+		public String color;
+	}
 
 	@Override
 	public void postprocess() throws ObjectValidationException{

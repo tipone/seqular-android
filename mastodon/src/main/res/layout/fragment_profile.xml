@@ -135,24 +135,39 @@
 						</FrameLayout>
 					</LinearLayout>
 
-					<TextView
-						android:id="@+id/name"
+					<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+						android:id="@+id/name_wrap"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_below="@id/avatar_border"
 						android:layout_alignParentStart="true"
 						android:layout_marginHorizontal="16dp"
-						android:layout_marginTop="12dp"
-						android:textAlignment="viewStart"
-						android:textAppearance="@style/m3_headline_small"
-						tools:text="Eugen" />
+						android:layout_marginTop="12dp">
+
+						<TextView
+							android:id="@+id/name"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:textAlignment="viewStart"
+							android:textAppearance="@style/m3_headline_small"
+							tools:text="Eugen" />
+
+						<LinearLayout
+							android:id="@+id/roles"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_gravity="bottom"
+							android:orientation="horizontal"
+							android:visibility="gone" />
+
+					</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
 
 					<TextView
 						android:id="@+id/username"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
 						android:layout_marginHorizontal="16dp"
-						android:layout_below="@id/name"
+						android:layout_below="@id/name_wrap"
 						android:paddingTop="4dp"
 						android:paddingBottom="8dp"
 						android:textAppearance="@style/m3_title_medium"
