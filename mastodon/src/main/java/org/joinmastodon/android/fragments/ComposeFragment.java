@@ -1248,7 +1248,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void confirmDiscardDraftAndFinish(){
-		new M3AlertDialogBuilder(getActivity())
+		boolean attachmentsPending = attachments.stream().anyMatch(att -> att.state != AttachmentUploadState.DONE);
+		if (attachmentsPending) new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.sk_unfinished_attachments)
+				.setMessage(R.string.sk_unfinished_attachments_message)
+				.setPositiveButton(R.string.edit, (d, w) -> {})
+				.setNegativeButton(R.string.discard, (d, w) -> Nav.finish(this))
+				.show();
+		else new M3AlertDialogBuilder(getActivity())
 				.setTitle(editingStatus != null ? R.string.sk_confirm_save_changes : R.string.sk_confirm_save_draft)
 				.setPositiveButton(R.string.save, (d, w) -> {
 					updateScheduledAt(scheduledAt == null ? getDraftInstant() : scheduledAt);

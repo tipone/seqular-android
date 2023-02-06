@@ -256,4 +256,6 @@
     <string name="sk_expand">Expand</string>
     <string name="sk_collapse">Collapse</string>
     <string name="sk_settings_collapse_long_posts">Collapse very long posts</string>
+    <string name="sk_unfinished_attachments">Fix attachments?</string>
+    <string name="sk_unfinished_attachments_message">Some attachments haven’t finished uploading.</string>
 </resources>
