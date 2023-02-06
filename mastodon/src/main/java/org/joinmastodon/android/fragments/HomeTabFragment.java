@@ -662,7 +662,8 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 			FrameLayout tabView = tabViews[viewType % getItemCount()];
-			((ViewGroup)tabView.getParent()).removeView(tabView);
+			ViewGroup tabParent = (ViewGroup) tabView.getParent();
+			if (tabParent != null) tabParent.removeView(tabView);
 			tabView.setVisibility(View.VISIBLE);
 			return new SimpleViewHolder(tabView);
 		}
