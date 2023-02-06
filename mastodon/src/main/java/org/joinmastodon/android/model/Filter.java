@@ -80,7 +80,9 @@ public class Filter extends BaseModel{
 		@SerializedName("public")
 		PUBLIC,
 		@SerializedName("thread")
-		THREAD
+		THREAD,
+		@SerializedName("account")
+		ACCOUNT
 	}
 
 	public enum FilterAction{
