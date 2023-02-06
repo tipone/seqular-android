@@ -18,14 +18,17 @@ import org.joinmastodon.android.api.requests.lists.UpdateList;
 import org.joinmastodon.android.api.requests.timelines.GetListTimeline;
 import org.joinmastodon.android.events.ListDeletedEvent;
 import org.joinmastodon.android.events.ListUpdatedCreatedEvent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.ListTimeline;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ListTimelineEditor;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -134,10 +137,11 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
                     @Override
                     public void onSuccess(List<Status> result) {
                         if (getActivity() == null) return;
+                        result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.HOME)).collect(Collectors.toList());
                         onDataLoaded(result, !result.isEmpty());
                     }
                 })
-                .exec(accountID);
+               .exec(accountID);
     }
 
     @Override

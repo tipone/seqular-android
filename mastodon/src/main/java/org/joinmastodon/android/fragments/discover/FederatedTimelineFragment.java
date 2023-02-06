@@ -30,7 +30,8 @@ public class FederatedTimelineFragment extends FabStatusListFragment {
 						if(!result.isEmpty())
 							maxID=result.get(result.size()-1).id;
 						if (getActivity() == null) return;
-						onDataLoaded(result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList()), !result.isEmpty());
+						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+						onDataLoaded(result, !result.isEmpty());
 					}
 				})
 				.exec(accountID);
