@@ -251,4 +251,10 @@
     <string name="sk_settings_see_new_posts_button">“查看新嘟文”按钮</string>
     <string name="sk_settings_server_version">服务器版本: %s</string>
     <string name="sk_notify_poll_results">投票结果</string>
+    <string name="sk_expand">扩增</string>
+    <string name="sk_collapse">折叠</string>
+    <string name="sk_unfinished_attachments">修复附件？</string>
+    <string name="sk_unfinished_attachments_message">部分附件尚未上传完毕。</string>
+    <string name="sk_filtered">已过滤: %s</string>
+    <string name="sk_settings_collapse_long_posts">折叠很长的嘟文</string>
 </resources>
