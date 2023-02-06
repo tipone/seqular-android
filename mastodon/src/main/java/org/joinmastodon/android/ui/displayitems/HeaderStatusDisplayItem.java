@@ -139,7 +139,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtn;
+		private final View collapseBtn;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtnIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -163,6 +164,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			deleteNotification=findViewById(R.id.delete_notification);
 			unreadIndicator=findViewById(R.id.unread_indicator);
 			collapseBtn=findViewById(R.id.collapse_btn);
+			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
@@ -384,7 +386,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 				collapseBtn.setVisibility(item.status.textExpandable ? View.VISIBLE : View.GONE);
 				collapseBtn.setContentDescription(collapseText);
-				collapseBtn.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
+				if (GlobalUserPreferences.reduceMotion) collapseBtnIcon.setScaleY(item.status.textExpanded ? -1 : 1);
+				else collapseBtnIcon.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
 				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
 			}
 		}

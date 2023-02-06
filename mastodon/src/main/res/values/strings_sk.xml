@@ -255,5 +255,5 @@
     <string name="sk_filtered">Filtered: %s</string>
     <string name="sk_expand">Expand</string>
     <string name="sk_collapse">Collapse</string>
-    <string name="sk_settings_collapse_long_posts">Collapse long posts</string>
+    <string name="sk_settings_collapse_long_posts">Collapse very long posts</string>
 </resources>

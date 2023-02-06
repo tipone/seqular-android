@@ -41,16 +41,28 @@
 		android:src="@drawable/ic_visibility"
 		android:tint="?android:textColorSecondary" />
 
-	<ImageView
+	<FrameLayout
 		android:id="@+id/collapse_btn"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
 		android:layout_toStartOf="@id/visibility"
 		android:background="?android:actionBarItemBackground"
-		android:scaleType="center"
-		android:src="@drawable/ic_fluent_chevron_down_20_filled"
-		android:visibility="gone"
-		android:tint="?android:textColorSecondary" />
+		android:visibility="gone">
+
+		<!-- wrapping this button so the flip animation doesn't flip the background and the tooltip
+		 	 isn't displaced by the -1 scale -->
+
+		<ImageView
+			android:id="@+id/collapse_btn_icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:importantForAccessibility="no"
+			android:scaleType="center"
+			android:src="@drawable/ic_fluent_chevron_down_20_filled"
+			android:tint="?android:textColorSecondary" />
+
+	</FrameLayout>
 
 	<ImageView
 		android:id="@+id/unread_indicator"
