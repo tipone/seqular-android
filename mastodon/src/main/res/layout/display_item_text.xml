@@ -79,7 +79,8 @@
 			android:textAppearance="@style/m3_label_medium"
 			android:textAllCaps="true"
 			android:text="@string/sk_expand"
-			android:visibility="gone" />
+			android:visibility="gone"
+			android:importantForAccessibility="no"/>
 
 		<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
 			android:id="@+id/translate_wrap"

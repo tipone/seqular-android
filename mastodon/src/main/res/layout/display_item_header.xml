@@ -47,7 +47,8 @@
 		android:layout_height="36dp"
 		android:layout_toStartOf="@id/visibility"
 		android:background="?android:actionBarItemBackground"
-		android:visibility="gone">
+		android:visibility="gone"
+		android:importantForAccessibility="noHideDescendants">
 
 		<!-- wrapping this button so the flip animation doesn't flip the background and the tooltip
 		 	 isn't displaced by the -1 scale -->
