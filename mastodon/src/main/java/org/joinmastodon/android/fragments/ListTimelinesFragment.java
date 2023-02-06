@@ -99,7 +99,6 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
 									new CreateList(editor.getTitle(), editor.getRepliesPolicy()).setCallback(new Callback<>() {
 										 @Override
 										 public void onSuccess(ListTimeline list) {
-												saveListMembership(list.id, true);
 												data.add(0, list);
 												adapter.notifyItemRangeInserted(0, 1);
 												E.post(new ListUpdatedCreatedEvent(list.id, list.title, list.repliesPolicy));
