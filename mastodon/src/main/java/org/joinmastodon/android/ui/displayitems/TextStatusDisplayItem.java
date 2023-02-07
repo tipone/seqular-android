@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.github.bottomSoftwareFoundation.bottom.Bottom;
 import com.github.bottomSoftwareFoundation.bottom.TranslationError;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -26,6 +27,7 @@ import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.model.TranslatedStatus;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.utils.StatusTextEncoder;
 
@@ -134,10 +136,10 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			}
 			spoilerTitleInline.setTextIsSelectable(item.textSelectable);
 			text.setInvalidateOnEveryFrame(false);
-			spoilerTitleInline.setBackground(item.inset ? null : backgroundColor);
+			spoilerTitleInline.setBackgroundColor(item.inset ? 0 : backgroundColor);
 			spoilerTitleInline.setPadding(spoilerTitleInline.getPaddingLeft(), item.inset ? 0 : V.dp(14), spoilerTitleInline.getPaddingRight(), item.inset ? 0 : V.dp(14));
-			borderTop.setBackground(item.inset ? null : borderColor);
-			borderBottom.setBackground(item.inset ? null : borderColor);
+			borderTop.setBackgroundColor(item.inset ? 0 : borderColor);
+			borderBottom.setBackgroundColor(item.inset ? 0 : borderColor);
 			if(!TextUtils.isEmpty(item.status.spoilerText)){
 				spoilerTitle.setText(item.parsedSpoilerText);
 				spoilerTitleInline.setText(item.parsedSpoilerText);
@@ -169,8 +171,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					translateEnabled &&
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
-							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))))
-					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
+							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))));
+//					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
 			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, isBottomText ? "bottom-java" : item.translation.provider) : "");

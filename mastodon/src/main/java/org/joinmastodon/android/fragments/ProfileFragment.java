@@ -39,6 +39,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
@@ -832,7 +833,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		notifyButton.setSelected(relationship.notifying);
 		if (!isOwnProfile) {
 			setNote(relationship.note);
-			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
+//			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
 		}
 		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
 	}

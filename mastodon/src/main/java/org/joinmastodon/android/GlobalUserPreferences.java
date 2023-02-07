@@ -59,7 +59,6 @@ public class GlobalUserPreferences{
 
 	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
 	public static Map<String, Integer> recentEmojis;
-    public static boolean enablePreReleases;
 
     private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);

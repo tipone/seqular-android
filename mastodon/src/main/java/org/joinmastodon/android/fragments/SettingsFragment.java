@@ -270,11 +270,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
-			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
+//		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
+//			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
+//			GlobalUserPreferences.save();
+//			needAppRestart=true;
+//		}));
 
 
 		items.add(new HeaderItem(R.string.settings_notifications));

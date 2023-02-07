@@ -143,7 +143,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
 		private final View collapseBtn;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtnIcon,botIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
