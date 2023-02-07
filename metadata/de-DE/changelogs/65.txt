@@ -1,0 +1,10 @@
+- Entwürfe und geplante Posts
+- Beim Antworten wird nun der Original-Post angezeigt
+- Mastodon 4.0-kompatible Filter von @thiagojedi
+- Lange Klicken, um mit Posts (Antworten, Boosten, Liken, Lesezeichen) von anderen Konten zu interagieren
+- Symbole in allen Menüs
+- Schalter, um beim Melden die Weiterleitung einzustellen
+- Erwähnung bei Verwendung der Funktion "Darüber schreiben" hinzufügen
+- Option zur Verwendung eines einheitlichen Benachrichtigungssymbols anstelle von unterschiedlichen Symbolen
+- Option zum Zugriff auf die In-App-Regelliste über die Einstellungen
+- Fehlerbehebungen
