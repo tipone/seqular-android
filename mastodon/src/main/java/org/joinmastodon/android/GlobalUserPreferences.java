@@ -41,6 +41,11 @@ public class GlobalUserPreferences{
 	public static boolean disableAltTextReminder;
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
+	public static boolean enablePreReleases;
+	public static boolean prefixRepliesWithRe;
+	public static boolean bottomEncoding;
+	public static boolean collapseLongPosts;
+	public static boolean spectatorMode;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -88,9 +93,13 @@ public class GlobalUserPreferences{
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		enableFabAutoHide=prefs.getBoolean("enableFabAutoHide", true);
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
-		showAltIndicator =prefs.getBoolean("showAltIndicator", true);
-		showNoAltIndicator =prefs.getBoolean("showNoAltIndicator", true);
-		enablePreReleases =prefs.getBoolean("enablePreReleases", false);
+		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
+		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
+		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
+		prefixRepliesWithRe=prefs.getBoolean("prefixRepliesWithRe", false);
+		bottomEncoding=prefs.getBoolean("bottomEncoding", false);
+		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
+		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
@@ -136,7 +145,11 @@ public class GlobalUserPreferences{
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
 				.putBoolean("enablePreReleases", enablePreReleases)
+				.putBoolean("prefixRepliesWithRe", prefixRepliesWithRe)
+				.putBoolean("collapseLongPosts", collapseLongPosts)
+				.putBoolean("spectatorMode", spectatorMode)
 				.putString("publishButtonText", publishButtonText)
+				.putBoolean("bottomEncoding", bottomEncoding)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

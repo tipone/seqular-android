@@ -3,14 +3,17 @@ package org.joinmastodon.android.ui.displayitems;
 import android.app.Activity;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Button;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.github.bottomSoftwareFoundation.bottom.Bottom;
+import com.github.bottomSoftwareFoundation.bottom.TranslationError;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
@@ -19,12 +22,14 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.model.TranslatedStatus;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.views.LinkedTextView;
+import org.joinmastodon.android.utils.StatusTextEncoder;
+
+import java.util.regex.Pattern;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -44,6 +49,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public boolean translated = false;
 	public TranslatedStatus translation = null;
 	private AccountSession session;
+	public static final Pattern BOTTOM_TEXT_PATTERN = Pattern.compile("(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️)(?:\uD83D\uDC49\uD83D\uDC48(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️))*\uD83D\uDC49\uD83D\uDC48");
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status, boolean disableTranslate){
 		super(parentID, parentFragment);
@@ -81,10 +87,14 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<TextStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final LinkedTextView text;
 		private final LinearLayout spoilerHeader;
-		private final TextView spoilerTitle, spoilerTitleInline, translateInfo;
-		private final View spoilerOverlay, borderTop, borderBottom, textWrap, translateWrap, translateProgress;
-		private final Drawable backgroundColor, borderColor;
+		private final TextView spoilerTitle, spoilerTitleInline, translateInfo, readMore;
+		private final View spoilerOverlay, borderTop, borderBottom, textWrap, translateWrap, translateProgress, spaceBelowText;
+		private final int backgroundColor, borderColor;
 		private final Button translateButton;
+		private final ScrollView textScrollView;
+
+		private final float textMaxHeight, textCollapsedHeight;
+		private final LinearLayout.LayoutParams collapseParams, wrapParams;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_text, parent);
@@ -101,14 +111,16 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			translateInfo=findViewById(R.id.translate_info);
 			translateProgress=findViewById(R.id.translate_progress);
 			itemView.setOnClickListener(v->item.parentFragment.onRevealSpoilerClick(this));
-
-			TypedValue outValue=new TypedValue();
-			activity.getTheme().resolveAttribute(R.attr.colorBackgroundLight, outValue, true);
-			backgroundColor=activity.getDrawable(outValue.resourceId);
-//			activity.getTheme().resolveAttribute(R.attr.colorBackgroundLightest, outValue, true);
-//			backgroundColorInset=activity.getDrawable(outValue.resourceId);
-			activity.getTheme().resolveAttribute(R.attr.colorPollVoted, outValue, true);
-			borderColor=activity.getDrawable(outValue.resourceId);
+			backgroundColor=UiUtils.getThemeColor(activity, R.attr.colorBackgroundLight);
+			borderColor=UiUtils.getThemeColor(activity, R.attr.colorPollVoted);
+			textScrollView=findViewById(R.id.text_scroll_view);
+			readMore=findViewById(R.id.read_more);
+			spaceBelowText=findViewById(R.id.space_below_text);
+			textMaxHeight=activity.getResources().getDimension(R.dimen.text_max_height);
+			textCollapsedHeight=activity.getResources().getDimension(R.dimen.text_collapsed_height);
+			collapseParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) textCollapsedHeight);
+			wrapParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			readMore.setOnClickListener(v -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
 		}
 
 		@Override
@@ -117,6 +129,9 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
 					: item.text);
 			text.setTextIsSelectable(item.textSelectable);
+			if (item.textSelectable) {
+				textScrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			}
 			spoilerTitleInline.setTextIsSelectable(item.textSelectable);
 			text.setInvalidateOnEveryFrame(false);
 			spoilerTitleInline.setBackground(item.inset ? null : backgroundColor);
@@ -149,18 +164,30 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					instanceInfo.v2 != null && instanceInfo.v2.configuration.translation != null &&
 					instanceInfo.v2.configuration.translation.enabled;
 
-			translateWrap.setVisibility(translateEnabled &&
-					!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
-					item.status.language != null &&
-					(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))
-					? View.VISIBLE : View.GONE);
+			boolean isBottomText = BOTTOM_TEXT_PATTERN.matcher(item.status.getStrippedText()).find();
+			boolean translateVisible = (isBottomText || (
+					translateEnabled &&
+							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
+							item.status.language != null &&
+							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))))
+					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
+			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
-			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, item.translation.provider) : "");
-
-
-
+			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, isBottomText ? "bottom-java" : item.translation.provider) : "");
 			translateButton.setOnClickListener(v->{
 				if (item.translation == null) {
+					if (isBottomText) {
+						try {
+							item.translation = new TranslatedStatus();
+							item.translation.content = new StatusTextEncoder(Bottom::decode).decode(item.status.getStrippedText(), BOTTOM_TEXT_PATTERN);
+							item.translated = true;
+						} catch (TranslationError err) {
+							item.translation = null;
+							Toast.makeText(itemView.getContext(), err.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
+						}
+						rebind();
+						return;
+					}
 					translateProgress.setVisibility(View.VISIBLE);
 					translateButton.setClickable(false);
 					translateButton.animate().alpha(0.5f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
@@ -190,6 +217,25 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				}
 			});
 
+			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
+			spaceBelowText.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
+
+			if (!GlobalUserPreferences.collapseLongPosts) {
+				textScrollView.setLayoutParams(wrapParams);
+				readMore.setVisibility(View.GONE);
+			}
+
+			if (GlobalUserPreferences.collapseLongPosts) text.post(() -> {
+				boolean tooBig = text.getMeasuredHeight() > textMaxHeight;
+				boolean inTimeline = !item.textSelectable;
+				boolean hasSpoiler = !TextUtils.isEmpty(item.status.spoilerText);
+				boolean expandable = inTimeline && tooBig && !hasSpoiler;
+				item.parentFragment.onEnableExpandable(this, expandable);
+			});
+
+			readMore.setVisibility(item.status.textExpandable && !item.status.textExpanded ? View.VISIBLE : View.GONE);
+			textScrollView.setLayoutParams(item.status.textExpandable && !item.status.textExpanded ? collapseParams : wrapParams);
+			if (item.status.textExpandable && !translateVisible) spaceBelowText.setVisibility(View.VISIBLE);
 		}
 
 		@Override

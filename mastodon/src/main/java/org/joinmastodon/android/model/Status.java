@@ -58,9 +58,9 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public boolean bookmarked;
 	public boolean pinned;
 
-	public boolean filterRevealed;
-
+	public transient boolean filterRevealed;
 	public transient boolean spoilerRevealed;
+	public transient boolean textExpanded, textExpandable;
 	public transient boolean hasGapAfter;
 	private transient String strippedText;
 
@@ -160,6 +160,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		s.mentions = List.of();
 		s.tags = List.of();
 		s.emojis = List.of();
+		s.filtered = List.of();
 		return s;
 	}
 }

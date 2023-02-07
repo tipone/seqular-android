@@ -44,19 +44,48 @@
 				android:background="?attr/colorPollVoted"/>
 		</LinearLayout>
 
-		<org.joinmastodon.android.ui.views.LinkedTextView
-			android:id="@+id/text"
+		<org.joinmastodon.android.ui.views.UntouchableScrollView
+			android:id="@+id/text_scroll_view"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:paddingHorizontal="16dp"
-			android:textSize="16sp"
-			android:textAppearance="@style/m3_body_large"/>
+			android:requiresFadingEdge="vertical"
+			android:scrollbars="none"
+			android:fadingEdgeLength="36dp">
+
+			<org.joinmastodon.android.ui.views.LinkedTextView
+				android:id="@+id/text"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:textSize="16sp"
+				android:textAppearance="@style/m3_body_large"/>
+
+		</org.joinmastodon.android.ui.views.UntouchableScrollView>
+
+		<Space
+			android:id="@+id/space_below_text"
+			android:layout_width="match_parent"
+			android:layout_height="8dp"
+			android:visibility="gone" />
+
+		<Button
+			android:id="@+id/read_more"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:background="@drawable/bg_text_button"
+			android:textColor="?android:textColorSecondary"
+			android:layout_marginHorizontal="16dp"
+			android:paddingHorizontal="8dp"
+			android:textAppearance="@style/m3_label_medium"
+			android:textAllCaps="true"
+			android:text="@string/sk_expand"
+			android:visibility="gone"
+			android:importantForAccessibility="no"/>
 
 		<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
 			android:id="@+id/translate_wrap"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:layout_marginTop="8dp"
 			android:gravity="center_vertical"
 			android:visibility="gone">
 
@@ -68,8 +97,7 @@
 				android:clipToPadding="false">
 				<org.joinmastodon.android.ui.views.ProgressBarButton
 					android:id="@+id/translate_btn"
-					style="?secondaryButtonStyle"
-					android:background="?android:selectableItemBackground"
+					android:background="@drawable/bg_text_button"
 					android:textColor="?android:textColorSecondary"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
@@ -88,13 +116,16 @@
 					android:visibility="gone"/>
 			</FrameLayout>
 
+			<Space
+				android:layout_width="0dp"
+				android:layout_height="0dp"
+				android:layout_weight="1" />
+
 			<TextView
 				android:id="@+id/translate_info"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginHorizontal="16dp"
-				android:layout_marginVertical="4dp"
-				android:layout_weight="1"
 				android:textColor="?android:textColorSecondary"
 				android:textAlignment="textEnd"
 				tools:text="Translated using TranslateEngine" />

@@ -251,4 +251,12 @@
     <string name="sk_new_reports">New reports</string>
     <string name="sk_settings_server_version">Server version: %s</string>
     <string name="sk_notify_poll_results">Poll results</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Prefix reply CW with “re:”</string>
+    <string name="sk_filtered">Filtered: %s</string>
+    <string name="sk_expand">Expand</string>
+    <string name="sk_collapse">Collapse</string>
+    <string name="sk_settings_collapse_long_posts">Collapse very long posts</string>
+    <string name="sk_unfinished_attachments">Fix attachments?</string>
+    <string name="sk_unfinished_attachments_message">Some attachments haven’t finished uploading.</string>
+    <string name="sk_spectator_mode">Spectator mode</string>
 </resources>

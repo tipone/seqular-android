@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class ThreadFragment extends StatusListFragment{
-	private Status mainStatus;
+	protected Status mainStatus;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){

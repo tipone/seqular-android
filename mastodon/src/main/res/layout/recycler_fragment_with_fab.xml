@@ -20,10 +20,6 @@
 			android:layout_height="match_parent"
 			android:id="@+id/empty"/>
 
-		<ImageButton
-			android:contentDescription="@string/mo_fab_compose"
-			android:tooltipText="@string/mo_fab_compose"
-			android:id="@+id/fab"
-			style="@style/Widget.Mastodon.Button.Compose"/>
+		<include layout="@layout/compose_fab" />
 	</FrameLayout>
 </me.grishka.appkit.views.RecursiveSwipeRefreshLayout>

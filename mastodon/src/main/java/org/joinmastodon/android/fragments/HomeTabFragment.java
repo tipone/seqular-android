@@ -375,7 +375,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	}
 
 	private <T> void updateList(List<T> addItems, Map<Integer, T> items) {
-		if (addItems.size() == 0) return;
+		if (addItems.size() == 0 || getActivity() == null) return;
 		for (int i = 0; i < addItems.size(); i++) items.put(View.generateViewId(), addItems.get(i));
 		updateOverflowMenu();
 	}
@@ -662,7 +662,8 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 			FrameLayout tabView = tabViews[viewType % getItemCount()];
-			((ViewGroup)tabView.getParent()).removeView(tabView);
+			ViewGroup tabParent = (ViewGroup) tabView.getParent();
+			if (tabParent != null) tabParent.removeView(tabView);
 			tabView.setVisibility(View.VISIBLE);
 			return new SimpleViewHolder(tabView);
 		}

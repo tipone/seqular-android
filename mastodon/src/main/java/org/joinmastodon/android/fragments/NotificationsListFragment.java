@@ -49,6 +49,11 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	private final DiscoverInfoBannerHelper bannerHelper = new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.POST_NOTIFICATIONS);
 
 	@Override
+	protected boolean withComposeButton() {
+		return true;
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		E.register(this);
@@ -92,7 +97,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		};
 		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, extraText, n, null) : null;
 		if(n.status!=null){
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n, Filter.FilterContext.NOTIFICATIONS);
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n, false, Filter.FilterContext.NOTIFICATIONS);
 			if(titleItem!=null){
 				for(StatusDisplayItem item:items){
 					if(item instanceof ImageStatusDisplayItem imgItem){
@@ -193,6 +198,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		list.addItemDecoration(new InsetStatusItemDecoration(this));
+		if (getParentFragment() instanceof NotificationsFragment) fab.setVisibility(View.GONE);
 		if (onlyPosts) bannerHelper.maybeAddBanner(contentWrap);
 	}
 

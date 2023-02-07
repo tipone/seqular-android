@@ -129,7 +129,8 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 		super.onViewCreated(view, savedInstanceState);
 //		list.setPadding(0, V.dp(16), 0, V.dp(16));
 		list.setClipToPadding(false);
-		list.addItemDecoration(new DividerItemDecoration(getActivity(), R.attr.colorPollVoted, 1, 72, 16));
+		list.addItemDecoration(new DividerItemDecoration(getActivity(), R.attr.colorPollVoted, 1,
+				Math.round(16f + 56f * getResources().getConfiguration().fontScale), 16));
 		updateToolbar();
 	}
 

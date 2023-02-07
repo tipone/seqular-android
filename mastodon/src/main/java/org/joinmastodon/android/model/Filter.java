@@ -21,6 +21,7 @@ public class Filter extends BaseModel{
 	public String title;
 	@RequiredField
 	public String phrase;
+	public String title;
 	public transient EnumSet<FilterContext> context=EnumSet.noneOf(FilterContext.class);
 	public Instant expiresAt;
 	public boolean irreversible;
@@ -52,6 +53,7 @@ public class Filter extends BaseModel{
 			else
 				pattern=Pattern.compile(Pattern.quote(phrase), Pattern.CASE_INSENSITIVE);
 		}
+		if (title == null) title = phrase;
 		return pattern.matcher(text).find();
 	}
 
@@ -80,7 +82,9 @@ public class Filter extends BaseModel{
 		@SerializedName("public")
 		PUBLIC,
 		@SerializedName("thread")
-		THREAD
+		THREAD,
+		@SerializedName("account")
+		ACCOUNT
 	}
 
 	public enum FilterAction{

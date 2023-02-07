@@ -32,10 +32,15 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.V;
 
-public class HomeTimelineFragment extends FabStatusListFragment {
+public class HomeTimelineFragment extends StatusListFragment {
 	private HomeTabFragment parent;
 	private String maxID;
 	private String lastSavedMarkerID;
+
+	@Override
+	protected boolean withComposeButton() {
+		return true;
+	}
 
 	@Override
 	public void onAttach(Activity activity){

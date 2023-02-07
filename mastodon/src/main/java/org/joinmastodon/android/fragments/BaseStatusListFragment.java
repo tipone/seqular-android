@@ -59,6 +59,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
@@ -79,9 +81,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
+	protected ImageButton fab;
 
 	public BaseStatusListFragment(){
 		super(20);
+		if (withComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
+	}
+
+	protected boolean withComposeButton() {
+		return false;
 	}
 
 	@Override
@@ -94,6 +102,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 	}
+
+
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
@@ -353,6 +363,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		list.setItemAnimator(new BetterItemAnimator());
 		((UsableRecyclerView) list).setIncludeMarginsInItemHitbox(true);
 		updateToolbar();
+
+		if (withComposeButton()) {
+			fab = view.findViewById(R.id.fab);
+			fab.setVisibility(View.VISIBLE);
+			fab.setOnClickListener(this::onFabClick);
+			fab.setOnLongClickListener(this::onFabLongClick);
+		}
 	}
 
 	@Override
@@ -518,13 +535,30 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		Status status=holder.getItem().status;
 		status.spoilerRevealed=!status.spoilerRevealed;
 		if(!TextUtils.isEmpty(status.spoilerText)){
-			TextStatusDisplayItem.Holder text=findHolderOfType(holder.getItemID(), TextStatusDisplayItem.Holder.class);
+			TextStatusDisplayItem.Holder text = findHolderOfType(holder.getItemID(), TextStatusDisplayItem.Holder.class);
 			if(text!=null){
 				adapter.notifyItemChanged(text.getAbsoluteAdapterPosition());
 			}
 		}
 		holder.rebind();
 		updateImagesSpoilerState(status, holder.getItemID());
+	}
+
+	public void onEnableExpandable(TextStatusDisplayItem.Holder holder, boolean expandable) {
+		if (holder.getItem().status.textExpandable != expandable && list != null) {
+			holder.getItem().status.textExpandable = expandable;
+			HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
+			if (header != null) header.rebind();
+			holder.rebind();
+		}
+	}
+
+	public void onToggleExpanded(Status status, String itemID) {
+		status.textExpanded = !status.textExpanded;
+		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
+		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
+		if (text != null) text.rebind();
+		if (header != null) header.rebind();
 	}
 
 	protected void updateImagesSpoilerState(Status status, String itemID){
@@ -544,14 +578,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
 
-	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warningItem){
-		int i = warningItem.getAbsoluteAdapterPosition();
-		for(StatusDisplayItem item:warningItem.filteredItems){
-			i++;
-			displayItems.add(i, item);
-		}
-		displayItems.remove(warningItem.getAbsoluteAdapterPosition());
-		adapter.notifyItemChanged(warningItem.getAbsoluteAdapterPosition());
+	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
+		int startPos = warning.getAbsoluteAdapterPosition();
+		displayItems.remove(startPos);
+		displayItems.addAll(startPos, warning.filteredItems);
+		adapter.notifyItemRangeInserted(startPos, warning.filteredItems.size() - 1);
+		if (startPos == 0) scrollToTop();
+		warning.getItem().status.filterRevealed = true;
 	}
 
 	public String getAccountID(){
@@ -667,6 +700,16 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		super.onPause();
 		if(currentPhotoViewer!=null)
 			currentPhotoViewer.onPause();
+	}
+
+	protected void onFabClick(View v){
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		Nav.go(getActivity(), ComposeFragment.class, args);
+	}
+
+	protected boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID);
 	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
