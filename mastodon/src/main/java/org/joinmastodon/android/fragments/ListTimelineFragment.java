@@ -42,10 +42,10 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     private String listTitle;
     @Nullable
     private ListTimeline.RepliesPolicy repliesPolicy;
-    private ImageButton fab;
 
-    public ListTimelineFragment() {
-        setListLayoutId(R.layout.recycler_fragment_with_fab);
+    @Override
+    protected boolean withComposeButton() {
+        return true;
     }
 
     @Override
@@ -152,14 +152,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        fab=view.findViewById(R.id.fab);
-        fab.setOnClickListener(this::onFabClick);
-        fab.setOnLongClickListener(v -> UiUtils.pickAccountForCompose(getActivity(), accountID));
-    }
-
-    private void onFabClick(View v){
+    protected void onFabClick(View v){
         Bundle args=new Bundle();
         args.putString("account", accountID);
         Nav.go(getActivity(), ComposeFragment.class, args);

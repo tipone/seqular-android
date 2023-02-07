@@ -16,6 +16,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.widget.ImageButton;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.E;
@@ -57,6 +58,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
@@ -75,9 +78,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
+	protected ImageButton fab;
 
 	public BaseStatusListFragment(){
 		super(20);
+		if (withComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
+	}
+
+	protected boolean withComposeButton() {
+		return false;
 	}
 
 	@Override
@@ -90,6 +99,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 	}
+
+
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
@@ -314,6 +325,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		list.setItemAnimator(new BetterItemAnimator());
 		((UsableRecyclerView) list).setIncludeMarginsInItemHitbox(true);
 		updateToolbar();
+
+		if (withComposeButton()) {
+			fab = view.findViewById(R.id.fab);
+			fab.setVisibility(View.VISIBLE);
+			fab.setOnClickListener(this::onFabClick);
+			fab.setOnLongClickListener(this::onFabLongClick);
+		}
 	}
 
 	@Override
@@ -644,6 +662,16 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		super.onPause();
 		if(currentPhotoViewer!=null)
 			currentPhotoViewer.onPause();
+	}
+
+	protected void onFabClick(View v){
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		Nav.go(getActivity(), ComposeFragment.class, args);
+	}
+
+	protected boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID);
 	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{

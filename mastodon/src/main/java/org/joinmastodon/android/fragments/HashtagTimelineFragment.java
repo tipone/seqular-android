@@ -36,11 +36,11 @@ import me.grishka.appkit.utils.V;
 public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	private String hashtag;
 	private boolean following;
-	private ImageButton fab;
 	private MenuItem followButton;
 
-	public HashtagTimelineFragment(){
-		setListLayoutId(R.layout.recycler_fragment_with_fab);
+	@Override
+	protected boolean withComposeButton() {
+		return true;
 	}
 
 	@Override
@@ -138,14 +138,12 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState){
-		super.onViewCreated(view, savedInstanceState);
-		fab=view.findViewById(R.id.fab);
-		fab.setOnClickListener(this::onFabClick);
-		fab.setOnLongClickListener(v -> UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtag+' '));
+	protected boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtag+' ');
 	}
 
-	private void onFabClick(View v){
+	@Override
+	protected void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putString("prefilledText", '#'+hashtag+' ');

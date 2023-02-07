@@ -49,6 +49,11 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	private final DiscoverInfoBannerHelper bannerHelper = new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.POST_NOTIFICATIONS);
 
 	@Override
+	protected boolean withComposeButton() {
+		return true;
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		E.register(this);
@@ -193,6 +198,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		list.addItemDecoration(new InsetStatusItemDecoration(this));
+		if (getParentFragment() instanceof NotificationsFragment) fab.setVisibility(View.GONE);
 		if (onlyPosts) bannerHelper.maybeAddBanner(contentWrap);
 	}
 

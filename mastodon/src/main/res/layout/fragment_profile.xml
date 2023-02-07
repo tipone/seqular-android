@@ -359,7 +359,7 @@
 			</LinearLayout>
 		</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
 
-		<ImageButton android:id="@+id/fab" style="@style/Widget.Mastodon.Button.Compose"/>
+		<include layout="@layout/compose_fab" />
 	</FrameLayout>
 
 </me.grishka.appkit.views.RecursiveSwipeRefreshLayout>
