@@ -44,7 +44,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
 
-	private NotificationsListFragment allNotificationsFragment, mentionsFragment;
+	private NotificationsListFragment allNotificationsFragment, mentionsFragment, postsFragment;
 
 	private String accountID;
 
@@ -102,14 +102,14 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 		tabLayout=view.findViewById(R.id.tabbar);
 		pager=view.findViewById(R.id.pager);
-		UiUtils.reduceSwipeSensitivity(pager);
 
-		tabViews=new FrameLayout[2];
+		tabViews=new FrameLayout[3];
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
 				case 0 -> R.id.notifications_all;
 				case 1 -> R.id.notifications_mentions;
+				case 2 -> R.id.notifications_posts;
 				default -> throw new IllegalStateException("Unexpected value: "+i);
 			});
 			tabView.setVisibility(View.GONE);
@@ -119,18 +119,6 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 		tabLayout.setTabTextSize(V.dp(16));
 		tabLayout.setTabTextColors(UiUtils.getThemeColor(getActivity(), R.attr.colorTabInactive), UiUtils.getThemeColor(getActivity(), android.R.attr.textColorPrimary));
-		tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
-			@Override
-			public void onTabSelected(TabLayout.Tab tab) {}
-
-			@Override
-			public void onTabUnselected(TabLayout.Tab tab) {}
-
-			@Override
-			public void onTabReselected(TabLayout.Tab tab) {
-				scrollToTop();
-			}
-		});
 
 		pager.setOffscreenPageLimit(4);
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
@@ -161,9 +149,15 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			mentionsFragment=new NotificationsListFragment();
 			mentionsFragment.setArguments(args);
 
+			args=new Bundle(args);
+			args.putBoolean("onlyPosts", true);
+			postsFragment=new NotificationsListFragment();
+			postsFragment.setArguments(args);
+
 			getChildFragmentManager().beginTransaction()
 					.add(R.id.notifications_all, allNotificationsFragment)
 					.add(R.id.notifications_mentions, mentionsFragment)
+					.add(R.id.notifications_posts, postsFragment)
 					.commit();
 		}
 
@@ -173,6 +167,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 				tab.setText(switch(position){
 					case 0 -> R.string.all_notifications;
 					case 1 -> R.string.mentions;
+					case 2 -> R.string.posts;
 					default -> throw new IllegalStateException("Unexpected value: "+position);
 				});
 				tab.view.textView.setAllCaps(true);
@@ -187,7 +182,6 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 		new GetFollowRequests(null, 1).setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(HeaderPaginationList<Account> accounts) {
-				if (getActivity() == null) return;
 				getToolbar().getMenu().findItem(R.id.follow_requests).setVisible(!accounts.isEmpty());
 			}
 
@@ -216,13 +210,13 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	protected void updateToolbar(){
 		super.updateToolbar();
 		getToolbar().setOutlineProvider(null);
-		getToolbar().setOnClickListener(v->scrollToTop());
 	}
 
 	private NotificationsListFragment getFragmentForPage(int page){
 		return switch(page){
 			case 0 -> allNotificationsFragment;
 			case 1 -> mentionsFragment;
+			case 2 -> postsFragment;
 			default -> throw new IllegalStateException("Unexpected value: "+page);
 		};
 	}
@@ -243,7 +237,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 		@Override
 		public int getItemCount(){
-			return 2;
+			return 3;
 		}
 
 		@Override
