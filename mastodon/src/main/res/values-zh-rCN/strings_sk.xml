@@ -257,4 +257,5 @@
     <string name="sk_unfinished_attachments_message">部分附件尚未上传完毕。</string>
     <string name="sk_filtered">已过滤: %s</string>
     <string name="sk_settings_collapse_long_posts">折叠很长的嘟文</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">在回复带有内容警告的嘟文前加上 \"re:\"</string>
 </resources>
