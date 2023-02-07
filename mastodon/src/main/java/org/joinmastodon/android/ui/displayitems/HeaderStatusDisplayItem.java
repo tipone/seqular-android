@@ -306,7 +306,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
 					timestamp.setText(item.scheduledStatus.scheduledAt.atZone(ZoneId.systemDefault()).format(formatter));
 				}
-			else if ((item.status==null || item.status.editedAt==null) && item.createdAt != null)
+			else if ((!item.inset || item.status==null || item.status.editedAt==null) && item.createdAt != null)
 				timestamp.setText(UiUtils.formatRelativeTimestamp(itemView.getContext(), item.createdAt));
 			else if (item.status != null && item.status.editedAt != null)
 				timestamp.setText(item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt)));
