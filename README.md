@@ -16,6 +16,13 @@
 
 ### **Show posts filtered with a warning!**
 
+**Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:**
+
+Before             |  After
+:-------------------------:|:-------------------------:
+![Screenshot_20230205-100200edited](https://user-images.githubusercontent.com/71328265/216820539-20802dc5-e433-4511-b2d9-291d810e4ef2.png) | ![Screenshot_20230205-100203edited](https://user-images.githubusercontent.com/71328265/216820544-231b2966-f38f-4ec6-b555-d39c62433839.png)
+
+
 ### **Color themes**
 
 **Allows you to change theme within the app. Supports Purple, pink, green, blue, orange and yellow!**
@@ -79,11 +86,13 @@ Variant with an integrated updater. If you download Moshidon from here (and not 
 
 ### Features
 
+* [Adding the ability to have filtered posts show with a warning](https://github.com/LucasGGamerM/moshidon/tree/feature/filters_again)
 * [Add “Unlisted” as a post visibility option](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/enable-unlisted)
   ([Pull request](https://github.com/mastodon/mastodon-android/pull/103))
 * Adding a useful private profile note box!*
 * Auto hiding the compose button on scroll!*
 * Adding the hability to remind yourself to add alt text to images!*
+* An indicator for if an image has alt text or not*
 * Adding the ability to have drafts!*
 * Also adding the ability to view announcements from your instance!*
 * Adding the ability to post for local timeline only (Only on instances that support it!)*
@@ -108,7 +117,7 @@ Variant with an integrated updater. If you download Moshidon from here (and not 
 
 ### Behavior
 
-* Adding a bottom option for the publish button, allowing for easier user on larger screens!
+* Adding a bottom option for the publish button, allowing for easier use on larger screens!
 * [Make back button return to the home tab before exiting the app](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/back-returns-home) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/118))
 * [Always preserve content warnings when replying](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/always-preserve-cw) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/113))
 * [Display full image when adding image description](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/compose-image-description-full-image) ([Pull request](https://github.com/mastodon/mastodon-android/pull/182))
