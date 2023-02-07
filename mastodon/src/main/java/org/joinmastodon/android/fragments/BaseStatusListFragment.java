@@ -507,7 +507,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	public void onEnableExpandable(TextStatusDisplayItem.Holder holder, boolean expandable) {
-		if (holder.getItem().status.textExpandable != expandable) {
+		if (holder.getItem().status.textExpandable != expandable && list != null) {
 			holder.getItem().status.textExpandable = expandable;
 			HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
 			if (header != null) header.rebind();
