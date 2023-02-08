@@ -83,7 +83,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
-	protected ImageButton fab;
 
 	public BaseStatusListFragment(){
 		super(20);
