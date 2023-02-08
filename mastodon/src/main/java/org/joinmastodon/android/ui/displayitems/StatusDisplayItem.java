@@ -10,23 +10,31 @@ import android.view.ViewGroup;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.HashtagTimelineFragment;
+import org.joinmastodon.android.fragments.HomeTabFragment;
+import org.joinmastodon.android.fragments.HomeTimelineFragment;
+import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
+import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
@@ -73,16 +81,38 @@ public abstract class StatusDisplayItem{
 			case HASHTAG -> new HashtagStatusDisplayItem.Holder(activity, parent);
 			case GAP -> new GapStatusDisplayItem.Holder(activity, parent);
 			case EXTENDED_FOOTER -> new ExtendedFooterStatusDisplayItem.Holder(activity, parent);
+			case WARNING -> new WarningFilteredStatusDisplayItem.Holder(activity, parent);
 		};
 	}
 
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification){
+	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification){
+		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, Filter.FilterContext.HOME);
+	}
+
+	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, Filter.FilterContext filterContext){
+		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, filterContext);
+	}
+
+	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate){
+		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, disableTranslate, Filter.FilterContext.HOME);
+	}
+
+	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate, Filter.FilterContext filterContext){
 		String parentID=parentObject.getID();
 		ArrayList<StatusDisplayItem> items=new ArrayList<>();
+
 		Status statusForContent=status.getContentStatus();
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
+
+		List<Filter> filters = AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream()
+			.filter(f -> f.context.contains(filterContext)).collect(Collectors.toList());
+		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
+
+		if(!statusForContent.filterRevealed){
+			statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
+		}
 
 		if(status.reblog!=null){
 			boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
@@ -96,11 +126,30 @@ public abstract class StatusDisplayItem{
 				args.putParcelable("profileAccount", Parcels.wrap(account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			}));
+		} else if (
+				!(status.tags.isEmpty() ||
+						fragment instanceof HashtagTimelineFragment ||
+						fragment instanceof ListTimelineFragment
+				) && fragment.getParentFragment() instanceof HomeTabFragment home
+		) {
+			home.getHashtags().stream()
+					.filter(followed -> status.tags.stream()
+							.anyMatch(hashtag -> followed.name.equalsIgnoreCase(hashtag.name)))
+					.findAny()
+					// post contains a hashtag the user is following
+					.ifPresent(hashtag -> items.add(new ReblogOrReplyLineStatusDisplayItem(
+							parentID, fragment, hashtag.name, List.of(),
+							R.drawable.ic_fluent_number_symbol_20_filled, null,
+							i -> {
+								args.putString("hashtag", hashtag.name);
+								Nav.go(fragment.getActivity(), HashtagTimelineFragment.class, args);
+							}
+					)));
 		}
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
 		if(!TextUtils.isEmpty(statusForContent.content))
-			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent));
+			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
 		else
 			header.needBottomPadding=true;
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
@@ -141,6 +190,13 @@ public abstract class StatusDisplayItem{
 			item.inset=inset;
 			item.index=i++;
 		}
+
+		if (!statusForContent.filterRevealed) {
+			return new ArrayList<>(List.of(
+					new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items)
+			));
+		}
+
 		return items;
 	}
 
@@ -167,6 +223,7 @@ public abstract class StatusDisplayItem{
 		ACCOUNT,
 		HASHTAG,
 		GAP,
+		WARNING,
 		EXTENDED_FOOTER
 	}
 
@@ -176,7 +233,7 @@ public abstract class StatusDisplayItem{
 		}
 
 		public Holder(Context context, int layout, ViewGroup parent){
- 			super(context, layout, parent);
+			super(context, layout, parent);
 		}
 
 		public String getItemID(){

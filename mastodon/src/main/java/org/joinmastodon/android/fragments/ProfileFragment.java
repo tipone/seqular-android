@@ -1,26 +1,21 @@
 package org.joinmastodon.android.fragments;
 
-import static android.content.Context.CLIPBOARD_SERVICE;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
@@ -36,17 +31,16 @@ import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
+import android.view.inputmethod.InputMethodManager;
 import android.view.animation.TranslateAnimation;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -65,6 +59,7 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Relationship;
+import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.SingleImagePhotoViewerListener;
 import org.joinmastodon.android.ui.drawables.CoverOverlayGradientDrawable;
@@ -73,8 +68,10 @@ import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.CoverImageView;
+import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.ui.views.NestedRecyclerScrollView;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
 import org.parceler.Parcels;
@@ -88,6 +85,9 @@ import java.util.Collections;
 import java.util.List;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
@@ -98,10 +98,17 @@ import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.fragments.LoaderFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
+import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
+import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
+import me.grishka.appkit.imageloader.ListImageLoaderWrapper;
+import me.grishka.appkit.imageloader.RecyclerViewDelegate;
 import me.grishka.appkit.imageloader.ViewImageLoader;
+import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
+import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
+import me.grishka.appkit.views.UsableRecyclerView;
 
 public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop{
 	private static final int AVATAR_RESULT=722;
@@ -109,23 +116,24 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private ImageView avatar;
 	private CoverImageView cover;
-	private View avatarBorder;
+	private View avatarBorder, nameWrap;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel, postsCount, postsLabel;
 	private ProgressBarButton actionButton, notifyButton;
 	private ViewPager2 pager;
 	private NestedRecyclerScrollView scrollView;
 	private AccountTimelineFragment postsFragment, postsWithRepliesFragment, pinnedPostsFragment, mediaFragment;
-	private ProfileAboutFragment aboutFragment;
+//	private ProfileAboutFragment aboutFragment;
 	private TabLayout tabbar;
 	private SwipeRefreshLayout refreshLayout;
 	private CoverOverlayGradientDrawable coverGradient=new CoverOverlayGradientDrawable();
 	private float titleTransY;
-	private View postsBtn, followersBtn, followingBtn;
+	private View postsBtn, followersBtn, followingBtn, profileCounters;
 	private EditText nameEdit, bioEdit;
 	private ProgressBar actionProgress, notifyProgress;
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
 	private TextView followsYouView;
+	private ViewGroup rolesView;
 
 	private Account account;
 	private String accountID;
@@ -143,6 +151,16 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
 	protected int scrollDiff = 0;
+
+	private static final int MAX_FIELDS=4;
+
+	// from ProfileAboutFragment
+	public UsableRecyclerView list;
+	private List<AccountField> metadataListData=Collections.emptyList();
+	private MetadataAdapter adapter;
+	private ItemTouchHelper dragHelper=new ItemTouchHelper(new ReorderCallback());
+	private RecyclerView.ViewHolder draggedViewHolder;
+	private ListImageLoaderWrapper imgLoader;
 
 	public ProfileFragment(){
 		super(R.layout.loader_fragment_overlay_toolbar);
@@ -188,8 +206,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
 		name=content.findViewById(R.id.name);
+		nameWrap=content.findViewById(R.id.name_wrap);
 		username=content.findViewById(R.id.username);
 		bio=content.findViewById(R.id.bio);
+		profileCounters=content.findViewById(R.id.profile_counters);
 		followersCount=content.findViewById(R.id.followers_count);
 		followersLabel=content.findViewById(R.id.followers_label);
 		followersBtn=content.findViewById(R.id.followers_btn);
@@ -211,6 +231,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		notifyProgress=content.findViewById(R.id.notify_progress);
 		fab=content.findViewById(R.id.fab);
 		followsYouView=content.findViewById(R.id.follows_you);
+		list=content.findViewById(R.id.metadata);
+		rolesView=content.findViewById(R.id.roles);
 
 		avatar.setOutlineProvider(new ViewOutlineProvider(){
 			@Override
@@ -230,7 +252,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		};
 
-		tabViews=new FrameLayout[5];
+		tabViews=new FrameLayout[4];
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
@@ -247,7 +269,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 
 		UiUtils.reduceSwipeSensitivity(pager);
-		pager.setOffscreenPageLimit(5);
+		pager.setOffscreenPageLimit(4);
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
 		pager.setAdapter(new ProfilePagerAdapter());
 		pager.getLayoutParams().height=getResources().getDisplayMetrics().heightPixels;
@@ -308,6 +330,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			return true;
 		});
 
+		// from ProfileAboutFragment
+		list.setItemAnimator(new BetterItemAnimator());
+		list.setDrawSelectorOnTop(true);
+		list.setLayoutManager(new LinearLayoutManager(getActivity()));
+		imgLoader=new ListImageLoaderWrapper(getActivity(), list, new RecyclerViewDelegate(list), null);
+		list.setAdapter(adapter=new MetadataAdapter());
+		list.setClipToPadding(false);
+
 		return sizeWrapper;
 	}
 
@@ -317,6 +347,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(Account result){
+						if (getActivity() == null) return;
 						account=result;
 						isOwnProfile=AccountSessionManager.getInstance().isSelf(accountID, account);
 						bindHeaderView();
@@ -362,8 +393,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			postsWithRepliesFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.INCLUDE_REPLIES, false);
 			pinnedPostsFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.PINNED, false);
 			mediaFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.MEDIA, false);
-			aboutFragment=new ProfileAboutFragment();
-			aboutFragment.setFields(fields);
+//			aboutFragment=new ProfileAboutFragment();
+			setFields(fields);
 		}
 		pager.getAdapter().notifyDataSetChanged();
 		super.dataLoaded();
@@ -456,6 +487,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		name.setText(ssb);
 		setTitle(ssb);
 
+		if (account.roles != null && !account.roles.isEmpty()) {
+			rolesView.setVisibility(View.VISIBLE);
+			rolesView.removeAllViews();
+			name.setPadding(0, 0, V.dp(12), 0);
+			for (Account.Role role : account.roles) {
+				TextView roleText = new TextView(getActivity(), null, 0, R.style.role_label);
+				roleText.setText(role.name);
+				GradientDrawable bg = (GradientDrawable) roleText.getBackground().mutate();
+				bg.setStroke(V.dp(2), Color.parseColor(role.color));
+				rolesView.addView(roleText);
+			}
+		}
+
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
 		if(account.locked){
@@ -523,9 +567,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			fields.add(field);
 		}
 
-		if(aboutFragment!=null){
-			aboutFragment.setFields(fields);
-		}
+		setFields(fields);
 	}
 
 	private void updateToolbar(){
@@ -684,6 +726,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void updateRelationship(){
+		if (getActivity() == null) return;
 		invalidateOptionsMenu();
 		actionButton.setVisibility(View.VISIBLE);
 		notifyButton.setVisibility(relationship.following ? View.VISIBLE : View.GONE);
@@ -693,7 +736,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		notifyProgress.setIndeterminateTintList(notifyButton.getTextColors());
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
-		if (getActivity() != null) notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
+		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
 	}
 
 	public ImageButton getFab() {
@@ -720,8 +763,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		coverGradient.setTopOffset(scrollY);
 		cover.invalidate();
 		titleTransY=getToolbar().getHeight();
-		if(scrollY>name.getTop()-topBarsH){
-			titleTransY=Math.max(0f, titleTransY-(scrollY-(name.getTop()-topBarsH)));
+		if(scrollY>nameWrap.getTop()-topBarsH){
+			titleTransY=Math.max(0f, titleTransY-(scrollY-(nameWrap.getTop()-topBarsH)));
 		}
 		if(toolbarTitleView!=null){
 			toolbarTitleView.setTranslationY(titleTransY);
@@ -768,7 +811,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			case 1 -> postsWithRepliesFragment;
 			case 2 -> pinnedPostsFragment;
 			case 3 -> mediaFragment;
-			case 4 -> aboutFragment;
+//			case 4 -> aboutFragment;
 			default -> throw new IllegalStateException();
 		};
 	}
@@ -810,8 +853,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 					@Override
 					public void onSuccess(Account result){
 						editModeLoading=false;
-						if(getActivity()==null)
-							return;
+						if (getActivity() == null) return;
 						enterEditMode(result);
 						setActionProgressVisible(false);
 					}
@@ -819,8 +861,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 					@Override
 					public void onError(ErrorResponse error){
 						editModeLoading=false;
-						if(getActivity()==null)
-							return;
+						if (getActivity() == null) return;
 						error.showToast(getActivity());
 						setActionProgressVisible(false);
 					}
@@ -835,16 +876,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		invalidateOptionsMenu();
 		pager.setUserInputEnabled(false);
 		actionButton.setText(R.string.done);
-		pager.setCurrentItem(4);
 		ArrayList<Animator> animators=new ArrayList<>();
-		for(int i=0;i<tabViews.length-1;i++){
-			animators.add(ObjectAnimator.ofFloat(tabbar.getTabAt(i).view, View.ALPHA, .3f));
-			tabbar.getTabAt(i).view.setEnabled(false);
-		}
 		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay).mutate();
 		avatar.setForeground(overlay);
 		animators.add(ObjectAnimator.ofInt(overlay, "alpha", 0, 255));
 
+		nameWrap.setVisibility(View.GONE);
 		nameEdit.setVisibility(View.VISIBLE);
 		nameEdit.setText(account.displayName);
 		RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) username.getLayoutParams();
@@ -856,10 +893,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bioEdit.setText(account.source.note);
 		animators.add(ObjectAnimator.ofFloat(bioEdit, View.ALPHA, 0f, 1f));
 		animators.add(ObjectAnimator.ofFloat(bio, View.ALPHA, 0f));
-
-		animators.add(ObjectAnimator.ofFloat(postsBtn, View.ALPHA, .3f));
-		animators.add(ObjectAnimator.ofFloat(followersBtn, View.ALPHA, .3f));
-		animators.add(ObjectAnimator.ofFloat(followingBtn, View.ALPHA, .3f));
+		profileCounters.setVisibility(View.GONE);
+		pager.setVisibility(View.GONE);
+		tabbar.setVisibility(View.GONE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -867,7 +903,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		set.setInterpolator(CubicBezierInterpolator.DEFAULT);
 		set.start();
 
-		aboutFragment.enterEditMode(account.source.fields);
+//		aboutFragment.enterEditMode(account.source.fields);
+
+		V.setVisibilityAnimated(fab, View.GONE);
+		metadataListData=account.source.fields;
+		adapter.notifyDataSetChanged();
+		dragHelper.attachToRecyclerView(list);
 	}
 
 	private void exitEditMode(){
@@ -878,16 +919,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		invalidateOptionsMenu();
 		ArrayList<Animator> animators=new ArrayList<>();
 		actionButton.setText(R.string.edit_profile);
-		for(int i=0;i<tabViews.length-1;i++){
-			animators.add(ObjectAnimator.ofFloat(tabbar.getTabAt(i).view, View.ALPHA, 1f));
-		}
 		animators.add(ObjectAnimator.ofInt(avatar.getForeground(), "alpha", 0));
 		animators.add(ObjectAnimator.ofFloat(nameEdit, View.ALPHA, 0f));
 		animators.add(ObjectAnimator.ofFloat(bioEdit, View.ALPHA, 0f));
 		animators.add(ObjectAnimator.ofFloat(bio, View.ALPHA, 1f));
-		animators.add(ObjectAnimator.ofFloat(postsBtn, View.ALPHA, 1f));
-		animators.add(ObjectAnimator.ofFloat(followersBtn, View.ALPHA, 1f));
-		animators.add(ObjectAnimator.ofFloat(followingBtn, View.ALPHA, 1f));
+		profileCounters.setVisibility(View.VISIBLE);
+		pager.setVisibility(View.VISIBLE);
+		tabbar.setVisibility(View.VISIBLE);
+		V.setVisibilityAnimated(nameWrap, View.VISIBLE);
 
 		AnimatorSet set=new AnimatorSet();
 		set.playTogether(animators);
@@ -896,20 +935,21 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		set.addListener(new AnimatorListenerAdapter(){
 			@Override
 			public void onAnimationEnd(Animator animation){
-				for(int i=0;i<tabViews.length-1;i++){
-					tabbar.getTabAt(i).view.setEnabled(true);
-				}
 				pager.setUserInputEnabled(true);
 				nameEdit.setVisibility(View.GONE);
 				bioEdit.setVisibility(View.GONE);
 				RelativeLayout.LayoutParams lp=(RelativeLayout.LayoutParams) username.getLayoutParams();
-				lp.addRule(RelativeLayout.BELOW, R.id.name);
+				lp.addRule(RelativeLayout.BELOW, R.id.name_wrap);
 				username.getParent().requestLayout();
 				avatar.setForeground(null);
+				scrollToTop();
 			}
 		});
 		set.start();
 
+		InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
+		imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
+		V.setVisibilityAnimated(fab, View.VISIBLE);
 		bindHeaderView();
 	}
 
@@ -917,12 +957,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(!isInEditMode)
 			throw new IllegalStateException();
 		setActionProgressVisible(true);
-		new UpdateAccountCredentials(nameEdit.getText().toString(), bioEdit.getText().toString(), editNewAvatar, editNewCover, aboutFragment.getFields())
+		new UpdateAccountCredentials(nameEdit.getText().toString(), bioEdit.getText().toString(), editNewAvatar, editNewCover, metadataListData)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(Account result){
 						account=result;
 						AccountSessionManager.getInstance().updateAccountInfo(accountID, account);
+						if (getActivity() == null) return;
 						exitEditMode();
 						setActionProgressVisible(false);
 					}
@@ -1085,6 +1126,229 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		@Override
 		public int getItemViewType(int position){
 			return position;
+		}
+	}
+
+	// from ProfileAboutFragment
+	public void setFields(ArrayList<AccountField> fields){
+		metadataListData=fields;
+		if (isInEditMode) {
+			isInEditMode=false;
+			dragHelper.attachToRecyclerView(null);
+		}
+		if (adapter != null) adapter.notifyDataSetChanged();
+	}
+
+	private class MetadataAdapter extends UsableRecyclerView.Adapter<BaseViewHolder> implements ImageLoaderRecyclerAdapter {
+		public MetadataAdapter(){
+			super(imgLoader);
+		}
+
+		@NonNull
+		@Override
+		public BaseViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
+			return switch(viewType){
+				case 0 -> new AboutViewHolder();
+				case 1 -> new EditableAboutViewHolder();
+				case 2 -> new AddRowViewHolder();
+				default -> throw new IllegalStateException("Unexpected value: "+viewType);
+			};
+		}
+
+		@Override
+		public void onBindViewHolder(BaseViewHolder holder, int position){
+			if(position<metadataListData.size()){
+				holder.bind(metadataListData.get(position));
+			}else{
+				holder.bind(null);
+			}
+			super.onBindViewHolder(holder, position);
+		}
+
+		@Override
+		public int getItemCount(){
+			if(isInEditMode){
+				int size=metadataListData.size();
+				if(size<MAX_FIELDS)
+					size++;
+				return size;
+			}
+			return metadataListData.size();
+		}
+
+		@Override
+		public int getItemViewType(int position){
+			if(isInEditMode){
+				return position==metadataListData.size() ? 2 : 1;
+			}
+			return 0;
+		}
+
+		@Override
+		public int getImageCountForItem(int position){
+			return isInEditMode || metadataListData.get(position).emojiRequests==null
+					? 0 : metadataListData.get(position).emojiRequests.size();
+		}
+
+		@Override
+		public ImageLoaderRequest getImageRequest(int position, int image){
+			return metadataListData.get(position).emojiRequests.get(image);
+		}
+	}
+
+	private abstract class BaseViewHolder extends BindableViewHolder<AccountField> {
+		public BaseViewHolder(int layout){
+			super(getActivity(), layout, list);
+		}
+	}
+
+	private class AboutViewHolder extends BaseViewHolder implements ImageLoaderViewHolder {
+		private TextView title;
+		private LinkedTextView value;
+
+		public AboutViewHolder(){
+			super(R.layout.item_profile_about);
+			title=findViewById(R.id.title);
+			value=findViewById(R.id.value);
+		}
+
+		@Override
+		public void onBind(AccountField item){
+			title.setText(item.parsedName);
+			value.setText(item.parsedValue);
+			if(item.verifiedAt!=null){
+				int textColor=UiUtils.isDarkTheme() ? 0xFF89bb9c : 0xFF5b8e63;
+				value.setTextColor(textColor);
+				value.setLinkTextColor(textColor);
+				Drawable check=getResources().getDrawable(R.drawable.ic_fluent_checkmark_24_regular, getActivity().getTheme()).mutate();
+				check.setTint(textColor);
+				value.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, check, null);
+			}else{
+				value.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorPrimary));
+				value.setLinkTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.colorAccent));
+				value.setCompoundDrawables(null, null, null, null);
+			}
+		}
+
+		@Override
+		public void setImage(int index, Drawable image){
+			CustomEmojiSpan span=index>=item.nameEmojis.length ? item.valueEmojis[index-item.nameEmojis.length] : item.nameEmojis[index];
+			span.setDrawable(image);
+			title.invalidate();
+			value.invalidate();
+		}
+
+		@Override
+		public void clearImage(int index){
+			setImage(index, null);
+		}
+	}
+
+	private class EditableAboutViewHolder extends BaseViewHolder {
+		private EditText title;
+		private EditText value;
+
+		public EditableAboutViewHolder(){
+			super(R.layout.item_profile_about_editable);
+			title=findViewById(R.id.title);
+			value=findViewById(R.id.value);
+			findViewById(R.id.dragger_thingy).setOnLongClickListener(v->{
+				dragHelper.startDrag(this);
+				return true;
+			});
+			title.addTextChangedListener(new SimpleTextWatcher(e->item.name=e.toString()));
+			value.addTextChangedListener(new SimpleTextWatcher(e->item.value=e.toString()));
+			findViewById(R.id.remove_row_btn).setOnClickListener(this::onRemoveRowClick);
+		}
+
+		@Override
+		public void onBind(AccountField item){
+			title.setText(item.name);
+			value.setText(item.value);
+		}
+
+		private void onRemoveRowClick(View v){
+			int pos=getAbsoluteAdapterPosition();
+			metadataListData.remove(pos);
+			adapter.notifyItemRemoved(pos);
+			for(int i=0;i<list.getChildCount();i++){
+				BaseViewHolder vh=(BaseViewHolder) list.getChildViewHolder(list.getChildAt(i));
+				vh.rebind();
+			}
+		}
+	}
+
+	private class AddRowViewHolder extends BaseViewHolder implements UsableRecyclerView.Clickable{
+		public AddRowViewHolder(){
+			super(R.layout.item_profile_about_add_row);
+		}
+
+		@Override
+		public void onClick(){
+			metadataListData.add(new AccountField());
+			if(metadataListData.size()==MAX_FIELDS){ // replace this row with new row
+				adapter.notifyItemChanged(metadataListData.size()-1);
+			}else{
+				adapter.notifyItemInserted(metadataListData.size()-1);
+				rebind();
+			}
+		}
+
+		@Override
+		public void onBind(AccountField item) {}
+	}
+
+	private class ReorderCallback extends ItemTouchHelper.SimpleCallback{
+		public ReorderCallback(){
+			super(ItemTouchHelper.UP | ItemTouchHelper.DOWN, 0);
+		}
+
+		@Override
+		public boolean onMove(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder, @NonNull RecyclerView.ViewHolder target){
+			if(target instanceof AddRowViewHolder)
+				return false;
+			int fromPosition=viewHolder.getAbsoluteAdapterPosition();
+			int toPosition=target.getAbsoluteAdapterPosition();
+			if (fromPosition<toPosition) {
+				for (int i=fromPosition;i<toPosition;i++) {
+					Collections.swap(metadataListData, i, i+1);
+				}
+			} else {
+				for (int i=fromPosition;i>toPosition;i--) {
+					Collections.swap(metadataListData, i, i-1);
+				}
+			}
+			adapter.notifyItemMoved(fromPosition, toPosition);
+			((BindableViewHolder)viewHolder).rebind();
+			((BindableViewHolder)target).rebind();
+			return true;
+		}
+
+		@Override
+		public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction){
+
+		}
+
+		@Override
+		public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState){
+			super.onSelectedChanged(viewHolder, actionState);
+			if(actionState==ItemTouchHelper.ACTION_STATE_DRAG){
+				viewHolder.itemView.setTag(R.id.item_touch_helper_previous_elevation, viewHolder.itemView.getElevation()); // prevents the default behavior of changing elevation in onDraw()
+				viewHolder.itemView.animate().translationZ(V.dp(1)).setDuration(200).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
+				draggedViewHolder=viewHolder;
+			}
+		}
+
+		@Override
+		public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder){
+			super.clearView(recyclerView, viewHolder);
+			viewHolder.itemView.animate().translationZ(0).setDuration(100).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
+			draggedViewHolder=null;
+		}
+
+		@Override
+		public boolean isLongPressDragEnabled(){
+			return false;
 		}
 	}
 }

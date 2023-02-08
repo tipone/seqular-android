@@ -66,7 +66,7 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 		instanceUser.avatar = instanceUser.avatarStatic = instance.thumbnail;
 		instanceUser.emojis = List.of();
 		Status fakeStatus = a.toStatus();
-		TextStatusDisplayItem textItem = new TextStatusDisplayItem(a.id, HtmlParser.parse(a.content, a.emojis, a.mentions, a.tags, accountID), this, fakeStatus);
+		TextStatusDisplayItem textItem = new TextStatusDisplayItem(a.id, HtmlParser.parse(a.content, a.emojis, a.mentions, a.tags, accountID), this, fakeStatus, true);
 		textItem.textSelectable = true;
 		return List.of(
 				HeaderStatusDisplayItem.fromAnnouncement(a, fakeStatus, instanceUser, this, accountID, this::onMarkAsRead),
@@ -77,12 +77,7 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 	public void onMarkAsRead(String id) {
 		if (unreadIDs == null) return;
 		unreadIDs.remove(id);
-		if (unreadIDs.size() == 0) setResult(true, null);
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
+		if (unreadIDs.isEmpty()) setResult(true, null);
 	}
 
 	@Override
@@ -97,11 +92,13 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Announcement> result){
+						if (getActivity() == null) return;
 						List<Announcement> unread = result.stream().filter(a -> !a.read).collect(toList());
 						List<Announcement> read = result.stream().filter(a -> a.read).collect(toList());
 						onDataLoaded(unread, true);
 						onDataLoaded(read, false);
-						unreadIDs = unread.stream().map(a -> a.id).collect(toList());
+						if (unread.isEmpty()) setResult(true, null);
+						else unreadIDs = unread.stream().map(a -> a.id).collect(toList());
 					}
 				})
 				.exec(accountID);

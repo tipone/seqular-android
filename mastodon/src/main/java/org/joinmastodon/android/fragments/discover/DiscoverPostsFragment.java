@@ -6,10 +6,13 @@ import android.view.View;
 import org.joinmastodon.android.api.requests.trends.GetTrendingStatuses;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.StatusListFragment;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
@@ -22,6 +25,8 @@ public class DiscoverPostsFragment extends StatusListFragment implements IsOnTop
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if (getActivity() == null) return;
+						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				}).exec(accountID);

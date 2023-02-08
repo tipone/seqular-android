@@ -9,6 +9,8 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
+import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -41,11 +43,13 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
 import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
+import org.joinmastodon.android.api.session.AccountActivationInfo;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.fragments.onboarding.InstanceRulesFragment;
 import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -63,7 +67,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -77,6 +80,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
 	private NotificationPolicyItem notificationPolicyItem;
+	private SwitchItem showNewPostsButtonItem, glitchModeItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
 	private boolean needAppRestart;
@@ -165,11 +169,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}));
 
 		items.add(new HeaderItem(R.string.settings_behavior));
-		items.add(new SwitchItem(R.string.sk_settings_show_federated_timeline, R.drawable.ic_fluent_earth_24_regular, GlobalUserPreferences.showFederatedTimeline, i->{
-			GlobalUserPreferences.showFederatedTimeline=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
 		items.add(new SwitchItem(R.string.settings_gif, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{
 			GlobalUserPreferences.playGifs=i.checked;
 			GlobalUserPreferences.save();
@@ -196,6 +195,59 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_disable_alt_text_reminder, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
+			GlobalUserPreferences.disableAltTextReminder=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
+			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
+			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
+			GlobalUserPreferences.save();
+		}));
+
+		items.add(new HeaderItem(R.string.sk_timelines));
+		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
+			GlobalUserPreferences.showReplies=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_boosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, GlobalUserPreferences.showBoosts, i->{
+			GlobalUserPreferences.showBoosts=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_sync_24_regular, GlobalUserPreferences.loadNewPosts, i->{
+			GlobalUserPreferences.loadNewPosts=i.checked;
+			showNewPostsButtonItem.enabled = i.checked;
+			if (!i.checked) {
+				GlobalUserPreferences.showNewPostsButton = false;
+				showNewPostsButtonItem.checked = false;
+			}
+			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsButtonItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			GlobalUserPreferences.save();
+		}));
+		items.add(showNewPostsButtonItem = new SwitchItem(R.string.sk_settings_see_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
+			GlobalUserPreferences.showNewPostsButton=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_alt_indicator, R.drawable.ic_fluent_scan_text_24_regular, GlobalUserPreferences.showAltIndicator, i->{
+			GlobalUserPreferences.showAltIndicator=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
+			GlobalUserPreferences.showNoAltIndicator=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_collapse_long_posts, R.drawable.ic_fluent_chevron_down_24_filled, GlobalUserPreferences.collapseLongPosts, i->{
+			GlobalUserPreferences.collapseLongPosts=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_spectator_mode, R.drawable.ic_fluent_eye_24_regular, GlobalUserPreferences.spectatorMode, i->{
+			GlobalUserPreferences.spectatorMode=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
 		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
 			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
 			GlobalUserPreferences.save();
@@ -206,32 +258,18 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				R.string.sk_settings_translation_availability_note_available :
 				R.string.sk_settings_translation_availability_note_unavailable, instanceName)));
 
-		items.add(new HeaderItem(R.string.home_timeline));
-		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
-			GlobalUserPreferences.showReplies=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_show_boosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, GlobalUserPreferences.showBoosts, i->{
-			GlobalUserPreferences.showBoosts=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.loadNewPosts, i->{
-			GlobalUserPreferences.loadNewPosts=i.checked;
-			GlobalUserPreferences.save();
-		}));
-
 		items.add(new HeaderItem(R.string.settings_notifications));
 		items.add(notificationPolicyItem=new NotificationPolicyItem());
 		PushSubscription pushSubscription=getPushSubscription();
-		items.add(new SwitchItem(R.string.notify_favorites, R.drawable.ic_fluent_star_24_regular, pushSubscription.alerts.favourite, i->onNotificationsChanged(PushNotification.Type.FAVORITE, i.checked)));
-		items.add(new SwitchItem(R.string.notify_follow, R.drawable.ic_fluent_person_add_24_regular, pushSubscription.alerts.follow, i->onNotificationsChanged(PushNotification.Type.FOLLOW, i.checked)));
-		items.add(new SwitchItem(R.string.notify_reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, pushSubscription.alerts.reblog, i->onNotificationsChanged(PushNotification.Type.REBLOG, i.checked)));
-		items.add(new SwitchItem(R.string.notify_mention, R.drawable.ic_fluent_mention_24_regular, pushSubscription.alerts.mention, i->onNotificationsChanged(PushNotification.Type.MENTION, i.checked)));
-		items.add(new SwitchItem(R.string.sk_notify_posts, R.drawable.ic_fluent_alert_24_regular, pushSubscription.alerts.status, i->onNotificationsChanged(PushNotification.Type.STATUS, i.checked)));
-		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
-			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
-			GlobalUserPreferences.save();
-		}));
+		boolean switchEnabled=pushSubscription.policy!=PushSubscription.Policy.NONE;
+
+		items.add(new SwitchItem(R.string.notify_favorites, R.drawable.ic_fluent_star_24_regular, pushSubscription.alerts.favourite, i->onNotificationsChanged(PushNotification.Type.FAVORITE, i.checked), switchEnabled));
+		items.add(new SwitchItem(R.string.notify_follow, R.drawable.ic_fluent_person_add_24_regular, pushSubscription.alerts.follow, i->onNotificationsChanged(PushNotification.Type.FOLLOW, i.checked), switchEnabled));
+		items.add(new SwitchItem(R.string.notify_reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, pushSubscription.alerts.reblog, i->onNotificationsChanged(PushNotification.Type.REBLOG, i.checked), switchEnabled));
+		items.add(new SwitchItem(R.string.notify_mention, R.drawable.ic_fluent_mention_24_regular, pushSubscription.alerts.mention, i->onNotificationsChanged(PushNotification.Type.MENTION, i.checked), switchEnabled));
+		items.add(new SwitchItem(R.string.sk_notify_posts, R.drawable.ic_fluent_chat_24_regular, pushSubscription.alerts.status, i->onNotificationsChanged(PushNotification.Type.STATUS, i.checked), switchEnabled));
+		items.add(new SwitchItem(R.string.sk_notify_update, R.drawable.ic_fluent_history_24_regular, pushSubscription.alerts.update, i->onNotificationsChanged(PushNotification.Type.UPDATE, i.checked), switchEnabled));
+		items.add(new SwitchItem(R.string.sk_notify_poll_results, R.drawable.ic_fluent_poll_24_regular, pushSubscription.alerts.poll, i->onNotificationsChanged(PushNotification.Type.POLL, i.checked), switchEnabled));
 
 		items.add(new HeaderItem(R.string.settings_account));
 		items.add(new TextItem(R.string.sk_settings_profile, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/settings/profile"), R.drawable.ic_fluent_open_24_regular));
@@ -249,20 +287,65 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
+		if (!TextUtils.isEmpty(instance.version)) items.add(new SmallTextItem(getString(R.string.sk_settings_server_version, instance.version)));
+
+		items.add(new HeaderItem(R.string.sk_instance_features));
+		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
+			glitchModeItem.enabled = i.checked;
+			if (i.checked) {
+				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
+				if (instance.pleroma == null) GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+			} else {
+				GlobalUserPreferences.accountsWithLocalOnlySupport.remove(accountID);
+				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);
+			}
+			glitchModeItem.checked = GlobalUserPreferences.accountsInGlitchMode.contains(accountID);
+			if (list.findViewHolderForAdapterPosition(items.indexOf(glitchModeItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_local_only_explanation)));
+		items.add(glitchModeItem = new SwitchItem(R.string.sk_settings_glitch_instance, 0, GlobalUserPreferences.accountsInGlitchMode.contains(accountID), i->{
+			if (i.checked) {
+				GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+			} else {
+				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);
+			}
+			GlobalUserPreferences.save();
+		}));
+		glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
+		items.add(new SmallTextItem(getString(R.string.sk_settings_glitch_mode_explanation)));
 
 		items.add(new HeaderItem(R.string.sk_settings_about));
 		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://ko-fi.com/xsk22"), R.drawable.ic_fluent_heart_24_regular));
-		if (GithubSelfUpdater.needSelfUpdating()) {
-			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
-			items.add(checkForUpdateItem);
-		}
-		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), imageCache.getDiskCache().size(), true), this::clearImageCache, 0);
+		LruCache<?, ?> cache = imageCache == null ? null : imageCache.getLruCache();
+		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), cache != null ? cache.size() : 0, true), this::clearImageCache, 0);
 		items.add(clearImageCacheItem);
 		items.add(new TextItem(R.string.sk_clear_recent_languages, ()->UiUtils.showConfirmationAlert(getActivity(), R.string.sk_clear_recent_languages, R.string.sk_confirm_clear_recent_languages, R.string.clear, ()->{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
+		if (GithubSelfUpdater.needSelfUpdating()) {
+			items.add(new SwitchItem(R.string.sk_updater_enable_pre_releases, 0, GlobalUserPreferences.enablePreReleases, i->{
+				GlobalUserPreferences.enablePreReleases=i.checked;
+				GlobalUserPreferences.save();
+			}));
+			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+			items.add(checkForUpdateItem);
+		}
+
+		if(BuildConfig.DEBUG){
+			items.add(new RedHeaderItem("Debug options"));
+			items.add(new TextItem("Test e-mail confirmation flow", ()->{
+				AccountSession sess=AccountSessionManager.getInstance().getAccount(accountID);
+				sess.activated=false;
+				sess.activationInfo=new AccountActivationInfo("test@email", System.currentTimeMillis());
+				Bundle args=new Bundle();
+				args.putString("account", accountID);
+				args.putBoolean("debug", true);
+				Nav.goClearingStack(getActivity(), AccountActivationFragment.class, args);
+			}));
+		}
 
 		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
 	}
@@ -317,11 +400,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(needUpdateNotificationSettings && PushSubscriptionManager.arePushNotificationsAvailable()){
 			AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().updatePushSettings(pushSubscription);
 		}
-		if(needAppRestart){
-			Intent intent = Intent.makeRestartActivityTask(MastodonApp.context.getPackageManager().getLaunchIntentForPackage(MastodonApp.context.getPackageName()).getComponent());
-			MastodonApp.context.startActivity(intent);
-			Runtime.getRuntime().exit(0);
-		}
+		if(needAppRestart) UiUtils.restartApp();
 	}
 
 	@Override
@@ -423,8 +502,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			case FAVORITE -> subscription.alerts.favourite=enabled;
 			case FOLLOW -> subscription.alerts.follow=enabled;
 			case REBLOG -> subscription.alerts.reblog=enabled;
-			case MENTION -> subscription.alerts.mention=subscription.alerts.poll=enabled;
+			case MENTION -> subscription.alerts.mention=enabled;
+			case POLL -> subscription.alerts.poll=enabled;
 			case STATUS -> subscription.alerts.status=enabled;
+			case UPDATE -> subscription.alerts.update=enabled;
 		}
 		needUpdateNotificationSettings=true;
 	}
@@ -443,9 +524,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			list.getAdapter().notifyItemChanged(index);
 		}
 		if((prevPolicy==PushSubscription.Policy.NONE)!=(policy==PushSubscription.Policy.NONE)){
+			boolean newState=policy!=PushSubscription.Policy.NONE;
+			for(PushNotification.Type value : PushNotification.Type.values()){
+				onNotificationsChanged(value, newState);
+			}
 			index++;
 			while(items.get(index) instanceof SwitchItem si){
-				si.enabled=si.checked=policy!=PushSubscription.Policy.NONE;
+				si.enabled=si.checked=newState;
 				RecyclerView.ViewHolder holder=list.findViewHolderForAdapterPosition(index);
 				if(holder!=null)
 					((BindableViewHolder<?>)holder).rebind();
@@ -485,6 +570,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	}
 
 	private void onLoggedOut(){
+		if (getActivity() == null) return;
 		AccountSessionManager.getInstance().removeAccount(accountID);
 		getActivity().finish();
 		Intent intent=new Intent(getActivity(), MainActivity.class);
@@ -538,7 +624,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.text=getString(text);
 		}
 
-		public HeaderItem(String text) {
+		public HeaderItem(String text){
 			this.text=text;
 		}
 
@@ -562,7 +648,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.onChanged=onChanged;
 		}
 
-		public SwitchItem(@StringRes int text, int icon, boolean checked, Consumer<SwitchItem> onChanged, boolean enabled){
+		public SwitchItem(@StringRes int text, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged, boolean enabled){
 			this.text=getString(text);
 			this.icon=icon;
 			this.checked=checked;
@@ -649,6 +735,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.secondaryText = secondaryText;
 		}
 
+		public TextItem(String text, Runnable onClick){
+			this.text=text;
+			this.onClick=onClick;
+		}
+
 		@Override
 		public int getViewType(){
 			return 4;
@@ -658,6 +749,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private class RedHeaderItem extends HeaderItem{
 
 		public RedHeaderItem(int text){
+			super(text);
+		}
+
+		public RedHeaderItem(String text){
 			super(text);
 		}
 
@@ -754,7 +849,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		@Override
 		public void onBind(SwitchItem item){
 			text.setText(item.text);
-			icon.setImageResource(item.icon);
+			if (item.icon == 0) {
+				icon.setVisibility(View.GONE);
+			} else {
+				icon.setVisibility(View.VISIBLE);
+				icon.setImageResource(item.icon);
+			}
 			checkbox.setChecked(item.checked && item.enabled);
 			checkbox.setEnabled(item.enabled);
 		}
@@ -928,19 +1028,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 	private class SmallTextViewHolder extends BindableViewHolder<SmallTextItem> {
 		private final TextView text;
-;
 
 		public SmallTextViewHolder(){
 			super(getActivity(), R.layout.item_settings_text, list);
 			text = itemView.findViewById(R.id.text);
+			text.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorSecondary));
+			text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+			text.setPaddingRelative(text.getPaddingStart(), 0, text.getPaddingEnd(), text.getPaddingBottom());
 		}
 
 		@Override
 		public void onBind(SmallTextItem item){
 			text.setText(item.text);
-			text.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorSecondary));
-			text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-			text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 		}
 	}
 

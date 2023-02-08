@@ -6,12 +6,14 @@ import android.os.Bundle;
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
@@ -30,7 +32,9 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, true, null);
+		boolean addFooter = !GlobalUserPreferences.spectatorMode ||
+				(this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id));
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, addFooter, null, Filter.FilterContext.HOME);
 	}
 
 	@Override
@@ -56,6 +60,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 		Status status=getContentStatusByID(id);
 		if(status==null)
 			return;
+		status.filterRevealed = true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putParcelable("status", Parcels.wrap(status));

@@ -62,19 +62,13 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
     }
 
     public Status toStatus() {
-        Status s = new Status();
-        s.id = id;
+        Status s = Status.ofFake(id, params.text, scheduledAt);
         s.mediaAttachments = mediaAttachments;
-        s.createdAt = scheduledAt;
         s.inReplyToId = params.inReplyToId > 0 ? "" + params.inReplyToId : null;
-        s.content = s.text = params.text;
         s.spoilerText = params.spoilerText;
         s.visibility = params.visibility;
         s.language = params.language;
         s.sensitive = params.sensitive;
-        s.mentions = List.of();
-        s.tags = List.of();
-        s.emojis = List.of();
         if (params.poll != null) s.poll = params.poll.toPoll();
         return s;
     }

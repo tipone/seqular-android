@@ -28,11 +28,11 @@ import me.grishka.appkit.api.SimpleCallback;
 
 public class ScheduledStatusListFragment extends BaseStatusListFragment<ScheduledStatus> {
 	private String nextMaxID;
-	private ImageButton fab;
 	private static final int SCHEDULED_STATUS_LIST_OPENED = 161;
 
-	public ScheduledStatusListFragment() {
-		setListLayoutId(R.layout.recycler_fragment_with_fab);
+	@Override
+	protected boolean withComposeButton() {
+		return true;
 	}
 
 	@Override
@@ -56,20 +56,30 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		fab=view.findViewById(R.id.fab);
+	protected void onFabClick(View v) {
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putSerializable("scheduledAt", CreateStatus.getDraftInstant());
-		fab.setOnClickListener(v -> Nav.go(getActivity(), ComposeFragment.class, args));
-		fab.setOnLongClickListener(v -> UiUtils.pickAccountForCompose(getActivity(), accountID, args));
+		Nav.go(getActivity(), ComposeFragment.class, args);
+	}
+
+	@Override
+	protected boolean onFabLongClick(View v) {
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putSerializable("scheduledAt", CreateStatus.getDraftInstant());
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, args);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 		if (getArguments().getBoolean("hide_fab", false)) fab.setVisibility(View.GONE);
 	}
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(ScheduledStatus s) {
-		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, false, false, null);
+		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, false, false, null, true);
 	}
 
 	@Override
@@ -109,6 +119,7 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 							nextMaxID=result.nextPageUri.getQueryParameter("max_id");
 						else
 							nextMaxID=null;
+						if (getActivity() == null) return;
 						onDataLoaded(result, nextMaxID!=null);
 					}
 				})

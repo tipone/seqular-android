@@ -2,8 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.squareup.otto.Subscribe;
@@ -14,14 +13,20 @@ import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
+import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ImageStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -41,6 +46,12 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	private boolean onlyMentions;
 	private boolean onlyPosts;
 	private String maxID;
+	private final DiscoverInfoBannerHelper bannerHelper = new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.POST_NOTIFICATIONS);
+
+	@Override
+	protected boolean withComposeButton() {
+		return true;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -71,6 +82,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Notification n){
+		Account reportTarget = n.report == null ? null : n.report.targetAccount == null ? null :
+				n.report.targetAccount;
 		String extraText=switch(n.type){
 			case FOLLOW -> getString(R.string.user_followed_you);
 			case FOLLOW_REQUEST -> getString(R.string.user_sent_follow_request);
@@ -78,10 +91,13 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			case REBLOG -> getString(R.string.notification_boosted);
 			case FAVORITE -> getString(R.string.user_favorited);
 			case POLL -> getString(R.string.poll_ended);
+			case UPDATE -> getString(R.string.sk_post_edited);
+			case SIGN_UP -> getString(R.string.sk_signed_up);
+			case REPORT -> getString(R.string.sk_reported);
 		};
-		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, null, extraText, n, null) : null;
+		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, extraText, n, null) : null;
 		if(n.status!=null){
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n);
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n, false, Filter.FilterContext.NOTIFICATIONS);
 			if(titleItem!=null){
 				for(StatusDisplayItem item:items){
 					if(item instanceof ImageStatusDisplayItem imgItem){
@@ -93,8 +109,13 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 				items.add(0, titleItem);
 			return items;
 		}else if(titleItem!=null){
-			AccountCardStatusDisplayItem card=new AccountCardStatusDisplayItem(n.id, this, n.account, n);
-			return Arrays.asList(titleItem, card);
+			AccountCardStatusDisplayItem card=new AccountCardStatusDisplayItem(n.id, this,
+					reportTarget != null ? reportTarget : n.account, n);
+			TextStatusDisplayItem text = n.report != null && !TextUtils.isEmpty(n.report.comment) ?
+					new TextStatusDisplayItem(n.id, n.report.comment, this,
+							Status.ofFake(n.id, n.report.comment, n.createdAt), true) :
+					null;
+			return text == null ? Arrays.asList(titleItem, card) : Arrays.asList(titleItem, text, card);
 		}else{
 			return Collections.emptyList();
 		}
@@ -115,8 +136,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, onlyPosts, refreshing, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(PaginatedResponse<List<Notification>> result){
-						if(getActivity()==null)
-							return;
+						if (getActivity() == null) return;
 						if(refreshing)
 							relationships.clear();
 						onDataLoaded(result.items.stream().filter(n->n.type!=null).collect(Collectors.toList()), !result.items.isEmpty());
@@ -163,6 +183,9 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId))
 				args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status.inReplyToAccountId)));
 			Nav.go(getActivity(), ThreadFragment.class, args);
+		}else if(n.report != null){
+			String domain = AccountSessionManager.getInstance().getAccount(accountID).domain;
+			UiUtils.launchWebBrowser(getActivity(), "https://"+domain+"/admin/reports/"+n.report.id);
 		}else{
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -175,6 +198,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		list.addItemDecoration(new InsetStatusItemDecoration(this));
+		if (getParentFragment() instanceof NotificationsFragment) fab.setVisibility(View.GONE);
+		if (onlyPosts) bannerHelper.maybeAddBanner(contentWrap);
 	}
 
 	private Notification getNotificationByID(String id){

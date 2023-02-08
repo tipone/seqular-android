@@ -45,7 +45,7 @@ public class Instance extends BaseModel{
 	@RequiredField
 	public String version;
 	/**
-	 * Primary langauges of the website and its staff.
+	 * Primary languages of the website and its staff.
 	 */
 //	@RequiredField
 	public List<String> languages;
@@ -83,6 +83,8 @@ public class Instance extends BaseModel{
 	public int maxTootChars;
 
 	public V2 v2;
+
+	public Pleroma pleroma;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -192,5 +194,10 @@ public class Instance extends BaseModel{
 		public static class TranslationConfiguration{
 			public boolean enabled;
 		}
+	}
+
+	@Parcel
+	public static class Pleroma extends BaseModel {
+		// metadata etc
 	}
 }

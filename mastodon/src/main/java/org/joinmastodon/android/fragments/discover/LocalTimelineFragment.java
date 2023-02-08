@@ -3,9 +3,7 @@ package org.joinmastodon.android.fragments.discover;
 import android.os.Bundle;
 import android.view.View;
 
-import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
-import org.joinmastodon.android.fragments.FabStatusListFragment;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
@@ -17,9 +15,15 @@ import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
-public class LocalTimelineFragment extends FabStatusListFragment {
+public class LocalTimelineFragment extends StatusListFragment {
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.LOCAL_TIMELINE);
 	private String maxID;
+
+	@Override
+	protected boolean withComposeButton() {
+		return true;
+	}
+
 
 	@Override
 	protected void doLoadData(int offset, int count){
@@ -29,7 +33,9 @@ public class LocalTimelineFragment extends FabStatusListFragment {
 					public void onSuccess(List<Status> result){
 						if(!result.isEmpty())
 							maxID=result.get(result.size()-1).id;
-						onDataLoaded(result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList()), !result.isEmpty());
+						if (getActivity() == null) return;
+						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+						onDataLoaded(result, !result.isEmpty());
 					}
 				})
 				.exec(accountID);

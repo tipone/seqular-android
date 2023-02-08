@@ -3,9 +3,9 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingTop="16dp"
-	android:paddingRight="16dp"
-	android:paddingLeft="16dp">
+	android:paddingTop="13dp"
+	android:paddingEnd="4dp"
+	android:paddingStart="16dp">
 
 	<ImageView
 		android:id="@+id/more"
@@ -13,9 +13,7 @@
 		android:layout_height="36dp"
 		android:layout_alignParentTop="true"
 		android:layout_alignParentEnd="true"
-		android:layout_marginTop="-6dp"
-		android:layout_marginEnd="-8dp"
-		android:background="?android:selectableItemBackgroundBorderless"
+		android:background="?android:actionBarItemBackground"
 		android:contentDescription="@string/more_options"
 		android:scaleType="center"
 		android:src="@drawable/ic_fluent_more_vertical_20_filled"
@@ -25,11 +23,9 @@
 		android:id="@+id/delete_notification"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
-		android:layout_marginTop="-6dp"
-		android:layout_marginEnd="2dp"
 		android:layout_toStartOf="@id/more"
 		android:visibility="gone"
-		android:background="?android:selectableItemBackgroundBorderless"
+		android:background="?android:actionBarItemBackground"
 		android:contentDescription="@string/sk_delete_notification"
 		android:scaleType="center"
 		android:src="@drawable/ic_fluent_dismiss_20_filled"
@@ -39,20 +35,41 @@
 		android:id="@+id/visibility"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
-		android:layout_marginTop="-6dp"
-		android:layout_marginEnd="2dp"
 		android:layout_toStartOf="@id/delete_notification"
-		android:background="?android:selectableItemBackgroundBorderless"
+		android:background="?android:actionBarItemBackground"
 		android:scaleType="center"
 		android:src="@drawable/ic_visibility"
 		android:tint="?android:textColorSecondary" />
+
+	<FrameLayout
+		android:id="@+id/collapse_btn"
+		android:layout_width="36dp"
+		android:layout_height="36dp"
+		android:layout_toStartOf="@id/visibility"
+		android:background="?android:actionBarItemBackground"
+		android:visibility="gone"
+		android:importantForAccessibility="noHideDescendants">
+
+		<!-- wrapping this button so the flip animation doesn't flip the background and the tooltip
+		 	 isn't displaced by the -1 scale -->
+
+		<ImageView
+			android:id="@+id/collapse_btn_icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:importantForAccessibility="no"
+			android:scaleType="center"
+			android:src="@drawable/ic_fluent_chevron_down_20_filled"
+			android:tint="?android:textColorSecondary" />
+
+	</FrameLayout>
 
 	<ImageView
 		android:id="@+id/unread_indicator"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
-		android:layout_marginTop="-6dp"
-		android:layout_toStartOf="@id/visibility"
+		android:layout_toStartOf="@id/collapse_btn"
 		android:visibility="gone"
 		android:tint="?android:colorAccent"
 		android:scaleType="center"
@@ -64,14 +81,16 @@
 		android:layout_height="46sp"
 		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
-		android:layout_marginEnd="12dp" />
+		android:layout_marginEnd="12dp"
+		android:layout_marginTop="3dp" />
 
 	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/name_wrap"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginEnd="12dp"
-		android:layout_marginTop="2sp"
+		android:layout_marginEnd="8dp"
+		android:layout_marginTop="3dp"
+		android:paddingTop="4sp"
 		android:layout_toStartOf="@id/unread_indicator"
 		android:layout_toEndOf="@id/avatar"
 		android:minHeight="24sp">
@@ -90,7 +109,7 @@
 			android:id="@+id/extra_text"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_marginStart="8dp"
+			android:layout_marginStart="8sp"
 			android:ellipsize="end"
 			android:fontFamily="sans-serif"
 			android:singleLine="true"
@@ -127,7 +146,7 @@
 			android:layout_marginLeft="4sp"
 			android:layout_marginRight="4sp"
 			android:importantForAccessibility="no"
-			android:text="·"
+			android:text="@string/sk_separator"
 			android:textAppearance="@style/m3_title_small" />
 
 		<TextView

@@ -10,4 +10,6 @@
 		android:layout_gravity="center"
 		android:scaleType="centerCrop"/>
 
+	<include layout="@layout/alt_badge" />
+
 </org.joinmastodon.android.ui.views.ImageAttachmentFrameLayout>

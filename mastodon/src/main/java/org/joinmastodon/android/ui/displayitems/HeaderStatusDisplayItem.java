@@ -9,7 +9,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -21,6 +20,8 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.StringRes;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
@@ -31,6 +32,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
+import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
@@ -42,6 +44,7 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -51,6 +54,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -135,7 +139,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator;
+		private final View collapseBtn;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtnIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -158,6 +163,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			visibility=findViewById(R.id.visibility);
 			deleteNotification=findViewById(R.id.delete_notification);
 			unreadIndicator=findViewById(R.id.unread_indicator);
+			collapseBtn=findViewById(R.id.collapse_btn);
+			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
@@ -169,6 +176,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					fragment.removeNotification(item.notification);
 				}
 			}));
+			collapseBtn.setOnClickListener(l -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
@@ -180,7 +188,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					final Bundle args=new Bundle();
 					args.putString("account", item.parentFragment.getAccountID());
 					args.putParcelable("editStatus", Parcels.wrap(item.status));
-					if (id==R.id.delete_and_redraft) {
+					boolean redraft = id==R.id.delete_and_redraft;
+					if (redraft) {
 						args.putBoolean("redraftStatus", true);
 						if (item.parentFragment instanceof ThreadFragment thread && !thread.isItemEnabled(item.status.id)) {
 							// ("enabled" = clickable; opened status is not clickable)
@@ -188,7 +197,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 							args.putBoolean("navigateToStatus", true);
 						}
 					}
-					if(TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText)){
+					if(!redraft && TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText)){
 						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 					}else if(item.scheduledStatus!=null){
 						args.putString("sourceText", item.status.text);
@@ -203,7 +212,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 									public void onSuccess(GetStatusSourceText.Response result){
 										args.putString("sourceText", result.text);
 										args.putString("sourceSpoiler", result.spoilerText);
-										if (id==R.id.delete_and_redraft) {
+										if (redraft) {
 											UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{
 												Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 											}, true);
@@ -261,6 +270,12 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					UiUtils.confirmToggleBlockDomain(activity, item.parentFragment.getAccountID(), account.getDomain(), relationship!=null && relationship.domainBlocking, ()->{});
 				}else if(id==R.id.bookmark){
 					AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked);
+				}else if(id==R.id.manage_user_lists){
+					final Bundle args=new Bundle();
+					args.putString("account", item.parentFragment.getAccountID());
+					args.putString("profileAccount", account.id);
+					args.putString("profileDisplayUsername", account.getDisplayUsername());
+					Nav.go(item.parentFragment.getActivity(), ListTimelinesFragment.class, args);
 				}
 				return true;
 			});
@@ -291,7 +306,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
 					timestamp.setText(item.scheduledStatus.scheduledAt.atZone(ZoneId.systemDefault()).format(formatter));
 				}
-			else if ((item.status==null || item.status.editedAt==null) && item.createdAt != null)
+			else if ((!item.inset || item.status==null || item.status.editedAt==null) && item.createdAt != null)
 				timestamp.setText(UiUtils.formatRelativeTimestamp(itemView.getContext(), item.createdAt));
 			else if (item.status != null && item.status.editedAt != null)
 				timestamp.setText(item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt)));
@@ -310,12 +325,15 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 			if(TextUtils.isEmpty(item.extraText)){
-				extraText.setVisibility(View.GONE);
+				if (item.status != null) {
+					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, item.status.visibility, item.status.localOnly);
+				}
 			}else{
 				extraText.setVisibility(View.VISIBLE);
 				extraText.setText(item.extraText);
 			}
-			more.setVisibility(item.inset ? View.GONE : View.VISIBLE);
+			more.setVisibility(item.inset || (item.notification != null && item.notification.report != null)
+					? View.GONE : View.VISIBLE);
 			avatar.setClickable(!item.inset);
 			avatar.setContentDescription(item.parentFragment.getString(R.string.avatar_description, item.user.acct));
 			if(currentRelationshipRequest!=null){
@@ -343,6 +361,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 						public void onSuccess(Object o) {
 							item.consumeReadAnnouncement.accept(item.announcement.id);
 							item.announcement.read = true;
+							if (item.parentFragment.getActivity() == null) return;
 							rebind();
 						}
 
@@ -360,6 +379,17 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 			more.setContentDescription(desc);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) more.setTooltipText(desc);
+
+			if (item.status == null || !item.status.textExpandable) {
+				collapseBtn.setVisibility(View.GONE);
+			} else {
+				String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
+				collapseBtn.setVisibility(item.status.textExpandable ? View.VISIBLE : View.GONE);
+				collapseBtn.setContentDescription(collapseText);
+				if (GlobalUserPreferences.reduceMotion) collapseBtnIcon.setScaleY(item.status.textExpanded ? -1 : 1);
+				else collapseBtnIcon.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
+			}
 		}
 
 		@Override
@@ -415,6 +445,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void updateOptionsMenu(){
+			if (item.parentFragment.getActivity() == null) return;
 			if (item.announcement != null) return;
 			boolean hasMultipleAccounts = AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
 			Menu menu=optionsMenu.getMenu();
@@ -445,6 +476,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			MenuItem block=menu.findItem(R.id.block);
 			MenuItem report=menu.findItem(R.id.report);
 			MenuItem follow=menu.findItem(R.id.follow);
+			MenuItem manageUserLists = menu.findItem(R.id.manage_user_lists);
 			MenuItem bookmark=menu.findItem(R.id.bookmark);
 			bookmark.setVisible(false);
 			/* disabled in megalodon: add/remove bookmark is already available through status footer
@@ -461,6 +493,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				report.setVisible(false);
 				follow.setVisible(false);
 				blockDomain.setVisible(false);
+				manageUserLists.setVisible(false);
 			}else{
 				mute.setVisible(true);
 				block.setVisible(true);
@@ -481,6 +514,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				boolean following = relationship!=null && relationship.following;
 				follow.setTitle(item.parentFragment.getString(following ? R.string.unfollow_user : R.string.follow_user, account.getShortUsername()));
 				follow.setIcon(following ? R.drawable.ic_fluent_person_delete_24_regular : R.drawable.ic_fluent_person_add_24_regular);
+				manageUserLists.setVisible(relationship != null && relationship.following);
+				manageUserLists.setTitle(item.parentFragment.getString(R.string.sk_lists_with_user, account.getShortUsername()));
 				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), follow);
 			}
 		}

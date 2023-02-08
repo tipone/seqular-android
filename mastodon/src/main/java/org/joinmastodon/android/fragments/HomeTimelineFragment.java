@@ -8,6 +8,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.E;
+import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCreatedEvent;
@@ -29,9 +32,15 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.V;
 
-public class HomeTimelineFragment extends FabStatusListFragment {
+public class HomeTimelineFragment extends StatusListFragment {
 	private HomeTabFragment parent;
 	private String maxID;
+	private String lastSavedMarkerID;
+
+	@Override
+	protected boolean withComposeButton() {
+		return true;
+	}
 
 	@Override
 	public void onAttach(Activity activity){
@@ -54,8 +63,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 				.getHomeTimeline(offset>0 ? maxID : null, count, refreshing, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(CacheablePaginatedResponse<List<Status>> result){
-						if(getActivity()==null)
-							return;
+						if (getActivity() == null) return;
 						List<Status> filteredItems = filterPosts(result.items);
 						onDataLoaded(filteredItems, !result.items.isEmpty());
 						maxID=result.maxID;
@@ -87,6 +95,29 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 				loadData();
 			}else if(!dataLoading){
 				loadNewPosts();
+			}
+		}
+	}
+
+	@Override
+	protected void onHidden(){
+		super.onHidden();
+		if(!data.isEmpty()){
+			String topPostID=displayItems.get(Math.max(0, list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset())).parentID;
+			if(!topPostID.equals(lastSavedMarkerID)){
+				lastSavedMarkerID=topPostID;
+				new SaveMarkers(topPostID, null)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(SaveMarkers.Response result){
+							}
+
+							@Override
+							public void onError(ErrorResponse error){
+								lastSavedMarkerID=null;
+							}
+						})
+						.exec(accountID);
 			}
 		}
 	}
@@ -123,7 +154,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 						toAdd=toAdd.stream().filter(filterPredicate).collect(Collectors.toList());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
-							if (parent != null) parent.showNewPostsButton();
+							if (parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAdd, false);
 						}
 					}

@@ -15,12 +15,15 @@ import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUnpinnedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
@@ -60,8 +63,8 @@ public class AccountTimelineFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
-						if(getActivity()==null)
-							return;
+						if(getActivity()==null) return;
+						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.ACCOUNT)).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})

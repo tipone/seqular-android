@@ -101,6 +101,7 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 						for(Relationship rel:result){
 							relationships.put(rel.id, rel);
 						}
+						if (getActivity() == null) return;
 						if(list==null)
 							return;
 						for(int i=0;i<list.getChildCount();i++){
@@ -128,7 +129,8 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 		super.onViewCreated(view, savedInstanceState);
 //		list.setPadding(0, V.dp(16), 0, V.dp(16));
 		list.setClipToPadding(false);
-		list.addItemDecoration(new DividerItemDecoration(getActivity(), R.attr.colorPollVoted, 1, 72, 16));
+		list.addItemDecoration(new DividerItemDecoration(getActivity(), R.attr.colorPollVoted, 1,
+				Math.round(16f + 56f * getResources().getConfiguration().fontScale), 16));
 		updateToolbar();
 	}
 
@@ -370,6 +372,7 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 							@Override
 							public void onSuccess(Relationship result){
 								relationships.put(AccountViewHolder.this.item.account.id, result);
+								if (getActivity() == null) return;
 								bindRelationship();
 							}
 

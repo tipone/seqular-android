@@ -23,6 +23,7 @@ public class PushSubscription extends BaseModel implements Cloneable{
 				", endpoint='"+endpoint+'\''+
 				", alerts="+alerts+
 				", serverKey='"+serverKey+'\''+
+				", policy="+policy+
 				'}';
 	}
 
@@ -44,10 +45,19 @@ public class PushSubscription extends BaseModel implements Cloneable{
 		public boolean mention;
 		public boolean poll;
 		public boolean status;
+		public boolean update;
+
+		// set to true here because i didn't add any items for those to the settings
+		// (so i don't have to determine whether the user is an admin to show the items or not, and
+		// admins can still disable those through the android notifications settings)
+		@SerializedName("admin.sign_up")
+		public boolean adminSignUp = true;
+		@SerializedName("admin.report")
+		public boolean adminReport = true;
 
 		public static Alerts ofAll(){
 			Alerts alerts=new Alerts();
-			alerts.follow=alerts.favourite=alerts.reblog=alerts.mention=alerts.poll=alerts.status=true;
+			alerts.follow=alerts.favourite=alerts.reblog=alerts.mention=alerts.poll=alerts.status=alerts.update=true;
 			return alerts;
 		}
 
@@ -60,6 +70,9 @@ public class PushSubscription extends BaseModel implements Cloneable{
 					", mention="+mention+
 					", poll="+poll+
 					", status="+status+
+					", update="+update+
+					", adminSignUp="+adminSignUp+
+					", adminReport="+adminReport+
 					'}';
 		}
 
