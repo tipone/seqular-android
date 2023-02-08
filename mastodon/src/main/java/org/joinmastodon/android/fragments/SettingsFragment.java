@@ -382,7 +382,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			}));
 		}
 
-		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
+		items.add(new FooterItem(getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
 	}
 
 	private void updatePublishText(Button btn) {
