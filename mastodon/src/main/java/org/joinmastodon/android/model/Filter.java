@@ -18,8 +18,9 @@ public class Filter extends BaseModel{
 	@RequiredField
 	public String id;
 	@RequiredField
-	public String phrase;
 	public String title;
+	@RequiredField
+	public String phrase;
 	public transient EnumSet<FilterContext> context=EnumSet.noneOf(FilterContext.class);
 	public Instant expiresAt;
 	public boolean irreversible;

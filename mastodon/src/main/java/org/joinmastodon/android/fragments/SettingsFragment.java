@@ -21,6 +21,8 @@ import android.view.WindowInsets;
 import android.view.WindowManager;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -55,7 +57,6 @@ import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
@@ -113,6 +114,21 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new HeaderItem(R.string.settings_theme));
 		items.add(themeItem=new ThemeItem());
 		items.add(new SwitchItem(R.string.theme_true_black, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
+		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
+			GlobalUserPreferences.disableMarquee=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
+			GlobalUserPreferences.uniformNotificationIcon=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
+			GlobalUserPreferences.reduceMotion=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+
+
 		items.add(new ButtonItem(R.string.sk_settings_color_palette, R.drawable.ic_fluent_color_24_regular, b->{
 			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
 			popupMenu.inflate(R.menu.color_palettes);
@@ -129,43 +145,41 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case BROWN -> R.string.sk_color_palette_brown;
 				case RED -> R.string.sk_color_palette_red;
 				case YELLOW -> R.string.sk_color_palette_yellow;
+				case NORD -> R.string.mo_color_palette_nord;
 			});
 		}));
-		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b->{
+		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
 			updatePublishText(b);
-
-			b.setOnClickListener(l->{
-				TextInputFrameLayout input = new TextInputFrameLayout(
-						getContext(),
-						getString(R.string.publish),
-						GlobalUserPreferences.publishButtonText.trim()
-				);
-				new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(input)
-						.setPositiveButton(R.string.save, (d, which) -> {
-							GlobalUserPreferences.publishButtonText = input.getEditText().getText().toString().trim();
-							GlobalUserPreferences.save();
-							updatePublishText(b);
-						})
-						.setNeutralButton(R.string.clear, (d, which) -> {
-							GlobalUserPreferences.publishButtonText = "";
-							GlobalUserPreferences.save();
-							updatePublishText(b);
-						})
-						.setNegativeButton(R.string.cancel, (d, which) -> {})
-						.show();
-			});
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
-			GlobalUserPreferences.uniformNotificationIcon=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
-			GlobalUserPreferences.disableMarquee=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
-			GlobalUserPreferences.reduceMotion=i.checked;
-			GlobalUserPreferences.save();
+			if (GlobalUserPreferences.relocatePublishButton) {
+				b.setOnClickListener(l -> {
+					Toast.makeText(getActivity(), R.string.mo_disable_relocate_publish_button_to_enable_customization,
+							Toast.LENGTH_LONG).show();
+				});
+			} else {
+				b.setOnClickListener(l -> {
+					FrameLayout inputWrap = new FrameLayout(getContext());
+					EditText input = new EditText(getContext());
+					input.setHint(R.string.publish);
+					input.setText(GlobalUserPreferences.publishButtonText.trim());
+					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+					params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+					input.setLayoutParams(params);
+					inputWrap.addView(input);
+					new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
+							.setPositiveButton(R.string.save, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNeutralButton(R.string.clear, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = "";
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNegativeButton(R.string.cancel, (d, which) -> {
+							})
+							.show();
+				});}
 		}));
 
 		items.add(new HeaderItem(R.string.settings_behavior));
@@ -190,13 +204,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_enable_delete_notifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
-			GlobalUserPreferences.enableDeleteNotifications=i.checked;
+//		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
+		items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
+			GlobalUserPreferences.disableDividers=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_disable_alt_text_reminder, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
-			GlobalUserPreferences.disableAltTextReminder=i.checked;
+		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.enableFabAutoHide, i->{
+			GlobalUserPreferences.enableFabAutoHide =i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
+			GlobalUserPreferences.relocatePublishButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
@@ -227,13 +247,15 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsButtonItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
 		}));
-		items.add(showNewPostsButtonItem = new SwitchItem(R.string.sk_settings_see_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
+		items.add(showNewPostsButtonItem = new SwitchItem(R.string.sk_settings_show_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
 			GlobalUserPreferences.showNewPostsButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
+
 		items.add(new SwitchItem(R.string.sk_settings_show_alt_indicator, R.drawable.ic_fluent_scan_text_24_regular, GlobalUserPreferences.showAltIndicator, i->{
 			GlobalUserPreferences.showAltIndicator=i.checked;
 			GlobalUserPreferences.save();
+			needAppRestart=true;
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
 			GlobalUserPreferences.showNoAltIndicator=i.checked;
@@ -248,15 +270,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
-			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
-		items.add(new SmallTextItem(getString(translationAvailable ?
-				R.string.sk_settings_translation_availability_note_available :
-				R.string.sk_settings_translation_availability_note_unavailable, instanceName)));
+//		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
+//			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
+//			GlobalUserPreferences.save();
+//			needAppRestart=true;
+//		}));
+
 
 		items.add(new HeaderItem(R.string.settings_notifications));
 		items.add(notificationPolicyItem=new NotificationPolicyItem());
@@ -315,9 +334,27 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
 		items.add(new SmallTextItem(getString(R.string.sk_settings_glitch_mode_explanation)));
 
+
+		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
+		items.add(new SmallTextItem(getString(translationAvailable ?
+				R.string.sk_settings_translation_availability_note_available :
+				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
+
+
 		items.add(new HeaderItem(R.string.sk_settings_about));
-		items.add(new TextItem(R.string.sk_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sk22/megalodon"), R.drawable.ic_fluent_open_24_regular));
-		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://ko-fi.com/xsk22"), R.drawable.ic_fluent_heart_24_regular));
+
+		if (GithubSelfUpdater.needSelfUpdating()) {
+			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+			items.add(checkForUpdateItem);
+			items.add(new SwitchItem(R.string.sk_updater_enable_pre_releases, 0, GlobalUserPreferences.enablePreReleases, i->{
+				GlobalUserPreferences.enablePreReleases=i.checked;
+				GlobalUserPreferences.save();
+			}));
+		}
+
+		items.add(new TextItem(R.string.mo_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
+		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
+
 		LruCache<?, ?> cache = imageCache == null ? null : imageCache.getLruCache();
 		clearImageCacheItem = new TextItem(R.string.settings_clear_cache, UiUtils.formatFileSize(getContext(), cache != null ? cache.size() : 0, true), this::clearImageCache, 0);
 		items.add(clearImageCacheItem);
@@ -325,14 +362,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentLanguages.remove(accountID);
 			GlobalUserPreferences.save();
 		})));
-		if (GithubSelfUpdater.needSelfUpdating()) {
-			items.add(new SwitchItem(R.string.sk_updater_enable_pre_releases, 0, GlobalUserPreferences.enablePreReleases, i->{
-				GlobalUserPreferences.enablePreReleases=i.checked;
-				GlobalUserPreferences.save();
-			}));
-			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
-			items.add(checkForUpdateItem);
-		}
+
+		items.add(new TextItem(R.string.mo_clear_recent_emoji, ()-> {
+			GlobalUserPreferences.recentEmojis.clear();
+			GlobalUserPreferences.save();
+		}));
+//		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		if(BuildConfig.DEBUG){
 			items.add(new RedHeaderItem("Debug options"));
@@ -435,6 +470,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		else if (id == R.id.brown_color) pref = ColorPreference.BROWN;
 		else if (id == R.id.red_color) pref = ColorPreference.RED;
 		else if (id == R.id.yellow_color) pref = ColorPreference.YELLOW;
+		else if (id == R.id.nord_color) pref = ColorPreference.NORD;
 
 		if (pref == null) return false;
 
@@ -443,6 +479,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		restartActivityToApplyNewTheme();
 		return true;
 	}
+
 
 	private void onTrueBlackThemeChanged(SwitchItem item){
 		GlobalUserPreferences.trueBlackTheme=item.checked;
@@ -509,6 +546,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 		needUpdateNotificationSettings=true;
 	}
+
+	private void onNotificationStyleChanged(SwitchItem item){
+		GlobalUserPreferences.uniformNotificationIcon=item.checked;
+		GlobalUserPreferences.save();
+	}
+
 
 	private void onNotificationsPolicyChanged(PushSubscription.Policy policy){
 		PushSubscription subscription=getPushSubscription();
@@ -673,6 +716,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.buttonConsumer = buttonConsumer;
 		}
 
+		@Override
+		public int getViewType(){
+			return 8;
+		}
+	}
+
+	public class ColorPicker extends Item{
 		@Override
 		public int getViewType(){
 			return 8;
@@ -932,6 +982,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			}
 		}
 	}
+
 	private class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
 		private final Button button;
 		private final ImageView icon;
@@ -1095,10 +1146,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			if (state == GithubSelfUpdater.UpdateState.CHECKING) return;
 			GithubSelfUpdater.UpdateInfo info=updater.getUpdateInfo();
 			if(state!=GithubSelfUpdater.UpdateState.DOWNLOADED){
-				text.setText(getString(R.string.sk_update_available, info.version));
+				text.setText(getString(R.string.mo_update_available, info.version));
 				button.setText(getString(R.string.download_update, UiUtils.formatFileSize(getActivity(), info.size, false)));
 			}else{
-				text.setText(getString(R.string.sk_update_ready, info.version));
+				text.setText(getString(R.string.mo_update_ready, info.version));
 				button.setText(R.string.install_update);
 			}
 			if(state==GithubSelfUpdater.UpdateState.DOWNLOADING){
@@ -1115,6 +1166,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				progress.removeCallbacks(progressUpdater);
 			}
 			changelog.setText(info.changelog);
+//			changelog.setText(getString(R.string.sk_changelog, info.changelog));
 		}
 
 		private void updateProgress(){

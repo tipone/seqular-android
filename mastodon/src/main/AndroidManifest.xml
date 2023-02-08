@@ -22,7 +22,7 @@
 	<application
 		android:name=".MastodonApp"
 		android:allowBackup="true"
-		android:label="@string/sk_app_name"
+		android:label="@string/mo_app_name"
 		android:supportsRtl="true"
 		android:localeConfig="@xml/locales_config"
 		android:icon="@mipmap/ic_launcher"
@@ -41,7 +41,7 @@
 				<action android:name="android.intent.action.VIEW"/>
 				<category android:name="android.intent.category.BROWSABLE"/>
 				<category android:name="android.intent.category.DEFAULT"/>
-				<data android:scheme="megalodon-android-auth" android:host="callback"/>
+				<data android:scheme="moshidon-android-auth" android:host="callback"/>
 			</intent-filter>
 		</activity>
 		<activity android:name=".ExternalShareActivity" android:exported="true" android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustResize">

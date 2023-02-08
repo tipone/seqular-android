@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Verberg bericht knop tijdens scrollen</string>
+    <string name="mo_personal_note">Voeg een notitie toe over dit profiel</string>
+    <string name="mo_personal_note_confirm">Bevestig de wijzigingen aan de notitie</string>
+    <string name="mo_personal_note_update_failed">Notitie bewaren mislukt</string>
+    <string name="mo_settings_contribute">Bijdragen aan Moshidon</string>
+    <string name="mo_update_ready">Moshidon %s is gedownload en gereed voor installatie.</string>
+    <string name="mo_update_available">Moshidon %s staat gereed om te downloaden.</string>
+    <string name="mo_no_image_desc_title">Geen beschrijving bij afbeelding</string>
+    <string name="mo_emoji_recent">Recent gebruikt</string>
+    <string name="mo_poll_option_add">Voeg nieuwe peiling optie toe</string>
+    <string name="mo_sending_error">Fout bij plaatsen bericht</string>
+    <string name="mo_disable_dividers">Berichten scheidingslijn uitschakelen</string>
+    <string name="mo_relocate_publish_button">Verplaats publiceerknop</string>
+    <string name="mo_welcome_text">Om te beginnen vul je hieronder de domeinnaam in van de instance (server).</string>
+    <string name="mo_clear_recent_emoji">Wis recent gebruikte emoji</string>
+    <string name="mo_no_image_desc">De bijgesloten afbeeldingen hebben geen omschrijving. Overweeg deze alsnog toe te voegen, zodat ook mensen met een visuele handicap kunnen deelnemen.</string>
+</resources>

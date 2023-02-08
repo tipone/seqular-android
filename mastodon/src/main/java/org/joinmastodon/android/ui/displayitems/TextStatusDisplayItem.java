@@ -128,8 +128,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(TextStatusDisplayItem item){
 			text.setText(item.translated
-							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
-							: item.text);
+					? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
+					: item.text);
 			text.setTextIsSelectable(item.textSelectable);
 			if (item.textSelectable) {
 				textScrollView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -171,8 +171,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					translateEnabled &&
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
-							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))))
-					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
+							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))));
+//					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
 			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, isBottomText ? "bottom-java" : item.translation.provider) : "");

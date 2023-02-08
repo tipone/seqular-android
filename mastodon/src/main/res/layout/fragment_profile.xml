@@ -174,6 +174,59 @@
 						android:textColor="?android:textColorSecondary"
 						tools:text="\@Gargron" />
 
+					<FrameLayout
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:layout_below="@id/username"
+						android:id="@+id/note_edit_wrap"
+						android:layout_marginTop="4dp"
+						android:layout_marginBottom="16dp"
+						android:layout_marginHorizontal="16dp"
+						android:visibility="gone">
+
+						<EditText
+							android:id="@+id/note_edit"
+							android:layout_width="match_parent"
+							android:layout_height="wrap_content"
+							android:paddingVertical="16dp"
+							android:inputType="textMultiLine|textCapSentences"
+							android:singleLine="false"
+							android:drawableStart="@drawable/ic_fluent_notepad_20_regular"
+							android:drawablePadding="12dp"
+							android:drawableTint="?android:textColorSecondary"
+							android:background="@drawable/bg_note_edit"
+							android:paddingEnd="48dp"
+							android:paddingHorizontal="16dp"
+							android:elevation="0dp"
+							android:visibility="gone"
+							android:hint="@string/mo_personal_note"/>
+
+						<Button
+							android:id="@+id/note_edit_confirm"
+							android:layout_width="wrap_content"
+							android:layout_height="wrap_content"
+							android:layout_marginEnd="8dp"
+							android:paddingHorizontal="8dp"
+							android:visibility="invisible"
+							android:backgroundTint="?colorBackgroundLightest"
+							android:layout_gravity="right|center_vertical"
+							android:tooltipText="@string/mo_personal_note_confirm"
+							android:contentDescription="@string/mo_personal_note_confirm"
+							android:drawableStart="@drawable/ic_fluent_checkmark_24_regular"
+							/>
+					</FrameLayout>
+
+<!--					<org.joinmastodon.android.ui.views.LinkedTextView-->
+<!--						android:id="@+id/bio"-->
+<!--						android:layout_width="match_parent"-->
+<!--						android:layout_height="wrap_content"-->
+<!--						android:layout_below="@id/note_edit_wrap"-->
+<!--						android:layout_marginLeft="16dp"-->
+<!--						android:layout_marginRight="16dp"-->
+<!--						android:textAppearance="@style/m3_body_large"-->
+<!--						android:textSize="16sp"-->
+<!--						tools:text="Founder, CEO and lead developer @Mastodon, Germany." />-->
+
 					<EditText
 						android:id="@+id/name_edit"
 						android:layout_width="match_parent"
@@ -194,7 +247,7 @@
 						android:id="@+id/bio_container"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
-						android:layout_below="@id/username"
+						android:layout_below="@id/note_edit_wrap"
 						android:layout_marginHorizontal="16dp">
 
 						<org.joinmastodon.android.ui.views.LinkedTextView
@@ -359,7 +412,11 @@
 			</LinearLayout>
 		</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
 
-		<include layout="@layout/compose_fab" />
+		<ImageButton
+			android:tooltipText="@string/mo_fab_compose"
+			android:contentDescription="@string/mo_fab_compose"
+			android:id="@+id/fab"
+			style="@style/Widget.Mastodon.Button.Compose"/>
 	</FrameLayout>
 
 </me.grishka.appkit.views.RecursiveSwipeRefreshLayout>

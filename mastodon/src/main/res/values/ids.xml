@@ -18,6 +18,7 @@
 
 	<item name="notifications_all" type="id"/>
 	<item name="notifications_mentions" type="id"/>
+	<item name="notifications_posts" type="id"/>
 
 	<item name="menu_add_timeline" type="id" />
 	<item name="menu_back" type="id" />

@@ -37,6 +37,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String TAG="PushNotificationReceive";
 
 	public static final int NOTIFICATION_ID=178;
+	private static final int SUMMARY_ID = 791;
 	private static int notificationId = 0;
 
 	@Override
@@ -98,6 +99,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		String accountName="@"+self.username+"@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 		Notification.Builder builder;
+		Notification.Builder summaryNotification;
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 			boolean hasGroup=false;
 			List<NotificationChannelGroup> channelGroups=nm.getNotificationChannelGroups();
@@ -120,8 +122,12 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				nm.createNotificationChannels(channels);
 			}
 			builder=new Notification.Builder(context, accountID+"_"+pn.notificationType);
+//			summaryNotification=new Notification.Builder(context, accountID);
 		}else{
 			builder=new Notification.Builder(context)
+					.setPriority(Notification.PRIORITY_DEFAULT)
+					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+			summaryNotification=new Notification.Builder(context)
 					.setPriority(Notification.PRIORITY_DEFAULT)
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		}
@@ -130,11 +136,14 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
 		contentIntent.putExtra("accountID", accountID);
+		contentIntent.putExtra("notificationID", notificationId);
 		if(notification!=null){
 			contentIntent.putExtra("notification", Parcels.wrap(notification));
 		}
+
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
+				.setContentTitle(pn.title)
 				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
 				.setSmallIcon(R.drawable.ic_ntf_logo)
 				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
@@ -142,7 +151,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
-				.setColor(context.getColor(R.color.primary_700));
+				.setColor(context.getColor(R.color.shortcut_icon_background))
+				.setGroup(accountID);
 
 		if (!GlobalUserPreferences.uniformNotificationIcon) {
 			builder.setSmallIcon(switch (pn.notificationType) {
@@ -164,6 +174,9 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());
+
+		notificationId++;
+		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
+
 	}
 }

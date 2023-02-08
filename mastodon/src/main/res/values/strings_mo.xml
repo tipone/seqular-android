@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="mo_app_name" translatable="false">Moshidon</string>
+
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_app_username" translatable="false">\@moshidon</string>
+    <string name="mo_disable_dividers">Disable post dividers</string>
+    <string name="mo_relocate_publish_button">Relocate publish button</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Hide compose button while scrolling</string>
+    <string name="mo_welcome_text">To get started, please enter your home instance’s domain name below.</string>
+
+    <!--    Setting this as non-translatable as it simply doesnt change with language-->
+    <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
+
+    <string name="mo_personal_note">Add a note about this profile</string>
+    <string name="mo_personal_note_confirm">Confirm changes to note</string>
+    <string name="mo_personal_note_update_failed">Failed to save note</string>
+    <string name="mo_settings_contribute">Contribute to Moshidon</string>
+    <string name="mo_update_available">Moshidon %s is ready to download.</string>
+    <string name="mo_update_ready">Moshidon %s is downloaded and ready to install.</string>
+    <string name="mo_no_image_desc_title">No Image description</string>
+    <string name="mo_no_image_desc">The included images have no description. Please consider adding one, to allow visually impaired people to participate.</string>
+    <string name="mo_emoji_recent">Recently used</string>
+    <string name="mo_clear_recent_emoji">Clear recently used emoji</string>
+    <string name="mo_filtered">Filtered: %s</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Disable "Relocate publish button" to allow customization</string>
+
+    <!--    accessibility labels-->
+    <string name="mo_poll_option_add">Add new poll option</string>
+    <string name="mo_fab_compose">Compose</string>
+    <string name="mo_sending_error">Error publishing</string>
+
+</resources>

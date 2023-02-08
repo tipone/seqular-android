@@ -169,6 +169,7 @@
 						android:layout_marginBottom="8dp"
 						android:background="@drawable/bg_poll_option_clickable"
 						android:outlineProvider="background"
+						android:contentDescription="@string/mo_poll_option_add"
 						android:elevation="2dp">
 						<ImageView
 							android:id="@+id/add_poll_option_icon"
@@ -176,6 +177,7 @@
 							android:layout_height="24dp"
 							android:layout_margin="16dp"
 							android:tint="?colorDarkIcon"
+							android:importantForAccessibility="no"
 							android:src="@drawable/ic_fluent_add_circle_24_regular"/>
 					</LinearLayout>
 					<TextView
@@ -274,10 +276,8 @@
 		android:background="?colorBackgroundLightest"
 		android:elevation="2dp"
 		android:outlineProvider="bounds"
-		android:paddingStart="8dp"
-		android:paddingEnd="6dp"
+		android:paddingHorizontal="10dp"
 		android:layoutDirection="locale">
-
 		<LinearLayout
 			android:id="@+id/schedule_draft_view"
 			android:layout_width="match_parent"
@@ -290,7 +290,6 @@
 				android:id="@+id/schedule_draft_text"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="6dp"
 				android:drawableStart="@drawable/ic_fluent_drafts_20_regular"
 				android:drawableTint="?android:textColorSecondary"
 				android:drawablePadding="16dp"
@@ -317,16 +316,15 @@
 				android:drawablePadding="8dp"
 				android:drawableTint="?android:textColorSecondary"
 				tools:text="Dec 12, 2021, 12:42 PM"/>
-
 			<ImageButton
 				android:id="@+id/schedule_draft_dismiss"
-				android:layout_width="36dp"
-				android:layout_height="36dp"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
 				android:layout_marginStart="8dp"
 				android:src="@drawable/ic_fluent_dismiss_20_filled"
-				android:background="?android:actionBarItemBackground"
-				android:contentDescription="@string/sk_compose_no_schedule" />
-
+				android:background="?android:selectableItemBackgroundBorderless"
+				android:contentDescription="@string/sk_compose_no_schedule"
+				android:padding="4dp"/>
 		</LinearLayout>
 
 		<LinearLayout
@@ -335,84 +333,124 @@
 			android:orientation="horizontal"
 			android:gravity="center_vertical">
 
-			<ImageButton
-				android:id="@+id/btn_media"
-				android:layout_width="36dp"
-				android:layout_height="36dp"
-				android:layout_marginEnd="12dp"
-				android:background="?android:attr/actionBarItemBackground"
-				android:padding="0px"
-				android:tint="@color/compose_button"
-				android:tintMode="src_in"
-				android:contentDescription="@string/add_media"
-				android:tooltipText="@string/add_media"
-				android:src="@drawable/ic_fluent_image_add_24_regular"/>
+		<ImageButton
+			android:id="@+id/btn_media"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_marginEnd="8dp"
+			android:background="?android:attr/actionBarItemBackground"
+			android:padding="0px"
+			android:tint="@color/compose_button"
+			android:tintMode="src_in"
+			android:contentDescription="@string/add_media"
+			android:tooltipText="@string/add_media"
+			android:src="@drawable/ic_fluent_image_24_regular"/>
 
-			<ImageButton
-				android:id="@+id/btn_poll"
-				android:layout_width="36dp"
-				android:layout_height="36dp"
-				android:layout_marginEnd="12dp"
-				android:background="?android:attr/actionBarItemBackground"
-				android:padding="0px"
-				android:tint="@color/compose_button"
-				android:tintMode="src_in"
-				android:contentDescription="@string/add_poll"
-				android:tooltipText="@string/add_poll"
-				android:src="@drawable/ic_fluent_poll_24_selector"/>
+		<ImageButton
+			android:id="@+id/btn_poll"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_marginEnd="8dp"
+			android:background="?android:attr/actionBarItemBackground"
+			android:padding="0px"
+			android:tint="@color/compose_button"
+			android:tintMode="src_in"
+			android:contentDescription="@string/add_poll"
+			android:tooltipText="@string/add_poll"
+			android:src="@drawable/ic_fluent_poll_24_selector"/>
 
-			<ImageButton
-				android:id="@+id/btn_emoji"
-				android:layout_width="36dp"
-				android:layout_height="36dp"
-				android:layout_marginEnd="12dp"
-				android:background="?android:attr/actionBarItemBackground"
-				android:padding="0px"
-				android:tint="@color/compose_button"
-				android:tintMode="src_in"
-				android:contentDescription="@string/emoji"
-				android:tooltipText="@string/emoji"
-				android:src="@drawable/ic_fluent_emoji_24_selector"/>
+		<ImageButton
+			android:id="@+id/btn_emoji"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_marginEnd="8dp"
+			android:background="?android:attr/actionBarItemBackground"
+			android:padding="0px"
+			android:tint="@color/compose_button"
+			android:tintMode="src_in"
+			android:contentDescription="@string/emoji"
+			android:tooltipText="@string/emoji"
+			android:src="@drawable/ic_fluent_emoji_24_selector"/>
 
-			<ImageButton
-				android:id="@+id/btn_spoiler"
-				android:layout_width="36dp"
-				android:layout_height="36dp"
-				android:layout_marginEnd="12dp"
-				android:background="?android:attr/actionBarItemBackground"
-				android:padding="0px"
-				android:tint="@color/compose_button"
-				android:tintMode="src_in"
-				android:contentDescription="@string/content_warning"
-				android:tooltipText="@string/content_warning"
-				android:src="@drawable/ic_fluent_chat_warning_24_selector"/>
+		<ImageButton
+			android:id="@+id/btn_spoiler"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_marginEnd="8dp"
+			android:background="?android:attr/actionBarItemBackground"
+			android:padding="0px"
+			android:tint="@color/compose_button"
+			android:tintMode="src_in"
+			android:contentDescription="@string/content_warning"
+			android:tooltipText="@string/content_warning"
+			android:src="@drawable/ic_fluent_chat_warning_24_selector"/>
 
-			<ImageButton
-				android:id="@+id/btn_visibility"
-				android:layout_width="36dp"
-				android:layout_height="36dp"
-				android:layout_marginEnd="12dp"
-				android:background="?android:attr/actionBarItemBackground"
+		<ImageButton
+			android:id="@+id/btn_visibility"
+			android:layout_width="36dp"
+			android:layout_height="36dp"
+			android:layout_marginEnd="8dp"
+			android:background="?android:attr/actionBarItemBackground"
+			android:padding="0px"
+			android:tint="@color/compose_button"
+			android:tintMode="src_in"
+			android:contentDescription="@string/post_visibility"
+			android:tooltipText="@string/post_visibility"
+			android:src="@drawable/ic_fluent_earth_24_regular"/>
+
+			<Button
+				android:id="@+id/drafts_btn"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
 				android:padding="0px"
-				android:tint="@color/compose_button"
-				android:tintMode="src_in"
-				android:contentDescription="@string/post_visibility"
-				android:tooltipText="@string/post_visibility"
-				android:src="@drawable/ic_fluent_earth_24_regular"/>
+				android:layout_marginEnd="8dp"
+				android:drawableStart="@drawable/ic_fluent_clock_24_regular"
+				android:drawableTint="@color/compose_button"
+				android:textColor="?android:textColorSecondary"
+				android:background="?android:attr/selectableItemBackgroundBorderless"
+				android:visibility="gone"
+				android:contentDescription="@string/sk_schedule_or_draft"
+				android:tooltipText="@string/sk_schedule_or_draft" />
 
 			<Space
 				android:layout_width="0px"
 				android:layout_height="1px"
 				android:layout_weight="1"/>
 
+			<ImageButton
+				android:id="@+id/btn_more"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="24dp"
+				android:background="?android:attr/selectableItemBackgroundBorderless"
+				android:padding="0px"
+				android:tint="@color/compose_button"
+				android:tintMode="src_in"
+				android:contentDescription="@string/more_options"
+				android:tooltipText="@string/more_options"
+				android:visibility="gone"
+				android:src="@drawable/ic_fluent_more_vertical_24_regular"/>
+
 			<TextView
 				android:id="@+id/char_counter"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginEnd="10dp"
 				android:textAppearance="@style/m3_body_large"
 				android:textColor="?android:textColorSecondary"
+				android:visibility="gone"
 				tools:text="500"/>
+
+			<Button
+				android:id="@+id/publish"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="12dp"
+				android:visibility="gone"
+				android:tooltipText="@string/publish"
+				android:contentDescription="@string/publish"
+				android:drawableStart="@drawable/ic_fluent_send_24_selector"
+				/>
+
 		</LinearLayout>
 	</LinearLayout>
 

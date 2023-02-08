@@ -10,8 +10,8 @@ import java.util.EnumSet;
 import java.util.List;
 
 public class DismissNotification extends MastodonAPIRequest<Object>{
-	public DismissNotification(String id){
-		super(HttpMethod.POST, "/notifications/" + (id != null ? id + "/dismiss" : "clear"), Object.class);
-		setRequestBody(new Object());
-	}
+    public DismissNotification(String id){
+        super(HttpMethod.POST, "/notifications/" + (id != null ? id + "/dismiss" : "clear"), Object.class);
+        setRequestBody(new Object());
+    }
 }

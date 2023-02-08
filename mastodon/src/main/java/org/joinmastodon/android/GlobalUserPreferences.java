@@ -4,6 +4,7 @@ import static org.joinmastodon.android.api.MastodonAPIController.gson;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Build;
 
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -29,12 +30,14 @@ public class GlobalUserPreferences{
 	public static boolean alwaysExpandContentWarnings;
 	public static boolean disableMarquee;
 	public static boolean disableSwipe;
+	public static boolean disableDividers;
 	public static boolean voteButtonForSingleChoice;
-	public static boolean enableDeleteNotifications;
-	public static boolean translateButtonOpenedOnly;
 	public static boolean uniformNotificationIcon;
+	public static boolean enableDeleteNotifications;
+	public static boolean relocatePublishButton;
 	public static boolean reduceMotion;
 	public static boolean keepOnlyLatestNotification;
+	public static boolean enableFabAutoHide;
 	public static boolean disableAltTextReminder;
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
@@ -54,7 +57,10 @@ public class GlobalUserPreferences{
 	public static Set<String> accountsWithLocalOnlySupport;
 	public static Set<String> accountsInGlitchMode;
 
-	private static SharedPreferences getPrefs(){
+	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
+	public static Map<String, Integer> recentEmojis;
+
+    private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
 
@@ -73,16 +79,18 @@ public class GlobalUserPreferences{
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
 		showNewPostsButton=prefs.getBoolean("showNewPostsButton", true);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", true);
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		disableSwipe=prefs.getBoolean("disableSwipe", false);
+		disableDividers=prefs.getBoolean("disableDividers", true);
+		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
-		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", false);
-		translateButtonOpenedOnly=prefs.getBoolean("translateButtonOpenedOnly", false);
-		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
+		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", true);
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
+		enableFabAutoHide=prefs.getBoolean("enableFabAutoHide", true);
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
@@ -93,16 +101,22 @@ public class GlobalUserPreferences{
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
-		recentLanguages=fromJson(prefs.getString("recentLanguages", null), recentLanguagesType, new HashMap<>());
+		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
+		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
+		publishButtonText=prefs.getString("publishButtonText", "");
 		pinnedTimelines=fromJson(prefs.getString("pinnedTimelines", null), pinnedTimelinesType, new HashMap<>());
 		accountsWithLocalOnlySupport=prefs.getStringSet("accountsWithLocalOnlySupport", new HashSet<>());
 		accountsInGlitchMode=prefs.getStringSet("accountsInGlitchMode", new HashSet<>());
 
 		try {
-			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
+			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
+			}else{
+				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PURPLE.name()));
+			}
 		} catch (IllegalArgumentException|ClassCastException ignored) {
 			// invalid color name or color was previously saved as integer
-			color=ColorPreference.PINK;
+			color=ColorPreference.PURPLE;
 		}
 	}
 
@@ -119,11 +133,13 @@ public class GlobalUserPreferences{
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
 				.putBoolean("disableMarquee", disableMarquee)
 				.putBoolean("disableSwipe", disableSwipe)
-				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
-				.putBoolean("translateButtonOpenedOnly", translateButtonOpenedOnly)
+				.putBoolean("disableDividers", disableDividers)
+				.putBoolean("relocatePublishButton", relocatePublishButton)
 				.putBoolean("uniformNotificationIcon", uniformNotificationIcon)
+				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putBoolean("reduceMotion", reduceMotion)
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
+				.putBoolean("enableFabAutoHide", enableFabAutoHide)
 				.putBoolean("disableAltTextReminder", disableAltTextReminder)
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
@@ -137,6 +153,7 @@ public class GlobalUserPreferences{
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
 				.putString("pinnedTimelines", gson.toJson(pinnedTimelines))
+				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.putStringSet("accountsWithLocalOnlySupport", accountsWithLocalOnlySupport)
 				.putStringSet("accountsInGlitchMode", accountsInGlitchMode)
 				.apply();
@@ -150,7 +167,8 @@ public class GlobalUserPreferences{
 		BLUE,
 		BROWN,
 		RED,
-		YELLOW
+		YELLOW,
+		NORD
 	}
 
 	public enum ThemePreference{

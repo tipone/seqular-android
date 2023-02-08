@@ -50,6 +50,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	private List<Status> filterPosts(List<Status> items) {
+		// This is the function I must use to solve the filters thing for real
 		return items.stream().filter(i ->
 				(GlobalUserPreferences.showReplies || i.inReplyToId == null) &&
 				(GlobalUserPreferences.showBoosts || i.reblog == null)
@@ -102,24 +103,24 @@ public class HomeTimelineFragment extends StatusListFragment {
 	@Override
 	protected void onHidden(){
 		super.onHidden();
-		if(!data.isEmpty()){
-			String topPostID=displayItems.get(Math.max(0, list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset())).parentID;
-			if(!topPostID.equals(lastSavedMarkerID)){
-				lastSavedMarkerID=topPostID;
-				new SaveMarkers(topPostID, null)
-						.setCallback(new Callback<>(){
-							@Override
-							public void onSuccess(SaveMarkers.Response result){
-							}
-
-							@Override
-							public void onError(ErrorResponse error){
-								lastSavedMarkerID=null;
-							}
-						})
-						.exec(accountID);
-			}
-		}
+//		if(!data.isEmpty()){
+//			String topPostID=displayItems.get(list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset()).parentID;
+//			if(!topPostID.equals(lastSavedMarkerID)){
+//				lastSavedMarkerID=topPostID;
+//				new SaveMarkers(topPostID, null)
+//						.setCallback(new Callback<>(){
+//							@Override
+//							public void onSuccess(SaveMarkers.Response result){
+//							}
+//
+//							@Override
+//							public void onError(ErrorResponse error){
+//								lastSavedMarkerID=null;
+//							}
+//						})
+//						.exec(accountID);
+//			}
+//		}
 	}
 
 	public void onStatusCreated(StatusCreatedEvent ev){

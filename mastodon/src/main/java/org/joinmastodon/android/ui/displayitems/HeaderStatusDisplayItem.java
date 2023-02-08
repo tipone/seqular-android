@@ -9,6 +9,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
+import android.util.Log;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -140,7 +143,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
 		private final View collapseBtn;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtnIcon;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtnIcon,botIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -165,6 +168,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			unreadIndicator=findViewById(R.id.unread_indicator);
 			collapseBtn=findViewById(R.id.collapse_btn);
 			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
+			botIcon=findViewById(R.id.bot_icon);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
@@ -179,7 +183,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			collapseBtn.setOnClickListener(l -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
 
 			optionsMenu=new PopupMenu(activity, more);
+
 			optionsMenu.inflate(R.menu.post);
+
 			optionsMenu.setOnMenuItemClickListener(menuItem->{
 				Account account=item.user;
 				int id=menuItem.getItemId();
@@ -277,10 +283,28 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					args.putString("profileDisplayUsername", account.getDisplayUsername());
 					Nav.go(item.parentFragment.getActivity(), ListTimelinesFragment.class, args);
 				}
+
+				if(!item.status.filterRevealed){
+					this.itemView.setVisibility(View.GONE);
+					ViewGroup.LayoutParams params = this.itemView.getLayoutParams();
+					params.height = 0;
+					params.width = 0;
+					this.itemView.setLayoutParams(params);
+//					item.parentFragment.notifyItemsChanged(this.getAbsoluteAdapterPosition());
+				}
 				return true;
 			});
 			UiUtils.enablePopupMenuIcons(activity, optionsMenu);
+
 		}
+
+//		public void setFilteredShown(){
+//			this.itemView.setVisibility(View.VISIBLE);
+//			params = this.itemView.getLayoutParams();
+//			params.height = 0;
+//			params.width = 0;
+//			this.itemView.setLayoutParams(params);
+//		}
 
 		private void populateAccountsMenu(Menu menu) {
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
@@ -297,6 +321,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		public void onBind(HeaderStatusDisplayItem item){
 			name.setText(item.parsedName);
 			username.setText('@'+item.user.acct);
+			botIcon.setVisibility(item.user.bot ? View.VISIBLE : View.GONE);
+			botIcon.setColorFilter(username.getCurrentTextColor());
 			separator.setVisibility(View.VISIBLE);
 
 			if (item.scheduledStatus!=null)

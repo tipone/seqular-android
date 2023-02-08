@@ -11,10 +11,10 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.SearchResults;
@@ -38,10 +38,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
+import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SearchFragment extends BaseStatusListFragment<SearchResult> implements IsOnTop {
+public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	private String currentQuery;
 	private List<StatusDisplayItem> prevDisplayItems;
 	private EnumSet<SearchResult.Type> currentFilter=EnumSet.allOf(SearchResult.Type.class);
@@ -80,7 +81,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 		return switch(s.type){
 			case ACCOUNT -> Collections.singletonList(new AccountStatusDisplayItem(s.id, this, s.account));
 			case HASHTAG -> Collections.singletonList(new HashtagStatusDisplayItem(s.id, this, s.hashtag));
-			case STATUS -> StatusDisplayItem.buildItems(this, s.status, accountID, s, knownAccounts, false, true, null);
+			case STATUS -> StatusDisplayItem.buildItems(this, s.status, accountID, s, knownAccounts, false, true, null, Filter.FilterContext.PUBLIC);
 		};
 	}
 
@@ -184,7 +185,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 			return;
 		}
 		UiUtils.updateList(prevDisplayItems, displayItems, list, adapter, (i1, i2)->i1.parentID.equals(i2.parentID) && i1.index==i2.index && i1.getType()==i2.getType());
-		boolean recent=isInRecentMode() && !displayItems.isEmpty();
+		boolean recent=isInRecentMode();
 		if(recent!=headerAdapter.isVisible())
 			headerAdapter.setVisible(recent);
 		imgLoader.forceUpdateImages();
@@ -308,11 +309,6 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 		if(imm.isActive()){
 			imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
 		}
-	}
-
-	@Override
-	public boolean isOnTop() {
-		return isRecyclerViewOnTop(list);
 	}
 
 	@FunctionalInterface

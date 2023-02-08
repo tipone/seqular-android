@@ -41,7 +41,11 @@ import me.grishka.appkit.views.FragmentRootLinearLayout;
 
 public class HomeFragment extends AppKitFragment implements OnBackPressedListener{
 	private FragmentRootLinearLayout content;
+
 	private HomeTabFragment homeTabFragment;
+
+//	private HomeTimelineFragment homeTimelineFragment;
+
 	private NotificationsFragment notificationsFragment;
 	private DiscoverFragment searchFragment;
 	private ProfileFragment profileFragment;
@@ -57,7 +61,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
-		setTitle(R.string.sk_app_name);
+		setTitle(R.string.mo_app_name);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
@@ -65,8 +69,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if(savedInstanceState==null){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
+
 			homeTabFragment=new HomeTabFragment();
 			homeTabFragment.setArguments(args);
+
+//			homeTimelineFragment=new HomeTimelineFragment();
+//			homeTimelineFragment.setArguments(args);
+
 			args=new Bundle(args);
 			args.putBoolean("noAutoLoad", true);
 			searchFragment=new DiscoverFragment();
@@ -116,6 +125,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 					.add(R.id.fragment_wrap, profileFragment).hide(profileFragment)
 					.commit();
 
+//			getChildFragmentManager().beginTransaction()
+//					.add(R.id.fragment_wrap, homeTimelineFragment)
+//					.add(R.id.fragment_wrap, searchFragment).hide(searchFragment)
+//					.add(R.id.fragment_wrap, notificationsFragment).hide(notificationsFragment)
+//					.add(R.id.fragment_wrap, profileFragment).hide(profileFragment)
+//					.commit();
+
 			String defaultTab=getArguments().getString("tab");
 			if("notifications".equals(defaultTab)){
 				tabBar.selectTab(R.id.tab_notifications);
@@ -136,13 +152,21 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState){
 		super.onViewStateRestored(savedInstanceState);
+
 		if(savedInstanceState==null) return;
+
+//		if(savedInstanceState==null || homeTimelineFragment!=null)
+//			return;
+
 		homeTabFragment=(HomeTabFragment) getChildFragmentManager().getFragment(savedInstanceState, "homeTabFragment");
+
+//		homeTimelineFragment=(HomeTimelineFragment) getChildFragmentManager().getFragment(savedInstanceState, "homeTimelineFragment");
 		searchFragment=(DiscoverFragment) getChildFragmentManager().getFragment(savedInstanceState, "searchFragment");
 		notificationsFragment=(NotificationsFragment) getChildFragmentManager().getFragment(savedInstanceState, "notificationsFragment");
 		profileFragment=(ProfileFragment) getChildFragmentManager().getFragment(savedInstanceState, "profileFragment");
 		currentTab=savedInstanceState.getInt("selectedTab");
 		Fragment current=fragmentForTab(currentTab);
+
 		getChildFragmentManager().beginTransaction()
 				.hide(homeTabFragment)
 				.hide(searchFragment)
@@ -150,6 +174,14 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				.hide(profileFragment)
 				.show(current)
 				.commit();
+
+		//		getChildFragmentManager().beginTransaction()
+//				.hide(homeTimelineFragment)
+//				.hide(searchFragment)
+//				.hide(notificationsFragment)
+//				.hide(profileFragment)
+//				.show(current)
+//				.commit();
 		maybeTriggerLoading(current);
 	}
 
@@ -179,7 +211,11 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			super.onApplyWindowInsets(insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom()));
 		}
 		WindowInsets topOnlyInsets=insets.replaceSystemWindowInsets(0, insets.getSystemWindowInsetTop(), 0, 0);
+
 		homeTabFragment.onApplyWindowInsets(topOnlyInsets);
+
+//		homeTimelineFragment.onApplyWindowInsets(topOnlyInsets);
+
 		searchFragment.onApplyWindowInsets(topOnlyInsets);
 		notificationsFragment.onApplyWindowInsets(topOnlyInsets);
 		profileFragment.onApplyWindowInsets(topOnlyInsets);
@@ -188,6 +224,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private Fragment fragmentForTab(@IdRes int tab){
 		if(tab==R.id.tab_home){
 			return homeTabFragment;
+
+		//		if(tab==R.id.tab_home){
+//			return homeTimelineFragment;
 		}else if(tab==R.id.tab_search){
 			return searchFragment;
 		}else if(tab==R.id.tab_notifications){
@@ -201,9 +240,18 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
-			if (tab == R.id.tab_search)
-				searchFragment.onSelect();
-			else if(newFragment instanceof ScrollableToTop scrollable)
+			if(tab == R.id.tab_search){
+				if(newFragment instanceof ScrollableToTop scrollable)
+					scrollable.scrollToTop();
+				searchFragment.selectSearch();
+				return;
+			}
+			if(newFragment instanceof ScrollableToTop scrollable)
+				scrollable.scrollToTop();
+			return;
+		}
+		if(tab==currentTab && tab == R.id.tab_search){
+			if(newFragment instanceof ScrollableToTop scrollable)
 				scrollable.scrollToTop();
 			return;
 		}
@@ -240,6 +288,12 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			new AccountSwitcherSheet(getActivity()).show();
 			return true;
 		}
+		if(tab==R.id.tab_search){
+			onTabSelected(R.id.tab_search);
+			tabBar.selectTab(R.id.tab_search);
+			searchFragment.selectSearch();
+			return true;
+		}
 		return false;
 	}
 
@@ -262,9 +316,15 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putInt("selectedTab", currentTab);
+
 		if (homeTabFragment.isAdded()) getChildFragmentManager().putFragment(outState, "homeTabFragment", homeTabFragment);
 		if (searchFragment.isAdded()) getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
 		if (notificationsFragment.isAdded()) getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
 		if (profileFragment.isAdded()) getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+
+//		getChildFragmentManager().putFragment(outState, "homeTimelineFragment", homeTimelineFragment);
+//		getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
+//		getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
+//		getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
 	}
 }

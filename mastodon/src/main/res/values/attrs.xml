@@ -19,6 +19,8 @@
 	<attr name="colorSearchHint" format="color"/>
 	<attr name="colorTabInactive" format="color"/>
 	<attr name="colorAccentLightest" format="color"/>
+	<attr name="favorite_selected" format="color"/>
+	<attr name="bookmark_selected" format="color"/>
 	<attr name="profileHeaderBackground" format="color"/>
 	<attr name="toolbarBackground" format="color"/>
 
@@ -41,7 +43,7 @@
 	<attr name="colorButtonBackgroundSecondaryLightOnDarkDisabled" format="color"/>
 	<attr name="colorButtonTextSecondaryLightOnDark" format="color"/>
 	<attr name="colorButtonTextSecondaryLightOnDarkDisabled" format="color"/>
-	
+
 	<attr name="colorM3Primary" format="color"/>
 	<attr name="colorM3OnPrimary" format="color"/>
 	<attr name="colorM3PrimaryContainer" format="color"/>

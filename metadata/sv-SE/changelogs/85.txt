@@ -1,0 +1,7 @@
+Nya grejer som kommer med Release 85:
+Lägger till en lång klick-sökknapp för att få fram tangentbordet
+Om du klickar på sökknappen när du redan är på sökfliken visas också tangentbordet
+Tar fram en bot-ikon för att använda botkonton, tack @FineFindus!
+Förbättrar synligheten för botikonen i kontoprofilen, tack @FineFindus!
+Uppdaterar tysk översättning, tack @Dontobi!
+Fixar mindre UI-problem

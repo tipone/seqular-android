@@ -290,13 +290,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
+
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
 
-				if (fab!=null) {
+				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						TranslateAnimation animate = new TranslateAnimation(
 								0,
@@ -325,7 +326,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						}
 					}
 				}
-			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
 		((UsableRecyclerView)list).setSelectorBoundsProvider(new UsableRecyclerView.SelectorBoundsProvider(){
@@ -765,7 +765,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		private int currentMediaHiddenLayoutsWidth=0;
 
 		{
-			dividerPaint.setColor(UiUtils.getThemeColor(getActivity(), R.attr.colorPollVoted));
+			dividerPaint.setColor(UiUtils.getThemeColor(getActivity(), GlobalUserPreferences.disableDividers ? R.attr.colorWindowBackground : R.attr.colorPollVoted));
 			dividerPaint.setStyle(Paint.Style.STROKE);
 			dividerPaint.setStrokeWidth(V.dp(1));
 		}

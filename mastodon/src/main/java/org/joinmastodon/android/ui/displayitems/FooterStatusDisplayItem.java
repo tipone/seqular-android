@@ -15,6 +15,9 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -58,6 +61,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private final TextView reply, boost, favorite, bookmark;
 		private final ImageView share;
 		private static final Animation opacityOut, opacityIn;
+		private static AnimationSet animSet;
+
 
 		private View touchingView = null;
 		private boolean longClickPerformed = false;
@@ -86,6 +91,15 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			opacityIn = new AlphaAnimation(0.55f, 1);
 			opacityIn.setDuration(400);
 			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
+			Animation spin = new RotateAnimation(0, 360,
+					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+					0.5f);
+
+			animSet = new AnimationSet(true);
+			animSet.setInterpolator(CubicBezierInterpolator.DEFAULT);
+			animSet.addAnimation(spin);
+			animSet.addAnimation(opacityIn);
+			animSet.setDuration(400);
 		}
 
 		public Holder(Activity activity, ViewGroup parent){
@@ -139,6 +153,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			bookmark.setSelected(item.status.bookmarked);
 			boost.setEnabled(item.status.visibility==StatusPrivacy.PUBLIC || item.status.visibility==StatusPrivacy.UNLISTED || item.status.visibility==StatusPrivacy.LOCAL
 					|| (item.status.visibility==StatusPrivacy.PRIVATE && item.status.account.id.equals(AccountSessionManager.getInstance().getAccount(item.accountID).self.id)));
+
 		}
 
 		private void bindButton(TextView btn, long count){
@@ -296,7 +311,15 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private void onFavoriteClick(View v){
 			favorite.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
-				v.startAnimation(opacityIn);
+				if (item.status.favourited) {
+					if(GlobalUserPreferences.reduceMotion){
+						v.startAnimation(opacityIn);
+					}else{
+						v.startAnimation(animSet);
+					}
+				} else {
+					v.startAnimation(opacityIn);
+				}
 				bindButton(favorite, r.favouritesCount);
 			});
 		}

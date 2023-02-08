@@ -103,22 +103,23 @@
 
 			<View
 				android:layout_width="8dp"
-				android:layout_height="8dp"
-				android:background="@drawable/white_circle"/>
+				android:layout_height="8dp"/>
+<!--				android:background="@drawable/white_circle"/>-->
 
 			<View
 				android:layout_width="8dp"
 				android:layout_height="8dp"
 				android:layout_marginLeft="16dp"
 				android:layout_marginRight="16dp"
-				android:alpha="0.3"
-				android:background="@drawable/white_circle"/>
+				android:alpha="0.3"/>
+<!--				android:background="@drawable/white_circle"-->
+
 
 			<View
 				android:layout_width="8dp"
 				android:layout_height="8dp"
-				android:alpha="0.3"
-				android:background="@drawable/white_circle"/>
+				android:alpha="0.3"/>
+<!--				android:background="@drawable/white_circle"-->
 
 		</LinearLayout>
 

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -146,11 +147,12 @@ public abstract class StatusDisplayItem{
 							}
 					)));
 		}
+
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
-		if(!TextUtils.isEmpty(statusForContent.content))
+		if(!TextUtils.isEmpty(statusForContent.content)){
 			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
-		else
+		} else
 			header.needBottomPadding=true;
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
@@ -182,9 +184,11 @@ public abstract class StatusDisplayItem{
 		}
 		if(addFooter){
 			items.add(new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID));
-			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
+			if(status.hasGapAfter && !(fragment instanceof ThreadFragment)){
 				items.add(new GapStatusDisplayItem(parentID, fragment));
+			}
 		}
+
 		int i=1;
 		for(StatusDisplayItem item:items){
 			item.inset=inset;

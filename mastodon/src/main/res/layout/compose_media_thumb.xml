@@ -28,6 +28,8 @@
 			android:layout_marginTop="2dp"
 			android:layout_marginStart="2dp"
 			android:background="?android:selectableItemBackgroundBorderless"
+			android:contentDescription="@string/delete"
+			android:tooltipText="@string/delete"
 			android:tint="#D92C2C"
 			android:src="@drawable/ic_fluent_delete_20_regular"/>
 
@@ -137,6 +139,7 @@
 			android:background="?android:selectableItemBackgroundBorderless"
 			android:tint="#D92C2C"
 			android:contentDescription="@string/delete"
+			android:tooltipText="@string/delete"
 			android:src="@drawable/ic_fluent_delete_20_regular"/>
 
 	</FrameLayout>

@@ -41,7 +41,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
@@ -50,6 +56,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
+import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
 import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
@@ -135,6 +142,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private TextView followsYouView;
 	private ViewGroup rolesView;
 
+	public FrameLayout noteWrap;
+	public EditText noteEdit;
+	private String note;
 	private Account account;
 	private String accountID;
 	private Relationship relationship;
@@ -216,6 +226,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingCount=content.findViewById(R.id.following_count);
 		followingLabel=content.findViewById(R.id.following_label);
 		followingBtn=content.findViewById(R.id.following_btn);
+
 		postsCount=content.findViewById(R.id.posts_count);
 		postsLabel=content.findViewById(R.id.posts_label);
 		postsBtn=content.findViewById(R.id.posts_btn);
@@ -234,6 +245,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		list=content.findViewById(R.id.metadata);
 		rolesView=content.findViewById(R.id.roles);
 
+		noteEdit = content.findViewById(R.id.note_edit);
+		noteWrap = content.findViewById(R.id.note_edit_wrap);
+		Button noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
+
 		avatar.setOutlineProvider(new ViewOutlineProvider(){
 			@Override
 			public void getOutline(View view, Outline outline){
@@ -241,6 +256,49 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		});
 		avatar.setClipToOutline(true);
+
+		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
+			if (hasFocus) {
+				fab.setVisibility(View.INVISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						0,
+						fab.getHeight() * 2);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+
+				noteEditConfirm.setVisibility(View.VISIBLE);
+				noteEditConfirm.animate()
+						.alpha(1.0f)
+						.setDuration(700);
+			} else {
+				fab.setVisibility(View.VISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						fab.getHeight() * 2,
+						0);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+
+				noteEditConfirm.animate()
+						.alpha(0.0f)
+						.setDuration(700);
+				noteEditConfirm.setVisibility(View.INVISIBLE);
+			}
+		});
+
+		noteEditConfirm.setOnClickListener((v -> {
+			if (!noteEdit.getText().toString().trim().equals(note)) {
+				savePrivateNote();
+			}
+			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
+			noteEdit.clearFocus();
+		}));
 
 		FrameLayout sizeWrapper=new FrameLayout(getActivity()){
 			@Override
@@ -339,6 +397,25 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		list.setClipToPadding(false);
 
 		return sizeWrapper;
+	}
+
+	public void setNote(String note){
+		this.note=note;
+		noteWrap.setVisibility(View.VISIBLE);
+		noteEdit.setVisibility(View.VISIBLE);
+		noteEdit.setText(note);
+	}
+
+	private void savePrivateNote(){
+		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Relationship result) {}
+
+			@Override
+			public void onError(ErrorResponse result) {
+				Toast.makeText(getActivity(), getString(R.string.mo_personal_note_update_failed), Toast.LENGTH_LONG).show();
+			}
+		}).exec(accountID);
 	}
 
 	@Override
@@ -502,6 +579,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
+
 		if(account.locked){
 			ssb=new SpannableStringBuilder("@");
 			ssb.append(account.acct);
@@ -515,6 +593,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			lock.setTint(username.getCurrentTextColor());
 			ssb.append(getString(R.string.manually_approves_followers), new ImageSpan(lock, ImageSpan.ALIGN_BASELINE), 0);
 			username.setText(ssb);
+		}else if(account.bot){
+			ssb=new SpannableStringBuilder("@");
+			ssb.append(account.acct);
+			if(isSelf){
+				ssb.append('@');
+				ssb.append(AccountSessionManager.getInstance().getAccount(accountID).domain);
+			}
+			ssb.append(" ");
+			Drawable botIcon=username.getResources().getDrawable(R.drawable.ic_bot, getActivity().getTheme()).mutate();
+			botIcon.setBounds(0, 0, botIcon.getIntrinsicWidth(), botIcon.getIntrinsicHeight());
+			botIcon.setTint(username.getCurrentTextColor());
+			ssb.append(getString(R.string.manually_approves_followers), new ImageSpan(botIcon, ImageSpan.ALIGN_BASELINE), 0);
+			username.setText(ssb);
 		}else{
 			// noinspection SetTextI18n
 			username.setText('@'+account.acct+(isSelf ? ('@'+AccountSessionManager.getInstance().getAccount(accountID).domain) : ""));
@@ -526,6 +617,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			bio.setVisibility(View.VISIBLE);
 			bio.setText(parsedBio);
 		}
+
+
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
 		postsCount.setText(UiUtils.abbreviateNumber(account.statusesCount));
@@ -603,7 +696,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(relationship==null && !isOwnProfile)
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags);
+		if(isOwnProfile){
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.scheduled, R.id.bookmarks, R.id.favorites);
+		}else{
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled);
+		}
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
 		if(isOwnProfile)
 			return;
@@ -736,6 +833,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		notifyProgress.setIndeterminateTintList(notifyButton.getTextColors());
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
+		if (!isOwnProfile) {
+			setNote(relationship.note);
+//			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
+		}
 		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
 	}
 
@@ -996,6 +1097,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	@Override
 	public boolean onBackPressed(){
+		if(noteEdit.hasFocus()) {
+			savePrivateNote();
+		}
 		if(isInEditMode){
 			exitEditMode();
 			return true;

@@ -73,6 +73,7 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 
 			photo.setImageDrawable(null);
 			if(item.imgRequest!=null){
+				crossfadeDrawable.setSize(card.width, card.height);
 				if (card.width > 0) {
 					// akkoma servers don't provide width and height
 					crossfadeDrawable.setSize(card.width, card.height);
@@ -104,3 +105,4 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 		}
 	}
 }
+

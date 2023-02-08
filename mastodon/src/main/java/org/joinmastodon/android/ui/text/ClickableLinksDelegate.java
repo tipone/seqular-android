@@ -27,6 +27,7 @@ public class ClickableLinksDelegate {
 		if (selectedSpan != null) selectedSpan.onLongClick(view);
 	};
 
+
 	public ClickableLinksDelegate(TextView view) {
 		this.view=view;
 		hlPaint=new Paint();

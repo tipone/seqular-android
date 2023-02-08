@@ -80,7 +80,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 				editHistory.setVisibility(View.GONE);
 			}
 			String timeStr=TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault()));
-			
+
 			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
 				time.setText(item.parentFragment.getString(R.string.timestamp_via_app, timeStr, ""));
 				applicationName.setText(item.status.application.name);
