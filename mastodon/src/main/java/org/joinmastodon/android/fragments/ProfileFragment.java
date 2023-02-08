@@ -19,11 +19,13 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -158,7 +160,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
-	private boolean isScrollingUp = false;
+	protected int scrollDiff = 0;
 
 	private static final int MAX_FIELDS=4;
 
@@ -871,6 +873,36 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 		if(currentPhotoViewer!=null){
 			currentPhotoViewer.offsetView(0, oldScrollY-scrollY);
+		}
+
+		int dy = scrollY - oldScrollY;
+
+		if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+			TranslateAnimation animate = new TranslateAnimation(
+					0,
+					0,
+					0,
+					fab.getHeight() * 2);
+			animate.setDuration(300);
+			animate.setFillAfter(true);
+			fab.startAnimation(animate);
+			fab.setVisibility(View.INVISIBLE);
+			scrollDiff = 0;
+		} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+			if (scrollDiff > 400) {
+				fab.setVisibility(View.VISIBLE);
+				TranslateAnimation animate = new TranslateAnimation(
+						0,
+						0,
+						fab.getHeight() * 2,
+						0);
+				animate.setDuration(300);
+				animate.setFillAfter(true);
+				fab.startAnimation(animate);
+				scrollDiff = 0;
+			} else {
+				scrollDiff += Math.abs(dy);
+			}
 		}
 	}
 

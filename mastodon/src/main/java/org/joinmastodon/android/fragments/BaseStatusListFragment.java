@@ -13,10 +13,12 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageButton;
 import android.widget.Toolbar;
 
@@ -296,9 +298,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
-					if(dy > 0){
-						scrollDiff = 0;
-					}
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						TranslateAnimation animate = new TranslateAnimation(
 								0,
@@ -311,7 +310,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						fab.setVisibility(View.INVISIBLE);
 						scrollDiff = 0;
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (scrollDiff > 800) {
+						if (scrollDiff > 400) {
 							fab.setVisibility(View.VISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
@@ -327,7 +326,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						}
 					}
 				}
-			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
 		((UsableRecyclerView)list).setSelectorBoundsProvider(new UsableRecyclerView.SelectorBoundsProvider(){
