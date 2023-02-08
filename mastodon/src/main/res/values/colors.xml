@@ -310,7 +310,7 @@
 	<color name="nord_gray_800">#2D343F</color>
 	<color name="nord_gray_700">#3A4250</color>
 	<color name="nord_gray_600">#404C5C</color>
-	<color name="nord_gray_500">#8C96B4</color>
+	<color name="nord_gray_500">#aa8C96B4</color>
 
 	<color name="nord_favorite_selected">#ebcb8b</color>
 	<color name="nord_bookmark_selected">#a3be8c</color>
