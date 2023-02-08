@@ -250,4 +250,11 @@
     <string name="sk_notify_poll_results">Rezultati ankete</string>
     <string name="sk_alt_text_missing_title">Manjka nadomestno besedilo</string>
     <string name="sk_icon_gauge">Merilnik</string>
+    <string name="sk_expand">Razširi</string>
+    <string name="sk_unfinished_attachments_message">Nekatere priloge se niso naložile do konca.</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">CW predpona odgovora z »re:«</string>
+    <string name="sk_collapse">Strni</string>
+    <string name="sk_settings_collapse_long_posts">Strni zelo dolge objave</string>
+    <string name="sk_filtered">Filtrirano: %s</string>
+    <string name="sk_unfinished_attachments">Popravki prilog\?</string>
 </resources>
