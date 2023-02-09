@@ -34,6 +34,7 @@ import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.BetterItemAnimator;
+import org.joinmastodon.android.model.DisplayItemsParent;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.TileGridLayoutManager;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
@@ -298,6 +299,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
+					if(dy > 0){
+						scrollDiff=0;
+					}
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						TranslateAnimation animate = new TranslateAnimation(
 								0,
@@ -310,7 +314,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						fab.setVisibility(View.INVISIBLE);
 						scrollDiff = 0;
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (scrollDiff > 400) {
+						if (scrollDiff > 800) {
 							fab.setVisibility(View.VISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
@@ -326,7 +330,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						}
 					}
 				}
-		});
+		}});
 		list.addItemDecoration(new StatusListItemDecoration());
 		((UsableRecyclerView)list).setSelectorBoundsProvider(new UsableRecyclerView.SelectorBoundsProvider(){
 			private Rect tmpRect=new Rect();
