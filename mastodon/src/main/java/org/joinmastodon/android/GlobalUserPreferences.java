@@ -87,7 +87,7 @@ public class GlobalUserPreferences{
 		disableDividers=prefs.getBoolean("disableDividers", true);
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
-		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", true);
+		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", false);
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		enableFabAutoHide=prefs.getBoolean("enableFabAutoHide", true);
