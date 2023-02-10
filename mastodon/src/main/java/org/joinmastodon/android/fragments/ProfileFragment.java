@@ -1355,6 +1355,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private class EditableAboutViewHolder extends BaseViewHolder {
 		private EditText title;
+		private boolean titleHasFocus, valueHasFocus;
 		private EditText value;
 
 		public EditableAboutViewHolder(){
@@ -1366,7 +1367,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				return true;
 			});
 			title.addTextChangedListener(new SimpleTextWatcher(e->item.name=e.toString()));
+			title.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					titleHasFocus = hasFocus;
+				}
+			});
 			value.addTextChangedListener(new SimpleTextWatcher(e->item.value=e.toString()));
+			value.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+				@Override
+				public void onFocusChange(View v, boolean hasFocus) {
+					valueHasFocus = hasFocus;
+				}
+			});
 			findViewById(R.id.remove_row_btn).setOnClickListener(this::onRemoveRowClick);
 		}
 
@@ -1377,6 +1390,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 
 		private void onRemoveRowClick(View v){
+			if(titleHasFocus || valueHasFocus){
+				return;
+			}
+
 			int pos=getAbsoluteAdapterPosition();
 			metadataListData.remove(pos);
 			adapter.notifyItemRemoved(pos);
