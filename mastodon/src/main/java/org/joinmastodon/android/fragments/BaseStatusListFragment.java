@@ -85,6 +85,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 
+	private final int THRESHHOLD = 800;
+
 	public BaseStatusListFragment(){
 		super(20);
 		if (withComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
@@ -299,9 +301,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
-					if(dy > 0){
-						scrollDiff=0;
+//					This piece of code should make it so that the fab is always visible if the status list scroll view is at the item at the top
+					if(list.getChildLayoutPosition(list.getChildAt(0)) < 1){
+						scrollDiff=THRESHHOLD+1;
+					}else{
+						if(dy > 0){
+							scrollDiff=0;
+						}
 					}
+
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						TranslateAnimation animate = new TranslateAnimation(
 								0,
@@ -314,7 +322,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						fab.setVisibility(View.INVISIBLE);
 						scrollDiff = 0;
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (scrollDiff > 800) {
+						if (scrollDiff > THRESHHOLD) {
 							fab.setVisibility(View.VISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
