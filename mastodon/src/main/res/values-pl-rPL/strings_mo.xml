@@ -17,4 +17,7 @@
     <string name="mo_welcome_text">Aby rozpocząć, wpisz poniżej nazwę domeny swojej instancji.</string>
     <string name="mo_settings_contribute">Wspomóż rozwój Moshidon</string>
     <string name="mo_no_image_desc">Dołączone obrazy nie mają opisu. Proszę rozważyć dodanie opisów, aby umożliwić osobom niedowidzącym ich odczytanie.</string>
+    <string name="mo_disable_dividers">Wyłącz dzielenie postów</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Wyłącz opcję Przenoszenia przycisku publikacji aby umożliwić dostosowywanie</string>
+    <string name="mo_filtered">Wyfiltrowano: %s</string>
 </resources>
