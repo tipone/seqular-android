@@ -258,4 +258,5 @@
     <string name="sk_filtered">Filtré : %s</string>
     <string name="sk_unfinished_attachments">Corriger les pièces jointes \?</string>
     <string name="sk_unfinished_attachments_message">Certaines pièces jointes n\'ont pas fini de se télécharger.</string>
+    <string name="sk_spectator_mode">Mode spectateur</string>
 </resources>
