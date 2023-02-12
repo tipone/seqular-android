@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_relocate_publish_button">Recol·loca el botó de publicació</string>
+    <string name="mo_disable_dividers">Desactiva els divisors de publicacions</string>
 </resources>
