@@ -243,7 +243,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.collapseLongPosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.sk_spectator_mode, R.drawable.ic_fluent_eye_24_regular, GlobalUserPreferences.spectatorMode, i->{
+		items.add(new SwitchItem(R.string.sk_settings_hide_interaction, R.drawable.ic_fluent_eye_24_regular, GlobalUserPreferences.spectatorMode, i->{
 			GlobalUserPreferences.spectatorMode=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
