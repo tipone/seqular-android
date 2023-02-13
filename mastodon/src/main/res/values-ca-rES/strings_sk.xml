@@ -246,4 +246,11 @@
     <string name="sk_searching">Cercant…</string>
     <string name="sk_save_draft">Voleu desar l\'esborrany\?</string>
     <string name="sk_settings_show_no_alt_indicator">Indicador dels textos alternatius inexistents</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Afegeix «re:» a les respostes als avisos de contingut</string>
+    <string name="sk_filtered">Filtrat: %s</string>
+    <string name="sk_expand">Amplia</string>
+    <string name="sk_collapse">Tanca</string>
+    <string name="sk_settings_collapse_long_posts">Acurta les publicacions llargues</string>
+    <string name="sk_signed_up">registrat</string>
+    <string name="sk_spectator_mode">Mode d\'espectador</string>
 </resources>

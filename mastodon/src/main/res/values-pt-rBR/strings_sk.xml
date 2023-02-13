@@ -246,8 +246,11 @@
     <string name="sk_settings_server_version">Versão do servidor: %s</string>
     <string name="sk_notify_poll_results">Resultados de enquetes</string>
     <string name="sk_filtered">Filtrado: %s</string>
-    <string name="sk_expand">Expandir</string>
-    <string name="sk_unfinished_attachments_message">Alguns anexos não foram carregados.</string>
+    <string name="sk_expand">Mostrar mais</string>
+    <string name="sk_unfinished_attachments_message">Alguns anexos ainda não foram enviados.</string>
     <string name="sk_unfinished_attachments">Corrigir anexos\?</string>
     <string name="sk_settings_glitch_mode_explanation">Habilite isso se sua instância inicial for executada no Glitch. Não é necessário para Hometown ou Akkoma.</string>
+    <string name="sk_collapse">Mostrar menos</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Adicionar \"re:\" nas respostas com Avisos de Conteúdo</string>
+    <string name="sk_spectator_mode">Modo espectador</string>
 </resources>

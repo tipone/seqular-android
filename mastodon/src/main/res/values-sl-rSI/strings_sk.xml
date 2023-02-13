@@ -257,4 +257,5 @@
     <string name="sk_settings_collapse_long_posts">Strni zelo dolge objave</string>
     <string name="sk_filtered">Filtrirano: %s</string>
     <string name="sk_unfinished_attachments">Popravki prilog\?</string>
+    <string name="sk_spectator_mode">Gledalski način</string>
 </resources>

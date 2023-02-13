@@ -32,6 +32,7 @@ import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -99,6 +100,10 @@ public abstract class StatusDisplayItem{
 	}
 
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate, Filter.FilterContext filterContext){
+		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, disableTranslate, filterContext, null);
+	}
+
+	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate, Filter.FilterContext filterContext, StatusDisplayItem titleItem){
 		String parentID=parentObject.getID();
 		ArrayList<StatusDisplayItem> items=new ArrayList<>();
 
@@ -194,6 +199,8 @@ public abstract class StatusDisplayItem{
 			item.inset=inset;
 			item.index=i++;
 		}
+
+		if (titleItem != null) items.add(0, titleItem);
 
 		if (!statusForContent.filterRevealed) {
 			return new ArrayList<>(List.of(

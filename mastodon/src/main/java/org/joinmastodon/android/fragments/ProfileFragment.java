@@ -983,7 +983,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		pager.setUserInputEnabled(false);
 		actionButton.setText(R.string.done);
 		ArrayList<Animator> animators=new ArrayList<>();
-		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay).mutate();
+		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay, getActivity().getTheme()).mutate();
 		avatar.setForeground(overlay);
 		animators.add(ObjectAnimator.ofInt(overlay, "alpha", 0, 255));
 
