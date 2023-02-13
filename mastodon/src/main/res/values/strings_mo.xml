@@ -24,6 +24,7 @@
     <string name="mo_clear_recent_emoji">Clear recently used emoji</string>
     <string name="mo_filtered">Filtered: %s</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Disable "Relocate publish button" to allow customization</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Disable reminder to add alt text</string>
 
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Add new poll option</string>
