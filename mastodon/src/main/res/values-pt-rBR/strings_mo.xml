@@ -20,4 +20,5 @@
     <string name="mo_sending_error">Erro ao publicar</string>
     <string name="mo_poll_option_add">Adicionar nova opção de enquete</string>
     <string name="mo_filtered">Filtrado: %s</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Desabilitar lembrete de adicionar textos descritivos</string>
 </resources>
