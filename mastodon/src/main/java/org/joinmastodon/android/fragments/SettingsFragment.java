@@ -232,6 +232,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.mo_disable_reminder_to_add_alt_text, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
+			GlobalUserPreferences.showNoAltIndicator=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+
+
 
 		items.add(new HeaderItem(R.string.sk_timelines));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
@@ -263,11 +270,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			needAppRestart=true;
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
-			GlobalUserPreferences.showNoAltIndicator=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-		items.add(new SwitchItem(R.string.mo_disable_reminder_to_add_alt_text, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
 			GlobalUserPreferences.showNoAltIndicator=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
