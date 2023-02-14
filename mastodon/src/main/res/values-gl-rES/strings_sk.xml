@@ -252,10 +252,11 @@
     <string name="sk_notify_poll_results">Resultados da enquisa</string>
     <string name="sk_collapse">Contraer</string>
     <string name="sk_unfinished_attachments_message">Algúns arquivos adxuntos aínda non remataron de cargarse.</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Prefixo resposta CW con \"re:\"</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Prefixar a resposta de AC con \"re:\"</string>
     <string name="sk_filtered">Filtrados: %s</string>
     <string name="sk_expand">Expandir</string>
     <string name="sk_settings_collapse_long_posts">Contraer publicacións moi longas</string>
     <string name="sk_unfinished_attachments">Arranxar arquivos adxuntos\?</string>
     <string name="sk_spectator_mode">Modo espectador</string>
+    <string name="sk_settings_hide_interaction">Ocultar botóns de interacción</string>
 </resources>
