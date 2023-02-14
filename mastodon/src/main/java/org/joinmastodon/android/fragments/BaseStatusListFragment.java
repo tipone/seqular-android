@@ -302,7 +302,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
 //					This piece of code should make it so that the fab is always visible if the status list scroll view is at the item at the top
-					if(list.getChildLayoutPosition(list.getChildAt(0)) < 1){
+					if(list.getChildAt(0).getTop() == 0){
 						scrollDiff=THRESHHOLD+1;
 					}else{
 						if(dy > 0){
