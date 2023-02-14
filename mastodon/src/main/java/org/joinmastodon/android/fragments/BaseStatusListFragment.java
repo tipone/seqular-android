@@ -317,7 +317,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 								0,
 								fab.getHeight() * 2);
 						animate.setDuration(300);
-						animate.setFillAfter(true);
+//						animate.setFillAfter(true);
 						fab.startAnimation(animate);
 						fab.setEnabled(false);
 						fab.setVisibility(View.INVISIBLE);
@@ -330,7 +330,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 									fab.getHeight() * 2,
 									0);
 							animate.setDuration(300);
-							animate.setFillAfter(true);
+//							animate.setFillAfter(true);
 							fab.startAnimation(animate);
 							fab.setEnabled(true);
 							fab.setVisibility(View.VISIBLE);
