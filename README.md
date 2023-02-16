@@ -70,7 +70,7 @@ To bookmark a post, press the button between the Favorite and Share buttons on t
 
 To install this app on your Android device, download the [latest release from GitHub](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk) and open it. You might have to accept installing APK files from your browser when trying to install it. You can also take a look at all releases on the [Releases](https://github.com/LucasGGamerM/moshidon/releases) page.
 
-Moshidon makes use of [Mastodon for Android](https://github.com/mastodon/mastodon-android)’s automatic update checker. Megalodon will check for new updates available on GitHub and offer to download and install them. You can also manually press “Check for updates” at the bottom of the settings page!
+Moshidon makes use of [Mastodon for Android](https://github.com/mastodon/mastodon-android)’s automatic update checker. Moshidon will check for new updates available on GitHub and offer to download and install them. You can also manually press “Check for updates” at the bottom of the settings page!
 
 Moshidon is also available in [IzzyOnDroid repo](https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda), compatible with all F-Droid clients. The APK provided here is the same as the one included in the Releases.
 
