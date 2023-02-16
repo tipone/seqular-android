@@ -258,4 +258,5 @@
     <string name="sk_unfinished_attachments_message">Algunos adjuntos no han terminado de subirse.</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Añadir \"re:\" a respuestas a Advertencias de Contenido</string>
     <string name="sk_spectator_mode">Modo espectador</string>
+    <string name="sk_settings_hide_interaction">Ocultar los botones interactivos</string>
 </resources>

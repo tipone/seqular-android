@@ -257,4 +257,5 @@
     <string name="sk_unfinished_attachments_message">Niektóre załączniki jeszcze nie zostały przesłane.</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Zaczynaj CW odpowiedzi od “re:”</string>
     <string name="sk_settings_collapse_long_posts">Zwijaj bardzo długie posty</string>
+    <string name="sk_settings_hide_interaction">Ukryj przyciski interakcji</string>
 </resources>

@@ -258,4 +258,5 @@
     <string name="sk_settings_collapse_long_posts">Згортати надто довгі дописи</string>
     <string name="sk_unfinished_attachments_message">Деякі вкладення не повністю завантажилися.</string>
     <string name="sk_spectator_mode">Режим глядача</string>
+    <string name="sk_settings_hide_interaction">Сховати кнопки взаємодії</string>
 </resources>
