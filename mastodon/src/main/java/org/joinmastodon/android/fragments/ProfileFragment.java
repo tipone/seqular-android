@@ -489,8 +489,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			for (Account.Role role : account.roles) {
 				TextView roleText = new TextView(getActivity(), null, 0, R.style.role_label);
 				roleText.setText(role.name);
-				GradientDrawable bg = (GradientDrawable) roleText.getBackground().mutate();
-				bg.setStroke(V.dp(2), Color.parseColor(role.color));
+				if (!TextUtils.isEmpty(role.color) && role.color.startsWith("#")) try {
+					GradientDrawable bg = (GradientDrawable) roleText.getBackground().mutate();
+					bg.setStroke(V.dp(2), Color.parseColor(role.color));
+				} catch (Exception ignored) {}
 				rolesView.addView(roleText);
 			}
 		}
