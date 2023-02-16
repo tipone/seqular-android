@@ -3,6 +3,7 @@ Moshidon is a modified version of the <a href="https://github.com/mastodon/masto
 <b>Key features</b>
 
 - <b>Many colors</b>: Brings material you theme and many colorful options for themes!
+- <b>Filtered posts!</b>: The ability to have filtered posts show with a warning!
 - <b>Translate button</b>: Brings a translate button!
 - <b>Toot language picker</b>: Brings in a toot language picker!
 - <b>Unlisted posting</b>: Post publicly without having your post show up in trends, hashtags or public timelines.
