@@ -20,4 +20,5 @@
     <string name="mo_fab_compose">撰写</string>
     <string name="mo_sending_error">发布帖文时出错</string>
     <string name="mo_filtered">已过滤：%s</string>
+    <string name="mo_disable_reminder_to_add_alt_text">禁用添加ALT文本的提醒</string>
 </resources>
