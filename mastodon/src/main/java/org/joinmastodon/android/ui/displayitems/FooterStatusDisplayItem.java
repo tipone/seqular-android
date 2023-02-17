@@ -312,11 +312,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				if (item.status.favourited) {
-//					if(GlobalUserPreferences.reduceMotion){
-					v.startAnimation(opacityIn);
-//					}else{
-//						v.startAnimation(animSet);
-//					}
+						v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
 				} else {
 					v.startAnimation(opacityIn);
 				}
