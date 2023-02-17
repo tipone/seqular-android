@@ -13,9 +13,12 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.ImageButton;
 import android.widget.Toolbar;
 
@@ -75,10 +78,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
 	protected PhotoViewer currentPhotoViewer;
+	protected ImageButton fab;
+	protected int scrollDiff = 0;
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
-	protected ImageButton fab;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -285,11 +289,42 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		fab=view.findViewById(R.id.fab);
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
+
+				if (fab!=null && GlobalUserPreferences.autoHideFab) {
+					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+						TranslateAnimation animate = new TranslateAnimation(
+								0,
+								0,
+								0,
+								fab.getHeight() * 2);
+						animate.setDuration(300);
+						animate.setFillAfter(true);
+						fab.startAnimation(animate);
+						fab.setVisibility(View.INVISIBLE);
+						scrollDiff = 0;
+					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+						if (list.getChildLayoutPosition(list.getChildAt(0)) == 0 || scrollDiff > 400) {
+							fab.setVisibility(View.VISIBLE);
+							TranslateAnimation animate = new TranslateAnimation(
+									0,
+									0,
+									fab.getHeight() * 2,
+									0);
+							animate.setDuration(300);
+							animate.setFillAfter(true);
+							fab.startAnimation(animate);
+							scrollDiff = 0;
+						} else {
+							scrollDiff += Math.abs(dy);
+						}
+					}
+				}
 			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
@@ -327,7 +362,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		updateToolbar();
 
 		if (withComposeButton()) {
-			fab = view.findViewById(R.id.fab);
 			fab.setVisibility(View.VISIBLE);
 			fab.setOnClickListener(this::onFabClick);
 			fab.setOnLongClickListener(this::onFabLongClick);
