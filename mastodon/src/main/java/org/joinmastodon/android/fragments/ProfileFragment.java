@@ -26,6 +26,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
@@ -361,6 +362,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		});
 
 		actionButton.setOnClickListener(this::onActionButtonClick);
+		actionButton.setOnLongClickListener(this::onActionButtonLongClick);
 		notifyButton.setOnClickListener(this::onNotifyButtonClick);
 		avatar.setOnClickListener(this::onAvatarClick);
 		cover.setOnClickListener(this::onCoverClick);
@@ -576,8 +578,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			for (Account.Role role : account.roles) {
 				TextView roleText = new TextView(getActivity(), null, 0, R.style.role_label);
 				roleText.setText(role.name);
-				GradientDrawable bg = (GradientDrawable) roleText.getBackground().mutate();
-				bg.setStroke(V.dp(2), Color.parseColor(role.color));
+				if (!TextUtils.isEmpty(role.color) && role.color.startsWith("#")) try {
+					GradientDrawable bg = (GradientDrawable) roleText.getBackground().mutate();
+					bg.setStroke(V.dp(2), Color.parseColor(role.color));
+				} catch (Exception ignored) {}
 				rolesView.addView(roleText);
 			}
 		}
@@ -705,6 +709,16 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.scheduled, R.id.bookmarks, R.id.favorites);
 		}else{
 			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.bookmarks, R.id.followed_hashtags, R.id.favorites, R.id.scheduled);
+		}
+		boolean hasMultipleAccounts = AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
+		MenuItem openWithAccounts = menu.findItem(R.id.open_with_account);
+		openWithAccounts.setVisible(hasMultipleAccounts);
+		SubMenu accountsMenu = openWithAccounts.getSubMenu();
+		if (hasMultipleAccounts) {
+			accountsMenu.clear();
+			UiUtils.populateAccountsMenu(accountID, accountsMenu, s-> UiUtils.openURL(
+					getActivity(), s.getID(), account.url, false
+			));
 		}
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
 		if(isOwnProfile)
@@ -880,33 +894,34 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			currentPhotoViewer.offsetView(0, oldScrollY-scrollY);
 		}
 
-		int dy = scrollY - oldScrollY;
-
-		if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-			TranslateAnimation animate = new TranslateAnimation(
-					0,
-					0,
-					0,
-					fab.getHeight() * 2);
-			animate.setDuration(300);
-			animate.setFillAfter(true);
-			fab.startAnimation(animate);
-			fab.setVisibility(View.INVISIBLE);
-			scrollDiff = 0;
-		} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-			if (scrollDiff > 400) {
-				fab.setVisibility(View.VISIBLE);
+		if (GlobalUserPreferences.enableFabAutoHide) {
+			int dy = scrollY - oldScrollY;
+			if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 				TranslateAnimation animate = new TranslateAnimation(
 						0,
 						0,
-						fab.getHeight() * 2,
-						0);
+						0,
+						fab.getHeight() * 2);
 				animate.setDuration(300);
 				animate.setFillAfter(true);
 				fab.startAnimation(animate);
+				fab.setVisibility(View.INVISIBLE);
 				scrollDiff = 0;
-			} else {
-				scrollDiff += Math.abs(dy);
+			} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+				if (v.getScrollY() == 0 || scrollDiff > 400) {
+					fab.setVisibility(View.VISIBLE);
+					TranslateAnimation animate = new TranslateAnimation(
+							0,
+							0,
+							fab.getHeight() * 2,
+							0);
+					animate.setDuration(300);
+					animate.setFillAfter(true);
+					fab.startAnimation(animate);
+					scrollDiff = 0;
+				} else {
+					scrollDiff += Math.abs(dy);
+				}
 			}
 		}
 	}
@@ -935,6 +950,31 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}else{
 			UiUtils.performAccountAction(getActivity(), account, accountID, relationship, actionButton, this::setActionProgressVisible, this::updateRelationship);
 		}
+	}
+
+	private boolean onActionButtonLongClick(View v) {
+		if (isOwnProfile || AccountSessionManager.getInstance().getLoggedInAccounts().size() < 2) return false;
+		UiUtils.pickAccount(getActivity(), accountID, R.string.sk_follow_as, R.drawable.ic_fluent_person_add_28_regular, session -> {
+			UiUtils.lookupAccount(getActivity(), account, session.getID(), accountID, acc -> {
+				if (acc == null) return;
+				new SetAccountFollowed(acc.id, true, true).setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(Relationship relationship) {
+						Toast.makeText(
+								getActivity(),
+								getString(R.string.sk_followed_as, session.self.getShortUsername()),
+								Toast.LENGTH_SHORT
+						).show();
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(getActivity());
+					}
+				}).exec(session.getID());
+			});
+		}, null);
+		return true;
 	}
 
 	private void setActionProgressVisible(boolean visible){
