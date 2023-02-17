@@ -252,4 +252,15 @@
     <string name="sk_settings_support_local_only">Server hanya mendukung pengiriman hanya lokal</string>
     <string name="sk_settings_server_version">Versi server: %s</string>
     <string name="sk_notify_poll_results">Hasil japat</string>
+    <string name="sk_filtered">Disaring: %s</string>
+    <string name="sk_expand">Buka</string>
+    <string name="sk_collapse">Tutup</string>
+    <string name="sk_settings_hide_interaction">Sembunyikan tombol interaksi</string>
+    <string name="sk_follow_as">Ikuti dari akun lain</string>
+    <string name="sk_followed_as">Diikuti dari %s</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Awali peringatan konten balasan dengan “re:”</string>
+    <string name="sk_settings_collapse_long_posts">Tutup kiriman yang sangat panjang</string>
+    <string name="sk_unfinished_attachments">Perbaiki lampiran\?</string>
+    <string name="sk_unfinished_attachments_message">Beberapa lampiran belum selesai diunggah.</string>
+    <string name="sk_settings_hide_fab">Sembunyikan tombol Komposer</string>
 </resources>
