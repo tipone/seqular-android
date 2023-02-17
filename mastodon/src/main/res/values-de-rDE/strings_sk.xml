@@ -258,4 +258,7 @@
     <string name="sk_unfinished_attachments">Anhänge richtig stellen\?</string>
     <string name="sk_settings_hide_interaction">Interaktions-Buttons verstecken</string>
     <string name="sk_unfinished_attachments_message">Einige Anhänge sind nicht fertig hochgeladen.</string>
+    <string name="sk_followed_as">Mit %s gefolgt</string>
+    <string name="sk_settings_hide_fab">Verfassen-Button automatisch ausblenden</string>
+    <string name="sk_follow_as">Mit anderem Account folgen</string>
 </resources>
