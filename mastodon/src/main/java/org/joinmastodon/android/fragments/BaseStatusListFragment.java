@@ -304,12 +304,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 								0,
 								fab.getHeight() * 2);
 						animate.setDuration(300);
-						animate.setFillAfter(true);
 						fab.startAnimation(animate);
 						fab.setVisibility(View.INVISIBLE);
 						scrollDiff = 0;
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (list.getChildLayoutPosition(list.getChildAt(0)) == 0 || scrollDiff > 400) {
+						if (list.getChildAt(0).getTop() == 0 || scrollDiff > 400) {
 							fab.setVisibility(View.VISIBLE);
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
@@ -317,7 +316,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 									fab.getHeight() * 2,
 									0);
 							animate.setDuration(300);
-							animate.setFillAfter(true);
 							fab.startAnimation(animate);
 							scrollDiff = 0;
 						} else {
