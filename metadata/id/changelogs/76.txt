@@ -1,0 +1,6 @@
+- Saringan ditingkatkan, termasuk kompatibilitas “Sembunyikan dengan peringatan”
+- Rancang ulang halaman profil dengan metadata langsung di bawah bio
+- Fungsi buka/tutup untuk kiriman yang sangat panjang
+- Opsi untuk menambahkan peringatan konten pada balasan dengan “re:”
+- Opsi untuk menyembunyikan tombol interaksi di lini masa
+- Banyak perbaikan kutu, perubahan, dan peningkatan
