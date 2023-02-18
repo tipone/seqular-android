@@ -7,10 +7,14 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import org.joinmastodon.android.api.ObjectValidationException;
+import org.joinmastodon.android.api.requests.accounts.SetPrivateNote;
+import org.joinmastodon.android.api.requests.statuses.SetStatusFavorited;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
@@ -19,12 +23,17 @@ import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.model.Notification;
+import org.joinmastodon.android.model.NotificationAction;
+import org.joinmastodon.android.model.Relationship;
+import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 
 public class MainActivity extends FragmentStackActivity{
 	@Override
@@ -98,6 +107,26 @@ public class MainActivity extends FragmentStackActivity{
 			}
 		}else if(intent.getBooleanExtra("compose", false)){
 			showCompose();
+		}else if(intent.getStringExtra("notificationAction") != null) {
+			switch (NotificationAction.values()[intent.getIntExtra("notificationAction", 0)]) {
+				case FAVORITE -> {
+					String accountID=intent.getStringExtra("accountID");
+					new SetStatusFavorited(intent.getStringExtra("status"), true)
+							.setCallback(new Callback<>(){
+								@Override
+								public void onSuccess(Status result){
+								}
+
+								@Override
+								public void onError(ErrorResponse error){
+								}
+							})
+							.exec(accountID);
+				}
+				case REBLOG -> {
+				}
+			}
+
 		}/*else if(intent.hasExtra(PackageInstaller.EXTRA_STATUS) && GithubSelfUpdater.needSelfUpdating()){
 			GithubSelfUpdater.getInstance().handleIntentFromInstaller(intent, this);
 		}*/
