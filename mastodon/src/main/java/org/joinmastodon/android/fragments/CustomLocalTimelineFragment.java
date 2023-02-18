@@ -59,6 +59,12 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.hashtag_timeline, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
     protected TimelineDefinition makeTimelineDefinition() {
         return TimelineDefinition.ofCustomLocalTimeline(domain);
     }
