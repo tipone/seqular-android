@@ -9,7 +9,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.Icon;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -20,7 +19,6 @@ import org.joinmastodon.android.api.requests.notifications.GetNotificationByID;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
-import org.joinmastodon.android.model.NotificationAction;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
@@ -101,7 +99,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		String accountName="@"+self.username+"@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 		Notification.Builder builder;
-		Notification.Builder summaryNotification;
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 			boolean hasGroup=false;
 			List<NotificationChannelGroup> channelGroups=nm.getNotificationChannelGroups();
@@ -124,12 +121,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				nm.createNotificationChannels(channels);
 			}
 			builder=new Notification.Builder(context, accountID+"_"+pn.notificationType);
-//			summaryNotification=new Notification.Builder(context, accountID);
 		}else{
 			builder=new Notification.Builder(context)
-					.setPriority(Notification.PRIORITY_DEFAULT)
-					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
-			summaryNotification=new Notification.Builder(context)
 					.setPriority(Notification.PRIORITY_DEFAULT)
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 		}
@@ -138,14 +131,11 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		contentIntent.putExtra("fromNotification", true);
 		contentIntent.putExtra("accountID", accountID);
-		contentIntent.putExtra("notificationID", notificationId);
 		if(notification!=null){
 			contentIntent.putExtra("notification", Parcels.wrap(notification));
 		}
-
 		builder.setContentTitle(pn.title)
 				.setContentText(pn.body)
-				.setContentTitle(pn.title)
 				.setStyle(new Notification.BigTextStyle().bigText(pn.body))
 				.setSmallIcon(R.drawable.ic_ntf_logo)
 				.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
@@ -153,8 +143,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
-				.setColor(context.getColor(R.color.shortcut_icon_background))
-				.setGroup(accountID);
+				.setColor(context.getColor(R.color.shortcut_icon_background));
 
 		if (!GlobalUserPreferences.uniformNotificationIcon) {
 			builder.setSmallIcon(switch (pn.notificationType) {
@@ -176,35 +165,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		if(AccountSessionManager.getInstance().getLoggedInAccounts().size()>1){
 			builder.setSubText(accountName);
 		}
-
-
-		Intent actionIntent = new Intent(context, MainActivity.class);
-		actionIntent.putExtra("fromNotification", true);
-		actionIntent.putExtra("accountID", accountID);
-		actionIntent.putExtra("notificationID", notificationId);
-		if(notification!=null){
-			actionIntent.putExtra("status", notification.status.id);
-//			actionIntent.putExtra("notification", Parcels.wrap(notification));
-		}
-		PendingIntent actionPendingIntent =
-				PendingIntent.getBroadcast(context, 0, actionIntent, 0);
-
-		switch (pn.notificationType) {
-			case FAVORITE -> builder.setSmallIcon(R.drawable.ic_fluent_star_24_filled);
-			case REBLOG -> builder.setSmallIcon(R.drawable.ic_fluent_arrow_repeat_all_24_filled);
-			case FOLLOW -> builder.setSmallIcon(R.drawable.ic_fluent_person_add_24_filled);
-			case MENTION -> builder.setSmallIcon(R.drawable.ic_fluent_mention_24_filled);
-			case POLL -> builder.setSmallIcon(R.drawable.ic_fluent_poll_24_filled);
-			default -> builder.setSmallIcon(R.drawable.ic_ntf_logo);
-		}
-
-		if (pn.notificationType == PushNotification.Type.MENTION) {
-			actionIntent.putExtra("notificationAction", NotificationAction.REBLOG.ordinal());
-			builder.addAction(new Notification.Action.Builder(null, "Favorite", actionPendingIntent).build());
-		}
-
-		notificationId++;
-		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId, builder.build());
-
+		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());
 	}
 }
