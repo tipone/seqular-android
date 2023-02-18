@@ -20,4 +20,5 @@
     <string name="mo_disable_dividers">Wyłącz dzielenie postów</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Wyłącz opcję Przenoszenia przycisku publikacji aby umożliwić dostosowywanie</string>
     <string name="mo_filtered">Wyfiltrowano: %s</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Wyłącz przypomnienie o dodaniu opisu</string>
 </resources>
