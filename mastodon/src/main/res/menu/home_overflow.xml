@@ -29,5 +29,12 @@
             android:visible="false">
             <menu />
         </item>
+        <item
+            android:id="@+id/custom_local_timelines"
+            android:icon="@drawable/ic_fluent_people_community_24_filled"
+            android:title="@string/sk_hashtags_you_follow"
+            android:visible="false">
+            <menu />
+        </item>
     </group>
 </menu>

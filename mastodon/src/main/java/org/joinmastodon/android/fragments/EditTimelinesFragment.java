@@ -30,7 +30,6 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
-import org.joinmastodon.android.model.CustomLocalTimeline;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.ListTimeline;
@@ -61,8 +60,6 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
     private final Map<MenuItem, TimelineDefinition> timelineByMenuItem = new HashMap<>();
     private final List<ListTimeline> listTimelines = new ArrayList<>();
     private final List<Hashtag> hashtags = new ArrayList<>();
-
-    private final List<CustomLocalTimeline> customLocalTimelines = new ArrayList<>();
 
     public EditTimelinesFragment() {
         super(10);
@@ -102,11 +99,6 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
                 error.showToast(getContext());
             }
         }).exec(accountID);
-
-        CustomLocalTimeline fosstodon = new CustomLocalTimeline();
-        fosstodon.domain = "fosstodon.org";
-        customLocalTimelines.add(fosstodon);
-
     }
 
     @Override
@@ -168,18 +160,14 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
         listsMenu.getItem().setIcon(R.drawable.ic_fluent_people_24_regular);
         SubMenu hashtagsMenu = menu.addSubMenu(R.string.sk_hashtag);
         hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
-        SubMenu customLocalTimelinesMenu = menu.addSubMenu(R.string.local_timeline);
-        hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_people_community_24_regular);
 
         makeBackItem(timelinesMenu);
         makeBackItem(listsMenu);
         makeBackItem(hashtagsMenu);
-        makeBackItem(customLocalTimelinesMenu);
 
         TimelineDefinition.ALL_TIMELINES.forEach(tl -> addTimelineToOptions(tl, timelinesMenu));
         listTimelines.stream().map(TimelineDefinition::ofList).forEach(tl -> addTimelineToOptions(tl, listsMenu));
         hashtags.stream().map(TimelineDefinition::ofHashtag).forEach(tl -> addTimelineToOptions(tl, hashtagsMenu));
-        customLocalTimelines.stream().map(TimelineDefinition::ofCustomLocalTimeline).forEach(tl -> addTimelineToOptions(tl, customLocalTimelinesMenu));
 
         timelinesMenu.getItem().setVisible(timelinesMenu.size() > 0);
         listsMenu.getItem().setVisible(listsMenu.size() > 0);
