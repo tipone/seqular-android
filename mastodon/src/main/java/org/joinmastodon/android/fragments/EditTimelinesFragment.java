@@ -150,7 +150,6 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
         FrameLayout inputWrap = new FrameLayout(getContext());
         EditText input = new EditText(getContext());
         input.setHint(R.string.sk_example_domain);
-        input.setText(GlobalUserPreferences.publishButtonText.trim());
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
         input.setLayoutParams(params);
