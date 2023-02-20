@@ -30,6 +30,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
+import org.joinmastodon.android.model.CustomLocalTimeline;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.ListTimeline;
@@ -60,6 +61,7 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
     private final Map<MenuItem, TimelineDefinition> timelineByMenuItem = new HashMap<>();
     private final List<ListTimeline> listTimelines = new ArrayList<>();
     private final List<Hashtag> hashtags = new ArrayList<>();
+    private final List<CustomLocalTimeline> localTimelines = new ArrayList<>();
 
     public EditTimelinesFragment() {
         super(10);
@@ -160,6 +162,8 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
         listsMenu.getItem().setIcon(R.drawable.ic_fluent_people_24_regular);
         SubMenu hashtagsMenu = menu.addSubMenu(R.string.sk_hashtag);
         hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
+//        SubMenu hashtagsMenu = menu.addSubMenu(R.string.sk_hashtag);
+//        hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
 
         makeBackItem(timelinesMenu);
         makeBackItem(listsMenu);

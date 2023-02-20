@@ -10,6 +10,7 @@ import androidx.annotation.StringRes;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTimelineFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
@@ -27,7 +28,7 @@ public class TimelineDefinition {
 
     private @Nullable String listId;
     private @Nullable String listTitle;
-
+    private @Nullable String domain;
     private @Nullable String hashtagName;
 
     public static TimelineDefinition ofList(String listId, String listTitle) {
@@ -44,6 +45,12 @@ public class TimelineDefinition {
     public static TimelineDefinition ofHashtag(String hashtag) {
         TimelineDefinition def = new TimelineDefinition(TimelineType.HASHTAG);
         def.hashtagName = hashtag;
+        return def;
+    }
+
+    public static TimelineDefinition ofCustomLocalTimeline(String domain) {
+        TimelineDefinition def = new TimelineDefinition(TimelineType.CUSTOM_LOCAL_TIMELINE);
+        def.domain = domain;
         return def;
     }
 
@@ -78,6 +85,7 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> ctx.getString(R.string.sk_timeline_posts);
             case LIST -> listTitle;
             case HASHTAG -> hashtagName;
+            case CUSTOM_LOCAL_TIMELINE -> domain;
         };
     }
 
@@ -89,6 +97,7 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> Icon.POST_NOTIFICATIONS;
             case LIST -> Icon.LIST;
             case HASHTAG -> Icon.HASHTAG;
+            case CUSTOM_LOCAL_TIMELINE -> Icon.CUSTOM_LOCAL_TIMELINE;
         };
     }
 
@@ -100,6 +109,7 @@ public class TimelineDefinition {
             case LIST -> new ListTimelineFragment();
             case HASHTAG -> new HashtagTimelineFragment();
             case POST_NOTIFICATIONS -> new NotificationsListFragment();
+            case CUSTOM_LOCAL_TIMELINE -> new CustomLocalTimelineFragment();
         };
     }
 
@@ -125,6 +135,7 @@ public class TimelineDefinition {
         if (type != that.type) return false;
         if (type == TimelineType.LIST) return Objects.equals(listId, that.listId);
         if (type == TimelineType.HASHTAG) return Objects.equals(hashtagName.toLowerCase(), that.hashtagName.toLowerCase());
+        if (type == TimelineType.CUSTOM_LOCAL_TIMELINE) return Objects.equals(domain.toLowerCase(), that.domain.toLowerCase());
         return true;
     }
 
@@ -133,6 +144,8 @@ public class TimelineDefinition {
         int result = type.ordinal();
         result = 31 * result + (listId != null ? listId.hashCode() : 0);
         result = 31 * result + (hashtagName.toLowerCase() != null ? hashtagName.toLowerCase().hashCode() : 0);
+        result = 31 * result + (domain.toLowerCase() != null ? domain.toLowerCase().hashCode() : 0);
+
         return result;
     }
 
@@ -142,6 +155,7 @@ public class TimelineDefinition {
         def.listId = listId;
         def.listTitle = listTitle;
         def.hashtagName = hashtagName;
+        def.domain = domain;
         def.icon = icon == null ? null : Icon.values()[icon.ordinal()];
         return def;
     }
@@ -152,11 +166,13 @@ public class TimelineDefinition {
             args.putString("listID", listId);
         } else if (type == TimelineType.HASHTAG) {
             args.putString("hashtag", hashtagName);
+        } else if (type == TimelineType.CUSTOM_LOCAL_TIMELINE) {
+            args.putString("domain", domain);
         }
         return args;
     }
 
-    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG }
+    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG, CUSTOM_LOCAL_TIMELINE }
 
     public enum Icon {
         HEART(R.drawable.ic_fluent_heart_24_regular, R.string.sk_icon_heart),
@@ -219,7 +235,8 @@ public class TimelineDefinition {
         FEDERATED(R.drawable.ic_fluent_earth_24_regular, R.string.sk_timeline_federated, true),
         POST_NOTIFICATIONS(R.drawable.ic_fluent_chat_24_regular, R.string.sk_timeline_posts, true),
         LIST(R.drawable.ic_fluent_people_24_regular, R.string.sk_list, true),
-        HASHTAG(R.drawable.ic_fluent_number_symbol_24_regular, R.string.sk_hashtag, true);
+        HASHTAG(R.drawable.ic_fluent_number_symbol_24_regular, R.string.sk_hashtag, true),
+        CUSTOM_LOCAL_TIMELINE(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true);
 
         public final int iconRes, nameRes;
         public final boolean hidden;
