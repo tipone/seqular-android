@@ -48,7 +48,7 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment {
     public void onAttach(Activity activity){
         super.onAttach(activity);
         domain=getArguments().getString("domain");
-        updateTitle(domain);
+        updateTitle(getArguments().getString("domain"));
 
         setHasOptionsMenu(true);
     }
@@ -82,7 +82,7 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment {
                         onDataLoaded(result, !result.isEmpty());
                     }
                 })
-                .execNoAuth(domain);
+                .execNoAuth("fosstodon.org");
     }
 
     @Override
