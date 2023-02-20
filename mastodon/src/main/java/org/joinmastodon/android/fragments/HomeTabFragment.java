@@ -46,7 +46,6 @@ import org.joinmastodon.android.events.ListDeletedEvent;
 import org.joinmastodon.android.events.ListUpdatedCreatedEvent;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.model.Announcement;
-import org.joinmastodon.android.model.CustomLocalTimeline;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.ListTimeline;
@@ -89,19 +88,16 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private PopupMenu switcherPopup;
 	private final Map<Integer, ListTimeline> listItems = new HashMap<>();
 	private final Map<Integer, Hashtag> hashtagsItems = new HashMap<>();
-	private final Map<Integer, CustomLocalTimeline> customLocalTimelineItems = new HashMap<>();
 	private List<TimelineDefinition> timelineDefinitions;
 	private int count;
 	private Fragment[] fragments;
 	private FrameLayout[] tabViews;
 	private TimelineDefinition[] timelines;
 	private final Map<Integer, TimelineDefinition> timelinesByMenuItem = new HashMap<>();
-	private SubMenu hashtagsMenu, listsMenu, customLocalTimelinesMenu;
+	private SubMenu hashtagsMenu, listsMenu;
 	private PopupMenu overflowPopup;
 	private View overflowActionView = null;
 	private boolean announcementsBadged, settingsBadged;
-
-	private CustomLocalTimeline fosstodon;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -115,9 +111,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		fragments = new Fragment[count];
 		tabViews = new FrameLayout[count];
 		timelines = new TimelineDefinition[count];
-		fosstodon = new CustomLocalTimeline();
-		fosstodon.domain = "fosstodon.org";
-		customLocalTimelineItems.put(1, fosstodon);
 	}
 
 	@Override
@@ -311,18 +304,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		});
 	}
 
-	private void addCustomLocalTimelinesToOverflowMenu() {
-		Context ctx = getContext();
-		customLocalTimelinesMenu.clear();
-		customLocalTimelinesMenu.getItem().setVisible(customLocalTimelineItems.size() > 0);
-		UiUtils.insetPopupMenuIcon(ctx, UiUtils.makeBackItem(customLocalTimelinesMenu));
-		customLocalTimelineItems.forEach((id, customLocalTimeline) -> {
-			MenuItem item = customLocalTimelinesMenu.add(Menu.NONE, id, Menu.NONE, customLocalTimeline.domain);
-			item.setIcon(R.drawable.ic_fluent_people_community_24_regular);
-			UiUtils.insetPopupMenuIcon(ctx, item);
-		});
-	}
-
 	public void updateToolbarLogo(){
 		Toolbar toolbar = getToolbar();
 		ViewParent parentView = toolbarFrame.getParent();
@@ -366,7 +347,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		settings = m.findItem(R.id.settings);
 		hashtagsMenu = m.findItem(R.id.hashtags).getSubMenu();
 		listsMenu = m.findItem(R.id.lists).getSubMenu();
-		customLocalTimelinesMenu = m.findItem(R.id.custom_local_timelines).getSubMenu();
 
 		announcements.setVisible(!announcementsBadged);
 		announcementsAction.setVisible(announcementsBadged);
@@ -377,7 +357,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 		addListsToOverflowMenu();
 		addHashtagsToOverflowMenu();
-		addCustomLocalTimelinesToOverflowMenu();
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
 			m.setGroupDividerEnabled(true);
@@ -460,7 +439,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		int id = item.getItemId();
 		ListTimeline list;
 		Hashtag hashtag;
-		CustomLocalTimeline customLocalTimeline;
 
 		if (item.getItemId() == R.id.menu_back) {
 			getToolbar().post(() -> overflowPopup.show());
@@ -480,10 +458,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 			args.putString("hashtag", hashtag.name);
 			args.putBoolean("following", hashtag.following);
 			Nav.go(getActivity(), HashtagTimelineFragment.class, args);
-		} else if ((customLocalTimeline = customLocalTimelineItems.get(id)) != null) {
-			args.putString("domain", customLocalTimeline.domain);
-//			args.putBoolean("following", hashtag.following);
-			Nav.go(getActivity(), CustomLocalTimelineFragment.class, args);
 		}
 		return true;
 	}
