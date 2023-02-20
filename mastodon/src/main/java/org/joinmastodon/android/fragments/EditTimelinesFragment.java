@@ -189,7 +189,7 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
         hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
 
         MenuItem addLocalTimelines = menu.add(0, R.id.menu_add_local_timelines, NONE, R.string.local_timeline);
-        addLocalTimelines.setIcon(R.drawable.ic_fluent_people_community_24_regular);
+        addLocalTimelines.setIcon(R.drawable.ic_fluent_add_24_regular);
 
         makeBackItem(timelinesMenu);
         makeBackItem(listsMenu);
