@@ -13,12 +13,10 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.animation.TranslateAnimation;
-import android.widget.ImageButton;
 import android.widget.ImageButton;
 import android.widget.Toolbar;
 
@@ -34,7 +32,6 @@ import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.BetterItemAnimator;
-import org.joinmastodon.android.model.DisplayItemsParent;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.TileGridLayoutManager;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
@@ -85,7 +82,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 
-	private final int THRESHHOLD = 800;
+	private final int THRESHOLD = 800;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -303,7 +300,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
 //					This piece of code should make it so that the fab is always visible if the status list scroll view is at the item at the top
 					if(list.getChildAt(0).getTop() == 0){
-						scrollDiff=THRESHHOLD+1;
+						scrollDiff= THRESHOLD +1;
 					}else{
 						if(dy > 0){
 							scrollDiff=0;
@@ -323,7 +320,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						fab.setVisibility(View.INVISIBLE);
 						scrollDiff = 0;
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (scrollDiff > THRESHHOLD) {
+						if (scrollDiff > THRESHOLD) {
 							TranslateAnimation animate = new TranslateAnimation(
 									0,
 									0,

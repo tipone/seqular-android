@@ -96,7 +96,7 @@ Variant with an integrated updater. If you download Moshidon from here (and not 
   ([Pull request](https://github.com/mastodon/mastodon-android/pull/103))
 * Adding a useful private profile note box!*
 * Auto hiding the compose button on scroll!*
-* Adding the hability to remind yourself to add alt text to images!*
+* Adding the ability to remind yourself to add alt text to images!*
 * An indicator for if an image has alt text or not*
 * Adding the ability to have drafts!*
 * Also adding the ability to view announcements from your instance!*
