@@ -22,4 +22,5 @@
 
 	<item name="menu_add_timeline" type="id" />
 	<item name="menu_back" type="id" />
+	<item name="menu_add_local_timelines" type="id" />
 </resources>

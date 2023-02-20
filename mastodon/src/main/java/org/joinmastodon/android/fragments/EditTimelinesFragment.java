@@ -130,6 +130,10 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
             optionsMenu.performIdentifierAction(R.id.menu_add_timeline, 0);
             return true;
         }
+        if (item.getItemId() == R.id.menu_add_local_timelines) {
+            addNewLocalTimeline();
+            return true;
+        }
         TimelineDefinition tl = timelineByMenuItem.get(item);
         if (tl != null) {
             data.add(tl.copy());
@@ -138,6 +142,10 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
             updateOptionsMenu();
         };
         return true;
+    }
+
+    private void addNewLocalTimeline() {
+
     }
 
     private void addTimelineToOptions(TimelineDefinition tl, Menu menu) {
@@ -162,8 +170,9 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
         listsMenu.getItem().setIcon(R.drawable.ic_fluent_people_24_regular);
         SubMenu hashtagsMenu = menu.addSubMenu(R.string.sk_hashtag);
         hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
-//        SubMenu hashtagsMenu = menu.addSubMenu(R.string.sk_hashtag);
-//        hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
+
+        MenuItem addLocalTimelines = menu.add(0, R.id.menu_add_local_timelines, NONE, R.string.local_timeline);
+        addLocalTimelines.setIcon(R.drawable.ic_fluent_people_community_24_regular);
 
         makeBackItem(timelinesMenu);
         makeBackItem(listsMenu);
