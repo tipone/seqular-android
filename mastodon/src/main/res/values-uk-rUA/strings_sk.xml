@@ -259,4 +259,7 @@
     <string name="sk_unfinished_attachments_message">Деякі вкладення не повністю завантажилися.</string>
     <string name="sk_spectator_mode">Режим глядача</string>
     <string name="sk_settings_hide_interaction">Сховати кнопки взаємодії</string>
+    <string name="sk_follow_as">Підписатися з іншого облікового запису</string>
+    <string name="sk_followed_as">Відстежується з %s</string>
+    <string name="sk_settings_hide_fab">Автоматично ховати кнопку компонування</string>
 </resources>

@@ -260,4 +260,7 @@
     <string name="sk_unfinished_attachments_message">Certaines pièces jointes n\'ont pas fini de se télécharger.</string>
     <string name="sk_spectator_mode">Mode spectateur</string>
     <string name="sk_settings_hide_interaction">Masquer les boutons d\'interaction</string>
+    <string name="sk_follow_as">Suivre depuis un autre compte</string>
+    <string name="sk_followed_as">Suivi depuis %s</string>
+    <string name="sk_settings_hide_fab">Masquer automatiquement le bouton Composer</string>
 </resources>
