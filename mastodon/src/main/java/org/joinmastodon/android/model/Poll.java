@@ -17,7 +17,7 @@ public class Poll extends BaseModel{
 	public boolean multiple;
 	public int votersCount;
 	public boolean voted;
-	@RequiredField
+//	@RequiredField
 	public List<Integer> ownVotes;
 	@RequiredField
 	public List<Option> options;
