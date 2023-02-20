@@ -15,6 +15,8 @@
 
 ## Key features
 
+### **The ability to add new custom local timelines!**
+
 ### **Material you theme support on Android 12+ devices!**
 
 ### **Show posts filtered with a warning!**
