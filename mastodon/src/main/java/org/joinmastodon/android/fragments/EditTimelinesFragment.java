@@ -15,6 +15,7 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,6 +51,7 @@ import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
+import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefinition> implements ScrollableToTop {
@@ -145,7 +147,23 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
     }
 
     private void addNewLocalTimeline() {
-
+        FrameLayout inputWrap = new FrameLayout(getContext());
+        EditText input = new EditText(getContext());
+        input.setHint(R.string.sk_example_domain);
+        input.setText(GlobalUserPreferences.publishButtonText.trim());
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+        input.setLayoutParams(params);
+        inputWrap.addView(input);
+        new M3AlertDialogBuilder(getContext()).setTitle(R.string.mo_add_custom_server_local_timeline).setView(inputWrap)
+                .setPositiveButton(R.string.save, (d, which) -> {
+                    TimelineDefinition tl = TimelineDefinition.ofCustomLocalTimeline(input.getText().toString().trim());
+                    data.add(tl);
+                    saveTimelines();
+                })
+                .setNegativeButton(R.string.cancel, (d, which) -> {
+                })
+                .show();
     }
 
     private void addTimelineToOptions(TimelineDefinition tl, Menu menu) {

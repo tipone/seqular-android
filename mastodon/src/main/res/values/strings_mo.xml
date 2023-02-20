@@ -25,6 +25,7 @@
     <string name="mo_filtered">Filtered: %s</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Disable "Relocate publish button" to allow customization</string>
     <string name="mo_disable_reminder_to_add_alt_text">Disable reminder to add alt text</string>
+    <string name="mo_add_custom_server_local_timeline">Add a custom server\'s local timeline</string>
 
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Add new poll option</string>
