@@ -10,7 +10,6 @@ import androidx.annotation.StringRes;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTimelineFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
@@ -30,7 +29,6 @@ public class TimelineDefinition {
     private @Nullable String listTitle;
 
     private @Nullable String hashtagName;
-    private @Nullable String customLocalTimelineDomain;
 
     public static TimelineDefinition ofList(String listId, String listTitle) {
         TimelineDefinition def = new TimelineDefinition(TimelineType.LIST);
@@ -52,18 +50,6 @@ public class TimelineDefinition {
     public static TimelineDefinition ofHashtag(Hashtag hashtag) {
         return ofHashtag(hashtag.name);
     }
-
-    public static TimelineDefinition ofCustomLocalTimeline(String domain) {
-        TimelineDefinition def = new TimelineDefinition(TimelineType.CUSTOM_LOCAL_TIMELINE);
-        def.customLocalTimelineDomain = domain;
-        return def;
-    }
-
-    public static TimelineDefinition ofCustomLocalTimeline(CustomLocalTimeline customLocalTimeline) {
-        return ofCustomLocalTimeline(customLocalTimeline.domain);
-    }
-
-
 
     @SuppressWarnings("unused")
     public TimelineDefinition() {}
@@ -92,14 +78,13 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> ctx.getString(R.string.sk_timeline_posts);
             case LIST -> listTitle;
             case HASHTAG -> hashtagName;
-            case CUSTOM_LOCAL_TIMELINE -> customLocalTimelineDomain;
         };
     }
 
     public Icon getDefaultIcon() {
         return switch (type) {
             case HOME -> Icon.HOME;
-            case LOCAL, CUSTOM_LOCAL_TIMELINE -> Icon.LOCAL;
+            case LOCAL -> Icon.LOCAL;
             case FEDERATED -> Icon.FEDERATED;
             case POST_NOTIFICATIONS -> Icon.POST_NOTIFICATIONS;
             case LIST -> Icon.LIST;
@@ -115,7 +100,6 @@ public class TimelineDefinition {
             case LIST -> new ListTimelineFragment();
             case HASHTAG -> new HashtagTimelineFragment();
             case POST_NOTIFICATIONS -> new NotificationsListFragment();
-            case CUSTOM_LOCAL_TIMELINE -> new CustomLocalTimelineFragment();
         };
     }
 
@@ -172,7 +156,7 @@ public class TimelineDefinition {
         return args;
     }
 
-    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG, CUSTOM_LOCAL_TIMELINE}
+    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG }
 
     public enum Icon {
         HEART(R.drawable.ic_fluent_heart_24_regular, R.string.sk_icon_heart),
