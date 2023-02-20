@@ -30,7 +30,7 @@ public class TimelineDefinition {
     private @Nullable String listTitle;
 
     private @Nullable String hashtagName;
-    private @Nullable String customLocalTimelineDomain;
+    private @Nullable String domain;
 
     public static TimelineDefinition ofList(String listId, String listTitle) {
         TimelineDefinition def = new TimelineDefinition(TimelineType.LIST);
@@ -55,7 +55,7 @@ public class TimelineDefinition {
 
     public static TimelineDefinition ofCustomLocalTimeline(String domain) {
         TimelineDefinition def = new TimelineDefinition(TimelineType.CUSTOM_LOCAL_TIMELINE);
-        def.customLocalTimelineDomain = domain;
+        def.domain = domain;
         return def;
     }
 
@@ -92,7 +92,7 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> ctx.getString(R.string.sk_timeline_posts);
             case LIST -> listTitle;
             case HASHTAG -> hashtagName;
-            case CUSTOM_LOCAL_TIMELINE -> customLocalTimelineDomain;
+            case CUSTOM_LOCAL_TIMELINE -> domain;
         };
     }
 
