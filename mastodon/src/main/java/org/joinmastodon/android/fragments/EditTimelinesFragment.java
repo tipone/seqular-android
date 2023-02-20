@@ -7,6 +7,7 @@ import static org.joinmastodon.android.ui.utils.UiUtils.makeBackItem;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -150,6 +151,7 @@ public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefiniti
         FrameLayout inputWrap = new FrameLayout(getContext());
         EditText input = new EditText(getContext());
         input.setHint(R.string.sk_example_domain);
+        input.setInputType(InputType.TYPE_TEXT_VARIATION_URI);
         FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
         input.setLayoutParams(params);
