@@ -1,0 +1,9 @@
+- Le timelines possono essere fissate e riorganizzate
+- Supporto per post solo locali
+- Aggiunti indicatori per testi alternativi mancanti
+- Migliorato l'editor del testo alternativo
+- Aggiunta intestazione nella home per gli hashtag seguiti
+- Più categorie di notifiche
+- Aggiunta nuovamente la possibilità di aprire file
+- Aggiunto avviso quando si salvano le bozze
+- Aggiunta opzione per disabilitare il tasto "Visualizza nuovi post"
