@@ -5,6 +5,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByHandle;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByID;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
@@ -12,11 +13,14 @@ import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Hashtag;
+import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -24,7 +28,7 @@ import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 
-public class CustomLocalTimelineFragment extends PinnableStatusListFragment {
+public class CustomLocalTimelineFragment extends StatusListFragment {
     //    private String name;
     private String domain;
 
@@ -48,10 +52,10 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment {
         setTitle(this.domain);
     }
 
-    @Override
-    protected TimelineDefinition makeTimelineDefinition() {
-        return TimelineDefinition.ofCustomLocalTimeline(domain);
-    }
+//    @Override
+//    protected TimelineDefinition makeTimelineDefinition() {
+//        return TimelineDefinition.ofCustomLocalTimeline(domain);
+//    }
 
     @Override
     protected void doLoadData(int offset, int count){
@@ -63,20 +67,30 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment {
                             maxID=result.get(result.size()-1).id;
                         if (getActivity() == null) return;
                         result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+
                         result.stream().forEach(status -> {
                             status.account.acct += "@"+domain;
-                            new GetAccountByHandle(status.account.acct)
-                                    .setCallback(new Callback<Account>() {
+                            currentRequest=new GetSearchResults(status.url, null, true)
+                                    .setCallback(new Callback<>(){
                                         @Override
-                                        public void onSuccess(Account result) {
-                                            status.account.id = result.id;
+                                        public void onSuccess(SearchResults result){
+                                            status.id = result.statuses.get(0).id;
+                                            status.account.id = result.statuses.get(0).account.id;
+                                            status.account.note = result.statuses.get(0).account.note;
+                                            status.account = result.statuses.get(0).account;
+                                            try {
+                                                status.account.postprocess();
+                                            } catch (ObjectValidationException e) {
+                                                throw new RuntimeException(e);
+                                            }
                                         }
 
                                         @Override
-                                        public void onError(ErrorResponse error) {
+                                        public void onError(ErrorResponse error){
                                             error.showToast(getContext());
                                         }
-                                    }).exec(accountID);
+                                    })
+                                    .exec(accountID);
                         });
 
                         onDataLoaded(result, !result.isEmpty());
