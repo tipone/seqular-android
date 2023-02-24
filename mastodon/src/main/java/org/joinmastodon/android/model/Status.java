@@ -62,6 +62,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public transient boolean spoilerRevealed;
 	public transient boolean textExpanded, textExpandable;
 	public transient boolean hasGapAfter;
+	public boolean reloadWhenClicked;
 	private transient String strippedText;
 
 	@Override

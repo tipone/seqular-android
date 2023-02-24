@@ -5,7 +5,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByHandle;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByID;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
@@ -13,14 +12,11 @@ import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;
-import org.joinmastodon.android.model.Hashtag;
-import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -52,11 +48,6 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
         setTitle(this.domain);
     }
 
-//    @Override
-//    protected TimelineDefinition makeTimelineDefinition() {
-//        return TimelineDefinition.ofCustomLocalTimeline(domain);
-//    }
-
     @Override
     protected void doLoadData(int offset, int count){
         currentRequest=new GetPublicTimeline(true, false, refreshing ? null : maxID, count)
@@ -67,30 +58,21 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
                             maxID=result.get(result.size()-1).id;
                         if (getActivity() == null) return;
                         result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
-
                         result.stream().forEach(status -> {
                             status.account.acct += "@"+domain;
-                            currentRequest=new GetSearchResults(status.url, null, true)
-                                    .setCallback(new Callback<>(){
+                            status.reloadWhenClicked = true;
+                            new GetAccountByHandle(status.account.acct)
+                                    .setCallback(new Callback<Account>() {
                                         @Override
-                                        public void onSuccess(SearchResults result){
-                                            status.id = result.statuses.get(0).id;
-                                            status.account.id = result.statuses.get(0).account.id;
-                                            status.account.note = result.statuses.get(0).account.note;
-                                            status.account = result.statuses.get(0).account;
-                                            try {
-                                                status.account.postprocess();
-                                            } catch (ObjectValidationException e) {
-                                                throw new RuntimeException(e);
-                                            }
+                                        public void onSuccess(Account result) {
+                                            status.account.id = result.id;
                                         }
 
                                         @Override
-                                        public void onError(ErrorResponse error){
+                                        public void onError(ErrorResponse error) {
                                             error.showToast(getContext());
                                         }
-                                    })
-                                    .exec(accountID);
+                                    }).exec(accountID);
                         });
 
                         onDataLoaded(result, !result.isEmpty());
