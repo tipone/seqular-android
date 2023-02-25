@@ -191,6 +191,19 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onReplyClick(View v){
+			if(item.status.reloadWhenClicked){
+				UiUtils.lookupStatus(v.getContext(),
+						item.status, item.accountID, null,
+						status -> {
+							v.startAnimation(opacityIn);
+							Bundle args=new Bundle();
+							args.putString("account", item.accountID);
+							args.putParcelable("replyTo", Parcels.wrap(status));
+							Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
+						}
+				);
+				return;
+			}
 			v.startAnimation(opacityIn);
 			Bundle args=new Bundle();
 			args.putString("account", item.accountID);
@@ -214,6 +227,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onBoostClick(View v){
+			if(item.status.reloadWhenClicked){
+				UiUtils.lookupStatus(v.getContext(),
+						item.status, item.accountID, null,
+						status -> {
+							boost.setSelected(!status.reblogged);
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
+						}
+				);
+				return;
+			}
 			boost.setSelected(!item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}
@@ -310,6 +333,23 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onFavoriteClick(View v){
+			if(item.status.reloadWhenClicked){
+				UiUtils.lookupStatus(v.getContext(),
+						item.status, item.accountID, null,
+						status -> {
+							favorite.setSelected(!status.favourited);
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
+								if (status.favourited) {
+									v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
+								} else {
+									v.startAnimation(opacityIn);
+								}
+								bindButton(favorite, r.favouritesCount);
+							});
+						}
+				);
+				return;
+			}
 			favorite.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				if (item.status.favourited) {
@@ -336,6 +376,18 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onBookmarkClick(View v){
+			if(item.status.reloadWhenClicked){
+				UiUtils.lookupStatus(v.getContext(),
+						item.status, item.accountID, null,
+						status -> {
+							bookmark.setSelected(!status.bookmarked);
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
+								v.startAnimation(opacityIn);
+							});
+						}
+				);
+				return;
+			}
 			bookmark.setSelected(!item.status.bookmarked);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked, r->{
 				v.startAnimation(opacityIn);

@@ -61,18 +61,6 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
                         result.stream().forEach(status -> {
                             status.account.acct += "@"+domain;
                             status.reloadWhenClicked = true;
-                            new GetAccountByHandle(status.account.acct)
-                                    .setCallback(new Callback<Account>() {
-                                        @Override
-                                        public void onSuccess(Account result) {
-                                            status.account.id = result.id;
-                                        }
-
-                                        @Override
-                                        public void onError(ErrorResponse error) {
-                                            error.showToast(getContext());
-                                        }
-                                    }).exec(accountID);
                         });
 
                         onDataLoaded(result, !result.isEmpty());
