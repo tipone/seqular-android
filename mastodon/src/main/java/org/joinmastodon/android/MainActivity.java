@@ -107,26 +107,6 @@ public class MainActivity extends FragmentStackActivity{
 			}
 		}else if(intent.getBooleanExtra("compose", false)){
 			showCompose();
-		}else if(intent.getStringExtra("notificationAction") != null) {
-			switch (NotificationAction.values()[intent.getIntExtra("notificationAction", 0)]) {
-				case FAVORITE -> {
-					String accountID=intent.getStringExtra("accountID");
-					new SetStatusFavorited(intent.getStringExtra("status"), true)
-							.setCallback(new Callback<>(){
-								@Override
-								public void onSuccess(Status result){
-								}
-
-								@Override
-								public void onError(ErrorResponse error){
-								}
-							})
-							.exec(accountID);
-				}
-				case REBLOG -> {
-				}
-			}
-
 		}/*else if(intent.hasExtra(PackageInstaller.EXTRA_STATUS) && GithubSelfUpdater.needSelfUpdating()){
 			GithubSelfUpdater.getInstance().handleIntentFromInstaller(intent, this);
 		}*/
