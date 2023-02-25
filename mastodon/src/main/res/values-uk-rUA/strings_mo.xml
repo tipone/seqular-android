@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_welcome_text">Щоб розпочати, будь ласка, введіть адресу вашого екземпляру нижче.</string>
+    <string name="mo_no_image_desc">Зображення не мають опису. Ви можете додати його, щоб люди із вадами зору могли зрозуміти, яке забарвлення в котика.</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Вимкніть переміщення кнопки \"Опублікувати\" для кастомізації</string>
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_disable_dividers">Вимкнути роздільники публікацій</string>
+    <string name="mo_relocate_publish_button">Перемістити кнопку \"Опублікувати\"</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Сховати кнопку \"Нова публікація\" під час прокручування</string>
+    <string name="mo_personal_note">Додати нотатку до цього профілю</string>
+    <string name="mo_personal_note_confirm">Підтвердити зміни</string>
+    <string name="mo_personal_note_update_failed">Не вдалося зберегти нотатку</string>
+    <string name="mo_settings_contribute">Допомогти у розробці Moshidon</string>
+    <string name="mo_update_available">Moshidon %s готовий до завантаження.</string>
+    <string name="mo_update_ready">Moshidon %s готовий до встановлення.</string>
+    <string name="mo_no_image_desc_title">Немає опису зображення</string>
+    <string name="mo_emoji_recent">Нещодавні</string>
+    <string name="mo_clear_recent_emoji">Очистити нещодавні емоджи</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Вимкнути повідомлення про додавання опису зображення</string>
+    <string name="mo_poll_option_add">Опція \"додати нове опитування\"</string>
+    <string name="mo_fab_compose">Новий допис</string>
+    <string name="mo_sending_error">Помилка при публікації</string>
+    <string name="mo_filtered">Відфільтровано: %s</string>
+    <string name="mo_add_custom_server_local_timeline">Додати місцеву стрічку іншого серверу</string>
 </resources>

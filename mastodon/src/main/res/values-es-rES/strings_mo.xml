@@ -20,4 +20,6 @@
     <string name="mo_settings_contribute">Contribuir en Moshidon</string>
     <string name="mo_no_image_desc">Las imágenes incluidas no tienen descripción. Por favor, piénsate añadir una para permitir a las personas con discapacidad participar.</string>
     <string name="mo_filtered">Filtrado: %s</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Desactivar recordatorio para añadir descripción</string>
+    <string name="mo_add_custom_server_local_timeline">Añadir una cronología de un servidor</string>
 </resources>

@@ -26,4 +26,5 @@
     <string name="mo_sending_error">Fehler beim Veröffentlichen</string>
     <string name="mo_filtered">Gefiltert: %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Erinnerung zum Hinzufügen einer Bildbeschreibung deaktivieren</string>
+    <string name="mo_add_custom_server_local_timeline">Füge eine lokale Timeline eines benutzerdefinierten Servers hinzu</string>
 </resources>
