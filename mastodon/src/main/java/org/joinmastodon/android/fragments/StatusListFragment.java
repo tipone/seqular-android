@@ -18,6 +18,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -60,6 +61,18 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 		Status status=getContentStatusByID(id);
 		if(status==null)
 			return;
+		if(status.reloadWhenClicked){
+			UiUtils.lookupStatus(getContext(), status, accountID, null, status1 -> {
+				status1.filterRevealed = true;
+				Bundle args=new Bundle();
+				args.putString("account", accountID);
+				args.putParcelable("status", Parcels.wrap(status1));
+				if(status1.inReplyToAccountId!=null && knownAccounts.containsKey(status1.inReplyToAccountId))
+					args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status1.inReplyToAccountId)));
+				Nav.go(getActivity(), ThreadFragment.class, args);
+			});
+			return;
+		}
 		status.filterRevealed = true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
