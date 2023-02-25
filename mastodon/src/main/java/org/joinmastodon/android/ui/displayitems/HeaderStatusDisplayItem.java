@@ -441,6 +441,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				return;
 			}
 			Bundle args=new Bundle();
+			if(item.status.reloadWhenClicked){
+				UiUtils.lookupAccount(v.getContext(), item.status.account, item.accountID, null, account -> {
+					args.putString("account", item.accountID);
+					args.putParcelable("profileAccount", Parcels.wrap(account));
+					Nav.go(item.parentFragment.getActivity(), ProfileFragment.class, args);
+				});
+				return;
+			}
 			args.putString("account", item.accountID);
 			args.putParcelable("profileAccount", Parcels.wrap(item.user));
 			Nav.go(item.parentFragment.getActivity(), ProfileFragment.class, args);
