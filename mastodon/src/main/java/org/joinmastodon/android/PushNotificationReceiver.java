@@ -99,6 +99,12 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 		if(intent.getBooleanExtra("fromNotificationAction", false)) {
 			String accountID=intent.getStringExtra("accountID");
+			int notificationId=intent.getIntExtra("notificationId", -1);
+
+			if ( notificationId >= 0) {
+				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+				notificationManager.cancel(notificationId);
+			}
 
 			if(intent.hasExtra("notification")){
 				org.joinmastodon.android.model.Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
@@ -193,35 +199,33 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 			builder.setSubText(accountName);
 		}
 
+		int id = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++;
 
 		if (notification != null) {
 			switch (pn.notificationType) {
 				case MENTION, STATUS -> {
-					if(!notification.status.favourited)
-						builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
-					if(!notification.status.bookmarked)
-						builder.addAction(buildNotificationAction(context, accountID, notification, context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
+					builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
+					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
 					if(notification.status.visibility != StatusPrivacy.DIRECT)
-							builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.BOOST));
+						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.BOOST));
 				}
 				case UPDATE -> {
 					if(notification.status.reblogged)
-						builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_unboost), NotificationAction.UNBOOST));
+						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_unboost), NotificationAction.UNBOOST));
 				}
 			}
 		}
 
-		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());
+		nm.notify(accountID, id, builder.build());
 	}
 
-	private Notification.Action buildNotificationAction(Context context, String accountID, org.joinmastodon.android.model.Notification notification, String title, NotificationAction action){
+	private Notification.Action buildNotificationAction(Context context, int notificationId, String accountID, org.joinmastodon.android.model.Notification notification, String title, NotificationAction action){
 		Intent notificationIntent=new Intent(context, PushNotificationReceiver.class);
+		notificationIntent.putExtra("notificationId", notificationId);
 		notificationIntent.putExtra("fromNotificationAction", true);
 		notificationIntent.putExtra("accountID", accountID);
 		notificationIntent.putExtra("notificationAction", action.ordinal());
-		if(notification!=null){
-			notificationIntent.putExtra("notification", Parcels.wrap(notification));
-		}
+		notificationIntent.putExtra("notification", Parcels.wrap(notification));
 		PendingIntent actionPendingIntent =
 				PendingIntent.getBroadcast(context, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 
