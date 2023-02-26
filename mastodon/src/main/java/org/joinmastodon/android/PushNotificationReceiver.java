@@ -199,14 +199,21 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 
 
+		if (notification != null) {
 		switch (pn.notificationType) {
 			case MENTION -> {
-				builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
-				builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
-				if (notification != null && notification.status.visibility != StatusPrivacy.DIRECT)
-					builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.REBLOG));
+				if(!notification.status.favourited)
+					builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
+				if(!notification.status.bookmarked)
+					builder.addAction(buildNotificationAction(context, accountID, notification, context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
+				if(notification.status.visibility != StatusPrivacy.DIRECT)
+						builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.REBLOG));
 			}
-//			case FOLLOW -> builder.addAction(buildNotificationAction(context, accountID, notification, null, "Refollow", NotificationAction.FAVORITE));
+			case FOLLOW -> {
+//				if ( notification != null && notification.status.account.)
+				builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_follow), NotificationAction.FAVORITE));
+			}
+		}
 		}
 
 		nm.notify(accountID, GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++, builder.build());

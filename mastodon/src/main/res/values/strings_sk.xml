@@ -265,4 +265,5 @@
     <string name="sk_notification_action_favorite">Favorite</string>
     <string name="sk_notification_action_bookmark">Bookmark</string>
     <string name="sk_notification_action_boost">Boost</string>
+    <string name="sk_notification_action_follow">Refollow</string>
 </resources>
