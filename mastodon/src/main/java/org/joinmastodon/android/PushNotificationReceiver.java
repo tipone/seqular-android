@@ -201,8 +201,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 		switch (pn.notificationType) {
 			case MENTION -> {
-				builder.addAction(buildNotificationAction(context, accountID, notification,  "Favourite", NotificationAction.FAVORITE));
-				builder.addAction(buildNotificationAction(context, accountID, notification,  "Bookmark", NotificationAction.BOOKMARK));
+				builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
+				builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
 				if (notification != null && notification.status.visibility != StatusPrivacy.DIRECT)
 					builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.REBLOG));
 			}
