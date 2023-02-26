@@ -24,8 +24,10 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.NotificationAction;
+import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
@@ -109,7 +111,11 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					switch (NotificationAction.values()[intent.getIntExtra("notificationAction", 0)]) {
 						case FAVORITE -> new SetStatusFavorited(statusID, true).exec(accountID);
 						case BOOKMARK -> new SetStatusBookmarked(statusID, true).exec(accountID);
-//						case REBLOG -> new SetStatusReblogged(notification.status.id, true, GlobalUserPreferences.);
+						case REBLOG -> {
+							AccountSessionManager accountSessionManager = AccountSessionManager.getInstance();
+							Preferences preferences = accountSessionManager.getAccount(accountID).preferences;
+							new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
+						}
 						default -> Log.w(TAG, "onReceive: Failed to get NotificationAction");
 					}
 				}
@@ -196,7 +202,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 			case MENTION -> {
 				builder.addAction(buildNotificationAction(context, accountID, notification,  "Favourite", NotificationAction.FAVORITE));
 				builder.addAction(buildNotificationAction(context, accountID, notification,  "Bookmark", NotificationAction.BOOKMARK));
-//				builder.addAction(buildNotificationAction(context, accountID, notification,  "Reblog", NotificationAction.REBLOG));
+				if (notification != null && notification.status.visibility != StatusPrivacy.DIRECT)
+					builder.addAction(buildNotificationAction(context, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.REBLOG));
 			}
 //			case FOLLOW -> builder.addAction(buildNotificationAction(context, accountID, notification, null, "Refollow", NotificationAction.FAVORITE));
 		}
