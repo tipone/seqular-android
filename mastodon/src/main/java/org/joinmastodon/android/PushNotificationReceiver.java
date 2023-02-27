@@ -31,6 +31,7 @@ import org.parceler.Parcels;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.Callback;
@@ -228,7 +229,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		notificationIntent.putExtra("notificationAction", action.ordinal());
 		notificationIntent.putExtra("notification", Parcels.wrap(notification));
 		PendingIntent actionPendingIntent =
-				PendingIntent.getBroadcast(context, 1, notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
+				PendingIntent.getBroadcast(context, new Random().nextInt(), notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_ONE_SHOT);
 
 		return new Notification.Action.Builder(null, title, actionPendingIntent).build();
 	}
