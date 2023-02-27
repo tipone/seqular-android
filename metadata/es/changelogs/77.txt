@@ -1,4 +1,0 @@
-- Mantenga presionado el botón de seguimiento para seguir los perfiles de otra cuenta
-- Opción para abrir perfiles en otra cuenta
-- Ocultar automáticamente el botón de redacción al desplazarse hacia abajo en la línea de tiempo
-- Solucione el bloqueo al abrir los perfiles de administrador del servidor
