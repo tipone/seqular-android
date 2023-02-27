@@ -266,5 +266,4 @@
     <string name="sk_notification_action_bookmark">Bookmark</string>
     <string name="sk_notification_action_boost">Boost</string>
     <string name="sk_notification_action_unboost">Unboost</string>
-    <string name="sk_notification_action_follow">Refollow</string>
 </resources>
