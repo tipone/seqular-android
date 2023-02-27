@@ -105,7 +105,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 			if ( notificationId >= 0) {
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-				notificationManager.cancel(notificationId);
+				notificationManager.cancel(accountID, notificationId);
 			}
 
 			if(intent.hasExtra("notification")){
