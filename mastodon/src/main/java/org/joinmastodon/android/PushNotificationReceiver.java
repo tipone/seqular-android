@@ -99,11 +99,11 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				Log.w(TAG, "onReceive: invalid push notification format");
 			}
 		}
-		if(intent.getBooleanExtra("fromNotificationAction", false)) {
+		if(intent.getBooleanExtra("fromNotificationAction", false)){
 			String accountID=intent.getStringExtra("accountID");
 			int notificationId=intent.getIntExtra("notificationId", -1);
 
-			if ( notificationId >= 0) {
+			if (notificationId >= 0){
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 				notificationManager.cancel(accountID, notificationId);
 			}
@@ -123,7 +123,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 						default -> Log.w(TAG, "onReceive: Failed to get NotificationAction");
 					}
 				}
-			} else {
+			}else{
 				Log.e(TAG, "onReceive: Failed to load notification");
 			}
 		}
@@ -203,8 +203,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 		int id = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++;
 
-		if (notification != null) {
-			switch (pn.notificationType) {
+		if (notification != null){
+			switch (pn.notificationType){
 				case MENTION, STATUS -> {
 					builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
 					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
@@ -228,8 +228,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		notificationIntent.putExtra("accountID", accountID);
 		notificationIntent.putExtra("notificationAction", action.ordinal());
 		notificationIntent.putExtra("notification", Parcels.wrap(notification));
-		PendingIntent actionPendingIntent =
-				PendingIntent.getBroadcast(context, new Random().nextInt(), notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_ONE_SHOT);
+		PendingIntent actionPendingIntent = PendingIntent.getBroadcast(context, new Random().nextInt(), notificationIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_ONE_SHOT);
 
 		return new Notification.Action.Builder(null, title, actionPendingIntent).build();
 	}
