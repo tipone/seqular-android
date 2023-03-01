@@ -16,32 +16,23 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
 import org.joinmastodon.android.model.Account;
-import org.joinmastodon.android.model.Notification;
-import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TabBar;
 import org.parceler.Parcels;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
-import me.grishka.appkit.api.Callback;
-import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.AppKitFragment;
 import me.grishka.appkit.fragments.LoaderFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
