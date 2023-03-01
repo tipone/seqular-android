@@ -16,6 +16,10 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -28,8 +32,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
 import me.grishka.appkit.fragments.AppKitFragment;
 import me.grishka.appkit.fragments.LoaderFragment;
@@ -52,6 +54,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private TabBar tabBar;
 	private View tabBarWrap;
 	private ImageView tabBarAvatar;
+	private ImageView notificationTabIcon;
 	@IdRes
 	private int currentTab=R.id.tab_home;
 
@@ -116,6 +119,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		tabBarAvatar.setClipToOutline(true);
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		ViewImageLoader.load(tabBarAvatar, null, new UrlImageLoaderRequest(self.avatar, V.dp(28), V.dp(28)));
+
+		notificationTabIcon=content.findViewById(R.id.tab_notifications);
+		setNotificationBadge();
 
 		if(savedInstanceState==null){
 			getChildFragmentManager().beginTransaction()
@@ -255,6 +261,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				scrollable.scrollToTop();
 			return;
 		}
+
+		if(tab == R.id.tab_notifications){
+			GlobalUserPreferences.unreadNotifications = false;
+			GlobalUserPreferences.save();
+			setNotificationBadge();
+		}
+
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
 		maybeTriggerLoading(newFragment);
 		currentTab=tab;
@@ -326,5 +339,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 //		getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
 //		getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
 //		getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+	}
+
+	private void setNotificationBadge() {
+			notificationTabIcon.setImageDrawable(getContext().getDrawable(GlobalUserPreferences.unreadNotifications ? R.drawable.ic_notifications_tab_badged : R.drawable.ic_fluent_alert_28_selector));
 	}
 }
