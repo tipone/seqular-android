@@ -166,8 +166,11 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	protected void onShown(){
 		super.onShown();
-//		if(!getArguments().getBoolean("noAutoLoad") && !loaded && !dataLoading)
-//			loadData();
+		if(!getArguments().getBoolean("noAutoLoad") && !loaded && !dataLoading){
+			refreshing=true;
+			loadData();
+		}
+
 	}
 
 	@Override
