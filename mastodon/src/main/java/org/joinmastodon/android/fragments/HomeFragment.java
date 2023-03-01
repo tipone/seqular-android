@@ -64,7 +64,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private View tabBarWrap;
 	private ImageView tabBarAvatar;
 	private ImageView notificationTabIcon;
-	private boolean notificationBadged = false;
 	@IdRes
 	private int currentTab=R.id.tab_home;
 
@@ -131,21 +130,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		ViewImageLoader.load(tabBarAvatar, null, new UrlImageLoaderRequest(self.avatar, V.dp(28), V.dp(28)));
 
 		notificationTabIcon=content.findViewById(R.id.tab_notifications);
-
-		AccountSessionManager.getInstance()
-				.getAccount(accountID).getCacheController()
-				.getNotifications(null, 1, false, false, true, new Callback<>() {
-					@Override
-					public void onSuccess(PaginatedResponse<List<Notification>> result) {
-						notificationBadged = result.items.get(0).createdAt.isAfter(Instant.ofEpochMilli(GlobalUserPreferences.lastNotificationOpenedTime));
-						setNotificationBadge();
-					}
-
-					@Override
-					public void onError(ErrorResponse error) {
-						error.showToast(getContext());
-					}
-				});
+		setNotificationBadge();
 
 		if(savedInstanceState==null){
 			getChildFragmentManager().beginTransaction()
@@ -287,8 +272,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		}
 
 		if(tab == R.id.tab_notifications){
-			notificationBadged=false;
-			GlobalUserPreferences.lastNotificationOpenedTime = System.currentTimeMillis();
+			GlobalUserPreferences.unreadNotifications = false;
 			GlobalUserPreferences.save();
 			setNotificationBadge();
 		}
@@ -367,6 +351,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	}
 
 	private void setNotificationBadge() {
-			notificationTabIcon.setImageDrawable(getContext().getDrawable(notificationBadged ? R.drawable.ic_notifications_tab_badged : R.drawable.ic_fluent_alert_28_selector));
+			notificationTabIcon.setImageDrawable(getContext().getDrawable(GlobalUserPreferences.unreadNotifications ? R.drawable.ic_notifications_tab_badged : R.drawable.ic_fluent_alert_28_selector));
 	}
 }
