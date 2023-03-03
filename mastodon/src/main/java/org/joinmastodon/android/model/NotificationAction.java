@@ -5,4 +5,5 @@ public enum NotificationAction {
     BOOST,
     UNBOOST,
     BOOKMARK,
+    REPLY,
 }
