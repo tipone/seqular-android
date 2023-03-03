@@ -12,11 +12,8 @@ import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
 import android.util.Log;
-
-import androidx.annotation.RequiresApi;
 
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.requests.notifications.GetNotificationByID;
@@ -283,7 +280,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 			req.spoilerText = "re: " + notification.status.spoilerText;
 		}
 
-//		new CreateStatus(req, UUID.randomUUID().toString()).exec(accountID);
+		new CreateStatus(req, UUID.randomUUID().toString()).exec(accountID);
 
 		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 		Notification.Builder builder = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
@@ -295,8 +292,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		Notification repliedNotification = builder.setSmallIcon(R.drawable.ic_ntf_logo)
 				.setContentText(context.getString(R.string.sk_notification_action_replied, notification.status.account.getDisplayUsername()))
 				.build();
-//		notificationManager.cancel(accountID, notificationId);
-//		notificationManager.notify(notificationId, repliedNotification);
 		notificationManager.notify(accountID, notificationId, repliedNotification);
 	}
 }
