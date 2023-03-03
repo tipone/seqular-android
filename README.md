@@ -7,11 +7,11 @@
 
 [![Download latest release](https://img.shields.io/badge/dynamic/json?color=282C37&label=download%20apk&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)
 
-[<img src="https://gitlab.com/IzzyOnDroid/repo/-/raw/master/assets/IzzyOnDroid.png"
-     alt="Get it on IzzyOnDroid"
-     height="80">](https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda)
----
+<a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="50" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
+&nbsp;
+<a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
+--- 
 
 ## Key features
 
