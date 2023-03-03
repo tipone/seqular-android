@@ -67,13 +67,13 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 		paint.setColor(bgColor);
 		rect.left=V.dp(12);
 		rect.right=list.getWidth()-V.dp(12);
-		rect.inset(V.dp(4), V.dp(4));
-		c.drawRoundRect(rect, V.dp(4), V.dp(4), paint);
+		rect.intersect(V.dp(4), V.dp(4), V.dp(4), V.dp(-4));
+		c.drawRoundRect(rect, V.dp(12), V.dp(12), paint);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(V.dp(1));
 		paint.setColor(borderColor);
 		rect.inset(paint.getStrokeWidth()/2f, paint.getStrokeWidth()/2f);
-		c.drawRoundRect(rect, V.dp(4), V.dp(4), paint);
+		c.drawRoundRect(rect, V.dp(12), V.dp(12), paint);
 	}
 
 	@Override

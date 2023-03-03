@@ -111,11 +111,11 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 			rejectWrap=findViewById(R.id.reject_btn_wrap);
 
 			View card=findViewById(R.id.card);
-			card.setOutlineProvider(OutlineProviders.roundedRect(6));
+			card.setOutlineProvider(OutlineProviders.roundedRect(12));
 			card.setClipToOutline(true);
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
 			avatar.setClipToOutline(true);
-			cover.setOutlineProvider(OutlineProviders.roundedRect(3));
+			cover.setOutlineProvider(OutlineProviders.roundedRect(12));
 			cover.setClipToOutline(true);
 			actionButton.setOnClickListener(this::onActionButtonClick);
 			acceptButton.setOnClickListener(this::onFollowRequestButtonClick);
