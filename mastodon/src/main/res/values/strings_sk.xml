@@ -266,4 +266,6 @@
     <string name="sk_notification_action_bookmark">Bookmark</string>
     <string name="sk_notification_action_boost">Boost</string>
     <string name="sk_notification_action_unboost">Unboost</string>
+    <string name="sk_notification_action_reply">Reply</string>
+    <string name="sk_notification_action_replied">Successfully replied to the post by %s</string>
 </resources>
