@@ -259,4 +259,7 @@
     <string name="sk_settings_collapse_long_posts">아주 긴 게시물 접기</string>
     <string name="sk_spectator_mode">관객 모드</string>
     <string name="sk_settings_hide_interaction">상호작용 버튼 가리기</string>
+    <string name="sk_follow_as">다른 계정으로 팔로우</string>
+    <string name="sk_followed_as">%s 계정으로 팔로우함</string>
+    <string name="sk_settings_hide_fab">게시 버튼 자동으로 가리기</string>
 </resources>
