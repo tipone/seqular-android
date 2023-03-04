@@ -15,7 +15,7 @@
 
 ## F.A.Q
 
-### Q: What are the main differences between this app and Megalodon?
+### Q: What are the main differences between Moshidon and Megalodon?
 
 ### A: There are many, but the most outstanding differences are: the ability to have other server's local timeline inside the app. It can be acessed in the "Add community" option in the top right corner of the Edit timelines screen. Most other features are pretty minor, such as profile notes directly available in the person's profile. Other features are quite minor usability and visibility improvements. All of which can be found in the settings page. 
 
