@@ -290,7 +290,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
 		Notification repliedNotification = builder.setSmallIcon(R.drawable.ic_ntf_logo)
-				.setContentText(context.getString(R.string.sk_notification_action_replied, notification.status.account.getDisplayUsername()))
+				.setContentText(context.getString(R.string.mo_notification_action_replied, notification.status.account.getDisplayUsername()))
 				.build();
 		notificationManager.notify(accountID, notificationId, repliedNotification);
 	}
