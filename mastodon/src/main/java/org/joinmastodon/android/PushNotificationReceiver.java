@@ -272,9 +272,9 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		CharSequence input = remoteInput.getCharSequence(ACTION_KEY_TEXT_REPLY);
 
 		CreateStatus.Request req=new CreateStatus.Request();
-		req.status = input.toString();
-		req.language = preferences.postingDefaultLanguage;
-		req.visibility = preferences.postingDefaultVisibility;
+		req.status = input.toString() + "\n\n" + "@" + notification.status.account.acct;
+		req.language = notification.status.language;
+		req.visibility = notification.status.visibility;
 		req.inReplyToId = notification.status.id;
 		if(!notification.status.spoilerText.isEmpty() && GlobalUserPreferences.prefixRepliesWithRe && !notification.status.spoilerText.startsWith("re: ")){
 			req.spoilerText = "re: " + notification.status.spoilerText;
