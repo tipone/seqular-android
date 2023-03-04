@@ -217,15 +217,15 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
 						builder.addAction(buildReplyAction(context, id, accountID, notification));
 					}
-					builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_favorite), NotificationAction.FAVORITE));
-					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.sk_notification_action_bookmark), NotificationAction.BOOKMARK));
+					builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_favorite), NotificationAction.FAVORITE));
+					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
 					if(notification.status.visibility != StatusPrivacy.DIRECT) {
-						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_boost), NotificationAction.BOOST));
+						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_reblog), NotificationAction.BOOST));
 					}
 				}
 				case UPDATE -> {
 					if(notification.status.reblogged)
-						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_notification_action_unboost), NotificationAction.UNBOOST));
+						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_undo_reblog), NotificationAction.UNBOOST));
 				}
 			}
 		}
@@ -246,7 +246,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	}
 
 	private Notification.Action buildReplyAction(Context context, int notificationId, String accountID, org.joinmastodon.android.model.Notification notification){
-		String replyLabel = context.getResources().getString(R.string.sk_notification_action_reply);
+		String replyLabel = context.getResources().getString(R.string.button_reply);
 		RemoteInput remoteInput = new RemoteInput.Builder(ACTION_KEY_TEXT_REPLY)
 				.setLabel(replyLabel)
 				.build();
