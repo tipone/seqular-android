@@ -22,4 +22,5 @@
     <string name="mo_filtered">Filtrado: %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Desabilitar lembrete de adicionar textos descritivos</string>
     <string name="mo_add_custom_server_local_timeline">Adicionar a linha local de um servidor customizado</string>
+    <string name="mo_notification_action_replied">Respondeu com sucesso ao post de %s</string>
 </resources>
