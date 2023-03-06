@@ -199,37 +199,18 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.alwaysExpandContentWarnings=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
-			GlobalUserPreferences.disableSwipe=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-		items.add(new SwitchItem(R.string.sk_enable_delete_notifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
-			GlobalUserPreferences.enableDeleteNotifications=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
+
 //		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
-		items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
-			GlobalUserPreferences.disableDividers=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
 		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.enableFabAutoHide, i->{
 			GlobalUserPreferences.enableFabAutoHide =i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+
+
+		items.add(new HeaderItem(R.string.mo_composer_behavior));
 		items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
 			GlobalUserPreferences.relocatePublishButton=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
-			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
-			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
 			GlobalUserPreferences.save();
 		}));
 		items.add(new SwitchItem(R.string.mo_disable_reminder_to_add_alt_text, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
@@ -237,8 +218,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-
-
+		items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
+			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
+			GlobalUserPreferences.save();
+		}));
 
 		items.add(new HeaderItem(R.string.sk_timelines));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
@@ -352,6 +335,29 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SmallTextItem(getString(translationAvailable ?
 				R.string.sk_settings_translation_availability_note_available :
 				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
+
+
+		items.add(new HeaderItem(R.string.mo_miscellaneous_settings));
+		items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
+			GlobalUserPreferences.disableDividers=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_enable_delete_notifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
+			GlobalUserPreferences.enableDeleteNotifications=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
+			GlobalUserPreferences.disableSwipe=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
+			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
+			GlobalUserPreferences.save();
+		}));
+
 
 
 		items.add(new HeaderItem(R.string.sk_settings_about));
