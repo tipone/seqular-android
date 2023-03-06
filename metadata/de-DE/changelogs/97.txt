@@ -1,0 +1,3 @@
+Version 97 fügt hinzu:
+- Die neue Funktion "Benutzerdefinierte lokale Zeitleisten". Sie kann über das Menü "Zeitleisten hinzufügen" aufgerufen werden.
+- Kleinere Korrekturen und Verbesserungen
