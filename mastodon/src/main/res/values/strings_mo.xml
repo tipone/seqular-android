@@ -34,4 +34,16 @@
     <string name="mo_fab_compose">Compose</string>
     <string name="mo_sending_error">Error publishing</string>
 
+    <!--    duration labels-->
+    <string name="mo_mute_label">Duration:</string>
+    <string name="mo_duration_indefinite">Indefinite</string>
+    <string name="mo_duration_minutes_5">5 minutes</string>
+    <string name="mo_duration_minutes_30">30 minutes</string>
+    <string name="mo_duration_hours_1">1 hour</string>
+    <string name="mo_duration_hours_6">6 hours</string>
+    <string name="mo_duration_days_1">1 day</string>
+    <string name="mo_duration_days_3">3 days</string>
+    <string name="mo_duration_days_7">7 day</string>
+
+
 </resources>

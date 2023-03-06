@@ -36,7 +36,9 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -99,6 +101,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -109,6 +112,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -464,12 +468,45 @@ public class UiUtils{
 	}
 
 	public static void confirmToggleMuteUser(Activity activity, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback){
-		showConfirmationAlert(activity, activity.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title),
-				activity.getString(currentlyMuted ? R.string.confirm_unmute : R.string.confirm_mute, account.displayName),
-				activity.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute),
-				currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular,
-				()->{
-					new SetAccountMuted(account.id, !currentlyMuted)
+		View menu = LayoutInflater.from(activity).inflate(R.layout.item_mute_duration, null);
+		Button button = menu.findViewById(R.id.button);
+
+		AtomicReference<Duration> muteDuration = new AtomicReference<>(Duration.ZERO);
+
+		PopupMenu popupMenu=new PopupMenu(activity, button, Gravity.CENTER_HORIZONTAL);
+		popupMenu.inflate(R.menu.mute_duration);
+		popupMenu.setOnMenuItemClickListener(item -> {
+			int id = item.getItemId();
+			if (id == R.id.duration_indefinite)
+				muteDuration.set(Duration.ZERO);
+			else if (id == R.id.duration_minutes_5) {
+				muteDuration.set(Duration.ofMinutes(5));
+			}else if (id == R.id.duration_minutes_30) {
+				muteDuration.set(Duration.ofMinutes(30));
+			}else if (id == R.id.duration_hours_1) {
+				muteDuration.set(Duration.ofHours(1));
+			}else if (id == R.id.duration_hours_6) {
+				muteDuration.set(Duration.ofHours(6));
+			}else if (id == R.id.duration_days_1) {
+				muteDuration.set(Duration.ofDays(1));
+			}else if (id == R.id.duration_days_3) {
+				muteDuration.set(Duration.ofDays(3));
+			}else if (id == R.id.duration_days_7) {
+				muteDuration.set(Duration.ofDays(7));
+			}
+			button.setText(item.getTitle());
+			return true;
+		});
+		button.setOnTouchListener(popupMenu.getDragToOpenListener());
+		button.setOnClickListener(v->popupMenu.show());
+		button.setText(popupMenu.getMenu().getItem(0).getTitle());
+
+		new M3AlertDialogBuilder(activity)
+				.setTitle(activity.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
+				.setMessage(activity.getString(currentlyMuted ? R.string.confirm_unmute : R.string.confirm_mute, account.displayName))
+				.setView(currentlyMuted ? null : menu)
+				.setPositiveButton(activity.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)-> {
+					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())
 							.setCallback(new Callback<>(){
 								@Override
 								public void onSuccess(Relationship result){
@@ -486,7 +523,10 @@ public class UiUtils{
 							})
 							.wrapProgress(activity, R.string.loading, false)
 							.exec(accountID);
-				});
+				})
+				.setNegativeButton(R.string.cancel, null)
+				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
+				.show();
 	}
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback){
 		confirmDeletePost(activity, accountID, status, resultCallback, false);
