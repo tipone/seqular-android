@@ -22,4 +22,5 @@
     <string name="mo_filtered">Filtrado: %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Desactivar recordatorio para añadir descripción</string>
     <string name="mo_add_custom_server_local_timeline">Añadir una cronología de un servidor</string>
+    <string name="mo_notification_action_replied">Respondió correctamente a la publicación de %s</string>
 </resources>
