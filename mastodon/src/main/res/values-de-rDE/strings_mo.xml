@@ -27,4 +27,5 @@
     <string name="mo_filtered">Gefiltert: %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Erinnerung zum Hinzufügen einer Bildbeschreibung deaktivieren</string>
     <string name="mo_add_custom_server_local_timeline">Füge eine lokale Timeline eines benutzerdefinierten Servers hinzu</string>
+    <string name="mo_notification_action_replied">Erfolgreich auf den Beitrag von %s geantwortet</string>
 </resources>
