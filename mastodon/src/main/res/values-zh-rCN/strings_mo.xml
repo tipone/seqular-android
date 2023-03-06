@@ -22,4 +22,5 @@
     <string name="mo_filtered">已过滤：%s</string>
     <string name="mo_disable_reminder_to_add_alt_text">禁用添加ALT文本的提醒</string>
     <string name="mo_add_custom_server_local_timeline">添加自定义实例的本地时间线</string>
+    <string name="mo_notification_action_replied">成功回复了 %s 的帖文</string>
 </resources>
