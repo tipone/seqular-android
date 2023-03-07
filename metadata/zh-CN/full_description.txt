@@ -3,6 +3,7 @@ Moshidon 是<a href="https://github.com/mastodon/mastodon-android">官方 Mastod
 <b>主要特点</b>
 
 - <b>许多颜色</b>：为您提供 material you 主题和许多丰富多彩的主题选项！
+- <b>过滤贴文</b>：可为带过滤内容标记的贴文显示敏感内容警告！
 - <b>翻译按钮</b>：带来翻译按钮！
 - <b>嘟文语言选择器</b>：引入了嘟文语言选择器！
 - <b>不公开发帖</b>：公开发布而不让您的嘟文出现在趋势、主题标签或公共时间轴中。
