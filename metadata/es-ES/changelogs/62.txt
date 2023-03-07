@@ -1,11 +1,9 @@
 - Botón de publicación personalizable
-- Abrir enlaces de Fediverse en la aplicación
-- Botón boost de pulsación larga para "citar" un post
-- Copiar la URL de la publicación al pulsar prolongadamente el botón de compartir
-- Implementar la eliminación de notificaciones (desactivada por defecto)
-- Iconos específicos para los distintos tipos de notificaciones
-- Nuevos colores grises
-- Añadir la opción de desactivar el deslizamiento entre pestañas.
-- Añadir varios enlaces a la configuración de la cuenta
+- Abrir enlaces del Fediverso en la aplicación
+- Pulsación prolongada de reblogueo para "citar" publicación
+- Copiar la URL de la publicación manteniendo pulsado compartir
+- Iconos específicos para distintos tipos de notificaciones
+- Añadida opción para desactivar el deslizamiento entre pestañas
+- Añadidos varios enlaces a la configuración de la cuenta
 - Mostrar/ocultar el botón de traducción en la línea de tiempo
 - Corrección de errores y ajustes
