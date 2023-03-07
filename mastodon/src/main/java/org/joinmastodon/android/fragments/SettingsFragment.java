@@ -286,6 +286,29 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.sk_notify_update, R.drawable.ic_fluent_history_24_regular, pushSubscription.alerts.update, i->onNotificationsChanged(PushNotification.Type.UPDATE, i.checked), switchEnabled));
 		items.add(new SwitchItem(R.string.sk_notify_poll_results, R.drawable.ic_fluent_poll_24_regular, pushSubscription.alerts.poll, i->onNotificationsChanged(PushNotification.Type.POLL, i.checked), switchEnabled));
 
+		items.add(new HeaderItem(R.string.mo_miscellaneous_settings));
+		items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
+			GlobalUserPreferences.disableDividers=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_enable_delete_notifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
+			GlobalUserPreferences.enableDeleteNotifications=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
+			GlobalUserPreferences.disableSwipe=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
+			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
+			GlobalUserPreferences.save();
+		}));
+
+
+
 		items.add(new HeaderItem(R.string.settings_account));
 		items.add(new TextItem(R.string.sk_settings_profile, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/settings/profile"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_posting, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/settings/preferences/other"), R.drawable.ic_fluent_open_24_regular));
@@ -335,29 +358,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SmallTextItem(getString(translationAvailable ?
 				R.string.sk_settings_translation_availability_note_available :
 				R.string.sk_settings_translation_availability_note_unavailable, instance.title)));
-
-
-		items.add(new HeaderItem(R.string.mo_miscellaneous_settings));
-		items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
-			GlobalUserPreferences.disableDividers=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-		items.add(new SwitchItem(R.string.sk_enable_delete_notifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
-			GlobalUserPreferences.enableDeleteNotifications=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-		items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
-			GlobalUserPreferences.disableSwipe=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_single_notification, R.drawable.ic_fluent_convert_range_24_regular, GlobalUserPreferences.keepOnlyLatestNotification, i->{
-			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
-			GlobalUserPreferences.save();
-		}));
-
 
 
 		items.add(new HeaderItem(R.string.sk_settings_about));
