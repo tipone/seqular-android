@@ -29,6 +29,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.icu.text.BreakIterator;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -1945,7 +1946,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void loadDefaultStatusVisibility(Bundle savedInstanceState) {
-		if(replyTo != null) statusVisibility = replyTo.visibility;
+		if(replyTo != null) {
+			statusVisibility = (replyTo.visibility == StatusPrivacy.PUBLIC && GlobalUserPreferences.defaultToUnlistedReplies ? StatusPrivacy.UNLISTED : replyTo.visibility);
+		}
 
 		// A saved privacy setting from a previous compose session wins over the reply visibility
 		if(savedInstanceState !=null){
