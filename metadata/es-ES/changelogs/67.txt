@@ -1,9 +1,10 @@
-- Nueva pestaña Inicio con cronologías públicas
-- Se muestran anuncios del servidor
-- Se escala el texto de acuerdo a ajustes del sistema
-- Filtros mejorados, (no, aún no funciona "Esconder con aviso), por @thiagojedi
-- Funciones de gestión de listas
-- Eliminar seguidores con un bloqueo y desbloqueo.
-- Arreglado fallo que no cargaba imágenes en instancias de Akkoma
-- Corrección de errores e interfaz
-- Añadida lista de novedades al actualizador por @LucasGGamerM
+- Pestaña de inicio con cronologías públicas
+- Anuncios del servidor
+- El texto cambia según la configuración del sistema
+- Filtrado mejorado (no, "Ocultar con una advertencia" aún no funciona) por @thiagojedi
+- Gestión de listas
+- Eliminar seguidores mediante bloqueo suave
+- No permitir conexiones con fascistas
+- Arreglar imágenes que no cargan al conectarse a una instancia de Akkoma
+- Corrección de errores y ajustes en la interfaz
+- Añadir registro de cambios al actualizador por @LucasGGamerM
