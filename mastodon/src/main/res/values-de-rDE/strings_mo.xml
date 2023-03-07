@@ -28,4 +28,16 @@
     <string name="mo_disable_reminder_to_add_alt_text">Erinnerung zum Hinzufügen einer Bildbeschreibung deaktivieren</string>
     <string name="mo_add_custom_server_local_timeline">Füge eine lokale Timeline eines benutzerdefinierten Servers hinzu</string>
     <string name="mo_notification_action_replied">Erfolgreich auf den Beitrag von %s geantwortet</string>
+    <string name="mo_duration_hours_1">1 Stunde</string>
+    <string name="mo_duration_hours_6">6 Stunden</string>
+    <string name="mo_duration_days_1">1 Tag</string>
+    <string name="mo_duration_days_3">3 Tage</string>
+    <string name="mo_mute_label">Dauer:</string>
+    <string name="mo_duration_indefinite">Unbestimmt</string>
+    <string name="mo_duration_minutes_5">5 Minuten</string>
+    <string name="mo_duration_minutes_30">30 Minuten</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Standard Antwortsichtbarkeit auf nicht aufgelistet ändern</string>
+    <string name="mo_duration_days_7">7 Tage</string>
+    <string name="mo_composer_behavior">Verhalten des Verfassers</string>
+    <string name="mo_miscellaneous_settings">Sonstige Einstellungen</string>
 </resources>
