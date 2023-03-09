@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.joinmastodon.android.ui.views.ImageAttachmentFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
@@ -10,6 +11,22 @@
 		android:layout_gravity="center"
 		android:scaleType="centerCrop"/>
 
-	<include layout="@layout/alt_badge" />
+	<!-- This is hidden from screenreaders because that same alt text is set as content description on the ImageView -->
+	<TextView
+		android:id="@+id/alt_button"
+		android:layout_width="40dp"
+		android:layout_height="22dp"
+		android:layout_gravity="start|bottom"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="8dp"
+		android:layout_marginBottom="8dp"
+		android:importantForAccessibility="no"
+		android:textAppearance="@style/m3_label_large"
+		android:textColor="#FFF"
+		android:gravity="center"
+		android:includeFontPadding="false"
+		android:background="@drawable/bg_image_alt_overlay"
+		android:text="ALT"/>
 
-</org.joinmastodon.android.ui.views.ImageAttachmentFrameLayout>
+</FrameLayout>
