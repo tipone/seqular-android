@@ -223,7 +223,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 		}));
 		items.add(new SwitchItem(R.string.mo_disable_reminder_to_add_alt_text, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
-			GlobalUserPreferences.showNoAltIndicator=i.checked;
+			GlobalUserPreferences.disableAltTextReminder=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
