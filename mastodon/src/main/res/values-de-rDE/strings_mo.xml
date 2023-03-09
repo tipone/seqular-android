@@ -33,7 +33,7 @@
     <string name="mo_duration_days_1">1 Tag</string>
     <string name="mo_duration_days_3">3 Tage</string>
     <string name="mo_mute_label">Dauer:</string>
-    <string name="mo_duration_indefinite">Unbestimmt</string>
+    <string name="mo_duration_indefinite">Unbegrenzt</string>
     <string name="mo_duration_minutes_5">5 Minuten</string>
     <string name="mo_duration_minutes_30">30 Minuten</string>
     <string name="mo_change_default_reply_visibility_to_unlisted">Standard Antwortsichtbarkeit auf nicht aufgelistet ändern</string>
