@@ -214,7 +214,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 
 		items.add(new HeaderItem(R.string.mo_composer_behavior));
-		items.add(new SwitchItem(R.string.mo_change_default_reply_visibility_to_unlisted, R.drawable.ic_fluent_lock_closed_24_regular, GlobalUserPreferences.defaultToUnlistedReplies, i->{
+		items.add(new SwitchItem(R.string.mo_change_default_reply_visibility_to_unlisted, R.drawable.ic_fluent_lock_open_24_regular, GlobalUserPreferences.defaultToUnlistedReplies, i->{
 			GlobalUserPreferences.defaultToUnlistedReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
