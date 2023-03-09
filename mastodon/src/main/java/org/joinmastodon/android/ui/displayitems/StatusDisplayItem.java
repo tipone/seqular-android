@@ -218,7 +218,7 @@ public abstract class StatusDisplayItem{
 		HASHTAG,
 		GAP,
 		WARNING,
-		EXTENDED_FOOTER
+		EXTENDED_FOOTER,
 		MEDIA_GRID
 	}
 
