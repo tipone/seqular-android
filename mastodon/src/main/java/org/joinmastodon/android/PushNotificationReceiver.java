@@ -10,6 +10,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -274,7 +275,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		CreateStatus.Request req=new CreateStatus.Request();
 		req.status = input.toString() + "\n\n" + "@" + notification.status.account.acct;
 		req.language = notification.status.language;
-		req.visibility = notification.status.visibility;
+		req.visibility = (notification.status.visibility == StatusPrivacy.PUBLIC && GlobalUserPreferences.defaultToUnlistedReplies ? StatusPrivacy.UNLISTED : notification.status.visibility);
 		req.inReplyToId = notification.status.id;
 		if(!notification.status.spoilerText.isEmpty() && GlobalUserPreferences.prefixRepliesWithRe && !notification.status.spoilerText.startsWith("re: ")){
 			req.spoilerText = "re: " + notification.status.spoilerText;
