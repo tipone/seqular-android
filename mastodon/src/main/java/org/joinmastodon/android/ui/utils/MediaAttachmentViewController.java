@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Status;
@@ -44,7 +45,11 @@ public class MediaAttachmentViewController{
 		photo.setImageDrawable(crossfadeDrawable);
 		photo.setContentDescription(TextUtils.isEmpty(attachment.description) ? context.getString(R.string.media_no_description) : attachment.description);
 		if(altButton!=null){
-			altButton.setVisibility(TextUtils.isEmpty(attachment.description) ? View.GONE : View.VISIBLE);
+			if(GlobalUserPreferences.showAltIndicator){
+				altButton.setVisibility(TextUtils.isEmpty(attachment.description) ? View.GONE : View.VISIBLE);
+			}else{
+				altButton.setVisibility(View.GONE);
+			}
 		}
 		didClear=false;
 	}
