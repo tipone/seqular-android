@@ -81,7 +81,7 @@ public class MastodonAPIController{
 		final boolean isBad = host == null || badDomains.stream().anyMatch(h -> h.equalsIgnoreCase(host) || host.toLowerCase().endsWith("." + h));
 		thread.postRunnable(()->{
 			try{
-				if (isBad) throw new IllegalArgumentException();
+//				if (isBad) throw new IllegalArgumentException();
 				if(req.canceled)
 					return;
 				Request.Builder builder=new Request.Builder()
