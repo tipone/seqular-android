@@ -22,4 +22,17 @@
     <string name="mo_filtered">Wyfiltrowano: %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Wyłącz przypomnienie o dodaniu opisu</string>
     <string name="mo_add_custom_server_local_timeline">Dodaj lokalną oś czasu innej instancji</string>
+    <string name="mo_mute_label">Czas trwania:</string>
+    <string name="mo_duration_indefinite">Nieokreślony</string>
+    <string name="mo_duration_minutes_5">5 minut</string>
+    <string name="mo_duration_minutes_30">30 minut</string>
+    <string name="mo_duration_hours_1">1 godzina</string>
+    <string name="mo_duration_hours_6">6 godzin</string>
+    <string name="mo_duration_days_1">1 dzień</string>
+    <string name="mo_duration_days_3">3 dni</string>
+    <string name="mo_duration_days_7">7 dni</string>
+    <string name="mo_composer_behavior">Zachowanie kompozytora</string>
+    <string name="mo_notification_action_replied">Pomyślnie odpowiedziano na wpis %s</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Zmień domyślną widoczność odpowiedzi na nielistowaną</string>
+    <string name="mo_miscellaneous_settings">Inne ustawienia</string>
 </resources>
