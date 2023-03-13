@@ -115,12 +115,16 @@ public abstract class StatusDisplayItem{
 				args.putParcelable("profileAccount", Parcels.wrap(status.account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			}));
-		}else if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId)){
-			Account account=Objects.requireNonNull(knownAccounts.get(status.inReplyToAccountId));
-			items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to, account.displayName), account.emojis, R.drawable.ic_fluent_arrow_reply_20_filled, null, i->{
-				args.putParcelable("profileAccount", Parcels.wrap(account));
-				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
-			}));
+		}else if(status.inReplyToAccountId!=null){
+			if (knownAccounts.containsKey(status.inReplyToAccountId)) {
+				Account account = Objects.requireNonNull(knownAccounts.get(status.inReplyToAccountId));
+				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to, account.displayName), account.emojis, R.drawable.ic_fluent_arrow_reply_20_filled, null, i -> {
+					args.putParcelable("profileAccount", Parcels.wrap(account));
+					Nav.go(fragment.getActivity(), ProfileFragment.class, args);
+				}));
+			} else {
+				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to), List.of(), R.drawable.ic_fluent_arrow_reply_20_filled, null, null));
+			}
 		} else if (
 				!(status.tags.isEmpty() ||
 						fragment instanceof HashtagTimelineFragment ||
