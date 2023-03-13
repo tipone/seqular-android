@@ -115,7 +115,7 @@ public abstract class StatusDisplayItem{
 				args.putParcelable("profileAccount", Parcels.wrap(status.account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			}));
-		}else if(status.inReplyToAccountId!=null){
+		} if(status.inReplyToAccountId!=null){
 			if (knownAccounts.containsKey(status.inReplyToAccountId)) {
 				Account account = Objects.requireNonNull(knownAccounts.get(status.inReplyToAccountId));
 				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to, account.displayName), account.emojis, R.drawable.ic_fluent_arrow_reply_20_filled, null, i -> {
@@ -123,7 +123,7 @@ public abstract class StatusDisplayItem{
 					Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 				}));
 			} else {
-				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.in_reply_to), List.of(), R.drawable.ic_fluent_arrow_reply_20_filled, null, null));
+				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.sk_in_reply), List.of(), R.drawable.ic_fluent_arrow_reply_20_filled, null, null));
 			}
 		} else if (
 				!(status.tags.isEmpty() ||
