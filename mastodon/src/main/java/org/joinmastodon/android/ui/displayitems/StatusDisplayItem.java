@@ -12,7 +12,6 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTabFragment;
-import org.joinmastodon.android.fragments.HomeTimelineFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
@@ -20,7 +19,6 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
 import org.joinmastodon.android.model.Filter;
-import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
@@ -31,11 +29,9 @@ import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
@@ -69,10 +65,7 @@ public abstract class StatusDisplayItem{
 			case HEADER -> new HeaderStatusDisplayItem.Holder(activity, parent);
 			case REBLOG_OR_REPLY_LINE -> new ReblogOrReplyLineStatusDisplayItem.Holder(activity, parent);
 			case TEXT -> new TextStatusDisplayItem.Holder(activity, parent);
-			case PHOTO -> new PhotoStatusDisplayItem.Holder(activity, parent);
-			case GIFV -> new GifVStatusDisplayItem.Holder(activity, parent);
 			case AUDIO -> new AudioStatusDisplayItem.Holder(activity, parent);
-			case VIDEO -> new VideoStatusDisplayItem.Holder(activity, parent);
 			case POLL_OPTION -> new PollOptionStatusDisplayItem.Holder(activity, parent);
 			case POLL_FOOTER -> new PollFooterStatusDisplayItem.Holder(activity, parent);
 			case CARD -> new LinkCardStatusDisplayItem.Holder(activity, parent);
@@ -82,6 +75,7 @@ public abstract class StatusDisplayItem{
 			case HASHTAG -> new HashtagStatusDisplayItem.Holder(activity, parent);
 			case GAP -> new GapStatusDisplayItem.Holder(activity, parent);
 			case EXTENDED_FOOTER -> new ExtendedFooterStatusDisplayItem.Holder(activity, parent);
+			case MEDIA_GRID -> new MediaGridStatusDisplayItem.Holder(activity, parent);
 			case WARNING -> new WarningFilteredStatusDisplayItem.Holder(activity, parent);
 		};
 	}
@@ -159,20 +153,8 @@ public abstract class StatusDisplayItem{
 			header.needBottomPadding=true;
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
-			int photoIndex=0;
-			PhotoLayoutHelper.TiledLayoutResult layout=PhotoLayoutHelper.processThumbs(1000, 1910, imageAttachments);
-			for(Attachment attachment:imageAttachments){
-				if(attachment.type==Attachment.Type.IMAGE){
-					items.add(new PhotoStatusDisplayItem(parentID, statusForContent, attachment, fragment, photoIndex, imageAttachments.size(), layout, layout.tiles[photoIndex]));
-				}else if(attachment.type==Attachment.Type.GIFV){
-					items.add(new GifVStatusDisplayItem(parentID, statusForContent, attachment, fragment, photoIndex, imageAttachments.size(), layout, layout.tiles[photoIndex]));
-				}else if(attachment.type==Attachment.Type.VIDEO){
-					items.add(new VideoStatusDisplayItem(parentID, statusForContent, attachment, fragment, photoIndex, imageAttachments.size(), layout, layout.tiles[photoIndex]));
-				}else{
-					throw new IllegalStateException("This isn't supposed to happen, type is "+attachment.type);
-				}
-				photoIndex++;
-			}
+			PhotoLayoutHelper.TiledLayoutResult layout=PhotoLayoutHelper.processThumbs(imageAttachments);
+			items.add(new MediaGridStatusDisplayItem(parentID, fragment, layout, imageAttachments, statusForContent));
 		}
 		for(Attachment att:statusForContent.mediaAttachments){
 			if(att.type==Attachment.Type.AUDIO){
@@ -218,9 +200,6 @@ public abstract class StatusDisplayItem{
 		HEADER,
 		REBLOG_OR_REPLY_LINE,
 		TEXT,
-		PHOTO,
-		VIDEO,
-		GIFV,
 		AUDIO,
 		POLL_OPTION,
 		POLL_FOOTER,
@@ -230,8 +209,9 @@ public abstract class StatusDisplayItem{
 		ACCOUNT,
 		HASHTAG,
 		GAP,
-		WARNING,
-		EXTENDED_FOOTER
+		EXTENDED_FOOTER,
+		MEDIA_GRID,
+		WARNING
 	}
 
 	public static abstract class Holder<T extends StatusDisplayItem> extends BindableViewHolder<T> implements UsableRecyclerView.DisableableClickable{
