@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
+import me.grishka.appkit.utils.V;
 
 public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private CharSequence text;
@@ -37,8 +38,13 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private int iconEnd;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
+	private boolean isLastLine;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick){
+		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, true);
+	}
+
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, boolean isLastLine){
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
@@ -49,6 +55,11 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
+		setIsLastLine(isLastLine);
+	}
+
+	public void setIsLastLine(boolean isLastLine) {
+		this.isLastLine = isLastLine;
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -78,18 +89,21 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text;
+		private final View frame;
+
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
 			text=findViewById(R.id.text);
+			frame=findViewById(R.id.frame);
 		}
 
 		@Override
 		public void onBind(ReblogOrReplyLineStatusDisplayItem item){
 			text.setText(item.text);
 			text.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon, 0, item.iconEnd, 0);
-			if(item.handleClick!=null) text.setOnClickListener(item.handleClick);
-			text.setEnabled(!item.inset);
-			text.setClickable(!item.inset);
+			text.setOnClickListener(item.handleClick);
+			text.setEnabled(!item.inset && item.handleClick != null);
+			text.setClickable(!item.inset && item.handleClick != null);
 			Context ctx = itemView.getContext();
 			int visibilityText = item.visibility != null ? switch (item.visibility) {
 				case PUBLIC -> R.string.visibility_public;
@@ -100,6 +114,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			if (visibilityText != 0) text.setContentDescription(item.text + " (" + ctx.getString(visibilityText) + ")");
 			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N)
 				UiUtils.fixCompoundDrawableTintOnAndroid6(text);
+			ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.bottomMargin = V.dp(item.isLastLine ? -12 : -18);
+			frame.setLayoutParams(params);
 		}
 
 		@Override
