@@ -38,13 +38,10 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private int iconEnd;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
-	private boolean isLastLine;
+	private boolean isLastLine = true;
+	private int lineNo = 0;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick){
-		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, true);
-	}
-
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, boolean isLastLine){
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
@@ -55,11 +52,14 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
-		setIsLastLine(isLastLine);
 	}
 
 	public void setIsLastLine(boolean isLastLine) {
 		this.isLastLine = isLastLine;
+	}
+
+	public void setLineNo(int lineNo) {
+		this.lineNo = lineNo;
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -116,6 +116,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.fixCompoundDrawableTintOnAndroid6(text);
 			ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.bottomMargin = V.dp(item.isLastLine ? -12 : -18);
+			params.leftMargin = V.dp(13) * item.lineNo;
 			frame.setLayoutParams(params);
 		}
 

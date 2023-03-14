@@ -113,23 +113,8 @@ public abstract class StatusDisplayItem{
 			items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.user_boosted, status.account.displayName), status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20_filled, isOwnPost ? status.visibility : null, i->{
 				args.putParcelable("profileAccount", Parcels.wrap(status.account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
-			}, false));
-		}
-
-		if(statusForContent.inReplyToAccountId!=null){
-			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
-			View.OnClickListener handleClick = account == null ? null : i -> {
-				args.putParcelable("profileAccount", Parcels.wrap(account));
-				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
-			};
-			String text = account != null ? fragment.getString(R.string.in_reply_to, account.displayName) : fragment.getString(R.string.sk_in_reply);
-			items.add(new ReblogOrReplyLineStatusDisplayItem(
-					parentID, fragment, text, account == null ? List.of() : account.emojis,
-					R.drawable.ic_fluent_arrow_reply_20_filled, null, handleClick, false
-			));
-		}
-
-		if (status.reblog == null && !(status.tags.isEmpty() ||
+			}));
+		} else if (!(status.tags.isEmpty() ||
 				fragment instanceof HashtagTimelineFragment ||
 				fragment instanceof ListTimelineFragment
 		) && fragment.getParentFragment() instanceof HomeTabFragment home) {
@@ -144,14 +129,34 @@ public abstract class StatusDisplayItem{
 							i -> {
 								args.putString("hashtag", hashtag.name);
 								Nav.go(fragment.getActivity(), HashtagTimelineFragment.class, args);
-							},
-							false
+							}
 					)));
 		}
 
-		if (items.size() > 0) {
-			((ReblogOrReplyLineStatusDisplayItem) items.get(items.size() - 1)).setIsLastLine(true);
+		if(statusForContent.inReplyToAccountId!=null){
+			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
+			View.OnClickListener handleClick = account == null ? null : i -> {
+				args.putParcelable("profileAccount", Parcels.wrap(account));
+				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
+			};
+			String text = account != null ? fragment.getString(R.string.in_reply_to, account.displayName) : fragment.getString(R.string.sk_in_reply);
+			items.add(new ReblogOrReplyLineStatusDisplayItem(
+					parentID, fragment, text, account == null ? List.of() : account.emojis,
+					R.drawable.ic_fluent_arrow_reply_20_filled, null, handleClick
+			));
 		}
+
+		int l = 0;
+		ReblogOrReplyLineStatusDisplayItem lastLine = null;
+		for (StatusDisplayItem item : items) {
+			if (item instanceof ReblogOrReplyLineStatusDisplayItem line) {
+				line.setLineNo(l);
+				line.setIsLastLine(false);
+				lastLine = line;
+				l++;
+			}
+		}
+		if (lastLine != null) lastLine.setIsLastLine(true);
 
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
