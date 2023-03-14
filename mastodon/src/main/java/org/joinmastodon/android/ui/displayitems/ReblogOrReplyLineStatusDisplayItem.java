@@ -109,6 +109,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 				case PUBLIC -> R.string.visibility_public;
 				case UNLISTED -> R.string.sk_visibility_unlisted;
 				case PRIVATE -> R.string.visibility_followers_only;
+				case LOCAL -> R.string.sk_local_only;
 				default -> 0;
 			} : 0;
 			if (visibilityText != 0) text.setContentDescription(item.text + " (" + ctx.getString(visibilityText) + ")");
