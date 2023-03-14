@@ -263,4 +263,5 @@
     <string name="sk_unfinished_attachments">Perbaiki lampiran\?</string>
     <string name="sk_unfinished_attachments_message">Beberapa lampiran belum selesai diunggah.</string>
     <string name="sk_settings_hide_fab">Sembunyikan tombol Komposer</string>
+    <string name="sk_in_reply">Dalam balasan</string>
 </resources>
