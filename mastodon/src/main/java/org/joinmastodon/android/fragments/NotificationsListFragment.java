@@ -117,6 +117,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			knownAccounts.put(s.account.id, s.account);
 		if(s.status!=null && !knownAccounts.containsKey(s.status.account.id))
 			knownAccounts.put(s.status.account.id, s.status.account);
+		if(s.status!=null && s.status.reblog!=null && !knownAccounts.containsKey(s.status.reblog.account.id))
+			knownAccounts.put(s.status.reblog.account.id, s.status.reblog.account);
 	}
 
 	@Override
