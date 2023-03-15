@@ -44,6 +44,8 @@ public class GlobalUserPreferences{
 	public static boolean collapseLongPosts;
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
+	public static boolean replyLineAboveHeader;
+	public static boolean compactReblogReplyLine;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -93,6 +95,8 @@ public class GlobalUserPreferences{
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
+		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
+		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", null), recentLanguagesType, new HashMap<>());
@@ -134,8 +138,10 @@ public class GlobalUserPreferences{
 				.putBoolean("collapseLongPosts", collapseLongPosts)
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
+				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
+				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
