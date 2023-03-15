@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
@@ -133,6 +134,7 @@ public abstract class StatusDisplayItem{
 					)));
 		}
 
+		ReblogOrReplyLineStatusDisplayItem replyLine = null;
 		if(statusForContent.inReplyToAccountId!=null){
 			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
 			View.OnClickListener handleClick = account == null ? null : i -> {
@@ -140,28 +142,28 @@ public abstract class StatusDisplayItem{
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			};
 			String text = account != null ? fragment.getString(R.string.in_reply_to, account.displayName) : fragment.getString(R.string.sk_in_reply);
-			items.add(new ReblogOrReplyLineStatusDisplayItem(
+			replyLine = new ReblogOrReplyLineStatusDisplayItem(
 					parentID, fragment, text, account == null ? List.of() : account.emojis,
 					R.drawable.ic_fluent_arrow_reply_20_filled, null, handleClick
-			));
+			);
 		}
 
-		int l = 0;
-		ReblogOrReplyLineStatusDisplayItem lastLine = null;
-		for (StatusDisplayItem item : items) {
-			if (item instanceof ReblogOrReplyLineStatusDisplayItem line) {
-				line.setLineNo(l);
-				line.setIsLastLine(false);
-				lastLine = line;
-				l++;
-			}
+		if (replyLine != null && !GlobalUserPreferences.replyLineBelowHeader) {
+			items.add(replyLine);
 		}
-		if (lastLine != null) lastLine.setIsLastLine(true);
 
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
+
+		if (replyLine != null && GlobalUserPreferences.replyLineBelowHeader) {
+			replyLine.belowHeader = true;
+			items.add(replyLine);
+		}
+
 		if(!TextUtils.isEmpty(statusForContent.content))
 			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
+		else if (GlobalUserPreferences.replyLineBelowHeader && replyLine != null)
+			replyLine.needBottomPadding=true;
 		else
 			header.needBottomPadding=true;
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());

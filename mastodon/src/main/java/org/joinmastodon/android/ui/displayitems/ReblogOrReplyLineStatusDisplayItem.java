@@ -38,10 +38,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private int iconEnd;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
-	private boolean isLastLine = true;
-	private int lineNo = 0;
+	boolean belowHeader, needBottomPadding;
 
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick){
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
@@ -52,14 +51,6 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
-	}
-
-	public void setIsLastLine(boolean isLastLine) {
-		this.isLastLine = isLastLine;
-	}
-
-	public void setLineNo(int lineNo) {
-		this.lineNo = lineNo;
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -89,12 +80,10 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text;
-		private final View frame;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
 			text=findViewById(R.id.text);
-			frame=findViewById(R.id.frame);
 		}
 
 		@Override
@@ -116,9 +105,12 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N)
 				UiUtils.fixCompoundDrawableTintOnAndroid6(text);
 			ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			params.bottomMargin = V.dp(item.isLastLine ? -12 : -18);
-			params.leftMargin = V.dp(13) * item.lineNo;
-			frame.setLayoutParams(params);
+			params.bottomMargin = item.belowHeader ? V.dp(-6) : V.dp(-12);
+			params.topMargin = item.belowHeader ? V.dp(-6) : 0;
+			text.setTextAppearance(item.belowHeader ? R.style.m3_label_large : R.style.m3_title_small);
+			text.setCompoundDrawableTintList(text.getTextColors());
+			itemView.setLayoutParams(params);
+			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 		}
 
 		@Override

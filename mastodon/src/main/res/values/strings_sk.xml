@@ -263,4 +263,5 @@
     <string name="sk_followed_as">Followed from %s</string>
     <string name="sk_settings_hide_fab">Auto-hide Compose button</string>
     <string name="sk_in_reply">In reply</string>
+    <string name="sk_reply_line_below_avatar">“In reply to” line below avatar</string>
 </resources>

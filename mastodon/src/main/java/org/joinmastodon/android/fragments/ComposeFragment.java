@@ -333,7 +333,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		scheduleTimeBtn=view.findViewById(R.id.scheduled_time_btn);
 		sensitiveIcon=view.findViewById(R.id.sensitive_icon);
 		sensitiveItem=view.findViewById(R.id.sensitive_item);
-		replyText=view.findViewById(R.id.reply_text);
+		replyText=view.findViewById(GlobalUserPreferences.replyLineBelowHeader ? R.id.reply_text_below : R.id.reply_text);
+		view.findViewById(GlobalUserPreferences.replyLineBelowHeader ? R.id.reply_text : R.id.reply_text_below)
+				.setVisibility(View.GONE);
 
 		if (isPhotoPickerAvailable()) {
 			PopupMenu attachPopup = new PopupMenu(getContext(), mediaBtn);
