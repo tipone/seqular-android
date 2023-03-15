@@ -162,7 +162,7 @@ public abstract class StatusDisplayItem{
 					.findFirst();
 
 			if (primaryLine.isPresent() && GlobalUserPreferences.compactReblogReplyLine) {
-				primaryLine.get().secondary = replyLine;
+				primaryLine.get().extra = replyLine;
 			} else {
 				items.add(replyLine);
 			}

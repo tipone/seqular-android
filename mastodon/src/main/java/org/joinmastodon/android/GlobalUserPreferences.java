@@ -95,7 +95,7 @@ public class GlobalUserPreferences{
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
-		replyLineAboveHeader =prefs.getBoolean("replyLineAboveHeader", false);
+		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];

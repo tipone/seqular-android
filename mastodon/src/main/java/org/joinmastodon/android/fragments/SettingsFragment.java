@@ -260,10 +260,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			compactReblogReplyLineItem.checked= GlobalUserPreferences.replyLineAboveHeader;
 			if (list.findViewHolderForAdapterPosition(items.indexOf(compactReblogReplyLineItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
+			needAppRestart=true;
 		}));
 		items.add(compactReblogReplyLineItem=new SwitchItem(R.string.sk_compact_reblog_reply_line, R.drawable.ic_fluent_re_order_24_regular, GlobalUserPreferences.compactReblogReplyLine, i->{
 			GlobalUserPreferences.compactReblogReplyLine=i.checked;
-			GlobalUserPreferences.save();;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
 		}));
 		compactReblogReplyLineItem.enabled=GlobalUserPreferences.replyLineAboveHeader;
 		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{

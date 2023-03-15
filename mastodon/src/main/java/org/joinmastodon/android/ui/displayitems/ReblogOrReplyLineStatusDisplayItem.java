@@ -10,8 +10,10 @@ import android.text.SpannableStringBuilder;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Emoji;
@@ -39,7 +41,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
 	boolean belowHeader, needBottomPadding;
-	ReblogOrReplyLineStatusDisplayItem secondary;
+	ReblogOrReplyLineStatusDisplayItem extra;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
 		super(parentID, parentFragment);
@@ -80,14 +82,26 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final TextView text, secondaryText;
-		private final View secondaryWrap;
+		private final TextView text, extraText;
+		private final View separator;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
 			text=findViewById(R.id.text);
-			secondaryText=findViewById(R.id.secondary_text);
-			secondaryWrap=findViewById(R.id.secondary_wrap);
+			extraText=findViewById(R.id.extra_text);
+			separator=findViewById(R.id.separator);
+			if (GlobalUserPreferences.replyLineAboveHeader && GlobalUserPreferences.compactReblogReplyLine) {
+				itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
+					int orientation = ((LinearLayout) itemView).getOrientation();
+					extraText.setPaddingRelative(extraText.getPaddingStart(), V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
+					separator.setVisibility(View.GONE);
+					if (getItem() != null && getItem().extra != null) {
+						if (orientation == LinearLayout.VERTICAL) extraText.setPaddingRelative(extraText.getPaddingStart(), 0, extraText.getPaddingEnd(), extraText.getPaddingBottom());
+						else separator.setVisibility(View.VISIBLE);
+					}
+					return true;
+				});
+			}
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
@@ -114,8 +128,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(ReblogOrReplyLineStatusDisplayItem item){
 			bindLine(item, text);
-			if (item.secondary != null) bindLine(item.secondary, secondaryText);
-			secondaryWrap.setVisibility(item.secondary == null ? View.GONE : View.VISIBLE);
+			if (item.extra != null) bindLine(item.extra, extraText);
+			extraText.setVisibility(item.extra == null ? View.GONE : View.VISIBLE);
+			separator.setVisibility(item.extra == null ? View.GONE : View.VISIBLE);
 			ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.bottomMargin = item.belowHeader ? V.dp(-6) : V.dp(-12);
 			params.topMargin = item.belowHeader ? V.dp(-6) : 0;
