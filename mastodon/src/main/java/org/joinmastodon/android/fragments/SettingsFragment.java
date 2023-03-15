@@ -80,7 +80,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
 	private NotificationPolicyItem notificationPolicyItem;
-	private SwitchItem showNewPostsButtonItem, glitchModeItem;
+	private SwitchItem showNewPostsButtonItem, glitchModeItem, compactReblogReplyLineItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
 	private boolean needAppRestart;
@@ -253,10 +253,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		items.add(new SwitchItem(R.string.sk_reply_line_below_avatar, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.replyLineBelowHeader, i->{
-			GlobalUserPreferences.replyLineBelowHeader=i.checked;
+		items.add(new SwitchItem(R.string.sk_reply_line_above_avatar, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.replyLineAboveHeader, i->{
+			GlobalUserPreferences.replyLineAboveHeader=i.checked;
+			GlobalUserPreferences.compactReblogReplyLine=i.checked;
+			compactReblogReplyLineItem.enabled=i.checked;
+			compactReblogReplyLineItem.checked= GlobalUserPreferences.replyLineAboveHeader;
+			if (list.findViewHolderForAdapterPosition(items.indexOf(compactReblogReplyLineItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
 		}));
+		items.add(compactReblogReplyLineItem=new SwitchItem(R.string.sk_compact_reblog_reply_line, R.drawable.ic_fluent_re_order_24_regular, GlobalUserPreferences.compactReblogReplyLine, i->{
+			GlobalUserPreferences.compactReblogReplyLine=i.checked;
+			GlobalUserPreferences.save();;
+		}));
+		compactReblogReplyLineItem.enabled=GlobalUserPreferences.replyLineAboveHeader;
 		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
 			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
 			GlobalUserPreferences.save();

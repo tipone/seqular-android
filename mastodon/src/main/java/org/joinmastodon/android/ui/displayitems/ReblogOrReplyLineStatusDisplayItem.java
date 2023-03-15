@@ -39,6 +39,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
 	boolean belowHeader, needBottomPadding;
+	ReblogOrReplyLineStatusDisplayItem secondary;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
 		super(parentID, parentFragment);
@@ -79,15 +80,17 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final TextView text;
+		private final TextView text, secondaryText;
+		private final View secondaryWrap;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
 			text=findViewById(R.id.text);
+			secondaryText=findViewById(R.id.secondary_text);
+			secondaryWrap=findViewById(R.id.secondary_wrap);
 		}
 
-		@Override
-		public void onBind(ReblogOrReplyLineStatusDisplayItem item){
+		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
 			text.setText(item.text);
 			text.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon, 0, item.iconEnd, 0);
 			text.setOnClickListener(item.handleClick);
@@ -104,11 +107,18 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			if (visibilityText != 0) text.setContentDescription(item.text + " (" + ctx.getString(visibilityText) + ")");
 			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N)
 				UiUtils.fixCompoundDrawableTintOnAndroid6(text);
+			text.setTextAppearance(item.belowHeader ? R.style.m3_label_large : R.style.m3_title_small);
+			text.setCompoundDrawableTintList(text.getTextColors());
+		}
+
+		@Override
+		public void onBind(ReblogOrReplyLineStatusDisplayItem item){
+			bindLine(item, text);
+			if (item.secondary != null) bindLine(item.secondary, secondaryText);
+			secondaryWrap.setVisibility(item.secondary == null ? View.GONE : View.VISIBLE);
 			ViewGroup.MarginLayoutParams params = new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 			params.bottomMargin = item.belowHeader ? V.dp(-6) : V.dp(-12);
 			params.topMargin = item.belowHeader ? V.dp(-6) : 0;
-			text.setTextAppearance(item.belowHeader ? R.style.m3_label_large : R.style.m3_title_small);
-			text.setCompoundDrawableTintList(text.getTextColors());
 			itemView.setLayoutParams(params);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 		}

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:id="@+id/frame"
+	android:paddingTop="16dp"
+	android:paddingHorizontal="10dp"
 	android:layout_marginBottom="-12dp">
 
 	<TextView
 		android:id="@+id/text"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
-		android:paddingHorizontal="16dp"
-		android:paddingTop="16dp"
+		android:layout_marginStart="6dp"
 		android:paddingBottom="6dp"
 		android:textAppearance="@style/m3_title_small"
 		android:drawableStart="@drawable/ic_fluent_arrow_repeat_all_20_filled"
@@ -19,4 +19,35 @@
 		android:singleLine="true"
 		android:ellipsize="end"/>
 
-</FrameLayout>
+	<LinearLayout
+		android:id="@+id/secondary_wrap"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:orientation="horizontal">
+
+		<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginHorizontal="6dp"
+			android:paddingHorizontal="1dp"
+			android:textAppearance="@style/m3_title_small"
+			android:gravity="center_horizontal"
+			android:importantForAccessibility="no"
+			android:includeFontPadding="false"
+			android:text="@string/sk_separator" />
+
+		<TextView
+			android:id="@+id/secondary_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:paddingBottom="6dp"
+			android:textAppearance="@style/m3_title_small"
+			android:drawableStart="@drawable/ic_fluent_arrow_reply_20_filled"
+			android:drawableTint="?android:textColorSecondary"
+			android:drawablePadding="6dp"
+			android:singleLine="true"
+			android:ellipsize="end"/>
+
+	</LinearLayout>
+
+</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>

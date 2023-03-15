@@ -32,6 +32,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
@@ -109,9 +110,35 @@ public abstract class StatusDisplayItem{
 			statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
 		}
 
+		ReblogOrReplyLineStatusDisplayItem replyLine = null;
+		boolean threadReply = statusForContent.inReplyToAccountId != null &&
+				statusForContent.inReplyToAccountId.equals(status.account.id);
+
+		if(statusForContent.inReplyToAccountId!=null && !(threadReply && fragment instanceof ThreadFragment)){
+			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
+			View.OnClickListener handleClick = account == null || threadReply ? null : i -> {
+				args.putParcelable("profileAccount", Parcels.wrap(account));
+				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
+			};
+
+			String text = threadReply ? fragment.getString(R.string.sk_show_thread)
+					: account == null ? fragment.getString(R.string.sk_in_reply)
+					: GlobalUserPreferences.compactReblogReplyLine && status.reblog != null ? account.displayName
+					: fragment.getString(R.string.in_reply_to, account.displayName);
+
+			replyLine = new ReblogOrReplyLineStatusDisplayItem(
+					parentID, fragment, text, account == null ? List.of() : account.emojis,
+					R.drawable.ic_fluent_arrow_reply_20_filled, null, handleClick
+			);
+		}
+
 		if(status.reblog!=null){
 			boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
-			items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, fragment.getString(R.string.user_boosted, status.account.displayName), status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20_filled, isOwnPost ? status.visibility : null, i->{
+			String text = GlobalUserPreferences.compactReblogReplyLine && replyLine != null
+					? status.account.displayName
+					: fragment.getString(R.string.user_boosted, status.account.displayName);
+
+			items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20_filled, isOwnPost ? status.visibility : null, i->{
 				args.putParcelable("profileAccount", Parcels.wrap(status.account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			}));
@@ -134,42 +161,30 @@ public abstract class StatusDisplayItem{
 					)));
 		}
 
-		ReblogOrReplyLineStatusDisplayItem replyLine = null;
-		boolean threadReply = statusForContent.inReplyToAccountId != null &&
-				statusForContent.inReplyToAccountId.equals(status.account.id);
+		if (replyLine != null && GlobalUserPreferences.replyLineAboveHeader) {
+			Optional<ReblogOrReplyLineStatusDisplayItem> primaryLine = items.stream()
+					.filter(i -> i instanceof ReblogOrReplyLineStatusDisplayItem)
+					.map(ReblogOrReplyLineStatusDisplayItem.class::cast)
+					.findFirst();
 
-		if(statusForContent.inReplyToAccountId!=null && !(threadReply && fragment instanceof ThreadFragment)){
-			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
-			View.OnClickListener handleClick = account == null || threadReply ? null : i -> {
-				args.putParcelable("profileAccount", Parcels.wrap(account));
-				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
-			};
-
-			String text = threadReply ?
-					fragment.getString(R.string.sk_show_thread) : account != null ?
-					fragment.getString(R.string.in_reply_to, account.displayName) : fragment.getString(R.string.sk_in_reply);
-
-			replyLine = new ReblogOrReplyLineStatusDisplayItem(
-					parentID, fragment, text, account == null ? List.of() : account.emojis,
-					R.drawable.ic_fluent_arrow_reply_20_filled, null, handleClick
-			);
-		}
-
-		if (replyLine != null && !GlobalUserPreferences.replyLineBelowHeader) {
-			items.add(replyLine);
+			if (primaryLine.isPresent() && GlobalUserPreferences.compactReblogReplyLine) {
+				primaryLine.get().secondary = replyLine;
+			} else {
+				items.add(replyLine);
+			}
 		}
 
 		HeaderStatusDisplayItem header;
 		items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, notification, scheduledStatus));
 
-		if (replyLine != null && GlobalUserPreferences.replyLineBelowHeader) {
+		if (replyLine != null && !GlobalUserPreferences.replyLineAboveHeader) {
 			replyLine.belowHeader = true;
 			items.add(replyLine);
 		}
 
 		if(!TextUtils.isEmpty(statusForContent.content))
 			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
-		else if (GlobalUserPreferences.replyLineBelowHeader && replyLine != null)
+		else if (!GlobalUserPreferences.replyLineAboveHeader && replyLine != null)
 			replyLine.needBottomPadding=true;
 		else
 			header.needBottomPadding=true;

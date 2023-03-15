@@ -263,6 +263,7 @@
     <string name="sk_followed_as">Followed from %s</string>
     <string name="sk_settings_hide_fab">Auto-hide Compose button</string>
     <string name="sk_in_reply">In reply</string>
-    <string name="sk_reply_line_below_avatar">“In reply to” line below avatar</string>
+    <string name="sk_reply_line_above_avatar">“In reply to” line above avatar</string>
     <string name="sk_show_thread">Show thread</string>
+    <string name="sk_compact_reblog_reply_line">Compact reblog/reply line</string>
 </resources>
