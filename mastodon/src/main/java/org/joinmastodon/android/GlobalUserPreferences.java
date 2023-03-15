@@ -63,7 +63,12 @@ public class GlobalUserPreferences{
 	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
 	public static Map<String, Integer> recentEmojis;
 
-    private static SharedPreferences getPrefs(){
+	/**
+	 * Pleroma
+	 */
+	public static String replyVisibility;
+
+	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
 
@@ -113,6 +118,7 @@ public class GlobalUserPreferences{
 		pinnedTimelines=fromJson(prefs.getString("pinnedTimelines", null), pinnedTimelinesType, new HashMap<>());
 		accountsWithLocalOnlySupport=prefs.getStringSet("accountsWithLocalOnlySupport", new HashSet<>());
 		accountsInGlitchMode=prefs.getStringSet("accountsInGlitchMode", new HashSet<>());
+		replyVisibility=prefs.getString("replyVisibility", null);
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -165,6 +171,7 @@ public class GlobalUserPreferences{
 				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.putStringSet("accountsWithLocalOnlySupport", accountsWithLocalOnlySupport)
 				.putStringSet("accountsInGlitchMode", accountsInGlitchMode)
+				.putString("replyVisibility", replyVisibility)
 				.apply();
 	}
 
