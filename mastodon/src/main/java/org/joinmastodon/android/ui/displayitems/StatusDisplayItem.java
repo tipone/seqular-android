@@ -112,7 +112,7 @@ public abstract class StatusDisplayItem{
 
 		ReblogOrReplyLineStatusDisplayItem replyLine = null;
 		boolean threadReply = statusForContent.inReplyToAccountId != null &&
-				statusForContent.inReplyToAccountId.equals(status.account.id);
+				statusForContent.inReplyToAccountId.equals(statusForContent.account.id);
 
 		if(statusForContent.inReplyToAccountId!=null && !(threadReply && fragment instanceof ThreadFragment)){
 			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
