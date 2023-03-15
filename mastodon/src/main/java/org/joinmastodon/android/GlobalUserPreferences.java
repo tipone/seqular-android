@@ -57,6 +57,11 @@ public class GlobalUserPreferences{
 	public static Set<String> accountsWithLocalOnlySupport;
 	public static Set<String> accountsInGlitchMode;
 
+	/**
+	 * Pleroma
+	 */
+	public static String replyVisibility;
+
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
@@ -103,6 +108,7 @@ public class GlobalUserPreferences{
 		pinnedTimelines=fromJson(prefs.getString("pinnedTimelines", null), pinnedTimelinesType, new HashMap<>());
 		accountsWithLocalOnlySupport=prefs.getStringSet("accountsWithLocalOnlySupport", new HashSet<>());
 		accountsInGlitchMode=prefs.getStringSet("accountsInGlitchMode", new HashSet<>());
+		replyVisibility=prefs.getString("replyVisibility", null);
 
 		try {
 			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
@@ -148,6 +154,7 @@ public class GlobalUserPreferences{
 				.putString("pinnedTimelines", gson.toJson(pinnedTimelines))
 				.putStringSet("accountsWithLocalOnlySupport", accountsWithLocalOnlySupport)
 				.putStringSet("accountsInGlitchMode", accountsInGlitchMode)
+				.putString("replyVisibility", replyVisibility)
 				.apply();
 	}
 

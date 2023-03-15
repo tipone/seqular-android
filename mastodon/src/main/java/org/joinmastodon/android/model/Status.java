@@ -58,6 +58,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public boolean bookmarked;
 	public boolean pinned;
 
+	public Status quote;
+
 	public transient boolean filterRevealed;
 	public transient boolean spoilerRevealed;
 	public transient boolean textExpanded, textExpandable;
@@ -66,6 +68,9 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
+		if(spoilerText!=null && !spoilerText.isEmpty() && !sensitive)
+			sensitive=true;
+
 		super.postprocess();
 		if(application!=null)
 			application.postprocess();
