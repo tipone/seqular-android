@@ -135,13 +135,20 @@ public abstract class StatusDisplayItem{
 		}
 
 		ReblogOrReplyLineStatusDisplayItem replyLine = null;
-		if(statusForContent.inReplyToAccountId!=null){
+		boolean threadReply = statusForContent.inReplyToAccountId != null &&
+				statusForContent.inReplyToAccountId.equals(status.account.id);
+
+		if(statusForContent.inReplyToAccountId!=null && !(threadReply && fragment instanceof ThreadFragment)){
 			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
-			View.OnClickListener handleClick = account == null ? null : i -> {
+			View.OnClickListener handleClick = account == null || threadReply ? null : i -> {
 				args.putParcelable("profileAccount", Parcels.wrap(account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			};
-			String text = account != null ? fragment.getString(R.string.in_reply_to, account.displayName) : fragment.getString(R.string.sk_in_reply);
+
+			String text = threadReply ?
+					fragment.getString(R.string.sk_show_thread) : account != null ?
+					fragment.getString(R.string.in_reply_to, account.displayName) : fragment.getString(R.string.sk_in_reply);
+
 			replyLine = new ReblogOrReplyLineStatusDisplayItem(
 					parentID, fragment, text, account == null ? List.of() : account.emojis,
 					R.drawable.ic_fluent_arrow_reply_20_filled, null, handleClick
