@@ -92,13 +92,10 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			separator=findViewById(R.id.separator);
 			if (GlobalUserPreferences.replyLineAboveHeader && GlobalUserPreferences.compactReblogReplyLine) {
 				itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
+					if (item == null) return true;
 					int orientation = ((LinearLayout) itemView).getOrientation();
-					extraText.setPaddingRelative(extraText.getPaddingStart(), V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
-					separator.setVisibility(View.GONE);
-					if (getItem() != null && getItem().extra != null) {
-						if (orientation == LinearLayout.VERTICAL) extraText.setPaddingRelative(extraText.getPaddingStart(), 0, extraText.getPaddingEnd(), extraText.getPaddingBottom());
-						else separator.setVisibility(View.VISIBLE);
-					}
+					extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && orientation == LinearLayout.VERTICAL ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
+					separator.setVisibility(item.extra != null && orientation == LinearLayout.HORIZONTAL ? View.VISIBLE : View.GONE);
 					return true;
 				});
 			}
