@@ -32,7 +32,7 @@ import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 
 public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
-	private CharSequence text;
+	private CharSequence text, compactText;
 	@DrawableRes
 	private int icon;
 	private StatusPrivacy visibility;
@@ -42,8 +42,13 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private View.OnClickListener handleClick;
 	boolean belowHeader, needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
+	String contentDescription;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
+		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, null);
+	}
+
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, String contentDescription) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
@@ -54,6 +59,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
+		this.contentDescription = contentDescription;
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -108,6 +114,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
+			if (item.contentDescription != null) text.setContentDescription(item.contentDescription);
 			text.setText(item.text);
 			text.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon, 0, item.iconEnd, 0);
 			text.setOnClickListener(item.handleClick);
