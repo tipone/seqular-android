@@ -1,0 +1,6 @@
+- Migliorati i filtri, compresa la compatibilità con "Nascondi con avvertimento"
+- Ripensata la pagina del profilo con metadati sotto la bio
+- Funzione mostra/nascondi per post molto lunghi
+- Possibilità di iniziare le risposte a dei Content Warning con "re:"
+- Possiblità di nascondere i pulsanti di interazione nello scorrimento della timeline
+- Numerose correzioni di bug e miglioramenti

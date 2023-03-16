@@ -259,4 +259,8 @@
     <string name="sk_unfinished_attachments">Arranxar arquivos adxuntos\?</string>
     <string name="sk_spectator_mode">Modo espectador</string>
     <string name="sk_settings_hide_interaction">Ocultar botóns de interacción</string>
+    <string name="sk_follow_as">Seguir dende outra conta</string>
+    <string name="sk_followed_as">Seguida dende %s</string>
+    <string name="sk_settings_hide_fab">Auto-ocultar botón de redacción</string>
+    <string name="sk_in_reply">Respondendo</string>
 </resources>

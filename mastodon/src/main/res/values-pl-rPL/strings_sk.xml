@@ -258,4 +258,8 @@
     <string name="sk_settings_prefix_reply_cw_with_re">Zaczynaj CW odpowiedzi od “re:”</string>
     <string name="sk_settings_collapse_long_posts">Zwijaj bardzo długie posty</string>
     <string name="sk_settings_hide_interaction">Ukryj przyciski interakcji</string>
+    <string name="sk_followed_as">Obserwowane z %s</string>
+    <string name="sk_follow_as">Obserwuj z innego konta</string>
+    <string name="sk_settings_hide_fab">Automatycznie ukrywaj przycisk tworzenia nowego wpisu</string>
+    <string name="sk_in_reply">W odpowiedzi</string>
 </resources>
