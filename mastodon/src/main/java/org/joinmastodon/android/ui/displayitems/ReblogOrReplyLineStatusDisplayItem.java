@@ -96,6 +96,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 					int orientation = ((LinearLayout) itemView).getOrientation();
 					extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && orientation == LinearLayout.VERTICAL ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
 					separator.setVisibility(item.extra != null && orientation == LinearLayout.HORIZONTAL ? View.VISIBLE : View.GONE);
+					((LinearLayout) itemView).removeView(extraText);
+					if (orientation == LinearLayout.VERTICAL) ((LinearLayout) itemView).addView(extraText);
+					else ((LinearLayout) itemView).addView(extraText, 0);
 					return true;
 				});
 			}
