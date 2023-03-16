@@ -84,6 +84,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text, extraText;
 		private final View separator;
+		private int currentOrientation = -1;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
@@ -94,6 +95,8 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 				itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
 					if (item == null) return true;
 					int orientation = ((LinearLayout) itemView).getOrientation();
+					if (orientation == currentOrientation) return true; // only run once
+					currentOrientation = orientation;
 					extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && orientation == LinearLayout.VERTICAL ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
 					separator.setVisibility(item.extra != null && orientation == LinearLayout.HORIZONTAL ? View.VISIBLE : View.GONE);
 					((LinearLayout) itemView).removeView(extraText);
