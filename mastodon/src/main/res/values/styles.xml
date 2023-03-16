@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
+
+	<style name="TransparentDialog" parent="android:Theme.Dialog">
+	<item name="android:windowIsTranslucent">true</item>
+	<item name="android:windowBackground">@android:color/transparent</item>
+	<item name="android:windowContentOverlay">@null</item>
+	<item name="android:windowNoTitle">true</item>
+	<item name="android:windowIsFloating">true</item>
+	<item name="android:backgroundDimEnabled">false</item>
+	</style>
+
 	<style name="Theme.Mastodon.Light" parent="Theme.AppKit.Light">
 		<!-- needed to disable scrim on API 29+ -->
 		<item name="android:enforceNavigationBarContrast" tools:ignore="NewApi">false</item>
