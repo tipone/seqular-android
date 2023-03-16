@@ -166,12 +166,12 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			boolean translateEnabled = !item.disableTranslate && instanceInfo != null &&
 					instanceInfo.v2 != null && instanceInfo.v2.configuration.translation != null &&
 					instanceInfo.v2.configuration.translation.enabled;
-
 			boolean isBottomText = BOTTOM_TEXT_PATTERN.matcher(item.status.getStrippedText()).find();
 			boolean translateVisible = (isBottomText || (
 					translateEnabled &&
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
+							// todo: compare to user's locale instead (how do i query that?!)
 							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))))
 					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
