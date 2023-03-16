@@ -47,6 +47,7 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
                         result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
                         result.stream().forEach(status -> {
                             status.account.acct += "@"+domain;
+                            status.mentions.forEach(mention -> mention.id = null);
                             status.reloadWhenClicked = true;
                         });
 
