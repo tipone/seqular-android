@@ -263,4 +263,13 @@
     <string name="sk_followed_as">Відстежується з %s</string>
     <string name="sk_settings_hide_fab">Автоматично ховати кнопку компонування</string>
     <string name="sk_in_reply">У відповідь</string>
+    <string name="sk_quoting_user">Цитування %s</string>
+    <string name="sk_settings_reply_visibility">Видимість відповіді</string>
+    <string name="sk_settings_reply_visibility_all">Усі відповіді</string>
+    <string name="sk_settings_reply_visibility_following">Відповіді моїм підписникам</string>
+    <string name="sk_settings_reply_visibility_self">Відповіді мені</string>
+    <string name="sk_notification_action_replied">Надіслано відповідь на %s</string>
+    <string name="sk_reply_line_above_avatar">Рядок «У відповідь» над аватаром</string>
+    <string name="sk_show_thread">Показати потік</string>
+    <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеного допису/відповіді</string>
 </resources>
