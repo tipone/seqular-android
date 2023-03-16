@@ -264,4 +264,13 @@
     <string name="sk_unfinished_attachments_message">Beberapa lampiran belum selesai diunggah.</string>
     <string name="sk_settings_hide_fab">Sembunyikan tombol Komposer</string>
     <string name="sk_in_reply">Dalam balasan</string>
+    <string name="sk_settings_reply_visibility_following">Balasan ke yang saya ikuti</string>
+    <string name="sk_quoting_user">Mengutip %s</string>
+    <string name="sk_settings_reply_visibility">Keterlihatan balasan</string>
+    <string name="sk_settings_reply_visibility_all">Semua balasan</string>
+    <string name="sk_settings_reply_visibility_self">Balasan kepada saya</string>
+    <string name="sk_notification_action_replied">Mengirim balasan ke %s</string>
+    <string name="sk_reply_line_above_avatar">Baris “Membalas ke” di atas avatar</string>
+    <string name="sk_show_thread">Tampilkan utasan</string>
+    <string name="sk_compact_reblog_reply_line">Baris berbagi/balasan</string>
 </resources>
