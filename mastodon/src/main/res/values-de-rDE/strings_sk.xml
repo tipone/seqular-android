@@ -267,4 +267,8 @@
     <string name="sk_settings_reply_visibility_following">Antworten auf Follows</string>
     <string name="sk_settings_reply_visibility_self">Antworten an mich</string>
     <string name="sk_quoting_user">Zitiere %s</string>
+    <string name="sk_notification_action_replied">Antwort an %s gesendet</string>
+    <string name="sk_show_thread">Thread öffnen</string>
+    <string name="sk_compact_reblog_reply_line">Kompakte Geteilt/Geantwortet-Zeile</string>
+    <string name="sk_reply_line_above_avatar">“Als Antwort auf”-Zeile über Profilbild</string>
 </resources>
