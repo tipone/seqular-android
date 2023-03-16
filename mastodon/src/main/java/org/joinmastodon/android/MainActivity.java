@@ -2,8 +2,10 @@ package org.joinmastodon.android;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -36,6 +38,7 @@ import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 
 public class MainActivity extends FragmentStackActivity{
+
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState){
 		UiUtils.setUserPreferredTheme(this);
@@ -90,6 +93,7 @@ public class MainActivity extends FragmentStackActivity{
 			AccountSession accountSession;
 			try{
 				accountSession=AccountSessionManager.getInstance().getAccount(accountID);
+				DomainManager.getInstance().setCurrentDomain(accountSession.domain);
 			}catch(IllegalStateException x){
 				return;
 			}
@@ -177,4 +181,11 @@ public class MainActivity extends FragmentStackActivity{
 			super.onBackPressed();
 		}
 	}
+	@Override
+	public void onProvideAssistContent(AssistContent outContent) {
+		super.onProvideAssistContent(outContent);
+
+		outContent.setWebUri(Uri.parse(DomainManager.getInstance().getCurrentDomain()));
+	}
+
 }
