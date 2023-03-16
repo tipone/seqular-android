@@ -98,9 +98,11 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		private final float textMaxHeight, textCollapsedHeight;
 		private final LinearLayout.LayoutParams collapseParams, wrapParams;
+		private final ViewGroup parent;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_text, parent);
+			this.parent=parent;
 			text=findViewById(R.id.text);
 			spoilerTitle=findViewById(R.id.spoiler_title);
 			spoilerTitleInline=findViewById(R.id.spoiler_title_inline);
@@ -228,19 +230,16 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				readMore.setVisibility(View.GONE);
 			}
 
-			if (GlobalUserPreferences.collapseLongPosts) {
-				text.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-					@Override
-					public boolean onPreDraw() {
-						text.getViewTreeObserver().removeOnPreDrawListener(this);
-						boolean tooBig = text.getMeasuredHeight() > textMaxHeight;
-						boolean inTimeline = !item.textSelectable;
-						boolean hasSpoiler = !TextUtils.isEmpty(item.status.spoilerText);
-						boolean expandable = inTimeline && tooBig && !hasSpoiler;
-						item.parentFragment.onEnableExpandable(Holder.this, expandable);
-						return true;
-					}
-				});
+			text.measure(
+					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
+					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
+
+			if (GlobalUserPreferences.collapseLongPosts && !item.status.textExpandable) {
+				boolean tooBig = text.getMeasuredHeight() > textMaxHeight;
+				boolean inTimeline = !item.textSelectable;
+				boolean hasSpoiler = !TextUtils.isEmpty(item.status.spoilerText);
+				boolean expandable = inTimeline && tooBig && !hasSpoiler;
+				item.parentFragment.onEnableExpandable(Holder.this, expandable);
 			}
 
 			readMore.setVisibility(item.status.textExpandable && !item.status.textExpanded ? View.VISIBLE : View.GONE);

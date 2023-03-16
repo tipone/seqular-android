@@ -503,7 +503,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			holder.getItem().status.textExpandable = expandable;
 			HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
 			if (header != null) header.rebind();
-			holder.rebind();
 		}
 	}
 
