@@ -232,7 +232,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
 			FrameLayout view=tabViews[viewType];
-			((ViewGroup)view.getParent()).removeView(view);
+			if (view.getParent() != null) ((ViewGroup)view.getParent()).removeView(view);
 			view.setVisibility(View.VISIBLE);
 			view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 			return new SimpleViewHolder(view);
