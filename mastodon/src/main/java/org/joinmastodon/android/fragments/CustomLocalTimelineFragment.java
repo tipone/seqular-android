@@ -39,8 +39,8 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
     }
 
     @Override
-    public void setAssistContentUri() {
-        DomainManager.getInstance().setCurrentDomain(domain);
+    public String getDomain() {
+        return domain;
     }
 
     @Override

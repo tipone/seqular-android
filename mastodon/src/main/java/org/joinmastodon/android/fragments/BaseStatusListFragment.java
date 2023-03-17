@@ -74,7 +74,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends BaseRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends BaseRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, DomainDisplay{
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
@@ -106,10 +106,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
-	}
-
-	public void setAssistContentUri() {
-		DomainManager.getInstance().setCurrentDomain(AccountSessionManager.getInstance().getAccount(accountID).domain);
 	}
 
 

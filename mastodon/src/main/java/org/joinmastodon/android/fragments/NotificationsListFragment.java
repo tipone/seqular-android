@@ -53,6 +53,11 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	}
 
 	@Override
+	public String getDomain() {
+		return super.getDomain() + "/notifications";
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		E.register(this);
