@@ -110,7 +110,10 @@ public class AccountActivationFragment extends ToolbarFragment{
 
 	@Override
 	public void onToolbarNavigationClick(){
-		new AccountSwitcherSheet(getActivity()).show();
+		new AccountSwitcherSheet(getActivity(), true, true, accountSession -> {
+			getActivity().finish();
+			getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+		}).show();
 	}
 
 	@Override
