@@ -78,7 +78,6 @@ public class DomainManager {
 	}
 
 	public void setCurrentDomain(String domain) {
-		Log.e(TAG, "setCurrentDomain: " + domain );
 		this.currentDomain = domain;
 	}
 }
