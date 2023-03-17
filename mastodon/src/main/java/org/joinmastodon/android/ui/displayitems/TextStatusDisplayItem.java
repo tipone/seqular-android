@@ -32,6 +32,7 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.utils.StatusTextEncoder;
 
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 import me.grishka.appkit.api.Callback;
@@ -173,8 +174,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					translateEnabled &&
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
-							// todo: compare to user's locale instead (how do i query that?!)
-							(item.session.preferences == null || !item.status.language.equalsIgnoreCase(item.session.preferences.postingDefaultLanguage))))
+							// todo: compare to mastodon locale instead (how do i query that?!)
+							!item.status.language.equalsIgnoreCase(Locale.getDefault().getLanguage())))
 					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
