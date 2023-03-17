@@ -1128,7 +1128,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					}else{
 						E.post(new StatusUpdatedEvent(result));
 					}
-					Nav.finish(ComposeFragment.this);
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !isStateSaved()) {
+						Nav.finish(ComposeFragment.this);
+					}
 					if (getArguments().getBoolean("navigateToStatus", false)) {
 						Bundle args=new Bundle();
 						args.putString("account", accountID);
