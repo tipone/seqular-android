@@ -37,7 +37,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.V;
 
-public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop{
+public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, DomainDisplay{
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -47,6 +47,11 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private NotificationsListFragment allNotificationsFragment, mentionsFragment, postsFragment;
 
 	private String accountID;
+
+	@Override
+	public String getDomain() {
+		return DomainDisplay.super.getDomain() + "/notifications";
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
