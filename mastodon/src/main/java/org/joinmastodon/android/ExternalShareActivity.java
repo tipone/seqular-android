@@ -3,7 +3,6 @@ package org.joinmastodon.android;
 import android.app.Fragment;
 import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
+import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.ArrayList;
@@ -34,11 +34,7 @@ public class ExternalShareActivity extends FragmentStackActivity{
 			}else if(sessions.size()==1){
 				openComposeFragment(sessions.get(0).getID());
 			}else{
-				getWindow().setBackgroundDrawable(new ColorDrawable(0xff000000));
-				UiUtils.pickAccount(this, null, R.string.choose_account, 0,
-						session -> openComposeFragment(session.getID()),
-						b -> b.setOnCancelListener(d -> finish())
-				);
+				new AccountSwitcherSheet(this, false, false, accountSession -> openComposeFragment(accountSession.getID())).show();
 			}
 		}
 	}

@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
@@ -21,6 +22,7 @@ import androidx.annotation.Nullable;
 
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -305,7 +307,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
-			new AccountSwitcherSheet(getActivity()).show();
+			new AccountSwitcherSheet(getActivity(), true, true, accountSession -> {
+				getActivity().finish();
+				getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+			}).show();
 			return true;
 		}
 		if(tab==R.id.tab_search){
