@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,7 +17,13 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
+import com.squareup.otto.Subscribe;
+
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.notifications.GetNotifications;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -35,11 +42,6 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-
-import com.squareup.otto.Subscribe;
 
 import me.grishka.appkit.FragmentStackActivity;
 import me.grishka.appkit.api.Callback;
@@ -263,7 +265,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
-			new AccountSwitcherSheet(getActivity()).show();
+			new AccountSwitcherSheet(getActivity(), true, true, accountSession -> {
+				getActivity().finish();
+				getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
+			}).show();
 			return true;
 		}
 		return false;

@@ -27,6 +27,7 @@ import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
@@ -52,10 +53,14 @@ public class AccountSwitcherSheet extends BottomSheet{
 	private UsableRecyclerView list;
 	private List<WrappedAccount> accounts;
 	private ListImageLoaderWrapper imgLoader;
+	private final boolean logOutEnabled;
+	private final Consumer<AccountSession> onClick;
 
-	public AccountSwitcherSheet(@NonNull Activity activity){
+	public AccountSwitcherSheet(@NonNull Activity activity, boolean logOutEnabled, boolean addAccountEnabled, Consumer<AccountSession> onClick){
 		super(activity);
 		this.activity=activity;
+		this.logOutEnabled=logOutEnabled;
+		this.onClick=onClick;
 
 		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
 
@@ -69,17 +74,20 @@ public class AccountSwitcherSheet extends BottomSheet{
 		handle.setBackgroundResource(R.drawable.bg_bottom_sheet_handle);
 		adapter.addAdapter(new SingleViewRecyclerAdapter(handle));
 		adapter.addAdapter(new AccountsAdapter());
-		AccountViewHolder holder=new AccountViewHolder();
-		holder.more.setVisibility(View.GONE);
-		holder.currentIcon.setVisibility(View.GONE);
-		holder.name.setText(R.string.add_account);
-		holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
-		holder.avatar.setImageResource(R.drawable.ic_fluent_add_circle_24_filled);
-		holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
-		adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, ()->{
-			Nav.go(activity, CustomWelcomeFragment.class, null);
-			dismiss();
-		}));
+
+		if(addAccountEnabled){
+			AccountViewHolder holder = new AccountViewHolder();
+			holder.more.setVisibility(View.GONE);
+			holder.currentIcon.setVisibility(View.GONE);
+			holder.name.setText(R.string.add_account);
+			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
+			holder.avatar.setImageResource(R.drawable.ic_fluent_add_circle_24_filled);
+			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
+			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {
+				Nav.go(activity, CustomWelcomeFragment.class, null);
+				dismiss();
+			}));
+		}
 
 		list.setAdapter(adapter);
 		DividerItemDecoration divider=new DividerItemDecoration(activity, R.attr.colorPollVoted, .5f, 72, 16, DividerItemDecoration.NOT_FIRST);
@@ -210,6 +218,11 @@ public class AccountSwitcherSheet extends BottomSheet{
 				more.setVisibility(View.VISIBLE);
 				currentIcon.setVisibility(View.GONE);
 			}
+
+			if(!logOutEnabled){
+				more.setVisibility(View.GONE);
+				currentIcon.setVisibility(View.GONE);
+			}
 			menu.getMenu().findItem(R.id.log_out).setTitle(activity.getString(R.string.log_out_account, "@"+item.self.username));
 			UiUtils.enablePopupMenuIcons(activity, menu);
 		}
@@ -229,8 +242,8 @@ public class AccountSwitcherSheet extends BottomSheet{
 		@Override
 		public void onClick(){
 			AccountSessionManager.getInstance().setLastActiveAccountID(item.getID());
-			activity.finish();
-			activity.startActivity(new Intent(activity, MainActivity.class));
+			dismiss();
+			onClick.accept(AccountSessionManager.getInstance().getAccount(item.getID()));
 		}
 	}
 
