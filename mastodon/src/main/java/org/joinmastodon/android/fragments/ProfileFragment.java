@@ -50,7 +50,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
+import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByID;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
@@ -207,6 +209,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden) {
+			DomainManager.getInstance().setCurrentDomain(account.url);
+		}
 	}
 
 	@Override
@@ -857,6 +867,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 //			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
 		}
 		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
+		DomainManager.getInstance().setCurrentDomain(account.url);
 	}
 
 	public ImageButton getFab() {

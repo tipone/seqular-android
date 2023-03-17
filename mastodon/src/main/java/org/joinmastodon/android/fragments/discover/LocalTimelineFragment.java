@@ -24,6 +24,10 @@ public class LocalTimelineFragment extends StatusListFragment {
 		return true;
 	}
 
+	@Override
+	public String getDomain() {
+		return super.getDomain() + "/public/local";
+	}
 
 	@Override
 	protected void doLoadData(int offset, int count){

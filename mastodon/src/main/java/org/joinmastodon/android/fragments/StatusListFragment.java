@@ -7,6 +7,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
@@ -29,7 +30,7 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 
-public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
+public abstract class StatusListFragment extends BaseStatusListFragment<Status> implements DomainDisplay{
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){

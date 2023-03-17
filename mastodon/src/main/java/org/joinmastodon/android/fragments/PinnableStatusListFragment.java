@@ -14,7 +14,7 @@ import org.joinmastodon.android.model.TimelineDefinition;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class PinnableStatusListFragment extends StatusListFragment {
+public abstract class PinnableStatusListFragment extends StatusListFragment implements DomainDisplay {
     protected boolean pinnedUpdated;
     protected List<TimelineDefinition> pinnedTimelines;
 

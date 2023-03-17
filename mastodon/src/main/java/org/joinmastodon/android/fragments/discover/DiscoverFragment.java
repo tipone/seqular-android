@@ -19,8 +19,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.joinmastodon.android.BuildConfig;
+import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.ui.SimpleViewHolder;
@@ -38,7 +40,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.V;
 
-public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener{
+public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, DomainDisplay {
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -63,6 +65,17 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private Runnable searchDebouncer=this::onSearchChangedDebounced;
 
 //	private final boolean noFederated = !GlobalUserPreferences.showFederatedTimeline;
+
+	@Override
+	public String getDomain() {
+		if (searchActive) {
+			return searchFragment.getDomain();
+		}
+		if (tabViews[tabLayout.getSelectedTabPosition()] instanceof DomainDisplay page) {
+			return page.getDomain();
+		}
+		return DomainDisplay.super.getDomain() + "/explore";
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -127,6 +140,9 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 					if(!page.loaded && !page.isDataLoading())
 						page.loadData();
 				}
+
+				if (_page instanceof DomainDisplay display)
+					DomainManager.getInstance().setCurrentDomain(display.getDomain());
 			}
 		});
 
@@ -208,7 +224,9 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		tabLayoutMediator.attach();
 		tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
 			@Override
-			public void onTabSelected(TabLayout.Tab tab){}
+			public void onTabSelected(TabLayout.Tab tab){
+				DomainManager.getInstance().setCurrentDomain(getDomain());
+			}
 
 			@Override
 			public void onTabUnselected(TabLayout.Tab tab){}

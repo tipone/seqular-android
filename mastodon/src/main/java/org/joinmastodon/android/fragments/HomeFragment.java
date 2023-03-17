@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 
+import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -194,6 +195,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Override
 	public void onHiddenChanged(boolean hidden){
 		super.onHiddenChanged(hidden);
+		if (!hidden && fragmentForTab(currentTab) instanceof  DomainDisplay display)
+			DomainManager.getInstance().setCurrentDomain(display.getDomain());
 		fragmentForTab(currentTab).onHiddenChanged(hidden);
 	}
 
@@ -266,6 +269,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			GlobalUserPreferences.unreadNotifications = false;
 			GlobalUserPreferences.save();
 			setNotificationBadge();
+		}
+
+		if (newFragment instanceof DomainDisplay display) {
+			DomainManager.getInstance().setCurrentDomain(display.getDomain());
 		}
 
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();

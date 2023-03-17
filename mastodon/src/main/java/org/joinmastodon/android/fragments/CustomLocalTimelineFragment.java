@@ -1,6 +1,9 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+
+import org.joinmastodon.android.DomainManager;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
@@ -33,6 +36,11 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
     private void updateTitle(String domain) {
         this.domain = domain;
         setTitle(this.domain);
+    }
+
+    @Override
+    public String getDomain() {
+        return domain;
     }
 
     @Override

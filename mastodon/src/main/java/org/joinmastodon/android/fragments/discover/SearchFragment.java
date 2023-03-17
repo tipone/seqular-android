@@ -58,6 +58,11 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	}
 
 	@Override
+	public String getDomain() {
+		return super.getDomain() + "/search";
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
@@ -248,7 +253,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	}
 
 	public void setQuery(String q){
-		if(Objects.equals(q, currentQuery))
+		if(Objects.equals(q, currentQuery) || q.isBlank())
 			return;
 		if(currentRequest!=null){
 			currentRequest.cancel();
