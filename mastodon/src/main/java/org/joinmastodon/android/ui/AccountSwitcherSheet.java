@@ -8,7 +8,6 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -81,7 +80,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 			AccountViewHolder holder = new AccountViewHolder();
 			holder.more.setVisibility(View.GONE);
 			holder.currentIcon.setVisibility(View.GONE);
-			holder.display_name.setText(R.string.add_account);
+			holder.name.setText(R.string.add_account);
 			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
 			holder.avatar.setImageResource(R.drawable.ic_fluent_add_circle_24_filled);
 			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
@@ -185,7 +184,6 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 	private class AccountViewHolder extends BindableViewHolder<AccountSession> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
 		private final TextView name;
-		private final TextView display_name;
 		private final ImageView avatar;
 		private final ImageButton more;
 		private final View currentIcon;
@@ -194,7 +192,6 @@ public class AccountSwitcherSheet extends BottomSheet{
 		public AccountViewHolder(){
 			super(activity, R.layout.item_account_switcher, list);
 			name=findViewById(R.id.name);
-			display_name=findViewById(R.id.display_name);
 			avatar=findViewById(R.id.avatar);
 			more=findViewById(R.id.more);
 			currentIcon=findViewById(R.id.current);
@@ -214,7 +211,6 @@ public class AccountSwitcherSheet extends BottomSheet{
 		@SuppressLint("SetTextI18n")
 		@Override
 		public void onBind(AccountSession item){
-			display_name.setText(item.self.displayName);
 			name.setText("@"+item.self.username+"@"+item.domain);
 			if(AccountSessionManager.getInstance().getLastActiveAccountID().equals(item.getID())){
 				more.setVisibility(View.GONE);
