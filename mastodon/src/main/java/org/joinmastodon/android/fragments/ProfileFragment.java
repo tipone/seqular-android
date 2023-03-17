@@ -191,7 +191,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			profileAccountID=account.id;
 			isOwnProfile=AccountSessionManager.getInstance().isSelf(accountID, account);
 			loaded=true;
-			DomainManager.getInstance().setCurrentDomain(account.url);
 			if(!isOwnProfile)
 				loadRelationship();
 		}else{
@@ -210,6 +209,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		setHasOptionsMenu(true);
+	}
+
+	@Override
+	public void onHiddenChanged(boolean hidden) {
+		super.onHiddenChanged(hidden);
+		if (!hidden) {
+			DomainManager.getInstance().setCurrentDomain(account.url);
+		}
 	}
 
 	@Override
