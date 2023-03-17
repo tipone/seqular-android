@@ -550,10 +550,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		fields.clear();
 
-		AccountField joined=new AccountField();
-		joined.parsedName=joined.name=getString(R.string.profile_joined);
-		joined.parsedValue=joined.value=DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(LocalDateTime.ofInstant(account.createdAt, ZoneId.systemDefault()));
-		fields.add(joined);
+		if (account.createdAt != null) {
+			AccountField joined=new AccountField();
+			joined.parsedName=joined.name=getString(R.string.profile_joined);
+			joined.parsedValue=joined.value=DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(LocalDateTime.ofInstant(account.createdAt, ZoneId.systemDefault()));
+			fields.add(joined);
+		}
 
 		for(AccountField field:account.fields){
 			field.parsedValue=ssb=HtmlParser.parse(field.value, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);

@@ -674,8 +674,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			moreBtn.setImageDrawable(visibilityIcon);
 			moreBtn.setBackground(null);
 			TextView timestamp = view.findViewById(R.id.timestamp);
-			if (status.editedAt==null) timestamp.setText(UiUtils.formatRelativeTimestamp(getContext(), status.createdAt));
-			else timestamp.setText(getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(getContext(), status.editedAt)));
+			if (status.editedAt!=null) timestamp.setText(getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(getContext(), status.editedAt)));
+			else if (status.createdAt!=null) timestamp.setText(UiUtils.formatRelativeTimestamp(getContext(), status.createdAt));
+			else timestamp.setText("");
 			if (status.spoilerText != null && !status.spoilerText.isBlank()) {
 				view.findViewById(R.id.spoiler_header).setVisibility(View.VISIBLE);
 				((TextView) view.findViewById(R.id.spoiler_title_inline)).setText(status.spoilerText);

@@ -43,7 +43,7 @@ public class Account extends BaseModel implements Searchable{
 	/**
 	 * The profile's display name.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String displayName;
 	/**
 	 * The profile's bio / description.
@@ -86,7 +86,7 @@ public class Account extends BaseModel implements Searchable{
 	/**
 	 * When the account was created.
 	 */
-	@RequiredField
+//	@RequiredField
 	public Instant createdAt;
 	/**
 	 * When the most recent status was posted.
