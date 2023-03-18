@@ -633,7 +633,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	@Override
 	public boolean isScrolledToTop() {
-		return list.getChildAt(0).getTop() == 0;
+		return list.getChildAt(0) == null || list.getChildAt(0).getTop() == 0;
 	}
 
 	protected int getListWidthForMediaLayout(){
