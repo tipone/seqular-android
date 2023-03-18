@@ -43,9 +43,17 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 			boolean inset=(holder instanceof StatusDisplayItem.Holder<?> sdi) && sdi.getItem().inset;
 			if(inset){
 				if(rect.isEmpty()){
-					rect.set(child.getX(), i==0 && pos>0 && displayItems.get(pos-1).inset ? V.dp(-10) : child.getY(), child.getX()+child.getWidth(), child.getY()+child.getHeight());
+					if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder){
+						rect.set(child.getX(), i == 0 && pos > 0 && displayItems.get(pos - 1).inset ? V.dp(-10) : child.getY(), child.getX() + child.getWidth(), child.getY() + child.getHeight() + V.dp(4));
+					}else {
+						rect.set(child.getX(), i == 0 && pos > 0 && displayItems.get(pos - 1).inset ? V.dp(-10) : child.getY(), child.getX() + child.getWidth(), child.getY() + child.getHeight());
+					}
 				}else{
-					rect.bottom=Math.max(rect.bottom, child.getY()+child.getHeight());
+					if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder){
+						rect.bottom=Math.max(rect.bottom, child.getY()+child.getHeight()) + V.dp(4);
+					}else {
+						rect.bottom=Math.max(rect.bottom, child.getY()+child.getHeight());
+					}
 				}
 			}else if(!rect.isEmpty()){
 				drawInsetBackground(parent, c);
