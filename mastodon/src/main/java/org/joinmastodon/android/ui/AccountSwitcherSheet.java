@@ -49,9 +49,9 @@ import me.grishka.appkit.views.UsableRecyclerView;
 
 public class AccountSwitcherSheet extends BottomSheet{
 	private final Activity activity;
-	private final UsableRecyclerView list;
-	private final List<WrappedAccount> accounts;
-	private final ListImageLoaderWrapper imgLoader;
+	private UsableRecyclerView list;
+	private List<WrappedAccount> accounts;
+	private ListImageLoaderWrapper imgLoader;
 	private final boolean logOutEnabled;
 	private final Consumer<AccountSession> onClick;
 
@@ -76,8 +76,11 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 		if(addAccountEnabled){
 			AccountViewHolder holder = new AccountViewHolder();
+			holder.more.setVisibility(View.GONE);
+			holder.currentIcon.setVisibility(View.GONE);
 			holder.display_name.setVisibility(View.GONE);
 			holder.display_add_account.setVisibility(View.VISIBLE);
+			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
 			holder.avatar.setImageResource(R.drawable.ic_fluent_add_circle_24_filled);
 			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
 			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {
@@ -88,8 +91,12 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 		if(showOpenURL) {
 			AccountViewHolder holder = new AccountViewHolder();
+			holder.more.setVisibility(View.GONE);
+			holder.currentIcon.setVisibility(View.GONE);
+			holder.display_name.setVisibility(View.VISIBLE);
 			holder.display_add_account.setVisibility(View.VISIBLE);
 			holder.display_add_account.setText(R.string.mo_share_open_url);
+			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
 			holder.avatar.setImageResource(R.drawable.ic_fluent_open_24_regular);
 			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
 			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {

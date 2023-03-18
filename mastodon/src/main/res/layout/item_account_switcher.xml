@@ -9,7 +9,6 @@
 	
 	<ImageView
 		android:id="@+id/avatar"
-		android:scaleType="center"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
 		android:importantForAccessibility="no"/>
@@ -64,7 +63,6 @@
 		android:id="@+id/current"
 		android:layout_width="24dp"
 		android:layout_height="24dp"
-		android:visibility="gone"
 		android:background="@drawable/ic_fluent_checkmark_24_filled"
 		android:backgroundTint="?android:textColorSecondary"
 		android:contentDescription="@string/current_account"/>
@@ -73,7 +71,6 @@
 		android:id="@+id/more"
 		android:layout_width="24dp"
 		android:layout_height="24dp"
-		android:visibility="gone"
 		android:src="@drawable/ic_fluent_more_vertical_24_regular"
 		android:tint="?android:textColorSecondary"
 		android:contentDescription="@string/more_options"
