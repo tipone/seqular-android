@@ -28,7 +28,7 @@
 
 ### **The ability to add new custom local timelines!**
 
-#### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other timeline's posts!
+#### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
 ### **Material you theme support on Android 12+ devices!**
 
