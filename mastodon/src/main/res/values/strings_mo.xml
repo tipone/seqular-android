@@ -48,5 +48,7 @@
     <string name="mo_duration_days_3">3 days</string>
     <string name="mo_duration_days_7">7 days</string>
 
+    <string name="mo_share_open_url">Open in App</string>
+
 
 </resources>
