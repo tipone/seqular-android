@@ -149,6 +149,11 @@ public class FollowRequestsListFragment extends BaseRecyclerFragment<FollowReque
 		smoothScrollRecyclerViewToTop(list);
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
 	private class AccountsAdapter extends UsableRecyclerView.Adapter<AccountViewHolder> implements ImageLoaderRecyclerAdapter{
 
 		public AccountsAdapter(){

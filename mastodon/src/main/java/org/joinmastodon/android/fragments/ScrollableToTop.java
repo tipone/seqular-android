@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.utils.V;
 
 public interface ScrollableToTop{
+	boolean isScrolledToTop();
+
 	void scrollToTop();
 
 	/**

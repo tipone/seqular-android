@@ -302,6 +302,15 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		}
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		if(!searchActive){
+			return ((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).isScrolledToTop();
+		}else{
+			return searchFragment.isScrolledToTop();
+		}
+	}
+
 	public void loadData(){
 		if(hashtagsFragment!=null && !hashtagsFragment.loaded && !hashtagsFragment.dataLoading)
 			hashtagsFragment.loadData();
