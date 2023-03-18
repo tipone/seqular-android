@@ -265,7 +265,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
-			new AccountSwitcherSheet(getActivity(), true, true, accountSession -> {
+			new AccountSwitcherSheet(getActivity(), true, true, false, accountSession -> {
 				getActivity().finish();
 				getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
 			}).show();

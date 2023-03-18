@@ -28,14 +28,23 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		UiUtils.setUserPreferredTheme(this);
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
+
+			String text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+			boolean isMastodonURL = UiUtils.looksLikeMastodonUrl(text);
+
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
 			if(sessions.isEmpty()){
 				Toast.makeText(this, R.string.err_not_logged_in, Toast.LENGTH_SHORT).show();
 				finish();
-			}else if(sessions.size()==1){
+			}else if(sessions.size()==1 && !isMastodonURL){
 				openComposeFragment(sessions.get(0).getID());
 			}else{
-				new AccountSwitcherSheet(this, false, false, accountSession -> openComposeFragment(accountSession.getID())).show();
+				new AccountSwitcherSheet(this, false, false, isMastodonURL, accountSession -> {
+					if(accountSession!=null)
+						openComposeFragment(accountSession.getID());
+					else
+						UiUtils.openURL(this, AccountSessionManager.getInstance().getLastActiveAccountID(), text);
+				}).show();
 			}
 		}
 	}

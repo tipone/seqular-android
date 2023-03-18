@@ -2,13 +2,11 @@ package org.joinmastodon.android.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -18,22 +16,21 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.w3c.dom.Text;
 
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -58,7 +55,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 	private final boolean logOutEnabled;
 	private final Consumer<AccountSession> onClick;
 
-	public AccountSwitcherSheet(@NonNull Activity activity, boolean logOutEnabled, boolean addAccountEnabled, Consumer<AccountSession> onClick){
+	public AccountSwitcherSheet(@NonNull Activity activity, boolean logOutEnabled, boolean addAccountEnabled, boolean showOpenURL, Consumer<AccountSession> onClick){
 		super(activity);
 		this.activity=activity;
 		this.logOutEnabled=logOutEnabled;
@@ -88,6 +85,22 @@ public class AccountSwitcherSheet extends BottomSheet{
 			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
 			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {
 				Nav.go(activity, CustomWelcomeFragment.class, null);
+				dismiss();
+			}));
+		}
+
+		if(showOpenURL) {
+			AccountViewHolder holder = new AccountViewHolder();
+			holder.more.setVisibility(View.GONE);
+			holder.currentIcon.setVisibility(View.GONE);
+			holder.display_name.setVisibility(View.VISIBLE);
+			holder.display_add_account.setVisibility(View.VISIBLE);
+			holder.display_add_account.setText(R.string.sk_share_open_url);
+			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
+			holder.avatar.setImageResource(R.drawable.ic_fluent_open_24_regular);
+			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
+			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {
+				onClick.accept(null);
 				dismiss();
 			}));
 		}
