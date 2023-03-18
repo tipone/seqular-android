@@ -631,6 +631,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		smoothScrollRecyclerViewToTop(list);
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
 	protected int getListWidthForMediaLayout(){
 		return list.getWidth();
 	}

@@ -200,6 +200,11 @@ public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> im
 		 smoothScrollRecyclerViewToTop(list);
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
 	private class ListsAdapter extends RecyclerView.Adapter<ListViewHolder>{
 		 @NonNull
 		 @Override

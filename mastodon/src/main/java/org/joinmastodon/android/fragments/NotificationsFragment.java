@@ -205,6 +205,11 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 		getFragmentForPage(pager.getCurrentItem()).scrollToTop();
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		return getFragmentForPage(pager.getCurrentItem()).isScrolledToTop();
+	}
+
 	public void loadData(){
 		refreshFollowRequestsBadge();
 		if(allNotificationsFragment!=null && !allNotificationsFragment.loaded && !allNotificationsFragment.dataLoading)

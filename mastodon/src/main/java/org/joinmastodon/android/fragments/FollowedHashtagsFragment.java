@@ -76,6 +76,11 @@ public class FollowedHashtagsFragment extends BaseRecyclerFragment<Hashtag> impl
         smoothScrollRecyclerViewToTop(list);
     }
 
+    @Override
+    public boolean isScrolledToTop() {
+        return list.getChildAt(0).getTop() == 0;
+    }
+
     private class HashtagsAdapter extends RecyclerView.Adapter<HashtagViewHolder>{
         @NonNull
         @Override

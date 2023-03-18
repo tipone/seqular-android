@@ -480,6 +480,11 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		((ScrollableToTop) fragments[pager.getCurrentItem()]).scrollToTop();
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		return ((ScrollableToTop) fragments[pager.getCurrentItem()]).isScrolledToTop();
+	}
+
 	public void hideNewPostsButton(){
 		if(!newPostsBtnShown)
 			return;

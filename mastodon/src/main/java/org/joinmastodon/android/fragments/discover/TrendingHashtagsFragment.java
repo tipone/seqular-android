@@ -75,6 +75,11 @@ public class TrendingHashtagsFragment extends BaseRecyclerFragment<Hashtag> impl
 	}
 
 	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
+	@Override
 	public boolean isOnTop() {
 		return isRecyclerViewOnTop(list);
 	}

@@ -1229,6 +1229,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		scrollView.smoothScrollTo(0, 0);
 	}
 
+	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
 	private void onFollowersOrFollowingClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
