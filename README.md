@@ -11,6 +11,7 @@
 &nbsp;
 
 <a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="50" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
+&nbsp;
 <a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
 --- 
