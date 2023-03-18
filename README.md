@@ -43,7 +43,7 @@ Before             |  After
 
 ### **Color themes**
 
-**Allows you to change theme within the app. Supports Purple, pink, green, blue, orange and yellow!**
+**Allows you to change theme within the app. Supports Purple, pink, green, blue, red, orange and yellow!**
 
 ### **Unlisted posting**
 
