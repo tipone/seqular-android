@@ -419,7 +419,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		List<StatusDisplayItem> pollItems=displayItems.subList(firstOptionIndex, footerIndex+1);
 		int prevSize=pollItems.size();
 		pollItems.clear();
-		StatusDisplayItem.buildPollItems(itemID, this, poll, pollItems);
+		StatusDisplayItem.buildPollItems(itemID, this, poll, pollItems, status);
 		if(prevSize!=pollItems.size()){
 			adapter.notifyItemRangeRemoved(firstOptionIndex, prevSize);
 			adapter.notifyItemRangeInserted(firstOptionIndex, pollItems.size());
@@ -456,12 +456,26 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				}
 			}
 		}else{
+			if(holder.getItem().status.reloadWhenClicked){
+				Status queryStatus = holder.getItem().status;
+				UiUtils.lookupStatus(getContext(), queryStatus, accountID, null, status -> {
+					submitPollVote(holder.getItemID(), status.poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
+				});
+				return;
+			}
 			submitPollVote(holder.getItemID(), poll.id, Collections.singletonList(poll.options.indexOf(option)));
 		}
 	}
 
 	public void onPollVoteButtonClick(PollFooterStatusDisplayItem.Holder holder){
 		Poll poll=holder.getItem().poll;
+		if(holder.getItem().status.reloadWhenClicked){
+			Status queryStatus = holder.getItem().status;
+			UiUtils.lookupStatus(getContext(), queryStatus, accountID, null, status -> {
+				submitPollVote(holder.getItemID(), status.poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
+			});
+			return;
+		}
 		submitPollVote(holder.getItemID(), poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
 	}
 

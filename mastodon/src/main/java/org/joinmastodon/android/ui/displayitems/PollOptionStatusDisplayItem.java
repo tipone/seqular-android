@@ -11,6 +11,7 @@ import android.widget.TextView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Poll;
+import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 
@@ -22,16 +23,18 @@ import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 	private CharSequence text;
 	public final Poll.Option option;
+	public final Status status;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private boolean showResults;
 	private float votesFraction; // 0..1
 	private boolean isMostVoted;
 	public final Poll poll;
 
-	public PollOptionStatusDisplayItem(String parentID, Poll poll, Poll.Option option, BaseStatusListFragment parentFragment){
+	public PollOptionStatusDisplayItem(String parentID, Poll poll, Poll.Option option, BaseStatusListFragment parentFragment, Status status){
 		super(parentID, parentFragment);
 		this.option=option;
 		this.poll=poll;
+		this.status=status;
 		text=HtmlParser.parseCustomEmoji(option.title, poll.emojis);
 		emojiHelper.setText(text);
 		showResults=poll.isExpired() || poll.voted;
