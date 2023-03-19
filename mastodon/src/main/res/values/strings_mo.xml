@@ -49,6 +49,7 @@
     <string name="mo_duration_days_7">7 days</string>
 
     <string name="mo_share_open_url">Open in App</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">Disable double tap to swipe between tabs</string>
 
 
 </resources>

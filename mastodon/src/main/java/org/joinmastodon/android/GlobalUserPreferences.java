@@ -49,6 +49,7 @@ public class GlobalUserPreferences{
 	public static boolean autoHideFab;
 	public static boolean unreadNotifications;
 	public static boolean defaultToUnlistedReplies;
+	public static boolean disableDoubleTapToSwipe;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -105,6 +106,7 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		unreadNotifications=prefs.getBoolean("unreadNotifications", false);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
+		disableDoubleTapToSwipe=prefs.getBoolean("disableDoubleTapToSwipe", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
@@ -158,6 +160,7 @@ public class GlobalUserPreferences{
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
+				.putBoolean("disableDoubleTapToSwipe", disableDoubleTapToSwipe)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

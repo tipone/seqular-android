@@ -202,7 +202,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 	@Override
 	public void scrollToTop(){
-		if (getFragmentForPage(pager.getCurrentItem()).isScrolledToTop()) {
+		if (getFragmentForPage(pager.getCurrentItem()).isScrolledToTop() && !GlobalUserPreferences.disableDoubleTapToSwipe) {
 			int nextPage = (pager.getCurrentItem() + 1) % tabViews.length;
 			pager.setCurrentItem(nextPage, true);
 			return;

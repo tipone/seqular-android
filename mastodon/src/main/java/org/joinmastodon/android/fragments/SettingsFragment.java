@@ -211,6 +211,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.mo_disable_double_tap_to_swipe_between_tabs, R.drawable.ic_fluent_double_tap_swipe_right_24_regular, GlobalUserPreferences.disableDoubleTapToSwipe, i->{
+			GlobalUserPreferences.disableDoubleTapToSwipe=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
 
 
 		items.add(new HeaderItem(R.string.mo_composer_behavior));
