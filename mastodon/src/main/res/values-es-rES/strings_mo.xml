@@ -35,4 +35,5 @@
     <string name="mo_duration_days_7">7 días</string>
     <string name="mo_composer_behavior">Comportamiento de publicación</string>
     <string name="mo_miscellaneous_settings">Ajustes varios</string>
+    <string name="mo_share_open_url">Abrir en la aplicación</string>
 </resources>
