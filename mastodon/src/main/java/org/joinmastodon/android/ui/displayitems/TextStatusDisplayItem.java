@@ -193,26 +193,51 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					translateProgress.setVisibility(View.VISIBLE);
 					translateButton.setClickable(false);
 					translateButton.animate().alpha(0.5f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
-					new TranslateStatus(item.status.id).setCallback(new Callback<>() {
-						@Override
-						public void onSuccess(TranslatedStatus translatedStatus) {
-							item.translation = translatedStatus;
-							item.translated = true;
-							if (item.parentFragment.getActivity() == null) return;
-							translateProgress.setVisibility(View.GONE);
-							translateButton.setClickable(true);
-							translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
-							rebind();
-						}
+					if(item.status.reloadWhenClicked){
+						UiUtils.lookupStatus(item.parentFragment.getContext(), item.status, item.parentFragment.getAccountID(), null, status1 -> {
+							new TranslateStatus(status1.id).setCallback(new Callback<>() {
+								@Override
+								public void onSuccess(TranslatedStatus translatedStatus) {
+									item.translation = translatedStatus;
+									item.translated = true;
+									if (item.parentFragment.getActivity() == null) return;
+									translateProgress.setVisibility(View.GONE);
+									translateButton.setClickable(true);
+									translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
+									rebind();
+								}
 
-						@Override
-						public void onError(ErrorResponse error) {
-							translateProgress.setVisibility(View.GONE);
-							translateButton.setClickable(true);
-							translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
-							error.showToast(itemView.getContext());
-						}
-					}).exec(item.parentFragment.getAccountID());
+								@Override
+								public void onError(ErrorResponse error) {
+									translateProgress.setVisibility(View.GONE);
+									translateButton.setClickable(true);
+									translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
+									error.showToast(itemView.getContext());
+								}
+							}).exec(item.parentFragment.getAccountID());
+						});
+					} else {
+						new TranslateStatus(item.status.id).setCallback(new Callback<>() {
+							@Override
+							public void onSuccess(TranslatedStatus translatedStatus) {
+								item.translation = translatedStatus;
+								item.translated = true;
+								if (item.parentFragment.getActivity() == null) return;
+								translateProgress.setVisibility(View.GONE);
+								translateButton.setClickable(true);
+								translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
+								rebind();
+							}
+
+							@Override
+							public void onError(ErrorResponse error) {
+								translateProgress.setVisibility(View.GONE);
+								translateButton.setClickable(true);
+								translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
+								error.showToast(itemView.getContext());
+							}
+						}).exec(item.parentFragment.getAccountID());
+					}
 				} else {
 					item.translated = !item.translated;
 					rebind();
