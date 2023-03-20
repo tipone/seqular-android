@@ -11,7 +11,7 @@ public class ApiUtils{
 		//no instance
 	}
 
-	public static <E extends Enum<E>> List<String> enumSetToStrings(EnumSet<E> e, Class<E> cls){
+public static <E extends Enum<E>> List<String> enumSetToStrings(EnumSet<E> e, Class<E> cls){
 		return e.stream().map(ev->{
 			try{
 				SerializedName annotation=cls.getField(ev.name()).getAnnotation(SerializedName.class);

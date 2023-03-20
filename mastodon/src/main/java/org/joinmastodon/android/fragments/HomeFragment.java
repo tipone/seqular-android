@@ -16,21 +16,34 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.notifications.GetNotifications;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.AllNotificationsSeenEvent;
+import org.joinmastodon.android.events.NotificationReceivedEvent;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TabBar;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
+
+import com.squareup.otto.Subscribe;
+
 import me.grishka.appkit.FragmentStackActivity;
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.AppKitFragment;
 import me.grishka.appkit.fragments.LoaderFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
@@ -48,6 +61,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private TabBar tabBar;
 	private View tabBarWrap;
 	private ImageView tabBarAvatar;
+	private ImageView notificationTabIcon;
 	@IdRes
 	private int currentTab=R.id.tab_home;
 
@@ -56,6 +70,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		E.register(this);
 		accountID=getArguments().getString("account");
 		setTitle(R.string.sk_app_name);
 
@@ -107,6 +122,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		tabBarAvatar.setClipToOutline(true);
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		ViewImageLoader.load(tabBarAvatar, null, new UrlImageLoaderRequest(self.avatar, V.dp(28), V.dp(28)));
+
+		notificationTabIcon=content.findViewById(R.id.tab_notifications);
+		updateNotificationBadge();
 
 		if(savedInstanceState==null){
 			getChildFragmentManager().beginTransaction()
@@ -266,5 +284,50 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if (searchFragment.isAdded()) getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
 		if (notificationsFragment.isAdded()) getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
 		if (profileFragment.isAdded()) getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+	}
+
+	public void updateNotificationBadge() {
+		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.pleroma != null)
+				.setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(List<Notification> notifications) {
+						if (notifications.size() > 0) {
+							try {
+								long newestId = Long.parseLong(notifications.get(0).id);
+								long lastSeenId = Long.parseLong(session.markers.notifications.lastReadId);
+								System.out.println("NEWEST: " + newestId);
+								System.out.println("LAST SEEN: " + lastSeenId);
+
+								setNotificationBadge(newestId > lastSeenId);
+							} catch (Exception ignored) {
+								setNotificationBadge(false);
+							}
+						}
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						setNotificationBadge(false);
+					}
+				}).exec(accountID);
+	}
+
+	public void setNotificationBadge(boolean badge) {
+		notificationTabIcon.setImageResource(badge
+				? R.drawable.ic_fluent_alert_28_selector_badged
+				: R.drawable.ic_fluent_alert_28_selector);
+	}
+
+	@Subscribe
+	public void onNotificationReceived(NotificationReceivedEvent notificationReceivedEvent) {
+		setNotificationBadge(true);
+	}
+
+	@Subscribe
+	public void onAllNotificationsSeen(AllNotificationsSeenEvent allNotificationsSeenEvent) {
+		setNotificationBadge(false);
 	}
 }

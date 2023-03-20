@@ -7,6 +7,7 @@ import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Markers;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.model.Token;
@@ -31,6 +32,7 @@ public class AccountSession{
 	public String pushAccountID;
 	public Preferences preferences;
 	public AccountActivationInfo activationInfo;
+	public Markers markers;
 	private transient MastodonAPIController apiController;
 	private transient StatusInteractionController statusInteractionController, remoteStatusInteractionController;
 	private transient CacheController cacheController;
