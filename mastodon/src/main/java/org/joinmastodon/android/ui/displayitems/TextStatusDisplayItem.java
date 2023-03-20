@@ -169,8 +169,14 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			boolean translateEnabled = !item.disableTranslate && instanceInfo != null &&
 					instanceInfo.v2 != null && instanceInfo.v2.configuration.translation != null &&
 					instanceInfo.v2.configuration.translation.enabled;
-			boolean isBottomText = BOTTOM_TEXT_PATTERN.matcher(item.status.getStrippedText()).find();
-			boolean translateVisible = (isBottomText || (
+			String bottomText = null;
+			try {
+				bottomText = BOTTOM_TEXT_PATTERN.matcher(item.status.getStrippedText()).find()
+						? new StatusTextEncoder(Bottom::decode).decode(item.status.getStrippedText(), BOTTOM_TEXT_PATTERN)
+						: null;
+			} catch (TranslationError ignored) {}
+
+			boolean translateVisible = (bottomText != null || (
 					translateEnabled &&
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
@@ -179,13 +185,14 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
-			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, isBottomText ? "bottom-java" : item.translation.provider) : "");
+			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, bottomText != null ? "bottom-java" : item.translation.provider) : "");
+			String finalBottomText = bottomText;
 			translateButton.setOnClickListener(v->{
 				if (item.translation == null) {
-					if (isBottomText) {
+					if (finalBottomText != null) {
 						try {
 							item.translation = new TranslatedStatus();
-							item.translation.content = new StatusTextEncoder(Bottom::decode).decode(item.status.getStrippedText(), BOTTOM_TEXT_PATTERN);
+							item.translation.content = finalBottomText;
 							item.translated = true;
 						} catch (TranslationError err) {
 							item.translation = null;
@@ -237,9 +244,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 			if (GlobalUserPreferences.collapseLongPosts && !item.status.textExpandable) {
 				boolean tooBig = text.getMeasuredHeight() > textMaxHeight;
-				boolean inTimeline = !item.textSelectable;
 				boolean hasSpoiler = !TextUtils.isEmpty(item.status.spoilerText);
-				boolean expandable = inTimeline && tooBig && !hasSpoiler;
+				boolean expandable = tooBig && !hasSpoiler;
 				item.parentFragment.onEnableExpandable(Holder.this, expandable);
 			}
 
