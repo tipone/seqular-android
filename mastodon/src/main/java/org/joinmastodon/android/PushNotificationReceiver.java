@@ -55,6 +55,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context context, Intent intent){
+		UiUtils.setUserPreferredTheme(context);
 		if(BuildConfig.DEBUG){
 			Log.e(TAG, "received: "+intent);
 			Bundle extras=intent.getExtras();
@@ -185,7 +186,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
-				.setColor(context.getColor(R.color.shortcut_icon_background));
+				.setColor(UiUtils.getThemeColor(context, android.R.attr.colorAccent));
 
 		if (!GlobalUserPreferences.uniformNotificationIcon) {
 			builder.setSmallIcon(switch (pn.notificationType) {
