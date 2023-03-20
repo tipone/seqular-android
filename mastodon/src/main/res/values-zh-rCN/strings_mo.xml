@@ -35,4 +35,6 @@
     <string name="mo_duration_days_7">7天</string>
     <string name="mo_composer_behavior">作者的行为</string>
     <string name="mo_miscellaneous_settings">杂项设置</string>
+    <string name="mo_share_open_url">应用内打开</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">禁用双击以切换标签页</string>
 </resources>
