@@ -37,11 +37,10 @@ import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class ListTimelinesFragment extends BaseRecyclerFragment<ListTimeline> implements ScrollableToTop {
+public class ListTimelinesFragment extends RecyclerFragment<ListTimeline> implements ScrollableToTop {
 	private String accountId;
 	private String profileAccountId;
 	private final HashMap<String, Boolean> userInListBefore = new HashMap<>();

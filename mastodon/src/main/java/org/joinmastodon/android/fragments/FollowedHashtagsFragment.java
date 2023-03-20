@@ -16,11 +16,10 @@ import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class FollowedHashtagsFragment extends BaseRecyclerFragment<Hashtag> implements ScrollableToTop {
+public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop {
     private String nextMaxID;
     private String accountId;
 

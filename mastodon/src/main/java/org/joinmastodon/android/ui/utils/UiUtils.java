@@ -338,8 +338,17 @@ public class UiUtils {
 	}
 
 	public static int getThemeColor(Context context, @AttrRes int attr) {
+		if (context == null) return 0xff00ff00;
 		TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
 		int color = ta.getColor(0, 0xff00ff00);
+		ta.recycle();
+		return color;
+	}
+
+	public static int getThemeColorRes(Context context, @AttrRes int attr) {
+		if (context == null) return 0xff00ff00;
+		TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
+		int color = ta.getResourceId(0, R.color.black);
 		ta.recycle();
 		return color;
 	}

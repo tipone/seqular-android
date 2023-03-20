@@ -17,6 +17,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
+import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.catalog.CatalogInstance;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -44,7 +45,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
@@ -52,7 +52,7 @@ import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 
-abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInstance>{
+abstract class InstanceCatalogFragment extends RecyclerFragment<CatalogInstance> {
 	protected RecyclerView.Adapter adapter;
 	protected MergeRecyclerAdapter mergeAdapter;
 	protected CatalogInstance chosenInstance;
@@ -75,7 +75,7 @@ abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInsta
 	private static final double DUNBAR=Math.log(800);
 
 	public InstanceCatalogFragment(int layout, int perPage){
-		super(layout, perPage);
+	super(layout, perPage);
 	}
 
 	@Override
