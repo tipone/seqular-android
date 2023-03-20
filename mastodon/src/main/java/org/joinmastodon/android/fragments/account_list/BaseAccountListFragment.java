@@ -295,7 +295,6 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 
 			menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
 			menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getShortUsername()));
-			menu.findItem(R.id.manage_user_lists).setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername())).setVisible(relationship.following);
 			menu.findItem(R.id.soft_block).setVisible(relationship.followedBy && !relationship.following);
 			MenuItem hideBoosts=menu.findItem(R.id.hide_boosts);
 			MenuItem manageUserLists=menu.findItem(R.id.manage_user_lists);
@@ -309,7 +308,7 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 				manageUserLists.setVisible(true);
 			}else{
 				hideBoosts.setVisible(false);
-				manageUserLists.setVisible(true);
+				manageUserLists.setVisible(false);
 			}
 			menu.findItem(R.id.block_domain).setVisible(false);
 
