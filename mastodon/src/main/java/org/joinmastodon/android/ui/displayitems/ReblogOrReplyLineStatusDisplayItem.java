@@ -42,13 +42,13 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private View.OnClickListener handleClick;
 	boolean belowHeader, needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
-	String contentDescription;
+	String fullText;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
 		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, null);
 	}
 
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, String contentDescription) {
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, String fullText) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
@@ -59,7 +59,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
-		this.contentDescription = contentDescription;
+		this.fullText = fullText;
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -90,31 +90,23 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text, extraText;
 		private final View separator;
-		private int currentOrientation = -1;
+		private final ViewGroup parent;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
+			this.parent = parent;
 			text=findViewById(R.id.text);
 			extraText=findViewById(R.id.extra_text);
 			separator=findViewById(R.id.separator);
 			if (GlobalUserPreferences.replyLineAboveHeader && GlobalUserPreferences.compactReblogReplyLine) {
-				itemView.getViewTreeObserver().addOnPreDrawListener(() -> {
-					if (item == null) return true;
-					int orientation = ((LinearLayout) itemView).getOrientation();
-					if (orientation == currentOrientation) return true; // only run once
-					currentOrientation = orientation;
-					extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && orientation == LinearLayout.VERTICAL ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
-					separator.setVisibility(item.extra != null && orientation == LinearLayout.HORIZONTAL ? View.VISIBLE : View.GONE);
-					((LinearLayout) itemView).removeView(extraText);
-					if (orientation == LinearLayout.VERTICAL) ((LinearLayout) itemView).addView(extraText);
-					else ((LinearLayout) itemView).addView(extraText, 0);
-					return true;
+				parent.addOnLayoutChangeListener((v, l, t, right, b, ol, ot, oldRight, ob) -> {
+					if (right != oldRight) layoutLine();
 				});
 			}
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
-			if (item.contentDescription != null) text.setContentDescription(item.contentDescription);
+			if (item.fullText != null) text.setContentDescription(item.fullText);
 			text.setText(item.text);
 			text.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon, 0, item.iconEnd, 0);
 			text.setOnClickListener(item.handleClick);
@@ -146,6 +138,27 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			params.topMargin = item.belowHeader ? V.dp(-6) : 0;
 			itemView.setLayoutParams(params);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
+			layoutLine();
+		}
+
+		private void layoutLine() {
+			// layout line only if above header, compact and has extra
+			if (!GlobalUserPreferences.replyLineAboveHeader
+					|| !GlobalUserPreferences.compactReblogReplyLine
+					|| item.extra == null) return;
+			itemView.measure(
+					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
+					View.MeasureSpec.UNSPECIFIED);
+			boolean isVertical = ((LinearLayout) itemView).getOrientation() == LinearLayout.VERTICAL;
+			extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && isVertical ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
+			separator.setVisibility(item.extra != null && !isVertical ? View.VISIBLE : View.GONE);
+			((LinearLayout) itemView).removeView(extraText);
+			if (isVertical) ((LinearLayout) itemView).addView(extraText);
+			else ((LinearLayout) itemView).addView(extraText, 0);
+			text.setText(isVertical ? item.fullText : item.text);
+			if (item.extra != null) {
+				extraText.setText(isVertical ? item.extra.fullText : item.extra.text);
+			}
 		}
 
 		@Override
