@@ -6,7 +6,6 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.widget.LinearLayout;
 import android.widget.Button;
 import android.widget.ScrollView;
@@ -49,9 +48,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	private CharSequence parsedSpoilerText;
 	public boolean textSelectable;
 	public final Status status;
-	public boolean disableTranslate;
-	public boolean translated = false;
-	public TranslatedStatus translation = null;
+	public boolean disableTranslate, translationShown;
 	private AccountSession session;
 	public static final Pattern BOTTOM_TEXT_PATTERN = Pattern.compile("(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️)(?:\uD83D\uDC49\uD83D\uDC48(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️))*\uD83D\uDC49\uD83D\uDC48");
 
@@ -60,6 +57,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		this.text=text;
 		this.status=status;
 		this.disableTranslate=disableTranslate;
+		this.translationShown=status.translationShown;
 		emojiHelper.setText(text);
 		if(!TextUtils.isEmpty(status.spoilerText)){
 			parsedSpoilerText=HtmlParser.parseCustomEmoji(status.spoilerText, status.emojis);
@@ -67,6 +65,11 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerEmojiHelper.setText(parsedSpoilerText);
 		}
 		session = AccountSessionManager.getInstance().getAccount(parentFragment.getAccountID());
+	}
+
+	public void setTranslationShown(boolean translationShown) {
+		this.translationShown = translationShown;
+		status.translationShown = translationShown;
 	}
 
 	@Override
@@ -131,8 +134,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(TextStatusDisplayItem item){
-			text.setText(item.translated
-							? HtmlParser.parse(item.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
+			text.setText(item.translationShown
+							? HtmlParser.parse(item.status.translation.content, item.status.emojis, item.status.mentions, item.status.tags, item.parentFragment.getAccountID())
 							: item.text);
 			text.setTextIsSelectable(item.textSelectable);
 			if (item.textSelectable) {
@@ -184,18 +187,18 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 							!item.status.language.equalsIgnoreCase(Locale.getDefault().getLanguage())))
 					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
-			translateButton.setText(item.translated ? R.string.sk_translate_show_original : R.string.sk_translate_post);
-			translateInfo.setText(item.translated ? itemView.getResources().getString(R.string.sk_translated_using, bottomText != null ? "bottom-java" : item.translation.provider) : "");
+			translateButton.setText(item.translationShown ? R.string.sk_translate_show_original : R.string.sk_translate_post);
+			translateInfo.setText(item.translationShown ? itemView.getResources().getString(R.string.sk_translated_using, bottomText != null ? "bottom-java" : item.status.translation.provider) : "");
 			String finalBottomText = bottomText;
 			translateButton.setOnClickListener(v->{
-				if (item.translation == null) {
+				if (item.status.translation == null) {
 					if (finalBottomText != null) {
 						try {
-							item.translation = new TranslatedStatus();
-							item.translation.content = finalBottomText;
-							item.translated = true;
+							item.status.translation = new TranslatedStatus();
+							item.status.translation.content = finalBottomText;
+							item.setTranslationShown(true);
 						} catch (TranslationError err) {
-							item.translation = null;
+							item.status.translation = null;
 							Toast.makeText(itemView.getContext(), err.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
 						}
 						rebind();
@@ -207,8 +210,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					new TranslateStatus(item.status.id).setCallback(new Callback<>() {
 						@Override
 						public void onSuccess(TranslatedStatus translatedStatus) {
-							item.translation = translatedStatus;
-							item.translated = true;
+							item.status.translation = translatedStatus;
+							item.setTranslationShown(true);
 							if (item.parentFragment.getActivity() == null) return;
 							translateProgress.setVisibility(View.GONE);
 							translateButton.setClickable(true);
@@ -225,7 +228,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 						}
 					}).exec(item.parentFragment.getAccountID());
 				} else {
-					item.translated = !item.translated;
+					item.setTranslationShown(!item.translationShown);
 					rebind();
 				}
 			});
