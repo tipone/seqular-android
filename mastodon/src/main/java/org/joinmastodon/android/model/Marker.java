@@ -1,5 +1,7 @@
 package org.joinmastodon.android.model;
 
+import com.google.gson.annotations.SerializedName;
+
 import org.joinmastodon.android.api.AllFieldsAreRequired;
 
 import java.time.Instant;
@@ -17,5 +19,12 @@ public class Marker extends BaseModel{
 				", version="+version+
 				", updatedAt="+updatedAt+
 				'}';
+	}
+
+	public enum Type {
+		@SerializedName("home")
+		HOME,
+		@SerializedName("notifications")
+		NOTIFICATIONS
 	}
 }

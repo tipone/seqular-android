@@ -11,6 +11,7 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.model.Account;
@@ -145,7 +146,11 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						maxID=result.maxID;
 
 						if(offset==0 && !result.items.isEmpty()){
+							E.post(new AllNotificationsSeenEvent());
 							new SaveMarkers(null, result.items.get(0).id).exec(accountID);
+							AccountSessionManager.getInstance().getAccount(accountID).markers
+									.notifications.lastReadId = result.items.get(0).id;
+							AccountSessionManager.getInstance().writeAccountsFile();
 						}
 					}
 				});
