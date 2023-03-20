@@ -36,4 +36,5 @@
     <string name="mo_composer_behavior">Comportamiento de publicación</string>
     <string name="mo_miscellaneous_settings">Ajustes varios</string>
     <string name="mo_share_open_url">Abrir en la aplicación</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">Desactivar el doble toque para pasar de una pestaña a otra</string>
 </resources>
