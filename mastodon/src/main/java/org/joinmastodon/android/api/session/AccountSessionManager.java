@@ -271,6 +271,15 @@ public class AccountSessionManager{
 		}
 	}
 
+	private void preferencesFromSource(AccountSession session, Account account) {
+		if (account != null && account.source != null && session.preferences != null) {
+			if (account.source.privacy != null)
+				session.preferences.postingDefaultVisibility = account.source.privacy;
+			if (account.source.language != null)
+				session.preferences.postingDefaultLanguage = account.source.language;
+		}
+	}
+
 	private void updateSessionLocalInfo(AccountSession session){
 		new GetOwnAccount()
 				.setCallback(new Callback<>(){
@@ -278,19 +287,12 @@ public class AccountSessionManager{
 					public void onSuccess(Account result){
 						session.self=result;
 						session.infoLastUpdated=System.currentTimeMillis();
-						if(session.preferences != null && session.preferences.postingDefaultVisibility != null){
-							session.preferences.postingDefaultVisibility = result.source.privacy;
-						}
-						if(session.preferences != null && session.preferences.postingDefaultLanguage != null){
-							session.preferences.postingDefaultLanguage = result.source.language;
-						}
+						preferencesFromSource(session, result);
 						writeAccountsFile();
 					}
 
 					@Override
-					public void onError(ErrorResponse error){
-
-					}
+					public void onError(ErrorResponse error){}
 				})
 				.exec(session.getID());
 	}
@@ -300,16 +302,13 @@ public class AccountSessionManager{
 			@Override
 			public void onSuccess(Preferences preferences) {
 				session.preferences=preferences;
+				preferencesFromSource(session, session.self);
 			}
 
 			@Override
 			public void onError(ErrorResponse error) {
-				Preferences preferences = new Preferences();
-				if(session.self != null){
-					preferences.postingDefaultVisibility = session.self.source.privacy;
-					preferences.postingDefaultLanguage = session.self.source.language;
-				}
-				session.preferences = preferences;
+				session.preferences = new Preferences();
+				preferencesFromSource(session, session.self);
 			}
 		}).exec(session.getID());
 	}
