@@ -92,11 +92,7 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 				progressBg.setLevel(Math.round(10000f*item.votesFraction));
 				button.setBackground(progressBg);
 				itemView.setSelected(item.isMostVoted);
-				if(item.poll.ownVotes == null){
-					icon.setSelected(false);
-				}else{
-					icon.setSelected(item.poll.ownVotes.contains(item.poll.options.indexOf(item.option)));
-				}
+				icon.setSelected(item.poll.ownVotes != null && item.poll.ownVotes.contains(item.poll.options.indexOf(item.option)));
 				icon.setVisibility(item.poll.voted && item.poll.ownVotes.isEmpty() ? View.GONE : View.VISIBLE);
 				percent.setText(String.format(Locale.getDefault(), "%d%%", Math.round(item.votesFraction*100f)));
 			}else{
