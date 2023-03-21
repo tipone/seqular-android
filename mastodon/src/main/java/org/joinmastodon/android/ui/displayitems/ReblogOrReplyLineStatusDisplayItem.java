@@ -38,17 +38,17 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private StatusPrivacy visibility;
 	@DrawableRes
 	private int iconEnd;
-	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
+	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper(), fullTextEmojiHelper;
 	private View.OnClickListener handleClick;
 	boolean belowHeader, needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
-	String fullText;
+	CharSequence fullText;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
-		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, null);
+		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, text);
 	}
 
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, String fullText) {
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
@@ -59,7 +59,15 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
-		this.fullText = fullText;
+
+		if (fullText != null) {
+			fullTextEmojiHelper = new CustomEmojiHelper();
+			SpannableStringBuilder fullTextSsb = new SpannableStringBuilder(fullText);
+			HtmlParser.parseCustomEmoji(fullTextSsb, emojis);
+			this.fullText=fullTextSsb;
+			fullTextEmojiHelper.setText(fullTextSsb);
+		}
+
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
