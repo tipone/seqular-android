@@ -408,46 +408,4 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void onAllNotificationsSeen(AllNotificationsSeenEvent allNotificationsSeenEvent) {
 		setNotificationBadge(false);
 	}
-
-	public void updateNotificationBadge() {
-		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
-
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.pleroma != null)
-				.setCallback(new Callback<>() {
-					@Override
-					public void onSuccess(List<Notification> notifications) {
-						if (notifications.size() > 0) {
-							try {
-								long newestId = Long.parseLong(notifications.get(0).id);
-								long lastSeenId = Long.parseLong(session.markers.notifications.lastReadId);
-								setNotificationBadge(newestId > lastSeenId);
-							} catch (Exception ignored) {
-								setNotificationBadge(false);
-							}
-						}
-					}
-
-					@Override
-					public void onError(ErrorResponse error) {
-						setNotificationBadge(false);
-					}
-				}).exec(accountID);
-	}
-
-	public void setNotificationBadge(boolean badge) {
-		notificationTabIcon.setImageResource(badge
-				? R.drawable.ic_fluent_alert_28_selector_badged
-				: R.drawable.ic_fluent_alert_28_selector);
-	}
-
-	@Subscribe
-	public void onNotificationReceived(NotificationReceivedEvent notificationReceivedEvent) {
-		if (notificationReceivedEvent.account.equals(accountID)) setNotificationBadge(true);
-	}
-
-	@Subscribe
-	public void onAllNotificationsSeen(AllNotificationsSeenEvent allNotificationsSeenEvent) {
-		setNotificationBadge(false);
-	}
 }

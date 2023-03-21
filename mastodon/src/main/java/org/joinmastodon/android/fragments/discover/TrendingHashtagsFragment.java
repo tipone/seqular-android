@@ -22,6 +22,7 @@ import java.util.List;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.api.SimpleCallback;
+import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 

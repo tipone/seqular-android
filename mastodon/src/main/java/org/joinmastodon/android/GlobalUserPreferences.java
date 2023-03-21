@@ -49,6 +49,8 @@ public class GlobalUserPreferences{
 	public static boolean autoHideFab;
 	public static boolean defaultToUnlistedReplies;
 	public static boolean disableDoubleTapToSwipe;
+	public static boolean compactReblogReplyLine;
+	public static boolean replyLineAboveHeader;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -67,6 +69,7 @@ public class GlobalUserPreferences{
 	 * Pleroma
 	 */
 	public static String replyVisibility;
+
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -108,8 +111,10 @@ public class GlobalUserPreferences{
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
+		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
 		disableDoubleTapToSwipe=prefs.getBoolean("disableDoubleTapToSwipe", false);
+		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
@@ -164,6 +169,8 @@ public class GlobalUserPreferences{
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
 				.putBoolean("disableDoubleTapToSwipe", disableDoubleTapToSwipe)
+				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
+				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

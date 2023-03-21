@@ -184,8 +184,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
 							// todo: compare to mastodon locale instead (how do i query that?!)
-							!item.status.language.equalsIgnoreCase(Locale.getDefault().getLanguage())))
-					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
+							!item.status.language.equalsIgnoreCase(Locale.getDefault().getLanguage())));
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translationShown ? R.string.sk_translate_show_original : R.string.sk_translate_post);
 			translateInfo.setText(item.translationShown ? itemView.getResources().getString(R.string.sk_translated_using, bottomText != null ? "bottom-java" : item.status.translation.provider) : "");
@@ -207,17 +206,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					translateProgress.setVisibility(View.VISIBLE);
 					translateButton.setClickable(false);
 					translateButton.animate().alpha(0.5f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
-					new TranslateStatus(item.status.id).setCallback(new Callback<>() {
-						@Override
-						public void onSuccess(TranslatedStatus translatedStatus) {
-							item.status.translation = translatedStatus;
-							item.setTranslationShown(true);
-							if (item.parentFragment.getActivity() == null) return;
-							translateProgress.setVisibility(View.GONE);
-							translateButton.setClickable(true);
-							translateButton.animate().alpha(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(50).start();
-							rebind();
-						}
+
 					if(item.status.reloadWhenClicked){
 						UiUtils.lookupStatus(item.parentFragment.getContext(), item.status, item.parentFragment.getAccountID(), null, status1 -> {
 							new TranslateStatus(item.status.id).setCallback(new Callback<>() {

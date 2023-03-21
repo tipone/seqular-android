@@ -321,10 +321,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 //			GlobalUserPreferences.save();
 //			needAppRestart=true;
 //		}));
-		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
-		items.add(new SmallTextItem(getString(translationAvailable ?
-				R.string.sk_settings_translation_availability_note_available :
-				R.string.sk_settings_translation_availability_note_unavailable, instanceName)));
 
 		items.add(new HeaderItem(R.string.settings_notifications));
 		items.add(notificationPolicyItem=new NotificationPolicyItem());

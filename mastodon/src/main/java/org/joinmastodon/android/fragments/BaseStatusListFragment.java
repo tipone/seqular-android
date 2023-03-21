@@ -66,6 +66,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
+import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
