@@ -1380,6 +1380,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 	}
 
+	@SuppressLint("StringFormatInvalid")
 	private boolean addMediaAttachment(Uri uri, String description){
 		if(getMediaAttachmentsCount()==MAX_ATTACHMENTS){
 			showMediaAttachmentError(getResources().getQuantityString(R.plurals.cant_add_more_than_x_attachments, MAX_ATTACHMENTS, MAX_ATTACHMENTS));
