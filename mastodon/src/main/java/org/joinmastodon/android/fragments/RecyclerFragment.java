@@ -4,6 +4,8 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -25,7 +27,10 @@ public abstract class RecyclerFragment<T> extends BaseRecyclerFragment<T> {
 
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		Context ctx = getContext();
+		if (refreshLayout != null) setRefreshLayoutColors(refreshLayout);
+	}
+
+	public static void setRefreshLayoutColors(SwipeRefreshLayout l) {
 		List<Integer> colors = new ArrayList<>(Arrays.asList(
 				R.color.primary_600,
 				R.color.red_primary_600,
@@ -33,13 +38,13 @@ public abstract class RecyclerFragment<T> extends BaseRecyclerFragment<T> {
 				R.color.blue_primary_600,
 				R.color.purple_600
 		));
-		int primary = UiUtils.getThemeColorRes(ctx, R.attr.colorPrimary600);
+		int primary = UiUtils.getThemeColorRes(l.getContext(), R.attr.colorPrimary600);
 		if (!colors.contains(primary)) colors.add(0, primary);
 		int offset = colors.indexOf(primary);
 		int[] sorted = new int[colors.size()];
 		for (int i = 0; i < colors.size(); i++) {
 			sorted[i] = colors.get((i + offset) % colors.size());
 		}
-		refreshLayout.setColorSchemeResources(sorted);
+		l.setColorSchemeResources(sorted);
 	}
 }
