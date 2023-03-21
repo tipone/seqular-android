@@ -265,13 +265,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			return;
 		}
 
-		if(tab == R.id.tab_notifications){
-			notificationBadged=false;
-			GlobalUserPreferences.lastNotificationOpenedTime = System.currentTimeMillis();
-			GlobalUserPreferences.save();
-			setNotificationBadge();
-		}
-
 		if (newFragment instanceof DomainDisplay display) {
 			DomainManager.getInstance().setCurrentDomain(display.getDomain());
 		}
