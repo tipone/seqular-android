@@ -941,6 +941,8 @@ public class UiUtils{
 	//
 	// COPIED FROM https://github.com/tuskyapp/Tusky/blob/develop/app/src/main/java/com/keylesspalace/tusky/util/LinkHelper.kt
 	public static boolean looksLikeMastodonUrl(String urlString) {
+		if(urlString == null)
+			return false;
 		URI uri;
 		try {
 			uri = new URI(urlString);
