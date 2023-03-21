@@ -32,7 +32,7 @@ import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 
 public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
-	private CharSequence text, compactText;
+	private CharSequence text;
 	@DrawableRes
 	private int icon;
 	private StatusPrivacy visibility;
