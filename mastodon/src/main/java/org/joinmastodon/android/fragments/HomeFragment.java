@@ -323,7 +323,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	@Subscribe
 	public void onNotificationReceived(NotificationReceivedEvent notificationReceivedEvent) {
-		setNotificationBadge(true);
+		if (notificationReceivedEvent.account.equals(accountID)) setNotificationBadge(true);
 	}
 
 	@Subscribe
