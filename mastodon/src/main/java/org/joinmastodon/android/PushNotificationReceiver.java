@@ -85,7 +85,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 						}
 						String accountID=account.getID();
 						PushNotification pn=AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().decryptNotification(k, p, s);
-						E.post(new NotificationReceivedEvent(pn.notificationId+""));
+						E.post(new NotificationReceivedEvent(accountID, pn.notificationId+""));
 						new GetNotificationByID(pn.notificationId+"")
 								.setCallback(new Callback<>(){
 									@Override
