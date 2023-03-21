@@ -128,7 +128,7 @@ public class CacheController{
 		});
 	}
 
-	public void getNotifications(String maxID, int count, boolean onlyMentions, boolean onlyPosts, boolean forceReload, Callback<PaginatedResponse<List<Notification>>> callback){
+	public void getNotifications(String maxID, int count, boolean onlyMentions, boolean onlyPosts, boolean forceReload, Callback<CacheablePaginatedResponse<List<Notification>>> callback){
 		cancelDelayedClose();
 		databaseThread.postRunnable(()->{
 			try{
@@ -156,7 +156,7 @@ public class CacheController{
 								result.add(ntf);
 							}while(cursor.moveToNext());
 							String _newMaxID=newMaxID;
-							uiHandler.post(()->callback.onSuccess(new PaginatedResponse<>(result, _newMaxID)));
+							uiHandler.post(()->callback.onSuccess(new CacheablePaginatedResponse<>(result, _newMaxID, true)));
 							return;
 						}
 					}catch(IOException x){
@@ -168,7 +168,7 @@ public class CacheController{
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Notification> result){
-								callback.onSuccess(new PaginatedResponse<>(result.stream().filter(ntf->{
+								callback.onSuccess(new CacheablePaginatedResponse<>(result.stream().filter(ntf->{
 									if(ntf.status!=null){
 										for(Filter filter:filters){
 											if(filter.matches(ntf.status)){
@@ -177,7 +177,7 @@ public class CacheController{
 										}
 									}
 									return true;
-								}).collect(Collectors.toList()), result.isEmpty() ? null : result.get(result.size()-1).id));
+								}).collect(Collectors.toList()), result.isEmpty() ? null : result.get(result.size()-1).id, false));
 								putNotifications(result, onlyMentions, onlyPosts, maxID==null);
 							}
 

@@ -15,6 +15,7 @@ import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
@@ -128,7 +129,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 				.getAccount(accountID).getCacheController()
 				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, onlyPosts, refreshing, new SimpleCallback<>(this){
 					@Override
-					public void onSuccess(PaginatedResponse<List<Notification>> result){
+					public void onSuccess(CacheablePaginatedResponse<List<Notification>> result){
 						if (getActivity() == null) return;
 						if(refreshing)
 							relationships.clear();
@@ -140,7 +141,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						loadRelationships(needRelationships);
 						maxID=result.maxID;
 
-						if(offset==0 && !result.items.isEmpty()){
+						if(offset==0 && !result.items.isEmpty() && !result.isFromCache()){
 							E.post(new AllNotificationsSeenEvent());
 							new SaveMarkers(null, result.items.get(0).id).exec(accountID);
 							AccountSessionManager.getInstance().getAccount(accountID).markers
