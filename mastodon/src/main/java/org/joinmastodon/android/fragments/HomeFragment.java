@@ -298,9 +298,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 							try {
 								long newestId = Long.parseLong(notifications.get(0).id);
 								long lastSeenId = Long.parseLong(session.markers.notifications.lastReadId);
-								System.out.println("NEWEST: " + newestId);
-								System.out.println("LAST SEEN: " + lastSeenId);
-
 								setNotificationBadge(newestId > lastSeenId);
 							} catch (Exception ignored) {
 								setNotificationBadge(false);
