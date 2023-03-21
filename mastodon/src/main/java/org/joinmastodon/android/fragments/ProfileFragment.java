@@ -525,6 +525,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			toolbarTitleView.setTranslationY(titleTransY);
 			toolbarSubtitleView.setTranslationY(titleTransY);
 		}
+		RecyclerFragment.setRefreshLayoutColors(refreshLayout);
 	}
 
 	@Override
@@ -652,10 +653,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		fields.clear();
 
-		AccountField joined=new AccountField();
-		joined.parsedName=joined.name=getString(R.string.profile_joined);
-		joined.parsedValue=joined.value=DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(LocalDateTime.ofInstant(account.createdAt, ZoneId.systemDefault()));
-		fields.add(joined);
+		if (account.createdAt != null) {
+			AccountField joined=new AccountField();
+			joined.parsedName=joined.name=getString(R.string.profile_joined);
+			joined.parsedValue=joined.value=DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM).format(LocalDateTime.ofInstant(account.createdAt, ZoneId.systemDefault()));
+			fields.add(joined);
+		}
 
 		for(AccountField field:account.fields){
 			field.parsedValue=ssb=HtmlParser.parse(field.value, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
@@ -1253,7 +1256,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
 			FrameLayout view=tabViews[viewType];
-			((ViewGroup)view.getParent()).removeView(view);
+			if (view.getParent() != null) ((ViewGroup)view.getParent()).removeView(view);
 			view.setVisibility(View.VISIBLE);
 			view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 			return new SimpleViewHolder(view);

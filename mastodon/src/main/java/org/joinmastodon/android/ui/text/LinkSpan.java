@@ -63,6 +63,10 @@ public class LinkSpan extends CharacterStyle {
 		return link;
 	}
 
+	public String getText() {
+		return text;
+	}
+
 	public Type getType(){
 		return type;
 	}

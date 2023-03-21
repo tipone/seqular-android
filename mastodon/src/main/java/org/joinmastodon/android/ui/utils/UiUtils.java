@@ -344,15 +344,24 @@ public class UiUtils{
 		}
 	}
 
-	public static int getThemeColor(Context context, @AttrRes int attr){
-		TypedArray ta=context.obtainStyledAttributes(new int[]{attr});
-		int color=ta.getColor(0, 0xff00ff00);
+	public static int getThemeColor(Context context, @AttrRes int attr) {
+		if (context == null) return 0xff00ff00;
+		TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
+		int color = ta.getColor(0, 0xff00ff00);
 		ta.recycle();
 		return color;
 	}
 
-	public static void openProfileByID(Context context, String selfID, String id){
-		Bundle args=new Bundle();
+	public static int getThemeColorRes(Context context, @AttrRes int attr) {
+		if (context == null) return 0xff00ff00;
+		TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
+		int color = ta.getResourceId(0, R.color.black);
+		ta.recycle();
+		return color;
+	}
+
+	public static void openProfileByID(Context context, String selfID, String id) {
+		Bundle args = new Bundle();
 		args.putString("account", selfID);
 		args.putString("profileAccountID", id);
 		Nav.go((Activity)context, ProfileFragment.class, args);
@@ -754,7 +763,7 @@ public class UiUtils{
 						public void onSuccess(Relationship result){
 							resultCallback.accept(result);
 							progressCallback.accept(false);
-							if(!result.following){
+							if(!result.following && !result.requested){
 								E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
 							}
 						}

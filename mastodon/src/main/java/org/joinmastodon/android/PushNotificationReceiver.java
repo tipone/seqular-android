@@ -29,6 +29,8 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.NotificationAction;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushNotification;
+import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
@@ -56,6 +58,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 	@Override
 	public void onReceive(Context context, Intent intent){
+		UiUtils.setUserPreferredTheme(context);
 		if(BuildConfig.DEBUG){
 			Log.e(TAG, "received: "+intent);
 			Bundle extras=intent.getExtras();

@@ -50,12 +50,11 @@ import java.util.Map;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class EditTimelinesFragment extends BaseRecyclerFragment<TimelineDefinition> implements ScrollableToTop {
+public class EditTimelinesFragment extends RecyclerFragment<TimelineDefinition> implements ScrollableToTop {
     private String accountID;
     private TimelinesAdapter adapter;
     private final ItemTouchHelper itemTouchHelper;

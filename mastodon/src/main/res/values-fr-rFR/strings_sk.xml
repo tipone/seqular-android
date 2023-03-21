@@ -263,4 +263,5 @@
     <string name="sk_follow_as">Suivre depuis un autre compte</string>
     <string name="sk_followed_as">Suivi depuis %s</string>
     <string name="sk_settings_hide_fab">Masquer automatiquement le bouton Composer</string>
+    <string name="sk_in_reply">En réponse</string>
 </resources>

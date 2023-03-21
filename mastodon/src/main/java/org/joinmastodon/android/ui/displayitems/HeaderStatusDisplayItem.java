@@ -1,8 +1,12 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Outline;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -270,7 +274,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 							progress.dismiss();
 					}, rel->{
 						relationship=rel;
-						Toast.makeText(activity, activity.getString(rel.following ? R.string.followed_user : R.string.unfollowed_user, account.getShortUsername()), Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, activity.getString(rel.following ? R.string.followed_user : rel.requested ? R.string.following_user_requested : R.string.unfollowed_user, account.getDisplayUsername()), Toast.LENGTH_SHORT).show();
 					});
 				}else if(id==R.id.block_domain){
 					UiUtils.confirmToggleBlockDomain(activity, item.parentFragment.getAccountID(), account.getDomain(), relationship!=null && relationship.domainBlocking, ()->{});
@@ -497,6 +501,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			}
 
 			Account account=item.user;
+			String username = account.getShortUsername();
 			boolean isOwnPost=AccountSessionManager.getInstance().isSelf(item.parentFragment.getAccountID(), account);
 			boolean isPostScheduled=item.scheduledStatus!=null;
 			menu.findItem(R.id.open_with_account).setVisible(!isPostScheduled && hasMultipleAccounts);
@@ -532,14 +537,15 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				manageUserLists.setVisible(false);
 			}else{
 				mute.setVisible(true);
-				block.setVisible(true);
+				// hiding when following to keep menu item count equal (trading it for user lists)
+				block.setVisible(relationship == null || !relationship.following);
 				report.setVisible(true);
 				follow.setVisible(relationship==null || relationship.following || (!relationship.blocking && !relationship.blockedBy && !relationship.domainBlocking && !relationship.muting));
-				mute.setTitle(item.parentFragment.getString(relationship!=null && relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+				mute.setTitle(item.parentFragment.getString(relationship!=null && relationship.muting ? R.string.unmute_user : R.string.mute_user, username));
 				mute.setIcon(relationship!=null && relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), mute);
-				block.setTitle(item.parentFragment.getString(relationship!=null && relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
-				report.setTitle(item.parentFragment.getString(R.string.report_user, account.getShortUsername()));
+				block.setTitle(item.parentFragment.getString(relationship!=null && relationship.blocking ? R.string.unblock_user : R.string.block_user, username));
+				report.setTitle(item.parentFragment.getString(R.string.report_user, username));
 				// disabled in megalodon. domain blocks from a post clutters the context menu and looks out of place
 //				if(!account.isLocal()){
 //					blockDomain.setVisible(true);
@@ -548,11 +554,52 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					blockDomain.setVisible(false);
 //				}
 				boolean following = relationship!=null && relationship.following;
-				follow.setTitle(item.parentFragment.getString(following ? R.string.unfollow_user : R.string.follow_user, account.getShortUsername()));
+				follow.setTitle(item.parentFragment.getString(following ? R.string.unfollow_user : R.string.follow_user, username));
 				follow.setIcon(following ? R.drawable.ic_fluent_person_delete_24_regular : R.drawable.ic_fluent_person_add_24_regular);
 				manageUserLists.setVisible(relationship != null && relationship.following);
-				manageUserLists.setTitle(item.parentFragment.getString(R.string.sk_lists_with_user, account.getShortUsername()));
+				manageUserLists.setTitle(item.parentFragment.getString(R.string.sk_lists_with_user, username));
 				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), follow);
+			}
+
+			workaroundChangingMenuItemWidths(menu, username);
+		}
+
+		// ugliest piece of code you'll see in a while: i measure the menu items' text widths to
+		// determine the biggest one, because it's probably not being displayed at first
+		// (before the relationship loaded). i take the largest one's size and add a space to the
+		// last item ("open in browser") until it takes up as much space as the largest item.
+		// goal: no more ugly ellipsis after the relationship loads in when opening the context menu
+		// of a post
+		private void workaroundChangingMenuItemWidths(Menu menu, String username) {
+			String openInBrowserText = item.parentFragment.getString(R.string.open_in_browser);
+			if (relationship == null) {
+				float largestWidth = 0;
+				Paint paint = new Paint();
+				paint.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+				String[] otherStrings = new String[] {
+						item.parentFragment.getString(R.string.unfollow_user, username),
+						item.parentFragment.getString(R.string.unblock_user, username),
+						item.parentFragment.getString(R.string.unmute_user, username),
+						item.parentFragment.getString(R.string.sk_lists_with_user, username),
+				};
+				for (int i = 0; i < menu.size(); i++) {
+					MenuItem item = menu.getItem(i);
+					if (item.getItemId() == R.id.open_in_browser || !item.isVisible()) continue;
+					float width = paint.measureText(menu.getItem(i).getTitle().toString());
+					if (width > largestWidth) largestWidth = width;
+				}
+				for (String str : otherStrings) {
+					float width = paint.measureText(str);
+					if (width > largestWidth) largestWidth = width;
+				}
+				float textWidth = paint.measureText(openInBrowserText);
+				float missingWidth = Math.max(0, largestWidth - textWidth);
+				float singleSpaceWidth = paint.measureText(" ");
+				int howManySpaces = (int) Math.ceil(missingWidth / singleSpaceWidth);
+				String enlargedText = openInBrowserText + " ".repeat(howManySpaces);
+				menu.findItem(R.id.open_in_browser).setTitle(enlargedText);
+			} else {
+				menu.findItem(R.id.open_in_browser).setTitle(openInBrowserText);
 			}
 		}
 	}

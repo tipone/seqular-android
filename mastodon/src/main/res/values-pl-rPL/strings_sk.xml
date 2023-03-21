@@ -139,7 +139,7 @@
     <string name="sk_settings_single_notification">Pokazuj tylko jedną notyfikację</string>
     <string name="sk_list_replies_policy_none">nikt</string>
     <string name="sk_delete_list">Usuń listę</string>
-    <string name="sk_delete_list_confirm">Czy jesteś pewien że chcesz usunąć tą listę\?</string>
+    <string name="sk_delete_list_confirm">Czy jesteś pewien że chcesz usunąć listę “%s”\?</string>
     <string name="sk_edit_list_title">Edytuj listę</string>
     <string name="sk_your_lists">Twoje listy</string>
     <string name="sk_recent_searches_placeholder">Wpisz coś, aby rozpocząć wyszukiwanie</string>
@@ -245,7 +245,7 @@
     <string name="sk_reported">zareportowano</string>
     <string name="sk_sign_ups">Rejestrujący się użytkownicy</string>
     <string name="sk_new_reports">Nowe raporty</string>
-    <string name="sk_settings_show_new_posts_button">Przycisk \"Pokaż nowe wpisy\"</string>
+    <string name="sk_settings_see_new_posts_button">Przycisk \"Pokaż nowe wpisy\"</string>
     <string name="sk_instance_features">Funkcje instancji</string>
     <string name="sk_settings_local_only_explanation">Twoja instancja domowa musi wspierać publikowanie w trybie lokalnym. Większość zmodyfikowanych wersji Mastodona to wspiera, ale podstawowy Mastodon nie.</string>
     <string name="sk_settings_server_version">Wersja serwera: %s</string>
@@ -261,4 +261,5 @@
     <string name="sk_followed_as">Obserwowane z %s</string>
     <string name="sk_follow_as">Obserwuj z innego konta</string>
     <string name="sk_settings_hide_fab">Automatycznie ukrywaj przycisk tworzenia nowego wpisu</string>
+    <string name="sk_in_reply">W odpowiedzi</string>
 </resources>

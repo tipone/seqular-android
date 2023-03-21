@@ -23,7 +23,6 @@ import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.displayitems.AudioStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;

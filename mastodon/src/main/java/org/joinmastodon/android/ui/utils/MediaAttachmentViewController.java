@@ -18,7 +18,8 @@ public class MediaAttachmentViewController{
 	public final View view;
 	public final MediaGridStatusDisplayItem.GridItemType type;
 	public final ImageView photo;
-	public final View altButton;
+	public final View altButton, noAltButton, btnsWrap;
+	public static int[] altWrapPadding = null;
 	private BlurhashCrossfadeDrawable crossfadeDrawable=new BlurhashCrossfadeDrawable();
 	private final Context context;
 	private boolean didClear;
@@ -32,8 +33,13 @@ public class MediaAttachmentViewController{
 			}, null);
 		photo=view.findViewById(R.id.photo);
 		altButton=view.findViewById(R.id.alt_button);
+		noAltButton=view.findViewById(R.id.no_alt_button);
+		btnsWrap=view.findViewById(R.id.alt_badges);
 		this.type=type;
 		this.context=context;
+		if (altWrapPadding == null) {
+			altWrapPadding = new int[] { btnsWrap.getPaddingLeft(), btnsWrap.getPaddingTop(), btnsWrap.getPaddingRight(), btnsWrap.getPaddingBottom() };
+		}
 	}
 
 	public void bind(Attachment attachment, Status status){
@@ -43,13 +49,12 @@ public class MediaAttachmentViewController{
 		crossfadeDrawable.setCrossfadeAlpha(status.spoilerRevealed ? 0f : 1f);
 		photo.setImageDrawable(null);
 		photo.setImageDrawable(crossfadeDrawable);
-		photo.setContentDescription(TextUtils.isEmpty(attachment.description) ? context.getString(R.string.media_no_description) : attachment.description);
-		if(altButton!=null){
-			if(GlobalUserPreferences.showAltIndicator){
-				altButton.setVisibility(TextUtils.isEmpty(attachment.description) ? View.GONE : View.VISIBLE);
-			}else{
-				altButton.setVisibility(View.GONE);
-			}
+		boolean hasAltText = !TextUtils.isEmpty(attachment.description);
+		photo.setContentDescription(!hasAltText ? context.getString(R.string.media_no_description) : attachment.description);
+		if(btnsWrap!=null){
+			btnsWrap.setVisibility(View.VISIBLE);
+			altButton.setVisibility(hasAltText && GlobalUserPreferences.showAltIndicator ? View.VISIBLE : View.GONE);
+			noAltButton.setVisibility(!hasAltText && GlobalUserPreferences.showNoAltIndicator ? View.VISIBLE : View.GONE);
 		}
 		didClear=false;
 	}

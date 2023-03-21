@@ -66,7 +66,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -537,7 +536,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			holder.getItem().status.textExpandable = expandable;
 			HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
 			if (header != null) header.rebind();
-			holder.rebind();
 		}
 	}
 
@@ -713,6 +711,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> getAttachmentViewsPool(){
 		return attachmentViewsPool;
 	}
+
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
 

@@ -359,7 +359,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		scheduleTimeBtn=view.findViewById(R.id.scheduled_time_btn);
 		sensitiveIcon=view.findViewById(R.id.sensitive_icon);
 		sensitiveItem=view.findViewById(R.id.sensitive_item);
-		replyText=view.findViewById(R.id.reply_text);
+		replyText=view.findViewById(GlobalUserPreferences.replyLineAboveHeader ? R.id.reply_text : R.id.reply_text_below);
+		view.findViewById(GlobalUserPreferences.replyLineAboveHeader ? R.id.reply_text_below : R.id.reply_text)
+				.setVisibility(View.GONE);
 
 		if (isPhotoPickerAvailable()) {
 			PopupMenu attachPopup = new PopupMenu(getContext(), mediaBtn);
@@ -695,8 +697,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			moreBtn.setImageDrawable(visibilityIcon);
 			moreBtn.setBackground(null);
 			TextView timestamp = view.findViewById(R.id.timestamp);
-			if (status.editedAt==null) timestamp.setText(UiUtils.formatRelativeTimestamp(getContext(), status.createdAt));
-			else timestamp.setText(getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(getContext(), status.editedAt)));
+			if (status.editedAt!=null) timestamp.setText(getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(getContext(), status.editedAt)));
+			else if (status.createdAt!=null) timestamp.setText(UiUtils.formatRelativeTimestamp(getContext(), status.createdAt));
+			else timestamp.setText("");
 			if (status.spoilerText != null && !status.spoilerText.isBlank()) {
 				view.findViewById(R.id.spoiler_header).setVisibility(View.VISIBLE);
 				((TextView) view.findViewById(R.id.spoiler_title_inline)).setText(status.spoilerText);
@@ -1179,7 +1182,9 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					}else{
 						E.post(new StatusUpdatedEvent(result));
 					}
-					Nav.finish(ComposeFragment.this);
+					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !isStateSaved()) {
+						Nav.finish(ComposeFragment.this);
+					}
 					if (getArguments().getBoolean("navigateToStatus", false)) {
 						Bundle args=new Bundle();
 						args.putString("account", accountID);

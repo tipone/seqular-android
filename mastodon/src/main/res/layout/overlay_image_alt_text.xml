@@ -5,22 +5,29 @@
 	android:layout_width="wrap_content"
 	android:layout_height="wrap_content"
 	android:layout_gravity="start|bottom"
-	android:layout_marginLeft="16dp"
-	android:layout_marginRight="16dp"
-	android:layout_marginTop="8dp"
-	android:layout_marginBottom="8dp"
+	android:layout_margin="12dp"
 	android:importantForAccessibility="noHideDescendants"
 	android:background="@drawable/bg_image_alt_overlay">
 
+	<ImageView
+		android:id="@+id/no_alt_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:padding="4dp"
+		android:src="@drawable/ic_fluent_important_20_filled"
+		android:tint="?colorGray25" />
+
 	<TextView
 		android:id="@+id/alt_button"
-		android:layout_width="40dp"
-		android:layout_height="22dp"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
 		android:textAppearance="@style/m3_label_large"
-		android:textColor="#FFF"
+		android:textColor="?colorGray25"
 		android:gravity="center"
 		android:includeFontPadding="false"
-		android:text="ALT"/>
+		android:paddingHorizontal="5dp"
+		android:paddingVertical="1dp"
+		android:text="@string/sk_alt_button"/>
 
 	<ImageButton
 		android:id="@+id/alt_text_close"
@@ -29,12 +36,13 @@
 		android:layout_gravity="end|top"
 		android:src="@drawable/ic_baseline_close_24"
 		android:tint="#FFF"
-		android:background="?android:selectableItemBackgroundBorderless"/>
+		android:background="?android:actionBarItemBackground"/>
 
 	<org.joinmastodon.android.ui.views.NestableScrollView
 		android:id="@+id/alt_text_scroller"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
 		android:layout_marginEnd="40dp">
 
 		<LinearLayout
@@ -50,6 +58,17 @@
 				android:textAppearance="@style/m3_body_medium"
 				android:textColor="#FFF"
 				tools:text="Alt text goes here"/>
+
+			<TextView
+				android:id="@+id/no_alt_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginVertical="8dp"
+				android:layout_marginEnd="8dp"
+				android:layout_marginStart="14dp"
+				android:textAppearance="@style/m3_label_large"
+				android:textColor="?colorGray25"
+				android:text="@string/sk_no_alt_text"/>
 
 		</LinearLayout>
 

@@ -1,18 +1,23 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import static org.joinmastodon.android.ui.utils.MediaAttachmentViewController.altWrapPadding;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Attachment;
@@ -85,9 +90,10 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 
 		private final FrameLayout altTextWrapper;
 		private final TextView altTextButton;
+		private final ImageView noAltTextButton;
 		private final View altTextScroller;
 		private final ImageButton altTextClose;
-		private final TextView altText;
+		private final TextView altText, noAltText;
 
 		private int altTextIndex=-1;
 		private Animator altTextAnimator;
@@ -101,9 +107,11 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			activity.getLayoutInflater().inflate(R.layout.overlay_image_alt_text, wrapper);
 			altTextWrapper=findViewById(R.id.alt_text_wrapper);
 			altTextButton=findViewById(R.id.alt_button);
+			noAltTextButton=findViewById(R.id.no_alt_button);
 			altTextScroller=findViewById(R.id.alt_text_scroller);
 			altTextClose=findViewById(R.id.alt_text_close);
 			altText=findViewById(R.id.alt_text);
+			noAltText=findViewById(R.id.no_alt_text);
 			altTextClose.setOnClickListener(this::onAltTextCloseClick);
 		}
 
@@ -133,15 +141,17 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 				layout.addView(c.view);
 				c.view.setOnClickListener(clickListener);
 				c.view.setTag(i);
-				if(c.altButton!=null){
-					c.altButton.setOnClickListener(altTextClickListener);
-					c.altButton.setTag(i);
-					c.altButton.setAlpha(1f);
+				if(c.btnsWrap!=null){
+					c.btnsWrap.setOnClickListener(altTextClickListener);
+					c.btnsWrap.setTag(i);
+					c.btnsWrap.setAlpha(1f);
 				}
 				controllers.add(c);
 				c.bind(att, item.status);
 				i++;
 			}
+			altTextButton.setVisibility(View.VISIBLE);
+			noAltTextButton.setVisibility(View.VISIBLE);
 			altTextWrapper.setVisibility(View.GONE);
 			altTextIndex=-1;
 		}
@@ -172,8 +182,14 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			int index=(Integer)v.getTag();
 			altTextIndex=index;
 			Attachment att=item.attachments.get(index);
+			boolean hasAltText = !TextUtils.isEmpty(att.description);
+			altTextButton.setVisibility(hasAltText && GlobalUserPreferences.showAltIndicator ? View.VISIBLE : View.GONE);
+			noAltTextButton.setVisibility(!hasAltText && GlobalUserPreferences.showNoAltIndicator ? View.VISIBLE : View.GONE);
+			altText.setVisibility(hasAltText && GlobalUserPreferences.showAltIndicator ? View.VISIBLE : View.GONE);
+			noAltText.setVisibility(!hasAltText && GlobalUserPreferences.showNoAltIndicator ? View.VISIBLE : View.GONE);
 			altText.setText(att.description);
 			altTextWrapper.setVisibility(View.VISIBLE);
+			altTextWrapper.setBackgroundResource(hasAltText ? R.drawable.bg_image_alt_overlay : R.drawable.bg_image_no_alt_overlay);
 			altTextWrapper.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener(){
 				@Override
 				public boolean onPreDraw(){
@@ -188,18 +204,19 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 
 					ArrayList<Animator> anims=new ArrayList<>();
 					anims.add(ObjectAnimator.ofFloat(altTextButton, View.ALPHA, 1, 0));
+					anims.add(ObjectAnimator.ofFloat(noAltTextButton, View.ALPHA, 1, 0));
 					anims.add(ObjectAnimator.ofFloat(altTextScroller, View.ALPHA, 0, 1));
 					anims.add(ObjectAnimator.ofFloat(altTextClose, View.ALPHA, 0, 1));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL, altTextWrapper.getLeft()));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT, altTextWrapper.getTop()));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+v.getWidth(), altTextWrapper.getRight()));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+v.getHeight(), altTextWrapper.getBottom()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL+altWrapPadding[0], altTextWrapper.getLeft()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT+altWrapPadding[1], altTextWrapper.getTop()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+v.getWidth()-altWrapPadding[2], altTextWrapper.getRight()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+v.getHeight()-altWrapPadding[3], altTextWrapper.getBottom()));
 					for(Animator a:anims)
 						a.setDuration(300);
 
 					for(MediaAttachmentViewController c:controllers){
-						if(c.altButton!=null && c.altButton!=v){
-							anims.add(ObjectAnimator.ofFloat(c.altButton, View.ALPHA, 1, 0).setDuration(150));
+						if(c.btnsWrap!=null && c.btnsWrap!=v){
+							anims.add(ObjectAnimator.ofFloat(c.btnsWrap, View.ALPHA, 1, 0).setDuration(150));
 						}
 					}
 
@@ -211,8 +228,8 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 						public void onAnimationEnd(Animator animation){
 							altTextAnimator=null;
 							for(MediaAttachmentViewController c:controllers){
-								if(c.altButton!=null){
-									c.altButton.setVisibility(View.INVISIBLE);
+								if(c.btnsWrap!=null){
+									c.btnsWrap.setVisibility(View.INVISIBLE);
 								}
 							}
 						}
@@ -229,10 +246,11 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			if(altTextAnimator!=null)
 				altTextAnimator.cancel();
 
-			View btn=controllers.get(altTextIndex).altButton;
+			View btn=controllers.get(altTextIndex).btnsWrap;
 			for(MediaAttachmentViewController c:controllers){
-				if(c.altButton!=null && c.altButton!=btn)
-					 c.altButton.setVisibility(View.VISIBLE);
+				if(c.btnsWrap!=null && c.btnsWrap!=btn) {
+					c.btnsWrap.setVisibility(View.VISIBLE);
+				}
 			}
 
 			int[] loc={0, 0};
@@ -244,19 +262,20 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 
 			ArrayList<Animator> anims=new ArrayList<>();
 			anims.add(ObjectAnimator.ofFloat(altTextButton, View.ALPHA, 1));
+			anims.add(ObjectAnimator.ofFloat(noAltTextButton, View.ALPHA, 1));
 			anims.add(ObjectAnimator.ofFloat(altTextScroller, View.ALPHA, 0));
 			anims.add(ObjectAnimator.ofFloat(altTextClose, View.ALPHA, 0));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+btn.getWidth()));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+btn.getHeight()));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL+altWrapPadding[0]));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT+altWrapPadding[1]));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+btn.getWidth()-altWrapPadding[2]));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+btn.getHeight()-altWrapPadding[3]));
 			for(Animator a:anims)
 				a.setDuration(300);
 
 			for(MediaAttachmentViewController c:controllers){
-				if(c.altButton!=null && c.altButton!=btn){
-					anims.add(ObjectAnimator.ofFloat(c.altButton, View.ALPHA, 1).setDuration(150));
-				}
+//				if(c.btnsWrap!=null && c.btnsWrap!=btn){
+					anims.add(ObjectAnimator.ofFloat(c.btnsWrap, View.ALPHA, 1).setDuration(150));
+//				}
 			}
 
 			AnimatorSet set=new AnimatorSet();

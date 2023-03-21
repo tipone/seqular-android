@@ -261,4 +261,10 @@
     <string name="sk_followed_as">Mit %s gefolgt</string>
     <string name="sk_settings_hide_fab">Verfassen-Button automatisch ausblenden</string>
     <string name="sk_follow_as">Mit anderem Account folgen</string>
+    <string name="sk_in_reply">Als Antwort</string>
+    <string name="sk_settings_reply_visibility">Antwort-Sichtbarkeit</string>
+    <string name="sk_settings_reply_visibility_all">Alle Antworten</string>
+    <string name="sk_settings_reply_visibility_following">Antworten auf Follows</string>
+    <string name="sk_settings_reply_visibility_self">Antworten an mich</string>
+    <string name="sk_quoting_user">Zitiere %s</string>
 </resources>

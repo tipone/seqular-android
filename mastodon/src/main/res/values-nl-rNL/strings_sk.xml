@@ -248,4 +248,7 @@
     <string name="sk_settings_collapse_long_posts">Lange berichten inklappen</string>
     <string name="sk_unfinished_attachments_message">Enkele bijlagen zijn nog niet klaar met uploaden.</string>
     <string name="sk_compose_no_draft">Niet opslaan als concept</string>
+    <string name="sk_settings_hide_interaction">Verberg interactie knoppen</string>
+    <string name="sk_follow_as">Volgen met ander account</string>
+    <string name="sk_followed_as">Gevolgd met %s</string>
 </resources>

@@ -262,4 +262,5 @@
     <string name="sk_follow_as">Підписатися з іншого облікового запису</string>
     <string name="sk_followed_as">Відстежується з %s</string>
     <string name="sk_settings_hide_fab">Автоматично ховати кнопку компонування</string>
+    <string name="sk_in_reply">У відповідь</string>
 </resources>

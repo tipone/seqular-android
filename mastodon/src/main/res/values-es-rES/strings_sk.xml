@@ -252,14 +252,15 @@
     <string name="sk_notify_poll_results">Resultado de encuestas</string>
     <string name="sk_filtered">Filtrado: %s</string>
     <string name="sk_expand">Ampliar</string>
-    <string name="sk_collapse">Reducir</string>
-    <string name="sk_settings_collapse_long_posts">Acortar publicaciones largas</string>
+    <string name="sk_collapse">Minimizar</string>
+    <string name="sk_settings_collapse_long_posts">Minimizar publicaciones largas</string>
     <string name="sk_unfinished_attachments">¿Corregir adjuntos\?</string>
     <string name="sk_unfinished_attachments_message">Algunos adjuntos no han terminado de subirse.</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Añadir \"re:\" a respuestas a Advertencias de Contenido</string>
     <string name="sk_spectator_mode">Modo espectador</string>
-    <string name="sk_settings_hide_interaction">Ocultar los botones interactivos</string>
+    <string name="sk_settings_hide_interaction">Ocultar los botones de interacción</string>
     <string name="sk_follow_as">Seguir desde otra cuenta</string>
-    <string name="sk_followed_as">Seguido de %s</string>
+    <string name="sk_followed_as">Seguido desde %s</string>
     <string name="sk_settings_hide_fab">Ocultar automáticamente el botón Redactar</string>
+    <string name="sk_in_reply">Respondiendo a</string>
 </resources>

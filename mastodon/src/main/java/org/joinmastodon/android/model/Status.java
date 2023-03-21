@@ -1,5 +1,14 @@
 package org.joinmastodon.android.model;
 
+import static org.joinmastodon.android.api.MastodonAPIController.gson;
+import static org.joinmastodon.android.api.MastodonAPIController.gsonWithoutDeserializer;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
@@ -7,6 +16,7 @@ import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
 
+import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.List;
 
@@ -16,7 +26,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public String id;
 	@RequiredField
 	public String uri;
-	@RequiredField
+//	@RequiredField // sometimes null on calckey
 	public Instant createdAt;
 	@RequiredField
 	public Account account;
@@ -58,12 +68,14 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public boolean bookmarked;
 	public boolean pinned;
 
-	public Status quote;
+	public Status quote; // can be boolean in calckey
 
 	public transient boolean filterRevealed;
 	public transient boolean spoilerRevealed;
 	public transient boolean textExpanded, textExpandable;
 	public transient boolean hasGapAfter;
+	public transient TranslatedStatus translation;
+	public transient boolean translationShown;
 	public boolean reloadWhenClicked;
 	private transient String strippedText;
 
@@ -173,5 +185,29 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	@Override
 	public String getQuery() {
 		return url;
+	}
+
+	public static class StatusDeserializer implements JsonDeserializer<Status> {
+
+		@Override
+		public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			JsonObject obj = json.getAsJsonObject();
+
+			Status quote = null;
+			if (obj.has("quote") && obj.get("quote").isJsonObject())
+				quote = gson.fromJson(obj.get("quote"), Status.class);
+			obj.remove("quote");
+
+			Status reblog = null;
+			if (obj.has("reblog"))
+				reblog = gson.fromJson(obj.get("reblog"), Status.class);
+			obj.remove("reblog");
+
+			Status status = gsonWithoutDeserializer.fromJson(json, Status.class);
+			status.quote = quote;
+			status.reblog = reblog;
+
+			return status;
+		}
 	}
 }

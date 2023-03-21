@@ -21,7 +21,6 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
-import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
@@ -41,7 +40,6 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.utils.V;
 
 public class NotificationsListFragment extends BaseStatusListFragment<Notification>{
 	private boolean onlyMentions;
@@ -126,6 +124,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			knownAccounts.put(s.account.id, s.account);
 		if(s.status!=null && !knownAccounts.containsKey(s.status.account.id))
 			knownAccounts.put(s.status.account.id, s.status.account);
+		if(s.status!=null && s.status.reblog!=null && !knownAccounts.containsKey(s.status.reblog.account.id))
+			knownAccounts.put(s.status.reblog.account.id, s.status.reblog.account);
 	}
 
 	@Override

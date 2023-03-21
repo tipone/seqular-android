@@ -25,6 +25,7 @@ import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
+import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Relationship;
@@ -48,7 +49,6 @@ import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.APIRequest;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -57,7 +57,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseAccountListFragment.AccountItem>{
+public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccountListFragment.AccountItem> {
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected String accountID;
 	protected ArrayList<APIRequest<?>> relationshipsRequests=new ArrayList<>();
@@ -295,7 +295,6 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 
 			menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
 			menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getShortUsername()));
-			menu.findItem(R.id.manage_user_lists).setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername())).setVisible(relationship.following);
 			menu.findItem(R.id.soft_block).setVisible(relationship.followedBy && !relationship.following);
 			MenuItem hideBoosts=menu.findItem(R.id.hide_boosts);
 			MenuItem manageUserLists=menu.findItem(R.id.manage_user_lists);
@@ -309,7 +308,7 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 				manageUserLists.setVisible(true);
 			}else{
 				hideBoosts.setVisible(false);
-				manageUserLists.setVisible(true);
+				manageUserLists.setVisible(false);
 			}
 			menu.findItem(R.id.block_domain).setVisible(false);
 
