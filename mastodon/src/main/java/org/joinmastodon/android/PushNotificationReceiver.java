@@ -89,8 +89,6 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 									@Override
 									public void onSuccess(org.joinmastodon.android.model.Notification result){
 										MastodonAPIController.runInBackground(()->PushNotificationReceiver.this.notify(context, pn, accountID, result));
-										GlobalUserPreferences.unreadNotifications = true;
-										GlobalUserPreferences.save();
 									}
 
 									@Override

@@ -47,7 +47,6 @@ public class GlobalUserPreferences{
 	public static boolean collapseLongPosts;
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
-	public static boolean unreadNotifications;
 	public static boolean defaultToUnlistedReplies;
 	public static boolean disableDoubleTapToSwipe;
 	public static String publishButtonText;
@@ -104,7 +103,6 @@ public class GlobalUserPreferences{
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
-		unreadNotifications=prefs.getBoolean("unreadNotifications", false);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
 		disableDoubleTapToSwipe=prefs.getBoolean("disableDoubleTapToSwipe", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
@@ -156,7 +154,6 @@ public class GlobalUserPreferences{
 				.putBoolean("collapseLongPosts", collapseLongPosts)
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
-				.putBoolean("unreadNotifications", unreadNotifications)
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
