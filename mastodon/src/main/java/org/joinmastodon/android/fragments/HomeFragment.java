@@ -65,8 +65,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	private HomeTabFragment homeTabFragment;
 
-//	private HomeTimelineFragment homeTimelineFragment;
-
 	private NotificationsFragment notificationsFragment;
 	private DiscoverFragment searchFragment;
 	private ProfileFragment profileFragment;
@@ -95,9 +93,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 			homeTabFragment=new HomeTabFragment();
 			homeTabFragment.setArguments(args);
-
-//			homeTimelineFragment=new HomeTimelineFragment();
-//			homeTimelineFragment.setArguments(args);
 
 			args=new Bundle(args);
 			args.putBoolean("noAutoLoad", true);
@@ -151,12 +146,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 					.add(R.id.fragment_wrap, profileFragment).hide(profileFragment)
 					.commit();
 
-//			getChildFragmentManager().beginTransaction()
-//					.add(R.id.fragment_wrap, homeTimelineFragment)
-//					.add(R.id.fragment_wrap, searchFragment).hide(searchFragment)
-//					.add(R.id.fragment_wrap, notificationsFragment).hide(notificationsFragment)
-//					.add(R.id.fragment_wrap, profileFragment).hide(profileFragment)
-//					.commit();
 
 			String defaultTab=getArguments().getString("tab");
 			if("notifications".equals(defaultTab)){
@@ -181,12 +170,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 		if(savedInstanceState==null) return;
 
-//		if(savedInstanceState==null || homeTimelineFragment!=null)
-//			return;
 
 		homeTabFragment=(HomeTabFragment) getChildFragmentManager().getFragment(savedInstanceState, "homeTabFragment");
 
-//		homeTimelineFragment=(HomeTimelineFragment) getChildFragmentManager().getFragment(savedInstanceState, "homeTimelineFragment");
 		searchFragment=(DiscoverFragment) getChildFragmentManager().getFragment(savedInstanceState, "searchFragment");
 		notificationsFragment=(NotificationsFragment) getChildFragmentManager().getFragment(savedInstanceState, "notificationsFragment");
 		profileFragment=(ProfileFragment) getChildFragmentManager().getFragment(savedInstanceState, "profileFragment");
@@ -201,13 +187,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				.show(current)
 				.commit();
 
-		//		getChildFragmentManager().beginTransaction()
-//				.hide(homeTimelineFragment)
-//				.hide(searchFragment)
-//				.hide(notificationsFragment)
-//				.hide(profileFragment)
-//				.show(current)
-//				.commit();
 		maybeTriggerLoading(current);
 	}
 
@@ -242,8 +221,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 		homeTabFragment.onApplyWindowInsets(topOnlyInsets);
 
-//		homeTimelineFragment.onApplyWindowInsets(topOnlyInsets);
-
 		searchFragment.onApplyWindowInsets(topOnlyInsets);
 		notificationsFragment.onApplyWindowInsets(topOnlyInsets);
 		profileFragment.onApplyWindowInsets(topOnlyInsets);
@@ -252,9 +229,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private Fragment fragmentForTab(@IdRes int tab){
 		if(tab==R.id.tab_home){
 			return homeTabFragment;
-
-		//		if(tab==R.id.tab_home){
-//			return homeTimelineFragment;
 		}else if(tab==R.id.tab_search){
 			return searchFragment;
 		}else if(tab==R.id.tab_notifications){
@@ -357,11 +331,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if (searchFragment.isAdded()) getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
 		if (notificationsFragment.isAdded()) getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
 		if (profileFragment.isAdded()) getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
-
-//		getChildFragmentManager().putFragment(outState, "homeTimelineFragment", homeTimelineFragment);
-//		getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
-//		getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
-//		getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
 	}
 
 	public void updateNotificationBadge() {
@@ -392,7 +361,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 					}
 				}).exec(accountID);
 	}
-
 	public void setNotificationBadge(boolean badge) {
 		notificationTabIcon.setImageResource(badge
 				? R.drawable.ic_fluent_alert_28_selector_badged
