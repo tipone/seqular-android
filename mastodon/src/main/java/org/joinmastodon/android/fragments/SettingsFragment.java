@@ -282,11 +282,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-//		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
-//			GlobalUserPreferences.showNoAltIndicator=i.checked;
-//			GlobalUserPreferences.save();
-//			needAppRestart=true;
-//		}));
+		items.add(new SwitchItem(R.string.sk_settings_show_no_alt_indicator, R.drawable.ic_fluent_important_24_regular, GlobalUserPreferences.showNoAltIndicator, i->{
+			GlobalUserPreferences.showNoAltIndicator=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
 		items.add(new SwitchItem(R.string.sk_settings_collapse_long_posts, R.drawable.ic_fluent_chevron_down_24_regular, GlobalUserPreferences.collapseLongPosts, i->{
 			GlobalUserPreferences.collapseLongPosts=i.checked;
 			GlobalUserPreferences.save();
