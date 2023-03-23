@@ -108,24 +108,24 @@ public class HomeTimelineFragment extends StatusListFragment {
 	@Override
 	protected void onHidden(){
 		super.onHidden();
-		if(!data.isEmpty()){
-			String topPostID=displayItems.get(list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset()).parentID;
-			if(!topPostID.equals(lastSavedMarkerID)){
-				lastSavedMarkerID=topPostID;
-				new SaveMarkers(topPostID, null)
-						.setCallback(new Callback<>(){
-							@Override
-							public void onSuccess(SaveMarkers.Response result){
-							}
-
-							@Override
-							public void onError(ErrorResponse error){
-								lastSavedMarkerID=null;
-							}
-						})
-						.exec(accountID);
-			}
-		}
+//		if(!data.isEmpty()){
+//			String topPostID=displayItems.get(list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset()).parentID;
+//			if(!topPostID.equals(lastSavedMarkerID)){
+//				lastSavedMarkerID=topPostID;
+//				new SaveMarkers(topPostID, null)
+//						.setCallback(new Callback<>(){
+//							@Override
+//							public void onSuccess(SaveMarkers.Response result){
+//							}
+//
+//							@Override
+//							public void onError(ErrorResponse error){
+//								lastSavedMarkerID=null;
+//							}
+//						})
+//						.exec(accountID);
+//			}
+//		}
 	}
 
 	public void onStatusCreated(StatusCreatedEvent ev){
