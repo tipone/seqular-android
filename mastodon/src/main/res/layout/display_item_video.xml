@@ -18,4 +18,6 @@
 		android:elevation="3dp"
 		android:background="@drawable/play_button"/>
 
+	<include layout="@layout/alt_badge" />
+
 </FrameLayout>

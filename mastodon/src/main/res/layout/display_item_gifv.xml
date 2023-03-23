@@ -25,4 +25,6 @@
 		android:layout_margin="8dp"
 		android:background="@drawable/ic_gif"/>
 
+	<include layout="@layout/alt_badge" />
+
 </FrameLayout>
