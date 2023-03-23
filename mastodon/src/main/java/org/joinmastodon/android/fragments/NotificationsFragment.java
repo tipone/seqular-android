@@ -145,17 +145,20 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
+			args.putBoolean("noAutoLoad", true);
 
 			allNotificationsFragment=new NotificationsListFragment();
 			allNotificationsFragment.setArguments(args);
 
 			args=new Bundle(args);
 			args.putBoolean("onlyMentions", true);
+			args.putBoolean("noAutoLoad", true);
 			mentionsFragment=new NotificationsListFragment();
 			mentionsFragment.setArguments(args);
 
 			args=new Bundle(args);
 			args.putBoolean("onlyPosts", true);
+			args.putBoolean("noAutoLoad", true);
 			postsFragment=new NotificationsListFragment();
 			postsFragment.setArguments(args);
 
