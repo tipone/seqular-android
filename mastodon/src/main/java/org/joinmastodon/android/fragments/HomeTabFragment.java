@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import static org.joinmastodon.android.GlobalUserPreferences.reduceMotion;
+import static org.joinmastodon.android.GlobalUserPreferences.showNewPostsButton;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -477,7 +478,8 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 	@Override
 	public void scrollToTop(){
-		if (((ScrollableToTop) fragments[pager.getCurrentItem()]).isScrolledToTop() && !GlobalUserPreferences.disableDoubleTapToSwipe) {
+		if (((ScrollableToTop) fragments[pager.getCurrentItem()]).isScrolledToTop() &&
+				!GlobalUserPreferences.disableDoubleTapToSwipe && !newPostsBtnShown) {
 			int nextPage = (pager.getCurrentItem() + 1) % count;
 			navigateTo(nextPage);
 			return;
