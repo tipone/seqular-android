@@ -36,4 +36,5 @@
     <string name="mo_change_default_reply_visibility_to_unlisted">Zmień domyślną widoczność odpowiedzi na nielistowaną</string>
     <string name="mo_miscellaneous_settings">Inne ustawienia</string>
     <string name="mo_share_open_url">Otwórz w aplikacji</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">Wyłącz przełączanie się między kartami podwójnym kliknięciem</string>
 </resources>
