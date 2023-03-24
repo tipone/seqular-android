@@ -264,4 +264,13 @@
     <string name="sk_followed_as">Suivi depuis %s</string>
     <string name="sk_settings_hide_fab">Masquer automatiquement le bouton Composer</string>
     <string name="sk_in_reply">En réponse</string>
+    <string name="sk_quoting_user">Citation %s</string>
+    <string name="sk_settings_reply_visibility">Visibilité des réponses</string>
+    <string name="sk_settings_reply_visibility_all">Toutes les réponses</string>
+    <string name="sk_settings_reply_visibility_following">Réponses à mes suivis</string>
+    <string name="sk_settings_reply_visibility_self">Me répond</string>
+    <string name="sk_notification_action_replied">Réponse envoyée à %s</string>
+    <string name="sk_show_thread">Afficher le fil</string>
+    <string name="sk_compact_reblog_reply_line">Ligne de repost/réponse compacte</string>
+    <string name="sk_reply_line_above_avatar">Ligne \"En réponse à\" au-dessus de l\'avatar</string>
 </resources>
