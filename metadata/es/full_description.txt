@@ -1,0 +1,15 @@
+Moshidon es una versión modificada de la <a href="https://github.com/mastodon/mastodon-android">aplicación oficial de Mastodon para Android</a> que agrega funciones importantes que faltan en la aplicación oficial, como: . B. una línea de tiempo federada, publicación no listada y la capacidad de ver descripciones de imágenes.
+
+<b>Características clave</b>
+
+- <b>Gran selección de colores</b>: Material You y muchos más esquemas de color.
+- <b>Función de traducción</b>: ¡Un botón para hacer traducciones!
+- <b>Tröt language selector</b>: ¡Un botón para seleccionar el idioma de la publicación!
+- <b>Publicación no listada</b>: publique públicamente sin que sus publicaciones aparezcan en tendencias, hashtags o cronologías públicas.
+- <b>Línea de tiempo federada</b>: vea todas las publicaciones públicas de todos los servidores Fediverse a los que está conectada su instancia.
+- <b>Descripciones de imágenes</b>: vea de un vistazo si una imagen o video tiene texto alternativo.
+- <b>Fijar publicaciones</b>: fije sus publicaciones más importantes en su página de perfil y busque los pines de otros usuarios en la pestaña "Fijar".
+- <b>Hashtags de seguimiento</b>: vea publicaciones con hashtags específicos directamente en su página de inicio simplemente siguiéndolas.
+- <b>Responder a las solicitudes de los seguidores</b>: acepte o rechace las solicitudes de los seguidores directamente en las notificaciones o en la lista de solicitudes de los seguidores por separado.
+- <b>Eliminar y recomponer</b>: la característica popular que hizo posible la edición de publicaciones sin la funcionalidad de edición real.
+- <b>Extras</b>: muchos ajustes de la interfaz de usuario, p. B. ¡Iconos de interacción en las notificaciones y la eliminación de muchas inconsistencias en el diseño original!
