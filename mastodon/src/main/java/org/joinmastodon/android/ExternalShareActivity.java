@@ -1,6 +1,7 @@
 package org.joinmastodon.android;
 
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
@@ -100,5 +101,12 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		if(l==null)
 			return null;
 		return new ArrayList<>(l);
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent outContent) {
+		super.onProvideAssistContent(outContent);
+
+		outContent.setWebUri(Uri.parse(DomainManager.getInstance().getCurrentDomain()));
 	}
 }
