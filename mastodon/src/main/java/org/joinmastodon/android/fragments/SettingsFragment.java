@@ -36,6 +36,7 @@ import android.widget.Toast;
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.BuildConfig;
+import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
@@ -102,6 +103,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 		String instanceName = UiUtils.getInstanceName(accountID);
+
+		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
 
 		if(GithubSelfUpdater.needSelfUpdating()){
 			GithubSelfUpdater updater=GithubSelfUpdater.getInstance();
