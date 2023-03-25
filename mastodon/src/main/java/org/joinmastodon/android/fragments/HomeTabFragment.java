@@ -562,8 +562,8 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 	private void onNewPostsBtnClick(View view) {
 		if(newPostsBtnShown){
-			hideNewPostsButton();
 			scrollToTop();
+			hideNewPostsButton();
 		}
 	}
 
