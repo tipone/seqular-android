@@ -115,23 +115,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 
 		items.add(new HeaderItem(R.string.settings_theme));
+
 		items.add(themeItem=new ThemeItem());
-		items.add(new SwitchItem(R.string.theme_true_black, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
-		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
-			GlobalUserPreferences.disableMarquee=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
-			GlobalUserPreferences.uniformNotificationIcon=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
-			GlobalUserPreferences.reduceMotion=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
-
-
 		items.add(new ButtonItem(R.string.sk_settings_color_palette, R.drawable.ic_fluent_color_24_regular, b->{
 			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
 			popupMenu.inflate(R.menu.color_palettes);
@@ -151,39 +136,21 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				case NORD -> R.string.mo_color_palette_nord;
 			});
 		}));
-		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
-			updatePublishText(b);
-			if (GlobalUserPreferences.relocatePublishButton) {
-				b.setOnClickListener(l -> {
-					Toast.makeText(getActivity(), R.string.mo_disable_relocate_publish_button_to_enable_customization,
-							Toast.LENGTH_LONG).show();
-				});
-			} else {
-				b.setOnClickListener(l -> {
-					FrameLayout inputWrap = new FrameLayout(getContext());
-					EditText input = new EditText(getContext());
-					input.setHint(R.string.publish);
-					input.setText(GlobalUserPreferences.publishButtonText.trim());
-					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
-					input.setLayoutParams(params);
-					inputWrap.addView(input);
-					new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
-							.setPositiveButton(R.string.save, (d, which) -> {
-								GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
-								GlobalUserPreferences.save();
-								updatePublishText(b);
-							})
-							.setNeutralButton(R.string.clear, (d, which) -> {
-								GlobalUserPreferences.publishButtonText = "";
-								GlobalUserPreferences.save();
-								updatePublishText(b);
-							})
-							.setNegativeButton(R.string.cancel, (d, which) -> {
-							})
-							.show();
-				});}
+		items.add(new SwitchItem(R.string.theme_true_black, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
+		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
+			GlobalUserPreferences.disableMarquee=i.checked;
+			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
+			GlobalUserPreferences.uniformNotificationIcon=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i->{
+			GlobalUserPreferences.reduceMotion=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+
 
 		items.add(new HeaderItem(R.string.settings_behavior));
 		items.add(new SwitchItem(R.string.settings_gif, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{
@@ -222,12 +189,45 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 
 		items.add(new HeaderItem(R.string.mo_composer_behavior));
-		items.add(new SwitchItem(R.string.mo_change_default_reply_visibility_to_unlisted, R.drawable.ic_fluent_lock_open_24_regular, GlobalUserPreferences.defaultToUnlistedReplies, i->{
-			GlobalUserPreferences.defaultToUnlistedReplies=i.checked;
-			GlobalUserPreferences.save();
+		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
+			updatePublishText(b);
+			b.setOnClickListener(l -> {
+				if(!GlobalUserPreferences.relocatePublishButton) {
+					FrameLayout inputWrap = new FrameLayout(getContext());
+					EditText input = new EditText(getContext());
+					input.setHint(R.string.publish);
+					input.setText(GlobalUserPreferences.publishButtonText.trim());
+					FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+					params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+					input.setLayoutParams(params);
+					inputWrap.addView(input);
+					new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_publish_button_text_title).setView(inputWrap)
+							.setPositiveButton(R.string.save, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = input.getText().toString().trim();
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNeutralButton(R.string.clear, (d, which) -> {
+								GlobalUserPreferences.publishButtonText = "";
+								GlobalUserPreferences.save();
+								updatePublishText(b);
+							})
+							.setNegativeButton(R.string.cancel, (d, which) -> {
+							})
+							.show();
+
+				} else {
+					Toast.makeText(getActivity(), R.string.mo_disable_relocate_publish_button_to_enable_customization,
+							Toast.LENGTH_LONG).show();
+				}
+			});
 		}));
 		items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
 			GlobalUserPreferences.relocatePublishButton=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.mo_change_default_reply_visibility_to_unlisted, R.drawable.ic_fluent_lock_open_24_regular, GlobalUserPreferences.defaultToUnlistedReplies, i->{
+			GlobalUserPreferences.defaultToUnlistedReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
 		items.add(new SwitchItem(R.string.mo_disable_reminder_to_add_alt_text, R.drawable.ic_fluent_image_alt_text_24_regular, GlobalUserPreferences.disableAltTextReminder, i->{
