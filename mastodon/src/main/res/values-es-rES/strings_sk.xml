@@ -262,7 +262,7 @@
     <string name="sk_follow_as">Seguir desde otra cuenta</string>
     <string name="sk_followed_as">Seguido desde %s</string>
     <string name="sk_settings_hide_fab">Ocultar automáticamente el botón Redactar</string>
-    <string name="sk_in_reply">Respondiendo a</string>
+    <string name="sk_in_reply">En respuesta</string>
     <string name="sk_quoting_user">Citando %s</string>
     <string name="sk_settings_reply_visibility">Visibilidad de la respuesta</string>
     <string name="sk_settings_reply_visibility_all">Todas las respuestas</string>
