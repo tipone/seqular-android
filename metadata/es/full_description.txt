@@ -1,15 +1,16 @@
-Moshidon es una versión modificada de la <a href="https://github.com/mastodon/mastodon-android">aplicación oficial de Mastodon para Android</a> que agrega funciones importantes que faltan en la aplicación oficial, como: . B. una línea de tiempo federada, publicación no listada y la capacidad de ver descripciones de imágenes.
+Moshidon es una versión modificada del <a href="https://github.com/mastodon/mastodon-android">aplicación oficial Mastodon para Android</a> añadiendo funciones importantes que faltan en la aplicación oficial, como la cronología federada, la publicación sin listar y un visor de descripción de imágenes.
 
-<b>Características clave</b>
+<b>Características principales</b>
 
-- <b>Gran selección de colores</b>: Material You y muchos más esquemas de color.
-- <b>Función de traducción</b>: ¡Un botón para hacer traducciones!
-- <b>Tröt language selector</b>: ¡Un botón para seleccionar el idioma de la publicación!
-- <b>Publicación no listada</b>: publique públicamente sin que sus publicaciones aparezcan en tendencias, hashtags o cronologías públicas.
-- <b>Línea de tiempo federada</b>: vea todas las publicaciones públicas de todos los servidores Fediverse a los que está conectada su instancia.
-- <b>Descripciones de imágenes</b>: vea de un vistazo si una imagen o video tiene texto alternativo.
-- <b>Fijar publicaciones</b>: fije sus publicaciones más importantes en su página de perfil y busque los pines de otros usuarios en la pestaña "Fijar".
-- <b>Hashtags de seguimiento</b>: vea publicaciones con hashtags específicos directamente en su página de inicio simplemente siguiéndolas.
-- <b>Responder a las solicitudes de los seguidores</b>: acepte o rechace las solicitudes de los seguidores directamente en las notificaciones o en la lista de solicitudes de los seguidores por separado.
-- <b>Eliminar y recomponer</b>: la característica popular que hizo posible la edición de publicaciones sin la funcionalidad de edición real.
-- <b>Extras</b>: muchos ajustes de la interfaz de usuario, p. B. ¡Iconos de interacción en las notificaciones y la eliminación de muchas inconsistencias en el diseño original!
+- <b>Varios colores</b>: ¡Trae material you y muchas opciones coloridas para temas!
+- <b>¡Mensajes filtrados!</b>: ¡La capacidad de mostrar publicaciones filtradas con una advertencia!
+- <b>Botón Traducir</b>: ¡Trae un botón de traducción!
+- <b>Selector de idioma Toot</b>: ¡Trae un selector de idioma toot!
+- <b>Anuncio no publicado</b>: Publicar sin que aparezca en las tendencias, hashtags o cronologías públicas.
+- <b>Línea de tiempo federada</b>: Vea todas las publicaciones públicas de personas en todos los demás vecindarios de Fediverse a los que esté conectada su instancia local.
+- <b>Visor de la descripción de las imágenes</b>: Comprueba rápidamente si una imagen o un vídeo tienen un texto alternativo adjunto.
+- <b>Fijar publicaciones</b>: Ancla tus publicaciones más importantes a tu perfil y mira lo que otros han anclado utilizando la pestaña "Anclado".
+- <b>Seguir los hashtags</b>: Ver nuevas publicaciones de hashtags específicos directamente en tu cronología de inicio siguiéndolos.
+- <b>Responder a las solicitudes de seguimiento</b>: Acepta o rechaza las solicitudes de seguimiento de tus notificaciones o de la lista de solicitudes de seguimiento.
+- <b>Suprimir y redactar de nuevo</b>: La apreciada función que hacía posible la edición sin una función de edición real.
+- <b>Extras</b>: ¡Trae muchas funciones de interfaz de usuario adicionales, como iconos de interacción en las notificaciones y elimina muchas molestias con la interfaz de usuario original!
