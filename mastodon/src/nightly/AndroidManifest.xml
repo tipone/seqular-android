@@ -15,6 +15,11 @@
 		<!--				<action android:name="android.intent.action.MY_PACKAGE_REPLACED"/>-->
 		<!--			</intent-filter>-->
 		<!--		</receiver>-->
+		<provider
+			android:authorities="${applicationId}.self_update_provider"
+			android:name=".updater.SelfUpdateContentProvider"
+			android:grantUriPermissions="true"
+			android:exported="false"/>
 	</application>
 
 </manifest>
