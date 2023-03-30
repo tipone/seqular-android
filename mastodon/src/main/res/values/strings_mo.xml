@@ -2,6 +2,7 @@
 <resources>
     <string name="mo_app_name" translatable="false">Moshidon</string>
     <string name="mo_app_name_debug" translatable="false">Moshidon Debug</string>
+    <string name="mo_app_name_nightly" translatable="false">Moshidon Nightly</string>
 
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_app_username" translatable="false">\@moshidon</string>
