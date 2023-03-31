@@ -25,7 +25,7 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew assembleNightly
     - name: Upload a Build Artifact
-    - uses: actions/upload-artifact@v3.1.2
+      uses: actions/upload-artifact@v3.1.2
       with:
        name: moshidon-nightly
        path: ./mastodon/build/outputs/apk/nightly/moshidon-nightly.apk
