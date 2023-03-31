@@ -35,4 +35,6 @@
     <string name="mo_duration_minutes_30">30 minutos</string>
     <string name="mo_change_default_reply_visibility_to_unlisted">Mudar visibilidade padrão das respostas para não listado</string>
     <string name="mo_miscellaneous_settings">Configurações Diversas</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">Desativar toque duplo para deslizar entre abas</string>
+    <string name="mo_share_open_url">Abrir no App</string>
 </resources>
