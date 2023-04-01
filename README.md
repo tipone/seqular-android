@@ -7,9 +7,12 @@
 
 [![Download latest release](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)
 
+[![Download nightly release](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20Nightly%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://nightly.link/LucasGGamerM/moshidon/workflows/android/master/moshidon-nightly.zip)
+
+
 [![Translation status](https://translate.codeberg.org/widgets/moshidon/-/svg-badge.svg)](https://translate.codeberg.org/engage/moshidon/)
 &nbsp;
-[![Get latest nightly build](https://github.com/LucasGGamerM/moshidon/actions/workflows/android.yml/badge.svg)](https://nightly.link/LucasGGamerM/moshidon/workflows/android/master/moshidon-nightly.zip)
+[![Nightly build](https://github.com/LucasGGamerM/moshidon/actions/workflows/android.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/android.yml)
 
 <a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="50" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
 &nbsp;
