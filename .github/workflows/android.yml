@@ -23,18 +23,20 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     
-    - name: Set Secret Properties
-      env: 
-        LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
-      run: echo "$LOCAL_PROPERTIES" > ./local.properties
-    
-    - name: Prepare release keystore
-      run: |
-        echo "${{ secrets.BASE_64_SIGNING_KEY }}" > release_keystore.jks.asc
-        gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release_keystore.jks.asc > release_keystore.jks
+    - name: Decode Keystore
+      id: decode_keystore
+      uses: timheuer/base64-to-file@v1
+      with:
+        fileName: 'keystore/nightly_keystore.jks'          
+        encodedString: ${{ secrets.KEYSTORE }}
     
     - name: Build with Gradle
       run: ./gradlew assembleNightly
+      env:
+          SIGNING_KEY_ALIAS: ${{ secrets.SIGNING_KEY_ALIAS }}
+          SIGNING_KEY_PASSWORD: ${{ secrets.SIGNING_KEY_PASSWORD }}
+          SIGNING_STORE_PASSWORD: ${{ secrets.SIGNING_STORE_PASSWORD }}
+      
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
