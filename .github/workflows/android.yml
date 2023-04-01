@@ -34,7 +34,7 @@ jobs:
         gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release_keystore.jks.asc > release_keystore.jks
     
     - name: Build with Gradle
-      run: ./gradlew assembleNightly
+      run: ./gradlew buildNightly
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
