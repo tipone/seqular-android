@@ -186,6 +186,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.mo_swap_bookmark_with_reblog, R.drawable.ic_boost, GlobalUserPreferences.swapBookmarkWithBoostAction, i -> {
+			GlobalUserPreferences.swapBookmarkWithBoostAction=i.checked;
+			GlobalUserPreferences.save();
+		}));
 
 
 		items.add(new HeaderItem(R.string.mo_composer_behavior));

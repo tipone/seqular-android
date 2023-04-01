@@ -222,9 +222,15 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 						builder.addAction(buildReplyAction(context, id, accountID, notification));
 					}
 					builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_favorite), NotificationAction.FAVORITE));
-					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
-					if(notification.status.visibility != StatusPrivacy.DIRECT) {
-						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_reblog), NotificationAction.BOOST));
+					if(GlobalUserPreferences.swapBookmarkWithBoostAction){
+						if(notification.status.visibility != StatusPrivacy.DIRECT) {
+							builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_reblog), NotificationAction.BOOST));
+						}else{
+							// This is just so there is a bookmark action if you cannot reblog the toot
+							builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
+						}
+					} else {
+						builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
 					}
 				}
 				case UPDATE -> {
