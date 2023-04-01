@@ -31,7 +31,7 @@ jobs:
     - name: Prepare release keystore
       run: |
         echo "${{ secrets.BASE_64_SIGNING_KEY }}" > release_keystore.jks.asc
-        gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release_keystore.jks.asc > app/release_keystore.jks
+        gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release_keystore.jks.asc > release_keystore.jks
     
     - name: Build with Gradle
       run: ./gradlew assembleNightly
