@@ -39,4 +39,4 @@ jobs:
       uses: actions/upload-artifact@v3.1.2
       with:
        name: moshidon-nightly
-       path: ./mastodon/build/outputs/apk/nightly/moshidon-nightly.apk
+       path: ./mastodon/build/intermediates/apk/nightly/moshidon-nightly.apk
