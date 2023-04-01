@@ -22,6 +22,17 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    
+    - name: Set Secret Properties
+      env: 
+        LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+      run: echo "$LOCAL_PROPERTIES" > ./local.properties
+    
+    - name: Prepare release keystore
+      run: |
+        echo "${{ secrets.BASE_64_SIGNING_KEY }}" > release_keystore.jks.asc
+        gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release_keystore.jks.asc > app/release_keystore.jks
+    
     - name: Build with Gradle
       run: ./gradlew assembleNightly
     - name: Upload a Build Artifact
