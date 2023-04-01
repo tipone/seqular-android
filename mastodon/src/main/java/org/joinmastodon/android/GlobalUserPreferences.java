@@ -90,7 +90,7 @@ public class GlobalUserPreferences{
 		showBoosts=prefs.getBoolean("showBoosts", true);
 		loadNewPosts=prefs.getBoolean("loadNewPosts", true);
 		showNewPostsButton=prefs.getBoolean("showNewPostsButton", true);
-		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", true);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
 		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
