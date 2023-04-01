@@ -34,9 +34,9 @@ jobs:
         gpg -d --passphrase "${{ secrets.BASE_64_SIGNING_KEY_PASSPHRASE }}" --batch release_keystore.jks.asc > release_keystore.jks
     
     - name: Build with Gradle
-      run: ./gradlew buildNightly
+      run: ./gradlew assembleNightly
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
        name: moshidon-nightly
-       path: ./mastodon/build/intermediates/apk/nightly/moshidon-nightly.apk
+       path: ./mastodon/build/outputs/apk/nightly/moshidon-nightly.apk
