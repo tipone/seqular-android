@@ -32,7 +32,6 @@ android {
 		nightly{
 			versionNameSuffix '-nightly'
 			applicationIdSuffix '.nightly'
-			signingConfig signingConfigs.debug
 		}
 		playRelease{
 			initWith release
