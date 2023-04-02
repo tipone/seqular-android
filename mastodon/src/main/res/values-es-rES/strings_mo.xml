@@ -37,4 +37,5 @@
     <string name="mo_miscellaneous_settings">Ajustes varios</string>
     <string name="mo_share_open_url">Abrir en la aplicación</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Desactivar el doble toque para pasar de una pestaña a otra</string>
+    <string name="mo_swap_bookmark_with_reblog">Usa la acción de rebloguear en lugar de la acción de marcador en las notificaciones</string>
 </resources>
