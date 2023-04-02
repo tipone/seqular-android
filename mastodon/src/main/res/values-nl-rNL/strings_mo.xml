@@ -16,4 +16,17 @@
     <string name="mo_welcome_text">Om te beginnen vul je hieronder de domeinnaam in van de instance (server).</string>
     <string name="mo_clear_recent_emoji">Wis recent gebruikte emoji</string>
     <string name="mo_no_image_desc">De bijgesloten afbeeldingen hebben geen omschrijving. Overweeg deze alsnog toe te voegen, zodat ook mensen met een visuele handicap kunnen deelnemen.</string>
+    <string name="mo_share_open_url">Open in app</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Uitschakelen herinnering om alt text toe te voegen</string>
+    <string name="mo_filtered">Filter: %s</string>
+    <string name="mo_mute_label">Duur:</string>
+    <string name="mo_duration_minutes_30">30 minuten</string>
+    <string name="mo_duration_minutes_5">5 minuten</string>
+    <string name="mo_duration_indefinite">Onbepaald</string>
+    <string name="mo_duration_days_3">3 dagen</string>
+    <string name="mo_duration_days_1">1 dag</string>
+    <string name="mo_duration_hours_6">6 uur</string>
+    <string name="mo_duration_hours_1">1 uur</string>
+    <string name="mo_duration_days_7">7 dagen</string>
+    <string name="mo_miscellaneous_settings">Diverse instellingen</string>
 </resources>
