@@ -8,7 +8,8 @@
 
 	<application
 		tools:replace="android:label"
-		android:label="@string/mo_app_name_nightly">
+		android:label="@string/mo_app_name_nightly"
+		android:largeHeap="true">
 		<!--		<receiver android:name=".updater.GithubSelfUpdaterImpl$InstallerStatusReceiver" android:exported="false"/>-->
 		<!--		<receiver android:name=".updater.GithubSelfUpdaterImpl$AfterUpdateRestartReceiver" android:exported="true" android:enabled="false">-->
 		<!--			<intent-filter>-->
