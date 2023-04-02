@@ -27,7 +27,7 @@ jobs:
       id: decode_keystore
       uses: timheuer/base64-to-file@v1
       with:
-        fileName: 'keystore/nightly_keystore.jks'          
+        fileName: 'mastodon/keystore/nightly_keystore.jks'          
         encodedString: ${{ secrets.KEYSTORE }}
     
     - name: Build with Gradle
