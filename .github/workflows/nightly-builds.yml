@@ -3,8 +3,6 @@ name: Nightly builds
 on:
   push:
     branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
 
 jobs:
   build:
@@ -41,5 +39,5 @@ jobs:
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v3.1.2
       with:
-       name: moshidon-nightly
+       name: moshidon-nightly.apk
        path: ./mastodon/build/outputs/apk/nightly/moshidon-nightly.apk
