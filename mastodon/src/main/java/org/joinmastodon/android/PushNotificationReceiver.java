@@ -54,7 +54,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String ACTION_KEY_TEXT_REPLY = "ACTION_KEY_TEXT_REPLY";
 
 	private static final int SUMMARY_ID = 791;
-	private static int notificationId = 0;
+	private static int notificationId = GlobalUserPreferences.latestNotificationId;
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -214,6 +214,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 
 		int id = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++;
+		GlobalUserPreferences.save();
 
 		if (notification != null){
 			switch (pn.notificationType){
