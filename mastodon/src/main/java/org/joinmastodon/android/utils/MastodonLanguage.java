@@ -44,7 +44,10 @@ public class MastodonLanguage {
 			for (int i = 0; i < localeList.size(); i++) systemLocales.add(localeList.get(i));
 		}
 
-		defaultRecentLanguages = systemLocales.stream().map(Locale::getLanguage).collect(Collectors.toList());
+		defaultRecentLanguages = systemLocales.stream()
+				.map(Locale::getLanguage)
+				.distinct()
+				.collect(Collectors.toList());
 	}
 
 	public final String languageTag, name, englishName;
