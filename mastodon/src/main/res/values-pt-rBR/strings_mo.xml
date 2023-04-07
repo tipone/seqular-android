@@ -38,4 +38,5 @@
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Desativar toque duplo para deslizar entre abas</string>
     <string name="mo_share_open_url">Abrir no App</string>
     <string name="mo_swap_bookmark_with_reblog">Usar ação de reblogar ao invés da ação salvar nas notificações</string>
+    <string name="mo_download_latest_nightly_release">Baixar mais novo lançamento noturno</string>
 </resources>
