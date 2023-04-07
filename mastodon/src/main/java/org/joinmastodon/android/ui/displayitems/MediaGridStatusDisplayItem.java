@@ -249,8 +249,12 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			View btn=controllers.get(altTextIndex).btnsWrap;
 			int i=0;
 			for(MediaAttachmentViewController c:controllers){
-				if(c.btnsWrap!=null && c.btnsWrap!=btn && !TextUtils.isEmpty(item.attachments.get(i).description))
-					c.btnsWrap.setVisibility(View.VISIBLE);
+				boolean hasAltText = !TextUtils.isEmpty(item.attachments.get(i).description);
+				if(c.btnsWrap!=null
+						&& c.btnsWrap!=btn
+						&& ((hasAltText && GlobalUserPreferences.showAltIndicator)
+						|| (!hasAltText && GlobalUserPreferences.showNoAltIndicator))
+				) c.btnsWrap.setVisibility(View.VISIBLE);
 				i++;
 			}
 
