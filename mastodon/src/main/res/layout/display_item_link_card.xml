@@ -11,7 +11,7 @@
 		android:layout_height="250dp"
 		android:layout_gravity="center_horizontal"
 		android:foreground="?android:selectableItemBackground"
-		android:maxWidth="400dp">
+		android:maxWidth="@dimen/layout_max_width">
 		<ImageView
 			android:id="@+id/photo"
 			android:layout_width="match_parent"

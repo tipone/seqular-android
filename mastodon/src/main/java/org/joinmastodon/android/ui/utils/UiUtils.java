@@ -137,8 +137,13 @@ public class UiUtils {
 	private static Handler mainHandler = new Handler(Looper.getMainLooper());
 	private static final DateTimeFormatter DATE_FORMATTER_SHORT_WITH_YEAR = DateTimeFormatter.ofPattern("d MMM uuuu"), DATE_FORMATTER_SHORT = DateTimeFormatter.ofPattern("d MMM");
 	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
+	public static int MAX_WIDTH;
 
 	private UiUtils() {
+	}
+
+	public static void loadMaxWidth(Context ctx) {
+		if (MAX_WIDTH == 0) MAX_WIDTH = (int) ctx.getResources().getDimension(R.dimen.layout_max_width);
 	}
 
 	public static void launchWebBrowser(Context context, String url) {

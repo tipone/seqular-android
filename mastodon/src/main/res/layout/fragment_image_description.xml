@@ -14,7 +14,7 @@
 		<org.joinmastodon.android.ui.views.MaxWidthFrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:maxWidth="400dp">
+			android:maxWidth="@dimen/layout_max_width">
 
 			<ImageView
 				android:id="@+id/photo"
