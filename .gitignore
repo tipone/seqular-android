@@ -9,4 +9,5 @@
 .cxx
 local.properties
 *.jks
-/keystore/nightly_keystore.keystore
+*.keystore
+/mastodon/keystore/nightly_keystore.keystore
