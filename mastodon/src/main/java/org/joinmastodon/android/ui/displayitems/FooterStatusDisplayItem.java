@@ -200,6 +200,11 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onBoostClick(View v){
+			if (GlobalUserPreferences.confirmBeforeReblog) {
+				v.startAnimation(opacityIn);
+				onBoostLongClick(v);
+				return;
+			}
 			boost.setSelected(!item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}

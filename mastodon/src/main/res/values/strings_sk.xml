@@ -272,4 +272,5 @@
     <string name="sk_reply_line_above_avatar">“In reply to” line above avatar</string>
     <string name="sk_show_thread">Show thread</string>
     <string name="sk_compact_reblog_reply_line">Compact reblog/reply line</string>
+    <string name="sk_settings_confirm_before_reblog">Confirm before reblogging</string>
 </resources>

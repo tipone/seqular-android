@@ -46,6 +46,7 @@ public class GlobalUserPreferences{
 	public static boolean autoHideFab;
 	public static boolean replyLineAboveHeader;
 	public static boolean compactReblogReplyLine;
+	public static boolean confirmBeforeReblog;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -102,6 +103,7 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
+		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", null), recentLanguagesType, new HashMap<>());
@@ -148,6 +150,7 @@ public class GlobalUserPreferences{
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
+				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))
