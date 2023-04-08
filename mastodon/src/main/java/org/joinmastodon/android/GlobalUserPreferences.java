@@ -52,6 +52,7 @@ public class GlobalUserPreferences{
 	public static boolean compactReblogReplyLine;
 	public static boolean replyLineAboveHeader;
 	public static boolean swapBookmarkWithBoostAction;
+	public static int latestNotificationId = 0;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -126,6 +127,7 @@ public class GlobalUserPreferences{
 		accountsWithLocalOnlySupport=prefs.getStringSet("accountsWithLocalOnlySupport", new HashSet<>());
 		accountsInGlitchMode=prefs.getStringSet("accountsInGlitchMode", new HashSet<>());
 		replyVisibility=prefs.getString("replyVisibility", null);
+		latestNotificationId=prefs.getInt("latestNotificationId", 0);
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -182,6 +184,7 @@ public class GlobalUserPreferences{
 				.putStringSet("accountsWithLocalOnlySupport", accountsWithLocalOnlySupport)
 				.putStringSet("accountsInGlitchMode", accountsInGlitchMode)
 				.putString("replyVisibility", replyVisibility)
+				.putInt("latestNotificationId", latestNotificationId)
 				.apply();
 	}
 
