@@ -337,7 +337,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
 		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.pleroma != null)
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.pleroma != null)
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(List<Notification> notifications) {
