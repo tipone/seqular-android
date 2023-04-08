@@ -55,7 +55,13 @@ android {
 		}
 		nightly{
 			initWith release
-			versionNameSuffix '-nightly+@' + System.getenv("CURRENT_DATE")
+			if(System.getenv("CURRENT_DATE") != null){
+				versionNameSuffix '-nightly+@' + System.getenv("CURRENT_DATE")
+			} else {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				versionNameSuffix '-nightly+@' + properties.getProperty('SIGNING_KEY_PASSWORD')
+			}
 			applicationIdSuffix '.nightly'
 			signingConfig signingConfigs.nightly
 		}
