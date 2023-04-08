@@ -17,7 +17,6 @@ android {
 
 	signingConfigs {
 		nightly{
-			versionName "1.2.0+fork.moshinda@" + System.getenv("CURRENT_DATE")
 			storeFile = file("keystore/nightly_keystore.jks")
 			storePassword System.getenv("SIGNING_STORE_PASSWORD")
 			if (storePassword == null) {
@@ -56,7 +55,7 @@ android {
 		}
 		nightly{
 			initWith release
-			versionNameSuffix '-nightly'
+			versionNameSuffix '-nightly+@' + System.getenv("CURRENT_DATE")
 			applicationIdSuffix '.nightly'
 			signingConfig signingConfigs.nightly
 		}
