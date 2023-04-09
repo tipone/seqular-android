@@ -215,7 +215,7 @@ public class AccountSessionManager{
 								.path("/oauth/authorize")
 								.appendQueryParameter("response_type", "code")
 								.appendQueryParameter("client_id", result.clientId)
-								.appendQueryParameter("redirect_uri", "moshidon-android-auth://callback")
+								.appendQueryParameter("redirect_uri", REDIRECT_URI)
 								.appendQueryParameter("scope", SCOPE)
 								.build();
 
