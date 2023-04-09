@@ -60,7 +60,7 @@ android {
 			} else {
 				Properties properties = new Properties()
 				properties.load(project.rootProject.file('local.properties').newDataInputStream())
-				versionNameSuffix '-nightly+@' + properties.getProperty('SIGNING_KEY_PASSWORD')
+				versionNameSuffix '-nightly+@' + properties.getProperty('CURRENT_DATE')
 			}
 			applicationIdSuffix '.nightly'
 			signingConfig signingConfigs.nightly
