@@ -413,9 +413,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 		items.add(new HeaderItem(R.string.sk_settings_about));
 
-		if(BuildConfig.BUILD_TYPE.equals("nightly")){
-			items.add(new TextItem(R.string.mo_download_latest_nightly_release, ()->UiUtils.launchWebBrowser(getActivity(), "https://nightly.link/LucasGGamerM/moshidon/workflows/nightly-builds/master/moshidon-nightly.apk.zip"), R.drawable.ic_fluent_open_24_regular));
-		}
+//		if(BuildConfig.BUILD_TYPE.equals("nightly")){
+//			items.add(new TextItem(R.string.mo_download_latest_nightly_release, ()->UiUtils.launchWebBrowser(getActivity(), "https://nightly.link/LucasGGamerM/moshidon/workflows/nightly-builds/master/moshidon-nightly.apk.zip"), R.drawable.ic_fluent_open_24_regular));
+//		}
 
 		items.add(new TextItem(R.string.mo_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));

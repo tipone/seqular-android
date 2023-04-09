@@ -115,7 +115,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 
 	private void actuallyCheckForUpdates(){
 		Request req=new Request.Builder()
-				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases")
+				.url("https://api.github.com/repos/LucasGGamerM/moshidon-nightly/releases")
 				.build();
 		Call call=MastodonAPIController.getHttpClient().newCall(req);
 		try(Response resp=call.execute()){
@@ -126,34 +126,13 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 
 				String tag=obj.get("tag_name").getAsString();
 				String changelog=obj.get("body").getAsString();
-				Pattern pattern=Pattern.compile("v?(\\d+)\\.(\\d+)\\.(\\d+)\\+fork\\.(\\d+)");
-				Matcher matcher=pattern.matcher(tag);
-				if(!matcher.find()){
-					Log.w(TAG, "actuallyCheckForUpdates: release tag has wrong format: "+tag);
-					return;
-				}
-				int newMajor=Integer.parseInt(matcher.group(1)),
-						newMinor=Integer.parseInt(matcher.group(2)),
-						newRevision=Integer.parseInt(matcher.group(3)),
-						newForkNumber=Integer.parseInt(matcher.group(4));
-				matcher=pattern.matcher(BuildConfig.VERSION_NAME);
-				String[] currentParts=BuildConfig.VERSION_NAME.split("[.+]");
-				if(!matcher.find()){
-					Log.w(TAG, "actuallyCheckForUpdates: current version has wrong format: "+BuildConfig.VERSION_NAME);
-					return;
-				}
-				int curMajor=Integer.parseInt(matcher.group(1)),
-						curMinor=Integer.parseInt(matcher.group(2)),
-						curRevision=Integer.parseInt(matcher.group(3)),
-						curForkNumber=Integer.parseInt(matcher.group(4));
-				long newVersion=((long)newMajor << 32) | ((long)newMinor << 16) | newRevision;
-				long curVersion=((long)curMajor << 32) | ((long)curMinor << 16) | curRevision;
-				if(newVersion>curVersion || newForkNumber>curForkNumber){
-					String version=newMajor+"."+newMinor+"."+newRevision+"+fork."+newForkNumber;
+
+				if(!tag.substring(tag.indexOf("-") + 1).equals(BuildConfig.VERSION_NAME.substring(BuildConfig.VERSION_NAME.lastIndexOf("@") + 1))){
+					String version=tag.substring(tag.indexOf("-") + 1);
 					Log.d(TAG, "actuallyCheckForUpdates: new version: "+version);
 					for(JsonElement el:obj.getAsJsonArray("assets")){
 						JsonObject asset=el.getAsJsonObject();
-						if("moshidon.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
+						if("moshidon-nightly.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
 							long size=asset.get("size").getAsLong();
 							String url=asset.get("browser_download_url").getAsString();
 
