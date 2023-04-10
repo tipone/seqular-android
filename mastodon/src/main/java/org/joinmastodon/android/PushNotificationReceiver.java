@@ -1,5 +1,7 @@
 package org.joinmastodon.android;
 
+import static org.joinmastodon.android.GlobalUserPreferences.getPrefs;
+
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationChannelGroup;
@@ -54,7 +56,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String ACTION_KEY_TEXT_REPLY = "ACTION_KEY_TEXT_REPLY";
 
 	private static final int SUMMARY_ID = 791;
-	private static int notificationId = GlobalUserPreferences.latestNotificationId;
+	private static int notificationId;
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -143,6 +145,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 	private void notify(Context context, PushNotification pn, String accountID, org.joinmastodon.android.model.Notification notification){
 		NotificationManager nm=context.getSystemService(NotificationManager.class);
+		notificationId=getPrefs().getInt("latestNotificationId", 0);
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		String accountName="@"+self.username+"@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 		Notification.Builder builder;
@@ -214,7 +217,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 
 		int id = GlobalUserPreferences.keepOnlyLatestNotification ? NOTIFICATION_ID : notificationId++;
-		GlobalUserPreferences.save();
+		getPrefs().edit().putInt("latestNotificationId", notificationId).apply();
 
 		if (notification != null){
 			switch (pn.notificationType){
