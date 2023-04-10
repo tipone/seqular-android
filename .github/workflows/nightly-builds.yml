@@ -17,10 +17,10 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: gradle
-        
+    
     - name: Get current date
       id: date
-      run: echo "::set-output name=date::$(date +'%Y-%m-%d')"
+      run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
