@@ -5,6 +5,7 @@ plugins {
 android {
 	compileSdk 33
 	defaultConfig {
+		manifestPlaceholders = [oAuthScheme:"moshidon-android-auth"]
 		archivesBaseName = "moshidon"
 		applicationId "org.joinmastodon.android.moshinda"
 		minSdk 23
@@ -49,6 +50,7 @@ android {
 			debuggable true
 			versionNameSuffix '-debug'
 			applicationIdSuffix '.debug'
+			manifestPlaceholders = [oAuthScheme:"moshidon-android-debug-auth"]
 		}
 		githubRelease{
 			initWith release
@@ -64,6 +66,7 @@ android {
 			}
 			applicationIdSuffix '.nightly'
 			signingConfig signingConfigs.nightly
+			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
 		}
 		playRelease{
 			initWith release
