@@ -186,6 +186,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_confirm_before_reblog, R.drawable.ic_fluent_checkmark_circle_24_regular, GlobalUserPreferences.confirmBeforeReblog, i->{
+			GlobalUserPreferences.confirmBeforeReblog=i.checked;
+			GlobalUserPreferences.save();
+		}));
 		items.add(new SwitchItem(R.string.mo_swap_bookmark_with_reblog, R.drawable.ic_boost, GlobalUserPreferences.swapBookmarkWithBoostAction, i -> {
 			GlobalUserPreferences.swapBookmarkWithBoostAction=i.checked;
 			GlobalUserPreferences.save();
@@ -241,10 +245,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
 			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
-			GlobalUserPreferences.save();
-		}));
-		items.add(new SwitchItem(R.string.sk_settings_confirm_before_reblog, R.drawable.ic_fluent_checkmark_circle_24_regular, GlobalUserPreferences.confirmBeforeReblog, i->{
-			GlobalUserPreferences.confirmBeforeReblog=i.checked;
 			GlobalUserPreferences.save();
 		}));
 
