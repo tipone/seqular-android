@@ -253,4 +253,25 @@
     <string name="sk_collapse">Mostrar menos</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Adicionar \"re:\" nas respostas com Avisos de Conteúdo</string>
     <string name="sk_spectator_mode">Modo espectador</string>
+    <string name="sk_quoting_user">Citando %s</string>
+    <string name="sk_settings_reply_visibility_all">Todas as respostas</string>
+    <string name="sk_settings_reply_visibility">Visibilidade da resposta</string>
+    <string name="sk_settings_reply_visibility_self">Respostas para mim</string>
+    <string name="sk_signed_up">se inscreveu</string>
+    <string name="sk_reported">reportado</string>
+    <string name="sk_sign_ups">Usuários se inscrevendo</string>
+    <string name="sk_new_reports">Novas reportagens</string>
+    <string name="sk_settings_hide_interaction">Esconder botões de interação</string>
+    <string name="sk_follow_as">Seguir com outra conta</string>
+    <string name="sk_followed_as">Seguindo por %s</string>
+    <string name="sk_settings_hide_fab">Ocultar compositor ao rolar a tela</string>
+    <string name="sk_in_reply">Em resposta</string>
+    <string name="sk_show_thread">Mostrar fio</string>
+    <string name="sk_settings_reply_visibility_following">Respostas para meus seguidores</string>
+    <string name="sk_settings_show_new_posts_button">Botão \"Ver novas publicações\"</string>
+    <string name="sk_settings_collapse_long_posts">Colapsar postagens muito longas</string>
+    <string name="sk_notification_action_replied">Resposta enviada para %s</string>
+    <string name="sk_reply_line_above_avatar">Linha \"Em resposta para\" acima do avatar</string>
+    <string name="sk_compact_reblog_reply_line">Linha respota/reblog compacta</string>
+    <string name="sk_settings_confirm_before_reblog">Confirmar antes de reblogar</string>
 </resources>
