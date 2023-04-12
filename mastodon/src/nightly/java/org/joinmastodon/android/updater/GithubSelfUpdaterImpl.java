@@ -212,6 +212,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}
 		intent.setDataAndType(uri, "application/vnd.android.package-archive");
 		activity.startActivity(intent);
+		setState(UpdateState.NO_UPDATE);
 
 		// TODO figure out how to restart the app when updating via this new API
 		/*
