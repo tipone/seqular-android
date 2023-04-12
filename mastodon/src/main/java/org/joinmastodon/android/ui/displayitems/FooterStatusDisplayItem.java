@@ -232,8 +232,13 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
-							boost.setSelected(!status.reblogged);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
+							if (GlobalUserPreferences.confirmBeforeReblog) {
+								v.startAnimation(opacityIn);
+								onBoostLongClick(v);
+							} else {
+								boost.setSelected(!status.reblogged);
+								AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
+							}
 						}
 				);
 				return;
