@@ -100,6 +100,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		UiUtils.loadMaxWidth(getContext());
 		if(GlobalUserPreferences.disableMarquee){
 			setTitleMarqueeEnabled(false);
 			setSubtitleMarqueeEnabled(false);
@@ -798,7 +799,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					if(!imgHolder.getItem().status.spoilerRevealed){
 						if(TextUtils.isEmpty(imgHolder.getItem().status.spoilerText)){
 							int listWidth=getListWidthForMediaLayout();
-							int width=Math.min(listWidth, V.dp(MediaGridLayout.MAX_WIDTH));
+							int width=Math.min(listWidth, UiUtils.MAX_WIDTH);
 							if(currentMediaHiddenLayoutsWidth!=width)
 								rebuildMediaHiddenLayouts(width-V.dp(32));
 							c.save();

@@ -50,6 +50,7 @@ public class GlobalUserPreferences{
 	public static boolean defaultToUnlistedReplies;
 	public static boolean disableDoubleTapToSwipe;
 	public static boolean compactReblogReplyLine;
+	public static boolean confirmBeforeReblog;
 	public static boolean replyLineAboveHeader;
 	public static boolean swapBookmarkWithBoostAction;
 	public static String publishButtonText;
@@ -116,6 +117,8 @@ public class GlobalUserPreferences{
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
 		disableDoubleTapToSwipe=prefs.getBoolean("disableDoubleTapToSwipe", false);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
+		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
+		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
@@ -173,6 +176,7 @@ public class GlobalUserPreferences{
 				.putBoolean("disableDoubleTapToSwipe", disableDoubleTapToSwipe)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
+				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())

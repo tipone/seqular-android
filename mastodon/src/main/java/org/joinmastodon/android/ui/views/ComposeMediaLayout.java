@@ -3,13 +3,13 @@ package org.joinmastodon.android.ui.views;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.view.View;
 import android.view.ViewGroup;
+
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 import me.grishka.appkit.utils.V;
 
 public class ComposeMediaLayout extends ViewGroup{
-	private static final int MAX_WIDTH_DP=400;
 	private static final int GAP_DP=8;
 	private static final float ASPECT_RATIO=0.5625f;
 
@@ -23,6 +23,7 @@ public class ComposeMediaLayout extends ViewGroup{
 
 	public ComposeMediaLayout(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
+		UiUtils.loadMaxWidth(context);
 	}
 
 	@Override
@@ -30,7 +31,7 @@ public class ComposeMediaLayout extends ViewGroup{
 		int mode=MeasureSpec.getMode(widthMeasureSpec);
 		@SuppressLint("SwitchIntDef")
 		int width=switch(mode){
-			case MeasureSpec.AT_MOST -> Math.min(V.dp(MAX_WIDTH_DP), MeasureSpec.getSize(widthMeasureSpec));
+			case MeasureSpec.AT_MOST -> Math.min(UiUtils.MAX_WIDTH, MeasureSpec.getSize(widthMeasureSpec));
 			case MeasureSpec.EXACTLY -> MeasureSpec.getSize(widthMeasureSpec);
 			default -> throw new IllegalArgumentException("unsupported measure mode");
 		};

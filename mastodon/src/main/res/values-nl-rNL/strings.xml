@@ -251,7 +251,7 @@
 	<string name="notify_favorites">Mijn bericht als favoriet markeert</string>
 	<string name="notify_follow">Mij volgt</string>
 	<string name="notify_reblog">boost mijn bericht</string>
-	<string name="notify_mention">vermeldt mij</string>
+	<string name="notify_mention">Mij vermeldt</string>
 	<string name="settings_boring">De saaie zone</string>
 	<string name="settings_account">Accountinstellingen</string>
 	<string name="settings_contribute">Bijdragen aan Mastodon</string>
@@ -285,6 +285,7 @@
 	<string name="follow_user">%s volgen</string>
 	<string name="unfollowed_user">%s ontvolgd</string>
 	<string name="followed_user">Je volgt %s nu</string>
+	<string name="following_user_requested">Je volgverzoek is aan %s verstuurd</string>
 	<string name="open_in_browser">Openen in browser</string>
 	<string name="hide_boosts_from_user">Boosts van %s verbergen</string>
 	<string name="show_boosts_from_user">Boosts van %s tonen</string>

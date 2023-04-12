@@ -14,6 +14,7 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.jsoup.internal.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -57,9 +58,15 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		String subject = "";
 		if (intent.hasExtra(Intent.EXTRA_SUBJECT)) {
 			subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
-			if (!subject.isBlank()) builder.append(subject).append("\n\n");
+			if (!StringUtil.isBlank(subject)) builder.append(subject).append("\n\n");
 		}
-		if (intent.hasExtra(Intent.EXTRA_TEXT)) builder.append(intent.getStringExtra(Intent.EXTRA_TEXT)).append("\n");
+		if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+			String extra = intent.getStringExtra(Intent.EXTRA_TEXT);
+			if (!StringUtil.isBlank(extra)) {
+				if (extra.startsWith(subject)) extra = extra.substring(subject.length()).trim();
+				builder.append(extra).append("\n\n");
+			}
+		}
 		String text=builder.toString();
 		List<Uri> mediaUris;
 		if(Intent.ACTION_SEND.equals(intent.getAction())){
@@ -86,8 +93,7 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		args.putString("account", accountID);
 		if(!TextUtils.isEmpty(text))
 			args.putString("prefilledText", text);
-		if(!subject.isBlank())
-			args.putInt("selectionEnd", subject.length());
+		args.putInt("selectionStart", StringUtil.isBlank(subject) ? 0 : subject.length());
 		if(mediaUris!=null && !mediaUris.isEmpty())
 			args.putParcelableArrayList("mediaAttachments", toArrayList(mediaUris));
 		Fragment fragment=new ComposeFragment();

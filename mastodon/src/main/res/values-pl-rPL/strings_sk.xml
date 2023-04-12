@@ -262,4 +262,13 @@
     <string name="sk_follow_as">Obserwuj z innego konta</string>
     <string name="sk_settings_hide_fab">Automatycznie ukrywaj przycisk tworzenia nowego wpisu</string>
     <string name="sk_in_reply">W odpowiedzi</string>
+    <string name="sk_settings_reply_visibility_following">Odpowiedzi do moich obserwacji</string>
+    <string name="sk_quoting_user">Cytowanie %s</string>
+    <string name="sk_settings_reply_visibility">Widoczność odpowiedzi</string>
+    <string name="sk_settings_reply_visibility_all">Wszystkie odpowiedzi</string>
+    <string name="sk_settings_reply_visibility_self">Odpowiedzi do mnie</string>
+    <string name="sk_notification_action_replied">Wysłano odpowiedź do %s</string>
+    <string name="sk_reply_line_above_avatar">Tekst \"W odpowiedzi na\" nad avatarem</string>
+    <string name="sk_show_thread">Pokaż wątek</string>
+    <string name="sk_compact_reblog_reply_line">Zmniejsz linię reblogu/odpowiedzi</string>
 </resources>

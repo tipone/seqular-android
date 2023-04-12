@@ -243,6 +243,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_confirm_before_reblog, R.drawable.ic_fluent_checkmark_circle_24_regular, GlobalUserPreferences.confirmBeforeReblog, i->{
+			GlobalUserPreferences.confirmBeforeReblog=i.checked;
+			GlobalUserPreferences.save();
+		}));
 
 		items.add(new HeaderItem(R.string.sk_timelines));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{

@@ -263,4 +263,13 @@
     <string name="sk_followed_as">Seguida dende %s</string>
     <string name="sk_settings_hide_fab">Auto-ocultar botón de redacción</string>
     <string name="sk_in_reply">Respondendo</string>
+    <string name="sk_quoting_user">Citando a %s</string>
+    <string name="sk_settings_reply_visibility">Visibilidade da resposta</string>
+    <string name="sk_settings_reply_visibility_all">Todas as respostas</string>
+    <string name="sk_settings_reply_visibility_following">Respostas aos meus seguidos</string>
+    <string name="sk_settings_reply_visibility_self">Respostas a min</string>
+    <string name="sk_notification_action_replied">Resposta enviada a %s</string>
+    <string name="sk_reply_line_above_avatar">Liña \"en resposta a\" sobre o avatar</string>
+    <string name="sk_show_thread">Mostrar chío</string>
+    <string name="sk_compact_reblog_reply_line">Compactar liña de promoción/resposta</string>
 </resources>

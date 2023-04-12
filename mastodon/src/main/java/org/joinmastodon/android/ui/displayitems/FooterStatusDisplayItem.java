@@ -238,6 +238,11 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				);
 				return;
 			}
+			if (GlobalUserPreferences.confirmBeforeReblog) {
+				v.startAnimation(opacityIn);
+				onBoostLongClick(v);
+				return;
+			}
 			boost.setSelected(!item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}
@@ -273,9 +278,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			reblogHeader.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
 			reblogAs.setVisibility(AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1 ? View.VISIBLE : View.GONE);
 
-			itemPublic.setVisibility(item.status.reblogged || item.status.visibility.isLessVisibleThan(StatusPrivacy.PUBLIC) ? View.GONE : View.VISIBLE);
-			itemUnlisted.setVisibility(item.status.reblogged || item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) ? View.GONE : View.VISIBLE);
-			itemFollowers.setVisibility(item.status.reblogged || item.status.visibility.isLessVisibleThan(StatusPrivacy.PRIVATE) ? View.GONE : View.VISIBLE);
+			itemPublic.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
+			itemUnlisted.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
+			itemFollowers.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
 
 			Drawable checkMark = ctx.getDrawable(R.drawable.ic_fluent_checkmark_circle_20_regular);
 			Drawable publicDrawable = ctx.getDrawable(R.drawable.ic_fluent_earth_24_regular);
@@ -283,16 +288,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			Drawable followersDrawable = ctx.getDrawable(R.drawable.ic_fluent_lock_closed_24_regular);
 
 			StatusPrivacy defaultVisibility = session.preferences != null ? session.preferences.postingDefaultVisibility : null;
-			// e.g. post visibility is unlisted, but default is public
-			// in this case, we want to display the check mark on the most visible visibility
-			if (defaultVisibility != null && item.status.visibility.isLessVisibleThan(defaultVisibility)) {
-				for (StatusPrivacy vis : StatusPrivacy.values()) {
-					if (vis.equals(item.status.visibility)) {
-						defaultVisibility = vis;
-						break;
-					}
-				}
-			}
 			itemPublic.setCompoundDrawablesWithIntrinsicBounds(publicDrawable, null, StatusPrivacy.PUBLIC.equals(defaultVisibility) ? checkMark : null, null);
 			itemUnlisted.setCompoundDrawablesWithIntrinsicBounds(unlistedDrawable, null, StatusPrivacy.UNLISTED.equals(defaultVisibility) ? checkMark : null, null);
 			itemFollowers.setCompoundDrawablesWithIntrinsicBounds(followersDrawable, null, StatusPrivacy.PRIVATE.equals(defaultVisibility) ? checkMark : null, null);

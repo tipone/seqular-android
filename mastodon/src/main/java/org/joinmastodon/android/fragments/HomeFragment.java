@@ -336,6 +336,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void updateNotificationBadge() {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
 		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		if (instance == null) return;
 
 		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.pleroma != null)
 				.setCallback(new Callback<>() {

@@ -6,13 +6,13 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 import me.grishka.appkit.utils.V;
 
 public class MediaGridLayout extends ViewGroup{
 	private static final String TAG="MediaGridLayout";
 
-	public static final int MAX_WIDTH=400; // dp
 	private static final int GAP=1; // dp
 	private PhotoLayoutHelper.TiledLayoutResult tiledLayout;
 	private int[] columnStarts=new int[10], columnEnds=new int[10], rowStarts=new int[10], rowEnds=new int[10];
@@ -27,7 +27,7 @@ public class MediaGridLayout extends ViewGroup{
 
 	public MediaGridLayout(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
-
+		UiUtils.loadMaxWidth(context);
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class MediaGridLayout extends ViewGroup{
 			setMeasuredDimension(MeasureSpec.getSize(widthMeasureSpec), 0);
 			return;
 		}
-		int width=Math.min(V.dp(MAX_WIDTH), MeasureSpec.getSize(widthMeasureSpec));
+		int width=Math.min(UiUtils.MAX_WIDTH, MeasureSpec.getSize(widthMeasureSpec));
 		int height=Math.round(width*(tiledLayout.height/(float)PhotoLayoutHelper.MAX_WIDTH));
 
 		int offset=0;
@@ -74,10 +74,9 @@ public class MediaGridLayout extends ViewGroup{
 		if(tiledLayout==null)
 			return;
 
-		int maxWidth=V.dp(MAX_WIDTH);
 		int xOffset=0;
-		if(r-l>maxWidth){
-			xOffset=(r-l)/2-maxWidth/2;
+		if(r-l>UiUtils.MAX_WIDTH){
+			xOffset=(r-l)/2-UiUtils.MAX_WIDTH/2;
 		}
 
 		for(int i=0;i<getChildCount();i++){
