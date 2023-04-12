@@ -228,24 +228,19 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onBoostClick(View v){
+			if (GlobalUserPreferences.confirmBeforeReblog) {
+				v.startAnimation(opacityIn);
+				onBoostLongClick(v);
+				return;
+			}
 			if(item.status.reloadWhenClicked){
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
-							if (GlobalUserPreferences.confirmBeforeReblog) {
-								v.startAnimation(opacityIn);
-								onBoostLongClick(v);
-							} else {
-								boost.setSelected(!status.reblogged);
-								AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
-							}
+							boost.setSelected(!status.reblogged);
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
 						}
 				);
-				return;
-			}
-			if (GlobalUserPreferences.confirmBeforeReblog) {
-				v.startAnimation(opacityIn);
-				onBoostLongClick(v);
 				return;
 			}
 			boost.setSelected(!item.status.reblogged);
@@ -265,9 +260,22 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			Consumer<StatusPrivacy> doReblog = (visibility) -> {
 				v.startAnimation(opacityOut);
-				session.getStatusInteractionController()
-						.setReblogged(item.status, !item.status.reblogged, visibility, r->boostConsumer(v, r));
-				dialog.dismiss();
+				if(item.status.reloadWhenClicked){
+					UiUtils.lookupStatus(v.getContext(),
+							item.status, item.accountID, null,
+							status -> {
+								session.getStatusInteractionController()
+										.setReblogged(status, !status.reblogged, visibility, r->boostConsumer(v, r));
+								boost.setSelected(status.reblogged);
+								dialog.dismiss();
+							}
+					);
+				} else {
+					session.getStatusInteractionController()
+							.setReblogged(item.status, !item.status.reblogged, visibility, r->boostConsumer(v, r));
+					boost.setSelected(item.status.reblogged);
+					dialog.dismiss();
+				}
 			};
 
 			View separator = menu.findViewById(R.id.separator);
