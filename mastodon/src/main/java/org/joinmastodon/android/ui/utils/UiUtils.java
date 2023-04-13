@@ -1127,7 +1127,7 @@ public class UiUtils {
 			return;
 		}
 
-		new GetSearchResults(query.getQuery(), type, true).setCallback(new Callback<>() {
+		new GetSearchResults(query.getQuery(), type, false).setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
 						Optional<T> result = extractResult.apply(results);
