@@ -117,6 +117,8 @@ import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import androidx.annotation.AttrRes;
@@ -1069,6 +1071,18 @@ public class UiUtils {
 		);
 	}
 
+	public static void lookupRemoteStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> resultConsumer) {
+		remoteLookup(context, queryStatus, targetAccountID, sourceAccountID, GetSearchResults.Type.STATUSES, resultConsumer, results ->
+				!results.statuses.isEmpty() ? Optional.of(results.statuses.get(0)) : Optional.empty()
+		);
+	}
+
+	public static void lookupRemoteAccount(Context context, Account queryAccount, String targetAccountID, @Nullable String sourceAccountID, Consumer<Account> resultConsumer) {
+		remoteLookup(context, queryAccount, targetAccountID, sourceAccountID, GetSearchResults.Type.ACCOUNTS, resultConsumer, results ->
+				!results.accounts.isEmpty() ? Optional.of(results.accounts.get(0)) : Optional.empty()
+		);
+	}
+
 	public static <T extends Searchable> void lookup(Context context, T query, String targetAccountID, @Nullable String sourceAccountID, @Nullable GetSearchResults.Type type, Consumer<T> resultConsumer, Function<SearchResults, Optional<T>> extractResult) {
 		if (sourceAccountID != null && targetAccountID.startsWith(sourceAccountID.substring(0, sourceAccountID.indexOf('_')))) {
 			resultConsumer.accept(query);
@@ -1094,6 +1108,44 @@ public class UiUtils {
 				.wrapProgress((Activity)context, R.string.loading, true,
 						d -> transformDialogForLookup(context, targetAccountID, null, d))
 				.exec(targetAccountID);
+	}
+
+	public static <T extends Searchable> void remoteLookup(Context context, T query, String targetAccountID, @Nullable String sourceAccountID, @Nullable GetSearchResults.Type type, Consumer<T> resultConsumer, Function<SearchResults, Optional<T>> extractResult) {
+		if (sourceAccountID != null && targetAccountID.startsWith(sourceAccountID.substring(0, sourceAccountID.indexOf('_')))) {
+			resultConsumer.accept(query);
+			return;
+		}
+
+		Pattern pattern = Pattern.compile("(?<=\\/\\/)([^\\/]+)(?=\\/@)");
+		Matcher matcher = pattern.matcher(query.getQuery());
+		String domain = null;
+		if(matcher.find()){
+			domain = matcher.group(1);
+		}
+
+		if(domain == null){
+			return;
+		}
+
+		new GetSearchResults(query.getQuery(), type, true).setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(SearchResults results) {
+						Optional<T> result = extractResult.apply(results);
+						if (result.isPresent()) resultConsumer.accept(result.get());
+						else {
+							Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+							resultConsumer.accept(null);
+						}
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(context);
+					}
+				})
+				.wrapProgress((Activity)context, R.string.loading, true,
+						d -> transformDialogForLookup(context, targetAccountID, null, d))
+				.execNoAuth(domain);
 	}
 
 	public static void openURL(Context context, String accountID, String url) {
