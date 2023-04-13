@@ -6,6 +6,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.api.requests.statuses.GetStatusFavorites;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Status;
 
 public class StatusFavoritesListFragment extends StatusRelatedAccountListFragment{
 	@Override
@@ -15,7 +16,21 @@ public class StatusFavoritesListFragment extends StatusRelatedAccountListFragmen
 	}
 
 	@Override
+	public Account getTargetAccount(){
+		return null;
+	}
+	@Override
+	public Status getTargetStatus(){
+		return status;
+	}
+
+	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
 		return new GetStatusFavorites(status.id, maxID, count);
+	}
+
+	@Override
+	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count){
+		return new GetStatusFavorites(id, maxID, count);
 	}
 }

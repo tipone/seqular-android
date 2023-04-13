@@ -6,6 +6,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.api.requests.statuses.GetStatusReblogs;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Status;
 
 public class StatusReblogsListFragment extends StatusRelatedAccountListFragment{
 	@Override
@@ -15,7 +16,20 @@ public class StatusReblogsListFragment extends StatusRelatedAccountListFragment{
 	}
 
 	@Override
+	public Account getTargetAccount(){
+		return null;
+	}
+	@Override
+	public Status getTargetStatus(){
+		return status;
+	}
+	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
 		return new GetStatusReblogs(status.id, maxID, count);
+	}
+
+	@Override
+	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count){
+		return new GetStatusReblogs(id, maxID, count);
 	}
 }
