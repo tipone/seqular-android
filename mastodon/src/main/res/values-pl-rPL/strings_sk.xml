@@ -271,4 +271,6 @@
     <string name="sk_reply_line_above_avatar">Tekst \"W odpowiedzi na\" nad avatarem</string>
     <string name="sk_show_thread">Pokaż wątek</string>
     <string name="sk_compact_reblog_reply_line">Zmniejsz linię reblogu/odpowiedzi</string>
+    <string name="sk_settings_show_new_posts_button">Przycisk \"Pokaż nowe wpisy\"</string>
+    <string name="sk_settings_confirm_before_reblog">Potwierdź przed reblogowaniem</string>
 </resources>
