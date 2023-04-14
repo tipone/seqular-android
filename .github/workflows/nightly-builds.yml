@@ -16,7 +16,7 @@ jobs:
       with:
         java-version: '17'
         distribution: 'corretto'
-#         cache: gradle
+        cache: gradle
     
     - name: Get current date
       id: date
