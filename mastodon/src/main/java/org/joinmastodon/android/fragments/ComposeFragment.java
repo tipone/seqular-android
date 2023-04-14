@@ -1602,7 +1602,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if(att.isUploadingOrProcessing())
 			att.cancelUpload();
 		attachments.remove(att);
-		uploadNextQueuedAttachment();
+		if(!areThereAnyUploadingAttachments())
+			uploadNextQueuedAttachment();
 		attachmentsView.removeView(att.view);
 		if(getMediaAttachmentsCount()==0)
 			attachmentsView.setVisibility(View.GONE);

@@ -19,7 +19,6 @@ public class MediaAttachmentViewController{
 	public final MediaGridStatusDisplayItem.GridItemType type;
 	public final ImageView photo;
 	public final View altButton, noAltButton, btnsWrap;
-	public static int[] altWrapPadding = null;
 	private BlurhashCrossfadeDrawable crossfadeDrawable=new BlurhashCrossfadeDrawable();
 	private final Context context;
 	private boolean didClear;
@@ -37,9 +36,6 @@ public class MediaAttachmentViewController{
 		btnsWrap=view.findViewById(R.id.alt_badges);
 		this.type=type;
 		this.context=context;
-		if (altWrapPadding == null) {
-			altWrapPadding = new int[] { btnsWrap.getPaddingLeft(), btnsWrap.getPaddingTop(), btnsWrap.getPaddingRight(), btnsWrap.getPaddingBottom() };
-		}
 	}
 
 	public void bind(Attachment attachment, Status status){

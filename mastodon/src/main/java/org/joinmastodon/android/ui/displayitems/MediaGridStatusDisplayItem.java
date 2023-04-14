@@ -1,7 +1,5 @@
 package org.joinmastodon.android.ui.displayitems;
 
-import static org.joinmastodon.android.ui.utils.MediaAttachmentViewController.altWrapPadding;
-
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
@@ -202,15 +200,16 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 					btnL-=loc[0];
 					btnT-=loc[1];
 
+					ViewGroup.MarginLayoutParams margins = (ViewGroup.MarginLayoutParams) altTextWrapper.getLayoutParams();
 					ArrayList<Animator> anims=new ArrayList<>();
 					anims.add(ObjectAnimator.ofFloat(altTextButton, View.ALPHA, 1, 0));
 					anims.add(ObjectAnimator.ofFloat(noAltTextButton, View.ALPHA, 1, 0));
 					anims.add(ObjectAnimator.ofFloat(altTextScroller, View.ALPHA, 0, 1));
 					anims.add(ObjectAnimator.ofFloat(altTextClose, View.ALPHA, 0, 1));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL+altWrapPadding[0], altTextWrapper.getLeft()));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT+altWrapPadding[1], altTextWrapper.getTop()));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+v.getWidth()-altWrapPadding[2], altTextWrapper.getRight()));
-					anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+v.getHeight()-altWrapPadding[3], altTextWrapper.getBottom()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL+margins.leftMargin, altTextWrapper.getLeft()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT+margins.topMargin, altTextWrapper.getTop()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+v.getWidth()-margins.rightMargin, altTextWrapper.getRight()));
+					anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+v.getHeight()-margins.bottomMargin, altTextWrapper.getBottom()));
 					for(Animator a:anims)
 						a.setDuration(300);
 
@@ -265,15 +264,16 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			btnL-=loc[0];
 			btnT-=loc[1];
 
+			ViewGroup.MarginLayoutParams margins = (ViewGroup.MarginLayoutParams) altTextWrapper.getLayoutParams();
 			ArrayList<Animator> anims=new ArrayList<>();
 			anims.add(ObjectAnimator.ofFloat(altTextButton, View.ALPHA, 1));
 			anims.add(ObjectAnimator.ofFloat(noAltTextButton, View.ALPHA, 1));
 			anims.add(ObjectAnimator.ofFloat(altTextScroller, View.ALPHA, 0));
 			anims.add(ObjectAnimator.ofFloat(altTextClose, View.ALPHA, 0));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL+altWrapPadding[0]));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT+altWrapPadding[1]));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+btn.getWidth()-altWrapPadding[2]));
-			anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+btn.getHeight()-altWrapPadding[3]));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "left", btnL+margins.leftMargin));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "top", btnT+margins.topMargin));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "right", btnL+btn.getWidth()-margins.rightMargin));
+			anims.add(ObjectAnimator.ofInt(altTextWrapper, "bottom", btnT+btn.getHeight()-margins.bottomMargin));
 			for(Animator a:anims)
 				a.setDuration(300);
 
