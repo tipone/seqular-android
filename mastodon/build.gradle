@@ -57,6 +57,7 @@ android {
 		}
 		nightly{
 			initWith release
+			debuggable true
 			if(System.getenv("CURRENT_DATE") != null){
 				versionNameSuffix '-nightly+@' + System.getenv("CURRENT_DATE")
 			} else {
