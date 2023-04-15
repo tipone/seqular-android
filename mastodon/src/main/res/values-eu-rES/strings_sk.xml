@@ -261,4 +261,16 @@
     <string name="sk_follow_as">Jarraitu beste kontu batetik</string>
     <string name="sk_followed_as">%s-(d/t)ik jarraitua</string>
     <string name="sk_settings_hide_fab">Automatikoki ezkutatu Idatzi botoia</string>
+    <string name="sk_settings_reply_visibility_all">Erantzun guztiak</string>
+    <string name="sk_settings_reply_visibility_self">Niri eginiko erantzunak</string>
+    <string name="sk_settings_reply_visibility_following">Jarraitzen ditudanei eginiko erantzunak</string>
+    <string name="sk_in_reply">Erantzunez</string>
+    <string name="sk_reply_line_above_avatar">“Honi erantzunez” abatarraren gaineko lerroa</string>
+    <string name="sk_show_thread">Erakutsi haria</string>
+    <string name="sk_settings_confirm_before_reblog">Berretsi bultzatu aurretik</string>
+    <string name="sk_quoting_user">%s aipatzen</string>
+    <string name="sk_settings_reply_visibility">Erantzunaren ikusgarritasuna</string>
+    <string name="sk_settings_show_new_posts_button">“Erakutsi argitalpen berriak” botoia</string>
+    <string name="sk_notification_action_replied">%s-(r)i erantzuna bidali da</string>
+    <string name="sk_compact_reblog_reply_line">Bultzada / erantzun lerro trinkoa</string>
 </resources>
