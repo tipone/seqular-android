@@ -1,10 +1,8 @@
 package org.joinmastodon.android.ui.text;
 
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
-import android.util.Log;
 import android.view.View;
 
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -49,14 +47,7 @@ public class LinkSpan extends CharacterStyle {
 	}
 
 	public void onLongClick(View view) {
-		if (getType() == Type.URL) {
-            Intent shareIntent = new Intent(Intent.ACTION_SEND)
-                    .setType("text/plain")
-                    .putExtra(Intent.EXTRA_TEXT, link);
-			view.getContext().startActivity(Intent.createChooser(shareIntent, null));
-		} else {
-			UiUtils.copyText(view, text);
-		}
+		UiUtils.copyText(view, getType() == Type.URL ? link : text);
 	}
 
 	public String getLink(){
