@@ -147,7 +147,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 									.putString("version", version)
 									.putString("apkURL", url)
 									.putString("changelog", changelog)
-									.putInt("checkedByBuild", BuildConfig.VERSION_CODE)
+									.putInt("checkedByBuild", BuildConfig.VERSION_CODE - 1)
 									.remove("downloadID")
 									.apply();
 
