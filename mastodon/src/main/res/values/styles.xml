@@ -227,7 +227,7 @@
 		<item name="colorBackgroundLightest">@color/black</item>
 		<item name="colorBackgroundPopup">?colorGray900</item>
 		<item name="colorWindowBackground">@color/black</item>
-		<item name="colorComposeButton">?android:colorAccent</item>
+<!--		<item name="colorComposeButton">?android:colorAccent</item>-->
 		<item name="colorComposeButtonBackground">?colorGray100</item>
 
 		<item name="colorM3Background">#000</item>
