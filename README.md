@@ -12,7 +12,7 @@
 
 [![Translation status](https://translate.codeberg.org/widgets/moshidon/-/svg-badge.svg)](https://translate.codeberg.org/engage/moshidon/)
 &nbsp;
-[![Nightly build](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/android.yml)
+[![Nightly build](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml)
 
 <a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="50" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
 &nbsp;
