@@ -140,6 +140,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i->{
 			GlobalUserPreferences.disableMarquee=i.checked;
 			GlobalUserPreferences.save();
+			needAppRestart=true;
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i->{
 			GlobalUserPreferences.uniformNotificationIcon=i.checked;
