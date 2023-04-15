@@ -113,6 +113,10 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		fragments = new Fragment[count];
 		tabViews = new FrameLayout[count];
 		timelines = new TimelineDefinition[count];
+		if(GlobalUserPreferences.disableMarquee){
+			setTitleMarqueeEnabled(false);
+			setSubtitleMarqueeEnabled(false);
+		}
 	}
 
 	@Override
