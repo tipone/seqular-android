@@ -258,10 +258,10 @@
 	<color name="yellow_primary_100">#ffe084</color>
 	<color name="yellow_primary_200">#e8c349</color>
 	<color name="yellow_primary_300">#cba82f</color>
-	<color name="yellow_primary_400">#ae8d10</color>
+	<color name="yellow_primary_400">#FFFF00</color>
 	<color name="yellow_primary_500">#8f7300</color>
 	<color name="yellow_primary_600">#735c00</color>
-	<color name="yellow_primary_700">#574500</color>
+	<color name="yellow_primary_700">#999900</color>
 	<color name="yellow_primary_800">#3c2f00</color>
 	<color name="yellow_primary_900">#231b00</color>
 
