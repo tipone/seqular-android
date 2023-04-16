@@ -1,5 +1,7 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.net.Uri;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.model.Account;
@@ -24,7 +26,7 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 		if(GlobalUserPreferences.loadRemoteAccountFollowers){
 			if ((this instanceof FollowingListFragment || this instanceof FollowerListFragment) && targetAccount != null){
 				UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
-					if(account != null){
+					if(account != null && account.getDomain() != null){
 						currentRequest=onCreateRemoteRequest(account.id, offset==0 ? null : nextMaxID, count)
 								.setCallback(new SimpleCallback<>(this){
 									@Override
@@ -35,6 +37,9 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 											nextMaxID=null;
 										result.stream().forEach(remoteAccount -> {
 											remoteAccount.reloadWhenClicked = true;
+											if (remoteAccount.getDomain() == null) {
+												remoteAccount.acct += "@" + Uri.parse(remoteAccount.url).getHost();
+											}
 										});
 										if (getActivity() == null) return;
 										onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), false);
