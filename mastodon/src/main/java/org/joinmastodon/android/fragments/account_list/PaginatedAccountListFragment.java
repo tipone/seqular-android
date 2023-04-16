@@ -9,7 +9,6 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.Callback;
@@ -27,8 +26,7 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		if(GlobalUserPreferences.loadRemoteAccountFollowers && targetAccount.getDomain() != null){
-			if ((this instanceof FollowingListFragment || this instanceof FollowerListFragment) && targetAccount != null){
+		if (shouldLoadRemote()) {
 				UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
 					if(account != null){
 						loadRemoteFollower(offset, count, account);
@@ -36,10 +34,16 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 						loadFollower(offset, count);
 					}
 				});
-			}
 		} else {
 			loadFollower(offset, count);
 		}
+	}
+
+	private boolean shouldLoadRemote() {
+		if (!GlobalUserPreferences.loadRemoteAccountFollowers && (this instanceof FollowingListFragment || this instanceof FollowerListFragment)) {
+			return false;
+		}
+		return targetAccount != null && targetAccount.getDomain() != null;
 	}
 
 	void loadFollower(int offset, int count) {
