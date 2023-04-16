@@ -134,8 +134,9 @@ public class Account extends BaseModel implements Searchable{
 	public Instant muteExpiresAt;
 
 	public List<Role> roles;
+    public boolean reloadWhenClicked;
 
-	@Override
+    @Override
 	public String getQuery() {
 		return url;
 	}

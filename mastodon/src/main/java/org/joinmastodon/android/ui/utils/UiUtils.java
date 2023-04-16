@@ -1127,7 +1127,20 @@ public class UiUtils {
 			return;
 		}
 
-		new GetSearchResults(query.getQuery(), type, false).setCallback(new Callback<>() {
+		Pattern patternForQuery = Pattern.compile("https?:\\/\\/[^\\/]+\\/@(\\w+)");
+		Matcher matcherForQuery = patternForQuery.matcher(query.getQuery());
+		String trimmedQuery = null;
+
+		if(matcherForQuery.find()){
+			trimmedQuery = matcherForQuery.group(1);
+		}
+
+		if(trimmedQuery == null){
+			return;
+		}
+
+		String finalDomain = domain;
+		new GetSearchResults(trimmedQuery, type, false).setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
 						Optional<T> result = extractResult.apply(results);
@@ -1144,7 +1157,7 @@ public class UiUtils {
 					}
 				})
 				.wrapProgress((Activity)context, R.string.loading, true,
-						d -> transformDialogForLookup(context, targetAccountID, null, d))
+						d -> transformDialogForLookup(context, targetAccountID, null, d, finalDomain))
 				.execNoAuth(domain);
 	}
 
@@ -1152,9 +1165,13 @@ public class UiUtils {
 		openURL(context, accountID, url, true);
 	}
 
-	private static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
+	private static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog){
+		transformDialogForLookup(context, accountID, url, dialog, null);
+	}
+
+	private static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog, @Nullable String instanceName) {
 		if (accountID != null) {
-			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, getInstanceName(accountID)));
+			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, instanceName != null ? instanceName : getInstanceName(accountID)));
 		} else {
 			dialog.setTitle(R.string.sk_loading_fediverse_resource_title);
 		}

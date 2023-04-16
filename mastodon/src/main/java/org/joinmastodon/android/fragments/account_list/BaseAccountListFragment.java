@@ -74,6 +74,8 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 
 	@Override
 	protected void onDataLoaded(List<AccountItem> d, boolean more){
+		if (getActivity() == null)
+			return;
 		if(refreshing){
 			relationships.clear();
 		}
@@ -267,6 +269,15 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 
 		@Override
 		public void onClick(){
+			if(item.account.reloadWhenClicked){
+				UiUtils.lookupAccount(getContext(), item.account, accountID, null, account -> {
+					Bundle args=new Bundle();
+					args.putString("account", accountID);
+					args.putParcelable("profileAccount", Parcels.wrap(account));
+					Nav.go(getActivity(), ProfileFragment.class, args);
+				});
+				return;
+			}
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putParcelable("profileAccount", Parcels.wrap(item.account));
