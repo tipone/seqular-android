@@ -6,7 +6,6 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.api.requests.accounts.GetAccountFollowing;
 import org.joinmastodon.android.model.Account;
-import org.joinmastodon.android.model.Status;
 
 public class FollowingListFragment extends AccountRelatedAccountListFragment{
 
@@ -15,22 +14,9 @@ public class FollowingListFragment extends AccountRelatedAccountListFragment{
 		super.onCreate(savedInstanceState);
 		setSubtitle(getResources().getQuantityString(R.plurals.x_following, (int)(account.followingCount%1000), account.followingCount));
 	}
-	@Override
-	public Account getTargetAccount(){
-		return account;
-	}
-	@Override
-	public Status getTargetStatus(){
-		return null;
-	}
 
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
 		return new GetAccountFollowing(account.id, maxID, count);
-	}
-
-	@Override
-	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count){
-		return new GetAccountFollowing(id, maxID, count);
 	}
 }
