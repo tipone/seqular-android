@@ -4,12 +4,16 @@ import android.net.Uri;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 
 public abstract class PaginatedAccountListFragment extends BaseAccountListFragment{
@@ -23,10 +27,10 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		if(GlobalUserPreferences.loadRemoteAccountFollowers){
+		if(GlobalUserPreferences.loadRemoteAccountFollowers && targetAccount.getDomain() != null){
 			if ((this instanceof FollowingListFragment || this instanceof FollowerListFragment) && targetAccount != null){
 				UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
-					if(account != null && account.getDomain() != null){
+					if(account != null){
 						loadRemoteFollower(offset, count, account);
 					} else {
 						loadFollower(offset, count);
@@ -54,8 +58,9 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 	}
 
 	private void loadRemoteFollower(int offset, int count, Account account) {
+		String ownDomain = AccountSessionManager.getInstance().getLastActiveAccount().domain;
 		currentRequest=onCreateRemoteRequest(account.id, offset==0 ? null : nextMaxID, count)
-				.setCallback(new SimpleCallback<>(this){
+				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(HeaderPaginationList<Account> result){
 						if(result.nextPageUri!=null)
@@ -66,9 +71,17 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 							remoteAccount.reloadWhenClicked = true;
 							if (remoteAccount.getDomain() == null) {
 								remoteAccount.acct += "@" + Uri.parse(remoteAccount.url).getHost();
+							} else if (remoteAccount.getDomain().equals(ownDomain)) {
+								remoteAccount.acct = remoteAccount.username;
 							}
 						});
 						onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), false);
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(getContext());
+						loadFollower(offset, count);
 					}
 				})
 				.execNoAuth(targetAccount.getDomain());
