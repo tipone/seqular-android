@@ -74,6 +74,8 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 
 	@Override
 	protected void onDataLoaded(List<AccountItem> d, boolean more){
+		if (getActivity() == null)
+			return;
 		if(refreshing){
 			relationships.clear();
 		}
