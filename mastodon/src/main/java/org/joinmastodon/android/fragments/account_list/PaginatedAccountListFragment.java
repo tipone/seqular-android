@@ -27,57 +27,53 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 			if ((this instanceof FollowingListFragment || this instanceof FollowerListFragment) && targetAccount != null){
 				UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
 					if(account != null && account.getDomain() != null){
-						currentRequest=onCreateRemoteRequest(account.id, offset==0 ? null : nextMaxID, count)
-								.setCallback(new SimpleCallback<>(this){
-									@Override
-									public void onSuccess(HeaderPaginationList<Account> result){
-										if(result.nextPageUri!=null)
-											nextMaxID=result.nextPageUri.getQueryParameter("max_id");
-										else
-											nextMaxID=null;
-										result.stream().forEach(remoteAccount -> {
-											remoteAccount.reloadWhenClicked = true;
-											if (remoteAccount.getDomain() == null) {
-												remoteAccount.acct += "@" + Uri.parse(remoteAccount.url).getHost();
-											}
-										});
-										if (getActivity() == null) return;
-										onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), false);
-									}
-								})
-								.execNoAuth(targetAccount.getDomain());
+						loadRemoteFollower(offset, count, account);
 					} else {
-						currentRequest=onCreateRequest(offset==0 ? null : nextMaxID, count)
-								.setCallback(new SimpleCallback<>(this){
-									@Override
-									public void onSuccess(HeaderPaginationList<Account> result){
-										if(result.nextPageUri!=null)
-											nextMaxID=result.nextPageUri.getQueryParameter("max_id");
-										else
-											nextMaxID=null;
-										if (getActivity() == null) return;
-										onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), nextMaxID!=null);
-									}
-								})
-								.exec(accountID);
+						loadFollower(offset, count);
 					}
 				});
 			}
 		} else {
-			currentRequest=onCreateRequest(offset==0 ? null : nextMaxID, count)
-					.setCallback(new SimpleCallback<>(this){
-						@Override
-						public void onSuccess(HeaderPaginationList<Account> result){
-							if(result.nextPageUri!=null)
-								nextMaxID=result.nextPageUri.getQueryParameter("max_id");
-							else
-								nextMaxID=null;
-							if (getActivity() == null) return;
-							onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), nextMaxID!=null);
-						}
-					})
-					.exec(accountID);
+			loadFollower(offset, count);
 		}
+	}
+
+	void loadFollower(int offset, int count) {
+		currentRequest=onCreateRequest(offset==0 ? null : nextMaxID, count)
+				.setCallback(new SimpleCallback<>(this){
+					@Override
+					public void onSuccess(HeaderPaginationList<Account> result){
+						if(result.nextPageUri!=null)
+							nextMaxID=result.nextPageUri.getQueryParameter("max_id");
+						else
+							nextMaxID=null;
+						if (getActivity() == null) return;
+						onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), nextMaxID!=null);
+					}
+				})
+				.exec(accountID);
+	}
+
+	private void loadRemoteFollower(int offset, int count, Account account) {
+		currentRequest=onCreateRemoteRequest(account.id, offset==0 ? null : nextMaxID, count)
+				.setCallback(new SimpleCallback<>(this){
+					@Override
+					public void onSuccess(HeaderPaginationList<Account> result){
+						if(result.nextPageUri!=null)
+							nextMaxID=result.nextPageUri.getQueryParameter("max_id");
+						else
+							nextMaxID=null;
+						result.stream().forEach(remoteAccount -> {
+							remoteAccount.reloadWhenClicked = true;
+							if (remoteAccount.getDomain() == null) {
+								remoteAccount.acct += "@" + Uri.parse(remoteAccount.url).getHost();
+							}
+						});
+						if (getActivity() == null) return;
+						onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), false);
+					}
+				})
+				.execNoAuth(targetAccount.getDomain());
 	}
 
 	@Override
