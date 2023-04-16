@@ -1,15 +1,11 @@
 package org.joinmastodon.android.fragments.account_list;
 
-import android.app.VoiceInteractor;
-
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
@@ -37,8 +33,8 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 											nextMaxID=result.nextPageUri.getQueryParameter("max_id");
 										else
 											nextMaxID=null;
-										result.stream().forEach(account1 -> {
-											account1.reloadWhenClicked = true;
+										result.stream().forEach(remoteAccount -> {
+											remoteAccount.reloadWhenClicked = true;
 										});
 										if (getActivity() == null) return;
 										onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), false);
