@@ -53,6 +53,7 @@ public class GlobalUserPreferences{
 	public static boolean confirmBeforeReblog;
 	public static boolean replyLineAboveHeader;
 	public static boolean swapBookmarkWithBoostAction;
+	public static boolean loadRemoteAccountFollowers;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -120,6 +121,7 @@ public class GlobalUserPreferences{
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
+		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
@@ -178,6 +180,7 @@ public class GlobalUserPreferences{
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
+				.putBoolean("loadRemoteAccountFollowers", loadRemoteAccountFollowers)
 				.putInt("theme", theme.ordinal())
 				.putString("color", color.name())
 				.putString("recentLanguages", gson.toJson(recentLanguages))

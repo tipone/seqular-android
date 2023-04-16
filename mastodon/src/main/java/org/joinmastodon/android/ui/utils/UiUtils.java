@@ -1127,7 +1127,19 @@ public class UiUtils {
 			return;
 		}
 
-		new GetSearchResults(query.getQuery(), type, false).setCallback(new Callback<>() {
+		Pattern patternForQuery = Pattern.compile("https?:\\/\\/[^\\/]+\\/@(\\w+)");
+		Matcher matcherForQuery = patternForQuery.matcher(query.getQuery());
+		String trimmedQuery = null;
+
+		if(matcherForQuery.find()){
+			trimmedQuery = matcherForQuery.group(1);
+		}
+
+		if(trimmedQuery == null){
+			return;
+		}
+
+		new GetSearchResults(trimmedQuery, type, false).setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
 						Optional<T> result = extractResult.apply(results);
