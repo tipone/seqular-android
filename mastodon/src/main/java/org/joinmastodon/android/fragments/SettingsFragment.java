@@ -187,6 +187,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
+		items.add(new SwitchItem(R.string.mo_load_remote_followers, R.drawable.ic_fluent_people_24_regular, GlobalUserPreferences.loadRemoteAccountFollowers, i -> {
+			GlobalUserPreferences.loadRemoteAccountFollowers=i.checked;
+			GlobalUserPreferences.save();
+		}));
 		items.add(new SwitchItem(R.string.sk_settings_confirm_before_reblog, R.drawable.ic_fluent_checkmark_circle_24_regular, GlobalUserPreferences.confirmBeforeReblog, i->{
 			GlobalUserPreferences.confirmBeforeReblog=i.checked;
 			GlobalUserPreferences.save();
