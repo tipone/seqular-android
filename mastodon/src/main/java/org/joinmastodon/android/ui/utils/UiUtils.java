@@ -1157,7 +1157,7 @@ public class UiUtils {
 
 						@Override
 						public void onError(ErrorResponse error) {
-
+							error.showToast(context);
 						}
 					})
 					.wrapProgress((Activity)context, R.string.loading, true,
