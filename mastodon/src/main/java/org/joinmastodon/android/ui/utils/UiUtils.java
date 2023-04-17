@@ -56,6 +56,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.StatusInteractionController;
+import org.joinmastodon.android.api.requests.accounts.GetAccountByHandle;
 import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
@@ -1140,6 +1141,30 @@ public class UiUtils {
 		}
 
 		String finalDomain = domain;
+
+		if(query instanceof Account){
+			new GetAccountByHandle(((Account) query).acct)
+					.setCallback(new Callback<Account>() {
+						@Override
+						public void onSuccess(Account result) {
+							if(result != null){
+								resultConsumer.accept((T) result);
+							} else {
+								Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+								resultConsumer.accept(null);
+							}
+						}
+
+						@Override
+						public void onError(ErrorResponse error) {
+
+						}
+					})
+					.wrapProgress((Activity)context, R.string.loading, true,
+							d -> transformDialogForLookup(context, targetAccountID, null, d, finalDomain))
+					.execNoAuth(domain);
+			return;
+		}
 		new GetSearchResults(trimmedQuery, type, false).setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
