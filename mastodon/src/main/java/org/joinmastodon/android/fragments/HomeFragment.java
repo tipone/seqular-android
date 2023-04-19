@@ -31,7 +31,9 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.NotificationReceivedEvent;
+import org.joinmastodon.android.fragments.discover.DiscoverAccountsFragment;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
+import org.joinmastodon.android.fragments.onboarding.OnboardingFollowSuggestionsFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
@@ -50,6 +52,7 @@ import androidx.annotation.Nullable;
 import com.squareup.otto.Subscribe;
 
 import me.grishka.appkit.FragmentStackActivity;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.AppKitFragment;
@@ -303,6 +306,11 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			tabBar.selectTab(R.id.tab_search);
 			searchFragment.selectSearch();
 			return true;
+		}
+		if(tab==R.id.tab_home){
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			Nav.go(getActivity(), OnboardingFollowSuggestionsFragment.class, args);
 		}
 		return false;
 	}

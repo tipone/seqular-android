@@ -77,12 +77,13 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		buttonBar=view.findViewById(R.id.button_bar);
-		setStatusBarColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
-		view.setBackgroundColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
-		list.addOnScrollListener(onScrollListener=new ElevationOnScrollListener((FragmentRootLinearLayout) view, buttonBar, getToolbar()));
+		setStatusBarColor(UiUtils.getThemeColor(getActivity(), R.attr.colorBackgroundLight));
+		getToolbar().setBackgroundResource(UiUtils.getThemeColorRes(getToolbarContext(), R.attr.colorBackgroundLight));
+		view.setBackgroundColor(UiUtils.getThemeColor(getActivity(), R.attr.colorWindowBackground));
+//		list.addOnScrollListener(onScrollListener=new ElevationOnScrollListener((FragmentRootLinearLayout) view, buttonBar, getToolbar()));
 
 		view.findViewById(R.id.btn_next).setOnClickListener(UiUtils.rateLimitedClickListener(this::onFollowAllClick));
-		view.findViewById(R.id.btn_skip).setOnClickListener(UiUtils.rateLimitedClickListener(v->proceed()));
+//		view.findViewById(R.id.btn_skip).setOnClickListener(UiUtils.rateLimitedClickListener(v->proceed()));
 	}
 
 	@Override
@@ -259,14 +260,14 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 	private class SuggestionViewHolder extends BindableViewHolder<ParsedAccount> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
 		private final TextView name, username, bio;
 		private final ImageView avatar;
-		private final ProgressBarButton actionButton;
+		private final Button actionButton;
 		private final ProgressBar actionProgress;
 		private final View actionWrap;
 
 		private Relationship relationship;
 
 		public SuggestionViewHolder(){
-			super(getActivity(), R.layout.item_user_row_m3, list);
+			super(getActivity(), R.layout.item_user_row, list);
 			name=findViewById(R.id.name);
 			username=findViewById(R.id.username);
 			bio=findViewById(R.id.bio);
@@ -336,7 +337,6 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 		}
 
 		private void setActionProgressVisible(boolean visible){
-			actionButton.setTextVisible(!visible);
 			actionProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
 			actionButton.setClickable(!visible);
 		}
