@@ -27,13 +27,13 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 	@Override
 	protected void doLoadData(int offset, int count){
 		if (shouldLoadRemote()) {
-				UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
-					if(account != null){
-						loadRemoteFollower(offset, count, account);
-					} else {
-						loadFollower(offset, count);
-					}
-				});
+			UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
+				if(account != null){
+					loadRemoteFollower(offset, count, account);
+				} else {
+					loadFollower(offset, count);
+				}
+			});
 		} else {
 			loadFollower(offset, count);
 		}
