@@ -1190,6 +1190,7 @@ public class UiUtils {
 						@Override
 						public void onError(ErrorResponse error) {
 							error.showToast(context);
+							resultConsumer.accept(null);
 						}
 					})
 					.wrapProgress((Activity)context, R.string.loading, true,
@@ -1211,6 +1212,7 @@ public class UiUtils {
 					@Override
 					public void onError(ErrorResponse error) {
 						error.showToast(context);
+						resultConsumer.accept(null);
 					}
 				})
 				.wrapProgress((Activity)context, R.string.loading, true,
