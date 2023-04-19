@@ -273,5 +273,5 @@
     <string name="sk_show_thread">Mostrar hilo</string>
     <string name="sk_compact_reblog_reply_line">Línea compacta de reblog/respuesta</string>
     <string name="sk_settings_show_new_posts_button">Botón “Mostrar nuevas publicaciones”</string>
-    <string name="sk_settings_confirm_before_reblog">Confirmar antes de rebloguear</string>
+    <string name="sk_settings_confirm_before_reblog">Confirmar antes de impulsar</string>
 </resources>
