@@ -297,7 +297,7 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 				actionWrap.setVisibility(View.GONE);
 			}else{
 				actionWrap.setVisibility(View.VISIBLE);
-				UiUtils.setRelationshipToActionButtonM3(relationship, actionButton);
+				UiUtils.setRelationshipToActionButton(relationship, actionButton);
 			}
 		}
 
