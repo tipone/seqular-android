@@ -1151,9 +1151,9 @@ public class UiUtils {
 			domain = matcher.group(1);
 		}
 
-		if(domain == null){
-			return;
-		}
+//		if(domain == null){
+//			return;
+//		}
 
 		Pattern patternForQuery = Pattern.compile("https?:\\/\\/[^\\/]+\\/@(\\w+)");
 		Matcher matcherForQuery = patternForQuery.matcher(query.getQuery());
@@ -1163,8 +1163,13 @@ public class UiUtils {
 			trimmedQuery = matcherForQuery.group(1);
 		}
 
-		if(trimmedQuery == null){
-			return;
+//		if(trimmedQuery == null){
+//			return;
+//		}
+
+		if(query instanceof Account){
+			domain = ((Account) query).getDomain();
+			trimmedQuery = ((Account) query).username;
 		}
 
 		String finalDomain = domain;
