@@ -27,7 +27,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginStart="-8dp">
 
-        <Button
+        <org.joinmastodon.android.ui.views.ProgressBarButton
             android:id="@+id/action_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -43,7 +43,6 @@
             style="?android:progressBarStyleSmall"
             android:elevation="10dp"
             android:outlineProvider="none"
-            android:indeterminateTint="?colorButtonText"
             android:visibility="gone"/>
     </FrameLayout>
 
@@ -60,7 +59,6 @@
         android:singleLine="true"
         android:ellipsize="end"
         android:textAppearance="@style/m3_title_medium"
-        android:textColor="?colorM3OnSurface"
         tools:text="User Name"/>
 
     <TextView
@@ -75,7 +73,6 @@
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:textAppearance="@style/m3_title_small"
-        android:textColor="?colorM3OnSurfaceVariant"
         tools:text="\@username@server.social"/>
 
     <TextView
@@ -87,7 +84,6 @@
         android:layout_marginRight="16dp"
         android:layout_marginBottom="12dp"
         android:textAppearance="@style/m3_body_medium"
-        android:textColor="?colorM3OnSurface"
         tools:text="Description"/>
 
 </RelativeLayout>

@@ -260,7 +260,7 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 	private class SuggestionViewHolder extends BindableViewHolder<ParsedAccount> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
 		private final TextView name, username, bio;
 		private final ImageView avatar;
-		private final Button actionButton;
+		private final ProgressBarButton actionButton;
 		private final ProgressBar actionProgress;
 		private final View actionWrap;
 
@@ -337,6 +337,7 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 		}
 
 		private void setActionProgressVisible(boolean visible){
+			actionButton.setTextVisible(!visible);
 			actionProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
 			actionButton.setClickable(!visible);
 		}
