@@ -472,13 +472,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				UiUtils.copyText(view, prefBuilder.toString());
 			}));
 
+			items.add(new TextItem("Reset preferences", ()->{
+				GlobalUserPreferences.load();
+				GlobalUserPreferences.getPrefs().edit().clear().commit();
+				UiUtils.restartApp();
+			}, R.drawable.ic_fluent_warning_24_regular));
+
 			items.add(new TextItem("Open App Info", () ->
 					getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
 							.setData(Uri.fromParts("package", getContext().getPackageName(), null))),
 					R.drawable.ic_fluent_open_24_regular
 					)
 			);
-			
+
 			items.add(new TextItem("Open developer settings",
 					()-> getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS)),
 					R.drawable.ic_fluent_open_24_regular)
