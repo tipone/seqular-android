@@ -7,9 +7,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -42,6 +45,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
+import org.joinmastodon.android.PushNotificationReceiver;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -62,6 +66,7 @@ import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
@@ -78,6 +83,7 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class SettingsFragment extends MastodonToolbarFragment{
+	private View view;
 	private UsableRecyclerView list;
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
@@ -450,11 +456,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentEmojis.clear();
 			GlobalUserPreferences.save();
 		}));
-//		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		if(BuildConfig.DEBUG){
 			items.add(new RedHeaderItem("Debug options"));
-			items.add(new TextItem("Test e-mail confirmation flow", ()->{
+
+			items.add(new TextItem("Test E-Mail confirmation flow", ()->{
 				AccountSession sess=AccountSessionManager.getInstance().getAccount(accountID);
 				sess.activated=false;
 				sess.activationInfo=new AccountActivationInfo("test@email", System.currentTimeMillis());
@@ -463,9 +469,35 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				args.putBoolean("debug", true);
 				Nav.goClearingStack(getActivity(), AccountActivationFragment.class, args);
 			}));
+
+			items.add(new TextItem("Copy preferences", ()->{
+				StringBuilder prefBuilder = new StringBuilder();
+				GlobalUserPreferences.load();
+				GlobalUserPreferences.getPrefs().getAll().forEach((key, value) -> prefBuilder.append(key).append(": ").append(value).append('\n'));
+				UiUtils.copyText(view, prefBuilder.toString());
+			}));
+
+			items.add(new TextItem("Reset preferences", ()->{
+				GlobalUserPreferences.load();
+				GlobalUserPreferences.getPrefs().edit().clear().commit();
+				UiUtils.restartApp();
+			}, R.drawable.ic_fluent_warning_24_regular));
+
+			items.add(new TextItem("Open App Info", () ->
+					getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+							.setData(Uri.fromParts("package", getContext().getPackageName(), null))),
+					R.drawable.ic_fluent_open_24_regular
+					)
+			);
+
+			items.add(new TextItem("Open developer settings",
+					()-> getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS)),
+					R.drawable.ic_fluent_open_24_regular)
+			);
 		}
 
-		items.add(new FooterItem(getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
+		String version = getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
+		items.add(new TextItem(version, () -> UiUtils.copyText(view, version)));
 	}
 
 	private void updatePublishText(Button btn) {
@@ -524,6 +556,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		this.view = view;
 		if(GithubSelfUpdater.needSelfUpdating())
 			E.register(this);
 	}
@@ -890,6 +923,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		public TextItem(String text, Runnable onClick){
 			this.text=text;
 			this.onClick=onClick;
+		}
+
+		public TextItem(String text, Runnable onClick, @DrawableRes int icon){
+			this.text=text;
+			this.onClick=onClick;
+			this.icon=icon;
 		}
 
 		@Override
