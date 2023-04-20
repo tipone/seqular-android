@@ -9,6 +9,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.Log;
 import android.util.LruCache;
@@ -43,6 +44,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
+import org.joinmastodon.android.PushNotificationReceiver;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -451,6 +453,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 		if(BuildConfig.DEBUG){
 			items.add(new RedHeaderItem("Debug options"));
+
 			items.add(new TextItem("Test e-mail confirmation flow", ()->{
 				AccountSession sess=AccountSessionManager.getInstance().getAccount(accountID);
 				sess.activated=false;
@@ -467,6 +470,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				GlobalUserPreferences.getPrefs().getAll().forEach((key, value) -> prefBuilder.append(key).append(": ").append(value).append('\n'));
 				UiUtils.copyText(view, prefBuilder.toString());
 			}));
+
+			items.add(new TextItem("Open developer settings", ()-> getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))));
 		}
 
 		String version = getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
