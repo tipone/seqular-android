@@ -49,9 +49,10 @@ android {
 			setRoot "src/github"
 		}
 	}
-	lintOptions{
-		checkReleaseBuilds false
+	namespace 'org.joinmastodon.android'
+	lint {
 		abortOnError false
+		checkReleaseBuilds false
 	}
 }
 
