@@ -109,7 +109,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(GithubSelfUpdater.needSelfUpdating()){
 			GithubSelfUpdater updater=GithubSelfUpdater.getInstance();
 			GithubSelfUpdater.UpdateState state=updater.getState();
-			if(state!=GithubSelfUpdater.UpdateState.NO_UPDATE && state!=GithubSelfUpdater.UpdateState.CHECKING){
+			if(state!=GithubSelfUpdater.UpdateState.NO_UPDATE && state!=GithubSelfUpdater.UpdateState.CHECKING && updater.getUpdateInfo() != null){
 				items.add(new UpdateItem());
 			}
 		}
