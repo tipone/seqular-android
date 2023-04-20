@@ -454,7 +454,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(BuildConfig.DEBUG){
 			items.add(new RedHeaderItem("Debug options"));
 
-			items.add(new TextItem("Test e-mail confirmation flow", ()->{
+			items.add(new TextItem("Test E-Mail confirmation flow", ()->{
 				AccountSession sess=AccountSessionManager.getInstance().getAccount(accountID);
 				sess.activated=false;
 				sess.activationInfo=new AccountActivationInfo("test@email", System.currentTimeMillis());
