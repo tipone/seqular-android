@@ -81,14 +81,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 				MastodonApp.context.getSystemService(DownloadManager.class).remove(id);
 			}
 			getUpdateApkFile().delete();
-			getPrefs().edit()
-					.remove("apkSize")
-					.remove("version")
-					.remove("apkURL")
-					.remove("checkedByBuild")
-					.remove("downloadID")
-					.remove("changelog")
-					.apply();
+			removeInfo();
 		}
 	}
 
@@ -154,6 +147,10 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 							break;
 						}
 					}
+				} else {
+					Log.d(TAG, "actuallyCheckForUpdates: no update available");
+					removeInfo();
+					setState(UpdateState.NO_UPDATE);
 				}
 				getPrefs().edit().putLong("lastCheck", System.currentTimeMillis()).apply();
 				break;
@@ -163,6 +160,17 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}finally{
 			setState(info==null ? UpdateState.NO_UPDATE : UpdateState.UPDATE_AVAILABLE);
 		}
+	}
+
+	private void removeInfo() {
+		getPrefs().edit()
+				.remove("apkSize")
+				.remove("version")
+				.remove("apkURL")
+				.remove("checkedByBuild")
+				.remove("downloadID")
+				.remove("changelog")
+				.apply();
 	}
 
 	private void setState(UpdateState state){
@@ -212,7 +220,6 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}
 		intent.setDataAndType(uri, "application/vnd.android.package-archive");
 		activity.startActivity(intent);
-		setState(UpdateState.NO_UPDATE);
 
 		// TODO figure out how to restart the app when updating via this new API
 		/*
