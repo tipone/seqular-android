@@ -79,7 +79,11 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 								remoteAccount.acct = remoteAccount.username;
 							}
 						});
-						onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), nextMaxID!=null);
+						if(!result.isEmpty()){
+							onDataLoaded(result.stream().map(AccountItem::new).collect(Collectors.toList()), nextMaxID!=null);
+						} else {
+							loadFollower(offset, count);
+						}
 					}
 
 					@Override
