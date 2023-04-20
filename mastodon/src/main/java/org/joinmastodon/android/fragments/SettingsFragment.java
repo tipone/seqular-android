@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -471,6 +472,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				UiUtils.copyText(view, prefBuilder.toString());
 			}));
 
+			items.add(new TextItem("Open App Info", () ->
+					getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+							.setData(Uri.fromParts("package", getContext().getPackageName(), null))))
+			);
 			items.add(new TextItem("Open developer settings", ()-> getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))));
 		}
 
