@@ -20,6 +20,8 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 
 	protected Account targetAccount;
 
+	protected Account remoteAccount;
+
 	public abstract HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count);
 
 	public abstract HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count);
@@ -27,13 +29,18 @@ public abstract class PaginatedAccountListFragment extends BaseAccountListFragme
 	@Override
 	protected void doLoadData(int offset, int count){
 		if (shouldLoadRemote()) {
-			UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
-				if(account != null){
-					loadRemoteFollower(offset, count, account);
-				} else {
-					loadFollower(offset, count);
-				}
-			});
+			if(remoteAccount == null){
+				UiUtils.lookupRemoteAccount(getContext(), targetAccount, accountID, null, account -> {
+					remoteAccount = account;
+					if(remoteAccount != null){
+						loadRemoteFollower(offset, count, remoteAccount);
+					} else {
+						loadFollower(offset, count);
+					}
+				});
+			} else {
+				loadRemoteFollower(offset, count, remoteAccount);
+			}
 		} else {
 			loadFollower(offset, count);
 		}
