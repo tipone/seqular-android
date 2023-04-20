@@ -474,9 +474,15 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 			items.add(new TextItem("Open App Info", () ->
 					getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-							.setData(Uri.fromParts("package", getContext().getPackageName(), null))))
+							.setData(Uri.fromParts("package", getContext().getPackageName(), null))),
+					R.drawable.ic_fluent_open_24_regular
+					)
 			);
-			items.add(new TextItem("Open developer settings", ()-> getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS))));
+			
+			items.add(new TextItem("Open developer settings",
+					()-> getContext().startActivity(new Intent(Settings.ACTION_APPLICATION_DEVELOPMENT_SETTINGS)),
+					R.drawable.ic_fluent_open_24_regular)
+			);
 		}
 
 		String version = getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
@@ -906,6 +912,12 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		public TextItem(String text, Runnable onClick){
 			this.text=text;
 			this.onClick=onClick;
+		}
+
+		public TextItem(String text, Runnable onClick, @DrawableRes int icon){
+			this.text=text;
+			this.onClick=onClick;
+			this.icon=icon;
 		}
 
 		@Override
