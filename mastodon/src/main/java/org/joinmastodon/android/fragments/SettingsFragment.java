@@ -78,6 +78,7 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class SettingsFragment extends MastodonToolbarFragment{
+	private View view;
 	private UsableRecyclerView list;
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
@@ -460,7 +461,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			}));
 		}
 
-		items.add(new FooterItem(getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
+		String version = getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
+		items.add(new TextItem(version, () -> UiUtils.copyText(view, version)));
 	}
 
 	private void updatePublishText(Button btn) {
@@ -519,6 +521,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		this.view = view;
 		if(GithubSelfUpdater.needSelfUpdating())
 			E.register(this);
 	}
