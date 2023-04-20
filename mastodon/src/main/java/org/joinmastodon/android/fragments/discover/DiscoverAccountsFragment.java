@@ -223,11 +223,11 @@ public class DiscoverAccountsFragment extends BaseRecyclerFragment<DiscoverAccou
 			actionProgress=findViewById(R.id.action_progress);
 			actionWrap=findViewById(R.id.action_btn_wrap);
 
-			itemView.setOutlineProvider(OutlineProviders.roundedRect(6));
+			itemView.setOutlineProvider(OutlineProviders.roundedRect(12));
 			itemView.setClipToOutline(true);
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
 			avatar.setClipToOutline(true);
-			cover.setOutlineProvider(OutlineProviders.roundedRect(3));
+			cover.setOutlineProvider(OutlineProviders.roundedRect(12));
 			cover.setClipToOutline(true);
 			actionButton.setOnClickListener(this::onActionButtonClick);
 		}
