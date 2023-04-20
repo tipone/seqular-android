@@ -10,6 +10,7 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,6 +63,7 @@ import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
@@ -446,7 +448,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.recentEmojis.clear();
 			GlobalUserPreferences.save();
 		}));
-//		items.add(new TextItem(R.string.log_out, this::confirmLogOut));
 
 		if(BuildConfig.DEBUG){
 			items.add(new RedHeaderItem("Debug options"));
@@ -458,6 +459,13 @@ public class SettingsFragment extends MastodonToolbarFragment{
 				args.putString("account", accountID);
 				args.putBoolean("debug", true);
 				Nav.goClearingStack(getActivity(), AccountActivationFragment.class, args);
+			}));
+
+			items.add(new TextItem("Copy preferences", ()->{
+				StringBuilder prefBuilder = new StringBuilder();
+				GlobalUserPreferences.load();
+				GlobalUserPreferences.getPrefs().getAll().forEach((key, value) -> prefBuilder.append(key).append(": ").append(value).append('\n'));
+				UiUtils.copyText(view, prefBuilder.toString());
 			}));
 		}
 
