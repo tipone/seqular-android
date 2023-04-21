@@ -497,7 +497,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 
 		String version = getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
-		items.add(new TextItem(version, () -> UiUtils.copyText(view, version)));
+		items.add(new FooterItem(version, () -> UiUtils.copyText(view, version)));
 	}
 
 	private void updatePublishText(Button btn) {
@@ -955,9 +955,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 
 	private class FooterItem extends Item{
 		private String text;
+		private Runnable onClick;
 
-		public FooterItem(String text){
+		public FooterItem(String text, Runnable onClick){
 			this.text=text;
+			this.onClick=onClick;
 		}
 
 		@Override
@@ -1236,7 +1238,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 	}
 
-	private class FooterViewHolder extends BindableViewHolder<FooterItem>{
+	private class FooterViewHolder extends BindableViewHolder<FooterItem> implements UsableRecyclerView.Clickable{
 		private final TextView text;
 		public FooterViewHolder(){
 			super(getActivity(), R.layout.item_settings_footer, list);
@@ -1246,6 +1248,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		@Override
 		public void onBind(FooterItem item){
 			text.setText(item.text);
+		}
+
+		@Override
+		public void onClick(){
+			item.onClick.run();
 		}
 	}
 
