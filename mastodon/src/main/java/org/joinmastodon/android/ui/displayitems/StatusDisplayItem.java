@@ -107,7 +107,7 @@ public abstract class StatusDisplayItem{
 			.filter(f -> f.context.contains(filterContext)).collect(Collectors.toList());
 		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
 
-		if(!statusForContent.filterRevealed){
+		if(statusForContent != null && !statusForContent.filterRevealed){
 			statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
 		}
 
