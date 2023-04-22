@@ -201,8 +201,6 @@ public abstract class StatusDisplayItem{
 		}
 		if(addFooter){
 			items.add(new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID));
-			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
-				items.add(new GapStatusDisplayItem(parentID, fragment));
 		}
 		int i=1;
 		for(StatusDisplayItem item:items){
@@ -210,13 +208,16 @@ public abstract class StatusDisplayItem{
 			item.index=i++;
 		}
 
-		if (!statusForContent.filterRevealed) {
-			return new ArrayList<>(List.of(
-					new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items)
-			));
+		ArrayList<StatusDisplayItem> result = statusForContent.filterRevealed ? items :
+				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items)));
+
+		if (addFooter && status.hasGapAfter && !(fragment instanceof ThreadFragment)) {
+			StatusDisplayItem gap = new GapStatusDisplayItem(parentID, fragment);
+			gap.index = i++;
+			result.add(gap);
 		}
 
-		return items;
+		return result;
 	}
 
 	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
