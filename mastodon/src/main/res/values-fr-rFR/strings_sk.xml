@@ -82,8 +82,8 @@
     <string name="sk_settings_translation_availability_note_unavailable">%s ne semble pas prendre en charge la traduction.</string>
     <string name="sk_clear_all_notifications_confirm">Voulez-vous vraiment supprimer toutes les notifications \?</string>
     <string name="sk_loading_fediverse_resource_title">Rechercher sur le Fediverse</string>
-    <string name="sk_reblog_with_visibility">Reposter avec la visibilité</string>
-    <string name="sk_undo_reblog">Annuler le repost</string>
+    <string name="sk_reblog_with_visibility">Booster avec la visibilité</string>
+    <string name="sk_undo_reblog">Annuler le boost</string>
     <string name="sk_quote_post">Poster à ce sujet</string>
     <string name="sk_hashtags_you_follow">Hashtags que vous suivez</string>
     <string name="sk_open_in_account">Ouvrir dans un autre compte</string>
@@ -94,13 +94,13 @@
     <string name="sk_favorite_as">Mettre en favoris avec un autre compte</string>
     <string name="sk_already_bookmarked">Déjà mis en signet</string>
     <string name="sk_already_favorited">Déjà mis en favori</string>
-    <string name="sk_reblogged_as">Reposté en tant que %s</string>
-    <string name="sk_already_reblogged">Déjà reposté</string>
+    <string name="sk_reblogged_as">Boosté en tant que %s</string>
+    <string name="sk_already_reblogged">Déjà boosté</string>
     <string name="sk_bookmarked_as">Ajouté aux signets en tant que %s</string>
     <string name="sk_favorited_as">Ajouté aux favoris en tant que %s</string>
     <string name="sk_reply_as">Répondre avec un autre compte</string>
     <string name="sk_bookmark_as">Mettre en signet avec un autre compte</string>
-    <string name="sk_reblog_as">Reposter avec un autre compte</string>
+    <string name="sk_reblog_as">Booster avec un autre compte</string>
     <string name="sk_settings_uniform_icon_for_notifications">Icône uniforme pour toutes les notifications</string>
     <string name="sk_forward_report_to">Transférer à %s</string>
     <string name="sk_unsent_posts">Messages non envoyés</string>
@@ -171,7 +171,7 @@
     <string name="sk_alt_button">ALT</string>
     <string name="sk_post_edited">édité</string>
     <string name="sk_edit_timeline">Modifier la timeline</string>
-    <string name="sk_notify_update">Modifie un article reposté</string>
+    <string name="sk_notify_update">Modifier un article boosté</string>
     <string name="sk_settings_disable_alt_text_reminder">Désactiver le rappel pour ajouter du texte alternatif</string>
     <string name="sk_notification_type_update">Messages modifiés</string>
     <string name="sk_icon_code">Code</string>
@@ -271,7 +271,7 @@
     <string name="sk_settings_reply_visibility_self">Me répond</string>
     <string name="sk_notification_action_replied">Réponse envoyée à %s</string>
     <string name="sk_show_thread">Afficher le fil</string>
-    <string name="sk_compact_reblog_reply_line">Ligne de repost/réponse compacte</string>
+    <string name="sk_compact_reblog_reply_line">Ligne boost/réponse compacte</string>
     <string name="sk_reply_line_above_avatar">Ligne \"En réponse à\" au-dessus de l\'avatar</string>
-    <string name="sk_settings_confirm_before_reblog">Confirmer avant de reposter</string>
+    <string name="sk_settings_confirm_before_reblog">Confirmer avant de booster</string>
 </resources>
