@@ -272,4 +272,6 @@
     <string name="sk_compact_reblog_reply_line">Kompakte Geteilt-/Geantwortet-Zeile</string>
     <string name="sk_reply_line_above_avatar">“Als Antwort auf”-Zeile über Profilbild</string>
     <string name="sk_settings_confirm_before_reblog">Vor dem Teilen bestätigen</string>
+    <string name="sk_reacted">hat reagiert</string>
+    <string name="sk_reacted_with">hat mit %s reagiert</string>
 </resources>
