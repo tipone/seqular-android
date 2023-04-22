@@ -43,8 +43,11 @@
 -keepattributes LineNumberTable
 
 -keepattributes *
--keep class com.google.gson.reflect.TypeToken { *; }
--keep class * extends com.google.gson.reflect.TypeToken { *; }
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+-keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
+
+-keep class javax.** { *; }
+-keep class org.** { *; }
 
 # Parceler library
 -keep interface org.parceler.Parcel
