@@ -31,7 +31,7 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 	private static final int SCHEDULED_STATUS_LIST_OPENED = 161;
 
 	@Override
-	protected boolean withComposeButton() {
+	protected boolean wantsComposeButton() {
 		return true;
 	}
 

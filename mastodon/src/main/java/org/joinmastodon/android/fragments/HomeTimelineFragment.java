@@ -38,7 +38,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 	private String lastSavedMarkerID;
 
 	@Override
-	protected boolean withComposeButton() {
+	protected boolean wantsComposeButton() {
 		return true;
 	}
 

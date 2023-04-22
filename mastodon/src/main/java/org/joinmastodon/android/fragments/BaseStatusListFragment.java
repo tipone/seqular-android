@@ -45,7 +45,6 @@ import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.MediaGridLayout;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.util.ArrayList;
@@ -80,14 +79,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
-	protected boolean fabDisabled;
 
 	public BaseStatusListFragment(){
 		super(20);
-		if (withComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
+		if (wantsComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
 	}
 
-	protected boolean withComposeButton() {
+	protected boolean wantsComposeButton() {
 		return false;
 	}
 
@@ -271,7 +269,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	public @Nullable View getFab() {
-		if (getParentFragment() instanceof HomeTabFragment home) return home.getFab();
+		if (getParentFragment() instanceof HasFab l) return l.getFab();
 		else return fab;
 	}
 
@@ -304,7 +302,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
-		fabDisabled = getArguments().getBoolean("__is_tab", false);
 
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
@@ -361,7 +358,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		((UsableRecyclerView) list).setIncludeMarginsInItemHitbox(true);
 		updateToolbar();
 
-		if (withComposeButton() && !fabDisabled) {
+		if (wantsComposeButton() && !getArguments().getBoolean("__disable_fab", false)) {
 			fab.setVisibility(View.VISIBLE);
 			fab.setOnClickListener(this::onFabClick);
 			fab.setOnLongClickListener(this::onFabLongClick);

@@ -71,7 +71,7 @@ import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
-public class HomeTabFragment extends MastodonToolbarFragment implements ScrollableToTop, OnBackPressedListener {
+public class HomeTabFragment extends MastodonToolbarFragment implements ScrollableToTop, OnBackPressedListener, HasFab {
 	private static final int ANNOUNCEMENTS_RESULT = 654;
 
 	private String accountID;
@@ -135,6 +135,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 			Bundle args = new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
+			args.putBoolean("__disable_fab", true);
 			args.putBoolean("onlyPosts", true);
 
 			for (int i = 0; i < timelineDefinitions.size(); i++) {

@@ -44,7 +44,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     private ListTimeline.RepliesPolicy repliesPolicy;
 
     @Override
-    protected boolean withComposeButton() {
+    protected boolean wantsComposeButton() {
         return true;
     }
 

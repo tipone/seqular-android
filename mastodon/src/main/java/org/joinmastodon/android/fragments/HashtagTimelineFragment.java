@@ -39,7 +39,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	private MenuItem followButton;
 
 	@Override
-	protected boolean withComposeButton() {
+	protected boolean wantsComposeButton() {
 		return true;
 	}
 
