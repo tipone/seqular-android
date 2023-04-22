@@ -274,4 +274,6 @@
     <string name="sk_compact_reblog_reply_line">Ligne boost/réponse compacte</string>
     <string name="sk_reply_line_above_avatar">Ligne \"En réponse à\" au-dessus de l\'avatar</string>
     <string name="sk_settings_confirm_before_reblog">Confirmer avant de booster</string>
+    <string name="sk_reacted">a réagi</string>
+    <string name="sk_reacted_with">a réagi avec %s</string>
 </resources>
