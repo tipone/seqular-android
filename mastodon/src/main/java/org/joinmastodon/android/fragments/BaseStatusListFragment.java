@@ -80,6 +80,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
+	protected boolean fabDisabled;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -101,8 +102,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 	}
-
-
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
@@ -271,37 +270,55 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		});
 	}
 
+	public @Nullable View getFab() {
+		if (getParentFragment() instanceof HomeTabFragment home) return home.getFab();
+		else return fab;
+	}
+
+	public void animateFab(boolean show) {
+		View fab = getFab();
+		if (fab == null) return;
+		if (show && fab.getVisibility() != View.VISIBLE) {
+			fab.setVisibility(View.VISIBLE);
+			TranslateAnimation animate = new TranslateAnimation(
+					0,
+					0,
+					fab.getHeight() * 2,
+					0);
+			animate.setDuration(300);
+			fab.startAnimation(animate);
+		} else if (!show && fab.getVisibility() == View.VISIBLE) {
+			TranslateAnimation animate = new TranslateAnimation(
+					0,
+					0,
+					0,
+					fab.getHeight() * 2);
+			animate.setDuration(300);
+			fab.startAnimation(animate);
+			fab.setVisibility(View.INVISIBLE);
+			scrollDiff = 0;
+		}
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
+		fabDisabled = getArguments().getBoolean("__is_tab", false);
+
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
 
+				View fab = getFab();
 				if (fab!=null && GlobalUserPreferences.autoHideFab) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-						TranslateAnimation animate = new TranslateAnimation(
-								0,
-								0,
-								0,
-								fab.getHeight() * 2);
-						animate.setDuration(300);
-						fab.startAnimation(animate);
-						fab.setVisibility(View.INVISIBLE);
-						scrollDiff = 0;
+						animateFab(false);
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
 						if (list.getChildAt(0).getTop() == 0 || scrollDiff > 400) {
-							fab.setVisibility(View.VISIBLE);
-							TranslateAnimation animate = new TranslateAnimation(
-									0,
-									0,
-									fab.getHeight() * 2,
-									0);
-							animate.setDuration(300);
-							fab.startAnimation(animate);
+							animateFab(true);
 							scrollDiff = 0;
 						} else {
 							scrollDiff += Math.abs(dy);
@@ -344,10 +361,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		((UsableRecyclerView) list).setIncludeMarginsInItemHitbox(true);
 		updateToolbar();
 
-		if (withComposeButton()) {
+		if (withComposeButton() && !fabDisabled) {
 			fab.setVisibility(View.VISIBLE);
 			fab.setOnClickListener(this::onFabClick);
 			fab.setOnLongClickListener(this::onFabLongClick);
+		} else if (fab != null) {
+			fab.setVisibility(View.GONE);
 		}
 	}
 
@@ -656,13 +675,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			currentPhotoViewer.onPause();
 	}
 
-	protected void onFabClick(View v){
+	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 
-	protected boolean onFabLongClick(View v) {
+	public boolean onFabLongClick(View v) {
 		return UiUtils.pickAccountForCompose(getActivity(), accountID);
 	}
 

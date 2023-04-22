@@ -24,6 +24,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -98,6 +99,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private PopupMenu overflowPopup;
 	private View overflowActionView = null;
 	private boolean announcementsBadged, settingsBadged;
+	private ImageButton fab;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,6 +124,10 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	@Override
 	public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 		FrameLayout view = new FrameLayout(getContext());
+		inflater.inflate(R.layout.compose_fab, view);
+		fab = view.findViewById(R.id.fab);
+		fab.setOnClickListener(this::onFabClick);
+		fab.setOnLongClickListener(this::onFabLongClick);
 		pager = new ViewPager2(getContext());
 		toolbarFrame = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.home_toolbar, getToolbar(), false);
 
@@ -280,6 +286,20 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		}).exec(accountID);
 	}
 
+	private void onFabClick(View v){
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) {
+			l.onFabClick(v);
+		}
+	}
+
+	private boolean onFabLongClick(View v) {
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) {
+			return l.onFabLongClick(v);
+		} else {
+			return false;
+		}
+	}
+
 	private void addListsToOverflowMenu() {
 		Context ctx = getContext();
 		listsMenu.clear();
@@ -430,6 +450,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private void updateSwitcherIcon(int i) {
 		timelineIcon.setImageResource(timelines[i].getIcon().iconRes);
 		timelineTitle.setText(timelines[i].getTitle(getContext()));
+		if (fragments[i] instanceof BaseStatusListFragment<?> l) l.animateFab(true);
 	}
 
 	@Override
@@ -655,6 +676,10 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 	public Collection<Hashtag> getHashtags() {
 		return hashtagsItems.values();
+	}
+
+	public ImageButton getFab() {
+		return fab;
 	}
 
 	private class HomePagerAdapter extends RecyclerView.Adapter<SimpleViewHolder> {

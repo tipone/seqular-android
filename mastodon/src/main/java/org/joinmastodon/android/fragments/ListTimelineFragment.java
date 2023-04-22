@@ -152,7 +152,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     }
 
     @Override
-    protected void onFabClick(View v){
+    public void onFabClick(View v){
         Bundle args=new Bundle();
         args.putString("account", accountID);
         Nav.go(getActivity(), ComposeFragment.class, args);
