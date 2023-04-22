@@ -79,8 +79,8 @@
     <string name="sk_favorite_as">Favorecer con outra conta</string>
     <string name="sk_favorited_as">Favorita con %s</string>
     <string name="sk_already_favorited">Xa foi favorecida</string>
-    <string name="sk_reblogged_as">Promovida por %s</string>
-    <string name="sk_already_reblogged">Xa foi promovida</string>
+    <string name="sk_reblogged_as">Impulsado coma %s</string>
+    <string name="sk_already_reblogged">Xa foi impulsado</string>
     <string name="sk_reply_as">Responder con outra conta</string>
     <string name="sk_settings_uniform_icon_for_notifications">Icona uniforme para tódalas notificacións</string>
     <string name="sk_enable_delete_notifications">Activar a eliminación de notificacións</string>
@@ -88,9 +88,9 @@
     <string name="sk_settings_publish_button_text_title">Personalizar o texto do botón de publicar</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s non semella ter soporte para tradución.</string>
     <string name="sk_loading_fediverse_resource_title">Buscando no Fediverso</string>
-    <string name="sk_reblog_with_visibility">Promover con visibilidade</string>
+    <string name="sk_reblog_with_visibility">Impulsar con visibilidade</string>
     <string name="sk_quote_post">Publicar acerca disto</string>
-    <string name="sk_undo_reblog">Retirar a promoción</string>
+    <string name="sk_undo_reblog">Desfacer o impulso</string>
     <string name="sk_copy_link_to_post">Copiar ligazón á publicación</string>
     <string name="sk_loading_resource_on_instance_title">Buscando en %s</string>
     <string name="sk_open_with_account">Abrir con outra conta</string>
@@ -113,7 +113,7 @@
     <string name="sk_schedule_or_draft">Programar ou borrador</string>
     <string name="sk_compose_no_schedule">Non programar</string>
     <string name="sk_compose_no_draft">Non facer borrador</string>
-    <string name="sk_reblog_as">Promover con outra conta</string>
+    <string name="sk_reblog_as">Impulsar con outra conta</string>
     <string name="sk_settings_reduce_motion">Reducir movemento nas animacións</string>
     <string name="sk_announcements">Anuncios</string>
     <string name="sk_mark_as_read">Marcar como lido</string>
@@ -225,7 +225,7 @@
     <string name="sk_icon_gavel">Mazo</string>
     <string name="sk_icon_gauge">Indicador</string>
     <string name="sk_icon_math_formula">Fórmula matemática</string>
-    <string name="sk_notify_update">Edita unha publicación promovida</string>
+    <string name="sk_notify_update">Edita unha publicación impulsada</string>
     <string name="sk_no_results">Sen resultados</string>
     <string name="sk_save_draft">Gardar borrador\?</string>
     <string name="sk_no_alt_text">Sen texto descriptivo</string>
@@ -271,5 +271,6 @@
     <string name="sk_notification_action_replied">Resposta enviada a %s</string>
     <string name="sk_reply_line_above_avatar">Liña \"en resposta a\" sobre o avatar</string>
     <string name="sk_show_thread">Mostrar chío</string>
-    <string name="sk_compact_reblog_reply_line">Compactar liña de promoción/resposta</string>
+    <string name="sk_compact_reblog_reply_line">Compactar liña de impulso/resposta</string>
+    <string name="sk_settings_confirm_before_reblog">Confirma antes de impulsar</string>
 </resources>
