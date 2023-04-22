@@ -51,7 +51,7 @@
     <string name="sk_translate_post">번역하기</string>
     <string name="sk_translate_show_original">원본 보기</string>
     <string name="sk_post_language">언어: %s</string>
-    <string name="sk_language_name">%s (%s)</string>
+    <string name="sk_language_name">%1$s (%2$s)</string>
     <string name="sk_translated_using">%s를 통해 번역함</string>
     <string name="sk_available_languages">모든 언어</string>
     <string name="sk_clear_recent_languages">최근 사용한 언어 지우기</string>
