@@ -110,7 +110,7 @@ import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop{
+public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop, HasFab{
 	private static final int AVATAR_RESULT=722;
 	private static final int COVER_RESULT=343;
 
@@ -150,7 +150,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private WindowInsets childInsets;
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
-	protected int scrollDiff = 0;
 
 	private static final int MAX_FIELDS=4;
 
@@ -788,35 +787,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 		if(currentPhotoViewer!=null){
 			currentPhotoViewer.offsetView(0, oldScrollY-scrollY);
-		}
-
-		if (GlobalUserPreferences.autoHideFab) {
-			int dy = scrollY - oldScrollY;
-			if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-				TranslateAnimation animate = new TranslateAnimation(
-						0,
-						0,
-						0,
-						fab.getHeight() * 2);
-				animate.setDuration(300);
-				fab.startAnimation(animate);
-				fab.setVisibility(View.INVISIBLE);
-				scrollDiff = 0;
-			} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-				if (v.getScrollY() == 0 || scrollDiff > 400) {
-					fab.setVisibility(View.VISIBLE);
-					TranslateAnimation animate = new TranslateAnimation(
-							0,
-							0,
-							fab.getHeight() * 2,
-							0);
-					animate.setDuration(300);
-					fab.startAnimation(animate);
-					scrollDiff = 0;
-				} else {
-					scrollDiff += Math.abs(dy);
-				}
-			}
 		}
 	}
 
