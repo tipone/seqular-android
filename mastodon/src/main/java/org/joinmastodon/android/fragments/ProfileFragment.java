@@ -19,13 +19,11 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
@@ -1375,7 +1373,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState){
 			super.onSelectedChanged(viewHolder, actionState);
 			if(actionState==ItemTouchHelper.ACTION_STATE_DRAG){
-				viewHolder.itemView.setTag(R.id.item_touch_helper_previous_elevation, viewHolder.itemView.getElevation()); // prevents the default behavior of changing elevation in onDraw()
+				viewHolder.itemView.setTag(androidx.recyclerview.R.id.item_touch_helper_previous_elevation, viewHolder.itemView.getElevation()); // prevents the default behavior of changing elevation in onDraw()
 				viewHolder.itemView.animate().translationZ(V.dp(1)).setDuration(200).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
 				draggedViewHolder=viewHolder;
 			}
