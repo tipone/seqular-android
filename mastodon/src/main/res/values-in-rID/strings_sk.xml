@@ -273,4 +273,5 @@
     <string name="sk_reply_line_above_avatar">Baris “Membalas ke” di atas avatar</string>
     <string name="sk_show_thread">Tampilkan utasan</string>
     <string name="sk_compact_reblog_reply_line">Baris berbagi/balasan</string>
+    <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
 </resources>
