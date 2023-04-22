@@ -53,12 +53,15 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 		STATUS,
 		@SerializedName("update")
 		UPDATE,
+
+		@SerializedName("reaction")
+		REACTION,
+		@SerializedName("pleroma:emoji_reaction")
+		PLEROMA_EMOJI_REACTION,
 		@SerializedName("admin.sign_up")
 		SIGN_UP,
 		@SerializedName("admin.report")
-		REPORT,
-		@SerializedName("pleroma:emoji_reaction")
-		EMOJI_REACTION
+		REPORT
 	}
 
 	@Parcel
