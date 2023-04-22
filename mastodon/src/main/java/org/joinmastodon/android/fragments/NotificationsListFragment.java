@@ -102,7 +102,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			case SIGN_UP -> getString(R.string.sk_signed_up);
 			case REPORT -> getString(R.string.sk_reported);
 			case REACTION, PLEROMA_EMOJI_REACTION ->
-					n.emojiUrl != null ? getString(R.string.sk_reacted_with, n.emoji) : getString(R.string.sk_reacted);
+					n.emoji != null ? getString(R.string.sk_reacted_with, n.emoji) : getString(R.string.sk_reacted);
 		};
 		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, n.emojiUrl!=null ? HtmlParser.parseCustomEmoji(extraText, Collections.singletonList(emoji)) : extraText, n, null) : null;
 		if(n.status!=null){
