@@ -273,4 +273,6 @@
     <string name="sk_show_thread">Показати потік</string>
     <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеного допису/відповіді</string>
     <string name="sk_settings_confirm_before_reblog">Підтверджувати поширення</string>
+    <string name="sk_reacted">реагує</string>
+    <string name="sk_reacted_with">реагує з %s</string>
 </resources>
