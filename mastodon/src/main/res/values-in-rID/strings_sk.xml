@@ -274,4 +274,6 @@
     <string name="sk_show_thread">Tampilkan utasan</string>
     <string name="sk_compact_reblog_reply_line">Baris berbagi/balasan</string>
     <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
+    <string name="sk_reacted_with">bereaksi dengan %s</string>
+    <string name="sk_reacted">bereaksi</string>
 </resources>
