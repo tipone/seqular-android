@@ -69,8 +69,8 @@
     <string name="sk_already_bookmarked">Zakładka została już zapisana</string>
     <string name="sk_favorited_as">Polubiono jako %s</string>
     <string name="sk_already_favorited">Już polubiono</string>
-    <string name="sk_reblogged_as">Zrebloguj jako %s</string>
-    <string name="sk_already_reblogged">Już zreblogowano</string>
+    <string name="sk_reblogged_as">Podbite jako %s</string>
+    <string name="sk_already_reblogged">Już podbito</string>
     <string name="sk_reply_as">Odpowiedz innym kontem</string>
     <string name="sk_settings_uniform_icon_for_notifications">Identyczna ikona dla wszystkich notyfikacji</string>
     <string name="sk_settings_translate_only_opened">Tłumacz tylko otwarte wpisy</string>
@@ -96,8 +96,8 @@
     <string name="sk_clear_all_notifications_confirm_action">Usuń wszystkie</string>
     <string name="sk_clear_all_notifications_confirm">Czy jesteś pewien że chcesz usunąć wszystkie powiadomienia\?</string>
     <string name="sk_loading_fediverse_resource_title">Wyszukiwanie na Fediwersum</string>
-    <string name="sk_undo_reblog">Cofnij reblog</string>
-    <string name="sk_reblog_with_visibility">Reblog z widocznością</string>
+    <string name="sk_undo_reblog">Cofnij podbicie</string>
+    <string name="sk_reblog_with_visibility">Podbij z widocznością</string>
     <string name="sk_quote_post">Wpis o tym</string>
     <string name="sk_hashtags_you_follow">Hashtagi które obserwujesz</string>
     <string name="sk_copy_link_to_post">Kopiuj link do wpisu</string>
@@ -127,7 +127,7 @@
     <string name="sk_compose_no_draft">Nie twórz wersji roboczej</string>
     <string name="sk_schedule_or_draft">Zaplanowany wpis lub kopia robocza</string>
     <string name="sk_favorite_as">Polub innym kontem</string>
-    <string name="sk_reblog_as">Już zreblogowano</string>
+    <string name="sk_reblog_as">Podbij z innego konta</string>
     <string name="sk_settings_reduce_motion">Zmniejsz ruch animacji</string>
     <string name="sk_mark_as_read">Oznacz jako przeczytane</string>
     <string name="sk_settings_about_instance">O instancji</string>
@@ -220,7 +220,7 @@
     <string name="sk_icon_headphones">Słuchawki</string>
     <string name="sk_icon_human">Człowiek</string>
     <string name="sk_icon_globe">Glob</string>
-    <string name="sk_notify_update">Edytuje reblogowany wpis</string>
+    <string name="sk_notify_update">Edytuje podbijany wpis</string>
     <string name="sk_icon_pin">Pinezka</string>
     <string name="sk_remove_follower">Usuń obserwującego</string>
     <string name="sk_remove_follower_confirm">Usunąć %s z obserwatorów, poprzez zablokowanie i natychmiastowe odblokowanie ich\?</string>
@@ -270,6 +270,8 @@
     <string name="sk_notification_action_replied">Wysłano odpowiedź do %s</string>
     <string name="sk_reply_line_above_avatar">Tekst \"W odpowiedzi na\" nad avatarem</string>
     <string name="sk_show_thread">Pokaż wątek</string>
-    <string name="sk_compact_reblog_reply_line">Zmniejsz linię reblogu/odpowiedzi</string>
-    <string name="sk_settings_confirm_before_reblog">Potwierdź przed reblogowaniem</string>
+    <string name="sk_compact_reblog_reply_line">Zmniejsz linię podbijania/odpowiedzi</string>
+    <string name="sk_settings_confirm_before_reblog">Potwierdź przed podbiciem</string>
+    <string name="sk_reacted_with">zareagował(a) z %s</string>
+    <string name="sk_reacted">zareagował(a)</string>
 </resources>
