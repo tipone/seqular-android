@@ -18,6 +18,8 @@
 &nbsp;
 <a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
+## Help out the project by donating at: https://github.com/sponsors/LucasGGamerM!
+
 --- 
 
 ## F.A.Q
