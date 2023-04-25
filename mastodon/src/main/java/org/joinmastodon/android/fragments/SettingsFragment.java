@@ -249,8 +249,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.defaultToUnlistedReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		// TODO find a good icon for this setting
-		items.add(new SwitchItem(R.string.mo_mention_reblogger_automatically, R.drawable.ic_fluent_balloon_24_regular, GlobalUserPreferences.mentionRebloggerAutomatically, i -> {
+		items.add(new SwitchItem(R.string.mo_mention_reblogger_automatically, R.drawable.ic_fluent_comment_mention_24_regular, GlobalUserPreferences.mentionRebloggerAutomatically, i -> {
 			GlobalUserPreferences.mentionRebloggerAutomatically=i.checked;
 			GlobalUserPreferences.save();
 		}));
