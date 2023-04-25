@@ -40,4 +40,5 @@
     <string name="mo_swap_bookmark_with_reblog">Usa la acción de rebloguear en vez de la de marcador en las notificaciones</string>
     <string name="mo_download_latest_nightly_release">Descargar la última versión beta</string>
     <string name="mo_load_remote_followers">Cargar remotamente seguidores y seguidos del perfil</string>
+    <string name="mo_mention_reblogger_automatically">Mencionar automáticamente la cuenta que reblogueó el post en las respuestas</string>
 </resources>
