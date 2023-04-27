@@ -14,7 +14,7 @@
     <string name="sk_app_name">Megalodon</string>
     <string name="sk_unpinning">Desanclando publicación…</string>
     <string name="sk_image_description">Descripción de la imagen</string>
-    <string name="sk_visibility_unlisted">No listada</string>
+    <string name="sk_visibility_unlisted">No listado</string>
     <string name="sk_settings_show_replies">Mostrar respuestas</string>
     <string name="sk_settings_show_boosts">Mostrar impulsos</string>
     <string name="sk_settings_load_new_posts">Cargar publicaciones nuevas automáticamente</string>
@@ -83,8 +83,8 @@
     <string name="sk_settings_translation_availability_note_unavailable">%s no parece admitir la traducción.</string>
     <string name="sk_loading_fediverse_resource_title">Buscándolo en el Fediverso</string>
     <string name="sk_quote_post">Publicar sobre esto</string>
-    <string name="sk_undo_reblog">Deshacer reblogueo</string>
-    <string name="sk_reblog_with_visibility">Rebloguea con visibilidad</string>
+    <string name="sk_undo_reblog">Deshacer impulso</string>
+    <string name="sk_reblog_with_visibility">Impulsar con visibilidad</string>
     <string name="sk_hashtags_you_follow">Etiquetas que sigues</string>
     <string name="sk_copy_link_to_post">Copiar enlace de la publicación</string>
     <string name="sk_open_with_account">Abrir con otra cuenta</string>
@@ -269,8 +269,10 @@
     <string name="sk_settings_reply_visibility_following">Responde a mis seguidores</string>
     <string name="sk_settings_reply_visibility_self">Respondeme</string>
     <string name="sk_notification_action_replied">Respuesta enviada a %s</string>
-    <string name="sk_reply_line_above_avatar">\"En respuesta a\" línea sobre el avatar</string>
+    <string name="sk_reply_line_above_avatar">Linea \"En respuesta a\" sobre el avatar</string>
     <string name="sk_show_thread">Mostrar hilo</string>
-    <string name="sk_compact_reblog_reply_line">Línea compacta de reblog/respuesta</string>
-    <string name="sk_settings_confirm_before_reblog">Confirmar antes de volver a publicar</string>
+    <string name="sk_compact_reblog_reply_line">Línea compacta de impulso/respuesta</string>
+    <string name="sk_settings_confirm_before_reblog">Confirmación antes de impulsar</string>
+    <string name="sk_settings_show_new_posts_button">Botón \"Ver nuevas publicaciones\"</string>
+    <string name="sk_reacted">reaccionó con %s</string>
 </resources>
