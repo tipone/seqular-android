@@ -317,7 +317,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				View fab = getFab();
-				if (fab!=null && GlobalUserPreferences.autoHideFab) {
+				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						animateFab(false);
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
