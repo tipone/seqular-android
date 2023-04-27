@@ -19,7 +19,6 @@ import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Notification;
-import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
@@ -50,8 +49,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	private final DiscoverInfoBannerHelper bannerHelper = new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.POST_NOTIFICATIONS);
 
 	@Override
-	protected boolean withComposeButton() {
-		return true;
+	protected boolean wantsComposeButton() {
+		return false;
 	}
 
 	@Override
@@ -107,7 +106,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			case UPDATE -> getString(R.string.sk_post_edited);
 			case SIGN_UP -> getString(R.string.sk_signed_up);
 			case REPORT -> getString(R.string.sk_reported);
-			case EMOJI_REACTION -> getString(R.string.sk_reacted, n.emoji);
+			case REACTION, PLEROMA_EMOJI_REACTION ->
+					n.emoji != null ? getString(R.string.sk_reacted_with, n.emoji) : getString(R.string.sk_reacted);
 		};
 		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, n.emojiUrl!=null ? HtmlParser.parseCustomEmoji(extraText, Collections.singletonList(emoji)) : extraText, n, null) : null;
 		if(n.status!=null){
@@ -214,7 +214,6 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		list.addItemDecoration(new InsetStatusItemDecoration(this));
-		if (getParentFragment() instanceof NotificationsFragment) fab.setVisibility(View.GONE);
 		if (onlyPosts) bannerHelper.maybeAddBanner(contentWrap);
 	}
 

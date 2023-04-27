@@ -222,6 +222,7 @@
 		<item name="android:actionBarTheme">@style/Theme.Mastodon.Toolbar.Dark.TrueBlack</item>
 		<item name="colorBackgroundLight">@color/black</item>
 		<item name="colorButtonText">@color/black</item>
+		<item name="toolbarBackground">@color/black</item>
 		<item name="colorPollVoted">?colorGray700</item>
 		<item name="colorSearchField">?colorGray900</item>
 		<item name="colorBackgroundLightest">@color/black</item>
@@ -257,7 +258,7 @@
 	</style>
 
 	<style name="Theme.Mastodon.Toolbar.Dark.TrueBlack" parent="android:ThemeOverlay.Material.Dark.ActionBar">
-		<item name="android:colorPrimary">@color/black</item>
+		<item name="android:colorPrimary">?toolbarBackground</item>
 		<item name="android:toolbarStyle">@style/Widget.Mastodon.Toolbar</item>
 <!--		Why must we re-add this? So that the text color isn't wrong. I don't know why it doesn't work, but we shall do this so it looks right -->
 		<item name="android:textColorPrimary">?colorGray50</item>

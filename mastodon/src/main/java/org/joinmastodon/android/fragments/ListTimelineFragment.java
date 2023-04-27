@@ -44,7 +44,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     private ListTimeline.RepliesPolicy repliesPolicy;
 
     @Override
-    protected boolean withComposeButton() {
+    protected boolean wantsComposeButton() {
         return true;
     }
 
@@ -152,7 +152,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     }
 
     @Override
-    protected void onFabClick(View v){
+    public void onFabClick(View v){
         Bundle args=new Bundle();
         args.putString("account", accountID);
         Nav.go(getActivity(), ComposeFragment.class, args);

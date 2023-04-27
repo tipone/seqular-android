@@ -207,7 +207,6 @@ public abstract class StatusDisplayItem{
 				items.add(new GapStatusDisplayItem(parentID, fragment));
 			}
 		}
-
 		int i=1;
 		for(StatusDisplayItem item:items){
 			item.inset=inset;

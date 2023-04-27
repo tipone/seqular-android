@@ -49,7 +49,6 @@ import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.MediaGridLayout;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.util.ArrayList;
@@ -90,10 +89,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public BaseStatusListFragment(){
 		super(20);
-		if (withComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
+		if (wantsComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
 	}
 
-	protected boolean withComposeButton() {
+	protected boolean wantsComposeButton() {
 		return false;
 	}
 
@@ -108,8 +107,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 	}
-
-
 
 	@Override
 	protected RecyclerView.Adapter getAdapter(){
@@ -278,6 +275,36 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		});
 	}
 
+	public @Nullable View getFab() {
+		if (getParentFragment() instanceof HasFab l) return l.getFab();
+		else return fab;
+	}
+
+	public void animateFab(boolean show) {
+		View fab = getFab();
+		if (fab == null) return;
+		if (show && fab.getVisibility() != View.VISIBLE) {
+			fab.setVisibility(View.VISIBLE);
+			TranslateAnimation animate = new TranslateAnimation(
+					0,
+					0,
+					fab.getHeight() * 2,
+					0);
+			animate.setDuration(300);
+			fab.startAnimation(animate);
+		} else if (!show && fab.getVisibility() == View.VISIBLE) {
+			TranslateAnimation animate = new TranslateAnimation(
+					0,
+					0,
+					0,
+					fab.getHeight() * 2);
+			animate.setDuration(300);
+			fab.startAnimation(animate);
+			fab.setVisibility(View.INVISIBLE);
+			scrollDiff = 0;
+		}
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
@@ -289,47 +316,21 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
 
-				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
-//					This piece of code should make it so that the fab is always visible if the status list scroll view is at the item at the top
-					if(list.getChildAt(0).getTop() == 0){
-						scrollDiff= THRESHOLD +1;
-					}else{
-						if(dy > 0){
-							scrollDiff=0;
-						}
-					}
-
+				View fab = getFab();
+				if (fab!=null && GlobalUserPreferences.autoHideFab) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-						TranslateAnimation animate = new TranslateAnimation(
-								0,
-								0,
-								0,
-								fab.getHeight() * 2);
-						animate.setDuration(300);
-//						animate.setFillAfter(true);
-						fab.startAnimation(animate);
-						fab.setEnabled(false);
-						fab.setVisibility(View.INVISIBLE);
-						scrollDiff = 0;
+						animateFab(false);
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (scrollDiff > THRESHOLD) {
-							TranslateAnimation animate = new TranslateAnimation(
-									0,
-									0,
-									fab.getHeight() * 2,
-									0);
-							animate.setDuration(300);
-//							animate.setFillAfter(true);
-							fab.startAnimation(animate);
-							fab.setEnabled(true);
-							fab.setVisibility(View.VISIBLE);
+						if (list.getChildAt(0).getTop() == 0 || scrollDiff > THRESHOLD) {
+							animateFab(true);
 							scrollDiff = 0;
 						} else {
 							scrollDiff += Math.abs(dy);
 						}
 					}
 				}
-		}});
+			}
+		});
 		list.addItemDecoration(new StatusListItemDecoration());
 		((UsableRecyclerView)list).setSelectorBoundsProvider(new UsableRecyclerView.SelectorBoundsProvider(){
 			private Rect tmpRect=new Rect();
@@ -364,11 +365,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		((UsableRecyclerView) list).setIncludeMarginsInItemHitbox(true);
 		updateToolbar();
 
-		if (withComposeButton()) {
-			fab = view.findViewById(R.id.fab);
+		if (wantsComposeButton() && !getArguments().getBoolean("__disable_fab", false)) {
 			fab.setVisibility(View.VISIBLE);
 			fab.setOnClickListener(this::onFabClick);
 			fab.setOnLongClickListener(this::onFabLongClick);
+		} else if (fab != null) {
+			fab.setVisibility(View.GONE);
 		}
 	}
 
@@ -696,13 +698,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			currentPhotoViewer.onPause();
 	}
 
-	protected void onFabClick(View v){
+	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 
-	protected boolean onFabLongClick(View v) {
+	public boolean onFabLongClick(View v) {
 		return UiUtils.pickAccountForCompose(getActivity(), accountID);
 	}
 

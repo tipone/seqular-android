@@ -40,7 +40,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	private MenuItem followButton;
 
 	@Override
-	protected boolean withComposeButton() {
+	protected boolean wantsComposeButton() {
 		return true;
 	}
 
@@ -146,12 +146,12 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	}
 
 	@Override
-	protected boolean onFabLongClick(View v) {
+	public boolean onFabLongClick(View v) {
 		return UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtag+' ');
 	}
 
 	@Override
-	protected void onFabClick(View v){
+	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putString("prefilledText", '#'+hashtag+' ');

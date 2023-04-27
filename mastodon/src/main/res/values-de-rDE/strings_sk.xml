@@ -82,8 +82,8 @@
     <string name="sk_settings_translation_availability_note_available">%s unterstützt Übersetzung!</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s scheint keine Übersetzung zu unterstützen.</string>
     <string name="sk_loading_fediverse_resource_title">Suche im Fediverse</string>
-    <string name="sk_undo_reblog">Reblog rückgängig machen</string>
-    <string name="sk_reblog_with_visibility">Rebloggen mit Sichtbarkeit</string>
+    <string name="sk_undo_reblog">Teilen rückgängig machen</string>
+    <string name="sk_reblog_with_visibility">Teilen mit Sichtbarkeit</string>
     <string name="sk_quote_post">Drüberkommentieren</string>
     <string name="sk_hashtags_you_follow">Hashtags, denen du folgst</string>
     <string name="sk_copy_link_to_post">Link zum Beitrag kopieren</string>
@@ -96,9 +96,9 @@
     <string name="sk_favorite_as">Favorit mit anderem Konto</string>
     <string name="sk_favorited_as">Favorisiert als %s</string>
     <string name="sk_already_favorited">Bereits favorisiert</string>
-    <string name="sk_reblog_as">Mit einem anderen Konto boosten</string>
-    <string name="sk_reblogged_as">Geboostet als %s</string>
-    <string name="sk_already_reblogged">Bereits geboostet</string>
+    <string name="sk_reblog_as">Mit einem anderen Konto teilen</string>
+    <string name="sk_reblogged_as">Geteilt als %s</string>
+    <string name="sk_already_reblogged">Bereits geteilt</string>
     <string name="sk_reply_as">Antworten mit anderem Konto</string>
     <string name="sk_settings_uniform_icon_for_notifications">Einheitliches Icon für alle Benachrichtigungen</string>
     <string name="sk_forward_report_to">Weiterleiten zu %s</string>
@@ -269,7 +269,9 @@
     <string name="sk_quoting_user">Zitiere %s</string>
     <string name="sk_notification_action_replied">Antwort an %s gesendet</string>
     <string name="sk_show_thread">Thread öffnen</string>
-    <string name="sk_compact_reblog_reply_line">Kompakte Geteilt/Geantwortet-Zeile</string>
+    <string name="sk_compact_reblog_reply_line">Kompakte Geteilt-/Geantwortet-Zeile</string>
     <string name="sk_reply_line_above_avatar">“Als Antwort auf”-Zeile über Profilbild</string>
     <string name="sk_settings_confirm_before_reblog">Vor dem Teilen bestätigen</string>
+    <string name="sk_reacted">hat reagiert</string>
+    <string name="sk_reacted_with">hat mit %s reagiert</string>
 </resources>
