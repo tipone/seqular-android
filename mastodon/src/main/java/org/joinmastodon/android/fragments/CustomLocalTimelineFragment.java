@@ -20,7 +20,7 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
 
     private String maxID;
     @Override
-    protected boolean withComposeButton() {
+    protected boolean wantsComposeButton() {
         return false;
     }
 
