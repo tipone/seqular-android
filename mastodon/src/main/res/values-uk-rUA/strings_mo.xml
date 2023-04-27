@@ -39,4 +39,6 @@
     <string name="mo_duration_minutes_5">5 хвилин</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Вимкнути подвійне тицяння для перемикання між вкладками</string>
     <string name="mo_swap_bookmark_with_reblog">Використовувати дію реблог замість дії закладок на сповіщеннях</string>
+    <string name="mo_load_remote_followers">Завантажити підписки та підписників з віддаленного профілю</string>
+    <string name="mo_mention_reblogger_automatically">Автоматично згадувати акаунт що реблогнув публікацію у відповідях</string>
 </resources>
