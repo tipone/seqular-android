@@ -6,4 +6,5 @@ public enum NotificationAction {
     UNBOOST,
     BOOKMARK,
     REPLY,
+    FOLLOW_BACK
 }

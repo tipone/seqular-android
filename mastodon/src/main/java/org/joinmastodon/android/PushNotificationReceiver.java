@@ -19,6 +19,7 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.notifications.GetNotificationByID;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.SetStatusBookmarked;
@@ -123,8 +124,16 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 			if(intent.hasExtra("notification")){
 				org.joinmastodon.android.model.Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
-				String statusID=notification.status.id;
-				if (statusID != null) {
+				String statusID = null;
+				String targetAccountID = null;
+
+				if(notification.status != null){
+					statusID = notification.status.id;
+				}
+				if(notification.account != null){
+					targetAccountID = notification.account.id;
+				}
+				if (statusID != null || targetAccountID != null) {
 					AccountSessionManager accountSessionManager = AccountSessionManager.getInstance();
 					Preferences preferences = accountSessionManager.getAccount(accountID).preferences;
 
@@ -134,6 +143,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 						case BOOST -> new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
 						case UNBOOST -> new SetStatusReblogged(notification.status.id, false, preferences.postingDefaultVisibility).exec(accountID);
 						case REPLY -> handleReplyAction(context, accountID, intent, notification, notificationId, preferences);
+						case FOLLOW_BACK -> new SetAccountFollowed(notification.account.id, true, true, false).exec(accountID);
 						default -> Log.w(TAG, "onReceive: Failed to get NotificationAction");
 					}
 				}
@@ -240,6 +250,9 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				case UPDATE -> {
 					if(notification.status.reblogged)
 						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_undo_reblog), NotificationAction.UNBOOST));
+				}
+				case FOLLOW -> {
+					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.follow_back), NotificationAction.FOLLOW_BACK));
 				}
 			}
 		}
