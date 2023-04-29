@@ -273,5 +273,6 @@
     <string name="sk_compact_reblog_reply_line">Zmniejsz linię podbicia/odpowiedzi</string>
     <string name="sk_settings_confirm_before_reblog">Potwierdź przed podbiciem</string>
     <string name="sk_settings_show_new_posts_button">Przycisk pokazujący nowe wpisy</string>
-    <string name="sk_reacted">zareagowano z %s</string>
+    <string name="sk_reacted">zareagował(a)</string>
+    <string name="sk_reacted_with">zareagowano z %s</string>
 </resources>
