@@ -91,7 +91,7 @@ android {
 			setRoot "src/github"
 		}
 		debug {
-			setRoot "src/github"
+			setRoot "src/debug"
 		}
 	}
 	namespace 'org.joinmastodon.android'
