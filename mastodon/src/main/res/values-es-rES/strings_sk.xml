@@ -274,5 +274,6 @@
     <string name="sk_compact_reblog_reply_line">Línea compacta de impulso/respuesta</string>
     <string name="sk_settings_confirm_before_reblog">Confirmación antes de impulsar</string>
     <string name="sk_settings_show_new_posts_button">Botón \"Ver nuevas publicaciones\"</string>
-    <string name="sk_reacted">reaccionó con %s</string>
+    <string name="sk_reacted">reaccionó</string>
+    <string name="sk_reacted_with">reaccionó con %s</string>
 </resources>
