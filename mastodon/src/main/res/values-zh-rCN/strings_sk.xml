@@ -97,7 +97,7 @@
     <string name="sk_favorited_as">已收藏为 %s</string>
     <string name="sk_already_favorited">已收藏过</string>
     <string name="sk_reblog_as">用其他账号转嘟</string>
-    <string name="sk_reblogged_as">已转嘟为 %s</string>
+    <string name="sk_reblogged_as">已用 %s 转嘟</string>
     <string name="sk_already_reblogged">已转嘟过</string>
     <string name="sk_reply_as">用其他帐号回复</string>
     <string name="sk_settings_uniform_icon_for_notifications">所有通知的统一图标</string>
@@ -273,4 +273,8 @@
     <string name="sk_reply_line_above_avatar">头像上方的 “回复” 一行</string>
     <string name="sk_compact_reblog_reply_line">紧凑转嘟/回复行</string>
     <string name="sk_show_thread">显示对话</string>
+    <string name="sk_settings_show_new_posts_button">“显示新嘟文”按钮</string>
+    <string name="sk_reacted">已回应</string>
+    <string name="sk_settings_confirm_before_reblog">转读前确认</string>
+    <string name="sk_reacted_with">已以 %s 回应</string>
 </resources>
