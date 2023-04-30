@@ -37,4 +37,8 @@
     <string name="mo_miscellaneous_settings">杂项设置</string>
     <string name="mo_share_open_url">应用内打开</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">禁用双击以切换标签页</string>
+    <string name="mo_download_latest_nightly_release">下载最新的每日版</string>
+    <string name="mo_load_remote_followers">加载远程账户的关注者和粉丝</string>
+    <string name="mo_mention_reblogger_automatically">自动在回复中提及转发帖子的账户</string>
+    <string name="mo_swap_bookmark_with_reblog">在通知中使用转载操作而不是收藏操作</string>
 </resources>
