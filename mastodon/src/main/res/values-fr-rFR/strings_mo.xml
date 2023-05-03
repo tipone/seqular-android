@@ -1,4 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_fab_compose">Composer</string>
+    <string name="mo_share_open_url">Ouvrir dans l\'appli</string>
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_relocate_publish_button">Déplacer le bouton publier</string>
+    <string name="mo_personal_note_update_failed">Échec de la sauvegarde de la note</string>
+    <string name="mo_no_image_desc">Les images incluses n\'ont aucune description. Veuillez pensez en ajoutant un pour permettre les personnes malvoyantes de participer.</string>
+    <string name="mo_filtered">Filtré: %s</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Désactiver rappel d\'ajouter un texte alternatif</string>
+    <string name="mo_add_custom_server_local_timeline">Ajouter le flux locale d\'un serveur personnalisé</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Changer le visibilité des réponse par défaut à non répertoriée</string>
+    <string name="mo_composer_behavior">Comportement du compositeur</string>
+    <string name="mo_poll_option_add">Ajouter nouvelle option de sondage</string>
+    <string name="mo_mute_label">Duration:</string>
+    <string name="mo_disable_double_tap_to_swipe_between_tabs">Désactiver appuyer deux fois pour balayer entre onglets</string>
+    <string name="mo_clear_recent_emoji">Vider les emojis utilisés récemment</string>
+    <string name="mo_disable_dividers">Désactiver les séparateur des postes</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Cacher le bouton compose pendant le défilement</string>
+    <string name="mo_welcome_text">Pour commencer, veuillez entrer le domaine de votre instance</string>
+    <string name="mo_personal_note">Ajouter une note sur ce profil</string>
+    <string name="mo_personal_note_confirm">Confirmer les modifications de la note</string>
+    <string name="mo_settings_contribute">Contribuer à Moshidon</string>
+    <string name="mo_update_available">Moshidon %s est prêt à télécharger.</string>
+    <string name="mo_update_ready">Moshidon %s est téléchargé et prêt à installer</string>
+    <string name="mo_no_image_desc_title">Aucune description de l\'image</string>
+    <string name="mo_emoji_recent">Utilisé récemment</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Désactiver « Déplacer le bouton publier » pour permettre la personnalisation</string>
+    <string name="mo_sending_error">Échec lors de la publication</string>
+    <string name="mo_notification_action_replied">Répondu avec succès à la poste de %s</string>
+    <string name="mo_duration_indefinite">Indéfini</string>
+    <string name="mo_duration_hours_1">1 heure</string>
+    <string name="mo_duration_hours_6">6 heures</string>
+    <string name="mo_duration_days_1">1 jour</string>
+    <string name="mo_duration_days_3">3 jours</string>
+    <string name="mo_duration_days_7">7 jours</string>
+    <string name="mo_miscellaneous_settings">Paramètres divers</string>
 </resources>
