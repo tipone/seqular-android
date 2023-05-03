@@ -26,19 +26,19 @@
 
 ### **The ability to add other server's local timeline to your timelines!**
 
-#### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
+It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
 ### **View remote profiles**
 
-#### You can now see all of a profile follows and followers, by directly loading them from the profile's home instance. In case of a failed lookup, the app will automatically fall back to the older method.
+You can now see all of a profile follows and followers, by directly loading them from the profile's home instance. In case of a failed lookup, the app will automatically fall back to the older method.
 
 ### **Translate posts easily!**
 
-#### Allows you to easily translate posts in another language with a translate button! Your instance **must** support translation, otherwise it will not work.
+Allows you to easily translate posts in another language with a translate button! Your instance **must** support translation, otherwise it will not work.
 
 ### **Show posts filtered with a warning!**
 
-**Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:**
+Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:
 
 Before             |  After
 :-------------------------:|:-------------------------:
@@ -73,7 +73,7 @@ This is important to **ensure the content you’re sharing is as accessible as p
 
 ### **Reminder to add alt text to attached media**
 
-#### By default, Moshidon will show a warning to add alt text if your post has any attachments without any alt text. This is for better accessibility, and it can easily be bypassed and disabled in settings.
+By default, Moshidon will show a warning to add alt text if your post has any attachments without any alt text. This is for better accessibility, and it can easily be bypassed and disabled in settings.
 
 ### **Pinning posts**
 
