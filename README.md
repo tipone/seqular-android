@@ -36,8 +36,6 @@
 
 #### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
-### **Material you theme support on Android 12+ devices!**
-
 ### **Show posts filtered with a warning!**
 
 **Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:**
@@ -49,7 +47,7 @@ Before             |  After
 
 ### **Color themes**
 
-**Allows you to change theme within the app. Supports Purple, pink, green, blue, red, orange, yellow and Nord!**
+**Allows you to change theme within the app. Supports Material You, purple, pink, green, blue, red, orange, yellow and Nord!**
 
 ### **Unlisted posting**
 
