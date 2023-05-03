@@ -238,7 +238,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 						item.status, item.accountID, null,
 						status -> {
 							boost.setSelected(!status.reblogged);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !item.status.reblogged, null, r->boostConsumer(v, r));
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
 						}
 				);
 				return;
@@ -265,7 +265,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							item.status, item.accountID, null,
 							status -> {
 								session.getStatusInteractionController()
-										.setReblogged(status, !item.status.reblogged, visibility, r->boostConsumer(v, r));
+										.setReblogged(status, !status.reblogged, visibility, r->boostConsumer(v, r));
 								boost.setSelected(status.reblogged);
 								dialog.dismiss();
 							}
@@ -353,7 +353,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 						item.status, item.accountID, null,
 						status -> {
 							favorite.setSelected(!status.favourited);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !item.status.favourited, r->{
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
 								if (status.favourited) {
 									v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
 								} else {
@@ -396,7 +396,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 						item.status, item.accountID, null,
 						status -> {
 							bookmark.setSelected(!status.bookmarked);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !item.status.bookmarked, r->{
+							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
 								v.startAnimation(opacityIn);
 							});
 						}
