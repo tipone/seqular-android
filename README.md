@@ -40,6 +40,10 @@
 
 #### You can now see all of a profile follows and followers, by directly loading them from the profile's home instance. In case of a failed lookup, the app will automatically fall back to the older method.
 
+### **Translate posts easily!**
+
+#### Allows you to easily translate posts in another language with a translate button! Your instance **must** support translation, otherwise it will not work.
+
 ### **Show posts filtered with a warning!**
 
 **Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:**
