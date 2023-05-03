@@ -71,6 +71,10 @@ That’s one of the reasons why choosing a small, **well-moderated instance is i
 
 This is important to **ensure the content you’re sharing is as accessible as possible** to people who can’t see the images and rely on software to read back the provided content descriptions. Thankfully, it’s quite common for people on the Fediverse to provide such alt texts, and hopefully things stay this way!
 
+### **Reminder to add alt text to attached media**
+
+#### By default, Moshidon will show a warning to add alt text if your post has any attachments without any alt text. This is for better accessibility, and it can easily be bypassed and disabled in settings.
+
 ### **Pinning posts**
 
 **This lets you can highlight important posts on your profile. A dedicated “Pinned” tab in people’s profiles shows all the posts they pinned.**
