@@ -36,6 +36,10 @@
 
 #### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
+### **View remote profiles**
+
+#### You can now see all of a profile follows and followers, by directly loading them from the profile's home instance. In case of a failed lookup, the app will automatically fall back to the older method.
+
 ### **Show posts filtered with a warning!**
 
 **Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:**
