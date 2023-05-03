@@ -32,7 +32,7 @@
 
 ## Key features
 
-### **The ability to add new custom local timelines!**
+### **The ability to add other server's local timeline to your timelines!**
 
 #### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
