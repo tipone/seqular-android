@@ -36,7 +36,7 @@ You can now see all of a profile follows and followers, by directly loading them
 
 Allows you to easily translate posts in another language with a translate button! Your instance must support translation, otherwise it will not work.
 
-### **Show posts filtered with a warning!**
+### **Show posts filtered with a warning**
 
 Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:
 
