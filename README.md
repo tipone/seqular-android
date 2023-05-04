@@ -24,7 +24,7 @@
 
 ## Key features
 
-### **The ability to add other server's local timeline to your timelines!**
+### **The ability to add other server's local timeline to your timelines**
 
 It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
@@ -32,9 +32,9 @@ It can be accessed in the "Edit timelines" menu, where you can add a new "Commun
 
 You can now see all of a profile follows and followers, by directly loading them from the profile's home instance. In case of a failed lookup, the app will automatically fall back to the older method.
 
-### **Translate posts easily!**
+### **Translate posts easily**
 
-Allows you to easily translate posts in another language with a translate button! Your instance **must** support translation, otherwise it will not work.
+Allows you to easily translate posts in another language with a translate button! Your instance must support translation, otherwise it will not work.
 
 ### **Show posts filtered with a warning!**
 
