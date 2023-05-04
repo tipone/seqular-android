@@ -273,4 +273,6 @@
     <string name="sk_show_thread">Mostrar chío</string>
     <string name="sk_compact_reblog_reply_line">Compactar liña de impulso/resposta</string>
     <string name="sk_settings_confirm_before_reblog">Confirma antes de impulsar</string>
+    <string name="sk_reacted_with">Redactado con %s</string>
+    <string name="sk_reacted">redactado</string>
 </resources>
