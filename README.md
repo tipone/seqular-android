@@ -47,7 +47,7 @@ Before             |  After
 
 ### **Color themes**
 
-**Allows you to change theme within the app. Supports Material You, purple, pink, green, blue, red, orange, yellow and Nord!**
+Allows you to change theme within the app. Supports Material You, purple, pink, green, blue, red, orange, yellow and Nord!
 
 ### **Unlisted posting**
 
