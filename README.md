@@ -122,16 +122,18 @@ Unstable variant with an integrated updater. It's for development and testing pu
 
 ### Features
 
+* [Adding the ability to view other server's local timelines](https://github.com/LucasGGamerM/moshidon/tree/feature/local-timelines)
+* [Adding the ability to load followers and following from remote instance](https://github.com/LucasGGamerM/moshidon/tree/feature/remote-followers)
 * [Adding the ability to have filtered posts show with a warning](https://github.com/LucasGGamerM/moshidon/tree/feature/filters_again)
 * [Add “Unlisted” as a post visibility option](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/enable-unlisted)
   ([Pull request](https://github.com/mastodon/mastodon-android/pull/103))
-* Adding a useful private profile note box!*
-* Auto hiding the compose button on scroll!*
-* Adding the ability to remind yourself to add alt text to images!*
-* An indicator for if an image has alt text or not*
-* Adding the ability to have drafts!*
-* Also adding the ability to view announcements from your instance!*
-* Adding the ability to post for local timeline only (Only on instances that support it!)*
+* Adding a useful private profile note box
+* Auto hiding the compose button on scroll
+* Adding the ability to remind yourself to add alt text to images
+* An indicator for if an image has alt text or not
+* Adding the ability to have drafts
+* Also adding the ability to view announcements from your instance
+* Adding the ability to post for local timeline only (Only on instances that support it!)
 * [Add image description button and viewer](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/display-alt-text) ([Pull request](https://github.com/mastodon/mastodon-android/pull/129))
 * [Implement pinning posts and displaying pinned posts](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/pin-posts) ([Pull request](https://github.com/mastodon/mastodon-android/pull/140))
 * [Implement deleting and re-drafting](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/delete-redraft) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/21))
@@ -153,6 +155,7 @@ Unstable variant with an integrated updater. It's for development and testing pu
 
 ### Behavior
 
+* Allow for confirmation before reblogging
 * Adding a bottom option for the publish button, allowing for easier use on larger screens!
 * [Make back button return to the home tab before exiting the app](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/back-returns-home) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/118))
 * [Always preserve content warnings when replying](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/always-preserve-cw) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/113))
