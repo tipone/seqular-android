@@ -59,7 +59,9 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 	public GithubSelfUpdaterImpl(){
 		SharedPreferences prefs=getPrefs();
 		int checkedByBuild=prefs.getInt("checkedByBuild", 0);
-		if(prefs.contains("version") && checkedByBuild==BuildConfig.VERSION_CODE){
+		String checkedByDate=prefs.getString("checkedByDate", "1970-01-00");
+		String currentVersionDate = BuildConfig.VERSION_NAME.substring(BuildConfig.VERSION_NAME.lastIndexOf("@") + 1);
+		if(prefs.contains("version") && checkedByBuild==BuildConfig.VERSION_CODE && checkedByDate.equals(currentVersionDate)){
 			info=new UpdateInfo();
 			info.version=prefs.getString("version", null);
 			info.size=prefs.getLong("apkSize", 0);
@@ -74,7 +76,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 					MastodonApp.context.registerReceiver(downloadCompletionReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
 				}
 			}
-		}else if(checkedByBuild!=BuildConfig.VERSION_CODE && checkedByBuild>0){
+		}else if((checkedByBuild!=BuildConfig.VERSION_CODE && checkedByBuild>0) || !checkedByDate.equals(currentVersionDate)){
 			// We are in a new version, running for the first time after update. Gotta clean things up.
 			long id=getPrefs().getLong("downloadID", 0);
 			if(id!=0){
@@ -140,6 +142,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 									.putString("version", version)
 									.putString("apkURL", url)
 									.putString("changelog", changelog)
+									.putString("checkedByDate", BuildConfig.VERSION_NAME.substring(BuildConfig.VERSION_NAME.lastIndexOf("@") + 1))
 									.putInt("checkedByBuild", BuildConfig.VERSION_CODE)
 									.remove("downloadID")
 									.apply();
@@ -158,7 +161,12 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}catch(Exception x){
 			Log.w(TAG, "actuallyCheckForUpdates", x);
 		}finally{
-			setState(info==null ? UpdateState.NO_UPDATE : UpdateState.UPDATE_AVAILABLE);
+			if(info != null && !info.version.substring(info.version.indexOf("-") + 1).equals(BuildConfig.VERSION_NAME.substring(BuildConfig.VERSION_NAME.lastIndexOf("@") + 1))) {
+				setState(UpdateState.UPDATE_AVAILABLE);
+			} else {
+				removeInfo();
+				setState(UpdateState.NO_UPDATE);
+			}
 		}
 	}
 
@@ -168,6 +176,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 				.remove("version")
 				.remove("apkURL")
 				.remove("checkedByBuild")
+				.remove("checkedByDate")
 				.remove("downloadID")
 				.remove("changelog")
 				.apply();
