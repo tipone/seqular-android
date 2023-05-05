@@ -187,7 +187,7 @@ This project is released under the [GPL-3 License](./LICENSE).
 
 ## Links
 
-[Official matrix chatroom:](https://matrix.to/#/#moshidon:matrix.org) https://matrix.to/#/#moshidon:matrix.org
+[Official matrix chatroom:](https://matrix.to/#/#moshidon:floss.social) https://matrix.to/#/#moshidon:floss.social
 
 <a rel="me" href="https://floss.social/@moshidon">@moshidon<wbr>@floss.social</a>
 
