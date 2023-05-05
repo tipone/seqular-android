@@ -22,25 +22,23 @@
 
 --- 
 
-## F.A.Q
-
-### Q: What are the main differences between Moshidon and Megalodon?
-
-### A: There are many, but the most outstanding differences are: the ability to have other server's local timeline inside the app. It can be acessed in the "Add community" option in the top right corner of the Edit timelines screen. Other outstanding features that Moshidon has are some quality of life improvements, such as notification actions and allowing for unlisted replies by default.  Most other features are pretty minor, such as profile notes directly available in the person's profile. Other features are quite minor usability and visibility improvements. All of which can be found in the settings page. 
-
----
-
 ## Key features
 
-### **The ability to add new custom local timelines!**
+### **The ability to add other server's local timeline to your timelines**
 
-#### It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
+It can be accessed in the "Edit timelines" menu, where you can add a new "Community" to see other server's local posts!
 
-### **Material you theme support on Android 12+ devices!**
+### **View remote profiles**
 
-### **Show posts filtered with a warning!**
+You can now see all of a profile follows and followers, by directly loading them from the profile's home instance. In case of a failed lookup, the app will automatically fall back to the older method.
 
-**Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:**
+### **Translate posts easily**
+
+Allows you to easily translate posts in another language with a translate button! Your instance must support translation, otherwise it will not work.
+
+### **Show posts filtered with a warning**
+
+Allows you to have filtered posts collapsed with a warning! As shown in the screenshots:
 
 Before             |  After
 :-------------------------:|:-------------------------:
@@ -49,7 +47,7 @@ Before             |  After
 
 ### **Color themes**
 
-**Allows you to change theme within the app. Supports Purple, pink, green, blue, red, orange, yellow and Nord!**
+**Allows you to change theme within the app. Supports Material You, purple, pink, green, blue, red, orange, yellow and Nord!**
 
 ### **Unlisted posting**
 
@@ -72,6 +70,10 @@ That’s one of the reasons why choosing a small, **well-moderated instance is i
 **Allows you to quickly check whether an image or video has an alternative text attached to it.**
 
 This is important to **ensure the content you’re sharing is as accessible as possible** to people who can’t see the images and rely on software to read back the provided content descriptions. Thankfully, it’s quite common for people on the Fediverse to provide such alt texts, and hopefully things stay this way!
+
+### **Reminder to add alt text to attached media**
+
+By default, Moshidon will show a warning to add alt text if your post has any attachments without any alt text. This is for better accessibility, and it can easily be bypassed and disabled in settings.
 
 ### **Pinning posts**
 
@@ -97,11 +99,21 @@ Moshidon is also available in [IzzyOnDroid repo](https://apt.izzysoft.de/fdroid/
 
 ## Release variants
 
-All downloads can be found on the [Releases](https://github.com/LucasGGamerM/moshidon/releases) page.
+### Stable variant
+
+All stable version downloads can be found on the [Releases](https://github.com/LucasGGamerM/moshidon/releases) page.
 
 **`moshidon.apk`**
 
 Variant with an integrated updater. If you download Moshidon from here (and not from an app store), just download the regular `moshidon.apk`.
+
+### Nightly variant
+
+All nightly builds can be downloaded at [Nightly Releases](https://github.com/LucasGGamerM/moshidon-nightly/releases) page.
+
+**`moshidon-nightly.apk`**
+
+Unstable variant with an integrated updater. It's for development and testing purposes. If you find any bugs with it, please file a bug report at our [issues](https://github.com/LucasGGamerM/moshidon/issues) page.
 
 ---
 
@@ -110,16 +122,18 @@ Variant with an integrated updater. If you download Moshidon from here (and not 
 
 ### Features
 
+* [Adding the ability to view other server's local timelines](https://github.com/LucasGGamerM/moshidon/tree/feature/local-timelines)
+* [Adding the ability to load followers and following from remote instance](https://github.com/LucasGGamerM/moshidon/tree/feature/remote-followers)
 * [Adding the ability to have filtered posts show with a warning](https://github.com/LucasGGamerM/moshidon/tree/feature/filters_again)
 * [Add “Unlisted” as a post visibility option](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/enable-unlisted)
   ([Pull request](https://github.com/mastodon/mastodon-android/pull/103))
-* Adding a useful private profile note box!*
-* Auto hiding the compose button on scroll!*
-* Adding the ability to remind yourself to add alt text to images!*
-* An indicator for if an image has alt text or not*
-* Adding the ability to have drafts!*
-* Also adding the ability to view announcements from your instance!*
-* Adding the ability to post for local timeline only (Only on instances that support it!)*
+* Adding a useful private profile note box
+* Auto hiding the compose button on scroll
+* Adding the ability to remind yourself to add alt text to images
+* An indicator for if an image has alt text or not
+* Adding the ability to have drafts
+* Also adding the ability to view announcements from your instance
+* Adding the ability to post for local timeline only (Only on instances that support it!)
 * [Add image description button and viewer](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/display-alt-text) ([Pull request](https://github.com/mastodon/mastodon-android/pull/129))
 * [Implement pinning posts and displaying pinned posts](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/pin-posts) ([Pull request](https://github.com/mastodon/mastodon-android/pull/140))
 * [Implement deleting and re-drafting](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/delete-redraft) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/21))
@@ -141,6 +155,7 @@ Variant with an integrated updater. If you download Moshidon from here (and not 
 
 ### Behavior
 
+* Allow for confirmation before reblogging
 * Adding a bottom option for the publish button, allowing for easier use on larger screens!
 * [Make back button return to the home tab before exiting the app](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/back-returns-home) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/118))
 * [Always preserve content warnings when replying](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/always-preserve-cw) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/113))
@@ -172,6 +187,10 @@ This project is released under the [GPL-3 License](./LICENSE).
 
 ## Links
 
-[Official matrix chatroom:](https://matrix.to/#/#moshidon:matrix.org) https://matrix.to/#/#moshidon:matrix.org
+[F.A.Q](FAQ.md)
+
+[Official matrix chatroom:](https://matrix.to/#/#moshidon:floss.social) https://matrix.to/#/#moshidon:floss.social
 
 <a rel="me" href="https://floss.social/@moshidon">@moshidon<wbr>@floss.social</a>
+
+---
