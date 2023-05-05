@@ -270,7 +270,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 						0,
 						fab.getHeight() * 2);
 				animate.setDuration(300);
-				animate.setFillAfter(true);
 				fab.startAnimation(animate);
 
 				noteEditConfirm.setVisibility(View.VISIBLE);
@@ -285,7 +284,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 						fab.getHeight() * 2,
 						0);
 				animate.setDuration(300);
-				animate.setFillAfter(true);
 				fab.startAnimation(animate);
 
 				noteEditConfirm.animate()
