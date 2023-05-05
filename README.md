@@ -99,11 +99,15 @@ Moshidon is also available in [IzzyOnDroid repo](https://apt.izzysoft.de/fdroid/
 
 ## Release variants
 
+### Stable variant
+
 All stable version downloads can be found on the [Releases](https://github.com/LucasGGamerM/moshidon/releases) page.
 
 **`moshidon.apk`**
 
 Variant with an integrated updater. If you download Moshidon from here (and not from an app store), just download the regular `moshidon.apk`.
+
+### Nightly variant
 
 All nightly builds can be downloaded at [Nightly Releases](https://github.com/LucasGGamerM/moshidon-nightly/releases) page.
 
