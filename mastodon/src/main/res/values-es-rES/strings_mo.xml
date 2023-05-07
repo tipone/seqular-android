@@ -33,7 +33,7 @@
     <string name="mo_duration_days_3">3 días</string>
     <string name="mo_change_default_reply_visibility_to_unlisted">Cambiar visibilidad por defecto de respuestas a no listada</string>
     <string name="mo_duration_days_7">7 días</string>
-    <string name="mo_composer_behavior">Comportamiento de publicación</string>
+    <string name="mo_composer_behavior">Comportamiento de Publicación</string>
     <string name="mo_miscellaneous_settings">Ajustes varios</string>
     <string name="mo_share_open_url">Abrir en la aplicación</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Desactivar el doble toque para cambiar de pestaña</string>
