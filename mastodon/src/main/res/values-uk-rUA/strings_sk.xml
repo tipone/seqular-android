@@ -274,5 +274,6 @@
     <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеної публікації/відповіді</string>
     <string name="sk_settings_confirm_before_reblog">Підтверджувати поширення</string>
     <string name="sk_settings_show_new_posts_button">Кнопка \"Показати нові публікації\"</string>
-    <string name="sk_reacted">відреагував із %s</string>
+    <string name="sk_reacted">відреагував</string>
+    <string name="sk_reacted_with">відреагував із %s</string>
 </resources>
