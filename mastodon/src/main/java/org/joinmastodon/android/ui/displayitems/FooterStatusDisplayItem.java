@@ -237,6 +237,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
+							if(status == null)
+								return;
 							boost.setSelected(!status.reblogged);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
 						}
@@ -352,6 +354,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
+							if(status == null)
+								return;
 							favorite.setSelected(!status.favourited);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
 								if (status.favourited) {
@@ -395,6 +399,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
+							if(status == null)
+								return;
 							bookmark.setSelected(!status.bookmarked);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
 								v.startAnimation(opacityIn);
