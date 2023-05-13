@@ -78,6 +78,7 @@ public abstract class StatusDisplayItem{
 			case EXTENDED_FOOTER -> new ExtendedFooterStatusDisplayItem.Holder(activity, parent);
 			case MEDIA_GRID -> new MediaGridStatusDisplayItem.Holder(activity, parent);
 			case WARNING -> new WarningFilteredStatusDisplayItem.Holder(activity, parent);
+			case FILE -> new FileStatusDisplayItem.Holder(activity, parent);
 		};
 	}
 
@@ -171,7 +172,10 @@ public abstract class StatusDisplayItem{
 			replyLine.needBottomPadding=true;
 		else
 			header.needBottomPadding=true;
-		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
+
+		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream()
+				.filter(att->att.type.isImage() && !att.type.equals(Attachment.Type.UNKNOWN))
+				.collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
 			PhotoLayoutHelper.TiledLayoutResult layout=PhotoLayoutHelper.processThumbs(imageAttachments);
 			items.add(new MediaGridStatusDisplayItem(parentID, fragment, layout, imageAttachments, statusForContent));
@@ -181,6 +185,12 @@ public abstract class StatusDisplayItem{
 				items.add(new AudioStatusDisplayItem(parentID, fragment, statusForContent, att));
 			}
 		}
+
+		statusForContent.mediaAttachments.stream()
+				.filter(att->att.type.equals(Attachment.Type.UNKNOWN))
+				.map(att -> new FileStatusDisplayItem(parentID, fragment, att))
+				.forEach(items::add);
+
 		if(statusForContent.poll!=null){
 			buildPollItems(parentID, fragment, statusForContent.poll, items);
 		}
@@ -230,7 +240,8 @@ public abstract class StatusDisplayItem{
 		GAP,
 		EXTENDED_FOOTER,
 		MEDIA_GRID,
-		WARNING
+		WARNING,
+		FILE
 	}
 
 	public static abstract class Holder<T extends StatusDisplayItem> extends BindableViewHolder<T> implements UsableRecyclerView.DisableableClickable{
