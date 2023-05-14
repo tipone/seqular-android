@@ -156,7 +156,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						loadRelationships(needRelationships);
 						maxID=result.maxID;
 
-						if(offset==0 && !result.items.isEmpty() && !result.isFromCache() && AccountSessionManager.getInstance().getAccount(accountID).markers.notifications != null){
+						if(offset == 0 && !result.items.isEmpty() && !result.isFromCache() && AccountSessionManager.getInstance().getAccount(accountID).markers != null && AccountSessionManager.getInstance().getAccount(accountID).markers.notifications != null){
 							E.post(new AllNotificationsSeenEvent());
 							new SaveMarkers(null, result.items.get(0).id).exec(accountID);
 							AccountSessionManager.getInstance().getAccount(accountID).markers
