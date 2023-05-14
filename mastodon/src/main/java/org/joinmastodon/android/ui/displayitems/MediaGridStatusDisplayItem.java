@@ -55,8 +55,8 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 		for(Attachment att:attachments){
 			requests.add(new UrlImageLoaderRequest(switch(att.type){
 				case IMAGE -> att.url;
-				case VIDEO, GIFV -> att.previewUrl;
-				default -> throw new IllegalStateException("Unexpected value: "+att.type);
+				case VIDEO, GIFV -> att.previewUrl == null ? att.url : att.previewUrl;
+				default -> throw new IllegalStateException("Unexpected value: "+att.url);
 			}, 1000, 1000));
 		}
 	}
