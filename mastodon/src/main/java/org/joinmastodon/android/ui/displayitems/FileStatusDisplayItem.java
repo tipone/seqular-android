@@ -48,12 +48,12 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
         @Override
         public void onBind(FileStatusDisplayItem item){
             title.setText(item.attachment.description == null ? title.getContext().getText(R.string.media_no_description) : item.attachment.description);
-            domain.setText(Uri.parse(item.attachment.url).getHost());
+            domain.setText(Uri.parse(item.attachment.remoteUrl == null ? item.attachment.url : item.attachment.remoteUrl).getHost());
 
         }
 
         private void onClick(View v){
-            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.attachment.url);
+            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.attachment.remoteUrl == null ? item.attachment.url : item.attachment.remoteUrl);
         }
     }
 }
