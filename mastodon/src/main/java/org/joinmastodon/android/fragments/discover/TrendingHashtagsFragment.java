@@ -117,11 +117,14 @@ public class TrendingHashtagsFragment extends BaseRecyclerFragment<Hashtag> impl
 		@Override
 		public void onBind(Hashtag item){
 			title.setText('#'+item.name);
-			int numPeople=item.history.get(0).accounts;
-			if(item.history.size()>1)
-				numPeople+=item.history.get(1).accounts;
+			int numPeople = 0;
+			if(item.history != null){
+				numPeople=item.history.get(0).accounts;
+				if(item.history.size()>1)
+					numPeople+=item.history.get(1).accounts;
+				chart.setData(item.history);
+			}
 			subtitle.setText(getResources().getQuantityString(R.plurals.x_people_talking, numPeople, numPeople));
-			chart.setData(item.history);
 		}
 
 		@Override
