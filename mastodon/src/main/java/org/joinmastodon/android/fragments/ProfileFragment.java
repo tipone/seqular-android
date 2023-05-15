@@ -566,8 +566,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private void bindHeaderView(){
 		setTitle(account.displayName);
 		setSubtitle(getResources().getQuantityString(R.plurals.x_posts, (int)(account.statusesCount%1000), account.statusesCount));
-		ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(100), V.dp(100)));
-		ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.header : account.headerStatic, 1000, 1000));
+		if((GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic) != null){
+			ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(100), V.dp(100)));
+		}
+		if((GlobalUserPreferences.playGifs ? account.header : account.headerStatic) != null) {
+			ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.header : account.headerStatic, 1000, 1000));
+		}
 		SpannableStringBuilder ssb=new SpannableStringBuilder(account.displayName);
 		HtmlParser.parseCustomEmoji(ssb, account.emojis);
 		name.setText(ssb);
