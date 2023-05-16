@@ -13,24 +13,39 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginEnd="32dp"
         android:importantForAccessibility="no"
         android:tint="?android:textColorPrimary"
         tools:src="@drawable/ic_fluent_color_24_regular"/>
 
 
-    <TextView
-        android:id="@+id/text"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:paddingVertical="8dp"
-        android:gravity="center_vertical"
-        android:textColor="?android:textColorPrimary"
-        android:textSize="16sp" />
 
+	<RelativeLayout
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_marginEnd="8dp"
+		android:paddingVertical="8dp"
+		android:layout_weight="1">
+
+		<TextView android:id="@+id/title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:singleLine="true"
+			android:ellipsize="marquee"
+			android:textColor="?android:textColorPrimary"
+			android:textSize="16sp"
+			android:fadingEdge="horizontal"
+			android:text=""/>
+
+		<TextView android:id="@+id/summary"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/title"
+			android:layout_alignStart="@id/title"
+			android:visibility="gone"
+			android:maxLines="4" />
+
+	</RelativeLayout>
     <Button
         android:id="@+id/button"
         android:layout_width="wrap_content"

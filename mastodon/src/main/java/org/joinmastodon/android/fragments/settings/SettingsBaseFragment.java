@@ -8,10 +8,10 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -241,12 +241,20 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 
 	protected class ButtonItem extends Item{
-		private int text;
+		private int title;
+		private int summary;
 		private int icon;
 		private Consumer<Button> buttonConsumer;
 
-		public ButtonItem(@StringRes int text, @DrawableRes int icon, Consumer<Button> buttonConsumer) {
-			this.text = text;
+		public ButtonItem(@StringRes int title, @DrawableRes int icon, Consumer<Button> buttonConsumer) {
+			this.title = title;
+			this.icon = icon;
+			this.buttonConsumer = buttonConsumer;
+		}
+
+		public ButtonItem(@StringRes int title, @StringRes int summary, @DrawableRes int icon, Consumer<Button> buttonConsumer) {
+			this.title = title;
+			this.summary = summary;
 			this.icon = icon;
 			this.buttonConsumer = buttonConsumer;
 		}
@@ -714,19 +722,27 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
 		private final Button button;
 		private final ImageView icon;
-		private final TextView text;
+		private final TextView title;
+		private final TextView summary;
 
 		@SuppressLint("ClickableViewAccessibility")
 		public ButtonViewHolder(){
 			super(getActivity(), R.layout.item_settings_button, list);
-			text=findViewById(R.id.text);
+			title=findViewById(R.id.title);
+			summary=findViewById(R.id.summary);
 			icon=findViewById(R.id.icon);
 			button=findViewById(R.id.button);
 		}
 
 		@Override
 		public void onBind(ButtonItem item){
-			text.setText(item.text);
+			title.setText(item.title);
+
+			if (item.summary != 0) {
+				summary.setText(item.summary);
+				summary.setVisibility(View.VISIBLE);
+			}
+
 			icon.setImageResource(item.icon);
 			item.buttonConsumer.accept(button);
 		}
