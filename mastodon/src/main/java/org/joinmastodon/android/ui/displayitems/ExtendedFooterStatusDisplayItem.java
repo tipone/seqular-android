@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.StatusEditHistoryFragment;
 import org.joinmastodon.android.fragments.account_list.StatusFavoritesListFragment;
@@ -34,12 +35,14 @@ import me.grishka.appkit.Nav;
 
 public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 	public final Status status;
+	public final String accountID;
 
 	private static final DateTimeFormatter TIME_FORMATTER=DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
 
-	public ExtendedFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status){
+	public ExtendedFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, String accountID, Status status){
 		super(parentID, parentFragment);
 		this.status=status;
+		this.accountID=accountID;
 	}
 
 	@Override
@@ -75,7 +78,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
 
 			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
-			if (s.visibility==StatusPrivacy.DIRECT)
+			if (!s.canBeBoosted(item.accountID))
 				reblogs.setVisibility(View.GONE);
 
 			if(s.editedAt!=null){

@@ -62,7 +62,7 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 				else if(item instanceof FooterStatusDisplayItem footer)
 					footer.hideCounts=true;
 			}
-			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, s.getContentStatus()));
+			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, accountID, s.getContentStatus()));
 		}
 		return items;
 	}
