@@ -415,8 +415,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			public void onSuccess(Relationship result) {}
 
 			@Override
-			public void onError(ErrorResponse result) {
-				Toast.makeText(getActivity(), getString(R.string.mo_personal_note_update_failed), Toast.LENGTH_LONG).show();
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
 			}
 		}).exec(accountID);
 	}
