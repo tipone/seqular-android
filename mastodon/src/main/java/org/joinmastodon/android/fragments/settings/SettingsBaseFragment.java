@@ -179,21 +179,30 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 
 	protected class SwitchItem extends Item{
-		private String text;
+		private String title;
+		private String summary;
 		private int icon;
 		boolean checked;
 		private Consumer<SwitchItem> onChanged;
 		protected boolean enabled=true;
 
-		public SwitchItem(@StringRes int text, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged){
-			this.text=getString(text);
+		public SwitchItem(@StringRes int title, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged){
+			this.title=getString(title);
 			this.icon=icon;
 			this.checked=checked;
 			this.onChanged=onChanged;
 		}
 
-		public SwitchItem(@StringRes int text, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged, boolean enabled){
-			this.text=getString(text);
+		public SwitchItem(@StringRes int title, @StringRes int summary, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged){
+			this.title=getString(title);
+			this.summary=getString(summary);
+			this.icon=icon;
+			this.checked=checked;
+			this.onChanged=onChanged;
+		}
+
+		public SwitchItem(@StringRes int title, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged, boolean enabled){
+			this.title=getString(title);
 			this.icon=icon;
 			this.checked=checked;
 			this.onChanged=onChanged;
@@ -573,20 +582,28 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 	protected class SwitchViewHolder extends BindableViewHolder<SwitchItem> implements UsableRecyclerView.DisableableClickable{
-		private final TextView text;
+		private final TextView title;
+		private final TextView summary;
 		private final ImageView icon;
 		private final Switch checkbox;
 
 		public SwitchViewHolder(){
 			super(getActivity(), R.layout.item_settings_switch, list);
-			text=findViewById(R.id.text);
+			title=findViewById(R.id.title);
+			summary=findViewById(R.id.summary);
 			icon=findViewById(R.id.icon);
 			checkbox=findViewById(R.id.checkbox);
 		}
 
 		@Override
 		public void onBind(SwitchItem item){
-			text.setText(item.text);
+			title.setText(item.title);
+
+			if (item.summary != null) {
+				summary.setText(item.summary);
+				summary.setVisibility(View.VISIBLE);
+			}
+
 			if (item.icon == 0) {
 				icon.setVisibility(View.GONE);
 			} else {
