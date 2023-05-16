@@ -390,12 +390,16 @@ public class UiUtils {
 		showConfirmationAlert(context, context.getString(title), context.getString(message), context.getString(confirmButton), icon, onConfirmed);
 	}
 
-	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed){
+	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed) {
+		showConfirmationAlert(context, title, message, confirmButton, icon, onConfirmed, null);
+	}
+
+	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed, Runnable onDenied){
 		new M3AlertDialogBuilder(context)
 				.setTitle(title)
 				.setMessage(message)
 				.setPositiveButton(confirmButton, (dlg, i)->onConfirmed.run())
-				.setNegativeButton(R.string.cancel, null)
+				.setNegativeButton(R.string.cancel, (dialog, which) -> onDenied.run())
 				.setIcon(icon)
 				.show();
 	}
@@ -779,7 +783,17 @@ public class UiUtils {
 		}
 
 		progressCallback.accept(true);
-		follow(activity, accountID, account,  !relationship.following && !relationship.requested, progressCallback, resultCallback);
+		if (!relationship.following && !relationship.requested) {
+			follow(activity, accountID, account,  true, progressCallback, resultCallback);
+		} else {
+			showConfirmationAlert(activity,
+					activity.getString(R.string.mo_confirm_unfollow_title),
+					activity.getString(R.string.mo_confirm_unfollow, account.getDisplayUsername()),
+					activity.getString(R.string.unfollow),
+					0,
+					() -> follow(activity, accountID, account, false, progressCallback, resultCallback),
+					() -> progressCallback.accept(false));
+		}
 
 	}
 
@@ -801,7 +815,8 @@ public class UiUtils {
 						progressCallback.accept(false);
 					}
 				})
-				.exec(accountID);	}
+				.exec(accountID);
+	}
 
 
 	public static void handleFollowRequest(Activity activity, Account account, String accountID, @Nullable String notificationID, boolean accepted, Relationship relationship, Consumer<Relationship> resultCallback) {
