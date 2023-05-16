@@ -141,7 +141,7 @@ import me.grishka.appkit.utils.V;
 import okhttp3.MediaType;
 
 public class UiUtils {
-	private static Handler mainHandler = new Handler(Looper.getMainLooper());
+	private static final Handler mainHandler = new Handler(Looper.getMainLooper());
 	private static final DateTimeFormatter DATE_FORMATTER_SHORT_WITH_YEAR = DateTimeFormatter.ofPattern("d MMM uuuu"), DATE_FORMATTER_SHORT = DateTimeFormatter.ofPattern("d MMM");
 	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
 	public static int MAX_WIDTH;
@@ -324,9 +324,8 @@ public class UiUtils {
 
 	public static void loadCustomEmojiInTextView(TextView view){
 		CharSequence _text=view.getText();
-		if(!(_text instanceof Spanned))
+		if(!(_text instanceof Spanned text))
 			return;
-		Spanned text=(Spanned)_text;
 		CustomEmojiSpan[] spans=text.getSpans(0, text.length(), CustomEmojiSpan.class);
 		if(spans.length==0)
 			return;
@@ -760,58 +759,49 @@ public class UiUtils {
 
 	public static void performAccountAction(Activity activity, Account account, String accountID, Relationship relationship, Button button, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
 		if(relationship == null){
-			UiUtils.lookupAccount(button.getContext(), account, accountID, null, account1 -> {
-				if(account1 == null){
-					return;
+			UiUtils.lookupAccount(button.getContext(), account, accountID, null, lookUpAccount -> {
+				if (lookUpAccount != null) {
+					progressCallback.accept(true);
+					follow(activity, accountID, lookUpAccount, true, progressCallback, resultCallback);
 				}
-				progressCallback.accept(true);
-				new SetAccountFollowed(account1.id, true, true, false)
-						.setCallback(new Callback<>(){
-							@Override
-							public void onSuccess(Relationship result){
-								resultCallback.accept(result);
-								progressCallback.accept(false);
-								if(!result.following && !result.requested){
-									E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
-								}
-							}
-
-							@Override
-							public void onError(ErrorResponse error){
-								error.showToast(activity);
-								progressCallback.accept(false);
-							}
-						})
-						.exec(accountID);
 			});
 			return;
 		}
+
 		if (relationship.blocking) {
 			confirmToggleBlockUser(activity, accountID, account, true, resultCallback);
-		}else if(relationship.muting){
-			confirmToggleMuteUser(activity, accountID, account, true, resultCallback);
-		}else{
-			progressCallback.accept(true);
-			new SetAccountFollowed(account.id, !relationship.following && !relationship.requested, true, false)
-					.setCallback(new Callback<>(){
-						@Override
-						public void onSuccess(Relationship result){
-							resultCallback.accept(result);
-							progressCallback.accept(false);
-							if(!result.following && !result.requested){
-								E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
-							}
-						}
-
-						@Override
-						public void onError(ErrorResponse error){
-							error.showToast(activity);
-							progressCallback.accept(false);
-						}
-					})
-					.exec(accountID);
+			return;
 		}
+
+		if(relationship.muting){
+			confirmToggleMuteUser(activity, accountID, account, true, resultCallback);
+			return;
+		}
+
+		progressCallback.accept(true);
+		follow(activity, accountID, account,  !relationship.following && !relationship.requested, progressCallback, resultCallback);
+
 	}
+
+	private static void follow(Activity activity, String accountID, Account account, boolean followed, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
+		new SetAccountFollowed(account.id, followed, true, false)
+				.setCallback(new Callback<>(){
+					@Override
+					public void onSuccess(Relationship result){
+						resultCallback.accept(result);
+						progressCallback.accept(false);
+						if(!result.following && !result.requested){
+							E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
+						}
+					}
+
+					@Override
+					public void onError(ErrorResponse error){
+						error.showToast(activity);
+						progressCallback.accept(false);
+					}
+				})
+				.exec(accountID);	}
 
 
 	public static void handleFollowRequest(Activity activity, Account account, String accountID, @Nullable String notificationID, boolean accepted, Relationship relationship, Consumer<Relationship> resultCallback) {
