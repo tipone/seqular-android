@@ -3,6 +3,7 @@ package org.joinmastodon.android.model;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
@@ -145,6 +146,11 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		if(strippedText==null)
 			strippedText=HtmlParser.strip(content);
 		return strippedText;
+	}
+
+	public boolean isBoostable(String accountID){
+		return (visibility==StatusPrivacy.PUBLIC || visibility==StatusPrivacy.UNLISTED || visibility==StatusPrivacy.LOCAL
+					|| (visibility==StatusPrivacy.PRIVATE && account.id.equals(AccountSessionManager.getInstance().getAccount(accountID).self.id)));
 	}
 
 	public static Status ofFake(String id, String text, Instant createdAt) {
