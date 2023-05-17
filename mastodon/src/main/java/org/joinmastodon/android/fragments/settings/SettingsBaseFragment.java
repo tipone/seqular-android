@@ -8,7 +8,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -129,6 +128,15 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		this.view = view;
+	}
+
+	protected void hideToolbar() {
+		getToolbar().setElevation(0f);
+        getToolbar().setTitle("");
+        TypedValue typedValue = new TypedValue();
+        if (getActivity().getTheme().resolveAttribute(android.R.attr.colorBackground, typedValue, true)) {
+            getToolbar().setBackgroundColor(typedValue.data);
+        }
 	}
 
 	protected Instance getInstance() {
@@ -265,6 +273,19 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
+	protected class GiantHeaderItem extends Item {
+		private String text;
+
+		public GiantHeaderItem(String text) {
+			this.text = text;
+		}
+
+		@Override
+		public int getViewType() {
+			return Type.GIANT_HEADER.ordinal();
+		}
+	}
+
 	protected class SmallTextItem extends Item {
 		private String text;
 
@@ -364,6 +385,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	public enum Type{
 		HEADER,
 		RED_HEADER,
+		GIANT_HEADER,
 		SWITCH,
 		THEME,
 		TEXT,
@@ -385,6 +407,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			return (BindableViewHolder<Item>) switch(Type.values()[viewType]){
 				case HEADER -> new HeaderViewHolder();
 				case RED_HEADER -> new HeaderViewHolder(true);
+				case GIANT_HEADER -> new GiantHeaderViewHolder();
 				case SWITCH -> new SwitchViewHolder();
 				case THEME -> new ThemeViewHolder();
 				case TEXT -> new TextViewHolder();
@@ -432,6 +455,24 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			text.setText(item.text);
 		}
 	}
+
+	private class GiantHeaderViewHolder extends BindableViewHolder<GiantHeaderItem> {
+		private final TextView text;
+
+		public GiantHeaderViewHolder(){
+			super(getActivity(), R.layout.item_settings_text, list);
+			text = itemView.findViewById(R.id.text);
+			text.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			text.setTextSize(TypedValue.COMPLEX_UNIT_SP, 32);
+			text.setPaddingRelative(text.getPaddingStart(), 0, text.getPaddingEnd(), text.getPaddingBottom());
+		}
+
+		@Override
+		public void onBind(GiantHeaderItem item){
+			text.setText(item.text);
+		}
+	}
+
 
 	protected void onThemePreferenceClick(GlobalUserPreferences.ThemePreference theme){
 		GlobalUserPreferences.theme=theme;
