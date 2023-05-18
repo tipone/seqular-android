@@ -48,7 +48,7 @@ public class Account extends BaseModel implements Searchable{
 	/**
 	 * The profile's bio / description.
 	 */
-	@RequiredField
+	
 	public String note;
 	/**
 	 * An image icon that is shown next to statuses and in the profile.
