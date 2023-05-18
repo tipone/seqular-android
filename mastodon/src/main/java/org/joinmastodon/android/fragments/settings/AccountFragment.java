@@ -52,7 +52,7 @@ public class AccountFragment extends SettingsBaseFragment{
         if (!TextUtils.isEmpty(getInstance().version)) items.add(new SmallTextItem(getString(R.string.sk_settings_server_version, getInstance().version)));
 
         items.add(new HeaderItem(R.string.sk_instance_features));
-        items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
+        items.add(new SwitchItem(R.string.sk_settings_support_local_only, R.string.sk_settings_local_only_explanation, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
             glitchModeItem.enabled = i.checked;
             if (i.checked) {
                 GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
@@ -65,8 +65,7 @@ public class AccountFragment extends SettingsBaseFragment{
             if (list.findViewHolderForAdapterPosition(items.indexOf(glitchModeItem)) instanceof SwitchViewHolder svh) svh.rebind();
             GlobalUserPreferences.save();
         }));
-        items.add(new SmallTextItem(getString(R.string.sk_settings_local_only_explanation)));
-        items.add(glitchModeItem = new SwitchItem(R.string.sk_settings_glitch_instance, 0, GlobalUserPreferences.accountsInGlitchMode.contains(accountID), i->{
+        items.add(glitchModeItem = new SwitchItem(R.string.sk_settings_glitch_instance, R.string.sk_settings_glitch_mode_explanation, 0, GlobalUserPreferences.accountsInGlitchMode.contains(accountID), i->{
             if (i.checked) {
                 GlobalUserPreferences.accountsInGlitchMode.add(accountID);
             } else {
@@ -75,7 +74,6 @@ public class AccountFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
         }));
         glitchModeItem.enabled = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
-        items.add(new SmallTextItem(getString(R.string.sk_settings_glitch_mode_explanation)));
 
 
         boolean translationAvailable = getInstance().v2 != null && getInstance().v2.configuration.translation != null && getInstance().v2.configuration.translation.enabled;

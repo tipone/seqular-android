@@ -10,7 +10,7 @@ import org.joinmastodon.android.R;
 
 import java.util.ArrayList;
 
-public class SettingsAppearanceFragment extends SettingsBaseFragment {
+public class AppearanceFragment extends SettingsBaseFragment {
 
     @Override
     public void addItems(ArrayList<Item> items) {
@@ -35,17 +35,17 @@ public class SettingsAppearanceFragment extends SettingsBaseFragment {
                 case NORD -> R.string.mo_color_palette_nord;
             });
         }));
-        items.add(new SwitchItem(R.string.theme_true_black, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
+        items.add(new SwitchItem(R.string.theme_true_black, R.string.mo_setting_true_black_summary, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
         items.add(new SwitchItem(R.string.sk_disable_marquee, R.drawable.ic_fluent_text_more_24_regular, GlobalUserPreferences.disableMarquee, i -> {
             GlobalUserPreferences.disableMarquee = i.checked;
             GlobalUserPreferences.save();
             needAppRestart = true;
         }));
-        items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i -> {
+        items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.string.mo_setting_uniform_summary, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i -> {
             GlobalUserPreferences.uniformNotificationIcon = i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i -> {
+        items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.string.mo_setting_reduced_motion_summary, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i -> {
             GlobalUserPreferences.reduceMotion = i.checked;
             GlobalUserPreferences.save();
             needAppRestart = true;

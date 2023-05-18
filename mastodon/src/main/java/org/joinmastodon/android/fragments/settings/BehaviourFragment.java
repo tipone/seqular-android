@@ -18,7 +18,7 @@ public class BehaviourFragment extends SettingsBaseFragment{
     @Override
     public void addItems(ArrayList<Item> items) {
         items.add(new HeaderItem(R.string.settings_behavior));
-        items.add(new SwitchItem(R.string.settings_gif, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{
+        items.add(new SwitchItem(R.string.settings_gif, R.string.mo_setting_play_gif_summary, R.drawable.ic_fluent_gif_24_regular, GlobalUserPreferences.playGifs, i->{
             GlobalUserPreferences.playGifs=i.checked;
             GlobalUserPreferences.save();
         }));
@@ -31,11 +31,11 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
-        items.add(new SwitchItem(R.string.mo_load_remote_followers, R.drawable.ic_fluent_people_24_regular, GlobalUserPreferences.loadRemoteAccountFollowers, i -> {
+        items.add(new SwitchItem(R.string.mo_load_remote_followers, R.string.mo_setting_remote_follower_summary, R.drawable.ic_fluent_people_24_regular, GlobalUserPreferences.loadRemoteAccountFollowers, i -> {
             GlobalUserPreferences.loadRemoteAccountFollowers=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.sk_settings_show_interaction_counts, R.drawable.ic_fluent_number_row_24_regular, GlobalUserPreferences.showInteractionCounts, i->{
+        items.add(new SwitchItem(R.string.sk_settings_show_interaction_counts, R.string.mo_setting_interaction_count_summary, R.drawable.ic_fluent_number_row_24_regular, GlobalUserPreferences.showInteractionCounts, i->{
             GlobalUserPreferences.showInteractionCounts=i.checked;
             GlobalUserPreferences.save();
         }));
@@ -45,7 +45,7 @@ public class BehaviourFragment extends SettingsBaseFragment{
         }));
 
 //		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
-        items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
+        items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.string.mo_setting_disable_swipe_summary, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
             GlobalUserPreferences.disableSwipe=i.checked;
             GlobalUserPreferences.save();
             needAppRestart=true;
@@ -98,11 +98,11 @@ public class BehaviourFragment extends SettingsBaseFragment{
                 }
             });
         }));
-        items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
+        items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.string.mo_setting_relocate_publish_summary, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
             GlobalUserPreferences.relocatePublishButton=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.mo_change_default_reply_visibility_to_unlisted, R.drawable.ic_fluent_lock_open_24_regular, GlobalUserPreferences.defaultToUnlistedReplies, i->{
+        items.add(new SwitchItem(R.string.mo_change_default_reply_visibility_to_unlisted, R.string.mo_setting_default_reply_privacy_summary, R.drawable.ic_fluent_lock_open_24_regular, GlobalUserPreferences.defaultToUnlistedReplies, i->{
             GlobalUserPreferences.defaultToUnlistedReplies=i.checked;
             GlobalUserPreferences.save();
         }));
