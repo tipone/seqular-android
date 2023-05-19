@@ -765,7 +765,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
         }
     }
 
-	protected class ButtonViewHolder extends BindableViewHolder<ButtonItem>{
+	protected class ButtonViewHolder extends BindableViewHolder<ButtonItem> implements  UsableRecyclerView.Clickable{
 		private final Button button;
 		private final ImageView icon;
 		private final TextView title;
@@ -791,6 +791,11 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 			icon.setImageResource(item.icon);
 			item.buttonConsumer.accept(button);
+		}
+
+		@Override
+		public void onClick() {
+			button.performClick();
 		}
 	}
 
