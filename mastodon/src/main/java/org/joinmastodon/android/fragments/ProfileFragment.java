@@ -624,7 +624,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			// noinspection SetTextI18n
 			username.setText('@'+account.acct+(isSelf ? ('@'+AccountSessionManager.getInstance().getAccount(accountID).domain) : ""));
 		}
-		CharSequence parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
+		CharSequence parsedBio = null;
+		if(account.note != null){
+			parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
+		}
 		if(TextUtils.isEmpty(parsedBio)){
 			bio.setVisibility(View.GONE);
 		}else{
