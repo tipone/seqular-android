@@ -23,7 +23,7 @@ public class NotificationsFragment extends SettingsBaseFragment {
         items.add(new SwitchItem(R.string.sk_notify_update, R.drawable.ic_fluent_history_24_regular, pushSubscription.alerts.update, i -> onNotificationsChanged(PushNotification.Type.UPDATE, i.checked), switchEnabled));
         items.add(new SwitchItem(R.string.sk_notify_poll_results, R.drawable.ic_fluent_poll_24_regular, pushSubscription.alerts.poll, i -> onNotificationsChanged(PushNotification.Type.POLL, i.checked), switchEnabled));
 
-        items.add(new HeaderItem(R.string.mo_miscellaneous_settings));
+        items.add(new HeaderItem(R.string.mo_notification_management_settings));
         items.add(new SwitchItem(R.string.sk_enable_delete_notifications,  R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, GlobalUserPreferences.enableDeleteNotifications, i->{
             GlobalUserPreferences.enableDeleteNotifications=i.checked;
             GlobalUserPreferences.save();
