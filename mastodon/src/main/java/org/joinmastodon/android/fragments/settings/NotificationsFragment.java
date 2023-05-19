@@ -10,6 +10,7 @@ import java.util.ArrayList;
 public class NotificationsFragment extends SettingsBaseFragment {
     @Override
     public void addItems(ArrayList<Item> items) {
+        items.add(new HeaderItem(R.string.mo_notification_audience_settings));
         items.add(notificationPolicyItem = new NotificationPolicyItem());
         PushSubscription pushSubscription = getPushSubscription();
         boolean switchEnabled = pushSubscription.policy != PushSubscription.Policy.NONE;
@@ -32,7 +33,10 @@ public class NotificationsFragment extends SettingsBaseFragment {
             GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
             GlobalUserPreferences.save();
         }));
-
+        items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.string.mo_setting_uniform_summary, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i -> {
+            GlobalUserPreferences.uniformNotificationIcon = i.checked;
+            GlobalUserPreferences.save();
+        }));
 
     }
 }

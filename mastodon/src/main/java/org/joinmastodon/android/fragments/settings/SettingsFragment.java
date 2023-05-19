@@ -172,8 +172,8 @@ public class SettingsFragment extends MastodonToolbarFragment {
 			GlobalUserPreferences.useCustomTabs=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.enableFabAutoHide, i->{
-			GlobalUserPreferences.enableFabAutoHide =i.checked;
+		items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.autoHideFab, i->{
+			GlobalUserPreferences.autoHideFab =i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));

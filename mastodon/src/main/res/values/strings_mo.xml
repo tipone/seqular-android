@@ -81,4 +81,7 @@
     <string name="mo_setting_default_reply_privacy_summary">Replies will be opted out of discovery features by default</string>
     <string name="mo_setting_interaction_count_summary">Show how many people interacted with a post in the timeline</string>
     <string name="mo_setting_disable_swipe_summary">Swipe to change viewed timeline</string>
+
+<!--  Settings  -->
+    <string name="mo_notification_audience_settings">Notification Audience</string>
 </resources>

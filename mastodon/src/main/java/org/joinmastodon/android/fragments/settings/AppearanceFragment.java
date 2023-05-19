@@ -41,10 +41,6 @@ public class AppearanceFragment extends SettingsBaseFragment {
             GlobalUserPreferences.save();
             needAppRestart = true;
         }));
-        items.add(new SwitchItem(R.string.sk_settings_uniform_icon_for_notifications, R.string.mo_setting_uniform_summary, R.drawable.ic_ntf_logo, GlobalUserPreferences.uniformNotificationIcon, i -> {
-            GlobalUserPreferences.uniformNotificationIcon = i.checked;
-            GlobalUserPreferences.save();
-        }));
         items.add(new SwitchItem(R.string.sk_settings_reduce_motion, R.string.mo_setting_reduced_motion_summary, R.drawable.ic_fluent_star_emphasis_24_regular, GlobalUserPreferences.reduceMotion, i -> {
             GlobalUserPreferences.reduceMotion = i.checked;
             GlobalUserPreferences.save();
