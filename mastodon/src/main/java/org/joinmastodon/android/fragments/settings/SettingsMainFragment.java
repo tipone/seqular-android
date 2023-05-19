@@ -12,7 +12,6 @@ import java.util.ArrayList;
 public class SettingsMainFragment extends SettingsBaseFragment {
     @Override
     public void addItems(ArrayList<Item> items) {
-        items.add(new GiantHeaderItem(getContext().getString(R.string.settings)));
 
         if (GithubSelfUpdater.needSelfUpdating()) {
             GithubSelfUpdater updater = GithubSelfUpdater.getInstance();
@@ -34,9 +33,9 @@ public class SettingsMainFragment extends SettingsBaseFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (GithubSelfUpdater.needSelfUpdating())
+        if (GithubSelfUpdater.needSelfUpdating()) {
             E.register(this);
-        hideToolbar();
+        }
     }
 
     @Override

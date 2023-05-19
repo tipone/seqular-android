@@ -93,6 +93,8 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
 
 		addItems(items);
+		String title = getArguments().getString("title", getTitle().toString());
+		items.add(0, new GiantHeaderItem(title));
 	}
 
 	@Override
@@ -128,6 +130,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		this.view = view;
+		hideToolbar();
 	}
 
 	protected void hideToolbar() {
@@ -756,7 +759,9 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
         @Override
         public void onClick() {
-            Nav.go(getActivity(), item.fragmentClass, getArguments());
+			Bundle args = getArguments();
+			args.putString("title", item.text);
+            Nav.go(getActivity(), item.fragmentClass, args);
         }
     }
 
