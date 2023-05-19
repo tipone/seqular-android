@@ -75,7 +75,7 @@
     <string name="mo_setting_marquee_summary">Disables the ellipsized title scrolling</string>
     <string name="mo_setting_uniform_summary">Use the app icon for all notifications</string>
     <string name="mo_setting_reduced_motion_summary">Disable animations of interactions</string>
-    <string name="mo_setting_play_gif_summary">Automatically play GIFs in avatars and emoji</string>
+    <string name="mo_setting_play_gif_summary">Autoplay GIFs in avatars and emoji</string>
     <string name="mo_setting_remote_follower_summary">Show followers from other instances</string>
     <string name="mo_setting_relocate_publish_summary">Move the publish button to the bottom bar</string>
     <string name="mo_setting_default_reply_privacy_summary">Replies will be opted out of discovery features by default</string>
