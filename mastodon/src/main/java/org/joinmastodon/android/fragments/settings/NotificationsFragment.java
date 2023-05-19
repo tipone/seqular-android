@@ -37,7 +37,7 @@ public class NotificationsFragment extends SettingsBaseFragment {
             GlobalUserPreferences.uniformNotificationIcon = i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.mo_swap_bookmark_with_reblog, R.drawable.ic_boost, GlobalUserPreferences.swapBookmarkWithBoostAction, i -> {
+        items.add(new SwitchItem(R.string.mo_swap_bookmark_with_reblog, R.string.mo_swap_bookmark_with_reblog_summary, R.drawable.ic_boost, GlobalUserPreferences.swapBookmarkWithBoostAction, i -> {
             GlobalUserPreferences.swapBookmarkWithBoostAction=i.checked;
             GlobalUserPreferences.save();
         }));
