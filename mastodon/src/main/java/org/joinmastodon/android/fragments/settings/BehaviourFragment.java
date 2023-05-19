@@ -49,10 +49,6 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.confirmBeforeReblog=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.mo_swap_bookmark_with_reblog, R.drawable.ic_boost, GlobalUserPreferences.swapBookmarkWithBoostAction, i -> {
-            GlobalUserPreferences.swapBookmarkWithBoostAction=i.checked;
-            GlobalUserPreferences.save();
-        }));
 
         items.add(new HeaderItem(R.string.mo_composer_behavior));
         items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
