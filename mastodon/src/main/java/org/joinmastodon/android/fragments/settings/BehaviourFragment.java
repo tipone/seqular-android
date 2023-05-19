@@ -26,11 +26,6 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.useCustomTabs=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.mo_hide_compose_button_while_scrolling_setting, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.enableFabAutoHide, i->{
-            GlobalUserPreferences.enableFabAutoHide =i.checked;
-            GlobalUserPreferences.save();
-            needAppRestart=true;
-        }));
         items.add(new SwitchItem(R.string.mo_load_remote_followers, R.string.mo_setting_remote_follower_summary, R.drawable.ic_fluent_people_24_regular, GlobalUserPreferences.loadRemoteAccountFollowers, i -> {
             GlobalUserPreferences.loadRemoteAccountFollowers=i.checked;
             GlobalUserPreferences.save();

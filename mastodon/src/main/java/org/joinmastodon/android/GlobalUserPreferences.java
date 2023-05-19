@@ -38,7 +38,6 @@ public class GlobalUserPreferences{
 	public static boolean relocatePublishButton;
 	public static boolean reduceMotion;
 	public static boolean keepOnlyLatestNotification;
-	public static boolean enableFabAutoHide;
 	public static boolean disableAltTextReminder;
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
@@ -109,7 +108,6 @@ public class GlobalUserPreferences{
 		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", false);
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
-		enableFabAutoHide=prefs.getBoolean("enableFabAutoHide", true);
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
@@ -171,7 +169,6 @@ public class GlobalUserPreferences{
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putBoolean("reduceMotion", reduceMotion)
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
-				.putBoolean("enableFabAutoHide", enableFabAutoHide)
 				.putBoolean("disableAltTextReminder", disableAltTextReminder)
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
