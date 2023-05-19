@@ -6,7 +6,7 @@
 
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_app_username" translatable="false">\@moshidon</string>
-    <string name="mo_disable_dividers">Disable post dividers</string>
+    <string name="mo_enable_dividers">Show post dividers</string>
     <string name="mo_relocate_publish_button">Relocate publish button</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Hide compose button while scrolling</string>
     <string name="mo_welcome_text">To get started, please enter your home instance’s domain name below.</string>

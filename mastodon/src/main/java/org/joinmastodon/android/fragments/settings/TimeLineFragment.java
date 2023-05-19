@@ -2,20 +2,13 @@ package org.joinmastodon.android.fragments.settings;
 
 import android.view.Gravity;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.PopupMenu;
-import android.widget.Toast;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 
 import java.util.ArrayList;
-
-import me.grishka.appkit.utils.V;
 
 public class TimeLineFragment extends SettingsBaseFragment{
 
@@ -104,8 +97,8 @@ public class TimeLineFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
-        items.add(new SwitchItem(R.string.mo_disable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.disableDividers, i->{
-            GlobalUserPreferences.disableDividers=i.checked;
+        items.add(new SwitchItem(R.string.mo_enable_dividers, R.drawable.ic_fluent_timeline_24_regular, GlobalUserPreferences.showDividers, i->{
+            GlobalUserPreferences.showDividers =i.checked;
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
