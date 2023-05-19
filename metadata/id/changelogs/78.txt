@@ -1,0 +1,1 @@
+Sekarang bisa menghapus pemisah toot di lini masa utama! Ini juga dapat diatur.
