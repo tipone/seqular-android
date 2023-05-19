@@ -48,7 +48,7 @@ public class GlobalUserPreferences{
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
 	public static boolean defaultToUnlistedReplies;
-	public static boolean disableDoubleTapToSwipe;
+	public static boolean doubleTapToSwipe;
 	public static boolean compactReblogReplyLine;
 	public static boolean confirmBeforeReblog;
 	public static boolean replyLineAboveHeader;
@@ -119,7 +119,7 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
-		disableDoubleTapToSwipe=prefs.getBoolean("disableDoubleTapToSwipe", false);
+		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
@@ -180,7 +180,7 @@ public class GlobalUserPreferences{
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
-				.putBoolean("disableDoubleTapToSwipe", disableDoubleTapToSwipe)
+				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)

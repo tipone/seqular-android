@@ -11,7 +11,7 @@
     <string name="mo_hide_compose_button_while_scrolling_setting">Hide compose button while scrolling</string>
     <string name="mo_welcome_text">To get started, please enter your home instance’s domain name below.</string>
 
-    <!--    Setting this as non-translatable as it simply doesnt change with language-->
+    <!--    Setting this as non-translatable as it simply doesn't change with language-->
     <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
 
     <string name="mo_personal_note">Add a note about this profile</string>
@@ -50,7 +50,7 @@
     <string name="mo_duration_days_7">7 days</string>
 
     <string name="mo_share_open_url">Open in App</string>
-    <string name="mo_disable_double_tap_to_swipe_between_tabs">Disable double tap to swipe between tabs</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Double tap to swipe between tabs</string>
     <string name="mo_swap_bookmark_with_reblog">Use reblog action instead of bookmark action on notifications</string>
     <string name="mo_download_latest_nightly_release">Download latest nightly release</string>
     <string name="mo_load_remote_followers">Load remote profile follows and followers</string>

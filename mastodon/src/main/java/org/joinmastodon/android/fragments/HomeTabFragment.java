@@ -505,7 +505,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	@Override
 	public void scrollToTop(){
 		if (((ScrollableToTop) fragments[pager.getCurrentItem()]).isScrolledToTop() &&
-				!GlobalUserPreferences.disableDoubleTapToSwipe && !newPostsBtnShown) {
+				GlobalUserPreferences.doubleTapToSwipe && !newPostsBtnShown) {
 			int nextPage = (pager.getCurrentItem() + 1) % count;
 			navigateTo(nextPage);
 			return;

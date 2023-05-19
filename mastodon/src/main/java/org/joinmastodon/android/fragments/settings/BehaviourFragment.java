@@ -40,8 +40,8 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
-        items.add(new SwitchItem(R.string.mo_disable_double_tap_to_swipe_between_tabs, R.drawable.ic_fluent_double_tap_swipe_right_24_regular, GlobalUserPreferences.disableDoubleTapToSwipe, i->{
-            GlobalUserPreferences.disableDoubleTapToSwipe=i.checked;
+        items.add(new SwitchItem(R.string.mo_double_tap_to_swipe_between_tabs, R.drawable.ic_fluent_double_tap_swipe_right_24_regular, GlobalUserPreferences.doubleTapToSwipe, i->{
+            GlobalUserPreferences.doubleTapToSwipe=i.checked;
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
