@@ -34,17 +34,18 @@ import me.grishka.appkit.imageloader.ImageCache;
 
 public class AboutFragment extends SettingsBaseFragment{
 
-    private TextItem checkForUpdateItem, clearImageCacheItem;
+    private TextItem clearImageCacheItem;
     private ImageCache imageCache;
     @Override
     public void addItems(ArrayList<Item> items) {
-        items.add(new HeaderItem(R.string.sk_settings_about));
+
+        imageCache = ImageCache.getInstance(getActivity());
 
         items.add(new TextItem(R.string.mo_settings_contribute, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/LucasGGamerM/moshidon"), R.drawable.ic_fluent_open_24_regular));
         items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
 
         if (GithubSelfUpdater.needSelfUpdating()) {
-            checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+            TextItem checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
             items.add(checkForUpdateItem);
             items.add(new SwitchItem(R.string.sk_updater_enable_pre_releases, 0, GlobalUserPreferences.enablePreReleases, i->{
                 GlobalUserPreferences.enablePreReleases=i.checked;
