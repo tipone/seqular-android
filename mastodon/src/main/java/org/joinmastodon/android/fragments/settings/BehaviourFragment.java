@@ -30,10 +30,6 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.loadRemoteAccountFollowers=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.sk_settings_show_interaction_counts, R.string.mo_setting_interaction_count_summary, R.drawable.ic_fluent_number_row_24_regular, GlobalUserPreferences.showInteractionCounts, i->{
-            GlobalUserPreferences.showInteractionCounts=i.checked;
-            GlobalUserPreferences.save();
-        }));
         items.add(new SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
             GlobalUserPreferences.alwaysExpandContentWarnings=i.checked;
             GlobalUserPreferences.save();

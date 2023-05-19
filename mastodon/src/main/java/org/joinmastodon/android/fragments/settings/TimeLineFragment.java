@@ -94,6 +94,10 @@ public class TimeLineFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
+        items.add(new SwitchItem(R.string.sk_settings_show_interaction_counts, R.string.mo_setting_interaction_count_summary, R.drawable.ic_fluent_number_row_24_regular, GlobalUserPreferences.showInteractionCounts, i->{
+            GlobalUserPreferences.showInteractionCounts=i.checked;
+            GlobalUserPreferences.save();
+        }));
         compactReblogReplyLineItem.enabled=GlobalUserPreferences.replyLineAboveHeader;
         items.add(new SwitchItem(R.string.sk_settings_hide_interaction, R.drawable.ic_fluent_eye_24_regular, GlobalUserPreferences.spectatorMode, i->{
             GlobalUserPreferences.spectatorMode=i.checked;
