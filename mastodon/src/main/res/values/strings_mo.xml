@@ -71,7 +71,7 @@
     <string name="mo_severity_suspend">Blocked</string>
 
 <!--    Settings summaries-->
-    <string name="mo_setting_true_black_summary">Might save your power on AMOLED displays</string>
+    <string name="mo_setting_true_black_summary">Might save power on AMOLED displays</string>
     <string name="mo_setting_marquee_summary">Disables the ellipsized title scrolling</string>
     <string name="mo_setting_uniform_summary">Use the app icon for all notifications</string>
     <string name="mo_setting_reduced_motion_summary">Disable animations of interactions</string>
