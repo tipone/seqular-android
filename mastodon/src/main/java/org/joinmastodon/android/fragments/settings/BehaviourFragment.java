@@ -35,7 +35,6 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
         }));
 
-//		items.add(new SwitchItem(R.string.sk_settings_show_differentiated_notification_icons, R.drawable.ic_ntf_logo, GlobalUserPreferences.showUniformPushNoticationIcons, this::onNotificationStyleChanged));
         items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.string.mo_setting_disable_swipe_summary, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
             GlobalUserPreferences.disableSwipe=i.checked;
             GlobalUserPreferences.save();
