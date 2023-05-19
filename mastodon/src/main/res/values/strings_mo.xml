@@ -29,7 +29,7 @@
     <string name="mo_disable_reminder_to_add_alt_text">Disable reminder to add alt text</string>
     <string name="mo_add_custom_server_local_timeline">Add a custom server\'s local timeline</string>
     <string name="mo_notification_action_replied">Successfully replied to the post by %s</string>
-    <string name="mo_change_default_reply_visibility_to_unlisted">Change default reply visibility to unlisted</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Reply as \'Unlisted\' by default</string>
     <string name="mo_composer_behavior">Composer\'s Behavior</string>
     <string name="mo_miscellaneous_settings">Miscellaneous Settings</string>
     
@@ -78,7 +78,7 @@
     <string name="mo_setting_play_gif_summary">Autoplay GIFs in avatars and emoji</string>
     <string name="mo_setting_remote_follower_summary">Show followers from other instances</string>
     <string name="mo_setting_relocate_publish_summary">Move the publish button to the bottom bar</string>
-    <string name="mo_setting_default_reply_privacy_summary">Replies will be opted out of discovery features by default</string>
+    <string name="mo_setting_default_reply_privacy_summary">Replies will be opted out of discovery features</string>
     <string name="mo_setting_interaction_count_summary">Show how many people interacted with a post in the timeline</string>
     <string name="mo_setting_disable_swipe_summary">Swipe to change viewed timeline</string>
 
