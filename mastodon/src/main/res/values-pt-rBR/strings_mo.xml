@@ -41,4 +41,6 @@
     <string name="mo_download_latest_nightly_release">Baixar mais novo lançamento noturno</string>
     <string name="mo_load_remote_followers">Carregar seguidores e seguindo de perfil remoto</string>
     <string name="mo_mention_reblogger_automatically">Automaticamente mencionar conta que reblogou a postagem nas respostas</string>
+    <string name="mo_confirm_unfollow_title">Deixar de seguir conta</string>
+    <string name="mo_confirm_unfollow">Conformar para deixar de seguir %s</string>
 </resources>
