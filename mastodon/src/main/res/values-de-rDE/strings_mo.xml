@@ -45,4 +45,6 @@
     <string name="mo_swap_bookmark_with_reblog">Verwenden der Reblog-Aktion anstelle der Lesezeichen-Aktion bei Benachrichtigungen</string>
     <string name="mo_download_latest_nightly_release">Neueste Nightly Version herunterladen</string>
     <string name="mo_load_remote_followers">Follower und Follower des Remote Profils laden</string>
+    <string name="mo_confirm_unfollow">Bestätige %s zu entfolgen</string>
+    <string name="mo_confirm_unfollow_title">Entfolge Account</string>
 </resources>
