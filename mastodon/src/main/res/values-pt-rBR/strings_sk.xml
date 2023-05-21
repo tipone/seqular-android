@@ -272,6 +272,6 @@
     <string name="sk_settings_collapse_long_posts">Colapsar postagens muito longas</string>
     <string name="sk_notification_action_replied">Resposta enviada para %s</string>
     <string name="sk_reply_line_above_avatar">Linha \"Em resposta para\" acima do avatar</string>
-    <string name="sk_compact_reblog_reply_line">Linha respota/reblog compacta</string>
+    <string name="sk_compact_reblog_reply_line">Linha resposta/reblog compacta</string>
     <string name="sk_settings_confirm_before_reblog">Confirmar antes de reblogar</string>
 </resources>
