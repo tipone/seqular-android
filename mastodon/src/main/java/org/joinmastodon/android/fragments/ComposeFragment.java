@@ -91,6 +91,7 @@ import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
+import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiCategory;
 import org.joinmastodon.android.model.Instance;
@@ -179,8 +180,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private int charCount, charLimit, trimmedCharCount;
 
 	private Button publishButton, languageButton, scheduleTimeBtn, draftsBtn;
-	private PopupMenu languagePopup, visibilityPopup, draftOptionsPopup;
-	private ImageButton mediaBtn, pollBtn, emojiBtn, spoilerBtn, visibilityBtn, scheduleDraftDismiss;
+	private PopupMenu languagePopup, contentTypePopup, visibilityPopup, draftOptionsPopup;
+	private ImageButton mediaBtn, pollBtn, emojiBtn, spoilerBtn, visibilityBtn, scheduleDraftDismiss, contentTypeBtn;
 	private ImageView sensitiveIcon;
 	private ComposeMediaLayout attachmentsView;
 	private TextView replyText;
@@ -234,6 +235,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private Runnable updateUploadEtaRunnable;
 
 	private String language, encoding;
+	private ContentType contentType;
 	private MastodonLanguage.LanguageResolver languageResolver;
 
 	@Override
@@ -242,6 +244,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		setRetainInstance(true);
 
 		accountID=getArguments().getString("account");
+		contentType = GlobalUserPreferences.accountsDefaultContentTypes.get(accountID);
+		if (contentType == null && GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID)) {
+			// if formatting is enabled, use plain to avoid confusing unspecified default setting
+			contentType = ContentType.PLAIN;
+		}
+
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		self=session.self;
 		instanceDomain=session.domain;
@@ -330,6 +338,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		emojiBtn=view.findViewById(R.id.btn_emoji);
 		spoilerBtn=view.findViewById(R.id.btn_spoiler);
 		visibilityBtn=view.findViewById(R.id.btn_visibility);
+		contentTypeBtn=view.findViewById(R.id.btn_content_type);
 		scheduleDraftView=view.findViewById(R.id.schedule_draft_view);
 		scheduleDraftText=view.findViewById(R.id.schedule_draft_text);
 		scheduleDraftDismiss=view.findViewById(R.id.schedule_draft_dismiss);
@@ -363,6 +372,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		buildVisibilityPopup(visibilityBtn);
 		visibilityBtn.setOnClickListener(v->visibilityPopup.show());
 		visibilityBtn.setOnTouchListener(visibilityPopup.getDragToOpenListener());
+
+		buildContentTypePopup(contentTypeBtn);
+		contentTypeBtn.setOnClickListener(v->contentTypePopup.show());
+		contentTypeBtn.setOnTouchListener(contentTypePopup.getDragToOpenListener());
 
 		scheduleDraftDismiss.setOnClickListener(v->updateScheduledAt(null));
 		scheduleTimeBtn.setOnClickListener(v->pickScheduledDateTime());
@@ -466,8 +479,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			}
 		}
 
-		if(editingStatus!=null && editingStatus.visibility!=null) {
-			statusVisibility=editingStatus.visibility;
+		if (savedInstanceState != null) {
+			statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
+		} else if (editingStatus != null && editingStatus.visibility != null) {
+			statusVisibility = editingStatus.visibility;
 		} else {
 			loadDefaultStatusVisibility(savedInstanceState);
 		}
@@ -481,6 +496,20 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			case LOCAL -> R.id.vis_local;
 		}).setChecked(true);
 		visibilityPopup.getMenu().findItem(R.id.local_only).setChecked(localOnly);
+
+
+		if (savedInstanceState != null && savedInstanceState.containsKey("contentType")) {
+			contentType = (ContentType) savedInstanceState.getSerializable("contentType");
+		} else if (getArguments().containsKey("sourceContentType")) {
+			try {
+				String val = getArguments().getString("sourceContentType");
+				contentType = val == null ? null : ContentType.valueOf(val);
+			} catch (IllegalArgumentException ignored) {}
+		}
+
+		int contentTypeId = ContentType.getContentTypeRes(contentType);
+		contentTypePopup.getMenu().findItem(contentTypeId).setChecked(true);
+		contentTypeBtn.setSelected(contentTypeId != R.id.content_type_null && contentTypeId != R.id.content_type_plain);
 
 		autocompleteViewController=new ComposeAutocompleteViewController(getActivity(), accountID);
 		autocompleteViewController.setCompletionSelectedListener(this::onAutocompleteOptionSelected);
@@ -518,6 +547,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			outState.putParcelableArrayList("attachments", serializedAttachments);
 		}
 		outState.putSerializable("visibility", statusVisibility);
+		outState.putSerializable("contentType", contentType);
 		if (scheduledAt != null) outState.putSerializable("scheduledAt", scheduledAt);
 		if (scheduledStatus != null) outState.putParcelable("scheduledStatus", Parcels.wrap(scheduledStatus));
 	}
@@ -907,6 +937,17 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		});
 	}
 
+	private int getContentTypeName(String id) {
+		return switch (id) {
+			case "text/plain" -> R.string.sk_content_type_plain;
+			case "text/html" -> R.string.sk_content_type_html;
+			case "text/markdown" -> R.string.sk_content_type_markdown;
+			case "text/bbcode" -> R.string.sk_content_type_bbcode;
+			case "text/x.misskeymarkdown" -> R.string.sk_content_type_mfm;
+			default -> throw new IllegalArgumentException("Invalid content type");
+		};
+	}
+
 	private void addBottomLanguage(Menu menu) {
 		if (menu.findItem(allLanguages.size()) == null) {
 			menu.add(0, allLanguages.size(), Menu.NONE, "bottom (\uD83E\uDD7A\uD83D\uDC49\uD83D\uDC48)");
@@ -1053,6 +1094,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		req.visibility=localOnly && instance.pleroma != null ? StatusPrivacy.LOCAL : statusVisibility;
 		req.sensitive=sensitive;
 		req.language=language;
+		req.contentType=contentType;
 		req.scheduledAt = scheduledAt;
 		if(!attachments.isEmpty()){
 			req.mediaIds=attachments.stream().map(a->a.serverAttachment.id).collect(Collectors.toList());
@@ -1895,13 +1937,35 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		});
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
+	private void buildContentTypePopup(View btn) {
+		contentTypePopup=new PopupMenu(getActivity(), btn);
+		contentTypePopup.inflate(R.menu.compose_content_type);
+		Menu m = contentTypePopup.getMenu();
+		ContentType.adaptMenuToInstance(m, instance);
+		if (contentType != null) m.findItem(R.id.content_type_null).setVisible(false);
+
+		contentTypePopup.setOnMenuItemClickListener(i->{
+			int id=i.getItemId();
+			if (id == R.id.content_type_null) contentType = null;
+			else if (id == R.id.content_type_plain) contentType = ContentType.PLAIN;
+			else if (id == R.id.content_type_html) contentType = ContentType.HTML;
+			else if (id == R.id.content_type_markdown) contentType = ContentType.MARKDOWN;
+			else if (id == R.id.content_type_bbcode) contentType = ContentType.BBCODE;
+			else if (id == R.id.content_type_misskey_markdown) contentType = ContentType.MISSKEY_MARKDOWN;
+			else return false;
+			btn.setSelected(id != R.id.content_type_null && id != R.id.content_type_plain);
+			i.setChecked(true);
+			return true;
+		});
+
+		if (!GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID)) {
+			btn.setVisibility(View.GONE);
+		}
+	}
+
 	private void loadDefaultStatusVisibility(Bundle savedInstanceState) {
 		if(replyTo != null) statusVisibility = replyTo.visibility;
-
-		// A saved privacy setting from a previous compose session wins over the reply visibility
-		if(savedInstanceState !=null){
-			statusVisibility = (StatusPrivacy) savedInstanceState.getSerializable("visibility");
-		}
 
 		AccountSessionManager asm = AccountSessionManager.getInstance();
 		Preferences prefs = asm.getAccount(accountID).preferences;
