@@ -60,7 +60,7 @@ public class MastodonAPIController{
 		thread.start();
 		try {
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(
-					MastodonApp.context.getAssets().open("blocks.tsv")
+					MastodonApp.context.getAssets().open("blocks.txt")
 			));
 			String line;
 			while ((line = reader.readLine()) != null) {
