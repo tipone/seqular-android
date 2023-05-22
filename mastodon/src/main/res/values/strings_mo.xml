@@ -58,6 +58,14 @@
     <string name="mo_confirm_unfollow_title">Unfollow Account</string>
     <string name="mo_confirm_unfollow">Confirm to unfollow %s</string>
 
+    <string name="mo_instance_admin">Administered by</string>
+    <string name="mo_instance_contact">Contact</string>
+    <string name="mo_instance_users">Users</string>
+    <string name="mo_instance_status">Status</string>
+    <string name="mo_instance_registration">Registration</string>
+    <string name="mo_instance_registration_open">Open</string>
+    <string name="mo_instance_registration_approval">Approval required</string>
+    <string name="mo_instance_registration_closed">Closed</string>
     <string name="mo_instance_info_open_timeline">Local timeline</string>
     <string name="mo_instance_info_moderated_servers">Moderated servers</string>
     <string name="mo_severity_silence">Silenced</string>
