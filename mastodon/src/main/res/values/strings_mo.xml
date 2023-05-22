@@ -60,4 +60,6 @@
 
     <string name="mo_instance_info_open_timeline">Local timeline</string>
     <string name="mo_instance_info_moderated_servers">Moderated servers</string>
+    <string name="mo_severity_silence">Silenced</string>
+    <string name="mo_severity_suspend">Blocked</string>
 </resources>
