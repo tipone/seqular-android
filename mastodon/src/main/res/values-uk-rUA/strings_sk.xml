@@ -95,7 +95,7 @@
     <string name="sk_favorited_as">Уподобано як %s</string>
     <string name="sk_already_favorited">Уже вподобано</string>
     <string name="sk_reblog_as">Поширити в іншому обліковому записі</string>
-    <string name="sk_already_reblogged">Вже поширено</string>
+    <string name="sk_already_reblogged">Уже поширено</string>
     <string name="sk_settings_uniform_icon_for_notifications">Єдина піктограма для всіх сповіщень</string>
     <string name="sk_bookmark_as">Додати до закладок іншого облікового запису</string>
     <string name="sk_favorite_as">Уподобане іншим обліковим записом</string>
@@ -172,7 +172,7 @@
     <string name="sk_edit_timeline">Редагувати стрічку</string>
     <string name="sk_edit_timelines">Редагувати стрічки</string>
     <string name="sk_notification_type_update">Змінені дописи</string>
-    <string name="sk_notify_update">Змінює поширену публікацію</string>
+    <string name="sk_notify_update">Зміни й поширені дописи</string>
     <string name="sk_icon_city">Місто</string>
     <string name="sk_icon_cat">Кіт</string>
     <string name="sk_icon_dog">Собака</string>
@@ -271,9 +271,8 @@
     <string name="sk_notification_action_replied">Надіслано відповідь на %s</string>
     <string name="sk_reply_line_above_avatar">Рядок «У відповідь» над аватаром</string>
     <string name="sk_show_thread">Показати потік</string>
-    <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеної публікації/відповіді</string>
+    <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеного допису/відповіді</string>
     <string name="sk_settings_confirm_before_reblog">Підтверджувати поширення</string>
-    <string name="sk_settings_show_new_posts_button">Кнопка \"Показати нові публікації\"</string>
-    <string name="sk_reacted">відреагував</string>
-    <string name="sk_reacted_with">відреагував із %s</string>
+    <string name="sk_reacted">реагує</string>
+    <string name="sk_reacted_with">реагує з %s</string>
 </resources>
