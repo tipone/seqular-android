@@ -3,4 +3,6 @@
     <dimen name="text_max_height">220dp</dimen>
     <dimen name="text_collapsed_height">145dp</dimen>
     <dimen name="layout_max_width">450dp</dimen>
+    <dimen name="description_max_height">1000dp</dimen>
+    <dimen name="description_collapsed_height">445dp</dimen>
 </resources>

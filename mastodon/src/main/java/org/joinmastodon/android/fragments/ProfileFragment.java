@@ -19,6 +19,7 @@ import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -381,6 +382,16 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		followersBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
+
+
+		//this currently takes up the whole username
+		//in the future it might need to be change to only the instance uri
+		username.setOnClickListener(v -> {
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putString("instanceDomain", Uri.parse(account.url).getHost());
+			Nav.go(getActivity(), InstanceInfoFragment.class, args);
+		});
 
 		username.setOnLongClickListener(v->{
 			String usernameString=account.acct;
@@ -1132,16 +1143,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		return false;
 	}
 
-	private List<Attachment> createFakeAttachments(String url, Drawable drawable){
-		Attachment att=new Attachment();
-		att.type=Attachment.Type.IMAGE;
-		att.url=url;
-		att.meta=new Attachment.Metadata();
-		att.meta.width=drawable.getIntrinsicWidth();
-		att.meta.height=drawable.getIntrinsicHeight();
-		return Collections.singletonList(att);
-	}
-
 	private void onNotifyButtonClick(View v) {
 		UiUtils.performToggleAccountNotifications(getActivity(), account, accountID, relationship, actionButton, this::setNotifyProgressVisible, this::updateRelationship);
 	}
@@ -1154,7 +1155,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(ava==null)
 				return;
 			int radius=V.dp(25);
-			currentPhotoViewer=new PhotoViewer(getActivity(), createFakeAttachments(account.avatar, ava), 0,
+			currentPhotoViewer=new PhotoViewer(getActivity(), Attachment.createFakeAttachments(account.avatar, ava), 0,
 					new SingleImagePhotoViewerListener(avatar, avatarBorder, new int[]{radius, radius, radius, radius}, this, ()->currentPhotoViewer=null, ()->ava, null, null));
 		}
 	}
@@ -1166,7 +1167,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			Drawable drawable=cover.getDrawable();
 			if(drawable==null || drawable instanceof ColorDrawable)
 				return;
-			currentPhotoViewer=new PhotoViewer(getActivity(), createFakeAttachments(account.header, drawable), 0,
+			currentPhotoViewer=new PhotoViewer(getActivity(), Attachment.createFakeAttachments(account.header, drawable), 0,
 					new SingleImagePhotoViewerListener(cover, cover, null, this, ()->currentPhotoViewer=null, ()->drawable, ()->avatarBorder.setTranslationZ(2), ()->avatarBorder.setTranslationZ(0)));
 		}
 	}
