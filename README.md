@@ -191,6 +191,8 @@ This project is released under the [GPL-3 License](./LICENSE).
 
 [Official matrix chatroom:](https://matrix.to/#/#moshidon:floss.social) https://matrix.to/#/#moshidon:floss.social
 
+[Moshidon roadmap](https://github.com/users/LucasGGamerM/projects/1)
+
 <a rel="me" href="https://floss.social/@moshidon">@moshidon<wbr>@floss.social</a>
 
 ---
