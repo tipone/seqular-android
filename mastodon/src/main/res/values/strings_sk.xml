@@ -275,4 +275,15 @@
     <string name="sk_show_thread">Show thread</string>
     <string name="sk_compact_reblog_reply_line">Compact boost/reply line</string>
     <string name="sk_settings_confirm_before_reblog">Confirm before boosting</string>
+    <string name="sk_content_type">Content type</string>
+    <string name="sk_content_type_unspecified">Not specified</string>
+    <string name="sk_content_type_plain">Plain text</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Enable post formatting</string>
+    <string name="sk_settings_content_types_explanation">Allows setting a content type like Markdown when creating a post. Keep in mind that not all instances support this.</string>
+    <string name="sk_settings_default_content_type">Default content type</string>
+    <string name="sk_settings_default_content_type_explanation">This lets you have a content type be pre-selected when creating new posts, overriding the value set in “Posting preferences”.</string>
 </resources>

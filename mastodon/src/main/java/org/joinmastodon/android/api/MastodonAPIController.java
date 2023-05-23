@@ -60,7 +60,7 @@ public class MastodonAPIController{
 		thread.start();
 		try {
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(
-					MastodonApp.context.getAssets().open("blocks.tsv")
+					MastodonApp.context.getAssets().open("blocks.txt")
 			));
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -91,7 +91,7 @@ public class MastodonAPIController{
 				Request.Builder builder=new Request.Builder()
 						.url(req.getURL().toString())
 						.method(req.getMethod(), req.getRequestBody())
-						.header("User-Agent", "MastodonAndroid/"+BuildConfig.VERSION_NAME);
+						.header("User-Agent", "MegalodonAndroid/"+BuildConfig.VERSION_NAME);
 
 				String token=null;
 				if(session!=null)

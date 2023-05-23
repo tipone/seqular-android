@@ -17,6 +17,7 @@ import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +56,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.fragments.onboarding.InstanceRulesFragment;
+import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
 import org.joinmastodon.android.model.PushNotification;
@@ -71,6 +73,7 @@ import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -88,7 +91,8 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
 	private NotificationPolicyItem notificationPolicyItem;
-	private SwitchItem showNewPostsButtonItem, glitchModeItem, compactReblogReplyLineItem;
+	private SwitchItem showNewPostsItem, glitchModeItem, compactReblogReplyLineItem;
+	private ButtonItem defaultContentTypeButtonItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
 	private boolean needAppRestart;
@@ -97,7 +101,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private ImageView themeTransitionWindowView;
 	private TextItem checkForUpdateItem, clearImageCacheItem;
 	private ImageCache imageCache;
+	private Menu contentTypeMenu;
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -290,15 +296,15 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_sync_24_regular, GlobalUserPreferences.loadNewPosts, i->{
 			GlobalUserPreferences.loadNewPosts=i.checked;
-			showNewPostsButtonItem.enabled = i.checked;
+			showNewPostsItem.enabled = i.checked;
 			if (!i.checked) {
 				GlobalUserPreferences.showNewPostsButton = false;
-				showNewPostsButtonItem.checked = false;
+				showNewPostsItem.checked = false;
 			}
-			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsButtonItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
 		}));
-		items.add(showNewPostsButtonItem = new SwitchItem(R.string.sk_settings_show_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
+		items.add(showNewPostsItem = new SwitchItem(R.string.sk_settings_see_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
 			GlobalUserPreferences.showNewPostsButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -398,6 +404,36 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if (!TextUtils.isEmpty(instance.version)) items.add(new SmallTextItem(getString(R.string.sk_settings_server_version, instance.version)));
 
 		items.add(new HeaderItem(R.string.sk_instance_features));
+		items.add(new SwitchItem(R.string.sk_settings_content_types, 0, GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID), (i)->{
+			if (i.checked) {
+				GlobalUserPreferences.accountsWithContentTypesEnabled.add(accountID);
+				if (GlobalUserPreferences.accountsDefaultContentTypes.get(accountID) == null) {
+					GlobalUserPreferences.accountsDefaultContentTypes.put(accountID, ContentType.PLAIN);
+				}
+			} else {
+				GlobalUserPreferences.accountsWithContentTypesEnabled.remove(accountID);
+				GlobalUserPreferences.accountsDefaultContentTypes.remove(accountID);
+			}
+			if (list.findViewHolderForAdapterPosition(items.indexOf(defaultContentTypeButtonItem))
+					instanceof ButtonViewHolder bvh) bvh.rebind();
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_content_types_explanation)));
+		items.add(defaultContentTypeButtonItem = new ButtonItem(R.string.sk_settings_default_content_type, 0, b->{
+			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
+			popupMenu.inflate(R.menu.compose_content_type);
+			popupMenu.setOnMenuItemClickListener(item -> this.onContentTypeChanged(item, b));
+			b.setOnTouchListener(popupMenu.getDragToOpenListener());
+			b.setOnClickListener(v->popupMenu.show());
+			ContentType contentType = GlobalUserPreferences.accountsDefaultContentTypes.get(accountID);
+			b.setText(getContentTypeString(contentType));
+			contentTypeMenu = popupMenu.getMenu();
+			contentTypeMenu.findItem(ContentType.getContentTypeRes(contentType)).setChecked(true);
+			ContentType.adaptMenuToInstance(contentTypeMenu, instance);
+			contentTypeMenu.findItem(R.id.content_type_null).setVisible(
+					!GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID));
+		}));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_default_content_type_explanation)));
 		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
 			glitchModeItem.enabled = i.checked;
 			if (i.checked) {
@@ -615,6 +651,34 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(UiUtils.isDarkTheme()){
 			restartActivityToApplyNewTheme();
 		}
+	}
+
+	private @StringRes int getContentTypeString(@Nullable ContentType contentType) {
+		if (contentType == null) return R.string.sk_content_type_unspecified;
+		return switch (contentType) {
+			case PLAIN -> R.string.sk_content_type_plain;
+			case HTML -> R.string.sk_content_type_html;
+			case MARKDOWN -> R.string.sk_content_type_markdown;
+			case BBCODE -> R.string.sk_content_type_bbcode;
+			case MISSKEY_MARKDOWN -> R.string.sk_content_type_mfm;
+		};
+	}
+
+	private boolean onContentTypeChanged(MenuItem item, Button btn){
+		int id = item.getItemId();
+		ContentType contentType = switch (id) {
+			case R.id.content_type_plain -> ContentType.PLAIN;
+			case R.id.content_type_html -> ContentType.HTML;
+			case R.id.content_type_markdown -> ContentType.MARKDOWN;
+			case R.id.content_type_bbcode -> ContentType.BBCODE;
+			case R.id.content_type_misskey_markdown -> ContentType.MISSKEY_MARKDOWN;
+			default -> null;
+		};
+		GlobalUserPreferences.accountsDefaultContentTypes.put(accountID, contentType);
+		GlobalUserPreferences.save();
+		btn.setText(getContentTypeString(contentType));
+		item.setChecked(true);
+		return true;
 	}
 
 	private boolean onReplyVisibilityChanged(MenuItem item, Button btn){
@@ -1146,7 +1210,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		@Override
 		public void onBind(ButtonItem item){
 			text.setText(item.text);
-			icon.setImageResource(item.icon);
+			if (item.icon == 0) {
+				icon.setVisibility(View.GONE);
+			} else {
+				icon.setImageResource(item.icon);
+			}
 			item.buttonConsumer.accept(button);
 		}
 	}
