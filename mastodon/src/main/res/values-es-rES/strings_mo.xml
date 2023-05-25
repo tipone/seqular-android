@@ -43,4 +43,15 @@
     <string name="mo_mention_reblogger_automatically">Mencionar automáticamente la cuenta que reblogueó el post en las respuestas</string>
     <string name="mo_confirm_unfollow_title">Dejar de seguir</string>
     <string name="mo_confirm_unfollow">¿Quieres dejar de seguir a %s\?</string>
+    <string name="mo_instance_contact">Contacto</string>
+    <string name="mo_instance_users">Usuarios</string>
+    <string name="mo_instance_status">Estado</string>
+    <string name="mo_instance_registration_open">Abrir</string>
+    <string name="mo_instance_registration_approval">Requiere aprobación</string>
+    <string name="mo_instance_info_open_timeline">Cronología Local</string>
+    <string name="mo_instance_info_moderated_servers">Servidores moderados</string>
+    <string name="mo_severity_silence">Silenciado</string>
+    <string name="mo_severity_suspend">Bloqueado</string>
+    <string name="mo_instance_admin">Administrado por</string>
+    <string name="mo_instance_registration">Registro</string>
 </resources>
