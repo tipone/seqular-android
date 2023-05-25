@@ -275,4 +275,15 @@
     <string name="sk_settings_confirm_before_reblog">Confirmar antes de volver a publicar</string>
     <string name="sk_reacted_with">reaccionó con %s</string>
     <string name="sk_reacted">reaccionó</string>
+    <string name="sk_content_type_unspecified">No especificado</string>
+    <string name="sk_content_type_plain">Texto plano</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_default_content_type">Tipo de contenido predeterminado</string>
+    <string name="sk_settings_default_content_type_explanation">Esto te permite tener un tipo de contenido preseleccionado cuando creas una nueva publicación, sobreescribiendo el valor en \"Preferencias de publicación\".</string>
+    <string name="sk_content_type">Tipo de contenido</string>
+    <string name="sk_settings_content_types">Activar formato de publicación</string>
+    <string name="sk_settings_content_types_explanation">Permite configurar un tipo de contenido como Markdown cuando creas una publicación. Ten en cuenta que no todas las instancias lo permiten.</string>
 </resources>
