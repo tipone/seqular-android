@@ -20,6 +20,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(context)).collect(Collectors.toList());
 	}
 
+	// TODO: rewrite (see testHasStatusWarning) and generalize
 	@Override
 	public boolean test(Status status){
 		if(status.filtered!=null){
@@ -39,21 +40,19 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		return true;
 	}
 
-	public boolean testWithWarning(Status status) {
-		if(status.filtered!=null){
-			if (status.filtered.isEmpty()){
-				return true;
-			}
-			boolean matches=status.filtered.stream()
-					.map(filterResult->filterResult.filter)
-					.filter(filter->filter.expiresAt==null||filter.expiresAt.isAfter(Instant.now()))
-					.anyMatch(filter->filter.filterAction==Filter.FilterAction.WARN);
-			return !matches;
+	// TODO: move this method elsewhere; it's not part of the actual StatusFilterPredicate
+	public boolean testHasStatusWarning(Status status, Filter.FilterContext context) {
+		if (status.filtered != null) {
+			// use server-provided info on whether this status was filtered
+			if (status.filtered.isEmpty()) return false;
+			return status.filtered.stream()
+					.map(filterResult -> filterResult.filter)
+					.filter(filter -> filter.expiresAt == null || filter.expiresAt.isAfter(Instant.now()))
+					.filter(filter -> filter.context.contains(context))
+					.anyMatch(filter -> filter.filterAction == Filter.FilterAction.WARN);
+		} else {
+			// look through local filters instead
+			return filters.stream().anyMatch(filter -> filter.matches(status));
 		}
-		for(Filter filter:filters){
-			if(filter.matches(status))
-				return false;
-		}
-		return true;
 	}
 }

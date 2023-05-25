@@ -107,7 +107,7 @@ public abstract class StatusDisplayItem{
 		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
 
 		if(!statusForContent.filterRevealed){
-			statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
+			statusForContent.filterRevealed = !filterPredicate.testHasStatusWarning(status, filterContext);
 		}
 
 		ReblogOrReplyLineStatusDisplayItem replyLine = null;

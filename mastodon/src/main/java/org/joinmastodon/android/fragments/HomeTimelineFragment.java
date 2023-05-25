@@ -280,4 +280,9 @@ public class HomeTimelineFragment extends StatusListFragment {
 	protected boolean shouldRemoveAccountPostsWhenUnfollowing(){
 		return true;
 	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.HOME;
+	}
 }

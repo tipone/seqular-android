@@ -15,9 +15,7 @@ import java.util.regex.Pattern;
 
 @Parcel
 public class Filter extends BaseModel{
-	@RequiredField
 	public String id;
-	@RequiredField
 	public String phrase;
 	public String title;
 	public transient EnumSet<FilterContext> context=EnumSet.noneOf(FilterContext.class);

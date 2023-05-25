@@ -118,4 +118,10 @@ public class AccountTimelineFragment extends StatusListFragment{
 	protected void onRemoveAccountPostsEvent(RemoveAccountPostsEvent ev){
 		// no-op
 	}
+
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.ACCOUNT;
+	}
 }

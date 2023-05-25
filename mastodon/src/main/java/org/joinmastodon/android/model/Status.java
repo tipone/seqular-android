@@ -101,6 +101,9 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 			card.postprocess();
 		if(reblog!=null)
 			reblog.postprocess();
+		if(filtered!=null)
+			for(FilterResult fr : filtered)
+				fr.postprocess();
 
 		spoilerRevealed=GlobalUserPreferences.alwaysExpandContentWarnings || !sensitive;
 		if (visibility.equals(StatusPrivacy.LOCAL)) localOnly = true;

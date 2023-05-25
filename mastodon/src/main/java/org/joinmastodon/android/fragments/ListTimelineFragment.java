@@ -162,4 +162,10 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
     protected void onSetFabBottomInset(int inset) {
         ((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(24)+inset;
     }
+
+
+    @Override
+    protected Filter.FilterContext getFilterContext() {
+        return Filter.FilterContext.HOME;
+    }
 }

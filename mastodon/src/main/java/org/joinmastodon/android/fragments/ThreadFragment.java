@@ -181,4 +181,10 @@ public class ThreadFragment extends StatusListFragment{
 	public boolean wantsLightNavigationBar(){
 		return !UiUtils.isDarkTheme();
 	}
+
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.THREAD;
+	}
 }

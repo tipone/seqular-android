@@ -34,7 +34,11 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
 		boolean addFooter = !GlobalUserPreferences.spectatorMode ||
 				(this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id));
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, addFooter, null, Filter.FilterContext.HOME);
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, addFooter, null, getFilterContext());
+	}
+
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.PUBLIC;
 	}
 
 	@Override
