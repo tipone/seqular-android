@@ -448,10 +448,20 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		updateSwitcherIcon(i);
 	}
 
+	@Override
+	public void showFab() {
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) l.showFab();
+	}
+
+	@Override
+	public void hideFab() {
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) l.hideFab();
+	}
+
 	private void updateSwitcherIcon(int i) {
 		timelineIcon.setImageResource(timelines[i].getIcon().iconRes);
 		timelineTitle.setText(timelines[i].getTitle(getContext()));
-		if (fragments[i] instanceof BaseStatusListFragment<?> l) l.animateFab(true);
+		showFab();
 	}
 
 	@Override
