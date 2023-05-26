@@ -123,7 +123,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 					@Override
 					public void onSuccess(List<Status> result){
 						if (getActivity() == null) return;
-						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+						result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})
@@ -153,5 +153,10 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	@Override
 	protected void onSetFabBottomInset(int inset){
 		((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(24)+inset;
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.PUBLIC;
 	}
 }

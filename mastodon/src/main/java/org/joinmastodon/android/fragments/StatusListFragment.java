@@ -37,9 +37,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, addFooter, null, getFilterContext());
 	}
 
-	protected Filter.FilterContext getFilterContext() {
-		return Filter.FilterContext.PUBLIC;
-	}
+	protected abstract Filter.FilterContext getFilterContext();
 
 	@Override
 	protected void addAccountToKnown(Status s){

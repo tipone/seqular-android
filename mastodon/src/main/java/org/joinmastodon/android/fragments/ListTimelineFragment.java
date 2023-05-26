@@ -137,7 +137,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
                     @Override
                     public void onSuccess(List<Status> result) {
                         if (getActivity() == null) return;
-                        result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.HOME)).collect(Collectors.toList());
+                        result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
                         onDataLoaded(result, !result.isEmpty());
                     }
                 })

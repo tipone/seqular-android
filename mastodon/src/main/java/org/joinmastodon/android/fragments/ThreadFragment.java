@@ -137,7 +137,7 @@ public class ThreadFragment extends StatusListFragment{
 	}
 
 	private List<Status> filterStatuses(List<Status> statuses){
-		StatusFilterPredicate statusFilterPredicate=new StatusFilterPredicate(accountID,Filter.FilterContext.THREAD);
+		StatusFilterPredicate statusFilterPredicate=new StatusFilterPredicate(accountID,getFilterContext());
 		return statuses.stream()
 				.filter(statusFilterPredicate)
 				.collect(Collectors.toList());

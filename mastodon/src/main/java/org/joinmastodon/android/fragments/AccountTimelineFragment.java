@@ -60,7 +60,12 @@ public class AccountTimelineFragment extends StatusListFragment{
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.ACCOUNT)).collect(Collectors.toList());
+						AccountSessionManager asm = AccountSessionManager.getInstance();
+						result=result.stream().filter(status -> {
+							// don't hide own posts in own profile
+							if (asm.isSelf(accountID, user) && asm.isSelf(accountID, status.account)) return true;
+							else return new StatusFilterPredicate(accountID, getFilterContext()).test(status);
+						}).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})

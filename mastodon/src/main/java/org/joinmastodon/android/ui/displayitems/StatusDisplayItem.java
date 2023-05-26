@@ -81,16 +81,8 @@ public abstract class StatusDisplayItem{
 		};
 	}
 
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification){
-		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, Filter.FilterContext.HOME);
-	}
-
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, Filter.FilterContext filterContext){
 		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, filterContext);
-	}
-
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate){
-		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, disableTranslate, Filter.FilterContext.HOME);
 	}
 
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate, Filter.FilterContext filterContext){
@@ -102,12 +94,8 @@ public abstract class StatusDisplayItem{
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
 
-		List<Filter> filters = AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream()
-			.filter(f -> f.context.contains(filterContext)).collect(Collectors.toList());
-		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
-
-		if(!statusForContent.filterRevealed){
-			statusForContent.filterRevealed = !filterPredicate.testHasStatusWarning(status, filterContext);
+		if (!statusForContent.filterRevealed) {
+			statusForContent.filterRevealed = new StatusFilterPredicate(accountID, filterContext, Filter.FilterAction.WARN).test(status);
 		}
 
 		ReblogOrReplyLineStatusDisplayItem replyLine = null;

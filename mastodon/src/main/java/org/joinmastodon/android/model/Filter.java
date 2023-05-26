@@ -2,16 +2,18 @@ package org.joinmastodon.android.model;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.joinmastodon.android.api.ObjectValidationException;
-import org.joinmastodon.android.api.RequiredField;
 import org.parceler.Parcel;
 
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @Parcel
 public class Filter extends BaseModel{
