@@ -2,10 +2,5 @@
 <ripple
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:color="?android:attr/colorControlHighlight">
-	<item>
-		<shape>
-			<solid android:color="?colorSearchField"/>
-			<corners android:radius="6dp"/>
-		</shape>
-	</item>
+	<item android:drawable="@drawable/bg_search_field" />
 </ripple>

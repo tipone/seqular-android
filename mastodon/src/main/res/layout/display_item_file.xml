@@ -16,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginVertical="4dp"
-            android:background="@drawable/bg_search_field"
+            android:background="@drawable/bg_search_button"
             android:paddingVertical="12dp"
             android:orientation="horizontal">
 
