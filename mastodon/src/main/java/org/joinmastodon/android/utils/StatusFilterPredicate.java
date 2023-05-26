@@ -15,6 +15,9 @@ public class StatusFilterPredicate implements Predicate<Status>{
 	private final Filter.FilterContext context;
 	private final Filter.FilterAction action;
 
+	/**
+	 * @param context null makes the predicate pass automatically
+	 */
 	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context){
 		this.filters=filters;
 		this.context = context;
