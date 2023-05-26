@@ -276,4 +276,15 @@
     <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
     <string name="sk_reacted_with">bereaksi dengan %s</string>
     <string name="sk_reacted">bereaksi</string>
+    <string name="sk_content_type_plain">Teks biasa</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Aktifkan pemformatan kiriman</string>
+    <string name="sk_settings_default_content_type">Jenis konten bawaan</string>
+    <string name="sk_settings_default_content_type_explanation">Ini memungkinkan Anda untuk menerapkan jenis konten yang sudah ditentukan saat membuat kiriman baru, menimpa nilai yang ditetapkan dalam “Preferensi kiriman”.</string>
+    <string name="sk_content_type">Jenis konten</string>
+    <string name="sk_content_type_unspecified">Tidak ditentukan</string>
+    <string name="sk_settings_content_types_explanation">Memperbolehkan menetapkan jenis konten seperti Markdown ketika membuat kiriman. Perlu diingat bahwa tidak semua server mendukung ini.</string>
 </resources>
