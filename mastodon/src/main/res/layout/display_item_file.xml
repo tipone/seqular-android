@@ -42,8 +42,8 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/m3_body_large"
                     android:singleLine="true"
-                    android:ellipsize="end"
-                    tools:text="Link title"/>
+                    android:ellipsize="middle"
+                    tools:text="07a9d88625a9d63d680f35baf040156e71ed87e5f068f14d332c0c5a83f7a939.webm"/>
 
                 <TextView
                     android:id="@+id/domain"

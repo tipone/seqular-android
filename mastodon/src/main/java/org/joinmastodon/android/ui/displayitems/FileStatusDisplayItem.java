@@ -44,14 +44,16 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
 
         @Override
         public void onBind(FileStatusDisplayItem item) {
-            title.setText(item.attachment.description == null
-                    ? title.getContext().getText(R.string.sk_attachment)
-                    : item.attachment.description);
-            domain.setText(Uri.parse(item.attachment.url).getHost());
+            Uri url = Uri.parse(item.attachment.remoteUrl);
+            title.setText(item.attachment.description != null
+                    ? item.attachment.description
+                    : url.getLastPathSegment());
+            title.setEllipsize(item.attachment.description != null ? TextUtils.TruncateAt.END : TextUtils.TruncateAt.MIDDLE);
+            domain.setText(url.getHost());
         }
 
         private void onClick(View v) {
-            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.attachment.url);
+            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.attachment.remoteUrl);
         }
     }
 }
