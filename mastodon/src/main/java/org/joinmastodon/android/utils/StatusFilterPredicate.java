@@ -17,11 +17,28 @@ public class StatusFilterPredicate implements Predicate<Status>{
 
 	/**
 	 * @param context null makes the predicate pass automatically
+	 * @param action defines what the predicate should check:
+	 * 	             status should not be hidden or should not display with warning
 	 */
-	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context){
-		this.filters=filters;
+	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context, Filter.FilterAction action){
+		this.filters = filters;
 		this.context = context;
-		this.action = Filter.FilterAction.HIDE;
+		this.action = action;
+	}
+
+	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context){
+		this(filters, context, Filter.FilterAction.HIDE);
+	}
+
+	/**
+	 * @param context null makes the predicate pass automatically
+	 * @param action defines what the predicate should check:
+	 *               status should not be hidden or should not display with warning
+	 */
+	public StatusFilterPredicate(String accountID, Filter.FilterContext context, Filter.FilterAction action){
+		filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(context)).collect(Collectors.toList());
+		this.context = context;
+		this.action = action;
 	}
 
 	/**
@@ -32,16 +49,11 @@ public class StatusFilterPredicate implements Predicate<Status>{
 	}
 
 	/**
-	 * @param context null makes the predicate pass automatically
-	 * @param action defines what the predicate should check:
-	 *               should not be hidden or should not display with warning
+	 * @return whether the status should be displayed without being hidden/warned about.
+	 *         will always return true if the context is null.
+	 *         true = display this status,
+	 *         false = filter this status
 	 */
-	public StatusFilterPredicate(String accountID, Filter.FilterContext context, Filter.FilterAction action){
-		filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(context)).collect(Collectors.toList());
-		this.context = context;
-		this.action = action;
-	}
-
 	@Override
 	public boolean test(Status status){
 		if (context == null) return true;
