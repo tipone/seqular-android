@@ -44,7 +44,7 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
 
         @Override
         public void onBind(FileStatusDisplayItem item) {
-            Uri url = Uri.parse(item.attachment.remoteUrl);
+            Uri url = Uri.parse(getUrl());
             title.setText(item.attachment.description != null
                     ? item.attachment.description
                     : url.getLastPathSegment());
@@ -53,7 +53,11 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
         }
 
         private void onClick(View v) {
-            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.attachment.remoteUrl);
+            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), getUrl());
+        }
+
+        private String getUrl() {
+            return item.attachment.remoteUrl == null ? item.attachment.url : item.attachment.remoteUrl;
         }
     }
 }
