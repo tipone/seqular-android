@@ -484,25 +484,6 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 	protected void restartActivityToApplyNewTheme(){
-		// Calling activity.recreate() causes a black screen for like half a second.
-		// So, let's take a screenshot and overlay it on top to create the illusion of a smoother transition.
-		// As a bonus, we can fade it out to make it even smoother.
-		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
-			View activityDecorView=getActivity().getWindow().getDecorView();
-			Bitmap bitmap=Bitmap.createBitmap(activityDecorView.getWidth(), activityDecorView.getHeight(), Bitmap.Config.ARGB_8888);
-			activityDecorView.draw(new Canvas(bitmap));
-			themeTransitionWindowView=new ImageView(MastodonApp.context);
-			themeTransitionWindowView.setImageBitmap(bitmap);
-			WindowManager.LayoutParams lp=new WindowManager.LayoutParams(WindowManager.LayoutParams.TYPE_APPLICATION);
-			lp.flags=WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE |
-					WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR | WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN | WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS;
-			lp.systemUiVisibility=View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
-			lp.systemUiVisibility|=(activityDecorView.getWindowSystemUiVisibility() & (View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR));
-			lp.width=lp.height=WindowManager.LayoutParams.MATCH_PARENT;
-			lp.token=getActivity().getWindow().getAttributes().token;
-			lp.windowAnimations=R.style.window_fade_out;
-			MastodonApp.context.getSystemService(WindowManager.class).addView(themeTransitionWindowView, lp);
-		}
 		getActivity().recreate();
 	}
 
