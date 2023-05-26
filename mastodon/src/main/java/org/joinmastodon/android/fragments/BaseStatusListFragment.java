@@ -13,7 +13,6 @@ import android.text.Layout;
 import android.text.StaticLayout;
 import android.text.TextPaint;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -21,14 +20,15 @@ import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
 import android.widget.Toolbar;
 
-import org.joinmastodon.android.DomainManager;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.polls.SubmitPollVote;
-import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.DisplayItemsParent;
@@ -57,10 +57,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -317,7 +313,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				View fab = getFab();
-				if (fab!=null && GlobalUserPreferences.enableFabAutoHide) {
+				if (fab!=null && GlobalUserPreferences.autoHideFab) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						animateFab(false);
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
