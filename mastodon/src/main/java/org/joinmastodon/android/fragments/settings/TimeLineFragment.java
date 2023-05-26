@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class TimeLineFragment extends SettingsBaseFragment{
 
-    private SwitchItem showNewPostsButtonItem, compactReblogReplyLineItem;
+    private SwitchItem showNewPostsItem, compactReblogReplyLineItem;
     @Override
     public void addItems(ArrayList<Item> items) {
         items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
@@ -41,15 +41,15 @@ public class TimeLineFragment extends SettingsBaseFragment{
         }));
         items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_sync_24_regular, GlobalUserPreferences.loadNewPosts, i->{
             GlobalUserPreferences.loadNewPosts=i.checked;
-            showNewPostsButtonItem.enabled = i.checked;
+            showNewPostsItem.enabled = i.checked;
             if (!i.checked) {
                 GlobalUserPreferences.showNewPostsButton = false;
-                showNewPostsButtonItem.checked = false;
+                showNewPostsItem.checked = false;
             }
-            if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsButtonItem)) instanceof SwitchViewHolder svh) svh.rebind();
+            if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsItem)) instanceof SwitchViewHolder svh) svh.rebind();
             GlobalUserPreferences.save();
         }));
-        items.add(showNewPostsButtonItem = new SwitchItem(R.string.sk_settings_show_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
+        items.add(showNewPostsItem = new SwitchItem(R.string.sk_settings_show_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
             GlobalUserPreferences.showNewPostsButton=i.checked;
             GlobalUserPreferences.save();
         }));

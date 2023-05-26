@@ -788,8 +788,11 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 				summary.setText(item.summary);
 				summary.setVisibility(View.VISIBLE);
 			}
-
-			icon.setImageResource(item.icon);
+			if (item.icon == 0) {
+				icon.setVisibility(View.GONE);
+			} else {
+				icon.setImageResource(item.icon);
+			}
 			item.buttonConsumer.accept(button);
 		}
 
