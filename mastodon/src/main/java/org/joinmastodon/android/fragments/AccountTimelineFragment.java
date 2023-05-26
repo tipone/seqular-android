@@ -85,7 +85,8 @@ public class AccountTimelineFragment extends StatusListFragment{
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
-		if(!AccountSessionManager.getInstance().isSelf(accountID, ev.status.account))
+		AccountSessionManager asm = AccountSessionManager.getInstance();
+		if(!asm.isSelf(accountID, ev.status.account) || !asm.isSelf(accountID, user))
 			return;
 		if(filter==GetAccountStatuses.Filter.PINNED) return;
 		if(filter==GetAccountStatuses.Filter.DEFAULT){
