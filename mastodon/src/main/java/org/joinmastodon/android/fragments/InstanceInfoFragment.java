@@ -163,6 +163,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 						instance = result;
 						bindViews();
 						dataLoaded();
+						invalidateOptionsMenu();
 						if(refreshing) {
 							refreshing = false;
 							refreshLayout.setRefreshing(false);
@@ -327,8 +328,10 @@ public class InstanceInfoFragment extends LoaderFragment {
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		inflater.inflate(R.menu.instance_info, menu);
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu);
+		if (instance != null) {
+			inflater.inflate(R.menu.instance_info, menu);
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu);
+		}
 	}
 
 	@Override
