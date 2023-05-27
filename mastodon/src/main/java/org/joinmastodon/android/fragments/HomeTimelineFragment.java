@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.E;
-import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -156,7 +154,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 							result.get(result.size()-1).hasGapAfter=true;
 							toAdd=result;
 						}
-						StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, Filter.FilterContext.HOME);
+						StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, getFilterContext());
 						toAdd=toAdd.stream().filter(filterPredicate).collect(Collectors.toList());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
@@ -235,7 +233,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 							List<StatusDisplayItem> targetList=displayItems.subList(gapPos, gapPos+1);
 							targetList.clear();
 							List<Status> insertedPosts=data.subList(gapPostIndex+1, gapPostIndex+1);
-							StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, Filter.FilterContext.HOME);
+							StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, getFilterContext());
 							for(Status s:result){
 								if(idsBelowGap.contains(s.id))
 									break;
@@ -287,5 +285,10 @@ public class HomeTimelineFragment extends StatusListFragment {
 	@Override
 	protected boolean shouldRemoveAccountPostsWhenUnfollowing(){
 		return true;
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.HOME;
 	}
 }

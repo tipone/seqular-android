@@ -145,7 +145,7 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 	}
 
 	private List<Status> filterStatuses(List<Status> statuses){
-		StatusFilterPredicate statusFilterPredicate=new StatusFilterPredicate(accountID,Filter.FilterContext.THREAD);
+		StatusFilterPredicate statusFilterPredicate=new StatusFilterPredicate(accountID,getFilterContext());
 		return statuses.stream()
 				.filter(statusFilterPredicate)
 				.collect(Collectors.toList());
@@ -188,5 +188,11 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 	@Override
 	public boolean wantsLightNavigationBar(){
 		return !UiUtils.isDarkTheme();
+	}
+
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.THREAD;
 	}
 }

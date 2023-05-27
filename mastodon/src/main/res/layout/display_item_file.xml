@@ -55,5 +55,4 @@
             </LinearLayout>
         </LinearLayout>
     </org.joinmastodon.android.ui.views.MaxWidthFrameLayout>
-
 </FrameLayout>

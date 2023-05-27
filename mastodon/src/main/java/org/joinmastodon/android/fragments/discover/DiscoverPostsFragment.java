@@ -31,7 +31,7 @@ public class DiscoverPostsFragment extends StatusListFragment implements IsOnTop
 					@Override
 					public void onSuccess(List<Status> result){
 						if (getActivity() == null) return;
-						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+						result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				}).exec(accountID);
@@ -46,5 +46,11 @@ public class DiscoverPostsFragment extends StatusListFragment implements IsOnTop
 	@Override
 	public boolean isOnTop() {
 		return isRecyclerViewOnTop(list);
+	}
+
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.PUBLIC;
 	}
 }

@@ -36,7 +36,6 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
 
     public static class Holder extends StatusDisplayItem.Holder<FileStatusDisplayItem>{
         private final TextView title, domain;
-        private boolean didClear;
 
         public Holder(Context context, ViewGroup parent){
             super(context, R.layout.display_item_file, parent);
@@ -54,6 +53,21 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
 
         private void onClick(View v){
             UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.attachment.remoteUrl == null ? item.attachment.url : item.attachment.remoteUrl);
+        public void onBind(FileStatusDisplayItem item) {
+            Uri url = Uri.parse(getUrl());
+            title.setText(item.attachment.description != null
+                    ? item.attachment.description
+                    : url.getLastPathSegment());
+            title.setEllipsize(item.attachment.description != null ? TextUtils.TruncateAt.END : TextUtils.TruncateAt.MIDDLE);
+            domain.setText(url.getHost());
+        }
+
+        private void onClick(View v) {
+            UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), getUrl());
+        }
+
+        private String getUrl() {
+            return item.attachment.remoteUrl == null ? item.attachment.url : item.attachment.remoteUrl;
         }
     }
 }

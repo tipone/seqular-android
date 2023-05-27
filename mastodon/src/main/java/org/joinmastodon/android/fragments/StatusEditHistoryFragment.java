@@ -56,7 +56,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null, Filter.FilterContext.HOME);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null, null);
 		int idx=data.indexOf(s);
 		if(idx>=0){
 			String date=UiUtils.DATE_TIME_FORMATTER.format(s.createdAt.atZone(ZoneId.systemDefault()));
@@ -156,5 +156,10 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 	@Override
 	public boolean isItemEnabled(String id){
 		return false;
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return null;
 	}
 }

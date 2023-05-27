@@ -38,7 +38,7 @@ public class LocalTimelineFragment extends StatusListFragment {
 						if(!result.isEmpty())
 							maxID=result.get(result.size()-1).id;
 						if (getActivity() == null) return;
-						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+						result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})
@@ -49,5 +49,10 @@ public class LocalTimelineFragment extends StatusListFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		bannerHelper.maybeAddBanner(contentWrap);
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.PUBLIC;
 	}
 }

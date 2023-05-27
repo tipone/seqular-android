@@ -262,4 +262,9 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 	protected boolean wantsOverlaySystemNavigation(){
 		return false;
 	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return null;
+	}
 }

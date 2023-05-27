@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -83,16 +82,8 @@ public abstract class StatusDisplayItem{
 		};
 	}
 
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification){
-		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, Filter.FilterContext.HOME);
-	}
-
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, Filter.FilterContext filterContext){
 		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, filterContext);
-	}
-
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate){
-		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, disableTranslate, Filter.FilterContext.HOME);
 	}
 
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate, Filter.FilterContext filterContext){
@@ -103,14 +94,6 @@ public abstract class StatusDisplayItem{
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
-
-		List<Filter> filters = AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream()
-			.filter(f -> f.context.contains(filterContext)).collect(Collectors.toList());
-		StatusFilterPredicate filterPredicate = new StatusFilterPredicate(filters);
-
-		if(statusForContent != null && !statusForContent.filterRevealed){
-			statusForContent.filterRevealed = filterPredicate.testWithWarning(status);
-		}
 
 		ReblogOrReplyLineStatusDisplayItem replyLine = null;
 		boolean threadReply = statusForContent.inReplyToAccountId != null &&
@@ -186,7 +169,10 @@ public abstract class StatusDisplayItem{
 			replyLine.needBottomPadding=true;
 		else
 			header.needBottomPadding=true;
-		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage() && !att.type.equals(Attachment.Type.UNKNOWN)).collect(Collectors.toList());
+
+		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream()
+				.filter(att->att.type.isImage() && !att.type.equals(Attachment.Type.UNKNOWN))
+				.collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
 			PhotoLayoutHelper.TiledLayoutResult layout=PhotoLayoutHelper.processThumbs(imageAttachments);
 			items.add(new MediaGridStatusDisplayItem(parentID, fragment, layout, imageAttachments, statusForContent));
@@ -197,22 +183,19 @@ public abstract class StatusDisplayItem{
 			}
 		}
 
-		List<Attachment> fileAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.equals(Attachment.Type.UNKNOWN)).collect(Collectors.toList());
-		fileAttachments.forEach(attachment -> {
-			items.add(new FileStatusDisplayItem(parentID, fragment, attachment, statusForContent));
-		});
+		statusForContent.mediaAttachments.stream()
+				.filter(att->att.type.equals(Attachment.Type.UNKNOWN))
+				.map(att -> new FileStatusDisplayItem(parentID, fragment, att))
+				.forEach(items::add);
 
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, items, statusForContent);
+			buildPollItems(parentID, fragment, statusForContent.poll, items);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty() && TextUtils.isEmpty(statusForContent.spoilerText)){
 			items.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent));
 		}
 		if(addFooter){
 			items.add(new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID));
-			if(status.hasGapAfter && !(fragment instanceof ThreadFragment)){
-				items.add(new GapStatusDisplayItem(parentID, fragment));
-			}
 		}
 		int i=1;
 		for(StatusDisplayItem item:items){
@@ -220,20 +203,30 @@ public abstract class StatusDisplayItem{
 			item.index=i++;
 		}
 
+		Filter applyingFilter = null;
 		if (!statusForContent.filterRevealed) {
-			return new ArrayList<>(List.of(
-					new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items)
-			));
+			StatusFilterPredicate predicate = new StatusFilterPredicate(accountID, filterContext, Filter.FilterAction.WARN);
+			statusForContent.filterRevealed = predicate.test(status);
+			applyingFilter = predicate.getApplyingFilter();
 		}
 
-		return items;
+		ArrayList<StatusDisplayItem> result = statusForContent.filterRevealed ? items :
+				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
+
+		if (addFooter && status.hasGapAfter && !(fragment instanceof ThreadFragment)) {
+			StatusDisplayItem gap = new GapStatusDisplayItem(parentID, fragment);
+			gap.index = i++;
+			result.add(gap);
+		}
+
+		return result;
 	}
 
-	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items, Status status){
+	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
 		for(Poll.Option opt:poll.options){
-			items.add(new PollOptionStatusDisplayItem(parentID, poll, opt, fragment, status));
+			items.add(new PollOptionStatusDisplayItem(parentID, poll, opt, fragment));
 		}
-		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll, status));
+		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll));
 	}
 
 	public enum Type{
@@ -249,9 +242,9 @@ public abstract class StatusDisplayItem{
 		ACCOUNT,
 		HASHTAG,
 		GAP,
-		WARNING,
 		EXTENDED_FOOTER,
 		MEDIA_GRID,
+		WARNING,
 		FILE
 	}
 

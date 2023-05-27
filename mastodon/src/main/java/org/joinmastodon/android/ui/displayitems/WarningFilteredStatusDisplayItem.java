@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.SawtoothTearDrawable;
 
@@ -18,20 +19,22 @@ import java.util.ArrayList;
 
 // Mind the gap!
 public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
-    public boolean loading;
-    public final Status status;
-    public ArrayList<StatusDisplayItem> filteredItems;
+	public boolean loading;
+	public final Status status;
+	public List<StatusDisplayItem> filteredItems;
+	public Filter applyingFilter;
 
-    public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status, ArrayList<StatusDisplayItem> items){
-        super(parentID, parentFragment);
-        this.status=status;
-        this.filteredItems = items;
-    }
+	public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, List<StatusDisplayItem> filteredItems, Filter applyingFilter){
+		super(parentID, parentFragment);
+		this.status=status;
+		this.filteredItems = filteredItems;
+		this.applyingFilter = applyingFilter;
+	}
 
-    @Override
-    public Type getType(){
-        return Type.WARNING;
-    }
+	@Override
+	public Type getType(){
+		return Type.WARNING;
+	}
 
     public static class Holder extends StatusDisplayItem.Holder<WarningFilteredStatusDisplayItem>{
         public final View warningWrap;
@@ -48,11 +51,11 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 //            itemView.setOnClickListener(v->item.parentFragment.onRevealFilteredClick(this));
         }
 
-        @Override
-        public void onBind(WarningFilteredStatusDisplayItem item){
-            filteredItems = item.filteredItems;
-            text.setText(item.parentFragment.getString(R.string.mo_filtered, item.status.filtered.get(item.status.filtered.size() -1).filter.title));
-        }
+		@Override
+		public void onBind(WarningFilteredStatusDisplayItem item) {
+			filteredItems = item.filteredItems;
+			text.setText(item.parentFragment.getString(R.string.sk_filtered, item.applyingFilter.title));
+		}
 
         @Override
         public void onClick(){

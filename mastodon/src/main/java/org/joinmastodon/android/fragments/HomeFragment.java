@@ -180,6 +180,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		notificationsFragment=(NotificationsFragment) getChildFragmentManager().getFragment(savedInstanceState, "notificationsFragment");
 		profileFragment=(ProfileFragment) getChildFragmentManager().getFragment(savedInstanceState, "profileFragment");
 		currentTab=savedInstanceState.getInt("selectedTab");
+		tabBar.selectTab(currentTab);
 		Fragment current=fragmentForTab(currentTab);
 
 		getChildFragmentManager().beginTransaction()
@@ -267,6 +268,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
 		maybeTriggerLoading(newFragment);
+		if (newFragment instanceof HasFab fabulous) fabulous.showFab();
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
 	}

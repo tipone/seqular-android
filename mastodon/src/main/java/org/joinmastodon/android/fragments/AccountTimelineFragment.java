@@ -3,10 +3,6 @@ package org.joinmastodon.android.fragments;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.TranslateAnimation;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
@@ -64,7 +60,12 @@ public class AccountTimelineFragment extends StatusListFragment{
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.ACCOUNT)).collect(Collectors.toList());
+						AccountSessionManager asm = AccountSessionManager.getInstance();
+						result=result.stream().filter(status -> {
+							// don't hide own posts in own profile
+							if (asm.isSelf(accountID, user) && asm.isSelf(accountID, status.account)) return true;
+							else return new StatusFilterPredicate(accountID, getFilterContext()).test(status);
+						}).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})
@@ -85,7 +86,8 @@ public class AccountTimelineFragment extends StatusListFragment{
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
-		if(!AccountSessionManager.getInstance().isSelf(accountID, ev.status.account))
+		AccountSessionManager asm = AccountSessionManager.getInstance();
+		if(!asm.isSelf(accountID, ev.status.account) || !asm.isSelf(accountID, user))
 			return;
 		if(filter==GetAccountStatuses.Filter.PINNED) return;
 		if(filter==GetAccountStatuses.Filter.DEFAULT){
@@ -122,5 +124,11 @@ public class AccountTimelineFragment extends StatusListFragment{
 	@Override
 	protected void onRemoveAccountPostsEvent(RemoveAccountPostsEvent ev){
 		// no-op
+	}
+
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.ACCOUNT;
 	}
 }

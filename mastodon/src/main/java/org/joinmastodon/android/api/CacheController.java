@@ -74,10 +74,8 @@ public class CacheController{
 								int flags=cursor.getInt(1);
 								status.hasGapAfter=((flags & POST_FLAG_GAP_AFTER)!=0);
 								newMaxID=status.id;
-								for(Filter filter:filters){
-									if(filter.matches(status))
-										continue outer;
-								}
+								if (!new StatusFilterPredicate(filters, Filter.FilterContext.HOME).test(status))
+									continue outer;
 								result.add(status);
 							}while(cursor.moveToNext());
 							String _newMaxID=newMaxID;
@@ -92,7 +90,7 @@ public class CacheController{
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Status> result){
-								callback.onSuccess(new CacheablePaginatedResponse<>(result.stream().filter(new StatusFilterPredicate(filters)).collect(Collectors.toList()), result.isEmpty() ? null : result.get(result.size()-1).id, false));
+								callback.onSuccess(new CacheablePaginatedResponse<>(result.stream().filter(new StatusFilterPredicate(filters, Filter.FilterContext.HOME)).collect(Collectors.toList()), result.isEmpty() ? null : result.get(result.size()-1).id, false));
 								putHomeTimeline(result, maxID==null);
 							}
 
@@ -148,10 +146,8 @@ public class CacheController{
 								ntf.postprocess();
 								newMaxID=ntf.id;
 								if(ntf.status!=null){
-									for(Filter filter:filters){
-										if(filter.matches(ntf.status))
-											continue outer;
-									}
+									if (!new StatusFilterPredicate(filters, Filter.FilterContext.NOTIFICATIONS).test(ntf.status))
+										continue outer;
 								}
 								result.add(ntf);
 							}while(cursor.moveToNext());
@@ -170,11 +166,7 @@ public class CacheController{
 							public void onSuccess(List<Notification> result){
 								callback.onSuccess(new CacheablePaginatedResponse<>(result.stream().filter(ntf->{
 									if(ntf.status!=null){
-										for(Filter filter:filters){
-											if(filter.matches(ntf.status)){
-												return false;
-											}
-										}
+										return new StatusFilterPredicate(filters, Filter.FilterContext.NOTIFICATIONS).test(ntf.status);
 									}
 									return true;
 								}).collect(Collectors.toList()), result.isEmpty() ? null : result.get(result.size()-1).id, false));

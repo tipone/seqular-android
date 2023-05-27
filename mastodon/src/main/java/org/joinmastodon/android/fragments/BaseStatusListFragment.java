@@ -69,7 +69,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends BaseRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, DomainDisplay{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends BaseRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, DomainDisplay{
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
@@ -271,34 +271,39 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		});
 	}
 
+	@Override
 	public @Nullable View getFab() {
 		if (getParentFragment() instanceof HasFab l) return l.getFab();
 		else return fab;
 	}
 
-	public void animateFab(boolean show) {
+	@Override
+	public void showFab() {
 		View fab = getFab();
-		if (fab == null) return;
-		if (show && fab.getVisibility() != View.VISIBLE) {
-			fab.setVisibility(View.VISIBLE);
-			TranslateAnimation animate = new TranslateAnimation(
-					0,
-					0,
-					fab.getHeight() * 2,
-					0);
-			animate.setDuration(300);
-			fab.startAnimation(animate);
-		} else if (!show && fab.getVisibility() == View.VISIBLE) {
-			TranslateAnimation animate = new TranslateAnimation(
-					0,
-					0,
-					0,
-					fab.getHeight() * 2);
-			animate.setDuration(300);
-			fab.startAnimation(animate);
-			fab.setVisibility(View.INVISIBLE);
-			scrollDiff = 0;
-		}
+		if (fab == null || fab.getVisibility() == View.VISIBLE) return;
+		fab.setVisibility(View.VISIBLE);
+		TranslateAnimation animate = new TranslateAnimation(
+				0,
+				0,
+				fab.getHeight() * 2,
+				0);
+		animate.setDuration(300);
+		fab.startAnimation(animate);
+	}
+
+	@Override
+	public void hideFab() {
+		View fab = getFab();
+		if (fab == null || fab.getVisibility() != View.VISIBLE) return;
+		TranslateAnimation animate = new TranslateAnimation(
+				0,
+				0,
+				0,
+				fab.getHeight() * 2);
+		animate.setDuration(300);
+		fab.startAnimation(animate);
+		fab.setVisibility(View.INVISIBLE);
+		scrollDiff = 0;
 	}
 
 	@Override
@@ -315,10 +320,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				View fab = getFab();
 				if (fab!=null && GlobalUserPreferences.autoHideFab) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
-						animateFab(false);
+						hideFab();
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
-						if (list.getChildAt(0).getTop() == 0 || scrollDiff > THRESHOLD) {
-							animateFab(true);
+						if (list.getChildAt(0).getTop() == 0 || scrollDiff > 400) {
+							showFab();
 							scrollDiff = 0;
 						} else {
 							scrollDiff += Math.abs(dy);

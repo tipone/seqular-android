@@ -6,54 +6,80 @@ import org.joinmastodon.android.model.Status;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StatusFilterPredicate implements Predicate<Status>{
 	private final List<Filter> filters;
+	private final Filter.FilterContext context;
+	private final Filter.FilterAction action;
+	private Filter applyingFilter;
 
-	public StatusFilterPredicate(List<Filter> filters){
-		this.filters=filters;
+	/**
+	 * @param context null makes the predicate pass automatically
+	 * @param action defines what the predicate should check:
+	 * 	             status should not be hidden or should not display with warning
+	 */
+	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context, Filter.FilterAction action){
+		this.filters = filters;
+		this.context = context;
+		this.action = action;
 	}
 
-	public StatusFilterPredicate(String accountID, Filter.FilterContext context){
+	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context){
+		this(filters, context, Filter.FilterAction.HIDE);
+	}
+
+	/**
+	 * @param context null makes the predicate pass automatically
+	 * @param action defines what the predicate should check:
+	 *               status should not be hidden or should not display with warning
+	 */
+	public StatusFilterPredicate(String accountID, Filter.FilterContext context, Filter.FilterAction action){
 		filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(context)).collect(Collectors.toList());
+		this.context = context;
+		this.action = action;
 	}
 
+	/**
+	 * @param context null makes the predicate pass automatically
+	 */
+	public StatusFilterPredicate(String accountID, Filter.FilterContext context){
+		this(accountID, context, Filter.FilterAction.HIDE);
+	}
+
+	/**
+	 * @return whether the status should be displayed without being hidden/warned about.
+	 *         will always return true if the context is null.
+	 *         true = display this status,
+	 *         false = filter this status
+	 */
 	@Override
 	public boolean test(Status status){
-		if(status.filtered!=null){
-			if (status.filtered.isEmpty()){
-				return true;
-			}
-			boolean matches=status.filtered.stream()
-					.map(filterResult->filterResult.filter)
-					.filter(filter->filter.expiresAt==null||filter.expiresAt.isAfter(Instant.now()))
-					.anyMatch(filter->filter.filterAction==Filter.FilterAction.HIDE);
-			return !matches;
-		}
-		for(Filter filter:filters){
-			if(filter.matches(status))
-				return false;
-		}
-		return true;
+		if (context == null) return true;
+
+		Stream<Filter> matchingFilters = status.filtered != null
+				// use server-provided per-status info (status.filtered) if available
+				? status.filtered.stream().map(f -> f.filter)
+				// or fall back to cached filters
+				: filters.stream().filter(filter -> filter.matches(status));
+
+		Optional<Filter> applyingFilter = matchingFilters
+				// discard expired filters
+				.filter(filter -> filter.expiresAt == null || filter.expiresAt.isAfter(Instant.now()))
+				// only apply filters for given context
+				.filter(filter -> filter.context.contains(context))
+				// treating filterAction = null (from filters list) as FilterAction.HIDE
+				.filter(filter -> filter.filterAction == null ? action == Filter.FilterAction.HIDE : filter.filterAction == action)
+				.findAny();
+
+		this.applyingFilter = applyingFilter.orElse(null);
+		return applyingFilter.isEmpty();
 	}
 
-	public boolean testWithWarning(Status status) {
-		if(status.filtered!=null){
-			if (status.filtered.isEmpty()){
-				return true;
-			}
-			boolean matches=status.filtered.stream()
-					.map(filterResult->filterResult.filter)
-					.filter(filter->filter.expiresAt==null||filter.expiresAt.isAfter(Instant.now()))
-					.anyMatch(filter->filter.filterAction==Filter.FilterAction.WARN);
-			return !matches;
-		}
-		for(Filter filter:filters){
-			if(filter.matches(status))
-				return false;
-		}
-		return true;
+	public Filter getApplyingFilter() {
+		return applyingFilter;
 	}
 }
