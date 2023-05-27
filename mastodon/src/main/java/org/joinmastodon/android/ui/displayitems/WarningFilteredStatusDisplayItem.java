@@ -44,8 +44,8 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
             warningWrap=findViewById(R.id.warning_wrap);
             showBtn=findViewById(R.id.reveal_btn);
             showBtn.setOnClickListener(i -> item.parentFragment.onWarningClick(this));
+            itemView.setOnClickListener(v->item.parentFragment.onWarningClick(this));
             text=findViewById(R.id.text);
-//            itemView.setOnClickListener(v->item.parentFragment.onRevealFilteredClick(this));
         }
 
         @Override
