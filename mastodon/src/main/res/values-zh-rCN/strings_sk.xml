@@ -277,4 +277,15 @@
     <string name="sk_reacted">已回应</string>
     <string name="sk_settings_confirm_before_reblog">转读前确认</string>
     <string name="sk_reacted_with">已以 %s 回应</string>
+    <string name="sk_content_type_plain">纯文本</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BB 代码</string>
+    <string name="sk_settings_content_types">启用帖文格式化</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_default_content_type">默认内容类型</string>
+    <string name="sk_content_type">内容类型</string>
+    <string name="sk_content_type_unspecified">未指明</string>
+    <string name="sk_settings_content_types_explanation">创建帖文时允许设置内容类型（如 Markdown）。请注意并非所有实例都支持该特性。</string>
+    <string name="sk_settings_default_content_type_explanation">该选项允许你为创建的帖文预设一种内容类型，将覆盖「发帖偏好」中的设置参数。</string>
 </resources>
