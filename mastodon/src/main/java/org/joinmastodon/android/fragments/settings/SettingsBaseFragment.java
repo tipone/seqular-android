@@ -102,7 +102,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		list=new UsableRecyclerView(getActivity());
 		list.setLayoutManager(new LinearLayoutManager(getActivity()));
 		list.setAdapter(new SettingsAdapter());
-		list.setBackgroundColor(UiUtils.getThemeColor(getActivity(), android.R.attr.colorBackground));
+		list.setBackgroundColor(UiUtils.getThemeColor(getActivity(), android.R.attr.windowBackground));
 		list.setPadding(0, V.dp(16), 0, V.dp(12));
 		list.setClipToPadding(false);
 		list.addItemDecoration(new RecyclerView.ItemDecoration(){
@@ -137,7 +137,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		getToolbar().setElevation(0f);
         getToolbar().setTitle("");
         TypedValue typedValue = new TypedValue();
-        if (getActivity().getTheme().resolveAttribute(android.R.attr.colorBackground, typedValue, true)) {
+        if (getActivity().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true)) {
             getToolbar().setBackgroundColor(typedValue.data);
         }
 	}
