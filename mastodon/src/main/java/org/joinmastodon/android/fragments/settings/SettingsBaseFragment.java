@@ -851,7 +851,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 
 	private class UpdateViewHolder extends BindableViewHolder<UpdateItem>{
 
-		private final TextView text, changelog;
+		private final TextView text, changelog, changelogHeader;
 		private final Button button;
 		private final ImageButton cancelBtn;
 		private final ProgressBar progress;
@@ -863,6 +863,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			super(getActivity(), R.layout.item_settings_update, list);
 			text=findViewById(R.id.text);
 			changelog=findViewById(R.id.changelog);
+			changelogHeader=findViewById(R.id.changelog_header);
 			button=findViewById(R.id.button);
 			cancelBtn=findViewById(R.id.cancel_btn);
 			progress=findViewById(R.id.progress);
@@ -907,6 +908,10 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 				progress.removeCallbacks(progressUpdater);
 			}
 			changelog.setText(info.changelog);
+			if(info.changelog.isEmpty()){
+				changelogHeader.setVisibility(View.GONE);
+				changelog.setVisibility(View.GONE);
+			}
 //			changelog.setText(getString(R.string.sk_changelog, info.changelog));
 		}
 
