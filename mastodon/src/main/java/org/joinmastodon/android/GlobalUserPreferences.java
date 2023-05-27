@@ -31,14 +31,13 @@ public class GlobalUserPreferences{
 	public static boolean alwaysExpandContentWarnings;
 	public static boolean disableMarquee;
 	public static boolean disableSwipe;
-	public static boolean disableDividers;
+	public static boolean showDividers;
 	public static boolean voteButtonForSingleChoice;
 	public static boolean uniformNotificationIcon;
 	public static boolean enableDeleteNotifications;
 	public static boolean relocatePublishButton;
 	public static boolean reduceMotion;
 	public static boolean keepOnlyLatestNotification;
-	public static boolean enableFabAutoHide;
 	public static boolean disableAltTextReminder;
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
@@ -49,7 +48,7 @@ public class GlobalUserPreferences{
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
 	public static boolean defaultToUnlistedReplies;
-	public static boolean disableDoubleTapToSwipe;
+	public static boolean doubleTapToSwipe;
 	public static boolean compactReblogReplyLine;
 	public static boolean confirmBeforeReblog;
 	public static boolean replyLineAboveHeader;
@@ -103,13 +102,12 @@ public class GlobalUserPreferences{
 		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
 		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		disableSwipe=prefs.getBoolean("disableSwipe", false);
-		disableDividers=prefs.getBoolean("disableDividers", true);
+		showDividers =prefs.getBoolean("showDividers", false);
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", false);
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
-		enableFabAutoHide=prefs.getBoolean("enableFabAutoHide", true);
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
@@ -121,7 +119,7 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
-		disableDoubleTapToSwipe=prefs.getBoolean("disableDoubleTapToSwipe", false);
+		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
@@ -165,13 +163,12 @@ public class GlobalUserPreferences{
 				.putBoolean("alwaysExpandContentWarnings", alwaysExpandContentWarnings)
 				.putBoolean("disableMarquee", disableMarquee)
 				.putBoolean("disableSwipe", disableSwipe)
-				.putBoolean("disableDividers", disableDividers)
+				.putBoolean("showDividers", showDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
 				.putBoolean("uniformNotificationIcon", uniformNotificationIcon)
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putBoolean("reduceMotion", reduceMotion)
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
-				.putBoolean("enableFabAutoHide", enableFabAutoHide)
 				.putBoolean("disableAltTextReminder", disableAltTextReminder)
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
@@ -183,7 +180,7 @@ public class GlobalUserPreferences{
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
-				.putBoolean("disableDoubleTapToSwipe", disableDoubleTapToSwipe)
+				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)

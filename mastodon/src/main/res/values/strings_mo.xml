@@ -6,12 +6,12 @@
 
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_app_username" translatable="false">\@moshidon</string>
-    <string name="mo_disable_dividers">Disable post dividers</string>
+    <string name="mo_enable_dividers">Show post dividers</string>
     <string name="mo_relocate_publish_button">Relocate publish button</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Hide compose button while scrolling</string>
     <string name="mo_welcome_text">To get started, please enter your home instance’s domain name below.</string>
 
-    <!--    Setting this as non-translatable as it simply doesnt change with language-->
+    <!--    Setting this as non-translatable as it simply doesn't change with language-->
     <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
 
     <string name="mo_personal_note">Add a note about this profile</string>
@@ -29,9 +29,9 @@
     <string name="mo_disable_reminder_to_add_alt_text">Disable reminder to add alt text</string>
     <string name="mo_add_custom_server_local_timeline">Add a custom server\'s local timeline</string>
     <string name="mo_notification_action_replied">Successfully replied to the post by %s</string>
-    <string name="mo_change_default_reply_visibility_to_unlisted">Change default reply visibility to unlisted</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Reply as \'Unlisted\' by default</string>
     <string name="mo_composer_behavior">Composer\'s Behavior</string>
-    <string name="mo_miscellaneous_settings">Miscellaneous Settings</string>
+    <string name="mo_notification_management_settings">Manage Notifications</string>
     
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Add new poll option</string>
@@ -50,8 +50,8 @@
     <string name="mo_duration_days_7">7 days</string>
 
     <string name="mo_share_open_url">Open in App</string>
-    <string name="mo_disable_double_tap_to_swipe_between_tabs">Disable double tap to swipe between tabs</string>
-    <string name="mo_swap_bookmark_with_reblog">Use reblog action instead of bookmark action on notifications</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Double tap to swipe between tabs</string>
+    <string name="mo_swap_bookmark_with_reblog">Swap bookmark with reblog action</string>
     <string name="mo_download_latest_nightly_release">Download latest nightly release</string>
     <string name="mo_load_remote_followers">Load remote profile follows and followers</string>
     <string name="mo_mention_reblogger_automatically">Automatically mention account who reblogged the post in replies</string>
@@ -69,4 +69,20 @@
     <string name="mo_instance_info_moderated_servers">Moderated servers</string>
     <string name="mo_severity_silence">Silenced</string>
     <string name="mo_severity_suspend">Blocked</string>
+
+<!--    Settings summaries-->
+    <string name="mo_setting_true_black_summary">Might save power on AMOLED displays</string>
+    <string name="mo_setting_marquee_summary">Disables the ellipsized title scrolling</string>
+    <string name="mo_setting_uniform_summary">Use the app icon for all notifications</string>
+    <string name="mo_setting_reduced_motion_summary">Disable animations of interactions</string>
+    <string name="mo_setting_play_gif_summary">Autoplay GIFs in avatars and emoji</string>
+    <string name="mo_setting_remote_follower_summary">Show followers from other instances</string>
+    <string name="mo_setting_relocate_publish_summary">Move the publish button to the bottom bar</string>
+    <string name="mo_setting_default_reply_privacy_summary">Replies will be opted out of discovery features</string>
+    <string name="mo_setting_interaction_count_summary">Show how many people interacted with a post in the timeline</string>
+    <string name="mo_setting_disable_swipe_summary">Swipe to change viewed timeline</string>
+    <string name="mo_swap_bookmark_with_reblog_summary">Bookmark or reblog posts from the notification</string>
+
+<!--  Settings  -->
+    <string name="mo_notification_audience_settings">Notification Audience</string>
 </resources>

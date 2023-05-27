@@ -17,16 +17,34 @@
 		android:tint="?android:textColorPrimary"
 		tools:src="@drawable/ic_fluent_star_24_regular"/>
 
-	<TextView
-		android:id="@+id/text"
+	<RelativeLayout
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
-		android:layout_weight="1"
-		android:layout_marginStart="16dp"
-		android:paddingVertical="8dp"
-		android:textSize="16sp"
-		android:textColor="?android:textColorPrimary"
-		tools:text="@string/theme_true_black"/>
+		android:layout_marginStart="15dip"
+		android:layout_marginEnd="6dip"
+		android:layout_marginTop="6dip"
+		android:layout_marginBottom="6dip"
+		android:layout_weight="1">
+
+		<TextView android:id="@+id/title"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ellipsize="marquee"
+			android:textColor="?android:textColorPrimary"
+			android:textSize="16sp"
+			android:fadingEdge="horizontal"
+			android:text=""/>
+
+		<TextView android:id="@+id/summary"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_below="@id/title"
+			android:textColor="?android:textColorSecondary"
+			android:layout_alignStart="@id/title"
+			android:visibility="gone"
+			android:maxLines="4" />
+
+	</RelativeLayout>
 
 	<Switch
 		android:id="@+id/checkbox"
