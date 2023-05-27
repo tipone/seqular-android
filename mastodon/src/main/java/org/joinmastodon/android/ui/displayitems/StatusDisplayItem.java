@@ -185,11 +185,11 @@ public abstract class StatusDisplayItem{
 
 		statusForContent.mediaAttachments.stream()
 				.filter(att->att.type.equals(Attachment.Type.UNKNOWN))
-				.map(att -> new FileStatusDisplayItem(parentID, fragment, att))
+				.map(att -> new FileStatusDisplayItem(parentID, fragment, att, statusForContent))
 				.forEach(items::add);
 
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, items);
+			buildPollItems(parentID, fragment, statusForContent.poll, items, statusForContent);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty() && TextUtils.isEmpty(statusForContent.spoilerText)){
 			items.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent));
@@ -222,11 +222,11 @@ public abstract class StatusDisplayItem{
 		return result;
 	}
 
-	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
+	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items, Status status){
 		for(Poll.Option opt:poll.options){
-			items.add(new PollOptionStatusDisplayItem(parentID, poll, opt, fragment));
+			items.add(new PollOptionStatusDisplayItem(parentID, poll, opt, fragment, status));
 		}
-		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll));
+		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll, status));
 	}
 
 	public enum Type{

@@ -71,4 +71,9 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
         if(!getArguments().getBoolean("noAutoLoad") && !loaded && !dataLoading)
             loadData();
     }
+
+    @Override
+    protected Filter.FilterContext getFilterContext() {
+        return null;
+    }
 }

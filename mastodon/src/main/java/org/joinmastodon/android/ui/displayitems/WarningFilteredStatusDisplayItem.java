@@ -16,6 +16,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.SawtoothTearDrawable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 // Mind the gap!
 public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
@@ -40,7 +41,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
         public final View warningWrap;
         public final Button showBtn;
         public final TextView text;
-        public ArrayList<StatusDisplayItem> filteredItems;
+        public List<StatusDisplayItem> filteredItems;
 
         public Holder(Context context, ViewGroup parent){
             super(context, R.layout.display_item_warning, parent);
