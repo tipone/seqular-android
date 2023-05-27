@@ -6,6 +6,7 @@ import org.joinmastodon.android.model.Status;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -14,6 +15,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 	private final List<Filter> filters;
 	private final Filter.FilterContext context;
 	private final Filter.FilterAction action;
+	private Filter applyingFilter;
 
 	/**
 	 * @param context null makes the predicate pass automatically
@@ -58,18 +60,26 @@ public class StatusFilterPredicate implements Predicate<Status>{
 	public boolean test(Status status){
 		if (context == null) return true;
 
-		Stream<Filter> stream = status.filtered != null
+		Stream<Filter> matchingFilters = status.filtered != null
 				// use server-provided per-status info (status.filtered) if available
 				? status.filtered.stream().map(f -> f.filter)
 				// or fall back to cached filters
 				: filters.stream().filter(filter -> filter.matches(status));
 
-		return stream
+		Optional<Filter> applyingFilter = matchingFilters
 				// discard expired filters
 				.filter(filter -> filter.expiresAt == null || filter.expiresAt.isAfter(Instant.now()))
 				// only apply filters for given context
 				.filter(filter -> filter.context.contains(context))
 				// treating filterAction = null (from filters list) as FilterAction.HIDE
-				.noneMatch(filter -> filter.filterAction == null ? action == Filter.FilterAction.HIDE : filter.filterAction == action);
+				.filter(filter -> filter.filterAction == null ? action == Filter.FilterAction.HIDE : filter.filterAction == action)
+				.findAny();
+
+		this.applyingFilter = applyingFilter.orElse(null);
+		return applyingFilter.isEmpty();
+	}
+
+	public Filter getApplyingFilter() {
+		return applyingFilter;
 	}
 }

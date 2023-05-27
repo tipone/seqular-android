@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 
 import java.util.List;
@@ -15,11 +16,13 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 	public boolean loading;
 	public final Status status;
 	public List<StatusDisplayItem> filteredItems;
+	public Filter applyingFilter;
 
-	public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, List<StatusDisplayItem> filteredItems){
+	public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, List<StatusDisplayItem> filteredItems, Filter applyingFilter){
 		super(parentID, parentFragment);
 		this.status=status;
 		this.filteredItems = filteredItems;
+		this.applyingFilter = applyingFilter;
 	}
 
 	@Override
@@ -41,7 +44,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(WarningFilteredStatusDisplayItem item) {
 			filteredItems = item.filteredItems;
-			text.setText(item.parentFragment.getString(R.string.sk_filtered, item.status.filtered.get(item.status.filtered.size() -1).filter.title));
+			text.setText(item.parentFragment.getString(R.string.sk_filtered, item.applyingFilter.title));
 		}
 
 		@Override

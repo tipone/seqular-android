@@ -95,10 +95,6 @@ public abstract class StatusDisplayItem{
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
 
-		if (!statusForContent.filterRevealed) {
-			statusForContent.filterRevealed = new StatusFilterPredicate(accountID, filterContext, Filter.FilterAction.WARN).test(status);
-		}
-
 		ReblogOrReplyLineStatusDisplayItem replyLine = null;
 		boolean threadReply = statusForContent.inReplyToAccountId != null &&
 				statusForContent.inReplyToAccountId.equals(statusForContent.account.id);
@@ -206,8 +202,15 @@ public abstract class StatusDisplayItem{
 			item.index=i++;
 		}
 
+		Filter applyingFilter = null;
+		if (!statusForContent.filterRevealed) {
+			StatusFilterPredicate predicate = new StatusFilterPredicate(accountID, filterContext, Filter.FilterAction.WARN);
+			statusForContent.filterRevealed = predicate.test(status);
+			applyingFilter = predicate.getApplyingFilter();
+		}
+
 		ArrayList<StatusDisplayItem> result = statusForContent.filterRevealed ? items :
-				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items)));
+				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
 
 		if (addFooter && status.hasGapAfter && !(fragment instanceof ThreadFragment)) {
 			StatusDisplayItem gap = new GapStatusDisplayItem(parentID, fragment);
