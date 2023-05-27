@@ -45,7 +45,7 @@
     <string name="mo_confirm_unfollow">¿Quieres dejar de seguir a %s\?</string>
     <string name="mo_instance_contact">Contacto</string>
     <string name="mo_instance_users">Usuarios</string>
-    <string name="mo_instance_status">Estado</string>
+    <string name="mo_instance_status">Publicaciones</string>
     <string name="mo_instance_registration_open">Abrir</string>
     <string name="mo_instance_registration_approval">Requiere aprobación</string>
     <string name="mo_instance_info_open_timeline">Cronología Local</string>
