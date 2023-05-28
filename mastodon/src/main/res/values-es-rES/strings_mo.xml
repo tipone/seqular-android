@@ -31,13 +31,13 @@
     <string name="mo_duration_minutes_5">5 minutos</string>
     <string name="mo_duration_days_1">1 día</string>
     <string name="mo_duration_days_3">3 días</string>
-    <string name="mo_change_default_reply_visibility_to_unlisted">Cambiar visibilidad por defecto de respuestas a no listada</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Respuestas como \"No listadas\" por defecto</string>
     <string name="mo_duration_days_7">7 días</string>
     <string name="mo_composer_behavior">Comportamiento de Publicación</string>
     <string name="mo_miscellaneous_settings">Ajustes varios</string>
     <string name="mo_share_open_url">Abrir en la aplicación</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Desactivar el doble toque para cambiar de pestaña</string>
-    <string name="mo_swap_bookmark_with_reblog">Usa la acción de rebloguear en vez de la de marcador en las notificaciones</string>
+    <string name="mo_swap_bookmark_with_reblog">Cambia la acción de marcador por impulsar</string>
     <string name="mo_download_latest_nightly_release">Descargar la última versión beta</string>
     <string name="mo_load_remote_followers">Cargar remotamente seguidores y seguidos del perfil</string>
     <string name="mo_mention_reblogger_automatically">Mencionar automáticamente la cuenta que reblogueó el post en las respuestas</string>
@@ -54,4 +54,19 @@
     <string name="mo_severity_suspend">Bloqueado</string>
     <string name="mo_instance_admin">Administrado por</string>
     <string name="mo_instance_registration">Registro</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Doble toque para cambiar entre pestañas</string>
+    <string name="mo_setting_true_black_summary">Puede ahorrar batería en pantallas AMOLED</string>
+    <string name="mo_setting_marquee_summary">Desactiva el desplazamiento del título acortado</string>
+    <string name="mo_setting_uniform_summary">Utiliza el icono de la aplicación para todas las notificaciones</string>
+    <string name="mo_setting_reduced_motion_summary">Desactivar animación de las interacciones</string>
+    <string name="mo_setting_play_gif_summary">Los avatares y emoji se reproducen automáticamente</string>
+    <string name="mo_setting_remote_follower_summary">Mostrar seguidores de otras instancias</string>
+    <string name="mo_setting_default_reply_privacy_summary">Las respuestas no aparecerán en las opciones de descubrimiento</string>
+    <string name="mo_setting_interaction_count_summary">Mostrar cuánta gente ha interactuado con una publicación en la cronología</string>
+    <string name="mo_setting_disable_swipe_summary">Desliza para cambiar la cronología que se muestra</string>
+    <string name="mo_notification_management_settings">Opciones de notificaciones</string>
+    <string name="mo_notification_audience_settings">Ajustes de notificaciones</string>
+    <string name="mo_enable_dividers">Mostrar divisores entre publicaciones</string>
+    <string name="mo_setting_relocate_publish_summary">Mueve el botón de publicación a la barra inferior</string>
+    <string name="mo_swap_bookmark_with_reblog_summary">Añade un marcador o impulsa publicaciones desde la notificación</string>
 </resources>
