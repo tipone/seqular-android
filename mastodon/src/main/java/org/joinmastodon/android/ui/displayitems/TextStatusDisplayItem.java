@@ -65,6 +65,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerEmojiHelper.setText(parsedSpoilerText);
 		}
 		session = AccountSessionManager.getInstance().getAccount(parentFragment.getAccountID());
+		UiUtils.loadMaxWidth(parentFragment.getContext());
 	}
 
 	public void setTranslationShown(boolean translationShown) {
@@ -241,8 +242,19 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				readMore.setVisibility(View.GONE);
 			}
 
+			// incredibly ugly workaround for https://github.com/sk22/megalodon/issues/520
+			// i am so, so sorry. FIXME
+			// attempts to use OnPreDrawListener, OnGlobalLayoutListener and .post have failed -
+			// the view didn't want to reliably update after calling .setVisibility etc :(
+			int width = parent.getWidth() != 0 ? parent.getWidth()
+					: item.parentFragment.getView().getWidth() != 0
+					? item.parentFragment.getView().getWidth()
+					: item.parentFragment.getParentFragment() != null && item.parentFragment.getParentFragment().getView().getWidth() != 0
+					? item.parentFragment.getParentFragment().getView().getWidth() // YIKES
+					: UiUtils.MAX_WIDTH;
+
 			text.measure(
-					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
+					View.MeasureSpec.makeMeasureSpec(width, View.MeasureSpec.EXACTLY),
 					View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED));
 
 			if (GlobalUserPreferences.collapseLongPosts && !item.status.textExpandable) {
