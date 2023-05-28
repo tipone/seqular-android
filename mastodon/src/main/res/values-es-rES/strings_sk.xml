@@ -286,4 +286,5 @@
     <string name="sk_content_type">Tipo de contenido</string>
     <string name="sk_settings_content_types">Activar formato de publicación</string>
     <string name="sk_settings_content_types_explanation">Permite configurar un tipo de contenido como Markdown cuando creas una publicación. Ten en cuenta que no todas las instancias lo permiten.</string>
+    <string name="sk_settings_show_new_posts_button">Botón \"Ver nuevas publicaciones\"</string>
 </resources>
