@@ -30,8 +30,11 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
+import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.ListTimeline;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.DividerItemDecoration;
@@ -164,7 +167,7 @@ public class EditTimelinesFragment extends RecyclerFragment<TimelineDefinition> 
         makeBackItem(listsMenu);
         makeBackItem(hashtagsMenu);
 
-        TimelineDefinition.ALL_TIMELINES.forEach(tl -> addTimelineToOptions(tl, timelinesMenu));
+        TimelineDefinition.getAllTimelines(accountID).forEach(tl -> addTimelineToOptions(tl, timelinesMenu));
         listTimelines.stream().map(TimelineDefinition::ofList).forEach(tl -> addTimelineToOptions(tl, listsMenu));
         hashtags.stream().map(TimelineDefinition::ofHashtag).forEach(tl -> addTimelineToOptions(tl, hashtagsMenu));
 
@@ -190,7 +193,7 @@ public class EditTimelinesFragment extends RecyclerFragment<TimelineDefinition> 
 
     @Override
     protected void doLoadData(int offset, int count){
-        onDataLoaded(GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.DEFAULT_TIMELINES), false);
+        onDataLoaded(GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.getDefaultTimelines(accountID)), false);
         updateOptionsMenu();
     }
 

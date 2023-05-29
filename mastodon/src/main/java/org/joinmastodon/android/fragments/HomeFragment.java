@@ -83,6 +83,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			homeTabFragment=new HomeTabFragment();
 			homeTabFragment.setArguments(args);
 			args=new Bundle(args);
+			Instance instance = AccountSessionManager.getInstance().getAccount(accountID).getInstance();
+			args.putBoolean("isPleroma", instance.isPleroma());
 			args.putBoolean("noAutoLoad", true);
 			searchFragment=new DiscoverFragment();
 			searchFragment.setArguments(args);
@@ -231,6 +233,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if (newFragment instanceof HasFab fabulous) fabulous.showFab();
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
+		if (tab == R.id.tab_search)
+			searchFragment.selectSearch();
 	}
 
 	private void maybeTriggerLoading(Fragment newFragment){
@@ -290,10 +294,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	public void updateNotificationBadge() {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		Instance instance = session.getInstance();
 		if (instance == null) return;
 
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.pleroma != null)
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.isPleroma())
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(List<Notification> notifications) {

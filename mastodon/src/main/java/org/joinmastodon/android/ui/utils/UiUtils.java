@@ -99,6 +99,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -946,7 +947,7 @@ public class UiUtils {
 
 	public static String getInstanceName(String accountID) {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		Instance instance = session.getInstance();
 		return instance != null && !instance.title.isBlank() ? instance.title : session.domain;
 	}
 
@@ -1112,14 +1113,20 @@ public class UiUtils {
 								if (!results.statuses.isEmpty()) {
 									args.putParcelable("status", Parcels.wrap(results.statuses.get(0)));
 									Nav.go((Activity) context, ThreadFragment.class, args);
-								} else if (!results.accounts.isEmpty()) {
-									args.putParcelable("profileAccount", Parcels.wrap(results.accounts.get(0)));
-									Nav.go((Activity) context, ProfileFragment.class, args);
-								} else {
-									if (launchBrowser) launchWebBrowser(context, url);
-									else
-										Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+									return;
 								}
+								Optional<Account> account = results.accounts.stream()
+										.filter(a -> uri.equals(Uri.parse(a.url))).findAny();
+								if (account.isPresent()) {
+									args.putParcelable("profileAccount", Parcels.wrap(account.get()));
+									Nav.go((Activity) context, ProfileFragment.class, args);
+									return;
+								}
+								if (launchBrowser) {
+									launchWebBrowser(context, url);
+									return;
+								}
+								Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
 							}
 
 							@Override

@@ -86,6 +86,8 @@ public class Instance extends BaseModel{
 
 	public Pleroma pleroma;
 
+	public PleromaPollLimits pollLimits;
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
@@ -132,6 +134,10 @@ public class Instance extends BaseModel{
 		if(stats!=null)
 			ci.totalUsers=stats.userCount;
 		return ci;
+	}
+
+	public boolean isPleroma() {
+		return pleroma != null;
 	}
 
 	@Parcel
@@ -198,6 +204,28 @@ public class Instance extends BaseModel{
 
 	@Parcel
 	public static class Pleroma extends BaseModel {
-		// metadata etc
+		public Pleroma.Metadata metadata;
+
+		@Parcel
+		public static class Metadata {
+			public List<String> features;
+			public Pleroma.Metadata.FieldsLimits fieldsLimits;
+
+			@Parcel
+			public static class FieldsLimits {
+				public int maxFields;
+				public int maxRemoteFields;
+				public int nameLength;
+				public int valueLength;
+			}
+		}
+	}
+
+	@Parcel
+	public static class PleromaPollLimits {
+		public int maxExpiration;
+		public int maxOptionChars;
+		public int maxOptions;
+		public int minExpiration;
 	}
 }
