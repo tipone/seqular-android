@@ -634,9 +634,9 @@ public class UiUtils {
 		if (relationship.blocking) {
 			button.setText(R.string.button_blocked);
 			secondaryStyle = true;
-		} else if (relationship.blockedBy) {
-			button.setText(R.string.button_follow);
-			secondaryStyle = false;
+//		} else if (relationship.blockedBy) {
+//			button.setText(R.string.button_follow);
+//			secondaryStyle = false;
 		} else if (relationship.requested) {
 			button.setText(R.string.button_follow_pending);
 			secondaryStyle = true;
@@ -650,7 +650,8 @@ public class UiUtils {
 
 		if (keepText) button.setText(textBefore);
 
-		button.setEnabled(!relationship.blockedBy);
+//		https://github.com/sk22/megalodon/issues/526
+//		button.setEnabled(!relationship.blockedBy);
 		int attr = secondaryStyle ? R.attr.secondaryButtonStyle : android.R.attr.buttonStyle;
 		TypedArray ta = button.getContext().obtainStyledAttributes(new int[]{attr});
 		int styleRes = ta.getResourceId(0, 0);
