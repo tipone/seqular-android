@@ -275,4 +275,15 @@
     <string name="sk_settings_confirm_before_reblog">Confirma antes de impulsar</string>
     <string name="sk_reacted_with">Redactado con %s</string>
     <string name="sk_reacted">redactado</string>
+    <string name="sk_content_type_unspecified">Non especificado</string>
+    <string name="sk_content_type_plain">Texto plano</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Activar o formato de publicacións</string>
+    <string name="sk_settings_default_content_type">Tipo de contido por defecto</string>
+    <string name="sk_settings_default_content_type_explanation">Isto permítelle ter un tipo de contido preseleccionado á hora de crear novas publicacións, sobrescribindo o valor establecido en \"Publicar preferencias\".</string>
+    <string name="sk_content_type">Tipo de contido</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_settings_content_types_explanation">Permite configurar un tipo de contido como Markdown ao crear unha publicación. Teña en conta que non tódalas instancias soportan isto.</string>
 </resources>
