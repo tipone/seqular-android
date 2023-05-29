@@ -458,10 +458,6 @@ public class AccountSessionManager{
 		return instances.get(domain);
 	}
 
-	public Instance getInstanceInfoForAccount(String account) {
-		return AccountSessionManager.getInstance().getInstanceInfo(instance.getAccount(account).domain);
-	}
-
 	public void updateAccountInfo(String id, Account account){
 		AccountSession session=getAccount(id);
 		session.self=account;
