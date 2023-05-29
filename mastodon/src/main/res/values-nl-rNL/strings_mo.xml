@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_hide_compose_button_while_scrolling_setting">Verberg bericht knop tijdens scrollen</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Verberg \"nieuw bericht\" knop tijdens scrollen</string>
     <string name="mo_personal_note">Voeg een notitie toe over dit profiel</string>
     <string name="mo_personal_note_confirm">Bevestig de wijzigingen aan de notitie</string>
     <string name="mo_personal_note_update_failed">Notitie bewaren mislukt</string>
@@ -29,13 +29,23 @@
     <string name="mo_duration_hours_1">1 uur</string>
     <string name="mo_duration_days_7">7 dagen</string>
     <string name="mo_miscellaneous_settings">Diverse instellingen</string>
-    <string name="mo_swap_bookmark_with_reblog">Gebruik reblog actie in plaats van bookmark actie bij notificaties</string>
+    <string name="mo_swap_bookmark_with_reblog">Gebruik reblog in plaats van bookmark</string>
     <string name="mo_notification_action_replied">Succesvol gereageerd op het bericht door %s</string>
     <string name="mo_load_remote_followers">Laad remote profiel follows en volgers</string>
     <string name="mo_download_latest_nightly_release">Download nieuwste nightly versie</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Uitschakelen dubbele tik om te vegen tussen tabs</string>
     <string name="mo_fab_compose">Samenstellen</string>
-    <string name="mo_change_default_reply_visibility_to_unlisted">Verander standaard zichtbaarheid reactie naar unlisted</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Reageer standaard met zichtbaarheid \"unlisted\"</string>
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_add_custom_server_local_timeline">Toevoegen lokale tijdlijn van een aangepaste server</string>
+    <string name="mo_confirm_unfollow_title">Ontvolg account</string>
+    <string name="mo_notification_management_settings">Beheer meldingen</string>
+    <string name="mo_setting_true_black_summary">Kan batterij beparen bij AMOLED scherm</string>
+    <string name="mo_confirm_unfollow">Bevestig ontvolgen van %s</string>
+    <string name="mo_setting_play_gif_summary">Autoplay GIFs in avatars en emoji</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Dubbeltikken om te swipen tussen tabs</string>
+    <string name="mo_enable_dividers">Toon lijnen tussen berichten</string>
+    <string name="mo_notification_audience_settings">Doelgroep van meldingen</string>
+    <string name="mo_setting_uniform_summary">Gebruik het icon van de app voor alle meldingen</string>
+    <string name="mo_swap_bookmark_with_reblog_summary">Bookmark of reblog vanuit de melding</string>
 </resources>
