@@ -110,6 +110,12 @@ public class AccountSessionManager{
 		sessions.put(session.getID(), session);
 		lastActiveAccountID=session.getID();
 		writeAccountsFile();
+
+		// write initial instance info to file immediately to avoid sessions without instance info
+		InstanceInfoStorageWrapper wrapper = new InstanceInfoStorageWrapper();
+		wrapper.instance = instance;
+		MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, instance.uri));
+
 		updateMoreInstanceInfo(instance, instance.uri);
 		if(PushSubscriptionManager.arePushNotificationsAvailable()){
 			session.getPushSubscriptionManager().registerAccountForPush(null);

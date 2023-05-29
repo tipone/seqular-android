@@ -52,6 +52,12 @@ public class MainActivity extends FragmentStackActivity{
 				}else{
 					session=AccountSessionManager.getInstance().getLastActiveAccount();
 				}
+				if (session.getInstance() == null) {
+					// i don't know how, but i ended up having a session, but no instance info.
+					// removing account to avoid glitched behavior and crashes
+					AccountSessionManager.getInstance().removeAccount(session.getID());
+					session=AccountSessionManager.getInstance().getLastActiveAccount();
+				}
 				args.putString("account", session.getID());
 				Fragment fragment=session.activated ? new HomeFragment() : new AccountActivationFragment();
 				fragment.setArguments(args);
