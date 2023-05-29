@@ -273,7 +273,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		searchBack.setEnabled(false);
 		searchBack.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 		getActivity().getSystemService(InputMethodManager.class).hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
-		if (getArguments().getBoolean("isPleroma"))
+		if (getArguments().getBoolean("disableDiscover"))
 			((HomeFragment) getParentFragment()).onBackPressed();
 	}
 
