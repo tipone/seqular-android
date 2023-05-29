@@ -77,6 +77,16 @@ public class GlobalUserPreferences{
 		catch (JsonSyntaxException ignored) { return orElse; }
 	}
 
+	public static void removeAccount(String accountId) {
+		recentLanguages.remove(accountId);
+		pinnedTimelines.remove(accountId);
+		accountsInGlitchMode.remove(accountId);
+		accountsWithLocalOnlySupport.remove(accountId);
+		accountsWithContentTypesEnabled.remove(accountId);
+		accountsDefaultContentTypes.remove(accountId);
+		save();
+	}
+
 	public static void load(){
 		SharedPreferences prefs=getPrefs();
 		playGifs=prefs.getBoolean("playGifs", true);
@@ -186,4 +196,3 @@ public class GlobalUserPreferences{
 		DARK
 	}
 }
-
