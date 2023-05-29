@@ -131,6 +131,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		super.onViewCreated(view, savedInstanceState);
 		this.view = view;
 		hideToolbar();
+		setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
 	}
 
 	protected void hideToolbar() {
