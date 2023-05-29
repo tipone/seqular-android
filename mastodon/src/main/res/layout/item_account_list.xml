@@ -29,10 +29,10 @@
 	<TextView
 		android:id="@+id/name"
 		android:layout_width="match_parent"
-		android:layout_height="24sp"
+		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/avatar"
 		android:layout_toStartOf="@id/button"
-		android:layout_marginTop="2sp"
+		android:layout_above="@+id/username"
 		android:singleLine="true"
 		android:ellipsize="end"
 		android:gravity="center_vertical"
@@ -40,16 +40,16 @@
 		tools:text="User"/>
 
 	<TextView
-		android:id="@+id/username"
+		android:id="@id/username"
 		android:layout_width="match_parent"
-		android:layout_height="20sp"
-		android:layout_below="@id/name"
+		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/avatar"
 		android:layout_toStartOf="@id/button"
+		android:layout_alignBottom="@id/avatar"
 		android:singleLine="true"
 		android:ellipsize="end"
-		android:gravity="center_vertical"
 		android:textAppearance="@style/m3_title_small"
+		android:paddingBottom="3sp"
 		tools:text="\@user@server"/>
 
 	<View
