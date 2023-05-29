@@ -463,7 +463,12 @@ public class AccountSessionManager{
 	}
 
 	public Instance getInstanceInfo(String domain){
-		return instances.get(domain);
+		Instance instance = instances.get(domain);
+		if (instance == null) {
+			throw new IllegalStateException("Cannot get instance for " + domain + ". Sessions: "
+					+ String.join(", ", instances.keySet()));
+		}
+		return instance;
 	}
 
 	public void updateAccountInfo(String id, Account account){
