@@ -275,4 +275,15 @@
     <string name="sk_settings_confirm_before_reblog">Підтверджувати поширення</string>
     <string name="sk_reacted">реагує</string>
     <string name="sk_reacted_with">реагує з %s</string>
+    <string name="sk_content_type_unspecified">Не визначено</string>
+    <string name="sk_content_type_plain">Звичайний текст</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Увімкнути форматування допису</string>
+    <string name="sk_settings_default_content_type">Типовий тип вмісту</string>
+    <string name="sk_content_type">Тип вмісту</string>
+    <string name="sk_settings_default_content_type_explanation">Це дозволяє вам попередньо вибрати тип вмісту під час написання нових дописів, замінивши значення, встановлене в «Налаштуваннях постингу».</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_settings_content_types_explanation">Дозволяє налаштувати тип вмісту, наприклад, Markdown, під час написання допису. Зауважте, що не всі сервери підтримують цю функцію.</string>
 </resources>

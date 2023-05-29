@@ -276,4 +276,15 @@
     <string name="sk_settings_confirm_before_reblog">Confirmer avant de booster</string>
     <string name="sk_reacted">a réagi</string>
     <string name="sk_reacted_with">a réagi avec %s</string>
+    <string name="sk_content_type">Type de contenu</string>
+    <string name="sk_content_type_plain">Texte brut</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Activer la mise en forme du message</string>
+    <string name="sk_settings_default_content_type_explanation">Cela vous permet de présélectionner un type de contenu lors de la création de nouveaux messages, en remplaçant la valeur définie dans \"Préférences de publication\".</string>
+    <string name="sk_content_type_unspecified">Non spécifié</string>
+    <string name="sk_settings_content_types_explanation">Permet de définir un type de contenu comme Markdown lors de la création d\'un message. Gardez à l\'esprit que toutes les instances ne le prennent pas en charge.</string>
+    <string name="sk_settings_default_content_type">Type de contenu par défaut</string>
 </resources>
