@@ -125,14 +125,16 @@ public class AccountSessionManager{
 	}
 
 	public synchronized void writeAccountsFile(){
-		File file=new File(MastodonApp.context.getFilesDir(), "accounts.json");
+		File tmpFile = new File(MastodonApp.context.getFilesDir(), "accounts.json~");
+		File file = new File(MastodonApp.context.getFilesDir(), "accounts.json");
 		try{
-			try(FileOutputStream out=new FileOutputStream(file)){
+			try(FileOutputStream out=new FileOutputStream(tmpFile)){
 				SessionsStorageWrapper w=new SessionsStorageWrapper();
 				w.accounts=new ArrayList<>(sessions.values());
 				OutputStreamWriter writer=new OutputStreamWriter(out, StandardCharsets.UTF_8);
 				MastodonAPIController.gson.toJson(w, writer);
 				writer.flush();
+				if (!tmpFile.renameTo(file)) Log.e(TAG, "Error renaming " + tmpFile.getPath() + " to " + file.getPath());
 			}
 		}catch(IOException x){
 			Log.e(TAG, "Error writing accounts file", x);
@@ -275,7 +277,7 @@ public class AccountSessionManager{
 	}
 
 	private void maybeUpdateCustomEmojis(Set<String> domains){
-		long now=System.currentTimeMillis();
+//		long now=System.currentTimeMillis();
 		for(String domain:domains){
 //			Long lastUpdated=instancesLastUpdated.get(domain);
 //			if(lastUpdated==null || now-lastUpdated>24L*3600_000L){
@@ -408,7 +410,9 @@ public class AccountSessionManager{
 
 					@Override
 					public void onError(ErrorResponse error){
-
+						InstanceInfoStorageWrapper wrapper=new InstanceInfoStorageWrapper();
+						wrapper.instance = instance;
+						MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, domain));
 					}
 				})
 				.execNoAuth(domain);
@@ -419,10 +423,13 @@ public class AccountSessionManager{
 	}
 
 	private void writeInstanceInfoFile(InstanceInfoStorageWrapper emojis, String domain){
-		try(FileOutputStream out=new FileOutputStream(getInstanceInfoFile(domain))){
+		File file = getInstanceInfoFile(domain);
+		File tmpFile = new File(file.getPath() + "~");
+		try(FileOutputStream out=new FileOutputStream(tmpFile)){
 			OutputStreamWriter writer=new OutputStreamWriter(out, StandardCharsets.UTF_8);
 			MastodonAPIController.gson.toJson(emojis, writer);
 			writer.flush();
+			if (!tmpFile.renameTo(file)) Log.e(TAG, "Error renaming " + tmpFile.getPath() + " to " + file.getPath());
 		}catch(IOException x){
 			Log.w(TAG, "Error writing instance info file for "+domain, x);
 		}
@@ -463,12 +470,7 @@ public class AccountSessionManager{
 	}
 
 	public Instance getInstanceInfo(String domain){
-		Instance instance = instances.get(domain);
-		if (instance == null) {
-			throw new IllegalStateException("Cannot get instance for " + domain + ". Sessions: "
-					+ String.join(", ", instances.keySet()));
-		}
-		return instance;
+		return instances.get(domain);
 	}
 
 	public void updateAccountInfo(String id, Account account){
