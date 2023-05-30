@@ -35,6 +35,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
@@ -74,8 +75,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		E.register(this);
 		accountID=getArguments().getString("account");
 		setTitle(R.string.sk_app_name);
-		Instance instance = AccountSessionManager.getInstance().getAccount(accountID).getInstance();
-		isPleroma = instance.isPleroma();
+		isPleroma = AccountSessionManager.getInstance().getAccount(accountID).getInstance()
+				.map(Instance::isPleroma)
+				.orElse(false);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
@@ -296,10 +298,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	public void updateNotificationBadge() {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = session.getInstance();
-		if (instance == null) return;
+		Optional<Instance> instance = session.getInstance();
+		if (instance.isEmpty()) return; // avoiding incompatibility with akkoma
 
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.isPleroma())
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.get().isPleroma())
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(List<Notification> notifications) {

@@ -15,6 +15,7 @@ import org.joinmastodon.android.model.Token;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AccountSession{
 	public Token token;
@@ -89,7 +90,7 @@ public class AccountSession{
 		return pushSubscriptionManager;
 	}
 
-	public Instance getInstance() {
-		return AccountSessionManager.getInstance().getInstanceInfo(domain);
+	public Optional<Instance> getInstance() {
+		return Optional.ofNullable(AccountSessionManager.getInstance().getInstanceInfo(domain));
 	}
 }

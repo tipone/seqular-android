@@ -184,7 +184,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				loadRelationship();
 			else {
 				Instance instance = AccountSessionManager.getInstance().getInstanceInfo(domain);
-				if (instance.isPleroma()) {
+				if (instance != null && instance.isPleroma()) {
 					maxFields = instance.pleroma.metadata.fieldsLimits.maxFields;
 				}
 			}

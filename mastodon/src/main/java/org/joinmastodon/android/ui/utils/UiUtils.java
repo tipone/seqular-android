@@ -948,8 +948,8 @@ public class UiUtils {
 
 	public static String getInstanceName(String accountID) {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = session.getInstance();
-		return instance != null && !instance.title.isBlank() ? instance.title : session.domain;
+		Optional<Instance> instance = session.getInstance();
+		return instance.isPresent() && !instance.get().title.isBlank() ? instance.get().title : session.domain;
 	}
 
 	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {

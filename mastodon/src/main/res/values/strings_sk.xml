@@ -288,4 +288,5 @@
     <string name="sk_settings_content_types_explanation">Allows setting a content type like Markdown when creating a post. Keep in mind that not all instances support this.</string>
     <string name="sk_settings_default_content_type">Default content type</string>
     <string name="sk_settings_default_content_type_explanation">This lets you have a content type be pre-selected when creating new posts, overriding the value set in “Posting preferences”.</string>
+    <string name="sk_instance_info_unavailable">Instance info temporarily unavailable</string>
 </resources>
