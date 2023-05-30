@@ -25,6 +25,10 @@ public class FederatedTimelineFragment extends StatusListFragment {
 		return true;
 	}
 
+	@Override
+	public String getDomain() {
+		return super.getDomain() + "/public";
+	}
 
 	@Override
 	protected void doLoadData(int offset, int count){

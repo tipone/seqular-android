@@ -41,6 +41,11 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	@Override
+	public String getDomain() {
+		return super.getDomain() + "/home";
+	}
+
+	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		if (getParentFragment() instanceof HomeTabFragment home) parent = home;

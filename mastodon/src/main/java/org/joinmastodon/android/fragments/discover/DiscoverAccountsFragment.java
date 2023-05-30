@@ -15,6 +15,7 @@ import android.widget.TextView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetFollowSuggestions;
+import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.RecyclerFragment;
@@ -49,13 +50,18 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class DiscoverAccountsFragment extends RecyclerFragment<DiscoverAccountsFragment.AccountWrapper> implements ScrollableToTop, IsOnTop {
+public class DiscoverAccountsFragment extends RecyclerFragment<DiscoverAccountsFragment.AccountWrapper> implements ScrollableToTop, IsOnTop, DomainDisplay {
 	private String accountID;
 	private Map<String, Relationship> relationships=Collections.emptyMap();
 	private GetAccountRelationships relationshipsRequest;
 
 	public DiscoverAccountsFragment(){
 		super(20);
+	}
+
+	@Override
+	public String getDomain() {
+		return DomainDisplay.super.getDomain() + "/explore/suggestions";
 	}
 
 	@Override

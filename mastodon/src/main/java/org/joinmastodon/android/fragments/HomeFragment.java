@@ -16,6 +16,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.notifications.GetNotifications;
@@ -180,6 +181,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Override
 	public void onHiddenChanged(boolean hidden){
 		super.onHiddenChanged(hidden);
+		if (!hidden && fragmentForTab(currentTab) instanceof  DomainDisplay display)
+			DomainManager.getInstance().setCurrentDomain(display.getDomain());
 		fragmentForTab(currentTab).onHiddenChanged(hidden);
 	}
 
@@ -237,6 +240,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
 		if (tab == R.id.tab_search && isPleroma) searchFragment.selectSearch();
+
+		if (newFragment instanceof DomainDisplay display) {
+			DomainManager.getInstance().setCurrentDomain(display.getDomain());
+		}
 	}
 
 	private void maybeTriggerLoading(Fragment newFragment){

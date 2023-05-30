@@ -68,7 +68,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, DomainDisplay{
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;

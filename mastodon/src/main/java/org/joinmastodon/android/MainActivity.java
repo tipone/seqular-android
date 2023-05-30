@@ -2,8 +2,10 @@ package org.joinmastodon.android;
 
 import android.Manifest;
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -94,6 +96,7 @@ public class MainActivity extends FragmentStackActivity{
 				Fragment fragment=new HomeFragment();
 				fragment.setArguments(args);
 				showFragmentClearingBackStack(fragment);
+				DomainManager.getInstance().setCurrentDomain(accountSession.domain);
 			}
 		}else if(intent.getBooleanExtra("compose", false)){
 			showCompose();
@@ -167,4 +170,12 @@ public class MainActivity extends FragmentStackActivity{
 			super.onBackPressed();
 		}
 	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent outContent) {
+		super.onProvideAssistContent(outContent);
+
+		outContent.setWebUri(Uri.parse(DomainManager.getInstance().getCurrentDomain()));
+	}
+
 }

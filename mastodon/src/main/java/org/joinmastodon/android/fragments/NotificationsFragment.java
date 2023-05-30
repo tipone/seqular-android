@@ -13,6 +13,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.squareup.otto.Subscribe;
+
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
@@ -25,19 +31,13 @@ import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.squareup.otto.Subscribe;
-
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.V;
 
-public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop{
+public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, DomainDisplay {
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -47,6 +47,11 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private NotificationsListFragment allNotificationsFragment, mentionsFragment;
 
 	private String accountID;
+
+	@Override
+	public String getDomain() {
+		return DomainDisplay.super.getDomain() + "/notifications";
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){

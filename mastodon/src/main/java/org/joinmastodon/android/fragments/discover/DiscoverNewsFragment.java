@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.trends.GetTrendingLinks;
+import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.ScrollableToTop;
@@ -35,13 +36,18 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class DiscoverNewsFragment extends RecyclerFragment<Card> implements ScrollableToTop, IsOnTop {
+public class DiscoverNewsFragment extends RecyclerFragment<Card> implements ScrollableToTop, IsOnTop, DomainDisplay {
 	private String accountID;
 	private List<ImageLoaderRequest> imageRequests=Collections.emptyList();
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.TRENDING_LINKS);
 
 	public DiscoverNewsFragment(){
 		super(10);
+	}
+
+	@Override
+	public String getDomain() {
+		return DomainDisplay.super.getDomain() + "/explore/links";
 	}
 
 	@Override

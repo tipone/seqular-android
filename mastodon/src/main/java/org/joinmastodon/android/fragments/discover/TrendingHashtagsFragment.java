@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.trends.GetTrendingHashtags;
+import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.ScrollableToTop;
@@ -27,7 +28,7 @@ import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class TrendingHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop, IsOnTop {
+public class TrendingHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop, IsOnTop, DomainDisplay {
 	private String accountID;
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.TRENDING_HASHTAGS);
 
@@ -39,6 +40,11 @@ public class TrendingHashtagsFragment extends RecyclerFragment<Hashtag> implemen
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
+	}
+
+	@Override
+	public String getDomain() {
+		return DomainDisplay.super.getDomain() + "/explore/tags";
 	}
 
 	@Override

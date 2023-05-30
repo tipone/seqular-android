@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 
-public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
+public abstract class StatusListFragment extends BaseStatusListFragment<Status> implements DomainDisplay{
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){

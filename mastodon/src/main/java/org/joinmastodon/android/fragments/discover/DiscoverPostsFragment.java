@@ -20,6 +20,12 @@ public class DiscoverPostsFragment extends StatusListFragment implements IsOnTop
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.TRENDING_POSTS);
 
 	@Override
+	public String getDomain() {
+		return super.getDomain() + "/explore/posts";
+	}
+
+
+	@Override
 	protected void doLoadData(int offset, int count){
 		currentRequest=new GetTrendingStatuses(offset, count)
 				.setCallback(new SimpleCallback<>(this){

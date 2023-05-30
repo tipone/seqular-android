@@ -3,6 +3,7 @@ package org.joinmastodon.android.fragments;
 import android.os.Bundle;
 import android.view.View;
 
+import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -29,8 +30,13 @@ import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
-public class ThreadFragment extends StatusListFragment{
+public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 	protected Status mainStatus;
+
+	@Override
+	public String getDomain() {
+		return mainStatus.url;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -42,6 +48,7 @@ public class ThreadFragment extends StatusListFragment{
 		data.add(mainStatus);
 		onAppendItems(Collections.singletonList(mainStatus));
 		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.displayName), mainStatus.account.emojis));
+		DomainManager.getInstance().setCurrentDomain(getDomain());
 	}
 
 	@Override
