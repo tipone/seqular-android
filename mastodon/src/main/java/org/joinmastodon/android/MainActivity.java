@@ -39,6 +39,10 @@ public class MainActivity extends FragmentStackActivity{
 				AccountSession session;
 				Bundle args=new Bundle();
 				Intent intent=getIntent();
+				if(intent.hasExtra("fromExternalShare")) {
+					showFragmentForExternalShare(intent.getExtras());
+					return;
+				}
 				boolean fromNotification = intent.getBooleanExtra("fromNotification", false);
 				boolean hasNotification = intent.hasExtra("notification");
 				if(fromNotification){
@@ -75,7 +79,8 @@ public class MainActivity extends FragmentStackActivity{
 	@Override
 	protected void onNewIntent(Intent intent){
 		super.onNewIntent(intent);
-		if(intent.getBooleanExtra("fromNotification", false)){
+		if(intent.hasExtra("fromExternalShare")) showFragmentForExternalShare(intent.getExtras());
+		else if(intent.getBooleanExtra("fromNotification", false)){
 			String accountID=intent.getStringExtra("accountID");
 			AccountSession accountSession;
 			try{
@@ -124,6 +129,19 @@ public class MainActivity extends FragmentStackActivity{
 		showFragment(fragment);
 	}
 
+	private void showFragmentForExternalShare(Bundle args) {
+		String clazz = args.getString("fromExternalShare");
+		Fragment fragment = switch (clazz) {
+			case "ThreadFragment" -> new ThreadFragment();
+			case "ProfileFragment" -> new ProfileFragment();
+			default -> null;
+		};
+		if (fragment == null) return;
+		args.putBoolean("_can_go_back", true);
+		fragment.setArguments(args);
+		showFragment(fragment);
+	}
+
 	private void showCompose(){
 		AccountSession session=AccountSessionManager.getInstance().getLastActiveAccount();
 		if(session==null || !session.activated)
@@ -153,18 +171,23 @@ public class MainActivity extends FragmentStackActivity{
 				(fragmentContainers.get(fragmentContainers.size() - 1)).getId()
 		);
 		Bundle currentArgs = currentFragment.getArguments();
-		if (this.fragmentContainers.size() == 1
-				&& currentArgs != null
-				&& currentArgs.getBoolean("_can_go_back", false)
-				&& currentArgs.containsKey("account")) {
+		if (fragmentContainers.size() != 1
+				|| currentArgs == null
+				|| !currentArgs.getBoolean("_can_go_back", false)) {
+			super.onBackPressed();
+			return;
+		}
+		if (currentArgs.getBoolean("_finish_on_back", false)) {
+			finish();
+		} else if (currentArgs.containsKey("account")) {
 			Bundle args = new Bundle();
 			args.putString("account", currentArgs.getString("account"));
-			args.putString("tab", "notifications");
+			if (getIntent().getBooleanExtra("fromNotification", false)) {
+				args.putString("tab", "notifications");
+			}
 			Fragment fragment=new HomeFragment();
 			fragment.setArguments(args);
 			showFragmentClearingBackStack(fragment);
-		} else {
-			super.onBackPressed();
 		}
 	}
 }
