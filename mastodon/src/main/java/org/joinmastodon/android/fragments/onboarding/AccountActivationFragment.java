@@ -90,13 +90,6 @@ public class AccountActivationFragment extends ToolbarFragment{
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState){
-		super.onViewCreated(view, savedInstanceState);
-		setStatusBarColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
-		view.setBackgroundColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
-	}
-
-	@Override
 	protected void onUpdateToolbar(){
 		super.onUpdateToolbar();
 		getToolbar().setBackground(null);
@@ -110,10 +103,7 @@ public class AccountActivationFragment extends ToolbarFragment{
 
 	@Override
 	public void onToolbarNavigationClick(){
-		new AccountSwitcherSheet(getActivity(), true, true, false, accountSession -> {
-			getActivity().finish();
-			getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-		}).show();
+		new AccountSwitcherSheet(getActivity(), null).show();
 	}
 
 	@Override
