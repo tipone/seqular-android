@@ -326,11 +326,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.sk_settings_auth, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit"), R.drawable.ic_fluent_open_24_regular));
 
 		items.add(new HeaderItem(instanceName));
-		items.add(new TextItem(R.string.sk_settings_rules, ()->{
-			Bundle args=new Bundle();
-			args.putParcelable("instance", Parcels.wrap(instance));
+		items.add(new TextItem(R.string.sk_settings_rules, instance.<Runnable>map(i -> () -> {
+			Bundle args = new Bundle();
+			args.putParcelable("instance", Parcels.wrap(i));
 			Nav.go(getActivity(), InstanceRulesFragment.class, args);
-		}, R.drawable.ic_fluent_task_list_ltr_24_regular));
+		}).orElse(null), R.drawable.ic_fluent_task_list_ltr_24_regular));
 		items.add(new TextItem(R.string.sk_settings_about_instance	, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/about"), R.drawable.ic_fluent_info_24_regular));
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
