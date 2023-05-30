@@ -67,6 +67,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected boolean needAppRestart;
 	private Instance instance;
 	private String instanceName;
+	protected String title;
 
 	protected NotificationPolicyItem notificationPolicyItem;
 
@@ -93,27 +94,47 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
 
 		addItems(items);
-		String title = getArguments().getString("title", getTitle().toString());
+		title = getArguments().getString("title", getTitle().toString());
 		items.add(0, new GiantHeaderItem(title));
 	}
 
 	@Override
-	public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
-		list=new UsableRecyclerView(getActivity());
+	public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+		list = new UsableRecyclerView(getActivity());
 		list.setLayoutManager(new LinearLayoutManager(getActivity()));
 		list.setAdapter(new SettingsAdapter());
 		list.setBackgroundColor(UiUtils.getThemeColor(getActivity(), android.R.attr.windowBackground));
 		list.setPadding(0, V.dp(16), 0, V.dp(12));
 		list.setClipToPadding(false);
-		list.addItemDecoration(new RecyclerView.ItemDecoration(){
+		list.addItemDecoration(new RecyclerView.ItemDecoration() {
 			@Override
-			public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state){
+			public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state) {
 				// Add 32dp gaps between sections
-				RecyclerView.ViewHolder holder=parent.getChildViewHolder(view);
-				if((holder instanceof HeaderViewHolder || holder instanceof FooterViewHolder) && holder.getAbsoluteAdapterPosition()>1)
-					outRect.top=V.dp(32);
+				RecyclerView.ViewHolder holder = parent.getChildViewHolder(view);
+				if ((holder instanceof HeaderViewHolder || holder instanceof FooterViewHolder) && holder.getAbsoluteAdapterPosition() > 1)
+					outRect.top = V.dp(32);
 			}
 		});
+
+		//TODO do this the same way as the profile toolbar
+		list.addOnScrollListener(new RecyclerView.OnScrollListener() {
+			@Override
+			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+				LinearLayoutManager linearLayoutManager = (LinearLayoutManager) list.getLayoutManager();
+				if (linearLayoutManager != null && linearLayoutManager.findFirstVisibleItemPosition() > 0) {
+					setTitle(title);
+					if(!title.isEmpty()){
+						getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
+						setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
+					}
+				} else {
+					setTitle("");
+					getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
+					setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
+				}
+			}
+		});
+
 		return list;
 	}
 
