@@ -40,6 +40,7 @@ public class MainActivity extends FragmentStackActivity{
 				Bundle args=new Bundle();
 				Intent intent=getIntent();
 				if(intent.hasExtra("fromExternalShare")) {
+					AccountSessionManager.getInstance().setLastActiveAccountID(intent.getStringExtra("account"));
 					showFragmentForExternalShare(intent.getExtras());
 					return;
 				}

@@ -40,7 +40,6 @@ public class ExternalShareActivity extends FragmentStackActivity{
 				openComposeFragment(sessions.get(0).getID());
 			}else{
 				new AccountSwitcherSheet(this, null, true, isMastodonURL, (accountId, open) -> {
-					AccountSessionManager.getInstance().setLastActiveAccountID(accountId);
 					if (open) {
 						UiUtils.lookupURL(this, accountId, text, false, (clazz, args) -> {
 							if (clazz == null) {
