@@ -194,7 +194,15 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 	private void onLoggedOut(String accountID){
 		AccountSessionManager.getInstance().removeAccount(accountID);
-		dismiss();
+		String activeAccountID = fragment != null
+				? fragment.getAccountID()
+				: AccountSessionManager.getInstance().getLastActiveAccountID();
+		if (accountID.equals(activeAccountID)) {
+			activity.finish();
+			activity.startActivity(new Intent(activity, MainActivity.class));
+		} else {
+			dismiss();
+		}
 	}
 
 	@Override
