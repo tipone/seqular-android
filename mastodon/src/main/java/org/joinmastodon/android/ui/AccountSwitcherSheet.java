@@ -279,10 +279,15 @@ public class AccountSwitcherSheet extends BottomSheet{
 		public void onBind(AccountSession item){
 			name.setText(item.self.displayName);
 			username.setText(item.getFullUsername());
-			view.setChecked(AccountSessionManager.getInstance().getLastActiveAccountID().equals(item.getID()));
 			radioButton.setVisibility(externalShare ? View.GONE : View.VISIBLE);
 			extraBtnWrap.setVisibility(externalShare && openInApp ? View.VISIBLE : View.GONE);
 			if (externalShare) view.setCheckable(false);
+			else {
+				String accountId = fragment != null
+						? fragment.getAccountID()
+						: AccountSessionManager.getInstance().getLastActiveAccountID();
+				view.setChecked(accountId.equals(item.getID()));
+			}
 		}
 
 		@Override
