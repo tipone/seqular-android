@@ -20,12 +20,11 @@
 		tools:ignore="RtlSymmetry" />
 
 	<TextView
+		style="@style/sheet_title"
 		android:id="@+id/title"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:text="@string/sk_external_share_or_open_title"
-		android:textAppearance="@style/alert_title"
-		android:textColor="?colorM3OnSurface"
-		android:gravity="center_vertical" />
+		android:textColor="?colorM3OnSurface" />
 
 </LinearLayout>

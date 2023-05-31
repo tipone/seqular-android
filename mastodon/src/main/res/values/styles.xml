@@ -458,6 +458,11 @@
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
+	<style name="sheet_title">
+		<item name="android:textSize">20sp</item>
+		<item name="android:gravity">center_vertical</item>
+	</style>
+
 	<style name="m3_body_large">
 		<item name="android:textSize">16sp</item>
 		<item name="android:textColor">?android:textColorPrimary</item>
