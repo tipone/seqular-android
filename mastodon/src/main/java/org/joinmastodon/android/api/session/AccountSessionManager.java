@@ -258,31 +258,35 @@ public class AccountSessionManager{
 	}
 
 	public void maybeUpdateLocalInfo(){
+		maybeUpdateLocalInfo(null);
+	}
+
+	public void maybeUpdateLocalInfo(AccountSession activeSession){
 		long now=System.currentTimeMillis();
 		HashSet<String> domains=new HashSet<>();
 		for(AccountSession session:sessions.values()){
 			domains.add(session.domain.toLowerCase());
-//			if(now-session.infoLastUpdated>24L*3600_000L){
-			updateSessionPreferences(session);
-			updateSessionLocalInfo(session);
-//			}
-//			if(now-session.filtersLastUpdated>3600_000L){
-			updateSessionWordFilters(session);
-//			}
+			if(now-session.infoLastUpdated>24L*3600_000L || session == activeSession){
+				updateSessionPreferences(session);
+				updateSessionLocalInfo(session);
+			}
+			if(now-session.filtersLastUpdated>3600_000L || session == activeSession){
+				updateSessionWordFilters(session);
+			}
 			updateSessionMarkers(session);
 		}
 		if(loadedInstances){
-			maybeUpdateCustomEmojis(domains);
+			maybeUpdateCustomEmojis(domains, activeSession != null ? activeSession.domain : null);
 		}
 	}
 
-	private void maybeUpdateCustomEmojis(Set<String> domains){
-//		long now=System.currentTimeMillis();
+	private void maybeUpdateCustomEmojis(Set<String> domains, String activeDomain){
+		long now=System.currentTimeMillis();
 		for(String domain:domains){
-//			Long lastUpdated=instancesLastUpdated.get(domain);
-//			if(lastUpdated==null || now-lastUpdated>24L*3600_000L){
-			updateInstanceInfo(domain);
-//			}
+			Long lastUpdated=instancesLastUpdated.get(domain);
+			if(lastUpdated==null || now-lastUpdated>24L*3600_000L || domain.equals(activeDomain)){
+				updateInstanceInfo(domain);
+			}
 		}
 	}
 
@@ -449,7 +453,7 @@ public class AccountSessionManager{
 		}
 		if(!loadedInstances){
 			loadedInstances=true;
-			maybeUpdateCustomEmojis(domains);
+			maybeUpdateCustomEmojis(domains, null);
 		}
 	}
 

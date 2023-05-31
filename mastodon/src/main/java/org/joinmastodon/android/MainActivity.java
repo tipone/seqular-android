@@ -35,15 +35,18 @@ public class MainActivity extends FragmentStackActivity{
 			if(AccountSessionManager.getInstance().getLoggedInAccounts().isEmpty()){
 				showFragmentClearingBackStack(new CustomWelcomeFragment());
 			}else{
-				AccountSessionManager.getInstance().maybeUpdateLocalInfo();
 				AccountSession session;
 				Bundle args=new Bundle();
 				Intent intent=getIntent();
 				if(intent.hasExtra("fromExternalShare")) {
-					AccountSessionManager.getInstance().setLastActiveAccountID(intent.getStringExtra("account"));
+					AccountSessionManager.getInstance()
+							.setLastActiveAccountID(intent.getStringExtra("account"));
+					AccountSessionManager.getInstance().maybeUpdateLocalInfo(
+							AccountSessionManager.getInstance().getLastActiveAccount());
 					showFragmentForExternalShare(intent.getExtras());
 					return;
 				}
+
 				boolean fromNotification = intent.getBooleanExtra("fromNotification", false);
 				boolean hasNotification = intent.hasExtra("notification");
 				if(fromNotification){
@@ -57,6 +60,7 @@ public class MainActivity extends FragmentStackActivity{
 				}else{
 					session=AccountSessionManager.getInstance().getLastActiveAccount();
 				}
+				AccountSessionManager.getInstance().maybeUpdateLocalInfo(session);
 				args.putString("account", session.getID());
 				Fragment fragment=session.activated ? new HomeFragment() : new AccountActivationFragment();
 				fragment.setArguments(args);
@@ -80,12 +84,12 @@ public class MainActivity extends FragmentStackActivity{
 	@Override
 	protected void onNewIntent(Intent intent){
 		super.onNewIntent(intent);
-		if(intent.hasExtra("fromExternalShare")) showFragmentForExternalShare(intent.getExtras());
-		else if(intent.getBooleanExtra("fromNotification", false)){
+		AccountSessionManager.getInstance().maybeUpdateLocalInfo();
+		if (intent.hasExtra("fromExternalShare")) showFragmentForExternalShare(intent.getExtras());
+		else if (intent.getBooleanExtra("fromNotification", false)) {
 			String accountID=intent.getStringExtra("accountID");
-			AccountSession accountSession;
 			try{
-				accountSession=AccountSessionManager.getInstance().getAccount(accountID);
+				AccountSessionManager.getInstance().getAccount(accountID);
 			}catch(IllegalStateException x){
 				return;
 			}
