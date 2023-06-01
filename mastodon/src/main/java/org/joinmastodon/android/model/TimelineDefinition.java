@@ -259,13 +259,13 @@ public class TimelineDefinition {
         public boolean isCompatible(AccountSession session) {
             // still enabling the bubble timeline for all pleroma/akkoma instances since i know of
             // at least one instance that supports it, but doesn't list "bubble_timeline"
-            return session.getInstance().map(Instance::isPleroma).orElse(false);
+            return session.getInstance().map(Instance::isAkkoma).orElse(false);
         }
 
         @Override
         public boolean wantsDefault(AccountSession session) {
             return session.getInstance()
-                    .map(i -> i.isPleroma() && i.pleroma.metadata.features.contains("bubble_timeline"))
+                    .map(i -> i.isAkkoma() && i.pleroma.metadata.features.contains("bubble_timeline"))
                     .orElse(false);
         }
     };

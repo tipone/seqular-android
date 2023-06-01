@@ -78,7 +78,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		accountID=getArguments().getString("account");
 		setTitle(R.string.sk_app_name);
 		isPleroma = AccountSessionManager.getInstance().getAccount(accountID).getInstance()
-				.map(Instance::isPleroma)
+				.map(Instance::isAkkoma)
 				.orElse(false);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
@@ -310,7 +310,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		Optional<Instance> instance = session.getInstance();
 		if (instance.isEmpty()) return; // avoiding incompatibility with akkoma
 
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.get().isPleroma())
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.get().isAkkoma())
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(List<Notification> notifications) {

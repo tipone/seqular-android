@@ -143,7 +143,7 @@ public class Instance extends BaseModel{
 		return ci;
 	}
 
-	public boolean isPleroma() {
+	public boolean isAkkoma() {
 		return pleroma != null;
 	}
 

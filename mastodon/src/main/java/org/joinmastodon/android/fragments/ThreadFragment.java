@@ -74,9 +74,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 							data.add(mainStatus);
 							onAppendItems(Collections.singletonList(mainStatus));
 						}
-						AccountSession account=AccountSessionManager.getInstance().getAccount(accountID);
-						Instance instance=AccountSessionManager.getInstance().getInstanceInfo(account.domain);
-						if(instance.isPleroma()){
+						if(isInstanceAkkoma()){
 							List<String> threadIds=new ArrayList<>();
 							threadIds.add(mainStatus.id);
 							for(Status s:result.descendants){

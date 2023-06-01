@@ -225,7 +225,7 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			GlobalUserPreferences.showReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		if (instance.map(Instance::isPleroma).orElse(false)) {
+		if (isInstanceAkkoma()) {
 			items.add(new ButtonItem(R.string.sk_settings_reply_visibility, R.drawable.ic_fluent_chat_24_regular, b->{
 				PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
 				popupMenu.inflate(R.menu.reply_visibility);
@@ -374,7 +374,7 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			glitchModeItem.enabled = i.checked;
 			if (i.checked) {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
-				if (!instance.map(Instance::isPleroma).orElse(false)) {
+				if (!isInstanceAkkoma()) {
 					GlobalUserPreferences.accountsInGlitchMode.add(accountID);
 				}
 			} else {

@@ -1084,7 +1084,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 		req.status=text;
 		req.localOnly=localOnly;
-		req.visibility=localOnly && instance.isPleroma() ? StatusPrivacy.LOCAL : statusVisibility;
+		req.visibility=localOnly && instance.isAkkoma() ? StatusPrivacy.LOCAL : statusVisibility;
 		req.sensitive=sensitive;
 		req.language=language;
 		req.contentType=contentType;
@@ -1899,7 +1899,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		Menu m=visibilityPopup.getMenu();
 		MenuItem localOnlyItem = visibilityPopup.getMenu().findItem(R.id.local_only);
 		boolean prefsSaysSupported = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
-		if (instance.isPleroma()) {
+		if (instance.isAkkoma()) {
 			m.findItem(R.id.vis_local).setVisible(true);
 		} else if (localOnly || prefsSaysSupported) {
 			localOnlyItem.setVisible(true);

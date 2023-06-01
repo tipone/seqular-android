@@ -14,7 +14,7 @@ public interface HasAccountID {
     }
 
     default boolean isInstanceAkkoma() {
-        return getInstance().map(Instance::isPleroma).orElse(false);
+        return getInstance().map(Instance::isAkkoma).orElse(false);
     }
 
     default Optional<Instance> getInstance() {

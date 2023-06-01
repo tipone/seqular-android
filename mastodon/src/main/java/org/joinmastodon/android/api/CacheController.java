@@ -159,7 +159,7 @@ public class CacheController{
 					}
 				}
 				Instance instance=AccountSessionManager.getInstance().getInstanceInfo(accountSession.domain);
-				new GetNotifications(maxID, count, onlyPosts ? EnumSet.of(Notification.Type.STATUS) : onlyMentions ? EnumSet.of(Notification.Type.MENTION): EnumSet.allOf(Notification.Type.class), instance.isPleroma())
+				new GetNotifications(maxID, count, onlyPosts ? EnumSet.of(Notification.Type.STATUS) : onlyMentions ? EnumSet.of(Notification.Type.MENTION): EnumSet.allOf(Notification.Type.class), instance.isAkkoma())
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Notification> result){
