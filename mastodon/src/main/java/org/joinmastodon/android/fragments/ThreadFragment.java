@@ -122,28 +122,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 							data.add(mainStatus);
 							onAppendItems(Collections.singletonList(mainStatus));
 						}
-						if(isInstanceAkkoma()){
-							List<String> threadIds=new ArrayList<>();
-							threadIds.add(mainStatus.id);
-							for(Status s:result.descendants){
-								if(threadIds.contains(s.inReplyToId)){
-									threadIds.add(s.id);
-								}
-							}
-							threadIds.add(mainStatus.inReplyToId);
-							for(int i=result.ancestors.size()-1; i >= 0; i--){
-								Status s=result.ancestors.get(i);
-								if(s.inReplyToId != null && threadIds.contains(s.id)){
-									threadIds.add(s.inReplyToId);
-								}
-							}
 
-							result.ancestors=result.ancestors.stream().filter(s -> threadIds.contains(s.id)).collect(Collectors.toList());
-							result.descendants=getDescendantsOrdered(mainStatus.id,
-									result.descendants.stream()
-											.filter(s -> threadIds.contains(s.id))
-											.collect(Collectors.toList()));
-						}
+						// TODO: figure out how this code works
+						if(isInstanceAkkoma()) sortStatusContext(mainStatus, result);
+
 						result.descendants=filterStatuses(result.descendants);
 						result.ancestors=filterStatuses(result.ancestors);
 
@@ -196,7 +178,30 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		return levels;
 	}
 
-	private List<Status> getDescendantsOrdered(String id, List<Status> statuses){
+	public static void sortStatusContext(Status mainStatus, StatusContext context) {
+		List<String> threadIds=new ArrayList<>();
+		threadIds.add(mainStatus.id);
+		for(Status s:context.descendants){
+			if(threadIds.contains(s.inReplyToId)){
+				threadIds.add(s.id);
+			}
+		}
+		threadIds.add(mainStatus.inReplyToId);
+		for(int i=context.ancestors.size()-1; i >= 0; i--){
+			Status s=context.ancestors.get(i);
+			if(s.inReplyToId != null && threadIds.contains(s.id)){
+				threadIds.add(s.inReplyToId);
+			}
+		}
+
+		context.ancestors=context.ancestors.stream().filter(s -> threadIds.contains(s.id)).collect(Collectors.toList());
+		context.descendants=getDescendantsOrdered(mainStatus.id,
+				context.descendants.stream()
+						.filter(s -> threadIds.contains(s.id))
+						.collect(Collectors.toList()));
+	}
+
+	private static List<Status> getDescendantsOrdered(String id, List<Status> statuses){
 		List<Status> out=new ArrayList<>();
 		for(Status s:getDirectDescendants(id, statuses)){
 			out.add(s);
@@ -208,7 +213,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		return out;
 	}
 
-	private List<Status> getDirectDescendants(String id, List<Status> statuses){
+	private static List<Status> getDirectDescendants(String id, List<Status> statuses){
 		return statuses.stream()
 				.filter(s -> s.inReplyToId.equals(id))
 				.collect(Collectors.toList());
