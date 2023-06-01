@@ -744,7 +744,7 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 
 	@Override
 	public Uri getWebUri(Uri.Builder base) {
-		return isInstanceAkkoma() ? null : base.path("/settings").build();
+		return base.path(isInstanceAkkoma() ? "/about" : "/settings").build();
 	}
 
 	@Override
