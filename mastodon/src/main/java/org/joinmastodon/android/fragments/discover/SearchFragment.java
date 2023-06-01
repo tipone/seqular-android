@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,7 +12,6 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
@@ -43,7 +43,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SearchFragment extends BaseStatusListFragment<SearchResult> implements IsOnTop, DomainDisplay {
+public class SearchFragment extends BaseStatusListFragment<SearchResult> implements IsOnTop {
 	private String currentQuery;
 	private List<StatusDisplayItem> prevDisplayItems;
 	private EnumSet<SearchResult.Type> currentFilter=EnumSet.allOf(SearchResult.Type.class);
@@ -56,11 +56,6 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 
 	public SearchFragment(){
 		setLayout(R.layout.fragment_search);
-	}
-
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/search";
 	}
 
 	@Override
@@ -320,6 +315,14 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 	@Override
 	public boolean isOnTop() {
 		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		Uri.Builder searchUri = base.path("/search");
+		return isInstanceAkkoma()
+				? searchUri.appendQueryParameter("query", currentQuery).build()
+				: searchUri.build();
 	}
 
 	@FunctionalInterface

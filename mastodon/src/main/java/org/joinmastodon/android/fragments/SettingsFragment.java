@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.LruCache;
@@ -58,6 +59,7 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -78,7 +80,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class SettingsFragment extends MastodonToolbarFragment{
+public class SettingsFragment extends MastodonToolbarFragment implements ProvidesAssistContent.ProvidesWebUri {
 	private UsableRecyclerView list;
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
@@ -738,6 +740,16 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if (ev.state == GithubSelfUpdater.UpdateState.NO_UPDATE) {
 			Toast.makeText(getActivity(), R.string.sk_no_update_available, Toast.LENGTH_SHORT).show();
 		}
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/settings").build();
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
 	}
 
 	private static abstract class Item{

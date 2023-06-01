@@ -1,5 +1,7 @@
 package org.joinmastodon.android.api.session;
 
+import android.net.Uri;
+
 import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -92,5 +94,12 @@ public class AccountSession{
 
 	public Optional<Instance> getInstance() {
 		return Optional.ofNullable(AccountSessionManager.getInstance().getInstanceInfo(domain));
+	}
+
+	public Uri getInstanceUri() {
+		return new Uri.Builder()
+				.scheme("https")
+				.authority(domain)
+				.build();
 	}
 }

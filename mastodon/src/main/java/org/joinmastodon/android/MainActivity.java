@@ -5,7 +5,6 @@ import android.app.Fragment;
 import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,12 +21,15 @@ import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
 
-public class MainActivity extends FragmentStackActivity{
+public class MainActivity extends FragmentStackActivity implements ProvidesAssistContent {
+	private Fragment currentFragment;
+
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState){
 		UiUtils.setUserPreferredTheme(this);
@@ -106,7 +108,6 @@ public class MainActivity extends FragmentStackActivity{
 				Fragment fragment=new HomeFragment();
 				fragment.setArguments(args);
 				showFragmentClearingBackStack(fragment);
-				DomainManager.getInstance().setCurrentDomain(accountSession.domain);
 			}
 		}else if(intent.getBooleanExtra("compose", false)){
 			showCompose();
@@ -200,10 +201,14 @@ public class MainActivity extends FragmentStackActivity{
 	}
 
 	@Override
-	public void onProvideAssistContent(AssistContent outContent) {
-		super.onProvideAssistContent(outContent);
-
-		outContent.setWebUri(Uri.parse(DomainManager.getInstance().getCurrentDomain()));
+	public void showFragment(Fragment fragment) {
+		super.showFragment(fragment);
+		this.currentFragment = fragment;
 	}
 
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		super.onProvideAssistContent(assistContent);
+		callFragmentToProvideAssistContent(currentFragment, assistContent);
+	}
 }

@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -23,11 +24,6 @@ public class FederatedTimelineFragment extends StatusListFragment {
 	@Override
 	protected boolean wantsComposeButton() {
 		return true;
-	}
-
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/public";
 	}
 
 	@Override
@@ -55,5 +51,10 @@ public class FederatedTimelineFragment extends StatusListFragment {
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma() ? "/main/all" : "/public").build();
 	}
 }

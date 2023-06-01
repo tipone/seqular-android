@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
@@ -8,10 +9,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
-import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.tags.GetHashtag;
@@ -45,17 +44,11 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	}
 
 	@Override
-	public String getDomain() {
-		return super.getDomain() + "/tags/" + hashtag;
-	}
-
-	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		updateTitle(getArguments().getString("hashtag"));
 		following=getArguments().getBoolean("following", false);
 		setHasOptionsMenu(true);
-		DomainManager.getInstance().setCurrentDomain(getDomain());
 	}
 
 	private void updateTitle(String hashtagName) {
@@ -165,5 +158,10 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path((isInstanceAkkoma() ? "/tag/" : "/tags") + hashtag).build();
 	}
 }

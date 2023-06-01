@@ -2,7 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
-import android.content.Intent;
+import android.app.assist.AssistContent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,14 +17,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.joinmastodon.android.DomainManager;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
-import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.notifications.GetNotifications;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -38,6 +36,7 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TabBar;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -56,7 +55,7 @@ import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class HomeFragment extends AppKitFragment implements OnBackPressedListener{
+public class HomeFragment extends AppKitFragment implements OnBackPressedListener, ProvidesAssistContent, HasAccountID {
 	private FragmentRootLinearLayout content;
 	private HomeTabFragment homeTabFragment;
 	private NotificationsFragment notificationsFragment;
@@ -185,8 +184,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Override
 	public void onHiddenChanged(boolean hidden){
 		super.onHiddenChanged(hidden);
-		if (!hidden && fragmentForTab(currentTab) instanceof  DomainDisplay display)
-			DomainManager.getInstance().setCurrentDomain(display.getDomain());
 		fragmentForTab(currentTab).onHiddenChanged(hidden);
 	}
 
@@ -251,10 +248,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
 		if (tab == R.id.tab_search && isPleroma) searchFragment.selectSearch();
-
-		if (newFragment instanceof DomainDisplay display) {
-			DomainManager.getInstance().setCurrentDomain(display.getDomain());
-		}
 	}
 
 	private void maybeTriggerLoading(Fragment newFragment){
@@ -355,7 +348,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		setNotificationBadge(false);
 	}
 
+	@Override
 	public String getAccountID() {
 		return accountID;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(fragmentForTab(currentTab), assistContent);
 	}
 }

@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -38,11 +39,6 @@ public class HomeTimelineFragment extends StatusListFragment {
 	@Override
 	protected boolean wantsComposeButton() {
 		return true;
-	}
-
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/home";
 	}
 
 	@Override
@@ -289,5 +285,10 @@ public class HomeTimelineFragment extends StatusListFragment {
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.HOME;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/").build();
 	}
 }

@@ -3,6 +3,7 @@ package org.joinmastodon.android.fragments.discover;
 import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -15,7 +16,6 @@ import android.widget.TextView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetFollowSuggestions;
-import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.RecyclerFragment;
@@ -28,6 +28,7 @@ import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.Collections;
@@ -50,18 +51,13 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class DiscoverAccountsFragment extends RecyclerFragment<DiscoverAccountsFragment.AccountWrapper> implements ScrollableToTop, IsOnTop, DomainDisplay {
+public class DiscoverAccountsFragment extends RecyclerFragment<DiscoverAccountsFragment.AccountWrapper> implements ScrollableToTop, IsOnTop, ProvidesAssistContent.ProvidesWebUri {
 	private String accountID;
 	private Map<String, Relationship> relationships=Collections.emptyMap();
 	private GetAccountRelationships relationshipsRequest;
 
 	public DiscoverAccountsFragment(){
 		super(20);
-	}
-
-	@Override
-	public String getDomain() {
-		return DomainDisplay.super.getDomain() + "/explore/suggestions";
 	}
 
 	@Override
@@ -149,6 +145,16 @@ public class DiscoverAccountsFragment extends RecyclerFragment<DiscoverAccountsF
 	@Override
 	public boolean isOnTop() {
 		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/suggestions").build();
 	}
 
 	private class AccountsAdapter extends UsableRecyclerView.Adapter<AccountViewHolder> implements ImageLoaderRecyclerAdapter{

@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -25,6 +26,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.polls.SubmitPollVote;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.DisplayItemsParent;
@@ -45,6 +47,7 @@ import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.util.ArrayList;
@@ -68,7 +71,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, DomainDisplay{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, ProvidesAssistContent.ProvidesWebUri {
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
@@ -570,6 +573,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		warning.getItem().status.filterRevealed = true;
 	}
 
+	@Override
 	public String getAccountID(){
 		return accountID;
 	}
@@ -703,6 +707,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		return attachmentViewsPool;
 	}
 
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
+	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
 

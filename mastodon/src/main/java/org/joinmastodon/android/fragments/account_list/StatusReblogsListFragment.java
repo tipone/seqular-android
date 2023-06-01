@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.R;
@@ -17,5 +18,13 @@ public class StatusReblogsListFragment extends StatusRelatedAccountListFragment{
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
 		return new GetStatusReblogs(status.id, maxID, count);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		Uri statusUri = super.getWebUri(base);
+		return isInstanceAkkoma()
+				? statusUri
+				: statusUri.buildUpon().appendPath("reblogs").build();
 	}
 }

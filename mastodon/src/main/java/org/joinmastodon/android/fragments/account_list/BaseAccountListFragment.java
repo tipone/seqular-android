@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.account_list;
 
 import android.app.ProgressDialog;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Animatable;
@@ -23,7 +24,8 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.fragments.ListTimelinesFragment;
+import org.joinmastodon.android.fragments.HasAccountID;
+import org.joinmastodon.android.fragments.ListsFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
@@ -34,6 +36,7 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -57,7 +60,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccountListFragment.AccountItem> {
+public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccountListFragment.AccountItem> implements ProvidesAssistContent.ProvidesWebUri {
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected String accountID;
 	protected ArrayList<APIRequest<?>> relationshipsRequests=new ArrayList<>();
@@ -168,6 +171,16 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 			list.setPadding(0, V.dp(16), 0, V.dp(16));
 		}
 		super.onApplyWindowInsets(insets);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
 	}
 
 	protected class AccountsAdapter extends UsableRecyclerView.Adapter<AccountViewHolder> implements ImageLoaderRecyclerAdapter{
@@ -387,7 +400,7 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 				args.putString("account", accountID);
 				args.putString("profileAccount", account.id);
 				args.putString("profileDisplayUsername", account.getDisplayUsername());
-				Nav.go(getActivity(), ListTimelinesFragment.class, args);
+				Nav.go(getActivity(), ListsFragment.class, args);
 			}
 			return true;
 		}

@@ -1,11 +1,9 @@
 package org.joinmastodon.android.ui.displayitems;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Outline;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -24,8 +22,6 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.StringRes;
-
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
@@ -36,7 +32,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
-import org.joinmastodon.android.fragments.ListTimelinesFragment;
+import org.joinmastodon.android.fragments.ListsFragment;
 import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
@@ -44,12 +40,10 @@ import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Attachment;
-import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -59,7 +53,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -284,7 +277,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					args.putString("account", item.parentFragment.getAccountID());
 					args.putString("profileAccount", account.id);
 					args.putString("profileDisplayUsername", account.getDisplayUsername());
-					Nav.go(item.parentFragment.getActivity(), ListTimelinesFragment.class, args);
+					Nav.go(item.parentFragment.getActivity(), ListsFragment.class, args);
 				}
 				return true;
 			});

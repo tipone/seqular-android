@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -129,5 +130,14 @@ public class AccountTimelineFragment extends StatusListFragment{
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.ACCOUNT;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		// could return different uris based on filter (e.g. media -> "/media"), but i want to
+		// return the remote url to the user, and i don't know whether i'd need to append
+		// '#media' (akkoma/pleroma) or '/media' (glitch/mastodon) since i don't know anything
+		// about the remote instance. so, just returning the base url to the user instead
+		return Uri.parse(user.url);
 	}
 }

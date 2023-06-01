@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,10 +10,8 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.notifications.PleromaMarkNotificationsRead;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
@@ -45,7 +44,6 @@ import java.util.stream.Stream;
 
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
-import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class NotificationsListFragment extends BaseStatusListFragment<Notification>{
@@ -272,5 +270,12 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}
 		displayItems.subList(index, lastIndex).clear();
 		adapter.notifyItemRangeRemoved(index, lastIndex-index);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma()
+				? "/users/" + getSession().self.username + "/interactions"
+				: "/notifications").build();
 	}
 }

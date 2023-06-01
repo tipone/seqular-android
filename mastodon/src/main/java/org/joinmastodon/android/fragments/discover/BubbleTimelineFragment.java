@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -51,5 +52,10 @@ public class BubbleTimelineFragment extends StatusListFragment {
     @Override
     protected Filter.FilterContext getFilterContext() {
         return Filter.FilterContext.PUBLIC;
+    }
+
+    @Override
+    public Uri getWebUri(Uri.Builder base) {
+        return isInstanceAkkoma() ? base.path("/main/bubble").build() : null;
     }
 }

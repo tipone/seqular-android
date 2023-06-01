@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +15,15 @@ import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop {
+public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop, ProvidesAssistContent.ProvidesWebUri {
     private String nextMaxID;
-    private String accountId;
+    private String accountID;
 
     public FollowedHashtagsFragment() {
         super(20);
@@ -31,7 +33,7 @@ public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implemen
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Bundle args=getArguments();
-        accountId=args.getString("account");
+        accountID=args.getString("account");
         setTitle(R.string.sk_hashtags_you_follow);
     }
 
@@ -62,7 +64,7 @@ public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implemen
                         onDataLoaded(result, nextMaxID!=null);
                     }
                 })
-                .exec(accountId);
+                .exec(accountID);
     }
 
     @Override
@@ -73,6 +75,16 @@ public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implemen
     @Override
     public void scrollToTop() {
         smoothScrollRecyclerViewToTop(list);
+    }
+
+    @Override
+    public String getAccountID() {
+        return accountID;
+    }
+
+    @Override
+    public Uri getWebUri(Uri.Builder base) {
+        return isInstanceAkkoma() ? null : base.path("/followed_tags").build();
     }
 
     private class HashtagsAdapter extends RecyclerView.Adapter<HashtagViewHolder>{
@@ -109,7 +121,7 @@ public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implemen
 
         @Override
         public void onClick() {
-            UiUtils.openHashtagTimeline(getActivity(), accountId, item.name, item.following);
+            UiUtils.openHashtagTimeline(getActivity(), accountID, item.name, item.following);
         }
     }
 }

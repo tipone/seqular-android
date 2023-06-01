@@ -1,9 +1,9 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
-import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -20,6 +20,7 @@ import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
@@ -30,13 +31,8 @@ import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
-public class ThreadFragment extends StatusListFragment implements DomainDisplay{
+public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
 	protected Status mainStatus;
-
-	@Override
-	public String getDomain() {
-		return mainStatus.url;
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -48,7 +44,6 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 		data.add(mainStatus);
 		onAppendItems(Collections.singletonList(mainStatus));
 		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.displayName), mainStatus.account.emojis));
-		DomainManager.getInstance().setCurrentDomain(getDomain());
 	}
 
 	@Override
@@ -193,5 +188,10 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.THREAD;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(mainStatus.url);
 	}
 }

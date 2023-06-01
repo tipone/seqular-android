@@ -131,6 +131,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			Bundle args=new Bundle();
 			args.putString("account", item.parentFragment.getAccountID());
 			args.putString("id", item.status.id);
+			args.putString("url", item.status.url);
 			Nav.go(item.parentFragment.getActivity(), StatusEditHistoryFragment.class, args);
 		}
 	}

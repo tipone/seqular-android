@@ -3,6 +3,7 @@ package org.joinmastodon.android.fragments;
 import static java.util.stream.Collectors.toList;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -102,5 +103,10 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 					}
 				})
 				.exec(accountID);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? base.path("/announcements").build() : null;
 	}
 }

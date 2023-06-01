@@ -1,9 +1,11 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
@@ -22,11 +24,6 @@ public class LocalTimelineFragment extends StatusListFragment {
 	@Override
 	protected boolean wantsComposeButton() {
 		return true;
-	}
-
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/public/local";
 	}
 
 	@Override
@@ -54,5 +51,10 @@ public class LocalTimelineFragment extends StatusListFragment {
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma() ? "/main/public" : "/public/local").build();
 	}
 }

@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -28,7 +29,7 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 
-public abstract class StatusListFragment extends BaseStatusListFragment<Status> implements DomainDisplay{
+public abstract class StatusListFragment extends BaseStatusListFragment<Status> {
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
@@ -182,7 +183,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration newConfig){
+	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		if (getParentFragment() instanceof HomeTabFragment home) home.updateToolbarLogo();
 	}

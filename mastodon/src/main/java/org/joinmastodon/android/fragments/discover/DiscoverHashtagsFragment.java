@@ -3,6 +3,7 @@ package org.joinmastodon.android.fragments.discover;
 import static org.joinmastodon.android.ui.displayitems.HashtagStatusDisplayItem.Holder.withHistoryParams;
 import static org.joinmastodon.android.ui.displayitems.HashtagStatusDisplayItem.Holder.withoutHistoryParams;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.trends.GetTrendingHashtags;
-import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.ScrollableToTop;
@@ -19,6 +19,7 @@ import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.HashtagChartView;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.List;
 
@@ -28,11 +29,11 @@ import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class TrendingHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop, IsOnTop, DomainDisplay {
+public class DiscoverHashtagsFragment extends RecyclerFragment<Hashtag> implements ScrollableToTop, IsOnTop, ProvidesAssistContent.ProvidesWebUri {
 	private String accountID;
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.TRENDING_HASHTAGS);
 
-	public TrendingHashtagsFragment(){
+	public DiscoverHashtagsFragment(){
 		super(10);
 	}
 
@@ -40,11 +41,6 @@ public class TrendingHashtagsFragment extends RecyclerFragment<Hashtag> implemen
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
-	}
-
-	@Override
-	public String getDomain() {
-		return DomainDisplay.super.getDomain() + "/explore/tags";
 	}
 
 	@Override
@@ -80,6 +76,16 @@ public class TrendingHashtagsFragment extends RecyclerFragment<Hashtag> implemen
 	@Override
 	public boolean isOnTop() {
 		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/tags").build();
 	}
 
 	private class HashtagsAdapter extends RecyclerView.Adapter<HashtagViewHolder>{

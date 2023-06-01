@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -42,7 +43,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
-import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByID;
@@ -51,7 +51,6 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowingListFragment;
@@ -76,6 +75,7 @@ import org.joinmastodon.android.ui.views.CoverImageView;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.ui.views.NestedRecyclerScrollView;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.time.LocalDateTime;
@@ -113,7 +113,7 @@ import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop, HasFab{
+public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop, HasFab, ProvidesAssistContent.ProvidesWebUri {
 	private static final int AVATAR_RESULT=722;
 	private static final int COVER_RESULT=343;
 
@@ -206,14 +206,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		setHasOptionsMenu(true);
-	}
-
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		if (!hidden) {
-			DomainManager.getInstance().setCurrentDomain(account.url);
-		}
 	}
 
 	@Override
@@ -722,7 +714,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				args.putString("profileAccount", profileAccountID);
 				args.putString("profileDisplayUsername", account.getDisplayUsername());
 			}
-			Nav.go(getActivity(), ListTimelinesFragment.class, args);
+			Nav.go(getActivity(), ListsFragment.class, args);
 		}else if(id==R.id.followed_hashtags){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -771,7 +763,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
 		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
-		DomainManager.getInstance().setCurrentDomain(account.url);
 	}
 
 	public ImageButton getFab() {
@@ -1177,6 +1168,21 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			dragHelper.attachToRecyclerView(null);
 		}
 		if (adapter != null) adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(getFragmentForPage(pager.getCurrentItem()), assistContent);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(account.url);
 	}
 
 	private class MetadataAdapter extends UsableRecyclerView.Adapter<BaseViewHolder> implements ImageLoaderRecyclerAdapter {
