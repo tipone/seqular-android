@@ -8,6 +8,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.FrameLayout;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -28,8 +30,6 @@ import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
 
 public class MainActivity extends FragmentStackActivity implements ProvidesAssistContent {
-	private Fragment currentFragment;
-
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState){
 		UiUtils.setUserPreferredTheme(this);
@@ -200,15 +200,20 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		}
 	}
 
-	@Override
-	public void showFragment(Fragment fragment) {
-		super.showFragment(fragment);
-		this.currentFragment = fragment;
+	public Fragment getCurrentFragment() {
+		for (int i = fragmentContainers.size() - 1; i >= 0; i--) {
+			FrameLayout fl = fragmentContainers.get(i);
+			if (fl.getVisibility() == View.VISIBLE) {
+				return getFragmentManager().findFragmentById(fl.getId());
+			}
+		}
+		return null;
 	}
 
 	@Override
 	public void onProvideAssistContent(AssistContent assistContent) {
 		super.onProvideAssistContent(assistContent);
-		callFragmentToProvideAssistContent(currentFragment, assistContent);
+		Fragment fragment = getCurrentFragment();
+		if (fragment != null) callFragmentToProvideAssistContent(fragment, assistContent);
 	}
 }
