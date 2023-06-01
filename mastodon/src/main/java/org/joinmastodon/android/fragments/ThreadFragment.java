@@ -2,20 +2,19 @@ package org.joinmastodon.android.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;
-import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusContext;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
@@ -24,15 +23,38 @@ import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
 	protected Status mainStatus;
+
+	/**
+	 * lists the hierarchy of ancestors and descendants in a thread. level 0 = the main status.
+	 * e.g.
+	 * <pre>
+	 * [0] ancestor:   -2 ↰
+	 * [1] ancestor:     -1 ↰
+	 * [2] main status:     0 ↰
+	 * [3] descendant:        1 ↰
+	 * [4] descendant:          2 ↰
+	 * [5] descendant:            3
+	 * [6] descendant:        1
+	 * [7] descendant:        1 ↰
+	 * [8] descendant:          2
+	 * </pre>
+	 * confused? good. /j
+	 */
+	private final List<Pair<String, Integer>> levels = new ArrayList<>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -49,13 +71,38 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
 		List<StatusDisplayItem> items=super.buildDisplayItems(s);
-		if(s.id.equals(mainStatus.id)){
-			for(StatusDisplayItem item:items){
+		// "what the fuck is a deque"? yes
+		// (it's just so the last-added item automatically comes first when looping over it)
+		Deque<Integer> deleteTheseItems = new ArrayDeque<>();
+		for(int i = 0; i < items.size(); i++){
+			StatusDisplayItem item = items.get(i);
+
+			Optional<Pair<String, Integer>> levelForStatus =
+					levels.stream().filter(p -> p.first.equals(s.id)).findAny();
+			item.descendantLevel = levelForStatus.map(p -> p.second).orElse(0);
+			if (levelForStatus.isPresent()) {
+				int idx = levels.indexOf(levelForStatus.get());
+				item.hasDescendantSibling = (levels.size() > idx + 1)
+						&& levels.get(idx + 1).second > levelForStatus.get().second;
+				item.isDescendantSibling = (idx - 1 >= 0)
+						&& levels.get(idx - 1).second < levelForStatus.get().second;
+			}
+
+			if (item instanceof ReblogOrReplyLineStatusDisplayItem
+					&& item.isDescendantSibling
+					&& item.descendantLevel != 1) {
+				deleteTheseItems.add(i);
+			}
+
+			if(s.id.equals(mainStatus.id)){
 				if(item instanceof TextStatusDisplayItem text)
 					text.textSelectable=true;
 				else if(item instanceof FooterStatusDisplayItem footer)
 					footer.hideCounts=true;
 			}
+		}
+		for (int deleteThisItem : deleteTheseItems) items.remove(deleteThisItem);
+		if(s.id.equals(mainStatus.id)) {
 			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, s.getContentStatus()));
 		}
 		return items;
@@ -70,6 +117,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 						if (getActivity() == null) return;
 						if(refreshing){
 							data.clear();
+							levels.clear();
 							displayItems.clear();
 							data.add(mainStatus);
 							onAppendItems(Collections.singletonList(mainStatus));
@@ -98,6 +146,9 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 						}
 						result.descendants=filterStatuses(result.descendants);
 						result.ancestors=filterStatuses(result.ancestors);
+
+						levels.addAll(countAncestryLevels(mainStatus.id, result));
+
 						if(footerProgress!=null)
 							footerProgress.setVisibility(View.GONE);
 						data.addAll(result.descendants);
@@ -106,7 +157,12 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 						int count=displayItems.size();
 						if(!refreshing)
 							adapter.notifyItemRangeInserted(prevCount, count-prevCount);
-						prependItems(result.ancestors, !refreshing);
+						int prependedCount = prependItems(result.ancestors, !refreshing);
+						if (prependedCount > 0 && displayItems.get(prependedCount) instanceof ReblogOrReplyLineStatusDisplayItem) {
+							displayItems.remove(prependedCount);
+							adapter.notifyItemRemoved(prependedCount);
+							count--;
+						}
 						dataLoaded();
 						if(refreshing){
 							refreshDone();
@@ -116,6 +172,28 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					}
 				})
 				.exec(accountID);
+	}
+
+	public static List<Pair<String, Integer>> countAncestryLevels(String mainStatusID, StatusContext context) {
+		List<Pair<String, Integer>> levels = new ArrayList<>();
+
+		for (int i = 0; i < context.ancestors.size(); i++) {
+			levels.add(Pair.create(
+					context.ancestors.get(i).id,
+					-context.ancestors.size() + i // -3, -2, -1
+			));
+		}
+
+		levels.add(Pair.create(mainStatusID, 0));
+		Map<String, Integer> levelPerStatus = new HashMap<>();
+
+		// sum up the amounts of descendants per status
+		context.descendants.forEach(s -> levelPerStatus.put(s.id,
+				levelPerStatus.getOrDefault(s.inReplyToId, 0) + 1));
+		context.descendants.forEach(s ->
+				levels.add(Pair.create(s.id, levelPerStatus.get(s.id))));
+
+		return levels;
 	}
 
 	private List<Status> getDescendantsOrdered(String id, List<Status> statuses){

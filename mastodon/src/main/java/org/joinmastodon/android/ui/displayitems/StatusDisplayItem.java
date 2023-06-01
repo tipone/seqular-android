@@ -49,6 +49,8 @@ public abstract class StatusDisplayItem{
 	public final BaseStatusListFragment parentFragment;
 	public boolean inset;
 	public int index;
+	public int descendantLevel;
+	public boolean hasDescendantSibling, isDescendantSibling;
 
 	public StatusDisplayItem(String parentID, BaseStatusListFragment parentFragment){
 		this.parentID=parentID;

@@ -35,6 +35,7 @@ import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
@@ -132,7 +133,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		displayItems.clear();
 	}
 
-	protected void prependItems(List<T> items, boolean notify){
+	protected int prependItems(List<T> items, boolean notify){
 		data.addAll(0, items);
 		int offset=0;
 		for(T s:items){
@@ -145,6 +146,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 		if(notify)
 			adapter.notifyItemRangeInserted(0, offset);
+		return offset;
 	}
 
 	protected String getMaxID(){
@@ -355,7 +357,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 								outRect.left=Math.min(outRect.left, tmpRect.left);
 								outRect.top=Math.min(outRect.top, tmpRect.top);
 								outRect.right=Math.max(outRect.right, tmpRect.right);
-								outRect.bottom=Math.max(outRect.bottom, tmpRect.bottom);
+								int bottom = tmpRect.bottom;
+								if (holder instanceof FooterStatusDisplayItem.Holder fh
+										&& fh.getItem().hasDescendantSibling) {
+									bottom += V.dp(8);
+								}
+								outRect.bottom=Math.max(outRect.bottom, bottom);
 							}
 						}
 					}
@@ -772,6 +779,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				RecyclerView.ViewHolder siblingHolder=parent.getChildViewHolder(bottomSibling);
 				if(holder instanceof StatusDisplayItem.Holder<?> ih && siblingHolder instanceof StatusDisplayItem.Holder<?> sh
 						&& (!ih.getItemID().equals(sh.getItemID()) || sh instanceof ExtendedFooterStatusDisplayItem.Holder) && ih.getItem().getType()!=StatusDisplayItem.Type.GAP){
+					if (ih.getItem().descendantLevel != 0 && ih.getItem().hasDescendantSibling) continue;
 					drawDivider(child, bottomSibling, holder, siblingHolder, parent, c, dividerPaint);
 				}
 			}
