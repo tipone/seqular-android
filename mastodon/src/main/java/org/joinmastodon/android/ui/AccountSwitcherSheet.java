@@ -104,7 +104,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 		adapter.addAdapter(new AccountsAdapter());
 
 		if (!externalShare) {
-			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_add_24px), () -> {
+			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_fluent_add_24_regular), () -> {
 				Nav.go(activity, CustomWelcomeFragment.class, null);
 				dismiss();
 			}));
