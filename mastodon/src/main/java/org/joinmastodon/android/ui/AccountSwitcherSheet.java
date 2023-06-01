@@ -63,6 +63,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 	private UsableRecyclerView list;
 	private List<WrappedAccount> accounts;
 	private ListImageLoaderWrapper imgLoader;
+	private AccountsAdapter accountsAdapter;
 
 	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment){
 		this(activity, fragment, false, false, null);
@@ -101,7 +102,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 			setOnDismissListener((d) -> activity.finish());
 		}
 
-		adapter.addAdapter(new AccountsAdapter());
+		adapter.addAdapter(accountsAdapter = new AccountsAdapter());
 
 		if (!externalShare) {
 			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_fluent_add_24_regular), () -> {
@@ -201,7 +202,10 @@ public class AccountSwitcherSheet extends BottomSheet{
 			activity.finish();
 			activity.startActivity(new Intent(activity, MainActivity.class));
 		} else {
-			dismiss();
+			accounts.stream().filter(w -> accountID.equals(w.session.getID())).findAny().ifPresent(w -> {
+				accountsAdapter.notifyItemRemoved(accounts.indexOf(w));
+				accounts.remove(w);
+			});
 		}
 	}
 
