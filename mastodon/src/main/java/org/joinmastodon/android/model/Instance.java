@@ -11,6 +11,7 @@ import java.net.IDN;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Parcel
 public class Instance extends BaseModel{
@@ -145,6 +146,22 @@ public class Instance extends BaseModel{
 
 	public boolean isAkkoma() {
 		return pleroma != null;
+	}
+
+	public boolean hasFeature(Feature feature) {
+		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
+				.map(p -> p.metadata)
+				.map(m -> m.features);
+
+		return switch (feature) {
+			case BUBBLE_TIMELINE -> pleromaFeatures
+					.map(f -> f.contains("bubble_timeline"))
+					.orElse(false);
+		};
+	}
+
+	public enum Feature {
+		BUBBLE_TIMELINE
 	}
 
 	@Parcel

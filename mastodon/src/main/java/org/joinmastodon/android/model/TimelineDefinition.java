@@ -265,7 +265,7 @@ public class TimelineDefinition {
         @Override
         public boolean wantsDefault(AccountSession session) {
             return session.getInstance()
-                    .map(i -> i.isAkkoma() && i.pleroma.metadata.features.contains("bubble_timeline"))
+                    .map(i -> i.hasFeature(Instance.Feature.BUBBLE_TIMELINE))
                     .orElse(false);
         }
     };
