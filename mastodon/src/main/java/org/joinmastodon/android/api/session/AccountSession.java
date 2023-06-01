@@ -99,7 +99,7 @@ public class AccountSession{
 	public Uri getInstanceUri() {
 		return new Uri.Builder()
 				.scheme("https")
-				.authority(domain)
+				.authority(getInstance().map(i -> i.uri).orElse(domain))
 				.build();
 	}
 }
