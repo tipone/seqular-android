@@ -88,6 +88,9 @@ public class Instance extends BaseModel{
 
 	public PleromaPollLimits pollLimits;
 
+	/** like uri, but always without scheme and trailing slash */
+	public transient String normalizedUri;
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
@@ -97,6 +100,10 @@ public class Instance extends BaseModel{
 			rules=Collections.emptyList();
 		if(shortDescription==null)
 			shortDescription="";
+		// akkoma says uri is "https://example.social" while just "example.social" on mastodon
+		normalizedUri = uri
+				.replaceFirst("^https://", "")
+				.replaceFirst("/$", "");
 	}
 
 	@Override

@@ -50,7 +50,6 @@ public class InstanceRulesFragment extends ToolbarFragment implements ProvidesAs
 	private ElevationOnScrollListener onScrollListener;
 
 	private static final int RULES_REQUEST=376;
-	private String domain;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -63,10 +62,6 @@ public class InstanceRulesFragment extends ToolbarFragment implements ProvidesAs
 		super.onAttach(activity);
 		setNavigationBarColor(UiUtils.getThemeColor(activity, R.attr.colorWindowBackground));
 		instance=Parcels.unwrap(getArguments().getParcelable("instance"));
-		// akkoma says uri is "https://example.social" while just "example.social" on mastodon
-		domain = instance.uri
-				.replaceFirst("^https://", "")
-				.replaceFirst("/$", "");
 		setTitle(R.string.instance_rules_title);
 	}
 
@@ -142,7 +137,7 @@ public class InstanceRulesFragment extends ToolbarFragment implements ProvidesAs
 	public void onProvideAssistContent(AssistContent assistContent) {
 		assistContent.setWebUri(new Uri.Builder()
 				.scheme("https")
-				.authority(domain)
+				.authority(instance.normalizedUri)
 				.path("/about")
 				.build());
 	}
