@@ -328,7 +328,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		private String text;
 		protected String secondaryText;
 		private Runnable onClick;
-		private boolean loading;
+		protected boolean loading;
 		private int icon;
 
 		public TextItem(@StringRes int text, Runnable onClick) {
@@ -423,7 +423,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 
-	private class SettingsAdapter extends RecyclerView.Adapter<BindableViewHolder<Item>>{
+	protected class SettingsAdapter extends RecyclerView.Adapter<BindableViewHolder<Item>>{
 
 		@NonNull
 		@Override
@@ -871,7 +871,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		}
 	}
 
-	private class UpdateViewHolder extends BindableViewHolder<UpdateItem>{
+	protected class UpdateViewHolder extends BindableViewHolder<UpdateItem>{
 
 		private final TextView text, changelog, changelogHeader;
 		private final Button button;

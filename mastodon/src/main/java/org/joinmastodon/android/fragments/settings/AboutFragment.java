@@ -7,9 +7,13 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils;
 import android.util.LruCache;
+import android.view.View;
 import android.widget.Toast;
 
+import com.squareup.otto.Subscribe;
+
 import org.joinmastodon.android.BuildConfig;
+import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
@@ -18,6 +22,7 @@ import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
 import org.joinmastodon.android.api.session.AccountActivationInfo;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
 import org.joinmastodon.android.fragments.onboarding.InstanceRulesFragment;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -36,6 +41,9 @@ public class AboutFragment extends SettingsBaseFragment{
 
     private TextItem clearImageCacheItem;
     private ImageCache imageCache;
+
+    private TextItem checkForUpdateItem;
+
     @Override
     public void addItems(ArrayList<Item> items) {
 
@@ -45,7 +53,7 @@ public class AboutFragment extends SettingsBaseFragment{
         items.add(new TextItem(R.string.sk_settings_donate, ()->UiUtils.launchWebBrowser(getActivity(), "https://github.com/sponsors/LucasGGamerM"), R.drawable.ic_fluent_heart_24_regular));
 
         if (GithubSelfUpdater.needSelfUpdating()) {
-            TextItem checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
+            checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
             items.add(checkForUpdateItem);
             items.add(new SwitchItem(R.string.sk_updater_enable_pre_releases, 0, GlobalUserPreferences.enablePreReleases, i->{
                 GlobalUserPreferences.enablePreReleases=i.checked;
@@ -107,6 +115,27 @@ public class AboutFragment extends SettingsBaseFragment{
 
         String version = getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE);
         items.add(new FooterItem(version, () -> UiUtils.copyText(view, version)));
+    }
+
+    @Subscribe
+    public void onSelfUpdateStateChanged(SelfUpdateStateChangedEvent ev){
+        checkForUpdateItem.loading = ev.state == GithubSelfUpdater.UpdateState.CHECKING;
+        if (list.findViewHolderForAdapterPosition(items.indexOf(checkForUpdateItem)) instanceof TextViewHolder tvh) tvh.rebind();
+    }
+
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (GithubSelfUpdater.needSelfUpdating()) {
+            E.register(this);
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (GithubSelfUpdater.needSelfUpdating())
+            E.unregister(this);
     }
 
     private void clearImageCache(){
