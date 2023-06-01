@@ -263,9 +263,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			Nav.finish(this);
 			return;
 		}
-		if(customEmojis.isEmpty()){
-			AccountSessionManager.getInstance().updateInstanceInfo(instanceDomain);
-		}
 
 		Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
 		if (bundle.containsKey("scheduledStatus")) scheduledStatus=Parcels.unwrap(bundle.getParcelable("scheduledStatus"));

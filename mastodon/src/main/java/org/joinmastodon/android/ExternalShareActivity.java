@@ -3,7 +3,6 @@ package org.joinmastodon.android;
 import android.app.Fragment;
 import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -12,6 +11,7 @@ import android.widget.Toast;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
+import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.jsoup.internal.StringUtil;
 
@@ -28,18 +28,34 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		UiUtils.setUserPreferredTheme(this);
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
+
+			String text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
+			boolean isMastodonURL = UiUtils.looksLikeMastodonUrl(text);
+
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
 			if(sessions.isEmpty()){
 				Toast.makeText(this, R.string.err_not_logged_in, Toast.LENGTH_SHORT).show();
 				finish();
-			}else if(sessions.size()==1){
+			}else if(sessions.size()==1 && !isMastodonURL){
 				openComposeFragment(sessions.get(0).getID());
 			}else{
-				getWindow().setBackgroundDrawable(new ColorDrawable(0xff000000));
-				UiUtils.pickAccount(this, null, R.string.choose_account, 0,
-						session -> openComposeFragment(session.getID()),
-						b -> b.setOnCancelListener(d -> finish())
-				);
+				new AccountSwitcherSheet(this, null, true, isMastodonURL, (accountId, open) -> {
+					if (open) {
+						UiUtils.lookupURL(this, accountId, text, false, (clazz, args) -> {
+							if (clazz == null) {
+								finish();
+								return;
+							}
+							args.putString("fromExternalShare", clazz.getSimpleName());
+							Intent intent = new Intent(this, MainActivity.class);
+							intent.putExtras(args);
+							finish();
+							startActivity(intent);
+						});
+					} else {
+						openComposeFragment(accountId);
+					}
+				}).show();
 			}
 		}
 	}

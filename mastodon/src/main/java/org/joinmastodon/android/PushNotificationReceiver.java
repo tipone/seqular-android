@@ -25,6 +25,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.NotificationReceivedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Mention;
 import org.joinmastodon.android.model.NotificationAction;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushNotification;
@@ -33,6 +34,7 @@ import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -273,8 +275,23 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 		CharSequence input = remoteInput.getCharSequence(ACTION_KEY_TEXT_REPLY);
 
+		// copied from ComposeFragment - TODO: generalize?
+		ArrayList<String> mentions=new ArrayList<>();
+		Status status = notification.status;
+		String ownID=AccountSessionManager.getInstance().getAccount(accountID).self.id;
+		if(!status.account.id.equals(ownID))
+			mentions.add('@'+status.account.acct);
+		for(Mention mention:status.mentions){
+			if(mention.id.equals(ownID))
+				continue;
+			String m='@'+mention.acct;
+			if(!mentions.contains(m))
+				mentions.add(m);
+		}
+		String initialText=mentions.isEmpty() ? "" : TextUtils.join(" ", mentions)+" ";
+
 		CreateStatus.Request req=new CreateStatus.Request();
-		req.status = input.toString();
+		req.status = initialText + input.toString();
 		req.language = preferences.postingDefaultLanguage;
 		req.visibility = preferences.postingDefaultVisibility;
 		req.inReplyToId = notification.status.id;
@@ -282,7 +299,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 			req.spoilerText = "re: " + notification.status.spoilerText;
 		}
 
-		new CreateStatus(req, UUID.randomUUID().toString()).setCallback(new Callback<Status>() {
+		new CreateStatus(req, UUID.randomUUID().toString()).setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(Status status) {
 				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);

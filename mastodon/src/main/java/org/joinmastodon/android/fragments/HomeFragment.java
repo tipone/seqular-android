@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
+import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,7 +18,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import org.joinmastodon.android.DomainManager;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
+import com.squareup.otto.Subscribe;
+
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.notifications.GetNotifications;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -36,11 +43,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-
-import com.squareup.otto.Subscribe;
+import java.util.Optional;
 
 import me.grishka.appkit.FragmentStackActivity;
 import me.grishka.appkit.api.Callback;
@@ -75,8 +78,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		E.register(this);
 		accountID=getArguments().getString("account");
 		setTitle(R.string.sk_app_name);
-		Instance instance = AccountSessionManager.getInstance().getAccount(accountID).getInstance();
-		isPleroma = instance.isPleroma();
+		isPleroma = AccountSessionManager.getInstance().getAccount(accountID).getInstance()
+				.map(Instance::isPleroma)
+				.orElse(false);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
@@ -225,6 +229,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		throw new IllegalArgumentException();
 	}
 
+	public void setCurrentTab(@IdRes int tab){
+		if(tab==currentTab)
+			return;
+		tabBar.selectTab(tab);
+		onTabSelected(tab);
+	}
+
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
@@ -270,7 +281,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
-			new AccountSwitcherSheet(getActivity()).show();
+			new AccountSwitcherSheet(getActivity(), this).show();
 			return true;
 		}
 		return false;
@@ -303,10 +314,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	public void updateNotificationBadge() {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = session.getInstance();
-		if (instance == null) return;
+		Optional<Instance> instance = session.getInstance();
+		if (instance.isEmpty()) return; // avoiding incompatibility with akkoma
 
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.isPleroma())
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.get().isPleroma())
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(List<Notification> notifications) {
@@ -342,5 +353,9 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Subscribe
 	public void onAllNotificationsSeen(AllNotificationsSeenEvent allNotificationsSeenEvent) {
 		setNotificationBadge(false);
+	}
+
+	public String getAccountID() {
+		return accountID;
 	}
 }

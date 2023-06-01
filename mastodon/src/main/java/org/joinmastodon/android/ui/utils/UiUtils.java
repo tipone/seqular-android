@@ -7,6 +7,7 @@ import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -110,6 +111,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -948,8 +950,8 @@ public class UiUtils {
 
 	public static String getInstanceName(String accountID) {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = session.getInstance();
-		return instance != null && !instance.title.isBlank() ? instance.title : session.domain;
+		Optional<Instance> instance = session.getInstance();
+		return instance.isPresent() && !instance.get().title.isBlank() ? instance.get().title : session.domain;
 	}
 
 	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {
@@ -1080,6 +1082,13 @@ public class UiUtils {
 	}
 
 	public static void openURL(Context context, String accountID, String url, boolean launchBrowser) {
+		lookupURL(context, accountID, url, launchBrowser, (clazz, args) -> {
+			if (clazz == null) return;
+			Nav.go((Activity) context, clazz, args);
+		});
+	}
+
+	public static void lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		Uri uri = Uri.parse(url);
 		List<String> path = uri.getPathSegments();
 		if (accountID != null && "https".equals(uri.getScheme())) {
@@ -1091,13 +1100,14 @@ public class UiUtils {
 								Bundle args = new Bundle();
 								args.putString("account", accountID);
 								args.putParcelable("status", Parcels.wrap(result));
-								Nav.go((Activity) context, ThreadFragment.class, args);
+								go.accept(ThreadFragment.class, args);
 							}
 
 							@Override
 							public void onError(ErrorResponse error) {
 								error.showToast(context);
 								if (launchBrowser) launchWebBrowser(context, url);
+								go.accept(null, null);
 							}
 						})
 						.wrapProgress((Activity) context, R.string.loading, true,
@@ -1113,27 +1123,26 @@ public class UiUtils {
 								args.putString("account", accountID);
 								if (!results.statuses.isEmpty()) {
 									args.putParcelable("status", Parcels.wrap(results.statuses.get(0)));
-									Nav.go((Activity) context, ThreadFragment.class, args);
+									go.accept(ThreadFragment.class, args);
 									return;
 								}
 								Optional<Account> account = results.accounts.stream()
 										.filter(a -> uri.equals(Uri.parse(a.url))).findAny();
 								if (account.isPresent()) {
 									args.putParcelable("profileAccount", Parcels.wrap(account.get()));
-									Nav.go((Activity) context, ProfileFragment.class, args);
+									go.accept(ProfileFragment.class, args);
 									return;
 								}
-								if (launchBrowser) {
-									launchWebBrowser(context, url);
-									return;
-								}
+								if (launchBrowser) launchWebBrowser(context, url);
 								Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+								go.accept(null, null);
 							}
 
 							@Override
 							public void onError(ErrorResponse error) {
 								error.showToast(context);
 								if (launchBrowser) launchWebBrowser(context, url);
+								go.accept(null, null);
 							}
 						})
 						.wrapProgress((Activity) context, R.string.loading, true,
@@ -1142,7 +1151,8 @@ public class UiUtils {
 				return;
 			}
 		}
-		launchWebBrowser(context, url);
+		if (launchBrowser) launchWebBrowser(context, url);
+		go.accept(null, null);
 	}
 
 	public static void copyText(View v, String text) {

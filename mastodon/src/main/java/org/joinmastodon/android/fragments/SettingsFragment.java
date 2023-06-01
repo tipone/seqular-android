@@ -9,7 +9,6 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -62,6 +61,7 @@ import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
@@ -105,7 +105,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		imageCache = ImageCache.getInstance(getActivity());
 		accountID=getArguments().getString("account");
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = session.getInstance();
+		Optional<Instance> instance = session.getInstance();
 		String instanceName = UiUtils.getInstanceName(accountID);
 
 		if(GithubSelfUpdater.needSelfUpdating()){
@@ -223,7 +223,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.showReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		if (instance.isPleroma()) {
+		if (instance.map(Instance::isPleroma).orElse(false)) {
 			items.add(new ButtonItem(R.string.sk_settings_reply_visibility, R.drawable.ic_fluent_chat_24_regular, b->{
 				PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
 				popupMenu.inflate(R.menu.reply_visibility);
@@ -299,7 +299,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
+		boolean translationAvailable = instance
+				.map(i -> i.v2 != null && i.v2.configuration.translation != null && i.v2.configuration.translation.enabled)
+				.orElse(false);
 		items.add(new SmallTextItem(getString(translationAvailable ?
 				R.string.sk_settings_translation_availability_note_available :
 				R.string.sk_settings_translation_availability_note_unavailable, instanceName)));
@@ -324,16 +326,18 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.sk_settings_auth, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit"), R.drawable.ic_fluent_open_24_regular));
 
 		items.add(new HeaderItem(instanceName));
-		items.add(new TextItem(R.string.sk_settings_rules, ()->{
-			Bundle args=new Bundle();
-			args.putParcelable("instance", Parcels.wrap(instance));
+		items.add(new TextItem(R.string.sk_settings_rules, instance.<Runnable>map(i -> () -> {
+			Bundle args = new Bundle();
+			args.putParcelable("instance", Parcels.wrap(i));
 			Nav.go(getActivity(), InstanceRulesFragment.class, args);
-		}, R.drawable.ic_fluent_task_list_ltr_24_regular));
+		}).orElse(null), R.drawable.ic_fluent_task_list_ltr_24_regular));
 		items.add(new TextItem(R.string.sk_settings_about_instance	, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/about"), R.drawable.ic_fluent_info_24_regular));
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
-		if (!TextUtils.isEmpty(instance.version)) items.add(new SmallTextItem(getString(R.string.sk_settings_server_version, instance.version)));
+		items.add(new SmallTextItem(instance
+				.map(i -> getString(R.string.sk_settings_server_version, i.version))
+				.orElse(getString(R.string.sk_instance_info_unavailable))));
 
 		items.add(new HeaderItem(R.string.sk_instance_features));
 		items.add(new SwitchItem(R.string.sk_settings_content_types, 0, GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID), (i)->{
@@ -361,14 +365,16 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			b.setText(getContentTypeString(contentType));
 			contentTypeMenu = popupMenu.getMenu();
 			contentTypeMenu.findItem(ContentType.getContentTypeRes(contentType)).setChecked(true);
-			ContentType.adaptMenuToInstance(contentTypeMenu, instance);
+			instance.ifPresent(i -> ContentType.adaptMenuToInstance(contentTypeMenu, i));
 		}));
 		items.add(new SmallTextItem(getString(R.string.sk_settings_default_content_type_explanation)));
 		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
 			glitchModeItem.enabled = i.checked;
 			if (i.checked) {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
-				if (instance.pleroma == null) GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+				if (!instance.map(Instance::isPleroma).orElse(false)) {
+					GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+				}
 			} else {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.remove(accountID);
 				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);

@@ -106,4 +106,42 @@
 	<attr name="colorGray800" format="color" />
 	<attr name="colorGray800t" format="color" />
 	<attr name="colorGray900" format="color" />
+
+	<attr name="colorSecondary25" format="color" />
+	<attr name="colorSecondary50" format="color" />
+	<attr name="colorSecondary100" format="color" />
+	<attr name="colorSecondary200" format="color" />
+	<attr name="colorSecondary300" format="color" />
+	<attr name="colorSecondary400" format="color" />
+	<attr name="colorSecondary500" format="color" />
+	<attr name="colorSecondary600" format="color" />
+	<attr name="colorSecondary700" format="color" />
+	<attr name="colorSecondary800" format="color" />
+	<attr name="colorSecondary900" format="color" />
+
+	<attr name="colorTertiary25" format="color" />
+	<attr name="colorTertiary50" format="color" />
+	<attr name="colorTertiary100" format="color" />
+	<attr name="colorTertiary200" format="color" />
+	<attr name="colorTertiary300" format="color" />
+	<attr name="colorTertiary400" format="color" />
+	<attr name="colorTertiary500" format="color" />
+	<attr name="colorTertiary600" format="color" />
+	<attr name="colorTertiary700" format="color" />
+	<attr name="colorTertiary800" format="color" />
+	<attr name="colorTertiary900" format="color" />
+
+	<attr name="colorNeutral25" format="color" />
+	<attr name="colorNeutral50" format="color" />
+	<attr name="colorNeutral50t" format="color" />
+	<attr name="colorNeutral100" format="color" />
+	<attr name="colorNeutral200" format="color" />
+	<attr name="colorNeutral300" format="color" />
+	<attr name="colorNeutral400" format="color" />
+	<attr name="colorNeutral500" format="color" />
+	<attr name="colorNeutral600" format="color" />
+	<attr name="colorNeutral700" format="color" />
+	<attr name="colorNeutral800" format="color" />
+	<attr name="colorNeutral800t" format="color" />
+	<attr name="colorNeutral900" format="color" />
 </resources>
