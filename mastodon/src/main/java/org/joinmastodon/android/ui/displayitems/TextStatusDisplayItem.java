@@ -237,6 +237,15 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 			spaceBelowText.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 
+			// remove additional padding when (transparently padded) translate button is visible
+			int pos = getAbsoluteAdapterPosition();
+			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(),
+					(translateVisible &&
+							item.parentFragment.getDisplayItems().size() >= pos + 1 &&
+							item.parentFragment.getDisplayItems().get(pos + 1) instanceof FooterStatusDisplayItem)
+							? 0 : V.dp(12)
+			);
+
 			if (!GlobalUserPreferences.collapseLongPosts) {
 				textScrollView.setLayoutParams(wrapParams);
 				readMore.setVisibility(View.GONE);
