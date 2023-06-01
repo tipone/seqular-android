@@ -123,21 +123,6 @@ public class AboutFragment extends SettingsBaseFragment{
         if (list.findViewHolderForAdapterPosition(items.indexOf(checkForUpdateItem)) instanceof TextViewHolder tvh) tvh.rebind();
     }
 
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (GithubSelfUpdater.needSelfUpdating()) {
-            E.register(this);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (GithubSelfUpdater.needSelfUpdating())
-            E.unregister(this);
-    }
-
     private void clearImageCache(){
         MastodonAPIController.runInBackground(()->{
             Activity activity=getActivity();

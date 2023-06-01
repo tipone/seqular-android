@@ -33,6 +33,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.DomainManager;
+import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -92,6 +93,9 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 		instanceName = UiUtils.getInstanceName(accountID);
 		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
+
+		if (GithubSelfUpdater.needSelfUpdating())
+			E.register(this);
 
 		addItems(items);
 		title = getArguments().getString("title", getTitle().toString());
@@ -506,6 +510,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	}
 
 	protected void restartActivityToApplyNewTheme(){
+		onDestroy();
 		getActivity().recreate();
 	}
 
@@ -515,6 +520,10 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		if(needUpdateNotificationSettings && PushSubscriptionManager.arePushNotificationsAvailable()){
 			AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().updatePushSettings(pushSubscription);
 		}
+
+		if (GithubSelfUpdater.needSelfUpdating())
+			E.unregister(this);
+
 		if(needAppRestart) UiUtils.restartApp();
 	}
 

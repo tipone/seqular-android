@@ -59,19 +59,4 @@ public class SettingsMainFragment extends SettingsBaseFragment {
             Toast.makeText(getActivity(), getString(R.string.mo_update_available, GithubSelfUpdater.getInstance().getUpdateInfo().version), Toast.LENGTH_SHORT).show();
         }
     }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        if (GithubSelfUpdater.needSelfUpdating()) {
-            E.register(this);
-        }
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (GithubSelfUpdater.needSelfUpdating())
-            E.unregister(this);
-    }
 }
