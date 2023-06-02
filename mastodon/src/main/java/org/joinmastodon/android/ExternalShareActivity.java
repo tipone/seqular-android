@@ -18,6 +18,7 @@ import org.jsoup.internal.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
@@ -29,8 +30,8 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
 
-			String text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-			boolean isMastodonURL = UiUtils.looksLikeMastodonUrl(text);
+			Optional<String> text = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT));
+			boolean isMastodonURL = text.map(UiUtils::looksLikeMastodonUrl).orElse(false);
 
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
 			if(sessions.isEmpty()){
@@ -40,8 +41,8 @@ public class ExternalShareActivity extends FragmentStackActivity{
 				openComposeFragment(sessions.get(0).getID());
 			}else{
 				new AccountSwitcherSheet(this, null, true, isMastodonURL, (accountId, open) -> {
-					if (open) {
-						UiUtils.lookupURL(this, accountId, text, false, (clazz, args) -> {
+					if (open && text.isPresent()) {
+						UiUtils.lookupURL(this, accountId, text.get(), false, (clazz, args) -> {
 							if (clazz == null) {
 								finish();
 								return;
