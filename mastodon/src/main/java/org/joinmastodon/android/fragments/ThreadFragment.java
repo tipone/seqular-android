@@ -92,7 +92,8 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 			NeighborAncestryInfo ancestryInfo = ancestryMap.get(s.id);
 			if (ancestryInfo != null) {
 				item.setAncestryInfo(
-						ancestryInfo,
+						ancestryInfo.hasDescendantNeighbor(),
+						ancestryInfo.hasAncestoringNeighbor(),
 						s.id.equals(mainStatus.id),
 						ancestryInfo.getAncestoringNeighbor()
 								.map(ancestor -> ancestor.id.equals(mainStatus.id))
@@ -100,7 +101,8 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 				);
 			}
 
-			if (item instanceof ReblogOrReplyLineStatusDisplayItem && !item.isDirectDescendant) {
+			if (item instanceof ReblogOrReplyLineStatusDisplayItem &&
+					(!item.isDirectDescendant && item.hasAncestoringNeighbor)) {
 				deleteTheseItems.add(i);
 			}
 

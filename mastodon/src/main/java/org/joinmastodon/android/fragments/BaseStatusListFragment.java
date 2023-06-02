@@ -357,10 +357,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 								if (firstIndex < 0) firstIndex = i;
 								lastIndex = i;
 								StatusDisplayItem item = h.getItem();
-								hasDescendant = item.hasDescendantNeighbor();
+								hasDescendant = item.hasDescendantNeighbor;
 								// no for direct descendants because main status (right above) is
 								// being displayed with an extended footer - no connected layout
-								hasAncestor = item.hasAncestoringNeighbor() && !item.isDirectDescendant;
+								hasAncestor = item.hasAncestoringNeighbor && !item.isDirectDescendant;
 								list.getDecoratedBoundsWithMargins(child, tmpRect);
 								outRect.left=Math.min(outRect.left, tmpRect.left);
 								outRect.top=Math.min(outRect.top, tmpRect.top);
@@ -797,7 +797,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				RecyclerView.ViewHolder siblingHolder=parent.getChildViewHolder(bottomSibling);
 				if(holder instanceof StatusDisplayItem.Holder<?> ih && siblingHolder instanceof StatusDisplayItem.Holder<?> sh
 						&& (!ih.getItemID().equals(sh.getItemID()) || sh instanceof ExtendedFooterStatusDisplayItem.Holder) && ih.getItem().getType()!=StatusDisplayItem.Type.GAP){
-					if (!ih.getItem().isMainStatus && ih.getItem().hasDescendantNeighbor()) continue;
+					if (!ih.getItem().isMainStatus && ih.getItem().hasDescendantNeighbor) continue;
 					drawDivider(child, bottomSibling, holder, siblingHolder, parent, c, dividerPaint);
 				}
 			}

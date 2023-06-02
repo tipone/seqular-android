@@ -136,7 +136,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			bindButton(favorite, item.status.favouritesCount);
 			// in thread view, direct descendant posts display one direct reply to themselves,
 			// hence in that case displaying whether there is another reply
-			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor() ? 0 : 1;
+			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor ? 0 : 1;
 			reply.setSelected(item.status.repliesCount > compareTo);
 			boost.setSelected(item.status.reblogged);
 			favorite.setSelected(item.status.favourited);
@@ -147,7 +147,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			int nextPos = getAbsoluteAdapterPosition() + 1;
 			boolean nextIsWarning = item.parentFragment.getDisplayItems().size() > nextPos &&
 					item.parentFragment.getDisplayItems().get(nextPos) instanceof WarningFilteredStatusDisplayItem;
-			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor() &&
+			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor &&
 					!nextIsWarning;
 
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();

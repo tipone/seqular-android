@@ -47,29 +47,20 @@ public abstract class StatusDisplayItem{
 	public final BaseStatusListFragment parentFragment;
 	public boolean inset;
 	public int index;
-	private ThreadFragment.NeighborAncestryInfo ancestryInfo;
 	public boolean
+			hasDescendantNeighbor = false,
+			hasAncestoringNeighbor = false,
 			isMainStatus = true,
 			isDirectDescendant = false;
 
-	public boolean hasDescendantNeighbor() {
-		return Optional.ofNullable(ancestryInfo)
-				.map(ThreadFragment.NeighborAncestryInfo::hasDescendantNeighbor)
-				.orElse(false);
-	}
-
-	public boolean hasAncestoringNeighbor() {
-		return Optional.ofNullable(ancestryInfo)
-				.map(ThreadFragment.NeighborAncestryInfo::hasAncestoringNeighbor)
-				.orElse(false);
-	}
-
 	public void setAncestryInfo(
-			ThreadFragment.NeighborAncestryInfo ancestryInfo,
+			boolean hasDescendantNeighbor,
+			boolean hasAncestoringNeighbor,
 			boolean isMainStatus,
 			boolean isDirectDescendant
 	) {
-		this.ancestryInfo = ancestryInfo;
+		this.hasDescendantNeighbor = hasDescendantNeighbor;
+		this.hasAncestoringNeighbor = hasAncestoringNeighbor;
 		this.isMainStatus = isMainStatus;
 		this.isDirectDescendant = isDirectDescendant;
 	}
