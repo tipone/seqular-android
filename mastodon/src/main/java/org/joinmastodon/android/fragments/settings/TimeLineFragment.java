@@ -15,10 +15,6 @@ public class TimeLineFragment extends SettingsBaseFragment{
     private SwitchItem showNewPostsItem, compactReblogReplyLineItem;
     @Override
     public void addItems(ArrayList<Item> items) {
-        items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
-            GlobalUserPreferences.showReplies=i.checked;
-            GlobalUserPreferences.save();
-        }));
         if (getInstance().pleroma != null) {
             items.add(new ButtonItem(R.string.sk_settings_reply_visibility, R.drawable.ic_fluent_chat_24_regular, b->{
                 PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
@@ -35,6 +31,10 @@ public class TimeLineFragment extends SettingsBaseFragment{
                         });
             }));
         }
+        items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
+            GlobalUserPreferences.showReplies=i.checked;
+            GlobalUserPreferences.save();
+        }));
         items.add(new SwitchItem(R.string.sk_settings_show_boosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, GlobalUserPreferences.showBoosts, i->{
             GlobalUserPreferences.showBoosts=i.checked;
             GlobalUserPreferences.save();
