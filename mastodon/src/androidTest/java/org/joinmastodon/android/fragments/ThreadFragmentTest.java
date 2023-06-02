@@ -19,41 +19,40 @@ public class ThreadFragmentTest {
 		return status;
 	}
 
+	private ThreadFragment.NeighborAncestryInfo fakeInfo(Status s, Status d, Status a) {
+		ThreadFragment.NeighborAncestryInfo info = new ThreadFragment.NeighborAncestryInfo(s);
+		info.descendantNeighbor = d;
+		info.ancestoringNeighbor = a;
+		return info;
+	}
+
 	@Test
-	public void countAncestryLevels() {
+	public void mapNeighborhoodAncestry() {
 		StatusContext context = new StatusContext();
 		context.ancestors = List.of(
 				fakeStatus("oldest ancestor", null),
 				fakeStatus("younger ancestor", "oldest ancestor")
 		);
+		Status mainStatus = fakeStatus("main status", "younger ancestor");
 		context.descendants = List.of(
 				fakeStatus("first reply", "main status"),
 				fakeStatus("reply to first reply", "first reply"),
 				fakeStatus("third level reply", "reply to first reply"),
 				fakeStatus("another reply", "main status")
 		);
-		List<Pair<String, Integer>> actual =
-				ThreadFragment.countAncestryLevels("main status", context);
 
-		List<Pair<String, Integer>> expected = List.of(
-				Pair.create("oldest ancestor", -2),
-				Pair.create("younger ancestor", -1),
-				Pair.create("main status", 0),
-				Pair.create("first reply", 1),
-				Pair.create("reply to first reply", 2),
-				Pair.create("third level reply", 3),
-				Pair.create("another reply", 1)
-		);
-		assertEquals(
-				"status ids are in the right order",
-				expected.stream().map(p -> p.first).collect(Collectors.toList()),
-				actual.stream().map(p -> p.first).collect(Collectors.toList())
-		);
-		assertEquals(
-				"counted levels match",
-				expected.stream().map(p -> p.second).collect(Collectors.toList()),
-				actual.stream().map(p -> p.second).collect(Collectors.toList())
-		);
+		List<ThreadFragment.NeighborAncestryInfo> neighbors =
+				ThreadFragment.mapNeighborhoodAncestry(mainStatus, context);
+
+		assertEquals(List.of(
+				fakeInfo(context.ancestors.get(0), context.ancestors.get(1), null),
+				fakeInfo(context.ancestors.get(1), mainStatus, context.ancestors.get(0)),
+				fakeInfo(mainStatus, context.descendants.get(0), context.ancestors.get(1)),
+				fakeInfo(context.descendants.get(0), context.descendants.get(1), mainStatus),
+				fakeInfo(context.descendants.get(1), context.descendants.get(2), context.descendants.get(0)),
+				fakeInfo(context.descendants.get(2), null, context.descendants.get(1)),
+				fakeInfo(context.descendants.get(3), null, null)
+		), neighbors);
 	}
 
 	@Test

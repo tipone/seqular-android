@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.util.Pair;
 import android.view.View;
 
+import androidx.annotation.NonNull;
+
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
 import org.joinmastodon.android.events.StatusCreatedEvent;
@@ -17,6 +19,7 @@ import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
@@ -30,8 +33,10 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import me.grishka.appkit.api.SimpleCallback;
 
@@ -55,6 +60,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 	 * confused? good. /j
 	 */
 	private final List<Pair<String, Integer>> levels = new ArrayList<>();
+	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -74,23 +80,27 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		// "what the fuck is a deque"? yes
 		// (it's just so the last-added item automatically comes first when looping over it)
 		Deque<Integer> deleteTheseItems = new ArrayDeque<>();
-		for(int i = 0; i < items.size(); i++){
-			StatusDisplayItem item = items.get(i);
 
-			Optional<Pair<String, Integer>> levelForStatus =
-					levels.stream().filter(p -> p.first.equals(s.id)).findAny();
-			item.descendantLevel = levelForStatus.map(p -> p.second).orElse(0);
-			if (levelForStatus.isPresent()) {
-				int idx = levels.indexOf(levelForStatus.get());
-				item.hasDescendantSibling = (levels.size() > idx + 1)
-						&& levels.get(idx + 1).second > levelForStatus.get().second;
-				item.isDescendantSibling = (idx - 1 >= 0)
-						&& levels.get(idx - 1).second < levelForStatus.get().second;
+		// modifying hidden filtered items if status is displayed as a warning
+		List<StatusDisplayItem> itemsToModify =
+				(items.get(0) instanceof WarningFilteredStatusDisplayItem warning)
+						? warning.filteredItems
+						: items;
+
+		for(int i = 0; i < itemsToModify.size(); i++){
+			StatusDisplayItem item = itemsToModify.get(i);
+			NeighborAncestryInfo ancestryInfo = ancestryMap.get(s.id);
+			if (ancestryInfo != null) {
+				item.setAncestryInfo(
+						ancestryInfo,
+						s.id.equals(mainStatus.id),
+						ancestryInfo.getAncestoringNeighbor()
+								.map(ancestor -> ancestor.id.equals(mainStatus.id))
+								.orElse(false)
+				);
 			}
 
-			if (item instanceof ReblogOrReplyLineStatusDisplayItem
-					&& item.isDescendantSibling
-					&& item.descendantLevel != 1) {
+			if (item instanceof ReblogOrReplyLineStatusDisplayItem && !item.isDirectDescendant) {
 				deleteTheseItems.add(i);
 			}
 
@@ -101,7 +111,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					footer.hideCounts=true;
 			}
 		}
-		for (int deleteThisItem : deleteTheseItems) items.remove(deleteThisItem);
+		for (int deleteThisItem : deleteTheseItems) itemsToModify.remove(deleteThisItem);
 		if(s.id.equals(mainStatus.id)) {
 			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, s.getContentStatus()));
 		}
@@ -117,7 +127,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 						if (getActivity() == null) return;
 						if(refreshing){
 							data.clear();
-							levels.clear();
+							ancestryMap.clear();
 							displayItems.clear();
 							data.add(mainStatus);
 							onAppendItems(Collections.singletonList(mainStatus));
@@ -129,7 +139,9 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 						result.descendants=filterStatuses(result.descendants);
 						result.ancestors=filterStatuses(result.ancestors);
 
-						levels.addAll(countAncestryLevels(mainStatus.id, result));
+						for (NeighborAncestryInfo i : mapNeighborhoodAncestry(mainStatus, result)) {
+							ancestryMap.put(i.status.id, i);
+						}
 
 						if(footerProgress!=null)
 							footerProgress.setVisibility(View.GONE);
@@ -156,26 +168,35 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 				.exec(accountID);
 	}
 
-	public static List<Pair<String, Integer>> countAncestryLevels(String mainStatusID, StatusContext context) {
-		List<Pair<String, Integer>> levels = new ArrayList<>();
+	public static List<NeighborAncestryInfo> mapNeighborhoodAncestry(Status mainStatus, StatusContext context) {
+		List<NeighborAncestryInfo> ancestry = new ArrayList<>();
 
-		for (int i = 0; i < context.ancestors.size(); i++) {
-			levels.add(Pair.create(
-					context.ancestors.get(i).id,
-					-context.ancestors.size() + i // -3, -2, -1
-			));
+		List<Status> statuses = new ArrayList<>(context.ancestors);
+		statuses.add(mainStatus);
+		statuses.addAll(context.descendants);
+
+		int count = statuses.size();
+		for (int index = 0; index < count; index++) {
+			Status current = statuses.get(index);
+			NeighborAncestryInfo item = new NeighborAncestryInfo(current);
+
+			item.descendantNeighbor = Optional
+					.ofNullable(count > index + 1 ? statuses.get(index + 1) : null)
+					.filter(s -> s.inReplyToId.equals(current.id))
+					.orElse(null);
+
+			item.ancestoringNeighbor = Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
+					.filter(ancestor -> ancestor
+							.getDescendantNeighbor()
+							.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
+							.orElse(false))
+					.flatMap(NeighborAncestryInfo::getStatus)
+					.orElse(null);
+
+			ancestry.add(item);
 		}
 
-		levels.add(Pair.create(mainStatusID, 0));
-		Map<String, Integer> levelPerStatus = new HashMap<>();
-
-		// sum up the amounts of descendants per status
-		context.descendants.forEach(s -> levelPerStatus.put(s.id,
-				levelPerStatus.getOrDefault(s.inReplyToId, 0) + 1));
-		context.descendants.forEach(s ->
-				levels.add(Pair.create(s.id, levelPerStatus.get(s.id))));
-
-		return levels;
+		return ancestry;
 	}
 
 	public static void sortStatusContext(Status mainStatus, StatusContext context) {
@@ -274,5 +295,48 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 	@Override
 	public Uri getWebUri(Uri.Builder base) {
 		return Uri.parse(mainStatus.url);
+	}
+
+	public static class NeighborAncestryInfo {
+		protected Status status, descendantNeighbor, ancestoringNeighbor;
+
+		public NeighborAncestryInfo(@NonNull Status status) {
+			this.status = status;
+		}
+
+		public Optional<Status> getStatus() {
+			return Optional.ofNullable(status);
+		}
+
+		public Optional<Status> getDescendantNeighbor() {
+			return Optional.ofNullable(descendantNeighbor);
+		}
+
+		public Optional<Status> getAncestoringNeighbor() {
+			return Optional.ofNullable(ancestoringNeighbor);
+		}
+
+		public boolean hasDescendantNeighbor() {
+			return getDescendantNeighbor().isPresent();
+		}
+
+		public boolean hasAncestoringNeighbor() {
+			return getAncestoringNeighbor().isPresent();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			NeighborAncestryInfo that = (NeighborAncestryInfo) o;
+			return status.equals(that.status)
+					&& Objects.equals(descendantNeighbor, that.descendantNeighbor)
+					&& Objects.equals(ancestoringNeighbor, that.ancestoringNeighbor);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(status, descendantNeighbor, ancestoringNeighbor);
+		}
 	}
 }

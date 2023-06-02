@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -22,7 +21,6 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
 import org.joinmastodon.android.model.Filter;
-import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
@@ -49,8 +47,32 @@ public abstract class StatusDisplayItem{
 	public final BaseStatusListFragment parentFragment;
 	public boolean inset;
 	public int index;
-	public int descendantLevel;
-	public boolean hasDescendantSibling, isDescendantSibling;
+	private ThreadFragment.NeighborAncestryInfo ancestryInfo;
+	public boolean
+			isMainStatus = true,
+			isDirectDescendant = false;
+
+	public boolean hasDescendantNeighbor() {
+		return Optional.ofNullable(ancestryInfo)
+				.map(ThreadFragment.NeighborAncestryInfo::hasDescendantNeighbor)
+				.orElse(false);
+	}
+
+	public boolean hasAncestoringNeighbor() {
+		return Optional.ofNullable(ancestryInfo)
+				.map(ThreadFragment.NeighborAncestryInfo::hasAncestoringNeighbor)
+				.orElse(false);
+	}
+
+	public void setAncestryInfo(
+			ThreadFragment.NeighborAncestryInfo ancestryInfo,
+			boolean isMainStatus,
+			boolean isDirectDescendant
+	) {
+		this.ancestryInfo = ancestryInfo;
+		this.isMainStatus = isMainStatus;
+		this.isDirectDescendant = isDirectDescendant;
+	}
 
 	public StatusDisplayItem(String parentID, BaseStatusListFragment parentFragment){
 		this.parentID=parentID;
