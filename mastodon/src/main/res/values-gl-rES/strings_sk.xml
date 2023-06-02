@@ -90,7 +90,7 @@
     <string name="sk_loading_fediverse_resource_title">Buscando no Fediverso</string>
     <string name="sk_reblog_with_visibility">Impulsar con visibilidade</string>
     <string name="sk_quote_post">Publicar acerca disto</string>
-    <string name="sk_undo_reblog">Desfacer o impulso</string>
+    <string name="sk_undo_reblog">Desfacer impulso</string>
     <string name="sk_copy_link_to_post">Copiar ligazón á publicación</string>
     <string name="sk_loading_resource_on_instance_title">Buscando en %s</string>
     <string name="sk_open_with_account">Abrir con outra conta</string>
@@ -286,4 +286,10 @@
     <string name="sk_content_type">Tipo de contido</string>
     <string name="sk_content_type_markdown">Markdown</string>
     <string name="sk_settings_content_types_explanation">Permite configurar un tipo de contido como Markdown ao crear unha publicación. Teña en conta que non tódalas instancias soportan isto.</string>
+    <string name="sk_bubble_timeline_info_banner">Estas son as publicacións máis recentes da xente na burbulla do seu servidor Akkoma.</string>
+    <string name="sk_timeline_bubble">Burbulla</string>
+    <string name="sk_instance_info_unavailable">Información da instancia temporalmente non dispoñible</string>
+    <string name="sk_open_in_app">Abrir na aplicación</string>
+    <string name="sk_external_share_title">Compartir coa conta</string>
+    <string name="sk_external_share_or_open_title">Compartir ou abrir coa conta</string>
 </resources>
