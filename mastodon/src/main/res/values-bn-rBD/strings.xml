@@ -20,11 +20,20 @@
 	<string name="share_toot_title">শেয়ার করুন</string>
 	<string name="settings">সেটিংস</string>
 	<string name="cancel">বাতিল করুন</string>
+	<plurals name="followers">
+		<item quantity="one">জন ফলোয়ার</item>
+		<item quantity="other">জন ফলোয়ারস</item>
+	</plurals>
 	<plurals name="posts">
 		<item quantity="one">পোস্ট</item>
 		<item quantity="other">পোস্টগুলো</item>
 	</plurals>
 	<string name="posts">পোস্টগুলো</string>
+	<string name="media">মিডিয়া</string>
+	<string name="button_follow">ফলো করুন</string>
+	<string name="button_following">ফলো করছেন</string>
+	<string name="edit_profile">প্রোফাইল সংশোধন করুন</string>
+	<string name="mention_user">%s -কে পিং করুন</string>
 	<string name="share_user">%s -কে শেয়ার করুন</string>
 	<string name="mute_user">%s -কে মিউট করুন</string>
 	<string name="unmute_user">%s -কে আনমিউট করুন</string>
@@ -52,6 +61,22 @@
 	<plurals name="x_days">
 		<item quantity="one">%d দিন</item>
 		<item quantity="other">%d দিন</item>
+	</plurals>
+	<plurals name="x_seconds_left">
+		<item quantity="one">%d সেকেন্ড বাকি</item>
+		<item quantity="other">%d সেকেন্ড বাকি</item>
+	</plurals>
+	<plurals name="x_minutes_left">
+		<item quantity="one">%d মিনিট বাকি</item>
+		<item quantity="other">%d মিনিট বাকি</item>
+	</plurals>
+	<plurals name="x_hours_left">
+		<item quantity="one">%d ঘণ্টা বাকি</item>
+		<item quantity="other">%d ঘণ্টা বাকি</item>
+	</plurals>
+	<plurals name="x_days_left">
+		<item quantity="one">%d দিন বাকি</item>
+		<item quantity="other">%d দিন বাকি</item>
 	</plurals>
 	<string name="poll_closed">বন্ধ</string>
 	<string name="confirm_mute_title">অ্যাকাউন্টটি মিউট করুন</string>
@@ -89,6 +114,17 @@
 		<item quantity="other">%d jon ব্যক্তিরা বলছেন</item>
 	</plurals>
 	<string name="sending_report">রিপোর্ট পাঠানো হচ্ছে…</string>
+	<string name="report_sent_title">রিপোর্ট করার জন্য আপনাকে ধন্যবাদ, আমরা এটি শীঘ্রই দেখব.</string>
+	<string name="report_sent_subtitle">আমরা যতক্ষণে আপনার রিপোর্ট পুনর্বিবেচনা করছি, আপনি %s এর বিরুদ্ধে ব্যবস্থা নিতে পারেন.</string>
+	<string name="back">ফিরে যান</string>
+	<string name="search_communities">সার্ভারের নাম বা লিঙ্ক</string>
+	<string name="instance_rules_title">সার্ভারের নিয়মাবলী</string>
+	<string name="signup_title">অ্যাকাউন্ট তৈরি করুন</string>
+	<string name="display_name">নাম</string>
+	<string name="username">ইউজারনেম</string>
+	<string name="email">ই-মেইল</string>
+	<string name="password">পাসওয়ার্ড</string>
+	<string name="confirm_password">পাসওয়ার্ড নিশ্চিত করুন</string>
 	<!-- %s is the email address -->
 	<!-- translators: %,d is a valid placeholder, it formats the number with locale-dependent grouping separators -->
 	<!-- %s is version like 1.2.3 -->
