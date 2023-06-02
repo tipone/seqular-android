@@ -1,7 +1,7 @@
 # These are supported funding model platforms
 
 github: LucasGGamerM
-custom: https://liberapay.com/LucasGGamerM/donate
+custom: ["https://liberapay.com/LucasGGamerM/donate", liberapay.com]
 patreon: # mastodon
 open_collective: # Replace with a single Open Collective username e.g., user1
 tidelift: # Replace with a single Tidelift platform-name/package-name e.g., npm/babel
