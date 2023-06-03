@@ -20,6 +20,8 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 @Parcel
 public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	@RequiredField
@@ -190,8 +192,15 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return url;
 	}
 
-	public static class StatusDeserializer implements JsonDeserializer<Status> {
+	@NonNull
+	@Override
+	public Status clone(){
+		Status copy=(Status) super.clone();
+		copy.spoilerRevealed=false;
+		return copy;
+	}
 
+	public static class StatusDeserializer implements JsonDeserializer<Status> {
 		@Override
 		public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
 			JsonObject obj = json.getAsJsonObject();

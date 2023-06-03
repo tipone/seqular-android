@@ -1395,7 +1395,7 @@ public class UiUtils {
 		extras.putString("account", accountID);
 		if (n.status!=null) {
 			Status status=n.status;
-			extras.putParcelable("status", Parcels.wrap(status));
+			extras.putParcelable("status", Parcels.wrap(status.clone()));
 			Nav.go((Activity) context, ThreadFragment.class, extras);
 		} else if (n.report != null) {
 			String domain = AccountSessionManager.getInstance().getAccount(accountID).domain;
