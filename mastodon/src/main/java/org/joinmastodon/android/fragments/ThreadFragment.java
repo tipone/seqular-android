@@ -2,7 +2,6 @@ package org.joinmastodon.android.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -32,11 +31,9 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import me.grishka.appkit.api.SimpleCallback;
 
@@ -74,10 +71,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 			NeighborAncestryInfo ancestryInfo = ancestryMap.get(s.id);
 			if (ancestryInfo != null) {
 				item.setAncestryInfo(
-						ancestryInfo.hasDescendantNeighbor(),
-						ancestryInfo.hasAncestoringNeighbor(),
+						ancestryInfo.descendantNeighbor != null,
+						ancestryInfo.ancestoringNeighbor != null,
 						s.id.equals(mainStatus.id),
-						ancestryInfo.getAncestoringNeighbor()
+						Optional.ofNullable(ancestryInfo.ancestoringNeighbor)
 								.map(ancestor -> ancestor.id.equals(mainStatus.id))
 								.orElse(false)
 				);
@@ -162,22 +159,21 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		int count = statuses.size();
 		for (int index = 0; index < count; index++) {
 			Status current = statuses.get(index);
-			NeighborAncestryInfo item = new NeighborAncestryInfo(current);
-
-			item.descendantNeighbor = Optional
-					.ofNullable(count > index + 1 ? statuses.get(index + 1) : null)
-					.filter(s -> s.inReplyToId.equals(current.id))
-					.orElse(null);
-
-			item.ancestoringNeighbor = Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
-					.filter(ancestor -> ancestor
-							.getDescendantNeighbor()
-							.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
-							.orElse(false))
-					.flatMap(NeighborAncestryInfo::getStatus)
-					.orElse(null);
-
-			ancestry.add(item);
+			ancestry.add(new NeighborAncestryInfo(
+					current,
+					// descendant neighbor
+					Optional
+							.ofNullable(count > index + 1 ? statuses.get(index + 1) : null)
+							.filter(s -> s.inReplyToId.equals(current.id))
+							.orElse(null),
+					// ancestoring neighbor
+					Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
+							.filter(ancestor -> Optional.ofNullable(ancestor.descendantNeighbor)
+									.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
+									.orElse(false))
+							.map(a -> a.status)
+							.orElse(null)
+			));
 		}
 
 		return ancestry;
@@ -281,31 +277,13 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		return Uri.parse(mainStatus.url);
 	}
 
-	public static class NeighborAncestryInfo {
+	protected static class NeighborAncestryInfo {
 		protected Status status, descendantNeighbor, ancestoringNeighbor;
 
-		public NeighborAncestryInfo(@NonNull Status status) {
+		protected NeighborAncestryInfo(@NonNull Status status, Status descendantNeighbor, Status ancestoringNeighbor) {
 			this.status = status;
-		}
-
-		public Optional<Status> getStatus() {
-			return Optional.ofNullable(status);
-		}
-
-		public Optional<Status> getDescendantNeighbor() {
-			return Optional.ofNullable(descendantNeighbor);
-		}
-
-		public Optional<Status> getAncestoringNeighbor() {
-			return Optional.ofNullable(ancestoringNeighbor);
-		}
-
-		public boolean hasDescendantNeighbor() {
-			return getDescendantNeighbor().isPresent();
-		}
-
-		public boolean hasAncestoringNeighbor() {
-			return getAncestoringNeighbor().isPresent();
+			this.descendantNeighbor = descendantNeighbor;
+			this.ancestoringNeighbor = ancestoringNeighbor;
 		}
 
 		@Override

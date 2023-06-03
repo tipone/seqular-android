@@ -20,9 +20,7 @@ public class ThreadFragmentTest {
 	}
 
 	private ThreadFragment.NeighborAncestryInfo fakeInfo(Status s, Status d, Status a) {
-		ThreadFragment.NeighborAncestryInfo info = new ThreadFragment.NeighborAncestryInfo(s);
-		info.descendantNeighbor = d;
-		info.ancestoringNeighbor = a;
+		ThreadFragment.NeighborAncestryInfo info = new ThreadFragment.NeighborAncestryInfo(s, d, a);
 		return info;
 	}
 
