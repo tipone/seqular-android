@@ -65,7 +65,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerEmojiHelper.setText(parsedSpoilerText);
 		}
 		session = AccountSessionManager.getInstance().getAccount(parentFragment.getAccountID());
-		UiUtils.loadMaxWidth(parentFragment.getContext());
 	}
 
 	public void setTranslationShown(boolean translationShown) {

@@ -16,7 +16,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
@@ -95,7 +94,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		UiUtils.loadMaxWidth(getContext());
 		if(GlobalUserPreferences.disableMarquee){
 			setTitleMarqueeEnabled(false);
 			setSubtitleMarqueeEnabled(false);
@@ -319,7 +317,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				View fab = getFab();
-				if (fab!=null && GlobalUserPreferences.autoHideFab) {
+				if (fab!=null && GlobalUserPreferences.autoHideFab && dy != UiUtils.SCROLL_TO_TOP_DELTA) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						hideFab();
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {

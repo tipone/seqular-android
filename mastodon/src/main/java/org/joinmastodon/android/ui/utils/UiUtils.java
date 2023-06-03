@@ -17,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -141,13 +142,9 @@ public class UiUtils {
 	private static Handler mainHandler = new Handler(Looper.getMainLooper());
 	private static final DateTimeFormatter DATE_FORMATTER_SHORT_WITH_YEAR = DateTimeFormatter.ofPattern("d MMM uuuu"), DATE_FORMATTER_SHORT = DateTimeFormatter.ofPattern("d MMM");
 	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
-	public static int MAX_WIDTH;
+	public static int MAX_WIDTH, SCROLL_TO_TOP_DELTA;
 
 	private UiUtils() {
-	}
-
-	public static void loadMaxWidth(Context ctx) {
-		if (MAX_WIDTH == 0) MAX_WIDTH = (int) ctx.getResources().getDimension(R.dimen.layout_max_width);
 	}
 
 	public static void launchWebBrowser(Context context, String url) {
@@ -898,6 +895,10 @@ public class UiUtils {
 
 		ColorPalette palette = ColorPalette.palettes.get(GlobalUserPreferences.color);
 		if (palette != null) palette.apply(context);
+
+		Resources res = context.getResources();
+		MAX_WIDTH = (int) res.getDimension(R.dimen.layout_max_width);
+		SCROLL_TO_TOP_DELTA = (int) res.getDimension(R.dimen.scroll_to_top_delta);
 	}
 
 	public static boolean isDarkTheme() {

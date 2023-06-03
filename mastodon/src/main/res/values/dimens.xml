@@ -3,4 +3,5 @@
     <dimen name="text_max_height">220dp</dimen>
     <dimen name="text_collapsed_height">145dp</dimen>
     <dimen name="layout_max_width">450dp</dimen>
+    <dimen name="scroll_to_top_delta">300dp</dimen>
 </resources>
