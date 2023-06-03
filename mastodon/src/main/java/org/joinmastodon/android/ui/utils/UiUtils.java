@@ -907,25 +907,28 @@ public class UiUtils {
 		return theme == GlobalUserPreferences.ThemePreference.DARK;
 	}
 
-	public static Optional<Pair<String, Optional<String>>> looksLikeFediverseHandle(String maybeFediHandle) {
+	public static Optional<Pair<String, Optional<String>>> parseFediverseHandle(String maybeFediHandle) {
 		// https://stackoverflow.com/a/26987741, except i put a + here ... v
 		String domainRegex = "^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]\\.)+(xn--)?([a-z0-9][a-z0-9\\-]{0,60}|[a-z0-9-]{1,30}\\.[a-z]{2,})$";
-		try {
-			List<String> parts = Arrays.stream(maybeFediHandle.split("@"))
-					.filter(part -> !part.isEmpty())
-					.collect(Collectors.toList());
-			if (parts.size() == 0 || !parts.get(0).matches("^[^/\\s]+$")) {
-				return Optional.empty();
-			} else if (parts.size() == 2) {
+		if (maybeFediHandle.toLowerCase().startsWith("mailto:")) {
+			maybeFediHandle = maybeFediHandle.substring("mailto:".length());
+		}
+		List<String> parts = Arrays.stream(maybeFediHandle.split("@"))
+				.filter(part -> !part.isEmpty())
+				.collect(Collectors.toList());
+		if (parts.size() == 0 || !parts.get(0).matches("^[^/\\s]+$")) {
+			return Optional.empty();
+		} else if (parts.size() == 2) {
+			try {
 				String domain = IDN.toASCII(parts.get(1));
 				if (!domain.matches(domainRegex)) return Optional.empty();
 				return Optional.of(Pair.create(parts.get(0), Optional.of(parts.get(1))));
-			} else if (maybeFediHandle.startsWith("@")) {
-				return Optional.of(Pair.create(parts.get(0), Optional.empty()));
-			} else {
+			} catch (IllegalArgumentException ignored) {
 				return Optional.empty();
 			}
-		} catch (IllegalArgumentException ignored) {
+		} else if (maybeFediHandle.startsWith("@")) {
+			return Optional.of(Pair.create(parts.get(0), Optional.empty()));
+		} else {
 			return Optional.empty();
 		}
 	}

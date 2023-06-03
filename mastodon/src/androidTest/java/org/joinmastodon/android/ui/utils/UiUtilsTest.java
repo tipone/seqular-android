@@ -29,35 +29,40 @@ public class UiUtilsTest {
 	}
 
 	@Test
-	public void looksLikeFediverseHandle() {
+	public void parseFediverseHandle() {
 		assertEquals(
 				Optional.of(Pair.create("megalodon", Optional.of("floss.social"))),
-				UiUtils.looksLikeFediverseHandle("megalodon@floss.social")
+				UiUtils.parseFediverseHandle("megalodon@floss.social")
 		);
 
 		assertEquals(
 				Optional.of(Pair.create("megalodon", Optional.of("floss.social"))),
-				UiUtils.looksLikeFediverseHandle("@megalodon@floss.social")
+				UiUtils.parseFediverseHandle("@megalodon@floss.social")
 		);
 
 		assertEquals(
 				Optional.of(Pair.create("megalodon", Optional.empty())),
-				UiUtils.looksLikeFediverseHandle("@megalodon")
+				UiUtils.parseFediverseHandle("@megalodon")
+		);
+
+		assertEquals(
+				Optional.of(Pair.create("megalodon", Optional.of("floss.social"))),
+				UiUtils.parseFediverseHandle("mailto:megalodon@floss.social")
 		);
 
 		assertEquals(
 				Optional.empty(),
-				UiUtils.looksLikeFediverseHandle("megalodon")
+				UiUtils.parseFediverseHandle("megalodon")
 		);
 
 		assertEquals(
 				Optional.empty(),
-				UiUtils.looksLikeFediverseHandle("this is not a fedi handle")
+				UiUtils.parseFediverseHandle("this is not a fedi handle")
 		);
 
 		assertEquals(
 				Optional.empty(),
-				UiUtils.looksLikeFediverseHandle("not@a-domain")
+				UiUtils.parseFediverseHandle("not@a-domain")
 		);
 	}
 
