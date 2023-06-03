@@ -81,6 +81,6 @@ public class CustomLocalTimelineFragment extends StatusListFragment implements P
 
     @Override
     public Uri getWebUri(Uri.Builder base) {
-        return base.path("").build();
+        return Uri.parse(domain);
     }
 }
