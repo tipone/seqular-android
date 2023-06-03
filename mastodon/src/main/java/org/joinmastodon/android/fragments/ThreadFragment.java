@@ -1,9 +1,13 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 
 import org.joinmastodon.android.DomainManager;
+import androidx.annotation.NonNull;
+
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -16,27 +20,51 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusContext;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import me.grishka.appkit.api.SimpleCallback;
 
-public class ThreadFragment extends StatusListFragment implements DomainDisplay{
+public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
 	protected Status mainStatus;
 
-	@Override
-	public String getDomain() {
-		return mainStatus.url;
-	}
+	/**
+	 * lists the hierarchy of ancestors and descendants in a thread. level 0 = the main status.
+	 * e.g.
+	 * <pre>
+	 * [0] ancestor:   -2 ↰
+	 * [1] ancestor:     -1 ↰
+	 * [2] main status:     0 ↰
+	 * [3] descendant:        1 ↰
+	 * [4] descendant:          2 ↰
+	 * [5] descendant:            3
+	 * [6] descendant:        1
+	 * [7] descendant:        1 ↰
+	 * [8] descendant:          2
+	 * </pre>
+	 * confused? good. /j
+	 */
+	private final List<Pair<String, Integer>> levels = new ArrayList<>();
+	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -48,21 +76,50 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 		data.add(mainStatus);
 		onAppendItems(Collections.singletonList(mainStatus));
 		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.displayName), mainStatus.account.emojis));
-
-		DomainManager.getInstance().setCurrentDomain(getDomain());
 	}
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
 		List<StatusDisplayItem> items=super.buildDisplayItems(s);
-		if(s.id.equals(mainStatus.id)){
-			for(StatusDisplayItem item:items){
+		// "what the fuck is a deque"? yes
+		// (it's just so the last-added item automatically comes first when looping over it)
+		Deque<Integer> deleteTheseItems = new ArrayDeque<>();
+
+		// modifying hidden filtered items if status is displayed as a warning
+		List<StatusDisplayItem> itemsToModify =
+				(items.get(0) instanceof WarningFilteredStatusDisplayItem warning)
+						? warning.filteredItems
+						: items;
+
+		for(int i = 0; i < itemsToModify.size(); i++){
+			StatusDisplayItem item = itemsToModify.get(i);
+			NeighborAncestryInfo ancestryInfo = ancestryMap.get(s.id);
+			if (ancestryInfo != null) {
+				item.setAncestryInfo(
+						ancestryInfo.hasDescendantNeighbor(),
+						ancestryInfo.hasAncestoringNeighbor(),
+						s.id.equals(mainStatus.id),
+						ancestryInfo.getAncestoringNeighbor()
+								.map(ancestor -> ancestor.id.equals(mainStatus.id))
+								.orElse(false)
+				);
+			}
+
+			if (item instanceof ReblogOrReplyLineStatusDisplayItem &&
+					(!item.isDirectDescendant && item.hasAncestoringNeighbor)) {
+				deleteTheseItems.add(i);
+			}
+
+			if(s.id.equals(mainStatus.id)){
 				if(item instanceof TextStatusDisplayItem text)
 					text.textSelectable=true;
 				else if(item instanceof FooterStatusDisplayItem footer)
 					footer.hideCounts=true;
 			}
-			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, accountID, s.getContentStatus()));
+		}
+		for (int deleteThisItem : deleteTheseItems) itemsToModify.remove(deleteThisItem);
+		if(s.id.equals(mainStatus.id)) {
+			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, s.getContentStatus()));
 		}
 		return items;
 	}
@@ -76,36 +133,22 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 						if (getActivity() == null) return;
 						if(refreshing){
 							data.clear();
+							ancestryMap.clear();
 							displayItems.clear();
 							data.add(mainStatus);
 							onAppendItems(Collections.singletonList(mainStatus));
 						}
-						AccountSession account=AccountSessionManager.getInstance().getAccount(accountID);
-						Instance instance=AccountSessionManager.getInstance().getInstanceInfo(account.domain);
-						if(instance.pleroma != null){
-							List<String> threadIds=new ArrayList<>();
-							threadIds.add(mainStatus.id);
-							for(Status s:result.descendants){
-								if(threadIds.contains(s.inReplyToId)){
-									threadIds.add(s.id);
-								}
-							}
-							threadIds.add(mainStatus.inReplyToId);
-							for(int i=result.ancestors.size()-1; i >= 0; i--){
-								Status s=result.ancestors.get(i);
-								if(s.inReplyToId != null && threadIds.contains(s.id)){
-									threadIds.add(s.inReplyToId);
-								}
-							}
 
-							result.ancestors=result.ancestors.stream().filter(s -> threadIds.contains(s.id)).collect(Collectors.toList());
-							result.descendants=getDescendantsOrdered(mainStatus.id,
-									result.descendants.stream()
-											.filter(s -> threadIds.contains(s.id))
-											.collect(Collectors.toList()));
-						}
+						// TODO: figure out how this code works
+						if(isInstanceAkkoma()) sortStatusContext(mainStatus, result);
+
 						result.descendants=filterStatuses(result.descendants);
 						result.ancestors=filterStatuses(result.ancestors);
+
+						for (NeighborAncestryInfo i : mapNeighborhoodAncestry(mainStatus, result)) {
+							ancestryMap.put(i.status.id, i);
+						}
+
 						if(footerProgress!=null)
 							footerProgress.setVisibility(View.GONE);
 						data.addAll(result.descendants);
@@ -114,7 +157,12 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 						int count=displayItems.size();
 						if(!refreshing)
 							adapter.notifyItemRangeInserted(prevCount, count-prevCount);
-						prependItems(result.ancestors, !refreshing);
+						int prependedCount = prependItems(result.ancestors, !refreshing);
+						if (prependedCount > 0 && displayItems.get(prependedCount) instanceof ReblogOrReplyLineStatusDisplayItem) {
+							displayItems.remove(prependedCount);
+							adapter.notifyItemRemoved(prependedCount);
+							count--;
+						}
 						dataLoaded();
 						if(refreshing){
 							refreshDone();
@@ -126,7 +174,61 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 				.exec(accountID);
 	}
 
-	private List<Status> getDescendantsOrdered(String id, List<Status> statuses){
+	public static List<NeighborAncestryInfo> mapNeighborhoodAncestry(Status mainStatus, StatusContext context) {
+		List<NeighborAncestryInfo> ancestry = new ArrayList<>();
+
+		List<Status> statuses = new ArrayList<>(context.ancestors);
+		statuses.add(mainStatus);
+		statuses.addAll(context.descendants);
+
+		int count = statuses.size();
+		for (int index = 0; index < count; index++) {
+			Status current = statuses.get(index);
+			NeighborAncestryInfo item = new NeighborAncestryInfo(current);
+
+			item.descendantNeighbor = Optional
+					.ofNullable(count > index + 1 ? statuses.get(index + 1) : null)
+					.filter(s -> s.inReplyToId.equals(current.id))
+					.orElse(null);
+
+			item.ancestoringNeighbor = Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
+					.filter(ancestor -> ancestor
+							.getDescendantNeighbor()
+							.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
+							.orElse(false))
+					.flatMap(NeighborAncestryInfo::getStatus)
+					.orElse(null);
+
+			ancestry.add(item);
+		}
+
+		return ancestry;
+	}
+
+	public static void sortStatusContext(Status mainStatus, StatusContext context) {
+		List<String> threadIds=new ArrayList<>();
+		threadIds.add(mainStatus.id);
+		for(Status s:context.descendants){
+			if(threadIds.contains(s.inReplyToId)){
+				threadIds.add(s.id);
+			}
+		}
+		threadIds.add(mainStatus.inReplyToId);
+		for(int i=context.ancestors.size()-1; i >= 0; i--){
+			Status s=context.ancestors.get(i);
+			if(s.inReplyToId != null && threadIds.contains(s.id)){
+				threadIds.add(s.inReplyToId);
+			}
+		}
+
+		context.ancestors=context.ancestors.stream().filter(s -> threadIds.contains(s.id)).collect(Collectors.toList());
+		context.descendants=getDescendantsOrdered(mainStatus.id,
+				context.descendants.stream()
+						.filter(s -> threadIds.contains(s.id))
+						.collect(Collectors.toList()));
+	}
+
+	private static List<Status> getDescendantsOrdered(String id, List<Status> statuses){
 		List<Status> out=new ArrayList<>();
 		for(Status s:getDirectDescendants(id, statuses)){
 			out.add(s);
@@ -138,7 +240,7 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 		return out;
 	}
 
-	private List<Status> getDirectDescendants(String id, List<Status> statuses){
+	private static List<Status> getDirectDescendants(String id, List<Status> statuses){
 		return statuses.stream()
 				.filter(s -> s.inReplyToId.equals(id))
 				.collect(Collectors.toList());
@@ -194,5 +296,53 @@ public class ThreadFragment extends StatusListFragment implements DomainDisplay{
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.THREAD;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(mainStatus.url);
+	}
+
+	public static class NeighborAncestryInfo {
+		protected Status status, descendantNeighbor, ancestoringNeighbor;
+
+		public NeighborAncestryInfo(@NonNull Status status) {
+			this.status = status;
+		}
+
+		public Optional<Status> getStatus() {
+			return Optional.ofNullable(status);
+		}
+
+		public Optional<Status> getDescendantNeighbor() {
+			return Optional.ofNullable(descendantNeighbor);
+		}
+
+		public Optional<Status> getAncestoringNeighbor() {
+			return Optional.ofNullable(ancestoringNeighbor);
+		}
+
+		public boolean hasDescendantNeighbor() {
+			return getDescendantNeighbor().isPresent();
+		}
+
+		public boolean hasAncestoringNeighbor() {
+			return getAncestoringNeighbor().isPresent();
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) return true;
+			if (o == null || getClass() != o.getClass()) return false;
+			NeighborAncestryInfo that = (NeighborAncestryInfo) o;
+			return status.equals(that.status)
+					&& Objects.equals(descendantNeighbor, that.descendantNeighbor)
+					&& Objects.equals(ancestoringNeighbor, that.ancestoringNeighbor);
+		}
+
+		@Override
+		public int hashCode() {
+			return Objects.hash(status, descendantNeighbor, ancestoringNeighbor);
+		}
 	}
 }

@@ -251,8 +251,7 @@
     <string name="sk_settings_hide_interaction">Verberg interactie knoppen</string>
     <string name="sk_follow_as">Volgen met ander account</string>
     <string name="sk_followed_as">Gevolgd met %s</string>
-    <string name="sk_settings_reply_visibility">Reactie zichtbaarheid</string>
+    <string name="sk_quoting_user">Quoting %s</string>
+    <string name="sk_settings_reply_visibility">Zichtbaarheid reactie</string>
     <string name="sk_settings_reply_visibility_all">Alle reacties</string>
-    <string name="sk_changelog">Changelog</string>
-    <string name="sk_settings_show_new_posts_button">Knop \"Toon nieuwe berichten\"</string>
 </resources>

@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.SparseIntArray;
@@ -265,6 +266,13 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	@Override
 	protected Filter.FilterContext getFilterContext() {
+		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		if (reportStatus != null) return Uri.parse(reportStatus.url);
+		if (reportAccount != null) return Uri.parse(reportAccount.url);
 		return null;
 	}
 }

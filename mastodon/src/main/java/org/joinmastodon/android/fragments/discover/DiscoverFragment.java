@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.app.FragmentTransaction;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,13 +23,15 @@ import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.fragments.DomainDisplay;
+import org.joinmastodon.android.fragments.HomeFragment;
+import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,7 +43,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.V;
 
-public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, DomainDisplay {
+public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, IsOnTop, ProvidesAssistContent {
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -53,29 +56,13 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private ProgressBar searchProgress;
 
 	private DiscoverPostsFragment postsFragment;
-	private TrendingHashtagsFragment hashtagsFragment;
+	private DiscoverHashtagsFragment hashtagsFragment;
 	private DiscoverNewsFragment newsFragment;
 	private DiscoverAccountsFragment accountsFragment;
 	private SearchFragment searchFragment;
-	private LocalTimelineFragment localTimelineFragment;
-	private FederatedTimelineFragment federatedTimelineFragment;
-	private ListTimelinesFragment listTimelinesFragment;
 
 	private String accountID;
 	private Runnable searchDebouncer=this::onSearchChangedDebounced;
-
-//	private final boolean noFederated = !GlobalUserPreferences.showFederatedTimeline;
-
-	@Override
-	public String getDomain() {
-		if (searchActive) {
-			return searchFragment.getDomain();
-		}
-		if (tabViews[tabLayout.getSelectedTabPosition()] instanceof DomainDisplay page) {
-			return page.getDomain();
-		}
-		return DomainDisplay.super.getDomain() + "/explore";
-	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -94,22 +81,9 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		tabLayout=view.findViewById(R.id.tabbar);
 		pager=view.findViewById(R.id.pager);
 
-//		tabViews=new FrameLayout[noFederated ? 5 : 6];
 		tabViews=new FrameLayout[4];
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
-
-///			int switchIndex = noFederated && i > 0 ? i + 1 : i;
-//			tabView.setId(switch(switchIndex){
-//				case 0 -> R.id.discover_local_timeline;
-//				case 1 -> R.id.discover_federated_timeline;
-//				case 2 -> R.id.discover_hashtags;
-//				case 3 -> R.id.discover_posts;
-//				case 4 -> R.id.discover_news;
-//				case 5 -> R.id.discover_users;
-//				default -> throw new IllegalStateException("Unexpected value: "+switchIndex);
-//			});
-
 			tabView.setId(switch(i){
 				case 0 -> R.id.discover_hashtags;
 				case 1 -> R.id.discover_posts;
@@ -117,7 +91,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 				case 3 -> R.id.discover_users;
 				default -> throw new IllegalStateException("Unexpected value: "+i);
 			});
-
 			tabView.setVisibility(View.GONE);
 			view.addView(tabView); // needed so the fragment manager will have somewhere to restore the tab fragment
 			tabViews[i]=tabView;
@@ -140,13 +113,10 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 					if(!page.loaded && !page.isDataLoading())
 						page.loadData();
 				}
-
-				if (_page instanceof DomainDisplay display)
-					DomainManager.getInstance().setCurrentDomain(display.getDomain());
 			}
 		});
 
-		if(localTimelineFragment==null || hashtagsFragment==null){
+		if(hashtagsFragment==null){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
@@ -154,7 +124,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			postsFragment=new DiscoverPostsFragment();
 			postsFragment.setArguments(args);
 
-			hashtagsFragment=new TrendingHashtagsFragment();
+			hashtagsFragment=new DiscoverHashtagsFragment();
 			hashtagsFragment.setArguments(args);
 
 			newsFragment=new DiscoverNewsFragment();
@@ -163,27 +133,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			accountsFragment=new DiscoverAccountsFragment();
 			accountsFragment.setArguments(args);
 
-			localTimelineFragment=new LocalTimelineFragment();
-			localTimelineFragment.setArguments(args);
-
-//			listTimelinesFragment=new ListTimelinesFragment();
-//			listTimelinesFragment.setArguments(args);
-//
-//			FragmentTransaction transaction = getChildFragmentManager().beginTransaction()
-//					.add(R.id.discover_posts, postsFragment)
-//					.add(R.id.discover_local_timeline, localTimelineFragment)
-//					.add(R.id.discover_hashtags, hashtagsFragment)
-//					.add(R.id.discover_news, newsFragment)
-//					.add(R.id.discover_users, accountsFragment)
-//					.add(R.id.discover_lists, listTimelinesFragment);
-//
-//			if (!noFederated) {
-//				federatedTimelineFragment=new FederatedTimelineFragment();
-//				federatedTimelineFragment.setArguments(args);
-//				transaction.add(R.id.discover_federated_timeline, federatedTimelineFragment);
-//			}
-//
-//			transaction.commit();
 
 			getChildFragmentManager().beginTransaction()
 					.add(R.id.discover_posts, postsFragment)
@@ -196,21 +145,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		tabLayoutMediator=new TabLayoutMediator(tabLayout, pager, new TabLayoutMediator.TabConfigurationStrategy(){
 			@Override
 			public void onConfigureTab(@NonNull TabLayout.Tab tab, int position){
-
-//				if (noFederated && position > 0) position++;
-
-//				tab.setText(switch(position){
-//					case 0 -> R.string.local_timeline;
-//					case 1 -> R.string.sk_federated_timeline;
-//					case 2 -> R.string.sk_list_timelines;
-//					case 3 -> R.string.hashtags;
-//					case 4 -> R.string.posts;
-//					case 5 -> R.string.news;
-//					case 6 -> R.string.for_you;
-//
-//					default -> throw new IllegalStateException("Unexpected value: "+position);
-//				});
-
 				tab.setText(switch(position){
 					case 0 -> R.string.hashtags;
 					case 1 -> R.string.posts;
@@ -224,9 +158,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		tabLayoutMediator.attach();
 		tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
 			@Override
-			public void onTabSelected(TabLayout.Tab tab){
-				DomainManager.getInstance().setCurrentDomain(getDomain());
-			}
+			public void onTabSelected(TabLayout.Tab tab){}
 
 			@Override
 			public void onTabUnselected(TabLayout.Tab tab){}
@@ -303,20 +235,25 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	@Override
-	public boolean isScrolledToTop() {
-		if(!searchActive){
-			return ((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).isScrolledToTop();
-		}else{
-			return searchFragment.isScrolledToTop();
-		}
+	public boolean isOnTop() {
+		return searchActive ? searchFragment.isOnTop()
+				: ((IsOnTop)getFragmentForPage(pager.getCurrentItem())).isOnTop();
+	}
+
+	public void onSelect() {
+		if (isOnTop()) selectSearch();
+		else scrollToTop();
+	}
+
+	public void selectSearch() {
+		searchEdit.requestFocus();
+		onSearchEditFocusChanged(searchEdit, true);
+		getActivity().getSystemService(InputMethodManager.class).showSoftInput(searchEdit, 0);
 	}
 
 	public void loadData(){
 		if(hashtagsFragment!=null && !hashtagsFragment.loaded && !hashtagsFragment.dataLoading)
 			hashtagsFragment.loadData();
-
-//		if(localTimelineFragment!=null && !localTimelineFragment.loaded && !localTimelineFragment.dataLoading)
-//			localTimelineFragment.loadData();
 	}
 
 	private void onSearchEditFocusChanged(View v, boolean hasFocus){
@@ -342,6 +279,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		searchBack.setEnabled(false);
 		searchBack.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 		getActivity().getSystemService(InputMethodManager.class).hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+		if (getArguments().getBoolean("disableDiscover"))
+			((HomeFragment) getParentFragment()).onBackPressed();
 	}
 
 	@Override
@@ -351,19 +290,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	private Fragment getFragmentForPage(int page){
-//		if (noFederated && page > 0) page++;
-
-//		return switch(page){
-//			case 0 -> localTimelineFragment;
-//			case 1 -> federatedTimelineFragment;
-//			case 2 -> hashtagsFragment;
-//			case 3 -> postsFragment;
-//			case 4 -> newsFragment;
-//			case 5 -> accountsFragment;
-//			case 6 -> listTimelinesFragment;
-//			default -> throw new IllegalStateException("Unexpected value: "+page);
-//		};
-
 		return switch(page){
 			case 0 -> hashtagsFragment;
 			case 1 -> postsFragment;
@@ -399,6 +325,13 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		V.setVisibilityAnimated(searchProgress, visible ? View.VISIBLE : View.INVISIBLE);
 		if(searchEdit.length()>0)
 			V.setVisibilityAnimated(searchClear, visible ? View.INVISIBLE : View.VISIBLE);
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(searchActive
+				? searchFragment
+				: getFragmentForPage(pager.getCurrentItem()), assistContent);
 	}
 
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{

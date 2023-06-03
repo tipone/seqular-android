@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,6 +12,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
@@ -42,7 +44,7 @@ import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SearchFragment extends BaseStatusListFragment<SearchResult>{
+public class SearchFragment extends BaseStatusListFragment<SearchResult> implements IsOnTop {
 	private String currentQuery;
 	private List<StatusDisplayItem> prevDisplayItems;
 	private EnumSet<SearchResult.Type> currentFilter=EnumSet.allOf(SearchResult.Type.class);
@@ -55,11 +57,6 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 
 	public SearchFragment(){
 		setLayout(R.layout.fragment_search);
-	}
-
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/search";
 	}
 
 	@Override
@@ -190,7 +187,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 			return;
 		}
 		UiUtils.updateList(prevDisplayItems, displayItems, list, adapter, (i1, i2)->i1.parentID.equals(i2.parentID) && i1.index==i2.index && i1.getType()==i2.getType());
-		boolean recent=isInRecentMode();
+		boolean recent=isInRecentMode() && !displayItems.isEmpty();
 		if(recent!=headerAdapter.isVisible())
 			headerAdapter.setVisible(recent);
 		imgLoader.forceUpdateImages();
@@ -314,6 +311,19 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 		if(imm.isActive()){
 			imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
 		}
+	}
+
+	@Override
+	public boolean isOnTop() {
+		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		Uri.Builder searchUri = base.path("/search");
+		return isInstanceAkkoma()
+				? searchUri.appendQueryParameter("query", currentQuery).build()
+				: searchUri.build();
 	}
 
 	@FunctionalInterface

@@ -6,6 +6,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -67,6 +68,7 @@ import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Attachment;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.SimpleViewHolder;
@@ -83,6 +85,7 @@ import org.joinmastodon.android.ui.views.CoverImageView;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.ui.views.NestedRecyclerScrollView;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.time.LocalDateTime;
@@ -93,9 +96,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager2.widget.ViewPager2;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -116,7 +123,7 @@ import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop, HasFab{
+public class ProfileFragment extends LoaderFragment implements OnBackPressedListener, ScrollableToTop, HasFab, ProvidesAssistContent.ProvidesWebUri {
 	private static final int AVATAR_RESULT=722;
 	private static final int COVER_RESULT=343;
 
@@ -146,6 +153,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private String note;
 	private Account account;
 	private String accountID;
+	private String domain;
 	private Relationship relationship;
 	private int statusBarHeight;
 	private boolean isOwnProfile;
@@ -160,7 +168,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private PhotoViewer currentPhotoViewer;
 	private boolean editModeLoading;
 
-	private static final int MAX_FIELDS=4;
+	private int maxFields = 4;
 
 	// from ProfileAboutFragment
 	public UsableRecyclerView list;
@@ -181,6 +189,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			setRetainInstance(true);
 
 		accountID=getArguments().getString("account");
+		domain=AccountSessionManager.getInstance().getAccount(accountID).domain;
 		if(getArguments().containsKey("profileAccount")){
 			account=Parcels.unwrap(getArguments().getParcelable("profileAccount"));
 			profileAccountID=account.id;
@@ -188,6 +197,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			loaded=true;
 			if(!isOwnProfile)
 				loadRelationship();
+			else if (isInstanceAkkoma() && getInstance().isPresent())
+				maxFields = getInstance().get().pleroma.metadata.fieldsLimits.maxFields;
 		}else{
 			profileAccountID=getArguments().getString("profileAccountID");
 			if(!getArguments().getBoolean("noAutoLoad", false))
@@ -204,14 +215,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		setHasOptionsMenu(true);
-	}
-
-	@Override
-	public void onHiddenChanged(boolean hidden) {
-		super.onHiddenChanged(hidden);
-		if (!hidden) {
-			DomainManager.getInstance().setCurrentDomain(account.url);
-		}
 	}
 
 	@Override
@@ -396,7 +399,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		username.setOnLongClickListener(v->{
 			String usernameString=account.acct;
 			if(!usernameString.contains("@")){
-				usernameString+="@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
+				usernameString+="@"+domain;
 			}
 			UiUtils.copyText(username, '@'+usernameString);
 			return true;
@@ -469,11 +472,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	@Override
 	public void onRefresh(){
-		if(isInEditMode){
-			refreshing=false;
-			refreshLayout.setRefreshing(false);
-			return;
-		}
 		if(refreshing)
 			return;
 		refreshing=true;
@@ -577,12 +575,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private void bindHeaderView(){
 		setTitle(account.displayName);
 		setSubtitle(getResources().getQuantityString(R.plurals.x_posts, (int)(account.statusesCount%1000), account.statusesCount));
-		if((GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic) != null){
-			ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(100), V.dp(100)));
-		}
-		if((GlobalUserPreferences.playGifs ? account.header : account.headerStatic) != null) {
-			ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.header : account.headerStatic, 1000, 1000));
-		}
+		ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(100), V.dp(100)));
+		ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.header : account.headerStatic, 1000, 1000));
 		SpannableStringBuilder ssb=new SpannableStringBuilder(account.displayName);
 		HtmlParser.parseCustomEmoji(ssb, account.emojis);
 		name.setText(ssb);
@@ -610,7 +604,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			ssb.append(account.acct);
 			if(isSelf){
 				ssb.append('@');
-				ssb.append(AccountSessionManager.getInstance().getAccount(accountID).domain);
+				ssb.append(domain);
 			}
 			ssb.append(" ");
 			Drawable lock=username.getResources().getDrawable(R.drawable.ic_lock, getActivity().getTheme()).mutate();
@@ -633,7 +627,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			username.setText(ssb);
 		}else{
 			// noinspection SetTextI18n
-			username.setText('@'+account.acct+(isSelf ? ('@'+AccountSessionManager.getInstance().getAccount(accountID).domain) : ""));
+			username.setText('@'+account.acct+(isSelf ? ('@'+domain) : ""));
 		}
 		CharSequence parsedBio = null;
 		if(account.note != null){
@@ -645,8 +639,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			bio.setVisibility(View.VISIBLE);
 			bio.setText(parsedBio);
 		}
-
-
 		followersCount.setText(UiUtils.abbreviateNumber(account.followersCount));
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
 		postsCount.setText(UiUtils.abbreviateNumber(account.statusesCount));
@@ -825,7 +817,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				args.putString("profileAccount", profileAccountID);
 				args.putString("profileDisplayUsername", account.getDisplayUsername());
 			}
-			Nav.go(getActivity(), ListTimelinesFragment.class, args);
+			Nav.go(getActivity(), ListsFragment.class, args);
 		}else if(id==R.id.followed_hashtags){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -878,7 +870,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 //			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
 		}
 		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
-		DomainManager.getInstance().setCurrentDomain(account.url);
 	}
 
 	public ImageButton getFab() {
@@ -1215,11 +1206,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		scrollView.smoothScrollTo(0, 0);
 	}
 
-	@Override
-	public boolean isScrolledToTop() {
-		return list.getChildAt(0).getTop() == 0;
-	}
-
 	private void onFollowersOrFollowingClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
@@ -1284,6 +1270,21 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if (adapter != null) adapter.notifyDataSetChanged();
 	}
 
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(getFragmentForPage(pager.getCurrentItem()), assistContent);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(account.url);
+	}
+
 	private class MetadataAdapter extends UsableRecyclerView.Adapter<BaseViewHolder> implements ImageLoaderRecyclerAdapter {
 		public MetadataAdapter(){
 			super(imgLoader);
@@ -1314,7 +1315,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		public int getItemCount(){
 			if(isInEditMode){
 				int size=metadataListData.size();
-				if(size<MAX_FIELDS)
+				if(size<maxFields)
 					size++;
 				return size;
 			}
@@ -1448,7 +1449,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		@Override
 		public void onClick(){
 			metadataListData.add(new AccountField());
-			if(metadataListData.size()==MAX_FIELDS){ // replace this row with new row
+			if(metadataListData.size()==maxFields){ // replace this row with new row
 				adapter.notifyItemChanged(metadataListData.size()-1);
 			}else{
 				adapter.notifyItemInserted(metadataListData.size()-1);

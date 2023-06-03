@@ -252,10 +252,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		accountID=getArguments().getString("account");
 		contentType = GlobalUserPreferences.accountsDefaultContentTypes.get(accountID);
-		if (contentType == null && GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID)) {
-			// if formatting is enabled, use plain to avoid confusing unspecified default setting
-			contentType = ContentType.PLAIN;
-		}
 
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		self=session.self;
@@ -273,9 +269,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if(instance==null){
 			Nav.finish(this);
 			return;
-		}
-		if(customEmojis.isEmpty()){
-			AccountSessionManager.getInstance().updateInstanceInfo(instanceDomain);
 		}
 
 		Bundle bundle = savedInstanceState != null ? savedInstanceState : getArguments();
@@ -1146,7 +1139,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 		req.status=text;
 		req.localOnly=localOnly;
-		req.visibility=localOnly && instance.pleroma != null ? StatusPrivacy.LOCAL : statusVisibility;
+		req.visibility=localOnly && instance.isAkkoma() ? StatusPrivacy.LOCAL : statusVisibility;
 		req.sensitive=sensitive;
 		req.language=language;
 		req.contentType=contentType;
@@ -1800,11 +1793,24 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				pollChanged=true;
 			updatePublishButtonState();
 		}));
-		option.edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxCharactersPerOption>0 ? instance.configuration.polls.maxCharactersPerOption : 50)});
+
+		int maxCharactersPerOption = 50;
+		if(instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxCharactersPerOption>0)
+			maxCharactersPerOption = instance.configuration.polls.maxCharactersPerOption;
+		else if(instance.pollLimits!=null && instance.pollLimits.maxOptionChars>0)
+			maxCharactersPerOption = instance.pollLimits.maxOptionChars;
+		option.edit.setFilters(new InputFilter[]{new InputFilter.LengthFilter(maxCharactersPerOption)});
 
 		pollOptionsView.addView(option.view);
 		pollOptions.add(option);
-		if(pollOptions.size()==(instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxOptions>0 ? instance.configuration.polls.maxOptions : 4))
+
+		int maxPollOptions = 4;
+		if(instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxOptions>0)
+			maxPollOptions = instance.configuration.polls.maxOptions;
+		else if (instance.pollLimits!=null && instance.pollLimits.maxOptions>0)
+			maxPollOptions = instance.pollLimits.maxOptions;
+
+		if(pollOptions.size()==maxPollOptions)
 			addPollOptionBtn.setVisibility(View.GONE);
 		return option;
 	}
@@ -1961,7 +1967,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		Menu m=visibilityPopup.getMenu();
 		MenuItem localOnlyItem = visibilityPopup.getMenu().findItem(R.id.local_only);
 		boolean prefsSaysSupported = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
-		if (instance.pleroma != null) {
+		if (instance.isAkkoma()) {
 			m.findItem(R.id.vis_local).setVisible(true);
 		} else if (localOnly || prefsSaysSupported) {
 			localOnlyItem.setVisible(true);

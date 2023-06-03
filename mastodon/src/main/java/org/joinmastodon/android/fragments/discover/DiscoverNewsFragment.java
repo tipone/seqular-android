@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,7 +11,6 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.trends.GetTrendingLinks;
-import org.joinmastodon.android.fragments.DomainDisplay;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.ScrollableToTop;
@@ -20,6 +20,7 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.Collections;
 import java.util.List;
@@ -28,7 +29,6 @@ import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -37,18 +37,13 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class DiscoverNewsFragment extends BaseRecyclerFragment<Card> implements ScrollableToTop, IsOnTop, DomainDisplay {
+public class DiscoverNewsFragment extends RecyclerFragment<Card> implements ScrollableToTop, IsOnTop, ProvidesAssistContent.ProvidesWebUri {
 	private String accountID;
 	private List<ImageLoaderRequest> imageRequests=Collections.emptyList();
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.TRENDING_LINKS);
 
 	public DiscoverNewsFragment(){
 		super(10);
-	}
-
-	@Override
-	public String getDomain() {
-		return DomainDisplay.super.getDomain() + "/explore/links";
 	}
 
 	@Override
@@ -91,13 +86,18 @@ public class DiscoverNewsFragment extends BaseRecyclerFragment<Card> implements 
 	}
 
 	@Override
-	public boolean isScrolledToTop() {
-		return list.getChildAt(0).getTop() == 0;
+	public boolean isOnTop() {
+		return isRecyclerViewOnTop(list);
 	}
 
 	@Override
-	public boolean isOnTop() {
-		return isRecyclerViewOnTop(list);
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/links").build();
 	}
 
 	private class LinksAdapter extends UsableRecyclerView.Adapter<LinkViewHolder> implements ImageLoaderRecyclerAdapter{

@@ -23,7 +23,8 @@ import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.session.AccountActivationInfo;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.fragments.settings.SettingsMainFragment;
+import org.joinmastodon.android.fragments.HomeFragment;
+import org.joinmastodon.android.fragments.SettingsFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -69,7 +70,7 @@ public class AccountActivationFragment extends ToolbarFragment{
 		openEmailBtn.setOnLongClickListener(v->{
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-			Nav.go(getActivity(), SettingsMainFragment.class, args);
+			Nav.go(getActivity(), SettingsFragment.class, args);
 			return true;
 		});
 		resendBtn=view.findViewById(R.id.btn_resend);
@@ -89,15 +90,8 @@ public class AccountActivationFragment extends ToolbarFragment{
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState){
-		super.onViewCreated(view, savedInstanceState);
-		setStatusBarColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
-		view.setBackgroundColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Background));
-	}
-
-//	@Override
 	protected void onUpdateToolbar(){
-//		super.onUpdateToolbar();
+		super.onUpdateToolbar();
 		getToolbar().setBackground(null);
 		getToolbar().setElevation(0);
 	}
@@ -109,10 +103,7 @@ public class AccountActivationFragment extends ToolbarFragment{
 
 	@Override
 	public void onToolbarNavigationClick(){
-		new AccountSwitcherSheet(getActivity(), true, true, false, accountSession -> {
-			getActivity().finish();
-			getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-		}).show();
+		new AccountSwitcherSheet(getActivity(), null).show();
 	}
 
 	@Override

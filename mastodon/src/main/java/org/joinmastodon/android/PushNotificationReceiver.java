@@ -29,6 +29,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.NotificationReceivedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Mention;
 import org.joinmastodon.android.model.NotificationAction;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushNotification;
@@ -38,6 +39,7 @@ import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -57,7 +59,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private static final String ACTION_KEY_TEXT_REPLY = "ACTION_KEY_TEXT_REPLY";
 
 	private static final int SUMMARY_ID = 791;
-	private static int notificationId;
+	private static int notificationId = 0;
 
 	@Override
 	public void onReceive(Context context, Intent intent){
@@ -298,27 +300,60 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 		CharSequence input = remoteInput.getCharSequence(ACTION_KEY_TEXT_REPLY);
 
+		// copied from ComposeFragment - TODO: generalize?
+		ArrayList<String> mentions=new ArrayList<>();
+		Status status = notification.status;
+		String ownID=AccountSessionManager.getInstance().getAccount(accountID).self.id;
+		if(!status.account.id.equals(ownID))
+			mentions.add('@'+status.account.acct);
+		for(Mention mention:status.mentions){
+			if(mention.id.equals(ownID))
+				continue;
+			String m='@'+mention.acct;
+			if(!mentions.contains(m))
+				mentions.add(m);
+		}
+		String initialText=mentions.isEmpty() ? "" : TextUtils.join(" ", mentions)+" ";
+
 		CreateStatus.Request req=new CreateStatus.Request();
-		req.status = input.toString() + "\n\n" + "@" + notification.status.account.acct;
-		req.language = notification.status.language;
-		req.visibility = (notification.status.visibility == StatusPrivacy.PUBLIC && GlobalUserPreferences.defaultToUnlistedReplies ? StatusPrivacy.UNLISTED : notification.status.visibility);
+		req.status = initialText + input.toString();
+		req.language = preferences.postingDefaultLanguage;
+		req.visibility = preferences.postingDefaultVisibility;
 		req.inReplyToId = notification.status.id;
 		if(!notification.status.spoilerText.isEmpty() && GlobalUserPreferences.prefixRepliesWithRe && !notification.status.spoilerText.startsWith("re: ")){
 			req.spoilerText = "re: " + notification.status.spoilerText;
 		}
 
-		new CreateStatus(req, UUID.randomUUID().toString()).exec(accountID);
+		new CreateStatus(req, UUID.randomUUID().toString()).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Status status) {
+				NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+				Notification.Builder builder = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
+						new Notification.Builder(context, accountID+"_"+notification.type) :
+						new Notification.Builder(context)
+								.setPriority(Notification.PRIORITY_DEFAULT)
+								.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
 
-		NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-		Notification.Builder builder = android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O ?
-				new Notification.Builder(context, accountID+"_"+notification.type) :
-				new Notification.Builder(context)
-					.setPriority(Notification.PRIORITY_DEFAULT)
-					.setDefaults(Notification.DEFAULT_SOUND | Notification.DEFAULT_VIBRATE);
+				notification.status = status;
+				Intent contentIntent=new Intent(context, MainActivity.class);
+				contentIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				contentIntent.putExtra("fromNotification", true);
+				contentIntent.putExtra("accountID", accountID);
+				contentIntent.putExtra("notification", Parcels.wrap(notification));
 
-		Notification repliedNotification = builder.setSmallIcon(R.drawable.ic_ntf_logo)
-				.setContentText(context.getString(R.string.mo_notification_action_replied, notification.status.account.getDisplayUsername()))
-				.build();
-		notificationManager.notify(accountID, notificationId, repliedNotification);
+				Notification repliedNotification = builder.setSmallIcon(R.drawable.ic_ntf_logo)
+						.setContentTitle(context.getString(R.string.sk_notification_action_replied, notification.status.account.displayName))
+						.setContentText(status.getStrippedText())
+						.setCategory(Notification.CATEGORY_SOCIAL)
+						.setContentIntent(PendingIntent.getActivity(context, notificationId, contentIntent, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT))
+						.build();
+				notificationManager.notify(accountID, notificationId, repliedNotification);
+			}
+
+			@Override
+			public void onError(ErrorResponse errorResponse) {
+
+			}
+		}).exec(accountID);
 	}
 }

@@ -2,7 +2,9 @@ package org.joinmastodon.android.fragments.onboarding;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.assist.AssistContent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
@@ -24,6 +26,7 @@ import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ElevationOnScrollListener;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import androidx.annotation.NonNull;
@@ -38,7 +41,7 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class InstanceRulesFragment extends ToolbarFragment{
+public class InstanceRulesFragment extends ToolbarFragment implements ProvidesAssistContent {
 	private UsableRecyclerView list;
 	private MergeRecyclerAdapter adapter;
 	private Button btn;
@@ -128,6 +131,15 @@ public class InstanceRulesFragment extends ToolbarFragment{
 		}else{
 			super.onApplyWindowInsets(insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom()));
 		}
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(new Uri.Builder()
+				.scheme("https")
+				.authority(instance.normalizedUri)
+				.path("/about")
+				.build());
 	}
 
 	private class ItemsAdapter extends RecyclerView.Adapter<ItemViewHolder>{

@@ -2,7 +2,8 @@ package org.joinmastodon.android.ui;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.res.ColorStateList;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -13,24 +14,31 @@ import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.PopupMenu;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.HomeFragment;
+import org.joinmastodon.android.fragments.SplashFragment;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -49,18 +57,26 @@ import me.grishka.appkit.views.UsableRecyclerView;
 
 public class AccountSwitcherSheet extends BottomSheet{
 	private final Activity activity;
+	private final HomeFragment fragment;
+	private final BiConsumer<String, Boolean> onClick;
+	private final boolean externalShare, openInApp;
 	private UsableRecyclerView list;
 	private List<WrappedAccount> accounts;
 	private ListImageLoaderWrapper imgLoader;
-	private final boolean logOutEnabled;
-	private final Consumer<AccountSession> onClick;
+	private AccountsAdapter accountsAdapter;
 
-	public AccountSwitcherSheet(@NonNull Activity activity, boolean logOutEnabled, boolean addAccountEnabled, boolean showOpenURL, Consumer<AccountSession> onClick){
+	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment){
+		this(activity, fragment, false, false, null);
+	}
+
+	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, boolean externalShare, boolean openInApp, BiConsumer<String, Boolean> onClick){
 		super(activity);
 		this.activity=activity;
-		this.logOutEnabled=logOutEnabled;
-		this.onClick=onClick;
-
+		this.fragment=fragment;
+		this.externalShare = externalShare;
+		this.openInApp = openInApp;
+		this.onClick = onClick;
+		
 		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
 
 		list=new UsableRecyclerView(activity);
@@ -71,57 +87,55 @@ public class AccountSwitcherSheet extends BottomSheet{
 		MergeRecyclerAdapter adapter=new MergeRecyclerAdapter();
 		View handle=new View(activity);
 		handle.setBackgroundResource(R.drawable.bg_bottom_sheet_handle);
-		adapter.addAdapter(new SingleViewRecyclerAdapter(handle));
-		adapter.addAdapter(new AccountsAdapter());
+		handle.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(36)));
 
-		if(addAccountEnabled){
-			AccountViewHolder holder = new AccountViewHolder();
-			holder.more.setVisibility(View.GONE);
-			holder.currentIcon.setVisibility(View.GONE);
-			holder.display_name.setVisibility(View.GONE);
-			holder.display_add_account.setVisibility(View.VISIBLE);
-			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
-			holder.avatar.setImageResource(R.drawable.ic_fluent_add_circle_24_filled);
-			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
-			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {
+		adapter.addAdapter(new SingleViewRecyclerAdapter(handle));
+
+		if (externalShare) {
+			FrameLayout shareHeading = new FrameLayout(activity);
+			activity.getLayoutInflater().inflate(R.layout.item_external_share_heading, shareHeading);
+			((TextView) shareHeading.findViewById(R.id.title)).setText(openInApp
+					? R.string.sk_external_share_or_open_title
+					: R.string.sk_external_share_title);
+			adapter.addAdapter(new SingleViewRecyclerAdapter(shareHeading));
+
+			setOnDismissListener((d) -> activity.finish());
+		}
+
+		adapter.addAdapter(accountsAdapter = new AccountsAdapter());
+
+		if (!externalShare) {
+			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_fluent_add_24_regular), () -> {
 				Nav.go(activity, CustomWelcomeFragment.class, null);
 				dismiss();
 			}));
-		}
-
-		if(showOpenURL) {
-			AccountViewHolder holder = new AccountViewHolder();
-			holder.more.setVisibility(View.GONE);
-			holder.currentIcon.setVisibility(View.GONE);
-			holder.display_name.setVisibility(View.VISIBLE);
-			holder.display_add_account.setVisibility(View.VISIBLE);
-			holder.display_add_account.setText(R.string.mo_share_open_url);
-			holder.avatar.setScaleType(ImageView.ScaleType.CENTER);
-			holder.avatar.setImageResource(R.drawable.ic_fluent_open_24_regular);
-			holder.avatar.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, android.R.attr.textColorPrimary)));
-			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(holder.itemView, () -> {
-				onClick.accept(null);
-				dismiss();
-			}));
+			// disabled in megalodon
+//			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.log_out_all_accounts, R.drawable.ic_fluent_person_arrow_right_24_filled), this::confirmLogOutAll));
 		}
 
 		list.setAdapter(adapter);
-		DividerItemDecoration divider=new DividerItemDecoration(activity, R.attr.colorPollVoted, .5f, 72, 16, DividerItemDecoration.NOT_FIRST);
-		divider.setDrawBelowLastItem(true);
-		list.addItemDecoration(divider);
 
 		FrameLayout content=new FrameLayout(activity);
 		content.setBackgroundResource(R.drawable.bg_bottom_sheet);
 		content.addView(list);
 		setContentView(content);
-		setNavigationBarBackground(new ColorDrawable(UiUtils.getThemeColor(activity, R.attr.colorWindowBackground)), !UiUtils.isDarkTheme());
+		setNavigationBarBackground(new ColorDrawable(UiUtils.alphaBlendColors(UiUtils.getThemeColor(activity, R.attr.colorM3Surface),
+				UiUtils.getThemeColor(activity, R.attr.colorM3Primary), 0.05f)), !UiUtils.isDarkTheme());
 	}
 
 	private void confirmLogOut(String accountID){
+		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		new M3AlertDialogBuilder(activity)
-				.setTitle(R.string.log_out)
-				.setMessage(R.string.confirm_log_out)
+				.setMessage(activity.getString(R.string.confirm_log_out, session.getFullUsername()))
 				.setPositiveButton(R.string.log_out, (dialog, which) -> logOut(accountID))
+				.setNegativeButton(R.string.cancel, null)
+				.show();
+	}
+
+	private void confirmLogOutAll(){
+		new M3AlertDialogBuilder(activity)
+				.setMessage(R.string.confirm_log_out_all_accounts)
+				.setPositiveButton(R.string.log_out, (dialog, which) -> logOutAll())
 				.setNegativeButton(R.string.cancel, null)
 				.show();
 	}
@@ -144,9 +158,55 @@ public class AccountSwitcherSheet extends BottomSheet{
 				.exec(accountID);
 	}
 
+	private void logOutAll(){
+		final ProgressDialog progress=new ProgressDialog(activity);
+		progress.setMessage(activity.getString(R.string.loading));
+		progress.setCancelable(false);
+		progress.show();
+		ArrayList<AccountSession> sessions=new ArrayList<>(AccountSessionManager.getInstance().getLoggedInAccounts());
+		for(AccountSession session:sessions){
+			new RevokeOauthToken(session.app.clientId, session.app.clientSecret, session.token.accessToken)
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Object result){
+							AccountSessionManager.getInstance().removeAccount(session.getID());
+							sessions.remove(session);
+							if(sessions.isEmpty()){
+								progress.dismiss();
+								Nav.goClearingStack(activity, SplashFragment.class, null);
+								dismiss();
+							}
+						}
+
+						@Override
+						public void onError(ErrorResponse error){
+							AccountSessionManager.getInstance().removeAccount(session.getID());
+							sessions.remove(session);
+							if(sessions.isEmpty()){
+								progress.dismiss();
+								Nav.goClearingStack(activity, SplashFragment.class, null);
+								dismiss();
+							}
+						}
+					})
+					.exec(session.getID());
+		}
+	}
+
 	private void onLoggedOut(String accountID){
 		AccountSessionManager.getInstance().removeAccount(accountID);
-		dismiss();
+		String activeAccountID = fragment != null
+				? fragment.getAccountID()
+				: AccountSessionManager.getInstance().getLastActiveAccountID();
+		if (accountID.equals(activeAccountID)) {
+			activity.finish();
+			activity.startActivity(new Intent(activity, MainActivity.class));
+		} else {
+			accounts.stream().filter(w -> accountID.equals(w.session.getID())).findAny().ifPresent(w -> {
+				accountsAdapter.notifyItemRemoved(accounts.indexOf(w));
+				accounts.remove(w);
+			});
+		}
 	}
 
 	@Override
@@ -162,6 +222,13 @@ public class AccountSwitcherSheet extends BottomSheet{
 		}else{
 			list.setPadding(0, 0, 0, V.dp(24));
 		}
+	}
+
+	private View makeSimpleListItem(@StringRes int title, @DrawableRes int icon){
+		TextView tv=(TextView) activity.getLayoutInflater().inflate(R.layout.item_text_with_icon, list, false);
+		tv.setText(title);
+		tv.setCompoundDrawablesRelativeWithIntrinsicBounds(icon, 0, 0, 0);
+		return tv;
 	}
 
 	private class AccountsAdapter extends UsableRecyclerView.Adapter<AccountViewHolder> implements ImageLoaderRecyclerAdapter{
@@ -197,55 +264,42 @@ public class AccountSwitcherSheet extends BottomSheet{
 		}
 	}
 
-	private class AccountViewHolder extends BindableViewHolder<AccountSession> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
-		private final TextView name;
-		private final TextView display_name;
-		private final TextView display_add_account;
+	private class AccountViewHolder extends BindableViewHolder<AccountSession> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable, UsableRecyclerView.LongClickable{
+		private final TextView name, username;
 		private final ImageView avatar;
-		private final ImageButton more;
-		private final View currentIcon;
-		private final PopupMenu menu;
+		private final CheckableRelativeLayout view;
+		private final View radioButton, extraBtnWrap;
+		private final ImageButton extraBtn;
 
 		public AccountViewHolder(){
 			super(activity, R.layout.item_account_switcher, list);
 			name=findViewById(R.id.name);
-			display_name=findViewById(R.id.display_name);
-			display_add_account=findViewById(R.id.add_account);
+			username=findViewById(R.id.username);
+			radioButton=findViewById(R.id.radiobtn);
+			radioButton.setBackground(new RadioButton(activity).getButtonDrawable());
 			avatar=findViewById(R.id.avatar);
-			more=findViewById(R.id.more);
-			currentIcon=findViewById(R.id.current);
-
-			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
+			avatar.setOutlineProvider(OutlineProviders.roundedRect(OutlineProviders.RADIUS_MEDIUM));
 			avatar.setClipToOutline(true);
-
-			menu=new PopupMenu(activity, more);
-			menu.inflate(R.menu.account_switcher);
-			menu.setOnMenuItemClickListener(item1 -> {
-				confirmLogOut(item.getID());
-				return true;
-			});
-			more.setOnClickListener(v->menu.show());
+			view=(CheckableRelativeLayout) itemView;
+			extraBtnWrap = findViewById(R.id.extra_btn_wrap);
+			extraBtn = findViewById(R.id.extra_btn);
+			extraBtn.setOnClickListener(this::onExtraBtnClick);
 		}
 
 		@SuppressLint("SetTextI18n")
 		@Override
 		public void onBind(AccountSession item){
-			display_name.setText(item.self.displayName);
-			name.setText("@"+item.self.username+"@"+item.domain);
-			if(AccountSessionManager.getInstance().getLastActiveAccountID().equals(item.getID())){
-				more.setVisibility(View.GONE);
-				currentIcon.setVisibility(View.VISIBLE);
-			}else{
-				more.setVisibility(View.VISIBLE);
-				currentIcon.setVisibility(View.GONE);
+			name.setText(item.self.displayName);
+			username.setText(item.getFullUsername());
+			radioButton.setVisibility(externalShare ? View.GONE : View.VISIBLE);
+			extraBtnWrap.setVisibility(externalShare && openInApp ? View.VISIBLE : View.GONE);
+			if (externalShare) view.setCheckable(false);
+			else {
+				String accountId = fragment != null
+						? fragment.getAccountID()
+						: AccountSessionManager.getInstance().getLastActiveAccountID();
+				view.setChecked(accountId.equals(item.getID()));
 			}
-
-			if(!logOutEnabled){
-				more.setVisibility(View.GONE);
-				currentIcon.setVisibility(View.GONE);
-			}
-			menu.getMenu().findItem(R.id.log_out).setTitle(activity.getString(R.string.log_out_account, "@"+item.self.username));
-			UiUtils.enablePopupMenuIcons(activity, menu);
 		}
 
 		@Override
@@ -260,11 +314,31 @@ public class AccountSwitcherSheet extends BottomSheet{
 			setImage(index, null);
 		}
 
+		private void onExtraBtnClick(View view) {
+			setOnDismissListener(null);
+			dismiss();
+			onClick.accept(item.getID(), true);
+		}
+
 		@Override
 		public void onClick(){
+			setOnDismissListener(null);
+			if (onClick != null) {
+				dismiss();
+				onClick.accept(item.getID(), false);
+				return;
+			}
+
 			AccountSessionManager.getInstance().setLastActiveAccountID(item.getID());
-			dismiss();
-			onClick.accept(AccountSessionManager.getInstance().getAccount(item.getID()));
+			activity.finish();
+			activity.startActivity(new Intent(activity, MainActivity.class));
+		}
+
+		@Override
+		public boolean onLongClick(){
+			if (externalShare) return false;
+			confirmLogOut(item.getID());
+			return true;
 		}
 	}
 

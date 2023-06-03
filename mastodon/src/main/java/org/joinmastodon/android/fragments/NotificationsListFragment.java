@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,6 +11,7 @@ import com.squareup.otto.Subscribe;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
+import org.joinmastodon.android.api.requests.notifications.PleromaMarkNotificationsRead;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
@@ -18,6 +20,8 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.Markers;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
@@ -51,11 +55,6 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	protected boolean wantsComposeButton() {
 		return false;
-	}
-
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/notifications";
 	}
 
 	@Override
@@ -156,13 +155,17 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						loadRelationships(needRelationships);
 						maxID=result.maxID;
 
-						if(offset == 0 && !result.items.isEmpty() && !result.isFromCache() && AccountSessionManager.getInstance().getAccount(accountID).markers != null && AccountSessionManager.getInstance().getAccount(accountID).markers.notifications != null){
+						Markers markers = AccountSessionManager.getInstance().getAccount(accountID).markers;
+						if(offset==0 && !result.items.isEmpty() && !result.isFromCache() && markers != null && markers.notifications != null){
 							E.post(new AllNotificationsSeenEvent());
 							new SaveMarkers(null, result.items.get(0).id).exec(accountID);
-							if (AccountSessionManager.getInstance().getAccount(accountID).markers != null)
-								AccountSessionManager.getInstance().getAccount(accountID).markers
-										.notifications.lastReadId = result.items.get(0).id;
+							AccountSessionManager.getInstance().getAccount(accountID).markers
+									.notifications.lastReadId = result.items.get(0).id;
 							AccountSessionManager.getInstance().writeAccountsFile();
+
+							if (isInstanceAkkoma()) {
+								new PleromaMarkNotificationsRead(result.items.get(0).id).exec(accountID);
+							}
 						}
 					}
 				});
@@ -182,11 +185,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	protected void onShown(){
 		super.onShown();
-		if(!getArguments().getBoolean("noAutoLoad") && !loaded && !dataLoading){
-			refreshing=true;
-			loadData();
-		}
-
+//		if(!getArguments().getBoolean("noAutoLoad") && !loaded && !dataLoading)
+//			loadData();
 	}
 
 	@Override
@@ -271,5 +271,12 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}
 		displayItems.subList(index, lastIndex).clear();
 		adapter.notifyItemRangeRemoved(index, lastIndex-index);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma()
+				? "/users/" + getSession().self.username + "/interactions"
+				: "/notifications").build();
 	}
 }

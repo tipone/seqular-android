@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -196,7 +197,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration newConfig){
+	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		if (getParentFragment() instanceof HomeTabFragment home) home.updateToolbarLogo();
 	}

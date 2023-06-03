@@ -148,12 +148,27 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			bindButton(reply, item.status.repliesCount);
 			bindButton(boost, item.status.reblogsCount);
 			bindButton(favorite, item.status.favouritesCount);
-			reply.setSelected(item.status.repliesCount > 0);
+			// in thread view, direct descendant posts display one direct reply to themselves,
+			// hence in that case displaying whether there is another reply
+			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor ? 0 : 1;
+			reply.setSelected(item.status.repliesCount > compareTo);
 			boost.setSelected(item.status.reblogged);
 			favorite.setSelected(item.status.favourited);
 			bookmark.setSelected(item.status.bookmarked);
-			boost.setEnabled(item.status.canBeBoosted(item.accountID));
+			boost.setEnabled(item.status.visibility==StatusPrivacy.PUBLIC || item.status.visibility==StatusPrivacy.UNLISTED || item.status.visibility==StatusPrivacy.LOCAL
+					|| (item.status.visibility==StatusPrivacy.PRIVATE && item.status.account.id.equals(AccountSessionManager.getInstance().getAccount(item.accountID).self.id)));
 
+			int nextPos = getAbsoluteAdapterPosition() + 1;
+			boolean nextIsWarning = item.parentFragment.getDisplayItems().size() > nextPos &&
+					item.parentFragment.getDisplayItems().get(nextPos) instanceof WarningFilteredStatusDisplayItem;
+			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor &&
+					!nextIsWarning;
+
+			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
+			params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
+					condenseBottom ? V.dp(-8) : 0);
+
+			itemView.requestLayout();
 		}
 
 		private void bindButton(TextView btn, long count){

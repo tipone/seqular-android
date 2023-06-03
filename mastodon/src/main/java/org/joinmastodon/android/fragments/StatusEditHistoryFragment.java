@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -24,13 +25,13 @@ import java.util.stream.Collectors;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class StatusEditHistoryFragment extends StatusListFragment{
-	private String id;
-
+	private String id, url;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		id=getArguments().getString("id");
+		url=getArguments().getString("url");
 		loadData();
 	}
 
@@ -161,5 +162,10 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(url);
 	}
 }

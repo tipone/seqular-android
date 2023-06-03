@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetBookmarkedStatuses;
@@ -40,5 +41,10 @@ public class BookmarkedStatusListFragment extends StatusListFragment{
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.ACCOUNT;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/bookmarks").build();
 	}
 }

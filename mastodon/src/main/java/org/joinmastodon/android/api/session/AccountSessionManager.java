@@ -15,6 +15,7 @@ import android.util.Log;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -121,6 +122,12 @@ public class AccountSessionManager{
 		sessions.put(session.getID(), session);
 		lastActiveAccountID=session.getID();
 		writeAccountsFile();
+
+		// write initial instance info to file immediately to avoid sessions without instance info
+		InstanceInfoStorageWrapper wrapper = new InstanceInfoStorageWrapper();
+		wrapper.instance = instance;
+		MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, instance.uri));
+
 		updateMoreInstanceInfo(instance, instance.uri);
 		if(PushSubscriptionManager.arePushNotificationsAvailable()){
 			session.getPushSubscriptionManager().registerAccountForPush(null);
@@ -129,14 +136,16 @@ public class AccountSessionManager{
 	}
 
 	public synchronized void writeAccountsFile(){
-		File file=new File(MastodonApp.context.getFilesDir(), "accounts.json");
+		File tmpFile = new File(MastodonApp.context.getFilesDir(), "accounts.json~");
+		File file = new File(MastodonApp.context.getFilesDir(), "accounts.json");
 		try{
-			try(FileOutputStream out=new FileOutputStream(file)){
+			try(FileOutputStream out=new FileOutputStream(tmpFile)){
 				SessionsStorageWrapper w=new SessionsStorageWrapper();
 				w.accounts=new ArrayList<>(sessions.values());
 				OutputStreamWriter writer=new OutputStreamWriter(out, StandardCharsets.UTF_8);
 				MastodonAPIController.gson.toJson(w, writer);
 				writer.flush();
+				if (!tmpFile.renameTo(file)) Log.e(TAG, "Error renaming " + tmpFile.getPath() + " to " + file.getPath());
 			}
 		}catch(IOException x){
 			Log.e(TAG, "Error writing accounts file", x);
@@ -189,6 +198,7 @@ public class AccountSessionManager{
 		AccountSession session=getAccount(id);
 		session.getCacheController().closeDatabase();
 		MastodonApp.context.deleteDatabase(id+".db");
+		GlobalUserPreferences.removeAccount(id);
 		sessions.remove(id);
 		if(lastActiveAccountID.equals(id)){
 			if(sessions.isEmpty())
@@ -259,31 +269,35 @@ public class AccountSessionManager{
 	}
 
 	public void maybeUpdateLocalInfo(){
+		maybeUpdateLocalInfo(null);
+	}
+
+	public void maybeUpdateLocalInfo(AccountSession activeSession){
 		long now=System.currentTimeMillis();
 		HashSet<String> domains=new HashSet<>();
 		for(AccountSession session:sessions.values()){
 			domains.add(session.domain.toLowerCase());
-//			if(now-session.infoLastUpdated>24L*3600_000L){
-			updateSessionPreferences(session);
-			updateSessionLocalInfo(session);
-//			}
-//			if(now-session.filtersLastUpdated>3600_000L){
-			updateSessionWordFilters(session);
-//			}
+			if(now-session.infoLastUpdated>24L*3600_000L || session == activeSession){
+				updateSessionPreferences(session);
+				updateSessionLocalInfo(session);
+			}
+			if(now-session.filtersLastUpdated>3600_000L || session == activeSession){
+				updateSessionWordFilters(session);
+			}
 			updateSessionMarkers(session);
 		}
 		if(loadedInstances){
-			maybeUpdateCustomEmojis(domains);
+			maybeUpdateCustomEmojis(domains, activeSession != null ? activeSession.domain : null);
 		}
 	}
 
-	private void maybeUpdateCustomEmojis(Set<String> domains){
+	private void maybeUpdateCustomEmojis(Set<String> domains, String activeDomain){
 		long now=System.currentTimeMillis();
 		for(String domain:domains){
-//			Long lastUpdated=instancesLastUpdated.get(domain);
-//			if(lastUpdated==null || now-lastUpdated>24L*3600_000L){
-			updateInstanceInfo(domain);
-//			}
+			Long lastUpdated=instancesLastUpdated.get(domain);
+			if(lastUpdated==null || now-lastUpdated>24L*3600_000L || domain.equals(activeDomain)){
+				updateInstanceInfo(domain);
+			}
 		}
 	}
 
@@ -411,7 +425,9 @@ public class AccountSessionManager{
 
 					@Override
 					public void onError(ErrorResponse error){
-
+						InstanceInfoStorageWrapper wrapper=new InstanceInfoStorageWrapper();
+						wrapper.instance = instance;
+						MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, domain));
 					}
 				})
 				.execNoAuth(domain);
@@ -422,10 +438,13 @@ public class AccountSessionManager{
 	}
 
 	private void writeInstanceInfoFile(InstanceInfoStorageWrapper emojis, String domain){
-		try(FileOutputStream out=new FileOutputStream(getInstanceInfoFile(domain))){
+		File file = getInstanceInfoFile(domain);
+		File tmpFile = new File(file.getPath() + "~");
+		try(FileOutputStream out=new FileOutputStream(tmpFile)){
 			OutputStreamWriter writer=new OutputStreamWriter(out, StandardCharsets.UTF_8);
 			MastodonAPIController.gson.toJson(emojis, writer);
 			writer.flush();
+			if (!tmpFile.renameTo(file)) Log.e(TAG, "Error renaming " + tmpFile.getPath() + " to " + file.getPath());
 		}catch(IOException x){
 			Log.w(TAG, "Error writing instance info file for "+domain, x);
 		}
@@ -445,7 +464,7 @@ public class AccountSessionManager{
 		}
 		if(!loadedInstances){
 			loadedInstances=true;
-			maybeUpdateCustomEmojis(domains);
+			maybeUpdateCustomEmojis(domains, null);
 		}
 	}
 
@@ -467,10 +486,6 @@ public class AccountSessionManager{
 
 	public Instance getInstanceInfo(String domain){
 		return instances.get(domain);
-	}
-
-	public Instance getInstanceInfoForAccount(String account) {
-		return AccountSessionManager.getInstance().getInstanceInfo(instance.getAccount(account).domain);
 	}
 
 	public void updateAccountInfo(String id, Account account){

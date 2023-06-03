@@ -11,15 +11,19 @@ import androidx.annotation.StringRes;
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
+import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTimelineFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.NotificationsListFragment;
+import org.joinmastodon.android.fragments.discover.BubbleTimelineFragment;
 import org.joinmastodon.android.fragments.discover.FederatedTimelineFragment;
 import org.joinmastodon.android.fragments.discover.LocalTimelineFragment;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class TimelineDefinition {
     private TimelineType type;
@@ -65,6 +69,14 @@ public class TimelineDefinition {
         this.type = type;
     }
 
+    public boolean isCompatible(AccountSession session) {
+        return true;
+    }
+
+    public boolean wantsDefault(AccountSession session) {
+        return true;
+    }
+
     public String getTitle(Context ctx) {
         return title != null ? title : getDefaultTitle(ctx);
     }
@@ -85,6 +97,7 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> ctx.getString(R.string.sk_timeline_posts);
             case LIST -> listTitle;
             case HASHTAG -> hashtagName;
+            case BUBBLE -> ctx.getString(R.string.sk_timeline_bubble);
             case CUSTOM_LOCAL_TIMELINE -> domain;
         };
     }
@@ -98,6 +111,7 @@ public class TimelineDefinition {
             case LIST -> Icon.LIST;
             case HASHTAG -> Icon.HASHTAG;
             case CUSTOM_LOCAL_TIMELINE -> Icon.CUSTOM_LOCAL_TIMELINE;
+            case BUBBLE -> Icon.BUBBLE;
         };
     }
 
@@ -109,6 +123,7 @@ public class TimelineDefinition {
             case LIST -> new ListTimelineFragment();
             case HASHTAG -> new HashtagTimelineFragment();
             case POST_NOTIFICATIONS -> new NotificationsListFragment();
+            case BUBBLE -> new BubbleTimelineFragment();
             case CUSTOM_LOCAL_TIMELINE -> new CustomLocalTimelineFragment();
         };
     }
@@ -172,7 +187,7 @@ public class TimelineDefinition {
         return args;
     }
 
-    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG, CUSTOM_LOCAL_TIMELINE }
+    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG, CUSTOM_LOCAL_TIMELINE, BUBBLE }
 
     public enum Icon {
         HEART(R.drawable.ic_fluent_heart_24_regular, R.string.sk_icon_heart),
@@ -236,7 +251,8 @@ public class TimelineDefinition {
         POST_NOTIFICATIONS(R.drawable.ic_fluent_chat_24_regular, R.string.sk_timeline_posts, true),
         LIST(R.drawable.ic_fluent_people_24_regular, R.string.sk_list, true),
         HASHTAG(R.drawable.ic_fluent_number_symbol_24_regular, R.string.sk_hashtag, true),
-        CUSTOM_LOCAL_TIMELINE(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true);
+        CUSTOM_LOCAL_TIMELINE(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
+        BUBBLE(R.drawable.ic_fluent_circle_24_regular, R.string.sk_timeline_bubble, true);
 
         public final int iconRes, nameRes;
         public final boolean hidden;
@@ -256,14 +272,50 @@ public class TimelineDefinition {
     public static final TimelineDefinition LOCAL_TIMELINE = new TimelineDefinition(TimelineType.LOCAL);
     public static final TimelineDefinition FEDERATED_TIMELINE = new TimelineDefinition(TimelineType.FEDERATED);
     public static final TimelineDefinition POSTS_TIMELINE = new TimelineDefinition(TimelineType.POST_NOTIFICATIONS);
+    public static final TimelineDefinition BUBBLE_TIMELINE = new TimelineDefinition(TimelineType.BUBBLE) {
+        @Override
+        public boolean isCompatible(AccountSession session) {
+            // still enabling the bubble timeline for all pleroma/akkoma instances since i know of
+            // at least one instance that supports it, but doesn't list "bubble_timeline"
+            return session.getInstance().map(Instance::isAkkoma).orElse(false);
+        }
 
-    public static final List<TimelineDefinition> DEFAULT_TIMELINES = BuildConfig.BUILD_TYPE.equals("playRelease")
-            ? List.of(HOME_TIMELINE.copy(), LOCAL_TIMELINE.copy())
-            : List.of(HOME_TIMELINE.copy(), LOCAL_TIMELINE.copy(), FEDERATED_TIMELINE.copy());
-    public static final List<TimelineDefinition> ALL_TIMELINES = List.of(
-            HOME_TIMELINE.copy(),
-            LOCAL_TIMELINE.copy(),
-            FEDERATED_TIMELINE.copy(),
-            POSTS_TIMELINE.copy()
+        @Override
+        public boolean wantsDefault(AccountSession session) {
+            return session.getInstance()
+                    .map(i -> i.hasFeature(Instance.Feature.BUBBLE_TIMELINE))
+                    .orElse(false);
+        }
+    };
+
+    public static List<TimelineDefinition> getDefaultTimelines(String accountId) {
+        AccountSession session = AccountSessionManager.getInstance().getAccount(accountId);
+        return DEFAULT_TIMELINES.stream()
+                .filter(tl -> tl.isCompatible(session) && tl.wantsDefault(session))
+                .map(TimelineDefinition::copy)
+                .collect(Collectors.toList());
+    }
+
+    public static List<TimelineDefinition> getAllTimelines(String accountId) {
+        AccountSession session = AccountSessionManager.getInstance().getAccount(accountId);
+        return ALL_TIMELINES.stream()
+                .filter(tl -> tl.isCompatible(session))
+                .map(TimelineDefinition::copy)
+                .collect(Collectors.toList());
+    }
+
+    private static final List<TimelineDefinition> DEFAULT_TIMELINES = List.of(
+            HOME_TIMELINE,
+            LOCAL_TIMELINE,
+            BUBBLE_TIMELINE,
+            FEDERATED_TIMELINE
+    );
+
+    private static final List<TimelineDefinition> ALL_TIMELINES = List.of(
+            HOME_TIMELINE,
+            LOCAL_TIMELINE,
+            FEDERATED_TIMELINE,
+            POSTS_TIMELINE,
+            BUBBLE_TIMELINE
     );
 }

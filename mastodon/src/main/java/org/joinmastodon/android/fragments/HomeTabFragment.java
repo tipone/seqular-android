@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.assist.AssistContent;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -56,6 +57,7 @@ import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -73,7 +75,7 @@ import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
-public class HomeTabFragment extends MastodonToolbarFragment implements ScrollableToTop, OnBackPressedListener, DomainDisplay, HasFab {
+public class HomeTabFragment extends MastodonToolbarFragment implements ScrollableToTop, OnBackPressedListener, HasFab, ProvidesAssistContent {
 	private static final int ANNOUNCEMENTS_RESULT = 654;
 
 	private String accountID;
@@ -108,7 +110,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		super.onCreate(savedInstanceState);
 		E.register(this);
 		accountID = getArguments().getString("account");
-		timelineDefinitions = GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.DEFAULT_TIMELINES);
+		timelineDefinitions = GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.getDefaultTimelines(accountID));
 		assert timelineDefinitions != null;
 		if (timelineDefinitions.size() == 0) timelineDefinitions = List.of(TimelineDefinition.HOME_TIMELINE);
 		count = timelineDefinitions.size();
@@ -209,10 +211,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 				if (fragments[position] instanceof BaseRecyclerFragment<?> page){
 					if(!page.loaded && !page.isDataLoading()) page.loadData();
 				}
-
-				//update recent app list url
-				if (fragments[position] instanceof DomainDisplay page)
-					DomainManager.getInstance().setCurrentDomain(page.getDomain());
 			}
 		});
 
@@ -295,14 +293,6 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 				error.showToast(getActivity());
 			}
 		}).exec(accountID);
-	}
-
-	@Override
-	public String getDomain() {
-		if (fragments[pager.getCurrentItem()] instanceof DomainDisplay page) {
-			return page.getDomain();
-		}
-		return DomainDisplay.super.getDomain();
 	}
 
 	private void onFabClick(View v){
@@ -720,6 +710,11 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 	public ImageButton getFab() {
 		return fab;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(fragments[pager.getCurrentItem()], assistContent);
 	}
 
 	private class HomePagerAdapter extends RecyclerView.Adapter<SimpleViewHolder> {

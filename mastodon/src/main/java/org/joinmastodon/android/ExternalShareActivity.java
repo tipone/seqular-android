@@ -1,7 +1,6 @@
 package org.joinmastodon.android;
 
 import android.app.Fragment;
-import android.app.assist.AssistContent;
 import android.content.ClipData;
 import android.content.Intent;
 import android.net.Uri;
@@ -19,6 +18,7 @@ import org.jsoup.internal.StringUtil;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
@@ -30,8 +30,8 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
 
-			String text = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-			boolean isMastodonURL = UiUtils.looksLikeMastodonUrl(text);
+			Optional<String> text = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT));
+			boolean isMastodonURL = text.map(UiUtils::looksLikeMastodonUrl).orElse(false);
 
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
 			if(sessions.isEmpty()){
@@ -40,11 +40,22 @@ public class ExternalShareActivity extends FragmentStackActivity{
 			}else if(sessions.size()==1 && !isMastodonURL){
 				openComposeFragment(sessions.get(0).getID());
 			}else{
-				new AccountSwitcherSheet(this, false, false, isMastodonURL, accountSession -> {
-					if(accountSession!=null)
-						openComposeFragment(accountSession.getID());
-					else
-						UiUtils.openURL(this, AccountSessionManager.getInstance().getLastActiveAccountID(), text);
+				new AccountSwitcherSheet(this, null, true, isMastodonURL, (accountId, open) -> {
+					if (open && text.isPresent()) {
+						UiUtils.lookupURL(this, accountId, text.get(), false, (clazz, args) -> {
+							if (clazz == null) {
+								finish();
+								return;
+							}
+							args.putString("fromExternalShare", clazz.getSimpleName());
+							Intent intent = new Intent(this, MainActivity.class);
+							intent.putExtras(args);
+							finish();
+							startActivity(intent);
+						});
+					} else {
+						openComposeFragment(accountId);
+					}
 				}).show();
 			}
 		}
@@ -107,12 +118,5 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		if(l==null)
 			return null;
 		return new ArrayList<>(l);
-	}
-
-	@Override
-	public void onProvideAssistContent(AssistContent outContent) {
-		super.onProvideAssistContent(outContent);
-
-		outContent.setWebUri(Uri.parse(DomainManager.getInstance().getCurrentDomain()));
 	}
 }

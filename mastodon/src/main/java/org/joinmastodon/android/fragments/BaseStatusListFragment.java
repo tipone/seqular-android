@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -15,6 +16,7 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
@@ -49,6 +51,7 @@ import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.util.ArrayList;
@@ -69,7 +72,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends BaseRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, DomainDisplay{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, ProvidesAssistContent.ProvidesWebUri, DomainDisplay {
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
@@ -132,7 +135,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		displayItems.clear();
 	}
 
-	protected void prependItems(List<T> items, boolean notify){
+	protected int prependItems(List<T> items, boolean notify){
 		data.addAll(0, items);
 		int offset=0;
 		for(T s:items){
@@ -145,6 +148,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 		if(notify)
 			adapter.notifyItemRangeInserted(0, offset);
+		return offset;
 	}
 
 	protected String getMaxID(){
@@ -205,7 +209,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			@Override
 			public boolean startPhotoViewTransition(int index, @NonNull Rect outRect, @NonNull int[] outCornerRadius){
 				MediaAttachmentViewController holder=findPhotoViewHolder(index);
-				if(holder!=null){
+				if(holder!=null && list!=null){
 					transitioningHolder=holder;
 					View view=transitioningHolder.photo;
 					int[] pos={0, 0};
@@ -337,6 +341,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			private Rect tmpRect=new Rect();
 			@Override
 			public void getSelectorBounds(View view, Rect outRect){
+				boolean hasDescendant = false, hasAncestor = false, isWarning = false;
+				int lastIndex = -1, firstIndex = -1;
 				list.getDecoratedBoundsWithMargins(view, outRect);
 				RecyclerView.ViewHolder holder=list.getChildViewHolder(view);
 				if(holder instanceof StatusDisplayItem.Holder){
@@ -348,18 +354,40 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					for(int i=0;i<list.getChildCount();i++){
 						View child=list.getChildAt(i);
 						holder=list.getChildViewHolder(child);
-						if(holder instanceof StatusDisplayItem.Holder){
+						if(holder instanceof StatusDisplayItem.Holder<?> h){
 							String otherID=((StatusDisplayItem.Holder<?>) holder).getItemID();
 							if(otherID.equals(id)){
+								if (firstIndex < 0) firstIndex = i;
+								lastIndex = i;
+								StatusDisplayItem item = h.getItem();
+								hasDescendant = item.hasDescendantNeighbor;
+								// no for direct descendants because main status (right above) is
+								// being displayed with an extended footer - no connected layout
+								hasAncestor = item.hasAncestoringNeighbor && !item.isDirectDescendant;
 								list.getDecoratedBoundsWithMargins(child, tmpRect);
 								outRect.left=Math.min(outRect.left, tmpRect.left);
 								outRect.top=Math.min(outRect.top, tmpRect.top);
 								outRect.right=Math.max(outRect.right, tmpRect.right);
 								outRect.bottom=Math.max(outRect.bottom, tmpRect.bottom);
+								if (holder instanceof WarningFilteredStatusDisplayItem.Holder) {
+									isWarning = true;
+								}
 							}
 						}
 					}
 				}
+				// shifting the selection box down
+				// see also: FooterStatusDisplayItem#onBind (setMargins)
+				if (isWarning || firstIndex < 0 || lastIndex < 0) return;
+				int prevIndex = firstIndex - 1, nextIndex = lastIndex + 1;
+				boolean prevIsWarning = prevIndex > 0 && prevIndex < list.getChildCount() &&
+						list.getChildViewHolder(list.getChildAt(prevIndex))
+						instanceof WarningFilteredStatusDisplayItem.Holder;
+				boolean nextIsWarning = nextIndex > 0 && nextIndex < list.getChildCount() &&
+						list.getChildViewHolder(list.getChildAt(nextIndex))
+						instanceof WarningFilteredStatusDisplayItem.Holder;
+				if (!prevIsWarning && hasAncestor) outRect.top += V.dp(4);
+				if (!nextIsWarning && hasDescendant) outRect.bottom += V.dp(4);
 			}
 		});
 		list.setItemAnimator(new BetterItemAnimator());
@@ -568,6 +596,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 	}
 
+	public void onImageUpdated(MediaGridStatusDisplayItem.Holder holder, int index) {
+		holder.rebind();
+		MediaGridStatusDisplayItem.Holder mediaGrid = findHolderOfType(holder.getItemID(), MediaGridStatusDisplayItem.Holder.class);
+		if(mediaGrid!=null){
+			adapter.notifyItemChanged(mediaGrid.getAbsoluteAdapterPosition());
+		}
+	}
+
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
@@ -579,6 +615,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		warning.getItem().status.filterRevealed = true;
 	}
 
+	@Override
 	public String getAccountID(){
 		return accountID;
 	}
@@ -717,6 +754,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		return attachmentViewsPool;
 	}
 
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
+	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
 
@@ -778,6 +819,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				RecyclerView.ViewHolder siblingHolder=parent.getChildViewHolder(bottomSibling);
 				if(holder instanceof StatusDisplayItem.Holder<?> ih && siblingHolder instanceof StatusDisplayItem.Holder<?> sh
 						&& (!ih.getItemID().equals(sh.getItemID()) || sh instanceof ExtendedFooterStatusDisplayItem.Holder) && ih.getItem().getType()!=StatusDisplayItem.Type.GAP){
+					if (!ih.getItem().isMainStatus && ih.getItem().hasDescendantNeighbor) continue;
 					drawDivider(child, bottomSibling, holder, siblingHolder, parent, c, dividerPaint);
 				}
 			}

@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -24,12 +31,7 @@ import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.squareup.otto.Subscribe;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -37,7 +39,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.V;
 
-public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, DomainDisplay{
+public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, ProvidesAssistContent {
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -47,12 +49,6 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private NotificationsListFragment allNotificationsFragment, mentionsFragment, postsFragment;
 
 	private String accountID;
-
-	@Override
-	public String getDomain() {
-		return DomainDisplay.super.getDomain() + "/notifications";
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -107,6 +103,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 		tabLayout=view.findViewById(R.id.tabbar);
 		pager=view.findViewById(R.id.pager);
+		UiUtils.reduceSwipeSensitivity(pager);
 
 		tabViews=new FrameLayout[3];
 		for(int i=0;i<tabViews.length;i++){
@@ -124,6 +121,18 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 		tabLayout.setTabTextSize(V.dp(16));
 		tabLayout.setTabTextColors(UiUtils.getThemeColor(getActivity(), R.attr.colorTabInactive), UiUtils.getThemeColor(getActivity(), android.R.attr.textColorPrimary));
+		tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+			@Override
+			public void onTabSelected(TabLayout.Tab tab) {}
+
+			@Override
+			public void onTabUnselected(TabLayout.Tab tab) {}
+
+			@Override
+			public void onTabReselected(TabLayout.Tab tab) {
+				scrollToTop();
+			}
+		});
 
 		pager.setOffscreenPageLimit(4);
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
@@ -145,20 +154,17 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
-			args.putBoolean("noAutoLoad", true);
 
 			allNotificationsFragment=new NotificationsListFragment();
 			allNotificationsFragment.setArguments(args);
 
 			args=new Bundle(args);
 			args.putBoolean("onlyMentions", true);
-			args.putBoolean("noAutoLoad", true);
 			mentionsFragment=new NotificationsListFragment();
 			mentionsFragment.setArguments(args);
 
 			args=new Bundle(args);
 			args.putBoolean("onlyPosts", true);
-			args.putBoolean("noAutoLoad", true);
 			postsFragment=new NotificationsListFragment();
 			postsFragment.setArguments(args);
 
@@ -190,6 +196,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 		new GetFollowRequests(null, 1).setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(HeaderPaginationList<Account> accounts) {
+				if (getActivity() == null) return;
 				getToolbar().getMenu().findItem(R.id.follow_requests).setVisible(!accounts.isEmpty());
 			}
 
@@ -228,6 +235,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	protected void updateToolbar(){
 		super.updateToolbar();
 		getToolbar().setOutlineProvider(null);
+		getToolbar().setOnClickListener(v->scrollToTop());
 	}
 
 	private NotificationsListFragment getFragmentForPage(int page){
@@ -237,6 +245,11 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			case 2 -> postsFragment;
 			default -> throw new IllegalStateException("Unexpected value: "+page);
 		};
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(getFragmentForPage(pager.getCurrentItem()), assistContent);
 	}
 
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{

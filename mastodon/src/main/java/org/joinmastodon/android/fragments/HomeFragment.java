@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.graphics.Outline;
 import android.os.Build;
@@ -40,16 +41,13 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TabBar;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
-
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
-
-import com.squareup.otto.Subscribe;
+import java.util.Optional;
 
 import me.grishka.appkit.FragmentStackActivity;
 import me.grishka.appkit.Nav;
@@ -63,11 +61,9 @@ import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class HomeFragment extends AppKitFragment implements OnBackPressedListener{
+public class HomeFragment extends AppKitFragment implements OnBackPressedListener, ProvidesAssistContent, HasAccountID {
 	private FragmentRootLinearLayout content;
-
 	private HomeTabFragment homeTabFragment;
-
 	private NotificationsFragment notificationsFragment;
 	private DiscoverFragment searchFragment;
 	private ProfileFragment profileFragment;
@@ -79,6 +75,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private int currentTab=R.id.tab_home;
 
 	private String accountID;
+	private boolean isPleroma;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -86,18 +83,21 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		E.register(this);
 		accountID=getArguments().getString("account");
 		setTitle(R.string.mo_app_name);
+		isPleroma = AccountSessionManager.getInstance().getAccount(accountID).getInstance()
+				.map(Instance::isAkkoma)
+				.orElse(false);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 
+		// TODO: clean up
 		if(savedInstanceState==null){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-
 			homeTabFragment=new HomeTabFragment();
 			homeTabFragment.setArguments(args);
-
 			args=new Bundle(args);
+			args.putBoolean("disableDiscover", isPleroma);
 			args.putBoolean("noAutoLoad", true);
 			searchFragment=new DiscoverFragment();
 			searchFragment.setArguments(args);
@@ -149,7 +149,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 					.add(me.grishka.appkit.R.id.fragment_wrap, profileFragment).hide(profileFragment)
 					.commit();
 
-
 			String defaultTab=getArguments().getString("tab");
 			if("notifications".equals(defaultTab)){
 				tabBar.selectTab(R.id.tab_notifications);
@@ -170,19 +169,14 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Override
 	public void onViewStateRestored(Bundle savedInstanceState){
 		super.onViewStateRestored(savedInstanceState);
-
 		if(savedInstanceState==null) return;
-
-
 		homeTabFragment=(HomeTabFragment) getChildFragmentManager().getFragment(savedInstanceState, "homeTabFragment");
-
 		searchFragment=(DiscoverFragment) getChildFragmentManager().getFragment(savedInstanceState, "searchFragment");
 		notificationsFragment=(NotificationsFragment) getChildFragmentManager().getFragment(savedInstanceState, "notificationsFragment");
 		profileFragment=(ProfileFragment) getChildFragmentManager().getFragment(savedInstanceState, "profileFragment");
 		currentTab=savedInstanceState.getInt("selectedTab");
 		tabBar.selectTab(currentTab);
 		Fragment current=fragmentForTab(currentTab);
-
 		getChildFragmentManager().beginTransaction()
 				.hide(homeTabFragment)
 				.hide(searchFragment)
@@ -190,15 +184,12 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				.hide(profileFragment)
 				.show(current)
 				.commit();
-
 		maybeTriggerLoading(current);
 	}
 
 	@Override
 	public void onHiddenChanged(boolean hidden){
 		super.onHiddenChanged(hidden);
-		if (!hidden && fragmentForTab(currentTab) instanceof  DomainDisplay display)
-			DomainManager.getInstance().setCurrentDomain(display.getDomain());
 		fragmentForTab(currentTab).onHiddenChanged(hidden);
 	}
 
@@ -222,9 +213,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			super.onApplyWindowInsets(insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), 0, insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom()));
 		}
 		WindowInsets topOnlyInsets=insets.replaceSystemWindowInsets(0, insets.getSystemWindowInsetTop(), 0, 0);
-
 		homeTabFragment.onApplyWindowInsets(topOnlyInsets);
-
 		searchFragment.onApplyWindowInsets(topOnlyInsets);
 		notificationsFragment.onApplyWindowInsets(topOnlyInsets);
 		profileFragment.onApplyWindowInsets(topOnlyInsets);
@@ -243,34 +232,28 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		throw new IllegalArgumentException();
 	}
 
+	public void setCurrentTab(@IdRes int tab){
+		if(tab==currentTab)
+			return;
+		tabBar.selectTab(tab);
+		onTabSelected(tab);
+	}
+
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
-			if(tab == R.id.tab_search){
-				if(newFragment instanceof ScrollableToTop scrollable)
-					scrollable.scrollToTop();
-				searchFragment.selectSearch();
-				return;
-			}
-			if(newFragment instanceof ScrollableToTop scrollable)
+			if (tab == R.id.tab_search)
+				searchFragment.onSelect();
+			else if(newFragment instanceof ScrollableToTop scrollable)
 				scrollable.scrollToTop();
 			return;
 		}
-		if(tab==currentTab && tab == R.id.tab_search){
-			if(newFragment instanceof ScrollableToTop scrollable)
-				scrollable.scrollToTop();
-			return;
-		}
-
-		if (newFragment instanceof DomainDisplay display) {
-			DomainManager.getInstance().setCurrentDomain(display.getDomain());
-		}
-
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
 		maybeTriggerLoading(newFragment);
 		if (newFragment instanceof HasFab fabulous) fabulous.showFab();
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
+		if (tab == R.id.tab_search && isPleroma) searchFragment.selectSearch();
 	}
 
 	private void maybeTriggerLoading(Fragment newFragment){
@@ -297,10 +280,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
-			new AccountSwitcherSheet(getActivity(), true, true, false, accountSession -> {
-				getActivity().finish();
-				getActivity().startActivity(new Intent(getActivity(), MainActivity.class));
-			}).show();
+			new AccountSwitcherSheet(getActivity(), this).show();
 			return true;
 		}
 		if(tab==R.id.tab_search){
@@ -336,7 +316,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void onSaveInstanceState(Bundle outState){
 		super.onSaveInstanceState(outState);
 		outState.putInt("selectedTab", currentTab);
-
 		if (homeTabFragment.isAdded()) getChildFragmentManager().putFragment(outState, "homeTabFragment", homeTabFragment);
 		if (searchFragment.isAdded()) getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
 		if (notificationsFragment.isAdded()) getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
@@ -345,10 +324,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	public void updateNotificationBadge() {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
-		if (instance == null) return;
+		Optional<Instance> instance = session.getInstance();
+		if (instance.isEmpty()) return; // avoiding incompatibility with akkoma
 
-		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance != null && instance.pleroma != null)
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.get().isAkkoma())
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(List<Notification> notifications) {
@@ -356,9 +335,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 							try {
 								long newestId = Long.parseLong(notifications.get(0).id);
 								long lastSeenId = Long.parseLong(session.markers.notifications.lastReadId);
-								System.out.println("NEWEST: " + newestId);
-								System.out.println("LAST SEEN: " + lastSeenId);
-
 								setNotificationBadge(newestId > lastSeenId);
 							} catch (Exception ignored) {
 								setNotificationBadge(false);
@@ -372,6 +348,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 					}
 				}).exec(accountID);
 	}
+
 	public void setNotificationBadge(boolean badge) {
 		notificationTabIcon.setImageResource(badge
 				? R.drawable.ic_fluent_alert_28_selector_badged
@@ -386,5 +363,15 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	@Subscribe
 	public void onAllNotificationsSeen(AllNotificationsSeenEvent allNotificationsSeenEvent) {
 		setNotificationBadge(false);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(fragmentForTab(currentTab), assistContent);
 	}
 }

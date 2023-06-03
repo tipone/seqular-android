@@ -2,6 +2,7 @@ package org.joinmastodon.android.ui.displayitems;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -26,6 +27,7 @@ import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
@@ -45,6 +47,23 @@ public abstract class StatusDisplayItem{
 	public final BaseStatusListFragment parentFragment;
 	public boolean inset;
 	public int index;
+	public boolean
+			hasDescendantNeighbor = false,
+			hasAncestoringNeighbor = false,
+			isMainStatus = true,
+			isDirectDescendant = false;
+
+	public void setAncestryInfo(
+			boolean hasDescendantNeighbor,
+			boolean hasAncestoringNeighbor,
+			boolean isMainStatus,
+			boolean isDirectDescendant
+	) {
+		this.hasDescendantNeighbor = hasDescendantNeighbor;
+		this.hasAncestoringNeighbor = hasAncestoringNeighbor;
+		this.isMainStatus = isMainStatus;
+		this.isDirectDescendant = isDirectDescendant;
+	}
 
 	public StatusDisplayItem(String parentID, BaseStatusListFragment parentFragment){
 		this.parentID=parentID;
@@ -163,6 +182,15 @@ public abstract class StatusDisplayItem{
 			items.add(replyLine);
 		}
 
+		if (statusForContent.quote != null) {
+			boolean hasQuoteInlineTag = statusForContent.content.contains("<span class=\"quote-inline\">");
+			if (!hasQuoteInlineTag) {
+				String quoteUrl = statusForContent.quote.url;
+				String quoteInline = String.format("<span class=\"quote-inline\">%sRE: <a href=\"%s\">%s</a></span>",
+						statusForContent.content.endsWith("</p>") ? "" : "<br/><br/>", quoteUrl, quoteUrl);
+				statusForContent.content += quoteInline;
+			}
+		}
 		if(!TextUtils.isEmpty(statusForContent.content))
 			items.add(new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, disableTranslate));
 		else if (!GlobalUserPreferences.replyLineAboveHeader && replyLine != null)
@@ -174,6 +202,12 @@ public abstract class StatusDisplayItem{
 				.filter(att->att.type.isImage() && !att.type.equals(Attachment.Type.UNKNOWN))
 				.collect(Collectors.toList());
 		if(!imageAttachments.isEmpty()){
+			int color = UiUtils.getThemeColor(fragment.getContext(), R.attr.colorAccentLightest);
+			for (Attachment att : imageAttachments) {
+				if (att.blurhashPlaceholder == null) {
+					att.blurhashPlaceholder = new ColorDrawable(color);
+				}
+			}
 			PhotoLayoutHelper.TiledLayoutResult layout=PhotoLayoutHelper.processThumbs(imageAttachments);
 			items.add(new MediaGridStatusDisplayItem(parentID, fragment, layout, imageAttachments, statusForContent));
 		}

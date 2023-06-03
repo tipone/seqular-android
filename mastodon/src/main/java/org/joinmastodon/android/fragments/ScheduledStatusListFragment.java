@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -180,6 +181,12 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 				return s;
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		// TODO: adapt when frontends finally implement a scheduled posts list
 		return null;
 	}
 }

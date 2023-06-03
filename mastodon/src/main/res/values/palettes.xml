@@ -28,34 +28,115 @@
 		<item name="colorGray50t">@color/gray_50t</item>
 		<item name="colorGray50">@color/gray_50</item>
 		<item name="colorGray25">@color/gray_25</item>
+
+		<!--
+		custom themes generally don't have secondary/tertiary accent colors -
+		falling back to primary colors
+		-->
+
+		<item name="colorSecondary25">@color/primary_25</item>
+		<item name="colorSecondary50">@color/primary_50</item>
+		<item name="colorSecondary100">@color/primary_100</item>
+		<item name="colorSecondary200">@color/primary_200</item>
+		<item name="colorSecondary300">@color/primary_300</item>
+		<item name="colorSecondary400">@color/primary_400</item>
+		<item name="colorSecondary500">@color/primary_500</item>
+		<item name="colorSecondary600">@color/primary_600</item>
+		<item name="colorSecondary700">@color/primary_700</item>
+		<item name="colorSecondary800">@color/primary_800</item>
+		<item name="colorSecondary900">@color/primary_900</item>
+
+		<item name="colorTertiary25">@color/primary_25</item>
+		<item name="colorTertiary50">@color/primary_50</item>
+		<item name="colorTertiary100">@color/primary_100</item>
+		<item name="colorTertiary200">@color/primary_200</item>
+		<item name="colorTertiary300">@color/primary_300</item>
+		<item name="colorTertiary400">@color/primary_400</item>
+		<item name="colorTertiary500">@color/primary_500</item>
+		<item name="colorTertiary600">@color/primary_600</item>
+		<item name="colorTertiary700">@color/primary_700</item>
+		<item name="colorTertiary800">@color/primary_800</item>
+		<item name="colorTertiary900">@color/primary_900</item>
+
+		<item name="colorNeutral900">@color/gray_900</item>
+		<item name="colorNeutral800t">@color/gray_800t</item>
+		<item name="colorNeutral800">@color/gray_800</item>
+		<item name="colorNeutral700">@color/gray_700</item>
+		<item name="colorNeutral600">@color/gray_600</item>
+		<item name="colorNeutral500">@color/gray_500</item>
+		<item name="colorNeutral400">@color/gray_400</item>
+		<item name="colorNeutral300">@color/gray_300</item>
+		<item name="colorNeutral200">@color/gray_200</item>
+		<item name="colorNeutral100">@color/gray_100</item>
+		<item name="colorNeutral50t">@color/gray_50t</item>
+		<item name="colorNeutral50">@color/gray_50</item>
+		<item name="colorNeutral25">@color/gray_25</item>
 	</style>
 
 	<style name="ColorPalette.Material3">
-		<item name="colorPrimary25">@color/m3_primary_25</item>
-		<item name="colorPrimary50">@color/m3_primary_50</item>
-		<item name="colorPrimary100">@color/m3_primary_100</item>
-		<item name="colorPrimary200">@color/m3_primary_200</item>
-		<item name="colorPrimary300">@color/m3_primary_300</item>
-		<item name="colorPrimary400">@color/m3_primary_400</item>
-		<item name="colorPrimary500">@color/m3_primary_500</item>
-		<item name="colorPrimary600">@color/m3_primary_600</item>
-		<item name="colorPrimary700">@color/m3_primary_700</item>
-		<item name="colorPrimary800">@color/m3_primary_800</item>
-		<item name="colorPrimary900">@color/m3_primary_900</item>
+		<item name="colorPrimary25">@color/m3_accent1_25</item>
+		<item name="colorPrimary50">@color/m3_accent1_50</item>
+		<item name="colorPrimary100">@color/m3_accent1_100</item>
+		<item name="colorPrimary200">@color/m3_accent1_200</item>
+		<item name="colorPrimary300">@color/m3_accent1_300</item>
+		<item name="colorPrimary400">@color/m3_accent1_400</item>
+		<item name="colorPrimary500">@color/m3_accent1_500</item>
+		<item name="colorPrimary600">@color/m3_accent1_600</item>
+		<item name="colorPrimary700">@color/m3_accent1_700</item>
+		<item name="colorPrimary800">@color/m3_accent1_800</item>
+		<item name="colorPrimary900">@color/m3_accent1_900</item>
 
-		<item name="colorGray900">@color/m3_gray_900</item>
-		<item name="colorGray800t">@color/m3_gray_800t</item>
-		<item name="colorGray800">@color/m3_gray_800</item>
-		<item name="colorGray700">@color/m3_gray_700</item>
-		<item name="colorGray600">@color/m3_gray_600</item>
-		<item name="colorGray500">@color/m3_gray_500</item>
-		<item name="colorGray400">@color/m3_gray_400</item>
-		<item name="colorGray300">@color/m3_gray_300</item>
-		<item name="colorGray200">@color/m3_gray_200</item>
-		<item name="colorGray100">@color/m3_gray_100</item>
-		<item name="colorGray50t">@color/m3_gray_50t</item>
-		<item name="colorGray50">@color/m3_gray_50</item>
-		<item name="colorGray25">@color/m3_gray_25</item>
+		<item name="colorSecondary25">@color/m3_accent2_25</item>
+		<item name="colorSecondary50">@color/m3_accent2_50</item>
+		<item name="colorSecondary100">@color/m3_accent2_100</item>
+		<item name="colorSecondary200">@color/m3_accent2_200</item>
+		<item name="colorSecondary300">@color/m3_accent2_300</item>
+		<item name="colorSecondary400">@color/m3_accent2_400</item>
+		<item name="colorSecondary500">@color/m3_accent2_500</item>
+		<item name="colorSecondary600">@color/m3_accent2_600</item>
+		<item name="colorSecondary700">@color/m3_accent2_700</item>
+		<item name="colorSecondary800">@color/m3_accent2_800</item>
+		<item name="colorSecondary900">@color/m3_accent2_900</item>
+
+		<item name="colorTertiary25">@color/m3_accent3_25</item>
+		<item name="colorTertiary50">@color/m3_accent3_50</item>
+		<item name="colorTertiary100">@color/m3_accent3_100</item>
+		<item name="colorTertiary200">@color/m3_accent3_200</item>
+		<item name="colorTertiary300">@color/m3_accent3_300</item>
+		<item name="colorTertiary400">@color/m3_accent3_400</item>
+		<item name="colorTertiary500">@color/m3_accent3_500</item>
+		<item name="colorTertiary600">@color/m3_accent3_600</item>
+		<item name="colorTertiary700">@color/m3_accent3_700</item>
+		<item name="colorTertiary800">@color/m3_accent3_800</item>
+		<item name="colorTertiary900">@color/m3_accent3_900</item>
+
+		<item name="colorGray900">@color/m3_neutral1_900</item>
+		<item name="colorGray800t">@color/m3_neutral1_800t</item>
+		<item name="colorGray800">@color/m3_neutral1_800</item>
+		<item name="colorGray700">@color/m3_neutral1_700</item>
+		<item name="colorGray600">@color/m3_neutral1_600</item>
+		<item name="colorGray500">@color/m3_neutral1_500</item>
+		<item name="colorGray400">@color/m3_neutral1_400</item>
+		<item name="colorGray300">@color/m3_neutral1_300</item>
+		<item name="colorGray200">@color/m3_neutral1_200</item>
+		<item name="colorGray100">@color/m3_neutral1_100</item>
+		<item name="colorGray50t">@color/m3_neutral1_50t</item>
+		<item name="colorGray50">@color/m3_neutral1_50</item>
+		<item name="colorGray25">@color/m3_neutral1_25</item>
+
+		<item name="colorNeutral900">@color/m3_neutral2_900</item>
+		<item name="colorNeutral800t">@color/m3_neutral2_800t</item>
+		<item name="colorNeutral800">@color/m3_neutral2_800</item>
+		<item name="colorNeutral700">@color/m3_neutral2_700</item>
+		<item name="colorNeutral600">@color/m3_neutral2_600</item>
+		<item name="colorNeutral500">@color/m3_neutral2_500</item>
+		<item name="colorNeutral400">@color/m3_neutral2_400</item>
+		<item name="colorNeutral300">@color/m3_neutral2_300</item>
+		<item name="colorNeutral200">@color/m3_neutral2_200</item>
+		<item name="colorNeutral100">@color/m3_neutral2_100</item>
+		<item name="colorNeutral50t">@color/m3_neutral2_50t</item>
+		<item name="colorNeutral50">@color/m3_neutral2_50</item>
+		<item name="colorNeutral25">@color/m3_neutral2_25</item>
 	</style>
 
 	<style name="ColorPalette.Material3.Dark">

@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -26,12 +27,6 @@ public class FederatedTimelineFragment extends StatusListFragment {
 	}
 
 	@Override
-	public String getDomain() {
-		return super.getDomain() + "/public";
-	}
-
-
-	@Override
 	protected void doLoadData(int offset, int count){
 		currentRequest=new GetPublicTimeline(false, false, refreshing ? null : maxID, count)
 				.setCallback(new SimpleCallback<>(this){
@@ -50,11 +45,16 @@ public class FederatedTimelineFragment extends StatusListFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
-//		bannerHelper.maybeAddBanner(contentWrap);
+		bannerHelper.maybeAddBanner(contentWrap);
 	}
 
 	@Override
 	protected Filter.FilterContext getFilterContext() {
 		return Filter.FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma() ? "/main/all" : "/public").build();
 	}
 }
