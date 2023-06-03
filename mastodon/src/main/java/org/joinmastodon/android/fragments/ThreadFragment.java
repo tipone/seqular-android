@@ -247,6 +247,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
 		if(ev.status.inReplyToId!=null && getStatusByID(ev.status.inReplyToId)!=null){
+			data.add(ev.status);
 			onAppendItems(Collections.singletonList(ev.status));
 		}
 	}
