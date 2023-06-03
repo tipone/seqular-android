@@ -1201,6 +1201,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
+	@Override
 	public void scrollToTop(){
 		getScrollableRecyclerView().scrollToPosition(0);
 		scrollView.smoothScrollTo(0, 0);

@@ -1,12 +1,14 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 
 import java.util.List;
@@ -14,7 +16,7 @@ import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
-public class CustomLocalTimelineFragment extends StatusListFragment {
+public class CustomLocalTimelineFragment extends StatusListFragment implements ProvidesAssistContent.ProvidesWebUri {
     //    private String name;
     private String domain;
 
@@ -75,5 +77,10 @@ public class CustomLocalTimelineFragment extends StatusListFragment {
     @Override
     protected Filter.FilterContext getFilterContext() {
         return null;
+    }
+
+    @Override
+    public Uri getWebUri(Uri.Builder base) {
+        return base.path("").build();
     }
 }

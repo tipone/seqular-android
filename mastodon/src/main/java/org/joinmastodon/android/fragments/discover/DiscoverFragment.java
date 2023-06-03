@@ -26,7 +26,6 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
-import org.joinmastodon.android.fragments.ListTimelinesFragment;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
@@ -226,6 +225,15 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	@Override
+	public boolean isScrolledToTop() {
+		if(!searchActive){
+			return ((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).isScrolledToTop();
+		}else{
+			return searchFragment.isScrolledToTop();
+		}
+	}
+
+	@Override
 	public void scrollToTop(){
 		if(!searchActive){
 			((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).scrollToTop();
@@ -334,34 +342,29 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 				: getFragmentForPage(pager.getCurrentItem()), assistContent);
 	}
 
-	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
+	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
 		@NonNull
 		@Override
-		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-			FrameLayout view=tabViews[viewType];
-			((ViewGroup)view.getParent()).removeView(view);
+		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+			FrameLayout view = tabViews[viewType];
+			((ViewGroup) view.getParent()).removeView(view);
 			view.setVisibility(View.VISIBLE);
 			view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 			return new SimpleViewHolder(view);
 		}
 
 		@Override
-		public void onBindViewHolder(@NonNull SimpleViewHolder holder, int position){}
+		public void onBindViewHolder(@NonNull SimpleViewHolder holder, int position) {
+		}
 
 		@Override
-		public int getItemCount(){
+		public int getItemCount() {
 			return tabViews.length;
 		}
 
 		@Override
-		public int getItemViewType(int position){
+		public int getItemViewType(int position) {
 			return position;
 		}
-	}
-
-	public void selectSearch(){
-		searchEdit.requestFocus();
-		onSearchEditFocusChanged(searchEdit, true);
-		getActivity().getSystemService(InputMethodManager.class).showSoftInput(searchEdit, 0);
 	}
 }

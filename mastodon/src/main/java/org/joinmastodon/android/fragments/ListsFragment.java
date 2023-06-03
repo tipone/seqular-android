@@ -197,6 +197,11 @@ public class ListsFragment extends RecyclerFragment<ListTimeline> implements Scr
 	}
 
 	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
+	@Override
 	public void scrollToTop() {
 		smoothScrollRecyclerViewToTop(list);
 	}

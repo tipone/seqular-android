@@ -69,6 +69,11 @@ public class DiscoverHashtagsFragment extends RecyclerFragment<Hashtag> implemen
 	}
 
 	@Override
+	public boolean isScrolledToTop() {
+		return list.getChildAt(0).getTop() == 0;
+	}
+
+	@Override
 	public void scrollToTop(){
 		smoothScrollRecyclerViewToTop(list);
 	}

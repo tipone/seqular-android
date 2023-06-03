@@ -22,6 +22,11 @@ public class FollowingListFragment extends AccountRelatedAccountListFragment{
 	}
 
 	@Override
+	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count) {
+		return new GetAccountFollowing(id, maxID, count);
+	}
+
+	@Override
 	public Uri getWebUri(Uri.Builder base) {
 		return super.getWebUri(base).buildUpon()
 				.appendPath(isInstanceAkkoma() ? "#followees" : "/following").build();

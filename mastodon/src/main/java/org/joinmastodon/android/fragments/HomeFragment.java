@@ -21,6 +21,8 @@ import android.widget.LinearLayout;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
 
+import com.squareup.otto.Subscribe;
+
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MainActivity;

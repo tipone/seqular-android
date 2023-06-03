@@ -1367,14 +1367,6 @@ public class UiUtils {
 		return !TextUtils.isEmpty(getSystemProperty("ro.build.version.emui"));
 	}
 
-	public static int alphaBlendColors(int color1, int color2, float alpha) {
-		float alpha0 = 1f - alpha;
-		int r = Math.round(((color1 >> 16) & 0xFF) * alpha0 + ((color2 >> 16) & 0xFF) * alpha);
-		int g = Math.round(((color1 >> 8) & 0xFF) * alpha0 + ((color2 >> 8) & 0xFF) * alpha);
-		int b = Math.round((color1 & 0xFF) * alpha0 + (color2 & 0xFF) * alpha);
-		return 0xFF000000 | (r << 16) | (g << 8) | b;
-	}
-
 	public static boolean pickAccountForCompose(Activity activity, String accountID, String prefilledText) {
 		Bundle args = new Bundle();
 		if (prefilledText != null) args.putString("prefilledText", prefilledText);

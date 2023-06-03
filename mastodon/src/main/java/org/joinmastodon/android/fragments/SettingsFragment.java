@@ -128,16 +128,16 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			popupMenu.setOnMenuItemClickListener(SettingsFragment.this::onColorPreferenceClick);
 			b.setOnTouchListener(popupMenu.getDragToOpenListener());
 			b.setOnClickListener(v->popupMenu.show());
-			b.setText(switch(GlobalUserPreferences.color){
-				case MATERIAL3 -> R.string.sk_color_palette_material3;
-				case PINK -> R.string.sk_color_palette_pink;
-				case PURPLE -> R.string.sk_color_palette_purple;
-				case GREEN -> R.string.sk_color_palette_green;
-				case BLUE -> R.string.sk_color_palette_blue;
-				case BROWN -> R.string.sk_color_palette_brown;
-				case RED -> R.string.sk_color_palette_red;
-				case YELLOW -> R.string.sk_color_palette_yellow;
-			});
+//			b.setText(switch(GlobalUserPreferences.color){
+//				case MATERIAL3 -> R.string.sk_color_palette_material3;
+//				case PINK -> R.string.sk_color_palette_pink;
+//				case PURPLE -> R.string.sk_color_palette_purple;
+//				case GREEN -> R.string.sk_color_palette_green;
+//				case BLUE -> R.string.sk_color_palette_blue;
+//				case BROWN -> R.string.sk_color_palette_brown;
+//				case RED -> R.string.sk_color_palette_red;
+//				case YELLOW -> R.string.sk_color_palette_yellow;
+//			});
 		}));
 		items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b->{
 			updatePublishText(b);
@@ -255,7 +255,7 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
 		}));
-		items.add(showNewPostsItem = new SwitchItem(R.string.sk_settings_see_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
+		items.add(showNewPostsItem = new SwitchItem(R.string.sk_settings_show_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
 			GlobalUserPreferences.showNewPostsButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -296,11 +296,11 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			needAppRestart=true;
 		}));
 		compactReblogReplyLineItem.enabled=GlobalUserPreferences.replyLineAboveHeader;
-		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
-			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
-			GlobalUserPreferences.save();
-			needAppRestart=true;
-		}));
+//		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
+////			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
+//			GlobalUserPreferences.save();
+//			needAppRestart=true;
+//		}));
 		boolean translationAvailable = instance
 				.map(i -> i.v2 != null && i.v2.configuration.translation != null && i.v2.configuration.translation.enabled)
 				.orElse(false);
@@ -722,7 +722,7 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 	public void onSelfUpdateStateChanged(SelfUpdateStateChangedEvent ev){
 		checkForUpdateItem.loading = ev.state == GithubSelfUpdater.UpdateState.CHECKING;
 		if (list.findViewHolderForAdapterPosition(items.indexOf(checkForUpdateItem)) instanceof TextViewHolder tvh) tvh.rebind();
-		
+
 		UpdateItem updateItem = null;
 		if(items.get(0) instanceof UpdateItem item0) {
 			updateItem = item0;
