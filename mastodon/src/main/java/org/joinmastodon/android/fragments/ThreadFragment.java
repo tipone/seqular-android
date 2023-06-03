@@ -42,24 +42,6 @@ import me.grishka.appkit.api.SimpleCallback;
 
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
 	protected Status mainStatus;
-
-	/**
-	 * lists the hierarchy of ancestors and descendants in a thread. level 0 = the main status.
-	 * e.g.
-	 * <pre>
-	 * [0] ancestor:   -2 ↰
-	 * [1] ancestor:     -1 ↰
-	 * [2] main status:     0 ↰
-	 * [3] descendant:        1 ↰
-	 * [4] descendant:          2 ↰
-	 * [5] descendant:            3
-	 * [6] descendant:        1
-	 * [7] descendant:        1 ↰
-	 * [8] descendant:          2
-	 * </pre>
-	 * confused? good. /j
-	 */
-	private final List<Pair<String, Integer>> levels = new ArrayList<>();
 	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
 
 	@Override
