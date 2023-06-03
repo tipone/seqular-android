@@ -1076,7 +1076,6 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 		private final ImageView icon;
 		private final TextView text;
 
-		@SuppressLint("ClickableViewAccessibility")
 		public ButtonViewHolder(){
 			super(getActivity(), R.layout.item_settings_button, list);
 			text=findViewById(R.id.text);
