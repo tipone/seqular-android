@@ -58,18 +58,18 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public class AccountSwitcherSheet extends BottomSheet{
 	private final Activity activity;
 	private final HomeFragment fragment;
-	private final BiConsumer<String, Boolean> onClick;
 	private final boolean externalShare, openInApp;
+	private BiConsumer<String, Boolean> onClick;
 	private UsableRecyclerView list;
 	private List<WrappedAccount> accounts;
 	private ListImageLoaderWrapper imgLoader;
 	private AccountsAdapter accountsAdapter;
 
 	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment){
-		this(activity, fragment, false, false, null);
+		this(activity, fragment, false, false);
 	}
 
-	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, boolean externalShare, boolean openInApp, BiConsumer<String, Boolean> onClick){
+	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, boolean externalShare, boolean openInApp){
 		super(activity);
 		this.activity=activity;
 		this.fragment=fragment;
@@ -121,6 +121,10 @@ public class AccountSwitcherSheet extends BottomSheet{
 		setContentView(content);
 		setNavigationBarBackground(new ColorDrawable(UiUtils.alphaBlendColors(UiUtils.getThemeColor(activity, R.attr.colorM3Surface),
 				UiUtils.getThemeColor(activity, R.attr.colorM3Primary), 0.05f)), !UiUtils.isDarkTheme());
+	}
+
+	public void setOnClick(BiConsumer<String, Boolean> onClick) {
+		this.onClick = onClick;
 	}
 
 	private void confirmLogOut(String accountID){

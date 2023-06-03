@@ -37,6 +37,7 @@ import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -98,9 +99,9 @@ import org.parceler.Parcels;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.IDN;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -905,6 +906,29 @@ public class UiUtils {
 		return theme == GlobalUserPreferences.ThemePreference.DARK;
 	}
 
+	public static Optional<Pair<String, Optional<String>>> looksLikeFediverseHandle(String maybeFediHandle) {
+		// https://stackoverflow.com/a/26987741, except i put a + here ... v
+		String domainRegex = "^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]\\.)+(xn--)?([a-z0-9][a-z0-9\\-]{0,60}|[a-z0-9-]{1,30}\\.[a-z]{2,})$";
+		try {
+			List<String> parts = Arrays.stream(maybeFediHandle.split("@"))
+					.filter(part -> !part.isEmpty())
+					.collect(Collectors.toList());
+			if (parts.size() == 0 || !parts.get(0).matches("^[^/\\s]+$")) {
+				return Optional.empty();
+			} else if (parts.size() == 2) {
+				String domain = IDN.toASCII(parts.get(1));
+				if (!domain.matches(domainRegex)) return Optional.empty();
+				return Optional.of(Pair.create(parts.get(0), Optional.of(parts.get(1))));
+			} else if (maybeFediHandle.startsWith("@")) {
+				return Optional.of(Pair.create(parts.get(0), Optional.empty()));
+			} else {
+				return Optional.empty();
+			}
+		} catch (IllegalArgumentException ignored) {
+			return Optional.empty();
+		}
+	}
+
 	// https://mastodon.foo.bar/@User
 	// https://mastodon.foo.bar/@User/43456787654678
 	// https://pleroma.foo.bar/users/User
@@ -921,7 +945,7 @@ public class UiUtils {
 	// https://foo.microblog.pub/o/5b64045effd24f48a27d7059f6cb38f5
 	//
 	// COPIED FROM https://github.com/tuskyapp/Tusky/blob/develop/app/src/main/java/com/keylesspalace/tusky/util/LinkHelper.kt
-	public static boolean looksLikeMastodonUrl(String urlString) {
+	public static boolean looksLikeFediverseUrl(String urlString) {
 		URI uri;
 		try {
 			uri = new URI(urlString);
@@ -1088,6 +1112,53 @@ public class UiUtils {
 		});
 	}
 
+	public static boolean acctMatches(String accountID, String acct, String queriedUsername, @Nullable String queriedDomain) {
+		// check if the username matches
+		if (!acct.split("@")[0].equalsIgnoreCase(queriedUsername)) return false;
+
+		boolean resultOnHomeInstance = !acct.contains("@");
+		if (resultOnHomeInstance) {
+			// acct is formatted like 'someone'
+			// only allow home instance result if query didn't specify a domain,
+			// or the specified domain does, in fact, match the account session's domain
+			AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+			return queriedDomain == null || session.domain.equalsIgnoreCase(queriedDomain);
+		} else if (queriedDomain == null) {
+			// accept whatever result we have as there's no queried domain to compare to
+			return true;
+		} else {
+			// acct is formatted like 'someone@somewhere'
+			return acct.split("@")[1].equalsIgnoreCase(queriedDomain);
+		}
+	}
+
+	public static void lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+		String fullHandle = ("@" + queryHandle.first) + (queryHandle.second.map(domain -> "@" + domain).orElse(""));
+		new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true)
+				.setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(SearchResults results) {
+						Bundle args = new Bundle();
+						args.putString("account", accountID);
+						Optional<Account> account = results.accounts.stream()
+								.filter(a -> acctMatches(accountID, a.acct, queryHandle.first, queryHandle.second.orElse(null)))
+								.findAny();
+						if (account.isPresent()) {
+							args.putParcelable("profileAccount", Parcels.wrap(account.get()));
+							go.accept(ProfileFragment.class, args);
+							return;
+						}
+						Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+						go.accept(null, null);
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+
+					}
+				}).exec(accountID);
+	}
+
 	public static void lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		Uri uri = Uri.parse(url);
 		List<String> path = uri.getPathSegments();
@@ -1114,7 +1185,7 @@ public class UiUtils {
 								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
 				return;
-			} else if (looksLikeMastodonUrl(url)) {
+			} else if (looksLikeFediverseUrl(url)) {
 				new GetSearchResults(url, null, true)
 						.setCallback(new Callback<>() {
 							@Override
