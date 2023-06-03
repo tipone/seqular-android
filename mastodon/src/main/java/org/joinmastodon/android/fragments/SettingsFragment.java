@@ -1084,14 +1084,17 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			button=findViewById(R.id.button);
 		}
 
+		@SuppressLint("ClickableViewAccessibility")
 		@Override
 		public void onBind(ButtonItem item){
 			text.setText(item.text);
-			if (item.icon == 0) {
-				icon.setVisibility(View.GONE);
-			} else {
-				icon.setImageResource(item.icon);
-			}
+			icon.setVisibility(item.icon == 0 ? View.GONE : View.VISIBLE);
+			icon.setImageResource(item.icon == 0 ? 0 : item.icon);
+			// reset listeners before letting the button consumer consume the button
+			// (and potentially set some listeners, but not others)
+			button.setOnTouchListener(null);
+			button.setOnClickListener(null);
+			button.setOnLongClickListener(null);
 			item.buttonConsumer.accept(button);
 		}
 	}
