@@ -81,6 +81,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
+	protected boolean currentlyScrolling;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -290,6 +291,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		fab.startAnimation(animate);
 	}
 
+	public boolean isScrolling() {
+		return currentlyScrolling;
+	}
+
 	@Override
 	public void hideFab() {
 		View fab = getFab();
@@ -329,6 +334,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						}
 					}
 				}
+			}
+
+			@Override
+			public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				currentlyScrolling = newState != RecyclerView.SCROLL_STATE_IDLE;
 			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());

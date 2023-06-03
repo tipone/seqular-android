@@ -775,6 +775,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if (getFragmentForPage(pager.getCurrentItem()) instanceof HasFab fabulous) fabulous.hideFab();
 	}
 
+	@Override
+	public boolean isScrolling() {
+		return getFragmentForPage(pager.getCurrentItem()) instanceof HasFab fabulous
+				&& fabulous.isScrolling();
+	}
+
 	private void onScrollChanged(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY){
 		int topBarsH=getToolbar().getHeight()+statusBarHeight;
 		if(scrollY>avatarBorder.getTop()-topBarsH){
