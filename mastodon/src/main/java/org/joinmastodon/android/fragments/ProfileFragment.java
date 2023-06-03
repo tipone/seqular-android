@@ -198,7 +198,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(!isOwnProfile)
 				loadRelationship();
 			else if (isInstanceAkkoma() && getInstance().isPresent())
-				maxFields = getInstance().get().pleroma.metadata.fieldsLimits.maxFields;
+				if(getInstance().get().pleroma != null && getInstance().get().pleroma.metadata != null && getInstance().get().pleroma.metadata.fieldsLimits != null){
+					maxFields = getInstance().get().pleroma.metadata.fieldsLimits.maxFields;
+				}
 		}else{
 			profileAccountID=getArguments().getString("profileAccountID");
 			if(!getArguments().getBoolean("noAutoLoad", false))
