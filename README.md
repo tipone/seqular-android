@@ -21,7 +21,8 @@
 ## Help out the project by donating at: https://github.com/sponsors/LucasGGamerM!
 ### We also support LiberaPay at: https://liberapay.com/LucasGGamerM/donate!
 
-You can also donate some Monero through this wallet address as well: 4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j
+### You can also donate some Monero through this wallet address as well:
+4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j
 
 --- 
 
