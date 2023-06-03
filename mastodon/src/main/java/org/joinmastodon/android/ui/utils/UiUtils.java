@@ -1387,6 +1387,23 @@ public class UiUtils {
 		});
 	}
 
+	public static void showFragmentForNotification(Context context, Notification n, String accountID, Bundle extras) {
+		if (extras == null) extras = new Bundle();
+		extras.putString("account", accountID);
+		if (n.status!=null) {
+			Status status=n.status;
+			extras.putParcelable("status", Parcels.wrap(status));
+			Nav.go((Activity) context, ThreadFragment.class, extras);
+		} else if (n.report != null) {
+			String domain = AccountSessionManager.getInstance().getAccount(accountID).domain;
+			UiUtils.launchWebBrowser(context, "https://"+domain+"/admin/reports/"+n.report.id);
+		} else if (n.account != null) {
+			extras.putString("account", accountID);
+			extras.putParcelable("profileAccount", Parcels.wrap(n.account));
+			Nav.go((Activity) context, ProfileFragment.class, extras);
+		}
+	}
+
 	/**
 	 * Wraps a View.OnClickListener to filter multiple clicks in succession.
 	 * Useful for buttons that perform some action that changes their state asynchronously.

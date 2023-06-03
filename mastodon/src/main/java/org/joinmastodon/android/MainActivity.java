@@ -117,25 +117,13 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 	}
 
 	private void showFragmentForNotification(Notification notification, String accountID){
-		Fragment fragment;
-		Bundle args=new Bundle();
-		args.putString("account", accountID);
-		args.putBoolean("_can_go_back", true);
 		try{
 			notification.postprocess();
 		}catch(ObjectValidationException x){
 			Log.w("MainActivity", x);
 			return;
 		}
-		if(notification.status!=null){
-			fragment=new ThreadFragment();
-			args.putParcelable("status", Parcels.wrap(notification.status));
-		}else{
-			fragment=new ProfileFragment();
-			args.putParcelable("profileAccount", Parcels.wrap(notification.account));
-		}
-		fragment.setArguments(args);
-		showFragment(fragment);
+		UiUtils.showFragmentForNotification(this, notification, accountID, null);
 	}
 
 	private void showFragmentForExternalShare(Bundle args) {

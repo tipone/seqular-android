@@ -192,23 +192,10 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	public void onItemClick(String id){
 		Notification n=getNotificationByID(id);
-		if(n.status!=null){
-			Status status=n.status;
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("status", Parcels.wrap(status));
-			if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId))
-				args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status.inReplyToAccountId)));
-			Nav.go(getActivity(), ThreadFragment.class, args);
-		}else if(n.report != null){
-			String domain = AccountSessionManager.getInstance().getAccount(accountID).domain;
-			UiUtils.launchWebBrowser(getActivity(), "https://"+domain+"/admin/reports/"+n.report.id);
-		}else{
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("profileAccount", Parcels.wrap(n.account));
-			Nav.go(getActivity(), ProfileFragment.class, args);
-		}
+		Bundle args = new Bundle();
+		if(n.status != null && n.status.inReplyToAccountId != null && knownAccounts.containsKey(n.status.inReplyToAccountId))
+			args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(n.status.inReplyToAccountId)));
+		UiUtils.showFragmentForNotification(getContext(), n, accountID, args);
 	}
 
 	@Override
