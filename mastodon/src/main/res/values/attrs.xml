@@ -21,6 +21,7 @@
 	<attr name="colorAccentLightest" format="color"/>
 	<attr name="profileHeaderBackground" format="color"/>
 	<attr name="toolbarBackground" format="color"/>
+	<attr name="colorIconDisabled" format="color"/>
 
 	<attr name="colorButtonBackgroundPrimaryDarkOnLight" format="color"/>
 	<attr name="colorButtonBackgroundPrimaryDarkOnLightDisabled" format="color"/>

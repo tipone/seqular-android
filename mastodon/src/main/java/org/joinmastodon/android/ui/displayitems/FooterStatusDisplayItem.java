@@ -56,8 +56,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
-		private final TextView reply, boost, favorite;
-		private final ImageView share, bookmark;
+		private final TextView replies, boosts, favorites;
+		private final View reply, boost, favorite, share, bookmark;
 		private static final Animation opacityOut, opacityIn;
 
 		private View touchingView = null;
@@ -91,21 +91,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
-			reply=findViewById(R.id.reply);
-			boost=findViewById(R.id.boost);
-			favorite=findViewById(R.id.favorite);
-			bookmark=findViewById(R.id.bookmark);
-			share=findViewById(R.id.share);
-			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N){
-				UiUtils.fixCompoundDrawableTintOnAndroid6(reply);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(boost);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(favorite);
-			}
-			View reply=findViewById(R.id.reply_btn);
-			View boost=findViewById(R.id.boost_btn);
-			View favorite=findViewById(R.id.favorite_btn);
-			View share=findViewById(R.id.share_btn);
-			View bookmark=findViewById(R.id.bookmark_btn);
+			replies=findViewById(R.id.reply);
+			boosts=findViewById(R.id.boost);
+			favorites=findViewById(R.id.favorite);
+
+			reply=findViewById(R.id.reply_btn);
+			boost=findViewById(R.id.boost_btn);
+			favorite=findViewById(R.id.favorite_btn);
+			share=findViewById(R.id.share_btn);
+			bookmark=findViewById(R.id.bookmark_btn);
+
 			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
 			reply.setOnLongClickListener(this::onReplyLongClick);
@@ -130,9 +125,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(FooterStatusDisplayItem item){
-			bindButton(reply, item.status.repliesCount);
-			bindButton(boost, item.status.reblogsCount);
-			bindButton(favorite, item.status.favouritesCount);
+			bindButton(replies, item.status.repliesCount);
+			bindButton(boosts, item.status.reblogsCount);
+			bindButton(favorites, item.status.favouritesCount);
 			// in thread view, direct descendant posts display one direct reply to themselves,
 			// hence in that case displaying whether there is another reply
 			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor ? 0 : 1;
@@ -220,13 +215,13 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				onBoostLongClick(v);
 				return;
 			}
-			boost.setSelected(!item.status.reblogged);
+			boosts.setSelected(!item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}
 
 		private void boostConsumer(View v, Status r) {
 			v.startAnimation(opacityIn);
-			bindButton(boost, r.reblogsCount);
+			bindButton(boosts, r.reblogsCount);
 		}
 
 		private boolean onBoostLongClick(View v){
@@ -312,10 +307,10 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onFavoriteClick(View v){
-			favorite.setSelected(!item.status.favourited);
+			favorites.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				v.startAnimation(opacityIn);
-				bindButton(favorite, r.favouritesCount);
+				bindButton(favorites, r.favouritesCount);
 			});
 		}
 
