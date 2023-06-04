@@ -357,4 +357,16 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 			return Objects.hash(status, descendantNeighbor, ancestoringNeighbor);
 		}
 	}
+
+	@Override
+	protected void onErrorRetryClick(){
+		if(preloadingFailed){
+			preloadingFailed=false;
+			V.setVisibilityAnimated(footerProgress, View.VISIBLE);
+			V.setVisibilityAnimated(footerError, View.GONE);
+			doLoadData();
+			return;
+		}
+		super.onErrorRetryClick();
+	}
 }
