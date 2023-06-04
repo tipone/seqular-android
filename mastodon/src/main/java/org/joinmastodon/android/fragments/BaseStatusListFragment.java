@@ -34,6 +34,7 @@ import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
@@ -384,7 +385,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				}
 				// shifting the selection box down
 				// see also: FooterStatusDisplayItem#onBind (setMargins)
-				if (isWarning || firstIndex < 0 || lastIndex < 0) return;
+				if (isWarning || firstIndex < 0 || lastIndex < 0 ||
+						!(list.getChildViewHolder(list.getChildAt(lastIndex))
+						instanceof FooterStatusDisplayItem.Holder)) return;
 				int prevIndex = firstIndex - 1, nextIndex = lastIndex + 1;
 				boolean prevIsWarning = prevIndex > 0 && prevIndex < list.getChildCount() &&
 						list.getChildViewHolder(list.getChildAt(prevIndex))
