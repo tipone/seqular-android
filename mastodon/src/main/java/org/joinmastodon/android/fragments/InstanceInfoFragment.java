@@ -18,9 +18,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewOutlineProvider;
 import android.view.WindowInsets;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -60,6 +62,7 @@ import me.grishka.appkit.imageloader.RecyclerViewDelegate;
 import me.grishka.appkit.imageloader.ViewImageLoader;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.BindableViewHolder;
+import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class InstanceInfoFragment extends LoaderFragment {
@@ -87,6 +90,8 @@ public class InstanceInfoFragment extends LoaderFragment {
 	private List<AccountField> metadataListData=Collections.emptyList();
 	private MetadataAdapter adapter;
 	private ListImageLoaderWrapper imgLoader;
+
+	private int statusBarHeight;
 
 	private float textMaxHeight, textCollapsedHeight;
 	private LinearLayout.LayoutParams collapseParams, wrapParams;
@@ -137,7 +142,6 @@ public class InstanceInfoFragment extends LoaderFragment {
 		cover.setOnClickListener(this::onCoverClick);
 		readMore.setOnClickListener(this::onReadMoreClick);
 		refreshLayout.setOnRefreshListener(this);
-
 
 		if(loaded){
 			bindViews();
@@ -223,6 +227,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		updateToolbar();
+		scrollView.setOnScrollChangeListener(this::onScrollChanged);
 		titleTransY=getToolbar().getLayoutParams().height;
 		if(toolbarTitleView!=null){
 			toolbarTitleView.setTranslationY(titleTransY);
@@ -238,7 +243,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 
 	@Override
 	public void onApplyWindowInsets(WindowInsets insets){
-		int statusBarHeight = insets.getSystemWindowInsetTop();
+		statusBarHeight = insets.getSystemWindowInsetTop();
 		if(contentView!=null){
 			((ViewGroup.MarginLayoutParams) getToolbar().getLayoutParams()).topMargin= statusBarHeight;
 		}
@@ -324,6 +329,29 @@ public class InstanceInfoFragment extends LoaderFragment {
 
 	public void scrollToTop(){
 		scrollView.smoothScrollTo(0, 0);
+	}
+
+	private void onScrollChanged(View v, int scrollX, int scrollY, int oldScrollX, int oldScrollY){
+		int topBarsH=getToolbar().getHeight()+statusBarHeight;
+		if(scrollY>cover.getHeight()-topBarsH){
+			cover.setTranslationY(scrollY-(cover.getHeight()-topBarsH));
+			cover.setTranslationZ(V.dp(10));
+			cover.setTransform(cover.getHeight()/2f-topBarsH/2f, 1f);
+		}else{
+			cover.setTranslationY(0f);
+			cover.setTranslationZ(0f);
+			cover.setTransform(scrollY/2f, 1f);
+		}
+		coverGradient.setTopOffset(scrollY);
+		cover.invalidate();
+		titleTransY=getToolbar().getHeight();
+		if(scrollY>textWrap.getTop()-topBarsH){
+			titleTransY=Math.max(0f, titleTransY-(scrollY-(textWrap.getTop()-topBarsH)));
+		}
+		if(toolbarTitleView!=null){
+			toolbarTitleView.setTranslationY(titleTransY);
+			toolbarSubtitleView.setTranslationY(titleTransY);
+		}
 	}
 
 
