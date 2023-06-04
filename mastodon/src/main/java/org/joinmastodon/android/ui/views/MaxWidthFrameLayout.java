@@ -3,12 +3,13 @@ package org.joinmastodon.android.ui.views;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import org.joinmastodon.android.R;
 
 public class MaxWidthFrameLayout extends FrameLayout{
-	private int maxWidth;
+	private int maxWidth, defaultWidth;
 
 	public MaxWidthFrameLayout(Context context){
 		this(context, null);
@@ -22,6 +23,7 @@ public class MaxWidthFrameLayout extends FrameLayout{
 		super(context, attrs, defStyle);
 		TypedArray ta=context.obtainStyledAttributes(attrs, R.styleable.MaxWidthFrameLayout);
 		maxWidth=ta.getDimensionPixelSize(R.styleable.MaxWidthFrameLayout_android_maxWidth, Integer.MAX_VALUE);
+		defaultWidth=ta.getDimensionPixelSize(R.styleable.MaxWidthFrameLayout_defaultWidth, -1);
 		ta.recycle();
 	}
 
@@ -33,10 +35,19 @@ public class MaxWidthFrameLayout extends FrameLayout{
 		this.maxWidth=maxWidth;
 	}
 
+	public int getDefaultWidth() {
+		return defaultWidth;
+	}
+
+	public void setDefaultWidth(int defaultWidth) {
+		this.defaultWidth = defaultWidth;
+	}
+
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
 		if(MeasureSpec.getSize(widthMeasureSpec)>maxWidth){
-			widthMeasureSpec=maxWidth | MeasureSpec.getMode(widthMeasureSpec);
+			int width = defaultWidth >= 0 ? defaultWidth : maxWidth;
+			widthMeasureSpec=width | MeasureSpec.getMode(widthMeasureSpec);
 		}
 		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 	}

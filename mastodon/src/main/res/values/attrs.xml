@@ -73,6 +73,7 @@
 
 	<declare-styleable name="MaxWidthFrameLayout">
 		<attr name="android:maxWidth" format="dimension"/>
+		<attr name="defaultWidth" format="dimension" />
 	</declare-styleable>
 
 	<declare-styleable name="FloatingHintEditTextLayout">
