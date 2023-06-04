@@ -71,7 +71,7 @@
 			android:id="@+id/username"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:textColor="?colorM3OnSurfaceVariant"
+			android:textColor="?android:textColorSecondary"
 			android:textAppearance="@style/m3_body_medium"
 			android:singleLine="true"
 			android:gravity="center_vertical"
