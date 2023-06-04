@@ -537,7 +537,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			toolbarTitleView.setTranslationY(titleTransY);
 			toolbarSubtitleView.setTranslationY(titleTransY);
 		}
-		RecyclerFragment.setRefreshLayoutColors(refreshLayout);
+//		RecyclerFragment.setRefreshLayoutColors(refreshLayout);
 	}
 
 	@Override
