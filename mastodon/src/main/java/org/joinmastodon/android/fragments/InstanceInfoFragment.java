@@ -256,6 +256,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 		ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(instance.thumbnail, 1000, 1000));
 		uri.setText(instance.title);
 		setTitle(instance.title);
+		setSubtitle(instance.uri);
 
 		updateDescription();
 		collapseDescription();
