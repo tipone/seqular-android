@@ -24,12 +24,12 @@
 				android:layout_height="match_parent"
 				android:paddingVertical="12dp">
 				<ImageView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
+					android:layout_width="24sp"
+					android:layout_height="24sp"
 					android:layout_gravity="center_vertical"
 					android:layout_marginStart="16dp"
 					android:duplicateParentState="true"
-					android:src="@drawable/ic_fluent_chat_multiple_24sp_selector_text"
+					android:src="@drawable/ic_fluent_chat_multiple_24_selector_text"
 					android:tint="?android:textColorSecondary"
 					android:gravity="center_vertical" />
 				<TextView
@@ -59,8 +59,8 @@
 				android:foregroundTint="@color/boost_icon"
 				android:paddingVertical="12dp">
 				<ImageView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
+					android:layout_width="24sp"
+					android:layout_height="24sp"
 					android:layout_gravity="center_vertical"
 					android:layout_marginStart="16dp"
 					android:duplicateParentState="true"
@@ -94,12 +94,12 @@
 				android:layout_height="match_parent"
 				android:paddingVertical="12dp">
 				<ImageView
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
+					android:layout_width="24sp"
+					android:layout_height="24sp"
 					android:layout_gravity="center_vertical"
 					android:layout_marginStart="16dp"
 					android:duplicateParentState="true"
-					android:src="@drawable/ic_fluent_star_24sp_selector"
+					android:src="@drawable/ic_fluent_star_24_selector"
 					android:tint="@color/favorite_icon"
 					android:gravity="center_vertical" />
 				<TextView
@@ -130,11 +130,11 @@
 				android:paddingVertical="12dp">
 				<ImageView
 					android:id="@+id/bookmark"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
+					android:layout_width="24sp"
+					android:layout_height="24sp"
 					android:layout_gravity="center_vertical"
 					android:layout_marginHorizontal="16dp"
-					android:src="@drawable/ic_fluent_bookmark_24sp_selector"
+					android:src="@drawable/ic_fluent_bookmark_24_selector"
 					android:tint="@color/bookmark_icon"
 					android:gravity="center_vertical"
 					android:textAppearance="@style/m3_label_large" />
@@ -148,11 +148,11 @@
 			android:paddingVertical="12dp">
 			<ImageView
 				android:id="@+id/share"
-				android:layout_width="wrap_content"
-				android:layout_height="match_parent"
+				android:layout_width="24sp"
+				android:layout_height="24sp"
 				android:layout_gravity="center_vertical"
 				android:layout_marginHorizontal="16dp"
-				android:src="@drawable/ic_fluent_share_24sp_regular"
+				android:src="@drawable/ic_fluent_share_24_regular"
 				android:tint="?android:textColorSecondary"
 				android:gravity="center_vertical"/>
 		</FrameLayout>
