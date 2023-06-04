@@ -237,7 +237,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spaceBelowText.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 
 			// remove additional padding when (transparently padded) translate button is visible
-			int nextPos = getAbsoluteAdapterPosition();
+			int nextPos = getAbsoluteAdapterPosition() + 1;
 			boolean nextIsFooter = item.parentFragment.getDisplayItems().size() > nextPos &&
 					item.parentFragment.getDisplayItems().get(nextPos) instanceof FooterStatusDisplayItem;
 			int bottomPadding = (translateVisible && nextIsFooter) ? 0
