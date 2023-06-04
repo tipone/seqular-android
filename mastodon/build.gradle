@@ -62,7 +62,6 @@ android {
 			initWith release
 		}
 		nightly{
-			initWith release
 			if(System.getenv("CURRENT_DATE") != null){
 				versionNameSuffix '-nightly+@' + System.getenv("CURRENT_DATE")
 			} else {
@@ -71,6 +70,7 @@ android {
 				versionNameSuffix '-nightly+@' + properties.getProperty('CURRENT_DATE')
 			}
 			applicationIdSuffix '.nightly'
+			debuggable true
 			signingConfig signingConfigs.nightly
 			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
 		}
