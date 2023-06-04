@@ -274,4 +274,15 @@
     <string name="sk_settings_confirm_before_reblog">Potwierdź przed podbiciem</string>
     <string name="sk_reacted_with">zareagował(a) z %s</string>
     <string name="sk_reacted">zareagował(a)</string>
+    <string name="sk_settings_default_content_type">Domyślny rodzaj treści</string>
+    <string name="sk_instance_info_unavailable">Informacje o instancji są tymczasowo niedostępne</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_content_type">Rodzaj treści</string>
+    <string name="sk_content_type_unspecified">Nie określono</string>
+    <string name="sk_content_type_plain">Czysty tekst</string>
+    <string name="sk_settings_content_types">Włącz formatowanie wpisu</string>
+    <string name="sk_open_in_app">Otwórz w aplikacji</string>
+    <string name="sk_external_share_title">Udostępnij z kontem</string>
 </resources>
