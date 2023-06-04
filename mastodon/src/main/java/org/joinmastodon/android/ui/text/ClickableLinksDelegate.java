@@ -31,9 +31,9 @@ public class ClickableLinksDelegate {
 		this.view=view;
 		hlPaint=new Paint();
 		hlPaint.setAntiAlias(true);
-		hlPaint.setPathEffect(new CornerPathEffect(V.dp(3)));
+		hlPaint.setPathEffect(new CornerPathEffect(dp(3)));
 		hlPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-		hlPaint.setStrokeWidth(V.dp(4));
+		hlPaint.setStrokeWidth(dp(4));
 		gestureDetector = new GestureDetector(view.getContext(), new LinkGestureListener(), view.getHandler());
 	}
 
