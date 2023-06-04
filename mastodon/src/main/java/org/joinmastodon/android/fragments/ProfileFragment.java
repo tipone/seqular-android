@@ -474,6 +474,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	@Override
 	public void onRefresh(){
+		if(isInEditMode){
+			refreshing=false;
+			refreshLayout.setRefreshing(false);
+			return;
+		}
 		if(refreshing)
 			return;
 		refreshing=true;
