@@ -2,8 +2,8 @@
 <org.joinmastodon.android.ui.views.MaxWidthFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
-	android:maxWidth="600dp"
-	app:defaultWidth="450dp"
+	android:maxWidth="600sp"
+	app:defaultWidth="450sp"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
