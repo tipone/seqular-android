@@ -119,8 +119,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 		content.setBackgroundResource(R.drawable.bg_bottom_sheet);
 		content.addView(list);
 		setContentView(content);
-		setNavigationBarBackground(new ColorDrawable(UiUtils.alphaBlendColors(UiUtils.getThemeColor(activity, R.attr.colorM3Surface),
-				UiUtils.getThemeColor(activity, R.attr.colorM3Primary), 0.05f)), !UiUtils.isDarkTheme());
+		setNavigationBarBackground(new ColorDrawable(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground)), !UiUtils.isDarkTheme());
 	}
 
 	private void confirmLogOut(String accountID){
