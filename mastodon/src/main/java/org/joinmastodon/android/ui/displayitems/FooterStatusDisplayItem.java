@@ -56,8 +56,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
-		private final TextView reply, boost, favorite, bookmark;
-		private final ImageView share;
+		private final TextView reply, boost, favorite;
+		private final ImageView share, bookmark;
 		private static final Animation opacityOut, opacityIn;
 
 		private View touchingView = null;
@@ -100,7 +100,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.fixCompoundDrawableTintOnAndroid6(reply);
 				UiUtils.fixCompoundDrawableTintOnAndroid6(boost);
 				UiUtils.fixCompoundDrawableTintOnAndroid6(favorite);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(bookmark);
 			}
 			View reply=findViewById(R.id.reply_btn);
 			View boost=findViewById(R.id.boost_btn);
@@ -181,8 +180,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			} else if (action == MotionEvent.ACTION_DOWN) {
 				longClickPerformed = false;
 				touchingView = v;
-				// 20dp to center in middle of icon, because: (icon width = 24dp) / 2 + (paddingStart = 8dp)
-				v.setPivotX(V.dp(20));
+				// 28dp to center in middle of icon, because:
+				// (icon width = 24dp) / 2 + (paddingStart = 8dp) + (paddingHorizontal = 8dp)
+				v.setPivotX(V.dp(28));
 				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
 				if (disabled) return true;
 				v.postDelayed(longClickRunnable, ViewConfiguration.getLongPressTimeout());
