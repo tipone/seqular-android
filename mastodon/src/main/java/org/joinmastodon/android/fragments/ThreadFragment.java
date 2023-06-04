@@ -5,14 +5,20 @@ import android.os.Bundle;
 import android.view.View;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
+import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusContext;
+import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
@@ -35,11 +41,14 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
-	protected Status mainStatus;
+	protected Status mainStatus, updatedStatus;
 	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
+	private boolean initialAnimationFinished;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -101,11 +110,12 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	@Override
 	protected void doLoadData(int offset, int count){
+		refreshMainStatus();
 		currentRequest=new GetStatusContext(mainStatus.id)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(StatusContext result){
-						if (getActivity() == null) return;
+						if (getContext() == null) return;
 						if(refreshing){
 							data.clear();
 							ancestryMap.clear();
@@ -147,6 +157,40 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					}
 				})
 				.exec(accountID);
+	}
+
+	private void refreshMainStatus() {
+		new GetStatusByID(mainStatus.id)
+				.setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(Status status) {
+						if (getContext() == null || status == null) return;
+						updatedStatus = status;
+						// only update main status if the initial animation is already finished.
+						// otherwise, the animator will call it in onAnimationFinished
+						if (initialAnimationFinished || data.size() == 1) updateMainStatus();
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {}
+				}).exec(accountID);
+	}
+
+	protected Object updateMainStatus() {
+		// returning fired event object to facilitate testing
+		Object event;
+		if (updatedStatus.editedAt != null &&
+				(mainStatus.editedAt == null ||
+						updatedStatus.editedAt.isAfter(mainStatus.editedAt))) {
+			event = new StatusUpdatedEvent(updatedStatus);
+		} else {
+			event = new StatusCountersUpdatedEvent(updatedStatus);
+		}
+
+		mainStatus = updatedStatus;
+		updatedStatus = null;
+		E.post(event);
+		return event;
 	}
 
 	public static List<NeighborAncestryInfo> mapNeighborhoodAncestry(Status mainStatus, StatusContext context) {
@@ -243,6 +287,17 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		showContent();
 		if(!loaded)
 			footerProgress.setVisibility(View.VISIBLE);
+		list.setItemAnimator(new BetterItemAnimator() {
+			@Override
+			public void onAnimationFinished(@NonNull RecyclerView.ViewHolder viewHolder) {
+				super.onAnimationFinished(viewHolder);
+				// in case someone else is about to call updateMainStatus faster...
+				initialAnimationFinished = true;
+				// ...if not (someone did fetch it but the animation wasn't finished yet),
+				// call it now
+				if (updatedStatus != null) updateMainStatus();
+			}
+		});
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
