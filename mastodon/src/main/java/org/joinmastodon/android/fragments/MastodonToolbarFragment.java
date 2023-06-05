@@ -30,4 +30,9 @@ public abstract class MastodonToolbarFragment extends ToolbarFragment{
 			toolbar.setNavigationContentDescription(R.string.back);
 		}
 	}
+
+	@Override
+	protected boolean wantsToolbarMenuIconsTinted() {
+		return false; // else, badged icons don't work :(
+	}
 }
