@@ -16,6 +16,7 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.Emoji;
@@ -25,6 +26,8 @@ import org.joinmastodon.android.model.Markers;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
@@ -223,6 +226,32 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			Status contentStatus=ntf.status.getContentStatus();
 			if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
 				updatePoll(ntf.id, ntf.status, ev.poll);
+			}
+		}
+	}
+
+	// copied from StatusListFragment.EventListener (just like the method above)
+	// (which assumes this.data to be a list of statuses...)
+	@Subscribe
+	public void onStatusCountersUpdated(StatusCountersUpdatedEvent ev){
+		for(Notification n:data){
+			if (n.status == null) continue;
+			if(n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
+				for(int i=0;i<list.getChildCount();i++){
+					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+					if(holder instanceof FooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
+						footer.rebind();
+					}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
+						footer.rebind();
+					}
+				}
+			}
+		}
+		for(Notification n:preloadedData){
+			if (n.status == null) continue;
+			if(n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
 			}
 		}
 	}
