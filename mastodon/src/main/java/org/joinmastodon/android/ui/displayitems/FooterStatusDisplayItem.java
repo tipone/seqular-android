@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,7 +16,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -125,9 +123,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(FooterStatusDisplayItem item){
-			bindButton(replies, item.status.repliesCount);
-			bindButton(boosts, item.status.reblogsCount);
-			bindButton(favorites, item.status.favouritesCount);
+			bindText(replies, item.status.repliesCount);
+			bindText(boosts, item.status.reblogsCount);
+			bindText(favorites, item.status.favouritesCount);
 			// in thread view, direct descendant posts display one direct reply to themselves,
 			// hence in that case displaying whether there is another reply
 			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor ? 0 : 1;
@@ -151,7 +149,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			itemView.requestLayout();
 		}
 
-		private void bindButton(TextView btn, long count){
+		private void bindText(TextView btn, long count){
 			if(GlobalUserPreferences.showInteractionCounts && count>0 && !item.hideCounts){
 				btn.setText(UiUtils.abbreviateNumber(count));
 				btn.setCompoundDrawablePadding(V.dp(8));
@@ -215,13 +213,13 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				onBoostLongClick(v);
 				return;
 			}
-			boosts.setSelected(!item.status.reblogged);
+			boost.setSelected(!item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}
 
 		private void boostConsumer(View v, Status r) {
 			v.startAnimation(opacityIn);
-			bindButton(boosts, r.reblogsCount);
+			bindText(boosts, r.reblogsCount);
 		}
 
 		private boolean onBoostLongClick(View v){
@@ -307,10 +305,10 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onFavoriteClick(View v){
-			favorites.setSelected(!item.status.favourited);
+			favorite.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				v.startAnimation(opacityIn);
-				bindButton(favorites, r.favouritesCount);
+				bindText(favorites, r.favouritesCount);
 			});
 		}
 
