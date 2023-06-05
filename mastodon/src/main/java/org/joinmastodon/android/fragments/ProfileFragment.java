@@ -58,7 +58,6 @@ import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Attachment;
-import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.SimpleViewHolder;
