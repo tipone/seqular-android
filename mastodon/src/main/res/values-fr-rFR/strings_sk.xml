@@ -290,7 +290,8 @@
     <string name="sk_open_in_app">Ouvrir dans l\'application</string>
     <string name="sk_external_share_title">Partager avec le compte</string>
     <string name="sk_external_share_or_open_title">Partager ou ouvrir avec le compte</string>
-    <string name="sk_bubble_timeline_info_banner">Ce sont les publications les plus récentes des personnes présentes dans la bulle de votre serveur Akkoma.</string>
+    <string name="sk_bubble_timeline_info_banner">Ce sont les messages les plus récents du réseau organisés par vos administrateurs d\'instance.</string>
     <string name="sk_timeline_bubble">Bulle</string>
     <string name="sk_instance_info_unavailable">Informations sur l\'instance temporairement indisponibles</string>
+    <string name="sk_open_in_app_failed">Impossible de l\'ouvrir dans l\'application</string>
 </resources>
