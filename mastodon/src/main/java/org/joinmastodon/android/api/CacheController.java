@@ -350,7 +350,8 @@ public class CacheController{
 							`id` VARCHAR(25) NOT NULL PRIMARY KEY,
 							`json` TEXT NOT NULL,
 							`flags` INTEGER NOT NULL DEFAULT 0,
-							`type` INTEGER NOT NULL
+							`type` INTEGER NOT NULL,
+							`time` INTEGER NOT NULL
 						)""");
 		}
 
@@ -358,9 +359,11 @@ public class CacheController{
 			db.execSQL("DELETE FROM `home_timeline`");
 			db.execSQL("DELETE FROM `notifications_all`");
 			db.execSQL("DELETE FROM `notifications_mentions`");
+			db.execSQL("DELETE FROM `notifications_posts`");
 			db.execSQL("ALTER TABLE `home_timeline` ADD `time` INTEGER NOT NULL DEFAULT 0");
 			db.execSQL("ALTER TABLE `notifications_all` ADD `time` INTEGER NOT NULL DEFAULT 0");
 			db.execSQL("ALTER TABLE `notifications_mentions` ADD `time` INTEGER NOT NULL DEFAULT 0");
+			db.execSQL("ALTER TABLE `notifications_posts` ADD `time` INTEGER NOT NULL DEFAULT 0");
 		}
 	}
 
