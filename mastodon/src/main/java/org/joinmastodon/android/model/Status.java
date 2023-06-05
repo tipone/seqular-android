@@ -192,14 +192,6 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return url;
 	}
 
-	@NonNull
-	@Override
-	public Status clone(){
-		Status copy=(Status) super.clone();
-		copy.spoilerRevealed=false;
-		return copy;
-	}
-
 	public static class StatusDeserializer implements JsonDeserializer<Status> {
 		@Override
 		public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
