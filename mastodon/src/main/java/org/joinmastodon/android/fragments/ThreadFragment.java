@@ -49,7 +49,7 @@ import me.grishka.appkit.utils.V;
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
 	protected Status mainStatus, updatedStatus;
 	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
-	private boolean initialAnimationFinished;
+	protected boolean contextInitiallyRendered;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -111,7 +111,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		refreshMainStatus();
+		loadMainStatus();
 		currentRequest=new GetStatusContext(mainStatus.id)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
@@ -155,21 +155,28 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 							adapter.notifyDataSetChanged();
 						}
 						list.scrollToPosition(displayItems.size()-count);
+
+						// no animation is going to happen, so proceeding to apply right now
+						if (data.size() == 1) {
+							contextInitiallyRendered = true;
+							// for the case that the main status has already finished loading
+							maybeApplyMainStatus();
+						}
 					}
 				})
 				.exec(accountID);
 	}
 
-	private void refreshMainStatus() {
+	private void loadMainStatus() {
 		new GetStatusByID(mainStatus.id)
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(Status status) {
 						if (getContext() == null || status == null) return;
 						updatedStatus = status;
-						// only update main status if the initial animation is already finished.
-						// otherwise, the animator will call it in onAnimationFinished
-						if (initialAnimationFinished || data.size() == 1) updateMainStatus();
+						// for the case that the context has already loaded (and the animation has
+						// already finished), falling back to applying it ourselves:
+						maybeApplyMainStatus();
 					}
 
 					@Override
@@ -177,7 +184,9 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 				}).exec(accountID);
 	}
 
-	protected Object updateMainStatus() {
+	protected Object maybeApplyMainStatus() {
+		if (updatedStatus == null || !contextInitiallyRendered) return null;
+
 		// returning fired event object to facilitate testing
 		Object event;
 		if (updatedStatus.editedAt != null &&
@@ -288,15 +297,14 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		showContent();
 		if(!loaded)
 			footerProgress.setVisibility(View.VISIBLE);
+
 		list.setItemAnimator(new BetterItemAnimator() {
 			@Override
 			public void onAnimationFinished(@NonNull RecyclerView.ViewHolder viewHolder) {
 				super.onAnimationFinished(viewHolder);
-				// in case someone else is about to call updateMainStatus faster...
-				initialAnimationFinished = true;
-				// ...if not (someone did fetch it but the animation wasn't finished yet),
-				// call it now
-				if (updatedStatus != null) updateMainStatus();
+				contextInitiallyRendered = true;
+				// for the case that both requests are already done (and thus won't apply it)
+				maybeApplyMainStatus();
 			}
 		});
 	}
