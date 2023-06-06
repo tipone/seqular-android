@@ -835,7 +835,11 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 	}
 
 	private class SmallTextItem extends Item {
-		private String text;
+		private final String text;
+
+		public SmallTextItem(@StringRes int text) {
+			this.text = getString(text);
+		}
 
 		public SmallTextItem(String text) {
 			this.text = text;
