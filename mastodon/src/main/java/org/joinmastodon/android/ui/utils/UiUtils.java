@@ -56,6 +56,7 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
@@ -1136,6 +1137,12 @@ public class UiUtils {
 		}
 	}
 
+	public static void lookupAccountHandle(Context context, String accountID, String query, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+		parseFediverseHandle(query).ifPresentOrElse(
+				handle -> lookupAccountHandle(context, accountID, handle, go),
+				() -> go.accept(null, null)
+		);
+	}
 	public static void lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		String fullHandle = ("@" + queryHandle.first) + (queryHandle.second.map(domain -> "@" + domain).orElse(""));
 		new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true)
@@ -1153,12 +1160,18 @@ public class UiUtils {
 							return;
 						}
 						Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+						args.putString("error", context.getString(R.string.sk_resource_not_found));
 						go.accept(null, null);
 					}
 
 					@Override
 					public void onError(ErrorResponse error) {
-
+						Bundle args = new Bundle();
+						if (error instanceof MastodonErrorResponse e) {
+							args.putString("error", e.error);
+							args.putInt("httpStatus", e.httpStatus);
+						}
+						go.accept(null, args);
 					}
 				}).exec(accountID);
 	}

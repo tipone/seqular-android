@@ -161,6 +161,11 @@ public class AccountSessionManager{
 	}
 
 	@Nullable
+	public AccountSession tryGetAccount(Account account) {
+		return sessions.get(account.getDomainFromURL() + "_" + account.id);
+	}
+
+	@Nullable
 	public AccountSession getLastActiveAccount(){
 		if(sessions.isEmpty() || lastActiveAccountID==null)
 			return null;

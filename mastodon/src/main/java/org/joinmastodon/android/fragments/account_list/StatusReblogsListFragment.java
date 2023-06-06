@@ -7,17 +7,23 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.api.requests.statuses.GetStatusReblogs;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Status;
 
 public class StatusReblogsListFragment extends StatusRelatedAccountListFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		updateTitle(status);
+	}
+
+	@Override
+	protected void updateTitle(Status status) {
 		setTitle(getResources().getQuantityString(R.plurals.x_reblogs, (int)(status.reblogsCount%1000), status.reblogsCount));
 	}
 
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
-		return new GetStatusReblogs(status.id, maxID, count);
+		return new GetStatusReblogs(getCurrentInfo().id, maxID, count);
 	}
 
 	@Override

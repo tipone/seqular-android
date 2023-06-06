@@ -45,6 +45,7 @@ import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByID;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
@@ -137,7 +138,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private TextView followsYouView;
 	private ViewGroup rolesView;
 
-	private Account account;
+	private Account account, remoteAccount;
 	private String accountID;
 	private String domain;
 	private Relationship relationship;
@@ -176,7 +177,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		accountID=getArguments().getString("account");
 		domain=AccountSessionManager.getInstance().getAccount(accountID).domain;
-		if(getArguments().containsKey("profileAccount")){
+		if (getArguments().containsKey("remoteAccount")) {
+			remoteAccount = Parcels.unwrap(getArguments().getParcelable("remoteAccount"));
+			if(!getArguments().getBoolean("noAutoLoad", false))
+				loadData();
+		} else if(getArguments().containsKey("profileAccount")){
 			account=Parcels.unwrap(getArguments().getParcelable("profileAccount"));
 			profileAccountID=account.id;
 			isOwnProfile=AccountSessionManager.getInstance().isSelf(accountID, account);
@@ -347,36 +352,55 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		return sizeWrapper;
 	}
 
+	private void onAccountLoaded(Account result) {
+		account=result;
+		isOwnProfile=AccountSessionManager.getInstance().isSelf(accountID, account);
+		bindHeaderView();
+		dataLoaded();
+		if(!tabLayoutMediator.isAttached())
+			tabLayoutMediator.attach();
+		if(!isOwnProfile)
+			loadRelationship();
+		else
+			AccountSessionManager.getInstance().updateAccountInfo(accountID, account);
+		if(refreshing){
+			refreshing=false;
+			refreshLayout.setRefreshing(false);
+			if(postsFragment.loaded)
+				postsFragment.onRefresh();
+			if(postsWithRepliesFragment.loaded)
+				postsWithRepliesFragment.onRefresh();
+			if(pinnedPostsFragment.loaded)
+				pinnedPostsFragment.onRefresh();
+			if(mediaFragment.loaded)
+				mediaFragment.onRefresh();
+		}
+		V.setVisibilityAnimated(fab, View.VISIBLE);
+	}
+
 	@Override
 	protected void doLoadData(){
+		if (remoteAccount != null) {
+			UiUtils.lookupAccountHandle(getContext(), accountID, remoteAccount.getFullyQualifiedName(), (c, args) -> {
+				if (getContext() == null) return;
+				if (args == null || !args.containsKey("profileAccount")) {
+					onError(new MastodonErrorResponse(
+							getContext().getString(R.string.sk_error_loading_profile),
+							0, null
+					));
+					return;
+				}
+				onAccountLoaded(Parcels.unwrap(args.getParcelable("profileAccount")));
+			});
+			return;
+		}
+
 		currentRequest=new GetAccountByID(profileAccountID)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(Account result){
 						if (getActivity() == null) return;
-						account=result;
-						isOwnProfile=AccountSessionManager.getInstance().isSelf(accountID, account);
-						bindHeaderView();
-						dataLoaded();
-						if(!tabLayoutMediator.isAttached())
-							tabLayoutMediator.attach();
-						if(!isOwnProfile)
-							loadRelationship();
-						else
-							AccountSessionManager.getInstance().updateAccountInfo(accountID, account);
-						if(refreshing){
-							refreshing=false;
-							refreshLayout.setRefreshing(false);
-							if(postsFragment.loaded)
-								postsFragment.onRefresh();
-							if(postsWithRepliesFragment.loaded)
-								postsWithRepliesFragment.onRefresh();
-							if(pinnedPostsFragment.loaded)
-								pinnedPostsFragment.onRefresh();
-							if(mediaFragment.loaded)
-								mediaFragment.onRefresh();
-						}
-						V.setVisibilityAnimated(fab, View.VISIBLE);
+						onAccountLoaded(result);
 					}
 				})
 				.exec(accountID);
@@ -490,9 +514,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(100), V.dp(100)));
 		ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.header : account.headerStatic, 1000, 1000));
 		SpannableStringBuilder ssb=new SpannableStringBuilder(account.displayName);
-		HtmlParser.parseCustomEmoji(ssb, account.emojis);
-		name.setText(ssb);
-		setTitle(ssb);
+			HtmlParser.parseCustomEmoji(ssb, account.emojis);
+			name.setText(ssb);
+			setTitle(ssb);
 
 		if (account.roles != null && !account.roles.isEmpty()) {
 			rolesView.setVisibility(View.VISIBLE);
@@ -511,13 +535,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
+		String acct = ((isSelf || account.isRemote)
+					? account.getFullyQualifiedName()
+					: account.acct);
 		if(account.locked){
 			ssb=new SpannableStringBuilder("@");
-			ssb.append(account.acct);
-			if(isSelf){
-				ssb.append('@');
-				ssb.append(domain);
-			}
+			ssb.append(acct);
 			ssb.append(" ");
 			Drawable lock=username.getResources().getDrawable(R.drawable.ic_lock, getActivity().getTheme()).mutate();
 			lock.setBounds(0, 0, lock.getIntrinsicWidth(), lock.getIntrinsicHeight());
@@ -526,7 +549,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			username.setText(ssb);
 		}else{
 			// noinspection SetTextI18n
-			username.setText('@'+account.acct+(isSelf ? ('@'+domain) : ""));
+			username.setText('@'+acct);
 		}
 		CharSequence parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
 		if(TextUtils.isEmpty(parsedBio)){

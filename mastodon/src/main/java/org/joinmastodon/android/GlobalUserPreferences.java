@@ -48,6 +48,7 @@ public class GlobalUserPreferences{
 	public static boolean replyLineAboveHeader;
 	public static boolean compactReblogReplyLine;
 	public static boolean confirmBeforeReblog;
+	public static boolean allowRemoteLoading;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -127,6 +128,7 @@ public class GlobalUserPreferences{
 		replyVisibility=prefs.getString("replyVisibility", null);
 		accountsWithContentTypesEnabled=prefs.getStringSet("accountsWithContentTypesEnabled", new HashSet<>());
 		accountsDefaultContentTypes=fromJson(prefs.getString("accountsDefaultContentTypes", null), accountsDefaultContentTypesType, new HashMap<>());
+		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 
 		try {
 			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
@@ -176,6 +178,7 @@ public class GlobalUserPreferences{
 				.putString("replyVisibility", replyVisibility)
 				.putStringSet("accountsWithContentTypesEnabled", accountsWithContentTypesEnabled)
 				.putString("accountsDefaultContentTypes", gson.toJson(accountsDefaultContentTypes))
+				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.apply();
 	}
 
