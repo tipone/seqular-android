@@ -241,7 +241,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			boolean nextIsFooter = item.parentFragment.getDisplayItems().size() > nextPos &&
 					item.parentFragment.getDisplayItems().get(nextPos) instanceof FooterStatusDisplayItem;
 			int bottomPadding = (translateVisible && nextIsFooter) ? 0
-					: nextIsFooter ? V.dp(8)
+					: nextIsFooter ? V.dp(6)
 					: V.dp(12);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 

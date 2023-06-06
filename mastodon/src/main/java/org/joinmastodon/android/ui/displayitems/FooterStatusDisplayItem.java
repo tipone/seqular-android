@@ -144,7 +144,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
 			params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
-					condenseBottom ? V.dp(-8) : 0);
+					condenseBottom ? V.dp(-5) : 0);
 
 			itemView.requestLayout();
 		}
