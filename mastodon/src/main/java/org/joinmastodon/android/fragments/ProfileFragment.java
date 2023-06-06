@@ -597,6 +597,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	@Override
+	protected boolean wantsToolbarMenuIconsTinted() {
+		return false;
+	}
+
+	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		if(isOwnProfile && isInEditMode){
 			Button cancelButton=new Button(getActivity(), null, 0, R.style.Widget_Mastodon_Button_Secondary_LightOnDark);
