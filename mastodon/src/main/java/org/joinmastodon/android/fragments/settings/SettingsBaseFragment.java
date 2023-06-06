@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
 import android.view.WindowManager;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -66,6 +67,9 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected ThemeItem themeItem;
 
 	protected boolean needAppRestart;
+	protected AlphaAnimation fadeIn = new AlphaAnimation(0.0f , 1.0f ) ;
+	protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f ) ;
+
 	private Instance instance;
 	private String instanceName;
 	protected String title;
@@ -97,6 +101,9 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		if (GithubSelfUpdater.needSelfUpdating())
 			E.register(this);
 
+		fadeIn.setDuration(150);
+		fadeOut.setDuration(150);
+
 		addItems(items);
 		title = getArguments().getString("title", getTitle().toString());
 		items.add(0, new GiantHeaderItem(title));
@@ -120,19 +127,26 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			}
 		});
 
-		//TODO do this the same way as the profile toolbar
+		setTitle(title);
+
 		list.addOnScrollListener(new RecyclerView.OnScrollListener() {
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 				LinearLayoutManager linearLayoutManager = (LinearLayoutManager) list.getLayoutManager();
 				if (linearLayoutManager != null && linearLayoutManager.findFirstVisibleItemPosition() > 0) {
-					setTitle(title);
 					if(!title.isEmpty()){
+						if(toolbarTitleView.getVisibility() != View.VISIBLE){
+							toolbarTitleView.startAnimation(fadeIn);
+							toolbarTitleView.setVisibility(View.VISIBLE);
+						}
 						getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
 						setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
 					}
 				} else {
-					setTitle("");
+					if(toolbarTitleView.getVisibility() != View.INVISIBLE){
+						toolbarTitleView.startAnimation(fadeOut);
+						toolbarTitleView.setVisibility(View.INVISIBLE);
+					}
 					getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
 					setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
 				}
@@ -155,7 +169,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		this.view = view;
-		hideToolbar();
+		toolbarTitleView.setVisibility(View.INVISIBLE);
 		setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
 	}
 
