@@ -42,6 +42,7 @@ import org.joinmastodon.android.api.PushSubscriptionManager;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.DomainDisplay;
+import org.joinmastodon.android.fragments.InstanceInfoFragment;
 import org.joinmastodon.android.fragments.MastodonToolbarFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.PushNotification;
@@ -67,8 +68,6 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	protected ThemeItem themeItem;
 
 	protected boolean needAppRestart;
-	protected AlphaAnimation fadeIn = new AlphaAnimation(0.0f , 1.0f ) ;
-	protected AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f ) ;
 
 	private Instance instance;
 	private String instanceName;
@@ -101,8 +100,7 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		if (GithubSelfUpdater.needSelfUpdating())
 			E.register(this);
 
-		fadeIn.setDuration(150);
-		fadeOut.setDuration(150);
+
 
 		addItems(items);
 		title = getArguments().getString("title", getTitle().toString());
@@ -134,21 +132,9 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
 				LinearLayoutManager linearLayoutManager = (LinearLayoutManager) list.getLayoutManager();
 				if (linearLayoutManager != null && linearLayoutManager.findFirstVisibleItemPosition() > 0) {
-					if(!title.isEmpty()){
-						if(toolbarTitleView.getVisibility() != View.VISIBLE){
-							toolbarTitleView.startAnimation(fadeIn);
-							toolbarTitleView.setVisibility(View.VISIBLE);
-						}
-						getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
-						setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
-					}
+					showToolbarAnimated();
 				} else {
-					if(toolbarTitleView.getVisibility() != View.INVISIBLE){
-						toolbarTitleView.startAnimation(fadeOut);
-						toolbarTitleView.setVisibility(View.INVISIBLE);
-					}
-					getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
-					setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
+					hideToolbarAnimated();
 				}
 			}
 		});
@@ -169,17 +155,43 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		this.view = view;
+		hideToolbar();
 		toolbarTitleView.setVisibility(View.INVISIBLE);
 		setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
 	}
 
 	protected void hideToolbar() {
 		getToolbar().setElevation(0f);
-        getToolbar().setTitle("");
+        toolbarTitleView.setVisibility(View.INVISIBLE);
         TypedValue typedValue = new TypedValue();
         if (getActivity().getTheme().resolveAttribute(android.R.attr.windowBackground, typedValue, true)) {
             getToolbar().setBackgroundColor(typedValue.data);
         }
+	}
+
+	protected void showToolbarAnimated(){
+		AlphaAnimation fadeIn = new AlphaAnimation(0.0f , 1.0f ) ;
+		fadeIn.setDuration(100);
+		if(toolbarTitleView.getVisibility() != View.VISIBLE){
+			getToolbar().setElevation(8.625f);
+			toolbarTitleView.startAnimation(fadeIn);
+			toolbarTitleView.setVisibility(View.VISIBLE);
+		}
+		getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
+		setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorBackgroundLight));
+	}
+
+	protected void hideToolbarAnimated(){
+		AlphaAnimation fadeOut = new AlphaAnimation( 1.0f , 0.0f ) ;
+		fadeOut.setDuration(100);
+		if(toolbarTitleView.getVisibility() != View.INVISIBLE){
+			getToolbar().setElevation(0f);
+			toolbarTitleView.startAnimation(fadeOut);
+			toolbarTitleView.setVisibility(View.INVISIBLE);
+		}
+		getToolbar().setBackgroundColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
+		setStatusBarColor(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground));
+
 	}
 
 	protected Instance getInstance() {
