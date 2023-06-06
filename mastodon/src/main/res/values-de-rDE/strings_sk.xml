@@ -292,4 +292,8 @@
     <string name="sk_instance_info_unavailable">Informationen zur Instanz momentan nicht verfügbar</string>
     <string name="sk_open_in_app">In App öffnen</string>
     <string name="sk_settings_content_types_explanation">Dadurch lässt beim Erstellen von Beiträgen ein Inhaltstyp wie Markdown angeben. Nicht alle Instanzen unterstützen das.</string>
+    <string name="sk_settings_allow_remote_loading">Infos von Remote-Instanzen laden</string>
+    <string name="sk_no_remote_info_hint">keine Remote-Infos abrufbar</string>
+    <string name="sk_error_loading_profile">Konnte das Profil auf deiner Heim-Instanz nicht laden.</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower*innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
 </resources>
