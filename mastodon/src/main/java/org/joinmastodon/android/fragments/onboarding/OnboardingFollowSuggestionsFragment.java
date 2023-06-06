@@ -215,9 +215,9 @@ public class OnboardingFollowSuggestionsFragment extends RecyclerFragment<Parsed
 	}
 
 	private void proceed(){
-		Bundle args=new Bundle();
-		args.putString("account", accountID);
-		Nav.go(getActivity(), OnboardingProfileSetupFragment.class, args);
+//		Bundle args=new Bundle();
+//		args.putString("account", accountID);
+//		Nav.go(getActivity(), OnboardingProfileSetupFragment.class, args);
 	}
 
 	private class SuggestionsAdapter extends UsableRecyclerView.Adapter<SuggestionViewHolder> implements ImageLoaderRecyclerAdapter{
