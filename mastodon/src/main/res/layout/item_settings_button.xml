@@ -44,8 +44,7 @@
 			android:textColor="?android:textColorSecondary"
 			android:layout_below="@id/title"
 			android:layout_alignStart="@id/title"
-			android:visibility="gone"
-			android:maxLines="4" />
+			android:visibility="gone" />
 
 	</RelativeLayout>
     <Button
