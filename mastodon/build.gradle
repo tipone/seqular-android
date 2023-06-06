@@ -70,7 +70,7 @@ android {
 				versionNameSuffix '-nightly+@' + properties.getProperty('CURRENT_DATE')
 			}
 			applicationIdSuffix '.nightly'
-			debuggable true
+		
 			signingConfig signingConfigs.nightly
 			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
 		}
