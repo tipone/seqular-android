@@ -384,10 +384,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			UiUtils.lookupAccountHandle(getContext(), accountID, remoteAccount.getFullyQualifiedName(), (c, args) -> {
 				if (getContext() == null) return;
 				if (args == null || !args.containsKey("profileAccount")) {
-					onError(new MastodonErrorResponse(
-							getContext().getString(R.string.sk_error_loading_profile),
-							0, null
-					));
+					Toast.makeText(getContext(), getContext().getString(
+							R.string.sk_error_loading_profile, domain
+					), Toast.LENGTH_SHORT).show();
+					Nav.finish(this);
 					return;
 				}
 				onAccountLoaded(Parcels.unwrap(args.getParcelable("profileAccount")));
