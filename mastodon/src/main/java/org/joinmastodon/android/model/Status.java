@@ -39,7 +39,6 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public boolean sensitive;
 	@RequiredField
 	public String spoilerText;
-	@RequiredField
 	public List<Attachment> mediaAttachments;
 	public Application application;
 	@RequiredField
@@ -96,6 +95,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 			t.postprocess();
 		for(Emoji e:emojis)
 			e.postprocess();
+		if (mediaAttachments == null) mediaAttachments = List.of();
 		for(Attachment a:mediaAttachments)
 			a.postprocess();
 		account.postprocess();
