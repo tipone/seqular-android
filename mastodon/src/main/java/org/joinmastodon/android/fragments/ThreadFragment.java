@@ -8,6 +8,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
@@ -111,7 +112,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		loadMainStatus();
+		if (refreshing) loadMainStatus();
 		currentRequest=new GetStatusContext(mainStatus.id)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
