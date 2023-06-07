@@ -654,8 +654,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			));
 		}
 		menu.findItem(R.id.share).setTitle(getString(R.string.share_user, account.getShortUsername()));
-		if(isOwnProfile)
+		if(isOwnProfile) {
+			if (isInstancePixelfed()) menu.findItem(R.id.scheduled).setVisible(false);
 			return;
+		}
 
 		MenuItem mute = menu.findItem(R.id.mute);
 		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));

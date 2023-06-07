@@ -149,7 +149,7 @@ import me.grishka.appkit.imageloader.ViewImageLoader;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 
-public class ComposeFragment extends MastodonToolbarFragment implements OnBackPressedListener, ComposeEditText.SelectionListener{
+public class ComposeFragment extends MastodonToolbarFragment implements OnBackPressedListener, ComposeEditText.SelectionListener, HasAccountID {
 
 	private static final int MEDIA_RESULT=717;
 	private static final int IMAGE_DESCRIPTION_RESULT=363;
@@ -355,6 +355,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		} else {
 			mediaBtn.setOnClickListener(v -> openFilePicker(false));
 		}
+		if (isInstancePixelfed()) pollBtn.setVisibility(View.GONE);
 		pollBtn.setOnClickListener(v->togglePoll());
 		emojiBtn.setOnClickListener(v->emojiKeyboard.toggleKeyboardPopup(mainEditText));
 		spoilerBtn.setOnClickListener(v->toggleSpoiler());
@@ -847,10 +848,16 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
 		buildLanguageSelector(languageButton);
 
-		if (editingStatus != null && scheduledStatus == null) {
+		if (isInstancePixelfed() || (editingStatus != null && scheduledStatus == null)) {
 			// editing an already published post
 			draftsBtn.setVisibility(View.GONE);
+			spoilerBtn.setVisibility(View.GONE);
 		}
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
 	}
 
 	private void navigateToUnsentPosts() {
@@ -1009,7 +1016,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			if(att.state!=AttachmentUploadState.DONE)
 				nonDoneAttachmentCount++;
 		}
-		publishButton.setEnabled((trimmedCharCount>0 || !attachments.isEmpty()) && charCount<=charLimit && nonDoneAttachmentCount==0 && (pollOptions.isEmpty() || nonEmptyPollOptionsCount>1));
+		publishButton.setEnabled((!isInstancePixelfed() || attachments.size() > 0) && (trimmedCharCount>0 || !attachments.isEmpty()) && charCount<=charLimit && nonDoneAttachmentCount==0 && (pollOptions.isEmpty() || nonEmptyPollOptionsCount>1));
 		sendError.setVisibility(View.GONE);
 	}
 
@@ -1151,7 +1158,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		sendProgress.setVisibility(View.VISIBLE);
 		sendError.setVisibility(View.GONE);
 
-		Callback<Status> resCallback=new Callback<>(){
+		Callback<Status> resCallback = new Callback<>(){
 			@Override
 			public void onSuccess(Status result){
 				maybeDeleteScheduledPost(() -> {
@@ -1164,7 +1171,17 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 							E.post(new StatusCountersUpdatedEvent(replyTo));
 						}
 					}else{
-						E.post(new StatusUpdatedEvent(result));
+						// pixelfed doesn't return the edited status :/
+						Status editedStatus = result == null ? editingStatus : result;
+						if (result == null) {
+							editedStatus.text = req.status;
+							editedStatus.spoilerText = req.spoilerText;
+							editedStatus.sensitive = req.sensitive;
+							editedStatus.language = req.language;
+							// user will have to reload to see html
+							editedStatus.content = req.status;
+						}
+						E.post(new StatusUpdatedEvent(editedStatus));
 					}
 					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !isStateSaved()) {
 						Nav.finish(ComposeFragment.this);
@@ -1899,9 +1916,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		visibilityPopup=new PopupMenu(getActivity(), v);
 		visibilityPopup.inflate(R.menu.compose_visibility);
 		Menu m=visibilityPopup.getMenu();
+		if (isInstancePixelfed()) {
+			m.findItem(R.id.vis_private).setVisible(false);
+		}
 		MenuItem localOnlyItem = visibilityPopup.getMenu().findItem(R.id.local_only);
 		boolean prefsSaysSupported = GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID);
-		if (instance.isAkkoma()) {
+		if (isInstanceAkkoma()) {
 			m.findItem(R.id.vis_local).setVisible(true);
 		} else if (localOnly || prefsSaysSupported) {
 			localOnlyItem.setVisible(true);

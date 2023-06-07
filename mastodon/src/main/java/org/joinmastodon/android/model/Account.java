@@ -65,7 +65,6 @@ public class Account extends BaseModel implements Searchable{
 	/**
 	 * An image banner that is shown above the profile and in profile cards.
 	 */
-	@RequiredField
 	public String header;
 	/**
 	 * A static version of the header. Equal to header if its value is a static image; different if header is an animated GIF.
