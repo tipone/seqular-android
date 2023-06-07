@@ -257,7 +257,7 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 
 		public void bindRelationship(){
 			Relationship rel=relationships.get(item.account.id);
-			if(rel==null || AccountSessionManager.getInstance().isSelf(accountID, item.account)){
+			if(rel==null || item.account.isRemote || AccountSessionManager.getInstance().isSelf(accountID, item.account)){
 				button.setVisibility(View.GONE);
 			}else{
 				button.setVisibility(View.VISIBLE);
