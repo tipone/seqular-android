@@ -199,6 +199,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					boolean isPixelfed = item.parentFragment.isInstancePixelfed();
 					boolean textEmpty = TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText);
 					if(!redraft && (isPixelfed || textEmpty)){
+						// pixelfed doesn't support /statuses/:id/source :/
 						if (isPixelfed) {
 							args.putString("sourceText", HtmlParser.text(item.status.content));
 							args.putString("sourceSpoiler", item.status.spoilerText);
