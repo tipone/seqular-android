@@ -754,6 +754,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
 	}
 
+	@Override
+	protected void onDataLoaded(List<T> d, boolean more) {
+		super.onDataLoaded(d, more);
+		// more available, but the page isn't even full yet? seems wrong, let's load some more
+		if (more && d.size() < itemsPerPage) preloader.onScrolledToLastItem();
+	}
+
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
 
 		public DisplayItemsAdapter(){
