@@ -251,6 +251,10 @@ public class HtmlParser{
 		return Jsoup.clean(html, Safelist.none());
 	}
 
+	public static String text(String html) {
+		return Jsoup.parse(html).body().wholeText();
+	}
+
 	public static CharSequence parseLinks(String text){
 		Matcher matcher=URL_PATTERN.matcher(text);
 		if(!matcher.find()) // Return the original string if there are no URLs
