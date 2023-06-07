@@ -61,6 +61,9 @@ public class OAuthActivity extends Activity{
 					@Override
 					public void onSuccess(Token token){
 						new GetOwnAccount()
+								// in case the instance (looking at pixelfed) wants to redirect to a
+								// website, we need to pass a context so we can launch a browser
+								.setContext(OAuthActivity.this)
 								.setCallback(new Callback<>(){
 									@Override
 									public void onSuccess(Account account){

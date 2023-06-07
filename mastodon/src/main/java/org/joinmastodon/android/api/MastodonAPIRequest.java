@@ -2,6 +2,7 @@ package org.joinmastodon.android.api;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 import android.util.Pair;
@@ -50,6 +51,7 @@ public abstract class MastodonAPIRequest<T> extends APIRequest<T>{
 	Map<String, String> headers;
 	private ProgressDialog progressDialog;
 	protected boolean removeUnsupportedItems;
+	@Nullable Context context;
 
 	public MastodonAPIRequest(HttpMethod method, String path, Class<T> respClass){
 		this.path=path;
@@ -179,6 +181,16 @@ public abstract class MastodonAPIRequest<T> extends APIRequest<T>{
 	public MastodonAPIRequest<T> setCallback(Callback<T> callback){
 		super.setCallback(callback);
 		return this;
+	}
+
+	public MastodonAPIRequest<T> setContext(Context context) {
+		this.context = context;
+		return this;
+	}
+
+	@Nullable
+	public Context getContext() {
+		return context;
 	}
 
 	@CallSuper
