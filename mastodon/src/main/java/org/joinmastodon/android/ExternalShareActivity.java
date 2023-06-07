@@ -9,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Pair;
 import android.widget.Toast;
 
+import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
@@ -43,7 +44,7 @@ public class ExternalShareActivity extends FragmentStackActivity{
 				finish();
 			} else if (isOpenable || sessions.size() > 1) {
 				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, true, isOpenable);
-				if (isOpenable) sheet.setOnClick((accountId, open) -> {
+				sheet.setOnClick((accountId, open) -> {
 					if (open && text.isPresent()) {
 						BiConsumer<Class<? extends Fragment>, Bundle> callback = (clazz, args) -> {
 							if (clazz == null) {
@@ -59,8 +60,17 @@ public class ExternalShareActivity extends FragmentStackActivity{
 							finish();
 							startActivity(intent);
 						};
-						if (isFediUrl) UiUtils.lookupURL(this, accountId, text.get(), false, callback);
-						else UiUtils.lookupAccountHandle(this, accountId, fediHandle.get(), callback);
+
+						fediHandle
+								.<MastodonAPIRequest<?>>map(handle ->
+										UiUtils.lookupAccountHandle(this, accountId, handle, callback))
+								.or(() -> Optional.ofNullable(
+										UiUtils.lookupURL(this, accountId, text.get(), false, callback)))
+								.ifPresent(req ->
+										req.wrapProgress(this, R.string.loading, true, d -> {
+											UiUtils.transformDialogForLookup(this, accountId, isFediUrl ? text.get() : null, d);
+											d.setOnDismissListener((ev) -> finish());
+										}));
 					} else {
 						openComposeFragment(accountId);
 					}

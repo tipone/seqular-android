@@ -56,6 +56,7 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
@@ -1095,7 +1096,7 @@ public class UiUtils {
 		openURL(context, accountID, url, true);
 	}
 
-	private static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
+	public static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
 		if (accountID != null) {
 			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, getInstanceName(accountID)));
 		} else {
@@ -1114,7 +1115,8 @@ public class UiUtils {
 		lookupURL(context, accountID, url, launchBrowser, (clazz, args) -> {
 			if (clazz == null) return;
 			Nav.go((Activity) context, clazz, args);
-		});
+		}).wrapProgress((Activity) context, R.string.loading, true, d ->
+				transformDialogForLookup(context, accountID, url, d));
 	}
 
 	public static boolean acctMatches(String accountID, String acct, String queriedUsername, @Nullable String queriedDomain) {
@@ -1143,9 +1145,9 @@ public class UiUtils {
 				() -> go.accept(null, null)
 		);
 	}
-	public static void lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+	public static MastodonAPIRequest<SearchResults> lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		String fullHandle = ("@" + queryHandle.first) + (queryHandle.second.map(domain -> "@" + domain).orElse(""));
-		new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true)
+		return new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true)
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
@@ -1176,12 +1178,12 @@ public class UiUtils {
 				}).exec(accountID);
 	}
 
-	public static void lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+	public static MastodonAPIRequest<?> lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		Uri uri = Uri.parse(url);
 		List<String> path = uri.getPathSegments();
 		if (accountID != null && "https".equals(uri.getScheme())) {
 			if (path.size() == 2 && path.get(0).matches("^@[a-zA-Z0-9_]+$") && path.get(1).matches("^[0-9]+$") && AccountSessionManager.getInstance().getAccount(accountID).domain.equalsIgnoreCase(uri.getAuthority())) {
-				new GetStatusByID(path.get(1))
+				return new GetStatusByID(path.get(1))
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(Status result) {
@@ -1198,12 +1200,9 @@ public class UiUtils {
 								go.accept(null, null);
 							}
 						})
-						.wrapProgress((Activity) context, R.string.loading, true,
-								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
-				return;
 			} else if (looksLikeFediverseUrl(url)) {
-				new GetSearchResults(url, null, true)
+				return new GetSearchResults(url, null, true)
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(SearchResults results) {
@@ -1233,14 +1232,12 @@ public class UiUtils {
 								go.accept(null, null);
 							}
 						})
-						.wrapProgress((Activity) context, R.string.loading, true,
-								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
-				return;
 			}
 		}
 		if (launchBrowser) launchWebBrowser(context, url);
 		go.accept(null, null);
+		return null;
 	}
 
 	public static void copyText(View v, String text) {

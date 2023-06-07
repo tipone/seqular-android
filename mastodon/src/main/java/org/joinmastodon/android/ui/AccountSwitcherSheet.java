@@ -75,8 +75,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 		this.fragment=fragment;
 		this.externalShare = externalShare;
 		this.openInApp = openInApp;
-		this.onClick = onClick;
-		
+
 		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
 
 		list=new UsableRecyclerView(activity);

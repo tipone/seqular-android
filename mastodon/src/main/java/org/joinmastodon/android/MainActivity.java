@@ -127,8 +127,8 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 	}
 
 	private void showFragmentForExternalShare(Bundle args) {
-		String clazz = args.getString("fromExternalShare");
-		Fragment fragment = switch (clazz) {
+		String className = args.getString("fromExternalShare");
+		Fragment fragment = switch (className) {
 			case "ThreadFragment" -> new ThreadFragment();
 			case "ProfileFragment" -> new ProfileFragment();
 			default -> null;
