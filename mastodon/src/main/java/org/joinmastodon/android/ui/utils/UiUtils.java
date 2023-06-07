@@ -1092,10 +1092,6 @@ public class UiUtils {
 				.exec(targetAccountID);
 	}
 
-	public static void openURL(Context context, String accountID, String url) {
-		openURL(context, accountID, url, true);
-	}
-
 	public static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
 		if (accountID != null) {
 			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, getInstanceName(accountID)));
@@ -1111,9 +1107,32 @@ public class UiUtils {
 		}
 	}
 
+	private static Bundle bundleError(String error) {
+		Bundle args = new Bundle();
+		args.putString("error", error);
+		return args;
+	}
+
+	private static Bundle bundleError(ErrorResponse error) {
+		Bundle args = new Bundle();
+		if (error instanceof MastodonErrorResponse e) {
+			args.putString("error", e.error);
+			args.putInt("httpStatus", e.httpStatus);
+		}
+		return args;
+	}
+
+	public static void openURL(Context context, String accountID, String url) {
+		openURL(context, accountID, url, true);
+	}
+
 	public static void openURL(Context context, String accountID, String url, boolean launchBrowser) {
 		lookupURL(context, accountID, url, launchBrowser, (clazz, args) -> {
-			if (clazz == null) return;
+			if (clazz == null) {
+				if (args.containsKey("error")) Toast.makeText(context, args.getString("error"), Toast.LENGTH_SHORT).show();
+				if (launchBrowser) launchWebBrowser(context, url);
+				return;
+			}
 			Nav.go((Activity) context, clazz, args);
 		}).wrapProgress((Activity) context, R.string.loading, true, d ->
 				transformDialogForLookup(context, accountID, url, d));
@@ -1161,19 +1180,12 @@ public class UiUtils {
 							go.accept(ProfileFragment.class, args);
 							return;
 						}
-						Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
-						args.putString("error", context.getString(R.string.sk_resource_not_found));
-						go.accept(null, null);
+						go.accept(null, bundleError(context.getString(R.string.sk_resource_not_found)));
 					}
 
 					@Override
 					public void onError(ErrorResponse error) {
-						Bundle args = new Bundle();
-						if (error instanceof MastodonErrorResponse e) {
-							args.putString("error", e.error);
-							args.putInt("httpStatus", e.httpStatus);
-						}
-						go.accept(null, args);
+						go.accept(null, bundleError(error));
 					}
 				}).exec(accountID);
 	}
@@ -1195,9 +1207,7 @@ public class UiUtils {
 
 							@Override
 							public void onError(ErrorResponse error) {
-								error.showToast(context);
-								if (launchBrowser) launchWebBrowser(context, url);
-								go.accept(null, null);
+								go.accept(null, bundleError(error));
 							}
 						})
 						.exec(accountID);
@@ -1221,15 +1231,12 @@ public class UiUtils {
 									return;
 								}
 								if (launchBrowser) launchWebBrowser(context, url);
-								Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
-								go.accept(null, null);
+								go.accept(null, bundleError(context.getString(R.string.sk_resource_not_found)));
 							}
 
 							@Override
 							public void onError(ErrorResponse error) {
-								error.showToast(context);
-								if (launchBrowser) launchWebBrowser(context, url);
-								go.accept(null, null);
+								go.accept(null, bundleError(error));
 							}
 						})
 						.exec(accountID);
