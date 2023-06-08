@@ -11,5 +11,5 @@
 	android:paddingLeft="24dp"
 	android:paddingRight="24dp"
 	android:drawablePadding="24dp"
-	android:drawableTint="?colorM3OnSurfaceVariant"
+	android:drawableTint="?android:textColorPrimary"
 	tools:text="List Item"/>
