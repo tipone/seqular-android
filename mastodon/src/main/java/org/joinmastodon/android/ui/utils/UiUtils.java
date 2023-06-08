@@ -1053,43 +1053,43 @@ public class UiUtils {
 		}, null);
 	}
 
-	public static void lookupStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> resultConsumer) {
-		lookup(context, queryStatus, targetAccountID, sourceAccountID, GetSearchResults.Type.STATUSES, resultConsumer, results ->
+	public static Optional<MastodonAPIRequest<SearchResults>> lookupStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> resultConsumer) {
+		return lookup(context, queryStatus, targetAccountID, sourceAccountID, GetSearchResults.Type.STATUSES, resultConsumer, results ->
 			!results.statuses.isEmpty() ? Optional.of(results.statuses.get(0)) : Optional.empty()
 		);
 	}
 
-	public static void lookupAccount(Context context, Account queryAccount, String targetAccountID, @Nullable String sourceAccountID, Consumer<Account> resultConsumer) {
-		lookup(context, queryAccount, targetAccountID, sourceAccountID, GetSearchResults.Type.ACCOUNTS, resultConsumer, results ->
+	public static Optional<MastodonAPIRequest<SearchResults>> lookupAccount(Context context, Account queryAccount, String targetAccountID, @Nullable String sourceAccountID, Consumer<Account> resultConsumer) {
+		return lookup(context, queryAccount, targetAccountID, sourceAccountID, GetSearchResults.Type.ACCOUNTS, resultConsumer, results ->
 				!results.accounts.isEmpty() ? Optional.of(results.accounts.get(0)) : Optional.empty()
 		);
 	}
 
-	public static <T extends Searchable> void lookup(Context context, T query, String targetAccountID, @Nullable String sourceAccountID, @Nullable GetSearchResults.Type type, Consumer<T> resultConsumer, Function<SearchResults, Optional<T>> extractResult) {
+	public static <T extends Searchable> Optional<MastodonAPIRequest<SearchResults>> lookup(Context context, T query, String targetAccountID, @Nullable String sourceAccountID, @Nullable GetSearchResults.Type type, Consumer<T> resultConsumer, Function<SearchResults, Optional<T>> extractResult) {
 		if (sourceAccountID != null && targetAccountID.startsWith(sourceAccountID.substring(0, sourceAccountID.indexOf('_')))) {
 			resultConsumer.accept(query);
-			return;
+			return Optional.empty();
 		}
 
-		new GetSearchResults(query.getQuery(), type, true).setCallback(new Callback<>() {
-					@Override
-					public void onSuccess(SearchResults results) {
-						Optional<T> result = extractResult.apply(results);
-						if (result.isPresent()) resultConsumer.accept(result.get());
-						else {
-							Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
-							resultConsumer.accept(null);
-						}
-					}
+		return Optional.of(new GetSearchResults(query.getQuery(), type, true).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(SearchResults results) {
+				Optional<T> result = extractResult.apply(results);
+				if (result.isPresent()) resultConsumer.accept(result.get());
+				else {
+					Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+					resultConsumer.accept(null);
+				}
+			}
 
-					@Override
-					public void onError(ErrorResponse error) {
-						error.showToast(context);
-					}
-				})
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(context);
+			}
+		})
 				.wrapProgress((Activity) context, R.string.loading, true,
 						d -> transformDialogForLookup(context, targetAccountID, null, d))
-				.exec(targetAccountID);
+				.exec(targetAccountID));
 	}
 
 	public static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
@@ -1129,13 +1129,13 @@ public class UiUtils {
 	public static void openURL(Context context, String accountID, String url, boolean launchBrowser) {
 		lookupURL(context, accountID, url, launchBrowser, (clazz, args) -> {
 			if (clazz == null) {
-				if (args.containsKey("error")) Toast.makeText(context, args.getString("error"), Toast.LENGTH_SHORT).show();
+				if (args != null && args.containsKey("error")) Toast.makeText(context, args.getString("error"), Toast.LENGTH_SHORT).show();
 				if (launchBrowser) launchWebBrowser(context, url);
 				return;
 			}
 			Nav.go((Activity) context, clazz, args);
-		}).wrapProgress((Activity) context, R.string.loading, true, d ->
-				transformDialogForLookup(context, accountID, url, d));
+		}).map(req -> req.wrapProgress((Activity) context, R.string.loading, true, d ->
+				transformDialogForLookup(context, accountID, url, d)));
 	}
 
 	public static boolean acctMatches(String accountID, String acct, String queriedUsername, @Nullable String queriedDomain) {
@@ -1158,11 +1158,13 @@ public class UiUtils {
 		}
 	}
 
-	public static void lookupAccountHandle(Context context, String accountID, String query, BiConsumer<Class<? extends Fragment>, Bundle> go) {
-		parseFediverseHandle(query).ifPresentOrElse(
-				handle -> lookupAccountHandle(context, accountID, handle, go),
-				() -> go.accept(null, null)
-		);
+	public static Optional<MastodonAPIRequest<SearchResults>> lookupAccountHandle(Context context, String accountID, String query, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+		return parseFediverseHandle(query).map(
+				handle -> lookupAccountHandle(context, accountID, handle, go))
+				.or(() -> {
+					go.accept(null, null);
+					return Optional.empty();
+				});
 	}
 	public static MastodonAPIRequest<SearchResults> lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		String fullHandle = ("@" + queryHandle.first) + (queryHandle.second.map(domain -> "@" + domain).orElse(""));
@@ -1190,12 +1192,12 @@ public class UiUtils {
 				}).exec(accountID);
 	}
 
-	public static MastodonAPIRequest<?> lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+	public static Optional<MastodonAPIRequest<?>> lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		Uri uri = Uri.parse(url);
 		List<String> path = uri.getPathSegments();
 		if (accountID != null && "https".equals(uri.getScheme())) {
 			if (path.size() == 2 && path.get(0).matches("^@[a-zA-Z0-9_]+$") && path.get(1).matches("^[0-9]+$") && AccountSessionManager.getInstance().getAccount(accountID).domain.equalsIgnoreCase(uri.getAuthority())) {
-				return new GetStatusByID(path.get(1))
+				return Optional.of(new GetStatusByID(path.get(1))
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(Status result) {
@@ -1210,9 +1212,9 @@ public class UiUtils {
 								go.accept(null, bundleError(error));
 							}
 						})
-						.exec(accountID);
+						.exec(accountID));
 			} else if (looksLikeFediverseUrl(url)) {
-				return new GetSearchResults(url, null, true)
+				return Optional.of(new GetSearchResults(url, null, true)
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(SearchResults results) {
@@ -1239,12 +1241,11 @@ public class UiUtils {
 								go.accept(null, bundleError(error));
 							}
 						})
-						.exec(accountID);
+						.exec(accountID));
 			}
 		}
-		if (launchBrowser) launchWebBrowser(context, url);
 		go.accept(null, null);
-		return null;
+		return Optional.empty();
 	}
 
 	public static void copyText(View v, String text) {

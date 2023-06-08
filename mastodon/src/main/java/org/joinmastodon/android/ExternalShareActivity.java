@@ -64,8 +64,8 @@ public class ExternalShareActivity extends FragmentStackActivity{
 						fediHandle
 								.<MastodonAPIRequest<?>>map(handle ->
 										UiUtils.lookupAccountHandle(this, accountId, handle, callback))
-								.or(() -> Optional.ofNullable(
-										UiUtils.lookupURL(this, accountId, text.get(), false, callback)))
+								.or(() ->
+										UiUtils.lookupURL(this, accountId, text.get(), false, callback))
 								.ifPresent(req ->
 										req.wrapProgress(this, R.string.loading, true, d -> {
 											UiUtils.transformDialogForLookup(this, accountId, isFediUrl ? text.get() : null, d);
