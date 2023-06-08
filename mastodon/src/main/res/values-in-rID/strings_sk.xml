@@ -289,8 +289,13 @@
     <string name="sk_settings_content_types_explanation">Memperbolehkan menetapkan jenis konten seperti Markdown ketika membuat kiriman. Perlu diingat bahwa tidak semua server mendukung ini.</string>
     <string name="sk_open_in_app">Buka dalam aplikasi</string>
     <string name="sk_external_share_title">Bagikan dengan akun</string>
-    <string name="sk_bubble_timeline_info_banner">Ini adalah kiriman yamg paling terkini oleh orang-orang dalam gelembung server Akkoma Anda.</string>
+    <string name="sk_bubble_timeline_info_banner">Ini adalah kiriman yang paling terkini dari jaringan dikurasikan oleh admin server Anda.</string>
     <string name="sk_timeline_bubble">Gelembung</string>
     <string name="sk_instance_info_unavailable">Info server sementara tidak tersedia</string>
     <string name="sk_external_share_or_open_title">Bagikan atau buka dengan akun</string>
+    <string name="sk_no_remote_info_hint">info jarak jauh tidak tersedia</string>
+    <string name="sk_settings_allow_remote_loading">Muat info dari server jarak jauh</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Coba mendapatkan pendaftaran akurat untuk pengikut cr</string>
+    <string name="sk_error_loading_profile">Gagal memuat profil melalui %s</string>
+    <string name="sk_open_in_app_failed">Tidak dapat buka dalam aplikasi</string>
 </resources>
