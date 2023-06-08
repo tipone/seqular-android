@@ -85,10 +85,10 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			}else{
 				editHistory.setVisibility(View.GONE);
 			}
-			String timeStr=TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault()));
+			String timeStr=item.status.createdAt != null ? TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault())) : null;
 			
 			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
-				time.setText(item.parentFragment.getString(R.string.timestamp_via_app, timeStr, ""));
+				time.setText(timeStr != null ? item.parentFragment.getString(R.string.timestamp_via_app, timeStr, "") : "");
 				applicationName.setText(item.status.application.name);
 				if (item.status.application.website != null && item.status.application.website.toLowerCase().startsWith("https://")) {
 					applicationName.setOnClickListener(e -> UiUtils.openURL(context, null, item.status.application.website));
@@ -137,6 +137,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			Bundle args=new Bundle();
 			args.putString("account", item.parentFragment.getAccountID());
 			args.putString("id", item.status.id);
+			args.putString("url", item.status.url);
 			Nav.go(item.parentFragment.getActivity(), StatusEditHistoryFragment.class, args);
 		}
 	}

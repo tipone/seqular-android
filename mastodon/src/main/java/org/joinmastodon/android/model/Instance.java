@@ -11,6 +11,7 @@ import java.net.IDN;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Parcel
 public class Instance extends BaseModel{
@@ -45,7 +46,7 @@ public class Instance extends BaseModel{
 	@RequiredField
 	public String version;
 	/**
-	 * Primary langauges of the website and its staff.
+	 * Primary languages of the website and its staff.
 	 */
 //	@RequiredField
 	public List<String> languages;
@@ -86,6 +87,11 @@ public class Instance extends BaseModel{
 
 	public Pleroma pleroma;
 
+	public PleromaPollLimits pollLimits;
+
+	/** like uri, but always without scheme and trailing slash */
+	public transient String normalizedUri;
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
@@ -95,6 +101,10 @@ public class Instance extends BaseModel{
 			rules=Collections.emptyList();
 		if(shortDescription==null)
 			shortDescription="";
+		// akkoma says uri is "https://example.social" while just "example.social" on mastodon
+		normalizedUri = uri
+				.replaceFirst("^https://", "")
+				.replaceFirst("/$", "");
 	}
 
 	@Override
@@ -121,7 +131,7 @@ public class Instance extends BaseModel{
 		ci.domain=uri;
 		ci.normalizedDomain=IDN.toUnicode(uri);
 		ci.description=Html.fromHtml(shortDescription).toString().trim();
-		if(languages!=null){
+		if(languages!=null && languages.size() > 0){
 			ci.language=languages.get(0);
 			ci.languages=languages;
 		}else{
@@ -132,6 +142,30 @@ public class Instance extends BaseModel{
 		if(stats!=null)
 			ci.totalUsers=stats.userCount;
 		return ci;
+	}
+
+	public boolean isAkkoma() {
+		return pleroma != null;
+	}
+
+	public boolean isPixelfed() {
+		return version.contains("compatible; Pixelfed");
+	}
+
+	public boolean hasFeature(Feature feature) {
+		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
+				.map(p -> p.metadata)
+				.map(m -> m.features);
+
+		return switch (feature) {
+			case BUBBLE_TIMELINE -> pleromaFeatures
+					.map(f -> f.contains("bubble_timeline"))
+					.orElse(false);
+		};
+	}
+
+	public enum Feature {
+		BUBBLE_TIMELINE
 	}
 
 	@Parcel
@@ -198,6 +232,28 @@ public class Instance extends BaseModel{
 
 	@Parcel
 	public static class Pleroma extends BaseModel {
-		// metadata etc
+		public Pleroma.Metadata metadata;
+
+		@Parcel
+		public static class Metadata {
+			public List<String> features;
+			public Pleroma.Metadata.FieldsLimits fieldsLimits;
+
+			@Parcel
+			public static class FieldsLimits {
+				public int maxFields;
+				public int maxRemoteFields;
+				public int nameLength;
+				public int valueLength;
+			}
+		}
+	}
+
+	@Parcel
+	public static class PleromaPollLimits {
+		public int maxExpiration;
+		public int maxOptionChars;
+		public int maxOptions;
+		public int minExpiration;
 	}
 }

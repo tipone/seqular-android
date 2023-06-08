@@ -16,12 +16,13 @@ public class Poll extends BaseModel{
 	private boolean expired;
 	public boolean multiple;
 	public int votersCount;
+	public int votesCount;
 	public boolean voted;
-	@RequiredField
+//	@RequiredField
 	public List<Integer> ownVotes;
 	@RequiredField
 	public List<Option> options;
-	@RequiredField
+//	@RequiredField
 	public List<Emoji> emojis;
 
 	public transient ArrayList<Option> selectedOptions;
@@ -29,6 +30,8 @@ public class Poll extends BaseModel{
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
+		if (emojis == null) emojis = List.of();
+		if (ownVotes == null) ownVotes = List.of();
 		for(Emoji e:emojis)
 			e.postprocess();
 	}
@@ -41,10 +44,12 @@ public class Poll extends BaseModel{
 				", expired="+expired+
 				", multiple="+multiple+
 				", votersCount="+votersCount+
+				", votesCount="+votesCount+
 				", voted="+voted+
 				", ownVotes="+ownVotes+
 				", options="+options+
 				", emojis="+emojis+
+				", selectedOptions="+selectedOptions+
 				'}';
 	}
 

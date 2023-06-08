@@ -1,5 +1,14 @@
 package org.joinmastodon.android.model;
 
+import static org.joinmastodon.android.api.MastodonAPIController.gson;
+import static org.joinmastodon.android.api.MastodonAPIController.gsonWithoutDeserializer;
+
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
@@ -8,16 +17,19 @@ import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
 
+import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.List;
 
+import androidx.annotation.NonNull;
+
 @Parcel
-public class Status extends BaseModel implements DisplayItemsParent{
+public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	@RequiredField
 	public String id;
 	@RequiredField
 	public String uri;
-	@RequiredField
+//	@RequiredField // sometimes null on calckey
 	public Instant createdAt;
 	@RequiredField
 	public Account account;
@@ -28,7 +40,6 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public boolean sensitive;
 	@RequiredField
 	public String spoilerText;
-	@RequiredField
 	public List<Attachment> mediaAttachments;
 	public Application application;
 	@RequiredField
@@ -41,6 +52,8 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public long favouritesCount;
 	public long repliesCount;
 	public Instant editedAt;
+	// might not be provided (by older mastodon servers),
+	// so megalodon will use the locally cached filters if filtered == null
 	public List<FilterResult> filtered;
 
 	public String url;
@@ -59,12 +72,21 @@ public class Status extends BaseModel implements DisplayItemsParent{
 	public boolean bookmarked;
 	public boolean pinned;
 
+	public Status quote; // can be boolean in calckey
+
+	public transient boolean filterRevealed;
 	public transient boolean spoilerRevealed;
+	public transient boolean textExpanded, textExpandable;
 	public transient boolean hasGapAfter;
+	public transient TranslatedStatus translation;
+	public transient boolean translationShown;
 	private transient String strippedText;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
+		if(spoilerText!=null && !spoilerText.isEmpty() && !sensitive)
+			sensitive=true;
+
 		super.postprocess();
 		if(application!=null)
 			application.postprocess();
@@ -74,6 +96,7 @@ public class Status extends BaseModel implements DisplayItemsParent{
 			t.postprocess();
 		for(Emoji e:emojis)
 			e.postprocess();
+		if (mediaAttachments == null) mediaAttachments = List.of();
 		for(Attachment a:mediaAttachments)
 			a.postprocess();
 		account.postprocess();
@@ -83,6 +106,9 @@ public class Status extends BaseModel implements DisplayItemsParent{
 			card.postprocess();
 		if(reblog!=null)
 			reblog.postprocess();
+		if(filtered!=null)
+			for(FilterResult fr : filtered)
+				fr.postprocess();
 
 		spoilerRevealed=GlobalUserPreferences.alwaysExpandContentWarnings || !sensitive;
 		if (visibility.equals(StatusPrivacy.LOCAL)) localOnly = true;
@@ -165,5 +191,33 @@ public class Status extends BaseModel implements DisplayItemsParent{
 		s.tags = List.of();
 		s.emojis = List.of();
 		return s;
+	}
+
+	@Override
+	public String getQuery() {
+		return url;
+	}
+
+	public static class StatusDeserializer implements JsonDeserializer<Status> {
+		@Override
+		public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
+			JsonObject obj = json.getAsJsonObject();
+
+			Status quote = null;
+			if (obj.has("quote") && obj.get("quote").isJsonObject())
+				quote = gson.fromJson(obj.get("quote"), Status.class);
+			obj.remove("quote");
+
+			Status reblog = null;
+			if (obj.has("reblog"))
+				reblog = gson.fromJson(obj.get("reblog"), Status.class);
+			obj.remove("reblog");
+
+			Status status = gsonWithoutDeserializer.fromJson(json, Status.class);
+			status.quote = quote;
+			status.reblog = reblog;
+
+			return status;
+		}
 	}
 }

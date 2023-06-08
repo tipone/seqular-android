@@ -1,0 +1,5 @@
+- Favorisieren/Lesezeichen/Antworten direkt über Android-Benachrichtigungen
+- Verbesserte Kopfzeilen für Reblogs und Antworten in der Timeline
+- Benachrichtigungs-Punkt (Benachrichtigungen werden aktuell noch nicht automatisch nachgeladen)
+- Für Akkoma-Benutzer_innen: Antwort-Sichtbarkeit, sortierte Thread-Antworten, Zitate, …
+- Crashes behoben und kleinere Verbesserungen

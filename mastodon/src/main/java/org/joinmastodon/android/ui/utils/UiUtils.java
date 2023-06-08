@@ -7,6 +7,7 @@ import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
@@ -16,6 +17,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -28,11 +30,15 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.SystemClock;
+import android.os.ext.SdkExtensions;
+import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.util.Log;
+import android.util.Pair;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -50,6 +56,8 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonAPIRequest;
+import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
@@ -84,6 +92,7 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
+import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -93,6 +102,7 @@ import org.parceler.Parcels;
 import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
+import java.net.IDN;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Instant;
@@ -104,8 +114,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -131,6 +144,7 @@ public class UiUtils {
 	private static Handler mainHandler = new Handler(Looper.getMainLooper());
 	private static final DateTimeFormatter DATE_FORMATTER_SHORT_WITH_YEAR = DateTimeFormatter.ofPattern("d MMM uuuu"), DATE_FORMATTER_SHORT = DateTimeFormatter.ofPattern("d MMM");
 	public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
+	public static int MAX_WIDTH, SCROLL_TO_TOP_DELTA;
 
 	private UiUtils() {
 	}
@@ -332,8 +346,17 @@ public class UiUtils {
 	}
 
 	public static int getThemeColor(Context context, @AttrRes int attr) {
+		if (context == null) return 0xff00ff00;
 		TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
 		int color = ta.getColor(0, 0xff00ff00);
+		ta.recycle();
+		return color;
+	}
+
+	public static int getThemeColorRes(Context context, @AttrRes int attr) {
+		if (context == null) return 0xff00ff00;
+		TypedArray ta = context.obtainStyledAttributes(new int[]{attr});
+		int color = ta.getResourceId(0, R.color.black);
 		ta.recycle();
 		return color;
 	}
@@ -613,9 +636,9 @@ public class UiUtils {
 		if (relationship.blocking) {
 			button.setText(R.string.button_blocked);
 			secondaryStyle = true;
-		} else if (relationship.blockedBy) {
-			button.setText(R.string.button_follow);
-			secondaryStyle = false;
+//		} else if (relationship.blockedBy) {
+//			button.setText(R.string.button_follow);
+//			secondaryStyle = false;
 		} else if (relationship.requested) {
 			button.setText(R.string.button_follow_pending);
 			secondaryStyle = true;
@@ -629,7 +652,8 @@ public class UiUtils {
 
 		if (keepText) button.setText(textBefore);
 
-		button.setEnabled(!relationship.blockedBy);
+//		https://github.com/sk22/megalodon/issues/526
+//		button.setEnabled(!relationship.blockedBy);
 		int attr = secondaryStyle ? R.attr.secondaryButtonStyle : android.R.attr.buttonStyle;
 		TypedArray ta = button.getContext().obtainStyledAttributes(new int[]{attr});
 		int styleRes = ta.getResourceId(0, 0);
@@ -664,6 +688,35 @@ public class UiUtils {
 				}).exec(accountID);
 	}
 
+	public static void setRelationshipToActionButtonM3(Relationship relationship, Button button){
+		boolean secondaryStyle;
+		if(relationship.blocking){
+			button.setText(R.string.button_blocked);
+			secondaryStyle=true;
+		}else if(relationship.blockedBy){
+			button.setText(R.string.button_follow);
+			secondaryStyle=false;
+		}else if(relationship.requested){
+			button.setText(R.string.button_follow_pending);
+			secondaryStyle=true;
+		}else if(!relationship.following){
+			button.setText(relationship.followedBy ? R.string.follow_back : R.string.button_follow);
+			secondaryStyle=false;
+		}else{
+			button.setText(R.string.button_following);
+			secondaryStyle=true;
+		}
+
+		button.setEnabled(!relationship.blockedBy);
+		int styleRes=secondaryStyle ? R.style.Widget_Mastodon_M3_Button_Tonal : R.style.Widget_Mastodon_M3_Button_Filled;
+		TypedArray ta=button.getContext().obtainStyledAttributes(styleRes, new int[]{android.R.attr.background});
+		button.setBackground(ta.getDrawable(0));
+		ta.recycle();
+		ta=button.getContext().obtainStyledAttributes(styleRes, new int[]{android.R.attr.textColor});
+		button.setTextColor(ta.getColorStateList(0));
+		ta.recycle();
+	}
+
 	public static void performAccountAction(Activity activity, Account account, String accountID, Relationship relationship, Button button, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
 		if (relationship.blocking) {
 			confirmToggleBlockUser(activity, accountID, account, true, resultCallback);
@@ -677,7 +730,7 @@ public class UiUtils {
 						public void onSuccess(Relationship result) {
 							resultCallback.accept(result);
 							progressCallback.accept(false);
-							if (!result.following) {
+							if(!result.following && !result.requested){
 								E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
 							}
 						}
@@ -844,12 +897,42 @@ public class UiUtils {
 
 		ColorPalette palette = ColorPalette.palettes.get(GlobalUserPreferences.color);
 		if (palette != null) palette.apply(context);
+
+		Resources res = context.getResources();
+		MAX_WIDTH = (int) res.getDimension(R.dimen.layout_max_width);
+		SCROLL_TO_TOP_DELTA = (int) res.getDimension(R.dimen.scroll_to_top_delta);
 	}
 
 	public static boolean isDarkTheme() {
 		if (theme == GlobalUserPreferences.ThemePreference.AUTO)
 			return (MastodonApp.context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
 		return theme == GlobalUserPreferences.ThemePreference.DARK;
+	}
+
+	public static Optional<Pair<String, Optional<String>>> parseFediverseHandle(String maybeFediHandle) {
+		// https://stackoverflow.com/a/26987741, except i put a + here ... v
+		String domainRegex = "^(((?!-))(xn--|_)?[a-z0-9-]{0,61}[a-z0-9]\\.)+(xn--)?([a-z0-9][a-z0-9\\-]{0,60}|[a-z0-9-]{1,30}\\.[a-z]{2,})$";
+		if (maybeFediHandle.toLowerCase().startsWith("mailto:")) {
+			maybeFediHandle = maybeFediHandle.substring("mailto:".length());
+		}
+		List<String> parts = Arrays.stream(maybeFediHandle.split("@"))
+				.filter(part -> !part.isEmpty())
+				.collect(Collectors.toList());
+		if (parts.size() == 0 || !parts.get(0).matches("^[^/\\s]+$")) {
+			return Optional.empty();
+		} else if (parts.size() == 2) {
+			try {
+				String domain = IDN.toASCII(parts.get(1));
+				if (!domain.matches(domainRegex)) return Optional.empty();
+				return Optional.of(Pair.create(parts.get(0), Optional.of(parts.get(1))));
+			} catch (IllegalArgumentException ignored) {
+				return Optional.empty();
+			}
+		} else if (maybeFediHandle.startsWith("@")) {
+			return Optional.of(Pair.create(parts.get(0), Optional.empty()));
+		} else {
+			return Optional.empty();
+		}
 	}
 
 	// https://mastodon.foo.bar/@User
@@ -868,7 +951,7 @@ public class UiUtils {
 	// https://foo.microblog.pub/o/5b64045effd24f48a27d7059f6cb38f5
 	//
 	// COPIED FROM https://github.com/tuskyapp/Tusky/blob/develop/app/src/main/java/com/keylesspalace/tusky/util/LinkHelper.kt
-	public static boolean looksLikeMastodonUrl(String urlString) {
+	public static boolean looksLikeFediverseUrl(String urlString) {
 		URI uri;
 		try {
 			uri = new URI(urlString);
@@ -897,8 +980,8 @@ public class UiUtils {
 
 	public static String getInstanceName(String accountID) {
 		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
-		return instance != null && !instance.title.isBlank() ? instance.title : session.domain;
+		Optional<Instance> instance = session.getInstance();
+		return instance.isPresent() && !instance.get().title.isBlank() ? instance.get().title : session.domain;
 	}
 
 	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {
@@ -953,6 +1036,8 @@ public class UiUtils {
 	public static void pickInteractAs(Context context, String accountID, Status sourceStatus, Predicate<Status> checkInteracted, InteractionPerformer interactionPerformer, @StringRes int interactAsRes, @StringRes int interactedAsAccountRes, @StringRes int alreadyInteractedRes, @DrawableRes int iconRes) {
 		pickAccount(context, accountID, interactAsRes, iconRes, session -> {
 			lookupStatus(context, sourceStatus, session.getID(), accountID, status -> {
+				if (status == null) return;
+
 				if (checkInteracted.test(status)) {
 					Toast.makeText(context, alreadyInteractedRes, Toast.LENGTH_SHORT).show();
 					return;
@@ -968,18 +1053,33 @@ public class UiUtils {
 		}, null);
 	}
 
-	public static void lookupStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> statusConsumer) {
+	public static void lookupStatus(Context context, Status queryStatus, String targetAccountID, @Nullable String sourceAccountID, Consumer<Status> resultConsumer) {
+		lookup(context, queryStatus, targetAccountID, sourceAccountID, GetSearchResults.Type.STATUSES, resultConsumer, results ->
+			!results.statuses.isEmpty() ? Optional.of(results.statuses.get(0)) : Optional.empty()
+		);
+	}
+
+	public static void lookupAccount(Context context, Account queryAccount, String targetAccountID, @Nullable String sourceAccountID, Consumer<Account> resultConsumer) {
+		lookup(context, queryAccount, targetAccountID, sourceAccountID, GetSearchResults.Type.ACCOUNTS, resultConsumer, results ->
+				!results.accounts.isEmpty() ? Optional.of(results.accounts.get(0)) : Optional.empty()
+		);
+	}
+
+	public static <T extends Searchable> void lookup(Context context, T query, String targetAccountID, @Nullable String sourceAccountID, @Nullable GetSearchResults.Type type, Consumer<T> resultConsumer, Function<SearchResults, Optional<T>> extractResult) {
 		if (sourceAccountID != null && targetAccountID.startsWith(sourceAccountID.substring(0, sourceAccountID.indexOf('_')))) {
-			statusConsumer.accept(queryStatus);
+			resultConsumer.accept(query);
 			return;
 		}
 
-		new GetSearchResults(queryStatus.url, GetSearchResults.Type.STATUSES, true).setCallback(new Callback<>() {
+		new GetSearchResults(query.getQuery(), type, true).setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
-						if (!results.statuses.isEmpty()) statusConsumer.accept(results.statuses.get(0));
-						else
+						Optional<T> result = extractResult.apply(results);
+						if (result.isPresent()) resultConsumer.accept(result.get());
+						else {
 							Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+							resultConsumer.accept(null);
+						}
 					}
 
 					@Override
@@ -992,11 +1092,7 @@ public class UiUtils {
 				.exec(targetAccountID);
 	}
 
-	public static void openURL(Context context, String accountID, String url) {
-		openURL(context, accountID, url, true);
-	}
-
-	private static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
+	public static void transformDialogForLookup(Context context, String accountID, @Nullable String url, ProgressDialog dialog) {
 		if (accountID != null) {
 			dialog.setTitle(context.getString(R.string.sk_loading_resource_on_instance_title, getInstanceName(accountID)));
 		} else {
@@ -1011,33 +1107,112 @@ public class UiUtils {
 		}
 	}
 
+	private static Bundle bundleError(String error) {
+		Bundle args = new Bundle();
+		args.putString("error", error);
+		return args;
+	}
+
+	private static Bundle bundleError(ErrorResponse error) {
+		Bundle args = new Bundle();
+		if (error instanceof MastodonErrorResponse e) {
+			args.putString("error", e.error);
+			args.putInt("httpStatus", e.httpStatus);
+		}
+		return args;
+	}
+
+	public static void openURL(Context context, String accountID, String url) {
+		openURL(context, accountID, url, true);
+	}
+
 	public static void openURL(Context context, String accountID, String url, boolean launchBrowser) {
+		lookupURL(context, accountID, url, launchBrowser, (clazz, args) -> {
+			if (clazz == null) {
+				if (args.containsKey("error")) Toast.makeText(context, args.getString("error"), Toast.LENGTH_SHORT).show();
+				if (launchBrowser) launchWebBrowser(context, url);
+				return;
+			}
+			Nav.go((Activity) context, clazz, args);
+		}).wrapProgress((Activity) context, R.string.loading, true, d ->
+				transformDialogForLookup(context, accountID, url, d));
+	}
+
+	public static boolean acctMatches(String accountID, String acct, String queriedUsername, @Nullable String queriedDomain) {
+		// check if the username matches
+		if (!acct.split("@")[0].equalsIgnoreCase(queriedUsername)) return false;
+
+		boolean resultOnHomeInstance = !acct.contains("@");
+		if (resultOnHomeInstance) {
+			// acct is formatted like 'someone'
+			// only allow home instance result if query didn't specify a domain,
+			// or the specified domain does, in fact, match the account session's domain
+			AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+			return queriedDomain == null || session.domain.equalsIgnoreCase(queriedDomain);
+		} else if (queriedDomain == null) {
+			// accept whatever result we have as there's no queried domain to compare to
+			return true;
+		} else {
+			// acct is formatted like 'someone@somewhere'
+			return acct.split("@")[1].equalsIgnoreCase(queriedDomain);
+		}
+	}
+
+	public static void lookupAccountHandle(Context context, String accountID, String query, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+		parseFediverseHandle(query).ifPresentOrElse(
+				handle -> lookupAccountHandle(context, accountID, handle, go),
+				() -> go.accept(null, null)
+		);
+	}
+	public static MastodonAPIRequest<SearchResults> lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+		String fullHandle = ("@" + queryHandle.first) + (queryHandle.second.map(domain -> "@" + domain).orElse(""));
+		return new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true)
+				.setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(SearchResults results) {
+						Bundle args = new Bundle();
+						args.putString("account", accountID);
+						Optional<Account> account = results.accounts.stream()
+								.filter(a -> acctMatches(accountID, a.acct, queryHandle.first, queryHandle.second.orElse(null)))
+								.findAny();
+						if (account.isPresent()) {
+							args.putParcelable("profileAccount", Parcels.wrap(account.get()));
+							go.accept(ProfileFragment.class, args);
+							return;
+						}
+						go.accept(null, bundleError(context.getString(R.string.sk_resource_not_found)));
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						go.accept(null, bundleError(error));
+					}
+				}).exec(accountID);
+	}
+
+	public static MastodonAPIRequest<?> lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		Uri uri = Uri.parse(url);
 		List<String> path = uri.getPathSegments();
 		if (accountID != null && "https".equals(uri.getScheme())) {
 			if (path.size() == 2 && path.get(0).matches("^@[a-zA-Z0-9_]+$") && path.get(1).matches("^[0-9]+$") && AccountSessionManager.getInstance().getAccount(accountID).domain.equalsIgnoreCase(uri.getAuthority())) {
-				new GetStatusByID(path.get(1))
+				return new GetStatusByID(path.get(1))
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(Status result) {
 								Bundle args = new Bundle();
 								args.putString("account", accountID);
 								args.putParcelable("status", Parcels.wrap(result));
-								Nav.go((Activity) context, ThreadFragment.class, args);
+								go.accept(ThreadFragment.class, args);
 							}
 
 							@Override
 							public void onError(ErrorResponse error) {
-								error.showToast(context);
-								if (launchBrowser) launchWebBrowser(context, url);
+								go.accept(null, bundleError(error));
 							}
 						})
-						.wrapProgress((Activity) context, R.string.loading, true,
-								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
-				return;
-			} else if (looksLikeMastodonUrl(url)) {
-				new GetSearchResults(url, null, true)
+			} else if (looksLikeFediverseUrl(url)) {
+				return new GetSearchResults(url, null, true)
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(SearchResults results) {
@@ -1045,30 +1220,31 @@ public class UiUtils {
 								args.putString("account", accountID);
 								if (!results.statuses.isEmpty()) {
 									args.putParcelable("status", Parcels.wrap(results.statuses.get(0)));
-									Nav.go((Activity) context, ThreadFragment.class, args);
-								} else if (!results.accounts.isEmpty()) {
-									args.putParcelable("profileAccount", Parcels.wrap(results.accounts.get(0)));
-									Nav.go((Activity) context, ProfileFragment.class, args);
-								} else {
-									if (launchBrowser) launchWebBrowser(context, url);
-									else
-										Toast.makeText(context, R.string.sk_resource_not_found, Toast.LENGTH_SHORT).show();
+									go.accept(ThreadFragment.class, args);
+									return;
 								}
+								Optional<Account> account = results.accounts.stream()
+										.filter(a -> uri.equals(Uri.parse(a.url))).findAny();
+								if (account.isPresent()) {
+									args.putParcelable("profileAccount", Parcels.wrap(account.get()));
+									go.accept(ProfileFragment.class, args);
+									return;
+								}
+								if (launchBrowser) launchWebBrowser(context, url);
+								go.accept(null, bundleError(context.getString(R.string.sk_resource_not_found)));
 							}
 
 							@Override
 							public void onError(ErrorResponse error) {
-								error.showToast(context);
-								if (launchBrowser) launchWebBrowser(context, url);
+								go.accept(null, bundleError(error));
 							}
 						})
-						.wrapProgress((Activity) context, R.string.loading, true,
-								d -> transformDialogForLookup(context, accountID, url, d))
 						.exec(accountID);
-				return;
 			}
 		}
-		launchWebBrowser(context, url);
+		if (launchBrowser) launchWebBrowser(context, url);
+		go.accept(null, null);
+		return null;
 	}
 
 	public static void copyText(View v, String text) {
@@ -1092,6 +1268,10 @@ public class UiUtils {
 
 	public static boolean isMIUI() {
 		return !TextUtils.isEmpty(getSystemProperty("ro.miui.ui.version.code"));
+	}
+
+	public static boolean isEMUI() {
+		return !TextUtils.isEmpty(getSystemProperty("ro.build.version.emui"));
 	}
 
 	public static int alphaBlendColors(int color1, int color2, float alpha) {
@@ -1175,5 +1355,102 @@ public class UiUtils {
 
 		// fucking finally
 		return container;
+	}
+
+	/**
+	 * Check to see if Android platform photopicker is available on the device\
+	 *
+	 * @return whether the device supports photopicker intents.
+	 */
+	@SuppressLint("NewApi")
+	public static boolean isPhotoPickerAvailable(){
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU){
+			return true;
+		}else if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.R){
+			return SdkExtensions.getExtensionVersion(Build.VERSION_CODES.R)>=2;
+		}else
+			return false;
+	}
+
+	@SuppressLint("InlinedApi")
+	public static Intent getMediaPickerIntent(String[] mimeTypes, int maxCount){
+		Intent intent;
+		if(isPhotoPickerAvailable()){
+			intent=new Intent(MediaStore.ACTION_PICK_IMAGES);
+			if(maxCount>1)
+				intent.putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, maxCount);
+		}else{
+			intent=new Intent(Intent.ACTION_GET_CONTENT);
+			intent.addCategory(Intent.CATEGORY_OPENABLE);
+		}
+		if(mimeTypes.length>1){
+			intent.setType("*/*");
+			intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes);
+		}else if(mimeTypes.length==1){
+			intent.setType(mimeTypes[0]);
+		}else{
+			intent.setType("*/*");
+		}
+		if(maxCount>1)
+			intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+		return intent;
+	}
+
+	public static void populateAccountsMenu(String excludeAccountID, Menu menu, Consumer<AccountSession> onClick) {
+		List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
+		sessions.stream().filter(s -> !s.getID().equals(excludeAccountID)).forEach(s -> {
+			String username = "@"+s.self.username+"@"+s.domain;
+			menu.add(username).setOnMenuItemClickListener((c) -> {
+				onClick.accept(s);
+				return true;
+			});
+		});
+	}
+
+	public static void showFragmentForNotification(Context context, Notification n, String accountID, Bundle extras) {
+		if (extras == null) extras = new Bundle();
+		extras.putString("account", accountID);
+		if (n.status!=null) {
+			Status status=n.status;
+			extras.putParcelable("status", Parcels.wrap(status.clone()));
+			Nav.go((Activity) context, ThreadFragment.class, extras);
+		} else if (n.report != null) {
+			String domain = AccountSessionManager.getInstance().getAccount(accountID).domain;
+			UiUtils.launchWebBrowser(context, "https://"+domain+"/admin/reports/"+n.report.id);
+		} else if (n.account != null) {
+			extras.putString("account", accountID);
+			extras.putParcelable("profileAccount", Parcels.wrap(n.account));
+			Nav.go((Activity) context, ProfileFragment.class, extras);
+		}
+	}
+
+	/**
+	 * Scale the input value according to the device's scaled display density
+	 * @param sp Input value in scale-independent pixels (sp)
+	 * @return Scaled value in physical pixels (px)
+	 */
+	public static int sp(Context context, float sp){
+		// TODO: replace with V.sp in next AppKit version
+		return Math.round(sp*context.getApplicationContext().getResources().getDisplayMetrics().scaledDensity);
+	}
+
+	/**
+	 * Wraps a View.OnClickListener to filter multiple clicks in succession.
+	 * Useful for buttons that perform some action that changes their state asynchronously.
+	 * @param l
+	 * @return
+	 */
+	public static View.OnClickListener rateLimitedClickListener(View.OnClickListener l){
+		return new View.OnClickListener(){
+			private long lastClickTime;
+
+			@Override
+			public void onClick(View v){
+				if(SystemClock.uptimeMillis()-lastClickTime>500L){
+					lastClickTime=SystemClock.uptimeMillis();
+					l.onClick(v);
+				}
+			}
+		};
 	}
 }

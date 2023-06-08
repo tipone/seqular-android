@@ -6,6 +6,8 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import me.grishka.appkit.utils.V;
+
 /**
  * A LinearLayout for TextViews. First child TextView will get truncated if it doesn't fit, remaining will always wrap content.
  */
@@ -36,7 +38,8 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 			}
 			View first=getChildAt(0);
 			if(first instanceof TextView){
-				((TextView) first).setMaxWidth(remainingWidth);
+				// guaranteeing at least 64dp of width for the display name
+				((TextView) first).setMaxWidth(Math.max(remainingWidth, V.dp(64)));
 			}
 		}else{
 			View first=getChildAt(0);

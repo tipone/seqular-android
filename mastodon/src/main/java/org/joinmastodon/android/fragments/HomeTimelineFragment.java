@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -8,8 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.E;
-import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -32,10 +31,15 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.V;
 
-public class HomeTimelineFragment extends FabStatusListFragment {
+public class HomeTimelineFragment extends StatusListFragment {
 	private HomeTabFragment parent;
 	private String maxID;
 	private String lastSavedMarkerID;
+
+	@Override
+	protected boolean wantsComposeButton() {
+		return true;
+	}
 
 	@Override
 	public void onAttach(Activity activity){
@@ -145,7 +149,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 							result.get(result.size()-1).hasGapAfter=true;
 							toAdd=result;
 						}
-						StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, Filter.FilterContext.HOME);
+						StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, getFilterContext());
 						toAdd=toAdd.stream().filter(filterPredicate).collect(Collectors.toList());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
@@ -161,6 +165,10 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 					}
 				})
 				.exec(accountID);
+
+		if (parent.getParentFragment() instanceof HomeFragment homeFragment) {
+			homeFragment.updateNotificationBadge();
+		}
 	}
 
 	@Override
@@ -220,7 +228,7 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 							List<StatusDisplayItem> targetList=displayItems.subList(gapPos, gapPos+1);
 							targetList.clear();
 							List<Status> insertedPosts=data.subList(gapPostIndex+1, gapPostIndex+1);
-							StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, Filter.FilterContext.HOME);
+							StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, getFilterContext());
 							for(Status s:result){
 								if(idsBelowGap.contains(s.id))
 									break;
@@ -272,5 +280,15 @@ public class HomeTimelineFragment extends FabStatusListFragment {
 	@Override
 	protected boolean shouldRemoveAccountPostsWhenUnfollowing(){
 		return true;
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.HOME;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/").build();
 	}
 }

@@ -16,6 +16,8 @@ import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.api.gson.IsoInstantTypeAdapter;
 import org.joinmastodon.android.api.gson.IsoLocalDateTypeAdapter;
 import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,6 +29,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -40,14 +43,19 @@ import okhttp3.ResponseBody;
 
 public class MastodonAPIController{
 	private static final String TAG="MastodonAPIController";
-	public static final Gson gson=new GsonBuilder()
+	public static final Gson gsonWithoutDeserializer = new GsonBuilder()
 			.disableHtmlEscaping()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.registerTypeAdapter(Instant.class, new IsoInstantTypeAdapter())
 			.registerTypeAdapter(LocalDate.class, new IsoLocalDateTypeAdapter())
 			.create();
+	public static final Gson gson = gsonWithoutDeserializer.newBuilder()
+			.registerTypeAdapter(Status.class, new Status.StatusDeserializer())
+			.create();
 	private static WorkerThread thread=new WorkerThread("MastodonAPIController");
-	private static OkHttpClient httpClient=new OkHttpClient.Builder().build();
+	private static OkHttpClient httpClient=new OkHttpClient.Builder()
+			.readTimeout(5, TimeUnit.MINUTES)
+			.build();
 
 	private AccountSession session;
 	private static List<String> badDomains = new ArrayList<>();
@@ -56,7 +64,7 @@ public class MastodonAPIController{
 		thread.start();
 		try {
 			final BufferedReader reader = new BufferedReader(new InputStreamReader(
-					MastodonApp.context.getAssets().open("blocks.tsv")
+					MastodonApp.context.getAssets().open("blocks.txt")
 			));
 			String line;
 			while ((line = reader.readLine()) != null) {
@@ -87,7 +95,7 @@ public class MastodonAPIController{
 				Request.Builder builder=new Request.Builder()
 						.url(req.getURL().toString())
 						.method(req.getMethod(), req.getRequestBody())
-						.header("User-Agent", "MastodonAndroid/"+BuildConfig.VERSION_NAME);
+						.header("User-Agent", "MegalodonAndroid/"+BuildConfig.VERSION_NAME);
 
 				String token=null;
 				if(session!=null)
@@ -154,6 +162,11 @@ public class MastodonAPIController{
 											respObj=gson.fromJson(reader, req.respClass);
 									}
 								}catch(JsonIOException|JsonSyntaxException x){
+									if (req.context != null && response.body().contentType().subtype().equals("html")) {
+										UiUtils.launchWebBrowser(req.context, response.request().url().toString());
+										req.cancel();
+										return;
+									}
 									if(BuildConfig.DEBUG)
 										Log.w(TAG, "["+(session==null ? "no-auth" : session.getID())+"] "+response+" error parsing or reading body", x);
 									req.onError(x.getLocalizedMessage(), response.code(), x);

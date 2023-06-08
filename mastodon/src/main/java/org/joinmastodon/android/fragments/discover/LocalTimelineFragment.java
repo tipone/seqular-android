@@ -1,11 +1,11 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
-import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
-import org.joinmastodon.android.fragments.FabStatusListFragment;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
@@ -17,9 +17,14 @@ import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
-public class LocalTimelineFragment extends FabStatusListFragment {
+public class LocalTimelineFragment extends StatusListFragment {
 	private DiscoverInfoBannerHelper bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.LOCAL_TIMELINE);
 	private String maxID;
+
+	@Override
+	protected boolean wantsComposeButton() {
+		return true;
+	}
 
 	@Override
 	protected void doLoadData(int offset, int count){
@@ -30,7 +35,8 @@ public class LocalTimelineFragment extends FabStatusListFragment {
 						if(!result.isEmpty())
 							maxID=result.get(result.size()-1).id;
 						if (getActivity() == null) return;
-						onDataLoaded(result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList()), !result.isEmpty());
+						result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
+						onDataLoaded(result, !result.isEmpty());
 					}
 				})
 				.exec(accountID);
@@ -40,5 +46,15 @@ public class LocalTimelineFragment extends FabStatusListFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		bannerHelper.maybeAddBanner(contentWrap);
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma() ? "/main/public" : "/public/local").build();
 	}
 }

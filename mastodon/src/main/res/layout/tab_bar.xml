@@ -51,7 +51,6 @@
 			android:scaleType="center"
 			android:contentDescription="@string/notifications"
 			android:background="?android:selectableItemBackgroundBorderless"
-			android:tint="?android:colorPrimary"
 			android:src="@drawable/ic_fluent_alert_28_selector"/>
 
 		<Space

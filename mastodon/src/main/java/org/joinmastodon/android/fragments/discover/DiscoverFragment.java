@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
@@ -19,12 +20,14 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,7 +39,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.V;
 
-public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, IsOnTop {
+public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, IsOnTop, ProvidesAssistContent {
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -49,7 +52,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	private ProgressBar searchProgress;
 
 	private DiscoverPostsFragment postsFragment;
-	private TrendingHashtagsFragment hashtagsFragment;
+	private DiscoverHashtagsFragment hashtagsFragment;
 	private DiscoverNewsFragment newsFragment;
 	private DiscoverAccountsFragment accountsFragment;
 	private SearchFragment searchFragment;
@@ -117,7 +120,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			postsFragment=new DiscoverPostsFragment();
 			postsFragment.setArguments(args);
 
-			hashtagsFragment=new TrendingHashtagsFragment();
+			hashtagsFragment=new DiscoverHashtagsFragment();
 			hashtagsFragment.setArguments(args);
 
 			newsFragment=new DiscoverNewsFragment();
@@ -238,7 +241,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		else scrollToTop();
 	}
 
-	private void selectSearch() {
+	public void selectSearch() {
 		searchEdit.requestFocus();
 		onSearchEditFocusChanged(searchEdit, true);
 		getActivity().getSystemService(InputMethodManager.class).showSoftInput(searchEdit, 0);
@@ -272,6 +275,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		searchBack.setEnabled(false);
 		searchBack.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 		getActivity().getSystemService(InputMethodManager.class).hideSoftInputFromWindow(searchEdit.getWindowToken(), 0);
+		if (getArguments().getBoolean("disableDiscover"))
+			((HomeFragment) getParentFragment()).onBackPressed();
 	}
 
 	@Override
@@ -316,6 +321,13 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		V.setVisibilityAnimated(searchProgress, visible ? View.VISIBLE : View.INVISIBLE);
 		if(searchEdit.length()>0)
 			V.setVisibilityAnimated(searchClear, visible ? View.INVISIBLE : View.VISIBLE);
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(searchActive
+				? searchFragment
+				: getFragmentForPage(pager.getCurrentItem()), assistContent);
 	}
 
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{

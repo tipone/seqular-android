@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.HapticFeedbackConstants;
 import android.view.Menu;
@@ -8,7 +9,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.Toast;
 
 import org.joinmastodon.android.E;
@@ -17,12 +17,15 @@ import org.joinmastodon.android.api.requests.tags.GetHashtag;
 import org.joinmastodon.android.api.requests.tags.SetHashtagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
 import org.joinmastodon.android.events.HashtagUpdatedEvent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -33,11 +36,11 @@ import me.grishka.appkit.utils.V;
 public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	private String hashtag;
 	private boolean following;
-	private ImageButton fab;
 	private MenuItem followButton;
 
-	public HashtagTimelineFragment(){
-		setListLayoutId(R.layout.recycler_fragment_with_fab);
+	@Override
+	protected boolean wantsComposeButton() {
+		return true;
 	}
 
 	@Override
@@ -120,6 +123,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 					@Override
 					public void onSuccess(List<Status> result){
 						if (getActivity() == null) return;
+						result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})
@@ -134,14 +138,12 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState){
-		super.onViewCreated(view, savedInstanceState);
-		fab=view.findViewById(R.id.fab);
-		fab.setOnClickListener(this::onFabClick);
-		fab.setOnLongClickListener(v -> UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtag+' '));
+	public boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtag+' ');
 	}
 
-	private void onFabClick(View v){
+	@Override
+	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putString("prefilledText", '#'+hashtag+' ');
@@ -151,5 +153,15 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	@Override
 	protected void onSetFabBottomInset(int inset){
 		((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(24)+inset;
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path((isInstanceAkkoma() ? "/tag/" : "/tags") + hashtag).build();
 	}
 }

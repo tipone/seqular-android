@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="62dp"
+	android:layout_height="wrap_content"
 	android:paddingLeft="16dp"
 	android:paddingRight="16dp"
 	android:paddingTop="8dp"
@@ -11,8 +11,8 @@
 
 	<ImageView
 		android:id="@+id/avatar"
-		android:layout_width="46dp"
-		android:layout_height="46dp"
+		android:layout_width="46sp"
+		android:layout_height="46sp"
 		android:layout_marginEnd="10dp"
 		android:importantForAccessibility="no"
 		tools:src="#0f0"/>
@@ -29,9 +29,10 @@
 	<TextView
 		android:id="@+id/name"
 		android:layout_width="match_parent"
-		android:layout_height="24dp"
+		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/avatar"
 		android:layout_toStartOf="@id/button"
+		android:layout_above="@+id/username"
 		android:singleLine="true"
 		android:ellipsize="end"
 		android:gravity="center_vertical"
@@ -39,16 +40,16 @@
 		tools:text="User"/>
 
 	<TextView
-		android:id="@+id/username"
+		android:id="@id/username"
 		android:layout_width="match_parent"
-		android:layout_height="20dp"
-		android:layout_below="@id/name"
+		android:layout_height="wrap_content"
 		android:layout_toEndOf="@id/avatar"
 		android:layout_toStartOf="@id/button"
+		android:layout_alignBottom="@id/avatar"
 		android:singleLine="true"
 		android:ellipsize="end"
-		android:gravity="center_vertical"
 		android:textAppearance="@style/m3_title_small"
+		android:paddingBottom="3sp"
 		tools:text="\@user@server"/>
 
 	<View

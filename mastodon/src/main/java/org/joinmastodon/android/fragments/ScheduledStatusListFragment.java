@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageButton;
@@ -28,11 +29,11 @@ import me.grishka.appkit.api.SimpleCallback;
 
 public class ScheduledStatusListFragment extends BaseStatusListFragment<ScheduledStatus> {
 	private String nextMaxID;
-	private ImageButton fab;
 	private static final int SCHEDULED_STATUS_LIST_OPENED = 161;
 
-	public ScheduledStatusListFragment() {
-		setListLayoutId(R.layout.recycler_fragment_with_fab);
+	@Override
+	protected boolean wantsComposeButton() {
+		return true;
 	}
 
 	@Override
@@ -56,20 +57,30 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		fab=view.findViewById(R.id.fab);
+	public void onFabClick(View v) {
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putSerializable("scheduledAt", CreateStatus.getDraftInstant());
-		fab.setOnClickListener(v -> Nav.go(getActivity(), ComposeFragment.class, args));
-		fab.setOnLongClickListener(v -> UiUtils.pickAccountForCompose(getActivity(), accountID, args));
+		Nav.go(getActivity(), ComposeFragment.class, args);
+	}
+
+	@Override
+	public boolean onFabLongClick(View v) {
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putSerializable("scheduledAt", CreateStatus.getDraftInstant());
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, args);
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
 		if (getArguments().getBoolean("hide_fab", false)) fab.setVisibility(View.GONE);
 	}
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(ScheduledStatus s) {
-		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, false, false, null, true);
+		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, false, false, null, true, null);
 	}
 
 	@Override
@@ -86,6 +97,8 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 		args.putString("sourceText", status.text);
 		args.putString("sourceSpoiler", status.spoilerText);
 		args.putBoolean("redraftStatus", true);
+		args.putString("sourceContentType", scheduledStatus.params.contentType != null ?
+				scheduledStatus.params.contentType.name() : null);
 		setResult(true, null);
 
 		// closing this scheduled status list if another status list is opened from compose fragment
@@ -167,6 +180,12 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 				return s;
 			}
 		}
+		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		// TODO: adapt when frontends finally implement a scheduled posts list
 		return null;
 	}
 }

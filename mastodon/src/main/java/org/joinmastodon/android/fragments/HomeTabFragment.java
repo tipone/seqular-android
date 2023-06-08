@@ -10,6 +10,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.assist.AssistContent;
 import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
@@ -53,6 +55,7 @@ import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -70,7 +73,7 @@ import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
-public class HomeTabFragment extends MastodonToolbarFragment implements ScrollableToTop, OnBackPressedListener {
+public class HomeTabFragment extends MastodonToolbarFragment implements ScrollableToTop, OnBackPressedListener, HasFab, ProvidesAssistContent {
 	private static final int ANNOUNCEMENTS_RESULT = 654;
 
 	private String accountID;
@@ -98,13 +101,14 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private PopupMenu overflowPopup;
 	private View overflowActionView = null;
 	private boolean announcementsBadged, settingsBadged;
+	private ImageButton fab;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		E.register(this);
 		accountID = getArguments().getString("account");
-		timelineDefinitions = GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.DEFAULT_TIMELINES);
+		timelineDefinitions = GlobalUserPreferences.pinnedTimelines.getOrDefault(accountID, TimelineDefinition.getDefaultTimelines(accountID));
 		assert timelineDefinitions != null;
 		if (timelineDefinitions.size() == 0) timelineDefinitions = List.of(TimelineDefinition.HOME_TIMELINE);
 		count = timelineDefinitions.size();
@@ -122,6 +126,10 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	@Override
 	public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle bundle) {
 		FrameLayout view = new FrameLayout(getContext());
+		inflater.inflate(R.layout.compose_fab, view);
+		fab = view.findViewById(R.id.fab);
+		fab.setOnClickListener(this::onFabClick);
+		fab.setOnLongClickListener(this::onFabLongClick);
 		pager = new ViewPager2(getContext());
 		toolbarFrame = (FrameLayout) LayoutInflater.from(getContext()).inflate(R.layout.home_toolbar, getToolbar(), false);
 
@@ -129,6 +137,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 			Bundle args = new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
+			args.putBoolean("__disable_fab", true);
 			args.putBoolean("onlyPosts", true);
 
 			for (int i = 0; i < timelineDefinitions.size(); i++) {
@@ -280,6 +289,20 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		}).exec(accountID);
 	}
 
+	private void onFabClick(View v){
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) {
+			l.onFabClick(v);
+		}
+	}
+
+	private boolean onFabLongClick(View v) {
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) {
+			return l.onFabLongClick(v);
+		} else {
+			return false;
+		}
+	}
+
 	private void addListsToOverflowMenu() {
 		Context ctx = getContext();
 		listsMenu.clear();
@@ -358,7 +381,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		addListsToOverflowMenu();
 		addHashtagsToOverflowMenu();
 
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P && !UiUtils.isEMUI()) {
 			m.setGroupDividerEnabled(true);
 		}
 	}
@@ -375,7 +398,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	}
 
 	private <T> void updateList(List<T> addItems, Map<Integer, T> items) {
-		if (addItems.size() == 0) return;
+		if (addItems.size() == 0 || getActivity() == null) return;
 		for (int i = 0; i < addItems.size(); i++) items.put(View.generateViewId(), addItems.get(i));
 		updateOverflowMenu();
 	}
@@ -427,9 +450,26 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		updateSwitcherIcon(i);
 	}
 
+	@Override
+	public void showFab() {
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) l.showFab();
+	}
+
+	@Override
+	public void hideFab() {
+		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) l.hideFab();
+	}
+
+	@Override
+	public boolean isScrolling() {
+		return (fragments[pager.getCurrentItem()] instanceof HasFab fabulous)
+				&& fabulous.isScrolling();
+	}
+
 	private void updateSwitcherIcon(int i) {
 		timelineIcon.setImageResource(timelines[i].getIcon().iconRes);
 		timelineTitle.setText(timelines[i].getTitle(getContext()));
+		showFab();
 	}
 
 	@Override
@@ -657,12 +697,22 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		return hashtagsItems.values();
 	}
 
+	public ImageButton getFab() {
+		return fab;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(fragments[pager.getCurrentItem()], assistContent);
+	}
+
 	private class HomePagerAdapter extends RecyclerView.Adapter<SimpleViewHolder> {
 		@NonNull
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 			FrameLayout tabView = tabViews[viewType % getItemCount()];
-			((ViewGroup)tabView.getParent()).removeView(tabView);
+			ViewGroup tabParent = (ViewGroup) tabView.getParent();
+			if (tabParent != null) tabParent.removeView(tabView);
 			tabView.setVisibility(View.VISIBLE);
 			return new SimpleViewHolder(tabView);
 		}

@@ -1,6 +1,8 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.drawable.Animatable;
@@ -23,8 +25,10 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.fragments.ListTimelinesFragment;
+import org.joinmastodon.android.fragments.HasAccountID;
+import org.joinmastodon.android.fragments.ListsFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
+import org.joinmastodon.android.fragments.RecyclerFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Relationship;
@@ -33,6 +37,7 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -43,12 +48,12 @@ import java.util.stream.Collectors;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.APIRequest;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -57,7 +62,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseAccountListFragment.AccountItem>{
+public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccountListFragment.AccountItem> implements ProvidesAssistContent.ProvidesWebUri {
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected String accountID;
 	protected ArrayList<APIRequest<?>> relationshipsRequests=new ArrayList<>();
@@ -129,7 +134,8 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 		super.onViewCreated(view, savedInstanceState);
 //		list.setPadding(0, V.dp(16), 0, V.dp(16));
 		list.setClipToPadding(false);
-		list.addItemDecoration(new DividerItemDecoration(getActivity(), R.attr.colorPollVoted, 1, 72, 16));
+		list.addItemDecoration(new DividerItemDecoration(getActivity(), R.attr.colorPollVoted, 1,
+				Math.round(16f + 56f * getResources().getConfiguration().fontScale), 16));
 		updateToolbar();
 	}
 
@@ -167,6 +173,16 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 			list.setPadding(0, V.dp(16), 0, V.dp(16));
 		}
 		super.onApplyWindowInsets(insets);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
 	}
 
 	protected class AccountsAdapter extends UsableRecyclerView.Adapter<AccountViewHolder> implements ImageLoaderRecyclerAdapter{
@@ -229,16 +245,19 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 			UiUtils.enablePopupMenuIcons(getActivity(), contextMenu);
 		}
 
+		@SuppressLint("SetTextI18n")
 		@Override
 		public void onBind(AccountItem item){
 			name.setText(item.parsedName);
-			username.setText("@"+item.account.acct);
+			username.setText("@"+ (item.account.isRemote
+					? item.account.getFullyQualifiedName()
+					: item.account.acct));
 			bindRelationship();
 		}
 
 		public void bindRelationship(){
 			Relationship rel=relationships.get(item.account.id);
-			if(rel==null || AccountSessionManager.getInstance().isSelf(accountID, item.account)){
+			if(rel==null || item.account.isRemote || AccountSessionManager.getInstance().isSelf(accountID, item.account)){
 				button.setVisibility(View.GONE);
 			}else{
 				button.setVisibility(View.VISIBLE);
@@ -268,7 +287,8 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 		public void onClick(){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-			args.putParcelable("profileAccount", Parcels.wrap(item.account));
+			if (item.account.isRemote) args.putParcelable("remoteAccount", Parcels.wrap(item.account));
+			else args.putParcelable("profileAccount", Parcels.wrap(item.account));
 			Nav.go(getActivity(), ProfileFragment.class, args);
 		}
 
@@ -294,7 +314,6 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 
 			menu.findItem(R.id.block).setTitle(getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
 			menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getShortUsername()));
-			menu.findItem(R.id.manage_user_lists).setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername())).setVisible(relationship.following);
 			menu.findItem(R.id.soft_block).setVisible(relationship.followedBy && !relationship.following);
 			MenuItem hideBoosts=menu.findItem(R.id.hide_boosts);
 			MenuItem manageUserLists=menu.findItem(R.id.manage_user_lists);
@@ -308,7 +327,7 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 				manageUserLists.setVisible(true);
 			}else{
 				hideBoosts.setVisible(false);
-				manageUserLists.setVisible(true);
+				manageUserLists.setVisible(false);
 			}
 			menu.findItem(R.id.block_domain).setVisible(false);
 
@@ -387,7 +406,7 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 				args.putString("account", accountID);
 				args.putString("profileAccount", account.id);
 				args.putString("profileDisplayUsername", account.getDisplayUsername());
-				Nav.go(getActivity(), ListTimelinesFragment.class, args);
+				Nav.go(getActivity(), ListsFragment.class, args);
 			}
 			return true;
 		}
@@ -409,6 +428,11 @@ public abstract class BaseAccountListFragment extends BaseRecyclerFragment<BaseA
 			avaRequest=new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(50), V.dp(50));
 			emojiHelper=new CustomEmojiHelper();
 			emojiHelper.setText(parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis));
+		}
+
+		@Override
+		public boolean equals(@Nullable Object obj) {
+			return obj instanceof AccountItem i && i.account.url.equals(account.url);
 		}
 	}
 }

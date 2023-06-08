@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-	package="org.joinmastodon.android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<uses-permission android:name="android.permission.INTERNET"/>
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
@@ -16,6 +15,9 @@
 		<intent>
 			<action android:name="android.intent.action.PROCESS_TEXT" />
 			<data android:mimeType="text/plain" />
+		</intent>
+		<intent>
+			<action android:name="android.intent.action.TRANSLATE" />
 		</intent>
 	</queries>
 
@@ -36,6 +38,22 @@
 				<category android:name="android.intent.category.LAUNCHER"/>
 			</intent-filter>
 		</activity>
+		<activity
+			android:name=".PanicResponderActivity"
+			android:exported="true"
+			android:launchMode="singleInstance"
+			android:noHistory="true"
+			android:theme="@android:style/Theme.NoDisplay">
+			<intent-filter>
+				<action android:name="info.guardianproject.panic.action.TRIGGER" />
+
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name=".ExitActivity"
+			android:exported="false"
+			android:theme="@android:style/Theme.NoDisplay" />
 		<activity android:name=".OAuthActivity" android:exported="true" android:configChanges="orientation|screenSize" android:launchMode="singleTask">
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW"/>
@@ -44,7 +62,8 @@
 				<data android:scheme="megalodon-android-auth" android:host="callback"/>
 			</intent-filter>
 		</activity>
-		<activity android:name=".ExternalShareActivity" android:exported="true" android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustResize">
+		<activity android:name=".ExternalShareActivity" android:exported="true" android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustResize"
+			android:theme="@style/TransparentDialog">
 			<intent-filter>
 				<action android:name="android.intent.action.SEND"/>
 				<category android:name="android.intent.category.DEFAULT"/>

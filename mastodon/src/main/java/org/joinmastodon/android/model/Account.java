@@ -1,6 +1,9 @@
 package org.joinmastodon.android.model;
 
+import android.net.Uri;
 import android.text.TextUtils;
+
+import androidx.annotation.Nullable;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
@@ -14,7 +17,7 @@ import java.util.List;
  * Represents a user of Mastodon and their associated profile.
  */
 @Parcel
-public class Account extends BaseModel{
+public class Account extends BaseModel implements Searchable{
 	// Base attributes
 
 	/**
@@ -43,7 +46,7 @@ public class Account extends BaseModel{
 	/**
 	 * The profile's display name.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String displayName;
 	/**
 	 * The profile's bio / description.
@@ -62,7 +65,6 @@ public class Account extends BaseModel{
 	/**
 	 * An image banner that is shown above the profile and in profile cards.
 	 */
-	@RequiredField
 	public String header;
 	/**
 	 * A static version of the header. Equal to header if its value is a static image; different if header is an animated GIF.
@@ -86,7 +88,7 @@ public class Account extends BaseModel{
 	/**
 	 * When the account was created.
 	 */
-	@RequiredField
+//	@RequiredField
 	public Instant createdAt;
 	/**
 	 * When the most recent status was posted.
@@ -133,6 +135,21 @@ public class Account extends BaseModel{
 	 */
 	public Instant muteExpiresAt;
 
+	public List<Role> roles;
+
+	public @Nullable String fqn; // akkoma has this, mastodon't
+
+	@Override
+	public String getQuery() {
+		return url;
+	}
+
+	@Parcel
+	public static class Role {
+		public String name;
+		/** #rrggbb */
+		public String color;
+	}
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -149,6 +166,7 @@ public class Account extends BaseModel{
 			moved.postprocess();
 		if(TextUtils.isEmpty(displayName))
 			displayName=username;
+		if(fqn == null) fqn = getFullyQualifiedName();
 	}
 
 	public boolean isLocal(){
@@ -160,12 +178,20 @@ public class Account extends BaseModel{
 		return parts.length==1 ? null : parts[1];
 	}
 
+	public String getDomainFromURL() {
+		return Uri.parse(url).getHost();
+	}
+
 	public String getDisplayUsername(){
 		return '@'+acct;
 	}
 
 	public String getShortUsername() {
 		return '@'+acct.split("@")[0];
+	}
+
+	public String getFullyQualifiedName() {
+		return fqn != null ? fqn : acct.split("@")[0] + "@" + getDomainFromURL();
 	}
 
 	@Override

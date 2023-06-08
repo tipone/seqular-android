@@ -3,6 +3,8 @@ package org.joinmastodon.android.ui.displayitems;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.graphics.Outline;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -30,7 +32,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
-import org.joinmastodon.android.fragments.ListTimelinesFragment;
+import org.joinmastodon.android.fragments.ListsFragment;
 import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
@@ -42,7 +44,6 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -52,7 +53,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
@@ -77,13 +77,13 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	public final Status status;
 	private boolean hasVisibilityToggle;
 	boolean needBottomPadding;
-	private String extraText;
+	private CharSequence extraText;
 	private Notification notification;
 	private ScheduledStatus scheduledStatus;
 	private Announcement announcement;
 	private Consumer<String> consumeReadAnnouncement;
 
-	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, String extraText, Notification notification, ScheduledStatus scheduledStatus){
+	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, CharSequence extraText, Notification notification, ScheduledStatus scheduledStatus){
 		super(parentID, parentFragment);
 		user=scheduledStatus != null ? AccountSessionManager.getInstance().getAccount(accountID).self : user;
 		this.user=user;
@@ -108,6 +108,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			}
 		}
 		this.extraText=extraText;
+		emojiHelper.addText(extraText);
 	}
 
 	public static HeaderStatusDisplayItem fromAnnouncement(Announcement a, Status fakeStatus, Account instanceUser, BaseStatusListFragment parentFragment, String accountID, Consumer<String> consumeReadID) {
@@ -137,7 +138,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, username, timestamp, extraText, separator;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator;
+		private final View collapseBtn;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, collapseBtnIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
@@ -160,6 +162,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			visibility=findViewById(R.id.visibility);
 			deleteNotification=findViewById(R.id.delete_notification);
 			unreadIndicator=findViewById(R.id.unread_indicator);
+			collapseBtn=findViewById(R.id.collapse_btn);
+			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
 			extraText=findViewById(R.id.extra_text);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(roundCornersOutline);
@@ -171,6 +175,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					fragment.removeNotification(item.notification);
 				}
 			}));
+			collapseBtn.setOnClickListener(l -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
@@ -191,7 +196,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 							args.putBoolean("navigateToStatus", true);
 						}
 					}
-					if(!redraft && TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText)){
+					boolean isPixelfed = item.parentFragment.isInstancePixelfed();
+					boolean textEmpty = TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText);
+					if(!redraft && (isPixelfed || textEmpty)){
+						// pixelfed doesn't support /statuses/:id/source :/
+						if (isPixelfed) {
+							args.putString("sourceText", HtmlParser.text(item.status.content));
+							args.putString("sourceSpoiler", item.status.spoilerText);
+						}
 						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 					}else if(item.scheduledStatus!=null){
 						args.putString("sourceText", item.status.text);
@@ -206,6 +218,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 									public void onSuccess(GetStatusSourceText.Response result){
 										args.putString("sourceText", result.text);
 										args.putString("sourceSpoiler", result.spoilerText);
+										if (result.contentType != null) {
+											args.putString("sourceContentType", result.contentType.name());
+										}
 										if (redraft) {
 											UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{
 												Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
@@ -258,7 +273,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 							progress.dismiss();
 					}, rel->{
 						relationship=rel;
-						Toast.makeText(activity, activity.getString(rel.following ? R.string.followed_user : R.string.unfollowed_user, account.getShortUsername()), Toast.LENGTH_SHORT).show();
+						Toast.makeText(activity, activity.getString(rel.following ? R.string.followed_user : rel.requested ? R.string.following_user_requested : R.string.unfollowed_user, account.getDisplayUsername()), Toast.LENGTH_SHORT).show();
 					});
 				}else if(id==R.id.block_domain){
 					UiUtils.confirmToggleBlockDomain(activity, item.parentFragment.getAccountID(), account.getDomain(), relationship!=null && relationship.domainBlocking, ()->{});
@@ -269,7 +284,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					args.putString("account", item.parentFragment.getAccountID());
 					args.putString("profileAccount", account.id);
 					args.putString("profileDisplayUsername", account.getDisplayUsername());
-					Nav.go(item.parentFragment.getActivity(), ListTimelinesFragment.class, args);
+					Nav.go(item.parentFragment.getActivity(), ListsFragment.class, args);
 				}
 				return true;
 			});
@@ -300,7 +315,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					DateTimeFormatter formatter = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM).withLocale(Locale.getDefault());
 					timestamp.setText(item.scheduledStatus.scheduledAt.atZone(ZoneId.systemDefault()).format(formatter));
 				}
-			else if ((item.status==null || item.status.editedAt==null) && item.createdAt != null)
+			else if ((!item.inset || item.status==null || item.status.editedAt==null) && item.createdAt != null)
 				timestamp.setText(UiUtils.formatRelativeTimestamp(itemView.getContext(), item.createdAt));
 			else if (item.status != null && item.status.editedAt != null)
 				timestamp.setText(item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt)));
@@ -373,6 +388,17 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 			more.setContentDescription(desc);
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) more.setTooltipText(desc);
+
+			if (item.status == null || !item.status.textExpandable) {
+				collapseBtn.setVisibility(View.GONE);
+			} else {
+				String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
+				collapseBtn.setVisibility(item.status.textExpandable ? View.VISIBLE : View.GONE);
+				collapseBtn.setContentDescription(collapseText);
+				if (GlobalUserPreferences.reduceMotion) collapseBtnIcon.setScaleY(item.status.textExpanded ? -1 : 1);
+				else collapseBtnIcon.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
+			}
 		}
 
 		@Override
@@ -438,12 +464,15 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			if (hasMultipleAccounts && accountsMenu != null) {
 				openWithAccounts.setVisible(true);
 				accountsMenu.clear();
-				populateAccountsMenu(accountsMenu);
+				UiUtils.populateAccountsMenu(item.accountID, accountsMenu, s-> UiUtils.openURL(
+						item.parentFragment.getActivity(), s.getID(), item.status.url, false
+				));
 			} else if (openWithAccounts != null) {
 				openWithAccounts.setVisible(false);
 			}
 
 			Account account=item.user;
+			String username = account.getShortUsername();
 			boolean isOwnPost=AccountSessionManager.getInstance().isSelf(item.parentFragment.getAccountID(), account);
 			boolean isPostScheduled=item.scheduledStatus!=null;
 			menu.findItem(R.id.open_with_account).setVisible(!isPostScheduled && hasMultipleAccounts);
@@ -479,14 +508,15 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				manageUserLists.setVisible(false);
 			}else{
 				mute.setVisible(true);
-				block.setVisible(true);
+				// hiding when following to keep menu item count equal (trading it for user lists)
+				block.setVisible(relationship == null || !relationship.following);
 				report.setVisible(true);
 				follow.setVisible(relationship==null || relationship.following || (!relationship.blocking && !relationship.blockedBy && !relationship.domainBlocking && !relationship.muting));
-				mute.setTitle(item.parentFragment.getString(relationship!=null && relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+				mute.setTitle(item.parentFragment.getString(relationship!=null && relationship.muting ? R.string.unmute_user : R.string.mute_user, username));
 				mute.setIcon(relationship!=null && relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), mute);
-				block.setTitle(item.parentFragment.getString(relationship!=null && relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
-				report.setTitle(item.parentFragment.getString(R.string.report_user, account.getShortUsername()));
+				block.setTitle(item.parentFragment.getString(relationship!=null && relationship.blocking ? R.string.unblock_user : R.string.block_user, username));
+				report.setTitle(item.parentFragment.getString(R.string.report_user, username));
 				// disabled in megalodon. domain blocks from a post clutters the context menu and looks out of place
 //				if(!account.isLocal()){
 //					blockDomain.setVisible(true);
@@ -495,11 +525,52 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					blockDomain.setVisible(false);
 //				}
 				boolean following = relationship!=null && relationship.following;
-				follow.setTitle(item.parentFragment.getString(following ? R.string.unfollow_user : R.string.follow_user, account.getShortUsername()));
+				follow.setTitle(item.parentFragment.getString(following ? R.string.unfollow_user : R.string.follow_user, username));
 				follow.setIcon(following ? R.drawable.ic_fluent_person_delete_24_regular : R.drawable.ic_fluent_person_add_24_regular);
 				manageUserLists.setVisible(relationship != null && relationship.following);
-				manageUserLists.setTitle(item.parentFragment.getString(R.string.sk_lists_with_user, account.getShortUsername()));
+				manageUserLists.setTitle(item.parentFragment.getString(R.string.sk_lists_with_user, username));
 				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), follow);
+			}
+
+			workaroundChangingMenuItemWidths(menu, username);
+		}
+
+		// ugliest piece of code you'll see in a while: i measure the menu items' text widths to
+		// determine the biggest one, because it's probably not being displayed at first
+		// (before the relationship loaded). i take the largest one's size and add a space to the
+		// last item ("open in browser") until it takes up as much space as the largest item.
+		// goal: no more ugly ellipsis after the relationship loads in when opening the context menu
+		// of a post
+		private void workaroundChangingMenuItemWidths(Menu menu, String username) {
+			String openInBrowserText = item.parentFragment.getString(R.string.open_in_browser);
+			if (relationship == null) {
+				float largestWidth = 0;
+				Paint paint = new Paint();
+				paint.setTypeface(Typeface.create("sans-serif", Typeface.NORMAL));
+				String[] otherStrings = new String[] {
+						item.parentFragment.getString(R.string.unfollow_user, username),
+						item.parentFragment.getString(R.string.unblock_user, username),
+						item.parentFragment.getString(R.string.unmute_user, username),
+						item.parentFragment.getString(R.string.sk_lists_with_user, username),
+				};
+				for (int i = 0; i < menu.size(); i++) {
+					MenuItem item = menu.getItem(i);
+					if (item.getItemId() == R.id.open_in_browser || !item.isVisible()) continue;
+					float width = paint.measureText(menu.getItem(i).getTitle().toString());
+					if (width > largestWidth) largestWidth = width;
+				}
+				for (String str : otherStrings) {
+					float width = paint.measureText(str);
+					if (width > largestWidth) largestWidth = width;
+				}
+				float textWidth = paint.measureText(openInBrowserText);
+				float missingWidth = Math.max(0, largestWidth - textWidth);
+				float singleSpaceWidth = paint.measureText(" ");
+				int howManySpaces = (int) Math.ceil(missingWidth / singleSpaceWidth);
+				String enlargedText = openInBrowserText + " ".repeat(howManySpaces);
+				menu.findItem(R.id.open_in_browser).setTitle(enlargedText);
+			} else {
+				menu.findItem(R.id.open_in_browser).setTitle(openInBrowserText);
 			}
 		}
 	}

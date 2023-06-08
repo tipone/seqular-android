@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -11,10 +12,10 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.SearchResults;
@@ -41,7 +42,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SearchFragment extends BaseStatusListFragment<SearchResult> implements IsOnTop {
+public class SearchFragment extends BaseStatusListFragment<SearchResult> {
 	private String currentQuery;
 	private List<StatusDisplayItem> prevDisplayItems;
 	private EnumSet<SearchResult.Type> currentFilter=EnumSet.allOf(SearchResult.Type.class);
@@ -80,7 +81,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 		return switch(s.type){
 			case ACCOUNT -> Collections.singletonList(new AccountStatusDisplayItem(s.id, this, s.account));
 			case HASHTAG -> Collections.singletonList(new HashtagStatusDisplayItem(s.id, this, s.hashtag));
-			case STATUS -> StatusDisplayItem.buildItems(this, s.status, accountID, s, knownAccounts, false, true, null);
+			case STATUS -> StatusDisplayItem.buildItems(this, s.status, accountID, s, knownAccounts, false, true, null, Filter.FilterContext.PUBLIC);
 		};
 	}
 
@@ -247,7 +248,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 	}
 
 	public void setQuery(String q){
-		if(Objects.equals(q, currentQuery))
+		if(Objects.equals(q, currentQuery) || q.isBlank())
 			return;
 		if(currentRequest!=null){
 			currentRequest.cancel();
@@ -311,8 +312,11 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult> impleme
 	}
 
 	@Override
-	public boolean isOnTop() {
-		return isRecyclerViewOnTop(list);
+	public Uri getWebUri(Uri.Builder base) {
+		Uri.Builder searchUri = base.path("/search");
+		return isInstanceAkkoma()
+				? searchUri.appendQueryParameter("query", currentQuery).build()
+				: searchUri.build();
 	}
 
 	@FunctionalInterface

@@ -1,5 +1,6 @@
 package org.joinmastodon.android.model;
 
+import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.model.Poll.Option;
 import org.parceler.Parcel;
@@ -16,7 +17,6 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
     public Instant scheduledAt;
     @RequiredField
     public Params params;
-    @RequiredField
     public List<Attachment> mediaAttachments;
 
     @Override
@@ -24,8 +24,17 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
         return id;
     }
 
+    @Override
+    public void postprocess() throws ObjectValidationException {
+        super.postprocess();
+        if (mediaAttachments == null) mediaAttachments = List.of();
+        for(Attachment a:mediaAttachments)
+            a.postprocess();
+        if (params != null) params.postprocess();
+    }
+
     @Parcel
-    public static class Params {
+    public static class Params extends BaseModel {
         @RequiredField
         public String text;
         public String spoilerText;
@@ -39,10 +48,17 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
         public String idempotency;
         public String applicationId;
         public List<String> mediaIds;
+        public ContentType contentType;
+
+        @Override
+        public void postprocess() throws ObjectValidationException {
+            super.postprocess();
+            if (poll != null) poll.postprocess();
+        }
     }
 
     @Parcel
-    public static class ScheduledPoll {
+    public static class ScheduledPoll extends BaseModel {
         @RequiredField
         public String expiresIn;
         @RequiredField
@@ -62,19 +78,13 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
     }
 
     public Status toStatus() {
-        Status s = new Status();
-        s.id = id;
+        Status s = Status.ofFake(id, params.text, scheduledAt);
         s.mediaAttachments = mediaAttachments;
-        s.createdAt = scheduledAt;
         s.inReplyToId = params.inReplyToId > 0 ? "" + params.inReplyToId : null;
-        s.content = s.text = params.text;
         s.spoilerText = params.spoilerText;
         s.visibility = params.visibility;
         s.language = params.language;
         s.sensitive = params.sensitive;
-        s.mentions = List.of();
-        s.tags = List.of();
-        s.emojis = List.of();
         if (params.poll != null) s.poll = params.poll.toPoll();
         return s;
     }

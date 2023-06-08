@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.assist.AssistContent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +13,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
+
+import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -24,12 +31,7 @@ import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
-
-import com.squareup.otto.Subscribe;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -37,7 +39,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.V;
 
-public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop{
+public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, ProvidesAssistContent {
 
 	private TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -47,7 +49,6 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private NotificationsListFragment allNotificationsFragment, mentionsFragment;
 
 	private String accountID;
-
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -227,12 +228,17 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 		};
 	}
 
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(getFragmentForPage(pager.getCurrentItem()), assistContent);
+	}
+
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
 		@NonNull
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
 			FrameLayout view=tabViews[viewType];
-			((ViewGroup)view.getParent()).removeView(view);
+			if (view.getParent() != null) ((ViewGroup)view.getParent()).removeView(view);
 			view.setVisibility(View.VISIBLE);
 			view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 			return new SimpleViewHolder(view);

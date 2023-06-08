@@ -1,0 +1,10 @@
+- Nuova home con timeline pubbliche
+- Mostra annunci del server
+- Testo scalato in base alle impostazioni di sistema
+- Filtro migliorato (no, "Nascondi con avvertimento" non funziona ancora) da @thiagojedi
+- Funzionalità di gestione delle liste
+- Rimozione di follower con blocco morbido
+- Respinte le connessioni con fascisti
+- Risolto il non caricamento delle immagini se connessi all'istanza di Akkoma
+- Risoluzioni di bug e miglioramenti UI
+- Aggiunto il registro delle modiifche da @LucasGGamerM

@@ -1,5 +1,7 @@
 package org.joinmastodon.android.api.session;
 
+import android.net.Uri;
+
 import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -7,12 +9,15 @@ import org.joinmastodon.android.api.StatusInteractionController;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.Markers;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.model.Token;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class AccountSession{
 	public Token token;
@@ -31,6 +36,7 @@ public class AccountSession{
 	public String pushAccountID;
 	public Preferences preferences;
 	public AccountActivationInfo activationInfo;
+	public Markers markers;
 	private transient MastodonAPIController apiController;
 	private transient StatusInteractionController statusInteractionController, remoteStatusInteractionController;
 	private transient CacheController cacheController;
@@ -84,5 +90,16 @@ public class AccountSession{
 		if(pushSubscriptionManager==null)
 			pushSubscriptionManager=new PushSubscriptionManager(getID());
 		return pushSubscriptionManager;
+	}
+
+	public Optional<Instance> getInstance() {
+		return Optional.ofNullable(AccountSessionManager.getInstance().getInstanceInfo(domain));
+	}
+
+	public Uri getInstanceUri() {
+		return new Uri.Builder()
+				.scheme("https")
+				.authority(getInstance().map(i -> i.normalizedUri).orElse(domain))
+				.build();
 	}
 }

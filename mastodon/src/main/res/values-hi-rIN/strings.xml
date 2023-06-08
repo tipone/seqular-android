@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="get_started">शुरू करें</string>
 	<string name="log_in">लॉग इन करें</string>
 	<string name="next">आगे</string>
 	<string name="ok">ठीक है</string>
@@ -9,7 +8,6 @@
 	<string name="user_followed_you">आपके साथ जुड़ा</string>
 	<string name="user_sent_follow_request">आपको एक अनुसरण अनुरोध भेजा है</string>
 	<string name="user_favorited">आपकी पोस्ट को पसंद किया</string>
-	<string name="notification_boosted">आपका पोस्ट को पुनः प्रसारित किया</string>
 	<string name="poll_ended">मतदान समाप्त</string>
 	<string name="poll_closed">बंद</string>
 	<string name="confirm_mute_title">म्यूट किए गए खाते</string>
@@ -38,8 +36,12 @@
 	<string name="for_you">आपके लिए</string>
 	<string name="all_notifications">सभी</string>
 	<string name="mentions">उल्लेख</string>
+	<!-- %s is the email address -->
 	<!-- translators: %,d is a valid placeholder, it formats the number with locale-dependent grouping separators -->
 	<!-- %s is version like 1.2.3 -->
 	<!-- %s is version like 1.2.3 -->
 	<!-- %s is file size -->
+	<!-- %s is server domain -->
+	<!-- Shown in a progress dialog when you tap "follow all" -->
+	<!-- %1$s is server domain, %2$s is email domain. You can reorder these placeholders to fit your language better. -->
 </resources>

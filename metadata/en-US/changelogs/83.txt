@@ -1,0 +1,5 @@
+- Like/bookmark/reply directly from notification shade
+- Prettier and more consistent headers for reblogs and replies in timeline
+- Notification dot (which doesn't actually load the notifications just yet)
+- For Akkoma users: Reply visibility, sorted thread replies, quoting, …
+- Crash fixes and minor tweaks

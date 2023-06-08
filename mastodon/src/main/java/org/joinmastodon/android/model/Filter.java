@@ -2,23 +2,24 @@ package org.joinmastodon.android.model;
 
 import android.text.TextUtils;
 
+import androidx.annotation.Nullable;
+
 import com.google.gson.annotations.SerializedName;
 
 import org.joinmastodon.android.api.ObjectValidationException;
-import org.joinmastodon.android.api.RequiredField;
 import org.parceler.Parcel;
 
 import java.time.Instant;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Stream;
 
 @Parcel
 public class Filter extends BaseModel{
-	@RequiredField
 	public String id;
-	@RequiredField
 	public String phrase;
+	public String title;
 	public transient EnumSet<FilterContext> context=EnumSet.noneOf(FilterContext.class);
 	public Instant expiresAt;
 	public boolean irreversible;
@@ -50,6 +51,7 @@ public class Filter extends BaseModel{
 			else
 				pattern=Pattern.compile(Pattern.quote(phrase), Pattern.CASE_INSENSITIVE);
 		}
+		if (title == null) title = phrase;
 		return pattern.matcher(text).find();
 	}
 
@@ -61,6 +63,7 @@ public class Filter extends BaseModel{
 	public String toString(){
 		return "Filter{"+
 				"id='"+id+'\''+
+				", title='"+title+'\''+
 				", phrase='"+phrase+'\''+
 				", context="+context+
 				", expiresAt="+expiresAt+
@@ -77,7 +80,9 @@ public class Filter extends BaseModel{
 		@SerializedName("public")
 		PUBLIC,
 		@SerializedName("thread")
-		THREAD
+		THREAD,
+		@SerializedName("account")
+		ACCOUNT
 	}
 
 	public enum FilterAction{

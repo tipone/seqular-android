@@ -7,13 +7,14 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,11 +44,14 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.PushSubscriptionManager;
 import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
+import org.joinmastodon.android.api.session.AccountActivationInfo;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.fragments.onboarding.InstanceRulesFragment;
+import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.fragments.onboarding.AccountActivationFragment;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -55,17 +59,19 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import androidx.annotation.DrawableRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -74,12 +80,13 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class SettingsFragment extends MastodonToolbarFragment{
+public class SettingsFragment extends MastodonToolbarFragment implements ProvidesAssistContent.ProvidesWebUri {
 	private UsableRecyclerView list;
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
 	private NotificationPolicyItem notificationPolicyItem;
-	private SwitchItem showNewPostsButtonItem, glitchModeItem;
+	private SwitchItem showNewPostsItem, glitchModeItem, compactReblogReplyLineItem;
+	private ButtonItem defaultContentTypeButtonItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
 	private boolean needAppRestart;
@@ -88,7 +95,9 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private ImageView themeTransitionWindowView;
 	private TextItem checkForUpdateItem, clearImageCacheItem;
 	private ImageCache imageCache;
+	private Menu contentTypeMenu;
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -98,7 +107,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		imageCache = ImageCache.getInstance(getActivity());
 		accountID=getArguments().getString("account");
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		Optional<Instance> instance = session.getInstance();
 		String instanceName = UiUtils.getInstanceName(accountID);
 
 		if(GithubSelfUpdater.needSelfUpdating()){
@@ -202,27 +211,56 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.keepOnlyLatestNotification=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
+			GlobalUserPreferences.prefixRepliesWithRe=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_confirm_before_reblog, R.drawable.ic_fluent_checkmark_circle_24_regular, GlobalUserPreferences.confirmBeforeReblog, i->{
+			GlobalUserPreferences.confirmBeforeReblog=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_allow_remote_loading, R.drawable.ic_fluent_communication_24_regular, GlobalUserPreferences.allowRemoteLoading, i->{
+			GlobalUserPreferences.allowRemoteLoading=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SmallTextItem(R.string.sk_settings_allow_remote_loading_explanation));
 
 		items.add(new HeaderItem(R.string.sk_timelines));
 		items.add(new SwitchItem(R.string.sk_settings_show_replies, R.drawable.ic_fluent_chat_multiple_24_regular, GlobalUserPreferences.showReplies, i->{
 			GlobalUserPreferences.showReplies=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		if (isInstanceAkkoma()) {
+			items.add(new ButtonItem(R.string.sk_settings_reply_visibility, R.drawable.ic_fluent_chat_24_regular, b->{
+				PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
+				popupMenu.inflate(R.menu.reply_visibility);
+				popupMenu.setOnMenuItemClickListener(item -> this.onReplyVisibilityChanged(item, b));
+				b.setOnTouchListener(popupMenu.getDragToOpenListener());
+				b.setOnClickListener(v->popupMenu.show());
+				b.setText(GlobalUserPreferences.replyVisibility == null ?
+						R.string.sk_settings_reply_visibility_all :
+						switch(GlobalUserPreferences.replyVisibility){
+							case "following" -> R.string.sk_settings_reply_visibility_following;
+							case "self" -> R.string.sk_settings_reply_visibility_self;
+							default -> R.string.sk_settings_reply_visibility_all;
+						});
+			}));
+		}
 		items.add(new SwitchItem(R.string.sk_settings_show_boosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, GlobalUserPreferences.showBoosts, i->{
 			GlobalUserPreferences.showBoosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
 		items.add(new SwitchItem(R.string.sk_settings_load_new_posts, R.drawable.ic_fluent_arrow_sync_24_regular, GlobalUserPreferences.loadNewPosts, i->{
 			GlobalUserPreferences.loadNewPosts=i.checked;
-			showNewPostsButtonItem.enabled = i.checked;
+			showNewPostsItem.enabled = i.checked;
 			if (!i.checked) {
 				GlobalUserPreferences.showNewPostsButton = false;
-				showNewPostsButtonItem.checked = false;
+				showNewPostsItem.checked = false;
 			}
-			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsButtonItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			if (list.findViewHolderForAdapterPosition(items.indexOf(showNewPostsItem)) instanceof SwitchViewHolder svh) svh.rebind();
 			GlobalUserPreferences.save();
 		}));
-		items.add(showNewPostsButtonItem = new SwitchItem(R.string.sk_settings_see_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
+		items.add(showNewPostsItem = new SwitchItem(R.string.sk_settings_see_new_posts_button, R.drawable.ic_fluent_arrow_up_24_regular, GlobalUserPreferences.showNewPostsButton, i->{
 			GlobalUserPreferences.showNewPostsButton=i.checked;
 			GlobalUserPreferences.save();
 		}));
@@ -234,12 +272,43 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			GlobalUserPreferences.showNoAltIndicator=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_collapse_long_posts, R.drawable.ic_fluent_chevron_down_24_regular, GlobalUserPreferences.collapseLongPosts, i->{
+			GlobalUserPreferences.collapseLongPosts=i.checked;
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_hide_interaction, R.drawable.ic_fluent_eye_24_regular, GlobalUserPreferences.spectatorMode, i->{
+			GlobalUserPreferences.spectatorMode=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_settings_hide_fab, R.drawable.ic_fluent_edit_24_regular, GlobalUserPreferences.autoHideFab, i->{
+			GlobalUserPreferences.autoHideFab=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(new SwitchItem(R.string.sk_reply_line_above_avatar, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.replyLineAboveHeader, i->{
+			GlobalUserPreferences.replyLineAboveHeader=i.checked;
+			GlobalUserPreferences.compactReblogReplyLine=i.checked;
+			compactReblogReplyLineItem.enabled=i.checked;
+			compactReblogReplyLineItem.checked= GlobalUserPreferences.replyLineAboveHeader;
+			if (list.findViewHolderForAdapterPosition(items.indexOf(compactReblogReplyLineItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		items.add(compactReblogReplyLineItem=new SwitchItem(R.string.sk_compact_reblog_reply_line, R.drawable.ic_fluent_re_order_24_regular, GlobalUserPreferences.compactReblogReplyLine, i->{
+			GlobalUserPreferences.compactReblogReplyLine=i.checked;
+			GlobalUserPreferences.save();
+			needAppRestart=true;
+		}));
+		compactReblogReplyLineItem.enabled=GlobalUserPreferences.replyLineAboveHeader;
 		items.add(new SwitchItem(R.string.sk_settings_translate_only_opened, R.drawable.ic_fluent_translate_24_regular, GlobalUserPreferences.translateButtonOpenedOnly, i->{
 			GlobalUserPreferences.translateButtonOpenedOnly=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
 		}));
-		boolean translationAvailable = instance.v2 != null && instance.v2.configuration.translation != null && instance.v2.configuration.translation.enabled;
+		boolean translationAvailable = instance
+				.map(i -> i.v2 != null && i.v2.configuration.translation != null && i.v2.configuration.translation.enabled)
+				.orElse(false);
 		items.add(new SmallTextItem(getString(translationAvailable ?
 				R.string.sk_settings_translation_availability_note_available :
 				R.string.sk_settings_translation_availability_note_unavailable, instanceName)));
@@ -264,23 +333,55 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		items.add(new TextItem(R.string.sk_settings_auth, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/auth/edit"), R.drawable.ic_fluent_open_24_regular));
 
 		items.add(new HeaderItem(instanceName));
-		items.add(new TextItem(R.string.sk_settings_rules, ()->{
-			Bundle args=new Bundle();
-			args.putParcelable("instance", Parcels.wrap(instance));
+		items.add(new TextItem(R.string.sk_settings_rules, instance.<Runnable>map(i -> () -> {
+			Bundle args = new Bundle();
+			args.putParcelable("instance", Parcels.wrap(i));
 			Nav.go(getActivity(), InstanceRulesFragment.class, args);
-		}, R.drawable.ic_fluent_task_list_ltr_24_regular));
+		}).orElse(null), R.drawable.ic_fluent_task_list_ltr_24_regular));
 		items.add(new TextItem(R.string.sk_settings_about_instance	, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/about"), R.drawable.ic_fluent_info_24_regular));
 		items.add(new TextItem(R.string.settings_tos, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.settings_privacy_policy, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms"), R.drawable.ic_fluent_open_24_regular));
 		items.add(new TextItem(R.string.log_out, this::confirmLogOut, R.drawable.ic_fluent_sign_out_24_regular));
-		if (!TextUtils.isEmpty(instance.version)) items.add(new SmallTextItem(getString(R.string.sk_settings_server_version, instance.version)));
+		items.add(new SmallTextItem(instance
+				.map(i -> getString(R.string.sk_settings_server_version, i.version))
+				.orElse(getString(R.string.sk_instance_info_unavailable))));
 
 		items.add(new HeaderItem(R.string.sk_instance_features));
+		items.add(new SwitchItem(R.string.sk_settings_content_types, 0, GlobalUserPreferences.accountsWithContentTypesEnabled.contains(accountID), (i)->{
+			if (i.checked) {
+				GlobalUserPreferences.accountsWithContentTypesEnabled.add(accountID);
+				if (GlobalUserPreferences.accountsDefaultContentTypes.get(accountID) == null) {
+					GlobalUserPreferences.accountsDefaultContentTypes.put(accountID, ContentType.PLAIN);
+				}
+			} else {
+				GlobalUserPreferences.accountsWithContentTypesEnabled.remove(accountID);
+				GlobalUserPreferences.accountsDefaultContentTypes.remove(accountID);
+			}
+			if (list.findViewHolderForAdapterPosition(items.indexOf(defaultContentTypeButtonItem))
+					instanceof ButtonViewHolder bvh) bvh.rebind();
+			GlobalUserPreferences.save();
+		}));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_content_types_explanation)));
+		items.add(defaultContentTypeButtonItem = new ButtonItem(R.string.sk_settings_default_content_type, 0, b->{
+			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
+			popupMenu.inflate(R.menu.compose_content_type);
+			popupMenu.setOnMenuItemClickListener(item -> this.onContentTypeChanged(item, b));
+			b.setOnTouchListener(popupMenu.getDragToOpenListener());
+			b.setOnClickListener(v->popupMenu.show());
+			ContentType contentType = GlobalUserPreferences.accountsDefaultContentTypes.get(accountID);
+			b.setText(getContentTypeString(contentType));
+			contentTypeMenu = popupMenu.getMenu();
+			contentTypeMenu.findItem(ContentType.getContentTypeRes(contentType)).setChecked(true);
+			instance.ifPresent(i -> ContentType.adaptMenuToInstance(contentTypeMenu, i));
+		}));
+		items.add(new SmallTextItem(getString(R.string.sk_settings_default_content_type_explanation)));
 		items.add(new SwitchItem(R.string.sk_settings_support_local_only, 0, GlobalUserPreferences.accountsWithLocalOnlySupport.contains(accountID), i->{
 			glitchModeItem.enabled = i.checked;
 			if (i.checked) {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.add(accountID);
-				if (instance.pleroma == null) GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+				if (!isInstanceAkkoma()) {
+					GlobalUserPreferences.accountsInGlitchMode.add(accountID);
+				}
 			} else {
 				GlobalUserPreferences.accountsWithLocalOnlySupport.remove(accountID);
 				GlobalUserPreferences.accountsInGlitchMode.remove(accountID);
@@ -318,6 +419,19 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			}));
 			checkForUpdateItem = new TextItem(R.string.sk_check_for_update, GithubSelfUpdater.getInstance()::checkForUpdates);
 			items.add(checkForUpdateItem);
+		}
+
+		if(BuildConfig.DEBUG){
+			items.add(new RedHeaderItem("Debug options"));
+			items.add(new TextItem("Test e-mail confirmation flow", ()->{
+				AccountSession sess=AccountSessionManager.getInstance().getAccount(accountID);
+				sess.activated=false;
+				sess.activationInfo=new AccountActivationInfo("test@email", System.currentTimeMillis());
+				Bundle args=new Bundle();
+				args.putString("account", accountID);
+				args.putBoolean("debug", true);
+				Nav.goClearingStack(getActivity(), AccountActivationFragment.class, args);
+			}));
 		}
 
 		items.add(new FooterItem(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE)));
@@ -431,6 +545,53 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		if(UiUtils.isDarkTheme()){
 			restartActivityToApplyNewTheme();
 		}
+	}
+
+	private @StringRes int getContentTypeString(@Nullable ContentType contentType) {
+		if (contentType == null) return R.string.sk_content_type_unspecified;
+		return switch (contentType) {
+			case PLAIN -> R.string.sk_content_type_plain;
+			case HTML -> R.string.sk_content_type_html;
+			case MARKDOWN -> R.string.sk_content_type_markdown;
+			case BBCODE -> R.string.sk_content_type_bbcode;
+			case MISSKEY_MARKDOWN -> R.string.sk_content_type_mfm;
+		};
+	}
+
+	private boolean onContentTypeChanged(MenuItem item, Button btn){
+		int id = item.getItemId();
+		ContentType contentType = switch (id) {
+			case R.id.content_type_plain -> ContentType.PLAIN;
+			case R.id.content_type_html -> ContentType.HTML;
+			case R.id.content_type_markdown -> ContentType.MARKDOWN;
+			case R.id.content_type_bbcode -> ContentType.BBCODE;
+			case R.id.content_type_misskey_markdown -> ContentType.MISSKEY_MARKDOWN;
+			default -> null;
+		};
+		GlobalUserPreferences.accountsDefaultContentTypes.put(accountID, contentType);
+		GlobalUserPreferences.save();
+		btn.setText(getContentTypeString(contentType));
+		item.setChecked(true);
+		return true;
+	}
+
+	private boolean onReplyVisibilityChanged(MenuItem item, Button btn){
+		String pref = null;
+		int id = item.getItemId();
+
+		if (id == R.id.reply_visibility_following) pref = "following";
+		else if (id == R.id.reply_visibility_self) pref = "self";
+
+		GlobalUserPreferences.replyVisibility=pref;
+		GlobalUserPreferences.save();
+		btn.setText(GlobalUserPreferences.replyVisibility == null ?
+				R.string.sk_settings_reply_visibility_all :
+				switch(GlobalUserPreferences.replyVisibility){
+					case "following" -> R.string.sk_settings_reply_visibility_following;
+					case "self" -> R.string.sk_settings_reply_visibility_self;
+					default -> R.string.sk_settings_reply_visibility_all;
+				});
+		return true;
 	}
 
 	private void restartActivityToApplyNewTheme(){
@@ -586,6 +747,16 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		}
 	}
 
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma() ? "/about" : "/settings").build();
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
 	private static abstract class Item{
 		public abstract int getViewType();
 	}
@@ -597,7 +768,7 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.text=getString(text);
 		}
 
-		public HeaderItem(String text) {
+		public HeaderItem(String text){
 			this.text=text;
 		}
 
@@ -669,7 +840,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	}
 
 	private class SmallTextItem extends Item {
-		private String text;
+		private final String text;
+
+		public SmallTextItem(@StringRes int text) {
+			this.text = getString(text);
+		}
 
 		public SmallTextItem(String text) {
 			this.text = text;
@@ -708,6 +883,11 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			this.secondaryText = secondaryText;
 		}
 
+		public TextItem(String text, Runnable onClick){
+			this.text=text;
+			this.onClick=onClick;
+		}
+
 		@Override
 		public int getViewType(){
 			return 4;
@@ -717,6 +897,10 @@ public class SettingsFragment extends MastodonToolbarFragment{
 	private class RedHeaderItem extends HeaderItem{
 
 		public RedHeaderItem(int text){
+			super(text);
+		}
+
+		public RedHeaderItem(String text){
 			super(text);
 		}
 
@@ -901,7 +1085,6 @@ public class SettingsFragment extends MastodonToolbarFragment{
 		private final ImageView icon;
 		private final TextView text;
 
-		@SuppressLint("ClickableViewAccessibility")
 		public ButtonViewHolder(){
 			super(getActivity(), R.layout.item_settings_button, list);
 			text=findViewById(R.id.text);
@@ -909,10 +1092,17 @@ public class SettingsFragment extends MastodonToolbarFragment{
 			button=findViewById(R.id.button);
 		}
 
+		@SuppressLint("ClickableViewAccessibility")
 		@Override
 		public void onBind(ButtonItem item){
 			text.setText(item.text);
-			icon.setImageResource(item.icon);
+			icon.setVisibility(item.icon == 0 ? View.GONE : View.VISIBLE);
+			icon.setImageResource(item.icon == 0 ? 0 : item.icon);
+			// reset listeners before letting the button consumer consume the button
+			// (and potentially set some listeners, but not others)
+			button.setOnTouchListener(null);
+			button.setOnClickListener(null);
+			button.setOnLongClickListener(null);
 			item.buttonConsumer.accept(button);
 		}
 	}

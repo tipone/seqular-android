@@ -1,0 +1,5 @@
+- Polubienia / dodawanie zakładek / odpowiadanie bezpośrednio z powiadomienia
+- Ładniejsze i bardziej spójne nagłówki dla reblogów i odpowiedzi na osi czasu
+- Kropka powiadomień (która w rzeczywistości nie ładuje jeszcze powiadomień)
+- Dla użytkowników Akkoma: widoczność odpowiedzi, posortowane odpowiedzi na wątek, cytowanie, itp.
+- Naprawienie błędów i inne drobne poprawki

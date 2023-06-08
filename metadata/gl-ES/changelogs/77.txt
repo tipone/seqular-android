@@ -1,0 +1,4 @@
+- Manter pulsado o botón de seguir para seguir perfís de outra conta
+- Opción de abrir perfís de outra conta
+- Auto-ocultar o botón de redacción cando deslizas cara abaixo na cronoloxía
+- Arranxado o bloqueo ao abrir os perfís dos administradores do servidor

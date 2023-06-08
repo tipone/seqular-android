@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,19 +11,27 @@ import com.squareup.otto.Subscribe;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
+import org.joinmastodon.android.api.requests.notifications.PleromaMarkNotificationsRead;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.AllNotificationsSeenEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.CacheablePaginatedResponse;
+import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.Markers;
 import org.joinmastodon.android.model.Notification;
-import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
-import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
-import org.joinmastodon.android.ui.displayitems.ImageStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -39,13 +48,17 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.utils.V;
 
 public class NotificationsListFragment extends BaseStatusListFragment<Notification>{
 	private boolean onlyMentions;
 	private boolean onlyPosts;
 	private String maxID;
 	private final DiscoverInfoBannerHelper bannerHelper = new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.POST_NOTIFICATIONS);
+
+	@Override
+	protected boolean wantsComposeButton() {
+		return false;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -78,6 +91,13 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	protected List<StatusDisplayItem> buildDisplayItems(Notification n){
 		Account reportTarget = n.report == null ? null : n.report.targetAccount == null ? null :
 				n.report.targetAccount;
+		Emoji emoji = new Emoji();
+		if(n.emojiUrl!=null){
+			emoji.shortcode=n.emoji.substring(1,n.emoji.length()-1);
+			emoji.url=n.emojiUrl;
+			emoji.staticUrl=n.emojiUrl;
+			emoji.visibleInPicker=false;
+		}
 		String extraText=switch(n.type){
 			case FOLLOW -> getString(R.string.user_followed_you);
 			case FOLLOW_REQUEST -> getString(R.string.user_sent_follow_request);
@@ -88,17 +108,12 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			case UPDATE -> getString(R.string.sk_post_edited);
 			case SIGN_UP -> getString(R.string.sk_signed_up);
 			case REPORT -> getString(R.string.sk_reported);
+			case REACTION, PLEROMA_EMOJI_REACTION ->
+					n.emoji != null ? getString(R.string.sk_reacted_with, n.emoji) : getString(R.string.sk_reacted);
 		};
-		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, extraText, n, null) : null;
+		HeaderStatusDisplayItem titleItem=extraText!=null ? new HeaderStatusDisplayItem(n.id, n.account, n.createdAt, this, accountID, n.status, n.emojiUrl!=null ? HtmlParser.parseCustomEmoji(extraText, Collections.singletonList(emoji)) : extraText, n, null) : null;
 		if(n.status!=null){
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n);
-			if(titleItem!=null){
-				for(StatusDisplayItem item:items){
-					if(item instanceof ImageStatusDisplayItem imgItem){
-						imgItem.horizontalInset=V.dp(32);
-					}
-				}
-			}
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, titleItem!=null, titleItem==null, n, false, Filter.FilterContext.NOTIFICATIONS);
 			if(titleItem!=null)
 				items.add(0, titleItem);
 			return items;
@@ -121,6 +136,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			knownAccounts.put(s.account.id, s.account);
 		if(s.status!=null && !knownAccounts.containsKey(s.status.account.id))
 			knownAccounts.put(s.status.account.id, s.status.account);
+		if(s.status!=null && s.status.reblog!=null && !knownAccounts.containsKey(s.status.reblog.account.id))
+			knownAccounts.put(s.status.reblog.account.id, s.status.reblog.account);
 	}
 
 	@Override
@@ -129,7 +146,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 				.getAccount(accountID).getCacheController()
 				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, onlyPosts, refreshing, new SimpleCallback<>(this){
 					@Override
-					public void onSuccess(PaginatedResponse<List<Notification>> result){
+					public void onSuccess(CacheablePaginatedResponse<List<Notification>> result){
 						if (getActivity() == null) return;
 						if(refreshing)
 							relationships.clear();
@@ -141,8 +158,17 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						loadRelationships(needRelationships);
 						maxID=result.maxID;
 
-						if(offset==0 && !result.items.isEmpty()){
+						Markers markers = AccountSessionManager.getInstance().getAccount(accountID).markers;
+						if(offset==0 && !result.items.isEmpty() && !result.isFromCache() && markers != null && markers.notifications != null){
+							E.post(new AllNotificationsSeenEvent());
 							new SaveMarkers(null, result.items.get(0).id).exec(accountID);
+							AccountSessionManager.getInstance().getAccount(accountID).markers
+									.notifications.lastReadId = result.items.get(0).id;
+							AccountSessionManager.getInstance().writeAccountsFile();
+
+							if (isInstanceAkkoma()) {
+								new PleromaMarkNotificationsRead(result.items.get(0).id).exec(accountID);
+							}
 						}
 					}
 				});
@@ -169,23 +195,10 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	public void onItemClick(String id){
 		Notification n=getNotificationByID(id);
-		if(n.status!=null){
-			Status status=n.status;
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("status", Parcels.wrap(status));
-			if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId))
-				args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status.inReplyToAccountId)));
-			Nav.go(getActivity(), ThreadFragment.class, args);
-		}else if(n.report != null){
-			String domain = AccountSessionManager.getInstance().getAccount(accountID).domain;
-			UiUtils.launchWebBrowser(getActivity(), "https://"+domain+"/admin/reports/"+n.report.id);
-		}else{
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("profileAccount", Parcels.wrap(n.account));
-			Nav.go(getActivity(), ProfileFragment.class, args);
-		}
+		Bundle args = new Bundle();
+		if(n.status != null && n.status.inReplyToAccountId != null && knownAccounts.containsKey(n.status.inReplyToAccountId))
+			args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(n.status.inReplyToAccountId)));
+		UiUtils.showFragmentForNotification(getContext(), n, accountID, args);
 	}
 
 	@Override
@@ -213,6 +226,32 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			Status contentStatus=ntf.status.getContentStatus();
 			if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
 				updatePoll(ntf.id, ntf.status, ev.poll);
+			}
+		}
+	}
+
+	// copied from StatusListFragment.EventListener (just like the method above)
+	// (which assumes this.data to be a list of statuses...)
+	@Subscribe
+	public void onStatusCountersUpdated(StatusCountersUpdatedEvent ev){
+		for(Notification n:data){
+			if (n.status == null) continue;
+			if(n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
+				for(int i=0;i<list.getChildCount();i++){
+					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+					if(holder instanceof FooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
+						footer.rebind();
+					}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
+						footer.rebind();
+					}
+				}
+			}
+		}
+		for(Notification n:preloadedData){
+			if (n.status == null) continue;
+			if(n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
 			}
 		}
 	}
@@ -248,5 +287,12 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}
 		displayItems.subList(index, lastIndex).clear();
 		adapter.notifyItemRangeRemoved(index, lastIndex-index);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma()
+				? "/users/" + getSession().self.username + "/interactions"
+				: "/notifications").build();
 	}
 }

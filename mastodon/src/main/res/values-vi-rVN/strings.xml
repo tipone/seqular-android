@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="get_started">Bắt đầu</string>
+	<string name="get_started">Tạo tài khoản</string>
+	<string name="already_have_account">Tôi đã có tài khoản</string>
 	<string name="log_in">Đăng nhập</string>
 	<string name="next">Kế tiếp</string>
 	<string name="loading_instance">Đang lấy thông tin…</string>
@@ -10,12 +11,12 @@
 	<string name="preparing_auth">Chuẩn bị xác thực…</string>
 	<string name="finishing_auth">Hoàn tất xác thực…</string>
 	<string name="user_boosted">%s đăng lại</string>
-	<string name="in_reply_to">Trả lời đến %s</string>
+	<string name="in_reply_to">Trả lời %s</string>
 	<string name="notifications">Thông báo</string>
 	<string name="user_followed_you">đã theo dõi bạn</string>
 	<string name="user_sent_follow_request">đã yêu cầu theo dõi bạn</string>
 	<string name="user_favorited">thích tút của bạn</string>
-	<string name="notification_boosted">đăng lại tút của bạn</string>
+	<string name="notification_boosted">vừa đăng lại tút của bạn</string>
 	<string name="poll_ended">cuộc bình chọn kết thúc</string>
 	<string name="time_seconds">%ds</string>
 	<string name="time_minutes">%dm</string>
@@ -37,7 +38,7 @@
 		<item quantity="other">tút</item>
 	</plurals>
 	<string name="posts">Tút</string>
-	<string name="posts_and_replies">Tút kèm trả lời</string>
+	<string name="posts_and_replies">Lượt trả lời</string>
 	<string name="media">Media</string>
 	<string name="profile_about">Giới thiệu</string>
 	<string name="button_follow">Theo dõi</string>
@@ -126,7 +127,7 @@
 		<item quantity="other">%d người đang thảo luận</item>
 	</plurals>
 	<plurals name="discussed_x_times">
-		<item quantity="other">Đề cập %d lần</item>
+		<item quantity="other">Chia sẻ %d lượt</item>
 	</plurals>
 	<string name="report_title">Báo cáo %s</string>
 	<string name="report_choose_reason">Có vấn đề gì với tút này?</string>
@@ -136,11 +137,11 @@
 	<string name="report_reason_personal_subtitle">Đó không phải là thứ gì mà bạn muốn thấy</string>
 	<string name="report_reason_spam">Đây là spam</string>
 	<string name="report_reason_spam_subtitle">Liên kết độc hại, tạo tương tác giả hoặc trả lời lặp đi lặp lại</string>
-	<string name="report_reason_violation">Vi phạm quy tắc máy chủ</string>
-	<string name="report_reason_violation_subtitle">Bạn nhận thấy nó vi phạm quy tắc máy chủ</string>
+	<string name="report_reason_violation">Vi phạm nội quy máy chủ</string>
+	<string name="report_reason_violation_subtitle">Bạn nhận thấy nó vi phạm nội quy máy chủ</string>
 	<string name="report_reason_other">Một lý do khác</string>
 	<string name="report_reason_other_subtitle">Vấn đề không nằm trong những mục trên</string>
-	<string name="report_choose_rule">Vi phạm quy tắc nào?</string>
+	<string name="report_choose_rule">Vi phạm nội quy nào?</string>
 	<string name="report_choose_rule_subtitle">Chọn tất cả những gì phù hợp</string>
 	<string name="report_choose_posts">Bạn muốn gửi tút nào kèm báo cáo này?</string>
 	<string name="report_choose_posts_subtitle">Chọn tất cả những gì phù hợp</string>
@@ -149,8 +150,8 @@
 	<string name="sending_report">Đang gửi báo cáo…</string>
 	<string name="report_sent_title">Cảm ơn đã báo cáo, chúng tôi sẽ xem xét kỹ.</string>
 	<string name="report_sent_subtitle">Trong lúc chờ chúng tôi xem xét, bạn có thể áp dụng hành động với @%s.</string>
-	<string name="unfollow_user">Ngưng theo dõi %s</string>
-	<string name="unfollow">Ngưng theo dõi</string>
+	<string name="unfollow_user">Bỏ theo dõi %s</string>
+	<string name="unfollow">Bỏ theo dõi</string>
 	<string name="mute_user_explain">Bạn sẽ không thấy tút hoặc lượt đăng lại của họ trên bảng tin. Họ không biết rằng bạn ẩn họ.</string>
 	<string name="block_user_explain">Họ sẽ không thể theo dõi hoặc đọc tút của bạn, nhưng họ có thể hiểu bạn đã chặn họ.</string>
 	<string name="report_personal_title">Không muốn xem thứ này?</string>
@@ -158,15 +159,16 @@
 	<string name="back">Quay lại</string>
 	<string name="instance_catalog_title">Mastodon gồm nhiều máy chủ với thành viên riêng.</string>
 	<string name="instance_catalog_subtitle">Chọn một máy chủ dựa theo sở thích, tôn giáo, hoặc ý muốn của bạn. Bạn vẫn có thể giao tiếp với bất cứ ai mà không phụ thuộc vào máy chủ của họ.</string>
-	<string name="search_communities">Tìm máy chủ hoặc nhập URL</string>
-	<string name="instance_rules_title">Quy tắc máy chủ</string>
-	<string name="instance_rules_subtitle">Hãy đọc kỹ quy tắc máy chủ của %s và cân nhắc.</string>
-	<string name="signup_title">Hãy để tôi đăng ký trên %s</string>
+	<string name="search_communities">Tên máy chủ hoặc URL</string>
+	<string name="instance_rules_title">Nội quy máy chủ</string>
+	<string name="instance_rules_subtitle">Tiếp tục nghĩa là bạn đồng ý tuân theo các quy tắc sau do kiểm duyệt viên %s đặt ra và thực thi.</string>
+	<string name="signup_title">Tạo tài khoản</string>
 	<string name="edit_photo">sửa</string>
-	<string name="display_name">biệt danh</string>
-	<string name="username">tên người dùng</string>
-	<string name="email">email</string>
-	<string name="password">mật khẩu</string>
+	<string name="display_name">Tên</string>
+	<string name="username">Tên người dùng</string>
+	<string name="email">Email</string>
+	<string name="password">Mật khẩu</string>
+	<string name="confirm_password">Nhập lại mật khẩu</string>
 	<string name="password_note">Hãy thêm chữ viết hoa, ký tự đặc biệt và số để tăng độ mạnh mật khẩu.</string>
 	<string name="category_academia">Học thuật</string>
 	<string name="category_activism">Hoạt động xã hội</string>
@@ -181,8 +183,10 @@
 	<string name="category_music">Âm nhạc</string>
 	<string name="category_regional">Khu vực</string>
 	<string name="category_tech">Công nghệ</string>
-	<string name="confirm_email_title">Còn điều này nữa</string>
-	<string name="confirm_email_subtitle">Nhấn vào liên kết chúng tôi gửi qua email để xác thực tài khoản.</string>
+	<string name="confirm_email_title">Kiểm tra hộp thư của bạn</string>
+	<!-- %s is the email address -->
+	<string name="confirm_email_subtitle">Nhấn vào liên kết chúng tôi vừa gửi để xác minh %s. Nhanh nhé bạn.</string>
+	<string name="confirm_email_didnt_get">Không nhận được mã?</string>
 	<string name="resend">Gửi lại</string>
 	<string name="open_email_app">Mở ứng dụng email</string>
 	<string name="resent_email">Đã gửi email xác nhận</string>
@@ -219,7 +223,7 @@
 	<string name="theme_auto">Tự động</string>
 	<string name="theme_light">Sáng</string>
 	<string name="theme_dark">Tối</string>
-	<string name="theme_true_black">Chế độ tối chân thật</string>
+	<string name="theme_true_black">Chế độ tương phản cao</string>
 	<string name="settings_behavior">Thao tác</string>
 	<string name="settings_gif">Ảnh đại diện và emoji động</string>
 	<string name="settings_custom_tabs">Dùng trình duyệt tích hợp</string>
@@ -264,12 +268,13 @@
 	<string name="my_profile">Hồ sơ của tôi</string>
 	<string name="media_viewer">Xem media</string>
 	<string name="follow_user">Theo dõi %s</string>
-	<string name="unfollowed_user">Ngưng theo dõi %s</string>
+	<string name="unfollowed_user">Bỏ theo dõi %s</string>
 	<string name="followed_user">Bạn đã theo dõi %s</string>
+	<string name="following_user_requested">Yêu cầu theo dõi %s</string>
 	<string name="open_in_browser">Mở trong trình duyệt</string>
 	<string name="hide_boosts_from_user">Ẩn đăng lại từ %s</string>
 	<string name="show_boosts_from_user">Hiện đăng lại từ %s</string>
-	<string name="signup_reason">vì sao bạn muốn tham gia?</string>
+	<string name="signup_reason">Vì sao bạn muốn tham gia?</string>
 	<string name="signup_reason_note">Điều này sẽ giúp chúng tôi phê duyệt đăng ký của bạn.</string>
 	<string name="clear">Xóa</string>
 	<string name="profile_header">Ảnh bìa</string>
@@ -308,12 +313,12 @@
 		<item quantity="other">%,d lượt thích</item>
 	</plurals>
 	<plurals name="x_reblogs">
-		<item quantity="other">%,d đăng lại</item>
+		<item quantity="other">%,đăng lại</item>
 	</plurals>
 	<string name="timestamp_via_app">%1$s qua %2$s</string>
 	<string name="time_now">vừa xong</string>
-	<string name="post_info_reblogs">Lượt đăng lại</string>
-	<string name="post_info_favorites">Lượt thích</string>
+	<string name="post_info_reblogs">Đăng lại</string>
+	<string name="post_info_favorites">Thích</string>
 	<string name="edit_history">Lịch sử chỉnh sửa</string>
 	<string name="last_edit_at_x">Sửa lần cuối %s</string>
 	<string name="time_just_now">vừa xong</string>
@@ -323,7 +328,7 @@
 	<plurals name="x_minutes_ago">
 		<item quantity="other">%d phút trước</item>
 	</plurals>
-	<string name="edited_timestamp">đã sửa %s</string>
+	<string name="edited_timestamp">sửa %s</string>
 	<string name="edit_original_post">Tút gốc</string>
 	<string name="edit_text_edited">Nội dung chỉnh sửa</string>
 	<string name="edit_spoiler_added">Thêm cảnh báo nội dung</string>
@@ -356,17 +361,67 @@
 	<!-- %s is file size -->
 	<string name="download_update">Tải về (%s)</string>
 	<string name="install_update">Cài đặt</string>
-	<string name="privacy_policy_title">Mastodon và sự riêng tư của bạn</string>
-	<string name="privacy_policy_subtitle">Mặc dù ứng dụng Mastodon không thu thập thông tin của bạn, máy chủ mà bạn dùng để đăng kí tài khoản có thể có một điều khoản sử dụng khác. Dành một chút thời gian để đọc và chấp nhận điều khoản riêng tư của ứng dụng Mastodon và máy chủ của bạn.</string>
+	<string name="privacy_policy_title">Sự riêng tư của bạn</string>
+	<string name="privacy_policy_subtitle">Mặc dù ứng dụng Mastodon không thu thập bất kỳ dữ liệu nào, máy chủ mà bạn đăng ký có thể có chính sách khác.\n\nNếu không đồng ý với chính sách dành cho %s, bạn có thể quay lại và chọn một máy chủ khác.</string>
 	<string name="i_agree">Tôi đồng ý</string>
 	<string name="empty_list">Danh sách trống</string>
 	<string name="instance_signup_closed">Máy chủ này không chấp nhận đăng kí mới.</string>
 	<string name="text_copied">Đã sao chép vào bộ nhớ tạm</string>
 	<string name="add_bookmark">Lưu</string>
 	<string name="remove_bookmark">Bỏ lưu</string>
-	<string name="bookmarks">Tút đã lưu</string>
-	<string name="your_favorites">Lượt thích</string>
+	<string name="bookmarks">Những tút đã lưu</string>
+	<string name="your_favorites">Những tút đã thích</string>
 	<string name="login_title">Chào mừng quay trở lại!</string>
 	<string name="login_subtitle">Đăng nhập với máy chủ nơi bạn tạo tài khoản.</string>
 	<string name="server_url">URL Máy chủ</string>
+	<string name="signup_random_server_explain">Chúng tôi sẽ chọn một máy chủ dựa trên ngôn ngữ của bạn nếu bạn tiếp tục mà không lựa chọn.</string>
+	<string name="server_filter_any_language">Mọi ngôn ngữ</string>
+	<string name="server_filter_instant_signup">Duyệt tự động</string>
+	<string name="server_filter_manual_review">Duyệt thủ công</string>
+	<string name="server_filter_any_signup_speed">Mọi hình thức duyệt</string>
+	<string name="server_filter_region_europe">Châu Âu</string>
+	<string name="server_filter_region_north_america">Bắc Mỹ</string>
+	<string name="server_filter_region_south_america">Nam Mỹ</string>
+	<string name="server_filter_region_africa">Châu Phi</string>
+	<string name="server_filter_region_asia">Châu Á</string>
+	<string name="server_filter_region_oceania">Châu Đại Dương</string>
+	<string name="not_accepting_new_members">Tạm dừng đăng ký mới</string>
+	<string name="category_special_interests">Sở thích đặc biệt</string>
+	<string name="signup_passwords_dont_match">Mật khẩu không khớp</string>
+	<string name="pick_server_for_me">Chọn giúp tôi</string>
+	<string name="profile_add_row">Thêm hàng</string>
+	<string name="profile_setup">Thiệt lập hồ sơ</string>
+	<string name="profile_setup_subtitle">Bạn có thể sửa sau trong mục Hồ sơ.</string>
+	<string name="profile_setup_explanation">Bạn có thể thêm tối đa bốn trường hồ sơ cho bất cứ thứ gì bạn muốn. Vị trí, liên kết, công việc - không giới hạn.</string>
+	<string name="popular_on_mastodon">Thịnh hành trên Mastodon</string>
+	<string name="follow_all">Theo dõi tất cả</string>
+	<string name="server_rules_disagree">Không đồng ý</string>
+	<string name="privacy_policy_explanation">TL;DR: Chúng tôi không thu thập bất cứ gì.</string>
+	<!-- %s is server domain -->
+	<string name="server_policy_disagree">Không đồng ý với %s</string>
+	<string name="profile_bio">Giới thiệu</string>
+	<!-- Shown in a progress dialog when you tap "follow all" -->
+	<string name="sending_follows">Đang theo dõi người này…</string>
+	<!-- %1$s is server domain, %2$s is email domain. You can reorder these placeholders to fit your language better. -->
+	<string name="signup_email_domain_blocked">%1$s không cho phép đăng ký với %2$s. Dùng cái khác hoặc &lt;a&gt;chọn máy chủ khác&lt;/a&gt;.</string>
+	<string name="signup_username_taken">Tên này đã được sử dụng.</string>
+	<string name="spoiler_show">Vẫn cứ xem</string>
+	<string name="spoiler_hide">Ẩn lại</string>
+	<string name="poll_multiple_choice">Chọn một hoặc nhiều</string>
+	<string name="save_changes">Lưu thay đổi</string>
+	<string name="profile_featured">Nổi bật</string>
+	<string name="profile_timeline">Bảng tin</string>
+	<string name="view_all">Xem tất cả</string>
+	<string name="profile_endorsed_accounts">Tài khoản</string>
+	<string name="verified_link">Liên kết xác minh</string>
+	<string name="show">Hiện</string>
+	<string name="hide">Ẩn</string>
+	<string name="join_default_server">Tham gia %s</string>
+	<string name="pick_server">Tìm máy chủ khác</string>
+	<string name="signup_or_login">hoặc</string>
+	<string name="learn_more">Tìm hiểu thêm</string>
+	<string name="welcome_to_mastodon">Chào mừng đến với Mastodon</string>
+	<string name="welcome_paragraph1">Mastodon là một mạng xã hội phi tập trung, không có công ty nào kiểm soát. Nó bao gồm nhiều máy chủ độc lập được kết nối với nhau.</string>
+	<string name="what_are_servers">Máy chủ là gì?</string>
+	<string name="welcome_paragraph2"><![CDATA[Mỗi tài khoản Mastodon được lưu trữ trên một máy chủ — với nội quy và quản trị viên riêng. Bất kể bạn chọn máy chủ nào, bạn có thể theo dõi và tương tác với mọi người trên máy chủ khác.]]></string>
 </resources>

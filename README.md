@@ -55,7 +55,7 @@ On the Fediverse, it’s quite common for people to pin posts they want others t
 
 [apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.sk](https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.sk)
 
-<a href="#installation"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
+<a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.sk"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
 Note that you'll need to add Izzy's F-Droid repository to your F-Droid app first:
 

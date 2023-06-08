@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -17,7 +16,6 @@ import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -26,6 +24,7 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -55,8 +54,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
-		private final TextView reply, boost, favorite, bookmark;
-		private final ImageView share;
+		private final TextView replies, boosts, favorites;
+		private final View reply, boost, favorite, share, bookmark;
 		private static final Animation opacityOut, opacityIn;
 
 		private View touchingView = null;
@@ -90,22 +89,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
-			reply=findViewById(R.id.reply);
-			boost=findViewById(R.id.boost);
-			favorite=findViewById(R.id.favorite);
-			bookmark=findViewById(R.id.bookmark);
-			share=findViewById(R.id.share);
-			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N){
-				UiUtils.fixCompoundDrawableTintOnAndroid6(reply);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(boost);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(favorite);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(bookmark);
-			}
-			View reply=findViewById(R.id.reply_btn);
-			View boost=findViewById(R.id.boost_btn);
-			View favorite=findViewById(R.id.favorite_btn);
-			View share=findViewById(R.id.share_btn);
-			View bookmark=findViewById(R.id.bookmark_btn);
+			replies=findViewById(R.id.reply);
+			boosts=findViewById(R.id.boost);
+			favorites=findViewById(R.id.favorite);
+
+			reply=findViewById(R.id.reply_btn);
+			boost=findViewById(R.id.boost_btn);
+			favorite=findViewById(R.id.favorite_btn);
+			share=findViewById(R.id.share_btn);
+			bookmark=findViewById(R.id.bookmark_btn);
+
 			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
 			reply.setOnLongClickListener(this::onReplyLongClick);
@@ -130,17 +123,32 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(FooterStatusDisplayItem item){
-			bindButton(reply, item.status.repliesCount);
-			bindButton(boost, item.status.reblogsCount);
-			bindButton(favorite, item.status.favouritesCount);
-			reply.setSelected(item.status.repliesCount > 0);
+			bindText(replies, item.status.repliesCount);
+			bindText(boosts, item.status.reblogsCount);
+			bindText(favorites, item.status.favouritesCount);
+			// in thread view, direct descendant posts display one direct reply to themselves,
+			// hence in that case displaying whether there is another reply
+			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor ? 0 : 1;
+			reply.setSelected(item.status.repliesCount > compareTo);
 			boost.setSelected(item.status.reblogged);
 			favorite.setSelected(item.status.favourited);
 			bookmark.setSelected(item.status.bookmarked);
 			boost.setEnabled(item.status.isBoostable(item.accountID));
+
+			int nextPos = getAbsoluteAdapterPosition() + 1;
+			boolean nextIsWarning = item.parentFragment.getDisplayItems().size() > nextPos &&
+					item.parentFragment.getDisplayItems().get(nextPos) instanceof WarningFilteredStatusDisplayItem;
+			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor &&
+					!nextIsWarning;
+
+			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
+			params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
+					condenseBottom ? V.dp(-5) : 0);
+
+			itemView.requestLayout();
 		}
 
-		private void bindButton(TextView btn, long count){
+		private void bindText(TextView btn, long count){
 			if(GlobalUserPreferences.showInteractionCounts && count>0 && !item.hideCounts){
 				btn.setText(UiUtils.abbreviateNumber(count));
 				btn.setCompoundDrawablePadding(V.dp(8));
@@ -164,8 +172,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			} else if (action == MotionEvent.ACTION_DOWN) {
 				longClickPerformed = false;
 				touchingView = v;
-				// 20dp to center in middle of icon, because: (icon width = 24dp) / 2 + (paddingStart = 8dp)
-				v.setPivotX(V.dp(20));
+				// 28dp to center in middle of icon, because:
+				// (icon width = 24dp) / 2 + (paddingStart = 8dp) + (paddingHorizontal = 8dp)
+				v.setPivotX(UiUtils.sp(v.getContext(), 28));
 				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
 				if (disabled) return true;
 				v.postDelayed(longClickRunnable, ViewConfiguration.getLongPressTimeout());
@@ -189,6 +198,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				String accountID = session.getID();
 				args.putString("account", accountID);
 				UiUtils.lookupStatus(v.getContext(), item.status, accountID, item.accountID, status -> {
+					if (status == null) return;
 					args.putParcelable("replyTo", Parcels.wrap(status));
 					Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 				});
@@ -197,13 +207,18 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onBoostClick(View v){
+			if (GlobalUserPreferences.confirmBeforeReblog) {
+				v.startAnimation(opacityIn);
+				onBoostLongClick(v);
+				return;
+			}
 			boost.setSelected(!item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}
 
 		private void boostConsumer(View v, Status r) {
 			v.startAnimation(opacityIn);
-			bindButton(boost, r.reblogsCount);
+			bindText(boosts, r.reblogsCount);
 		}
 
 		private boolean onBoostLongClick(View v){
@@ -232,9 +247,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			reblogHeader.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
 			reblogAs.setVisibility(AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1 ? View.VISIBLE : View.GONE);
 
-			itemPublic.setVisibility(item.status.reblogged || item.status.visibility.isLessVisibleThan(StatusPrivacy.PUBLIC) ? View.GONE : View.VISIBLE);
-			itemUnlisted.setVisibility(item.status.reblogged || item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) ? View.GONE : View.VISIBLE);
-			itemFollowers.setVisibility(item.status.reblogged || item.status.visibility.isLessVisibleThan(StatusPrivacy.PRIVATE) ? View.GONE : View.VISIBLE);
+			itemPublic.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
+			itemUnlisted.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
+			itemFollowers.setVisibility(item.status.reblogged ? View.GONE : View.VISIBLE);
 
 			Drawable checkMark = ctx.getDrawable(R.drawable.ic_fluent_checkmark_circle_20_regular);
 			Drawable publicDrawable = ctx.getDrawable(R.drawable.ic_fluent_earth_24_regular);
@@ -242,16 +257,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			Drawable followersDrawable = ctx.getDrawable(R.drawable.ic_fluent_lock_closed_24_regular);
 
 			StatusPrivacy defaultVisibility = session.preferences != null ? session.preferences.postingDefaultVisibility : null;
-			// e.g. post visibility is unlisted, but default is public
-			// in this case, we want to display the check mark on the most visible visibility
-			if (defaultVisibility != null && item.status.visibility.isLessVisibleThan(defaultVisibility)) {
-				for (StatusPrivacy vis : StatusPrivacy.values()) {
-					if (vis.equals(item.status.visibility)) {
-						defaultVisibility = vis;
-						break;
-					}
-				}
-			}
 			itemPublic.setCompoundDrawablesWithIntrinsicBounds(publicDrawable, null, StatusPrivacy.PUBLIC.equals(defaultVisibility) ? checkMark : null, null);
 			itemUnlisted.setCompoundDrawablesWithIntrinsicBounds(unlistedDrawable, null, StatusPrivacy.UNLISTED.equals(defaultVisibility) ? checkMark : null, null);
 			itemFollowers.setCompoundDrawablesWithIntrinsicBounds(followersDrawable, null, StatusPrivacy.PRIVATE.equals(defaultVisibility) ? checkMark : null, null);
@@ -279,12 +284,18 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				v.startAnimation(opacityIn);
 				Bundle args=new Bundle();
 				args.putString("account", item.accountID);
-				StringBuilder prefilledText = new StringBuilder().append("\n\n");
-				String ownID = AccountSessionManager.getInstance().getAccount(item.accountID).self.id;
-				if (!item.status.account.id.equals(ownID)) prefilledText.append('@').append(item.status.account.acct).append(' ');
-				prefilledText.append(item.status.url);
-				args.putString("prefilledText", prefilledText.toString());
-				args.putInt("selectionStart", 0);
+				AccountSession accountSession=AccountSessionManager.getInstance().getAccount(item.accountID);
+				Instance instance=AccountSessionManager.getInstance().getInstanceInfo(accountSession.domain);
+				if(instance.pleroma == null){
+					StringBuilder prefilledText = new StringBuilder().append("\n\n");
+					String ownID = AccountSessionManager.getInstance().getAccount(item.accountID).self.id;
+					if (!item.status.account.id.equals(ownID)) prefilledText.append('@').append(item.status.account.acct).append(' ');
+					prefilledText.append(item.status.url);
+					args.putString("prefilledText", prefilledText.toString());
+					args.putInt("selectionStart", 0);
+				}else{
+					args.putParcelable("quote", Parcels.wrap(item.status));
+				}
 				Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 			});
 
@@ -296,7 +307,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				v.startAnimation(opacityIn);
-				bindButton(favorite, r.favouritesCount);
+				bindText(favorites, r.favouritesCount);
 			});
 		}
 

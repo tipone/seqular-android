@@ -3,7 +3,6 @@
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:paddingTop="11dp"
 	android:paddingEnd="4dp"
 	android:paddingStart="16dp">
 
@@ -11,6 +10,7 @@
 		android:id="@+id/more"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
+		android:layout_marginTop="13dp"
 		android:layout_alignParentTop="true"
 		android:layout_alignParentEnd="true"
 		android:background="?android:actionBarItemBackground"
@@ -23,10 +23,12 @@
 		android:id="@+id/delete_notification"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
+		android:layout_marginTop="13dp"
 		android:layout_toStartOf="@id/more"
 		android:visibility="gone"
 		android:background="?android:actionBarItemBackground"
 		android:contentDescription="@string/sk_delete_notification"
+		android:tooltipText="@string/sk_delete_notification"
 		android:scaleType="center"
 		android:src="@drawable/ic_fluent_dismiss_20_filled"
 		android:tint="?android:textColorSecondary" />
@@ -35,17 +37,44 @@
 		android:id="@+id/visibility"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
+		android:layout_marginTop="13dp"
 		android:layout_toStartOf="@id/delete_notification"
 		android:background="?android:actionBarItemBackground"
 		android:scaleType="center"
 		android:src="@drawable/ic_visibility"
 		android:tint="?android:textColorSecondary" />
 
+	<FrameLayout
+		android:id="@+id/collapse_btn"
+		android:layout_width="36dp"
+		android:layout_height="36dp"
+		android:layout_marginTop="13dp"
+		android:layout_toStartOf="@id/visibility"
+		android:background="?android:actionBarItemBackground"
+		android:visibility="gone"
+		android:importantForAccessibility="noHideDescendants">
+
+		<!-- wrapping this button so the flip animation doesn't flip the background and the tooltip
+		 	 isn't displaced by the -1 scale -->
+
+		<ImageView
+			android:id="@+id/collapse_btn_icon"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="center"
+			android:importantForAccessibility="no"
+			android:scaleType="center"
+			android:src="@drawable/ic_fluent_chevron_down_20_filled"
+			android:tint="?android:textColorSecondary" />
+
+	</FrameLayout>
+
 	<ImageView
 		android:id="@+id/unread_indicator"
 		android:layout_width="36dp"
 		android:layout_height="36dp"
-		android:layout_toStartOf="@id/visibility"
+		android:layout_marginTop="13dp"
+		android:layout_toStartOf="@id/collapse_btn"
 		android:visibility="gone"
 		android:tint="?android:colorAccent"
 		android:scaleType="center"
@@ -58,17 +87,16 @@
 		android:layout_alignParentStart="true"
 		android:layout_alignParentTop="true"
 		android:layout_marginEnd="12dp"
-		android:layout_marginTop="5dp" />
+		android:layout_marginTop="16dp" />
 
 	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/name_wrap"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_marginEnd="12dp"
-		android:layout_marginTop="7dp"
+		android:layout_marginEnd="8dp"
 		android:layout_toStartOf="@id/unread_indicator"
 		android:layout_toEndOf="@id/avatar"
-		android:minHeight="24sp">
+		android:layout_above="@+id/username_wrap">
 
 		<TextView
 			android:id="@+id/name"
@@ -95,14 +123,15 @@
 	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
 
 	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+		android:id="@id/username_wrap"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:layout_below="@id/name_wrap"
 		android:layout_marginEnd="8dp"
 		android:layout_toStartOf="@id/unread_indicator"
 		android:layout_toEndOf="@id/avatar"
+		android:layout_alignBottom="@id/avatar"
 		android:layoutDirection="locale"
-		android:minHeight="20sp"
+		android:paddingBottom="3sp"
 		android:orientation="horizontal">
 
 		<TextView

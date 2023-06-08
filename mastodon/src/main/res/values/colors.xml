@@ -103,31 +103,69 @@
 	<!-- M3 dynamic colors -->
 	<color name="m3_navigation_bar_bg">@color/gray_50</color>
 
-	<color name="m3_gray_900">@color/gray_900</color>
-	<color name="m3_gray_800t">@color/gray_800t</color>
-	<color name="m3_gray_800">@color/gray_800</color>
-	<color name="m3_gray_700">@color/gray_700</color>
-	<color name="m3_gray_600">@color/gray_600</color>
-	<color name="m3_gray_500">@color/gray_500</color>
-	<color name="m3_gray_400">@color/gray_400</color>
-	<color name="m3_gray_300">@color/gray_300</color>
-	<color name="m3_gray_200">@color/gray_200</color>
-	<color name="m3_gray_100">@color/gray_100</color>
-	<color name="m3_gray_50t">@color/gray_50t</color>
-	<color name="m3_gray_50">@color/gray_50</color>
-	<color name="m3_gray_25">@color/gray_25</color>
+	<color name="m3_neutral1_900">@color/gray_900</color>
+	<color name="m3_neutral1_800t">@color/gray_800t</color>
+	<color name="m3_neutral1_800">@color/gray_800</color>
+	<color name="m3_neutral1_700">@color/gray_700</color>
+	<color name="m3_neutral1_600">@color/gray_600</color>
+	<color name="m3_neutral1_500">@color/gray_500</color>
+	<color name="m3_neutral1_400">@color/gray_400</color>
+	<color name="m3_neutral1_300">@color/gray_300</color>
+	<color name="m3_neutral1_200">@color/gray_200</color>
+	<color name="m3_neutral1_100">@color/gray_100</color>
+	<color name="m3_neutral1_50t">@color/gray_50t</color>
+	<color name="m3_neutral1_50">@color/gray_50</color>
+	<color name="m3_neutral1_25">@color/gray_25</color>
 
-	<color name="m3_primary_25">@color/primary_25</color>
-	<color name="m3_primary_50">@color/primary_50</color>
-	<color name="m3_primary_100">@color/primary_100</color>
-	<color name="m3_primary_200">@color/primary_200</color>
-	<color name="m3_primary_300">@color/primary_300</color>
-	<color name="m3_primary_400">@color/primary_400</color>
-	<color name="m3_primary_500">@color/primary_500</color>
-	<color name="m3_primary_600">@color/primary_600</color>
-	<color name="m3_primary_700">@color/primary_700</color>
-	<color name="m3_primary_800">@color/primary_800</color>
-	<color name="m3_primary_900">@color/primary_900</color>
+	<color name="m3_neutral2_900">@color/gray_900</color>
+	<color name="m3_neutral2_800t">@color/gray_800t</color>
+	<color name="m3_neutral2_800">@color/gray_800</color>
+	<color name="m3_neutral2_700">@color/gray_700</color>
+	<color name="m3_neutral2_600">@color/gray_600</color>
+	<color name="m3_neutral2_500">@color/gray_500</color>
+	<color name="m3_neutral2_400">@color/gray_400</color>
+	<color name="m3_neutral2_300">@color/gray_300</color>
+	<color name="m3_neutral2_200">@color/gray_200</color>
+	<color name="m3_neutral2_100">@color/gray_100</color>
+	<color name="m3_neutral2_50t">@color/gray_50t</color>
+	<color name="m3_neutral2_50">@color/gray_50</color>
+	<color name="m3_neutral2_25">@color/gray_25</color>
+
+	<color name="m3_accent1_25">@color/primary_25</color>
+	<color name="m3_accent1_50">@color/primary_50</color>
+	<color name="m3_accent1_100">@color/primary_100</color>
+	<color name="m3_accent1_200">@color/primary_200</color>
+	<color name="m3_accent1_300">@color/primary_300</color>
+	<color name="m3_accent1_400">@color/primary_400</color>
+	<color name="m3_accent1_500">@color/primary_500</color>
+	<color name="m3_accent1_600">@color/primary_600</color>
+	<color name="m3_accent1_700">@color/primary_700</color>
+	<color name="m3_accent1_800">@color/primary_800</color>
+	<color name="m3_accent1_900">@color/primary_900</color>
+
+	<color name="m3_accent2_25">@color/primary_25</color>
+	<color name="m3_accent2_50">@color/primary_50</color>
+	<color name="m3_accent2_100">@color/primary_100</color>
+	<color name="m3_accent2_200">@color/primary_200</color>
+	<color name="m3_accent2_300">@color/primary_300</color>
+	<color name="m3_accent2_400">@color/primary_400</color>
+	<color name="m3_accent2_500">@color/primary_500</color>
+	<color name="m3_accent2_600">@color/primary_600</color>
+	<color name="m3_accent2_700">@color/primary_700</color>
+	<color name="m3_accent2_800">@color/primary_800</color>
+	<color name="m3_accent2_900">@color/primary_900</color>
+
+	<color name="m3_accent3_25">@color/primary_25</color>
+	<color name="m3_accent3_50">@color/primary_50</color>
+	<color name="m3_accent3_100">@color/primary_100</color>
+	<color name="m3_accent3_200">@color/primary_200</color>
+	<color name="m3_accent3_300">@color/primary_300</color>
+	<color name="m3_accent3_400">@color/primary_400</color>
+	<color name="m3_accent3_500">@color/primary_500</color>
+	<color name="m3_accent3_600">@color/primary_600</color>
+	<color name="m3_accent3_700">@color/primary_700</color>
+	<color name="m3_accent3_800">@color/primary_800</color>
+	<color name="m3_accent3_900">@color/primary_900</color>
 
 	<!-- light theme -->
 	<color name="m3_sys_light_primary">#6750A4</color>

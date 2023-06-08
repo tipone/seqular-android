@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
@@ -11,12 +12,16 @@ import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUnpinnedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
+import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
@@ -57,6 +62,12 @@ public class AccountTimelineFragment extends StatusListFragment{
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
+						AccountSessionManager asm = AccountSessionManager.getInstance();
+						result=result.stream().filter(status -> {
+							// don't hide own posts in own profile
+							if (asm.isSelf(accountID, user) && asm.isSelf(accountID, status.account)) return true;
+							else return new StatusFilterPredicate(accountID, getFilterContext()).test(status);
+						}).collect(Collectors.toList());
 						onDataLoaded(result, !result.isEmpty());
 					}
 				})
@@ -76,7 +87,8 @@ public class AccountTimelineFragment extends StatusListFragment{
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
-		if(!AccountSessionManager.getInstance().isSelf(accountID, ev.status.account))
+		AccountSessionManager asm = AccountSessionManager.getInstance();
+		if(!asm.isSelf(accountID, ev.status.account) || !asm.isSelf(accountID, user))
 			return;
 		if(filter==GetAccountStatuses.Filter.PINNED) return;
 		if(filter==GetAccountStatuses.Filter.DEFAULT){
@@ -84,10 +96,11 @@ public class AccountTimelineFragment extends StatusListFragment{
 			if(ev.status.inReplyToAccountId!=null && !ev.status.inReplyToAccountId.equals(AccountSessionManager.getInstance().getAccount(accountID).self.id))
 				return;
 		}else if(filter==GetAccountStatuses.Filter.MEDIA){
-			if(ev.status.mediaAttachments.isEmpty())
+			if(Optional.ofNullable(ev.status.mediaAttachments).map(List::isEmpty).orElse(true))
 				return;
 		}
 		prependItems(Collections.singletonList(ev.status), true);
+		if (isOnTop()) scrollToTop();
 	}
 
 	protected void onStatusUnpinned(StatusUnpinnedEvent ev){
@@ -113,5 +126,20 @@ public class AccountTimelineFragment extends StatusListFragment{
 	@Override
 	protected void onRemoveAccountPostsEvent(RemoveAccountPostsEvent ev){
 		// no-op
+	}
+
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return Filter.FilterContext.ACCOUNT;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		// could return different uris based on filter (e.g. media -> "/media"), but i want to
+		// return the remote url to the user, and i don't know whether i'd need to append
+		// '#media' (akkoma/pleroma) or '/media' (glitch/mastodon) since i don't know anything
+		// about the remote instance. so, just returning the base url to the user instead
+		return Uri.parse(user.url);
 	}
 }

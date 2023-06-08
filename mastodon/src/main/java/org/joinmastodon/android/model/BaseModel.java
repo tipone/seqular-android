@@ -8,8 +8,17 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 
 import androidx.annotation.CallSuper;
+import androidx.annotation.NonNull;
 
-public abstract class BaseModel{
+public abstract class BaseModel implements Cloneable{
+
+	/**
+	 * indicates the profile has been fetched from a foreign instance.
+	 *
+	 * @see MastodonAPIRequest#execRemote
+	 */
+	public transient boolean isRemote;
+
 	@CallSuper
 	public void postprocess() throws ObjectValidationException{
 		try{
@@ -22,5 +31,15 @@ public abstract class BaseModel{
 				}
 			}
 		}catch(IllegalAccessException ignore){}
+	}
+
+	@NonNull
+	@Override
+	public Object clone(){
+		try{
+			return super.clone();
+		}catch(CloneNotSupportedException x){
+			throw new RuntimeException(x);
+		}
 	}
 }

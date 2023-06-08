@@ -15,6 +15,7 @@ import android.util.Log;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -25,6 +26,7 @@ import org.joinmastodon.android.api.requests.accounts.GetWordFilters;
 import org.joinmastodon.android.api.requests.instance.GetCustomEmojis;
 import org.joinmastodon.android.api.requests.accounts.GetOwnAccount;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
+import org.joinmastodon.android.api.requests.markers.GetMarkers;
 import org.joinmastodon.android.api.requests.oauth.CreateOAuthApp;
 import org.joinmastodon.android.events.EmojiUpdatedEvent;
 import org.joinmastodon.android.model.Account;
@@ -33,6 +35,8 @@ import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiCategory;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.Marker;
+import org.joinmastodon.android.model.Markers;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.Token;
 
@@ -46,6 +50,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -106,6 +111,12 @@ public class AccountSessionManager{
 		sessions.put(session.getID(), session);
 		lastActiveAccountID=session.getID();
 		writeAccountsFile();
+
+		// write initial instance info to file immediately to avoid sessions without instance info
+		InstanceInfoStorageWrapper wrapper = new InstanceInfoStorageWrapper();
+		wrapper.instance = instance;
+		MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, instance.uri));
+
 		updateMoreInstanceInfo(instance, instance.uri);
 		if(PushSubscriptionManager.arePushNotificationsAvailable()){
 			session.getPushSubscriptionManager().registerAccountForPush(null);
@@ -114,14 +125,16 @@ public class AccountSessionManager{
 	}
 
 	public synchronized void writeAccountsFile(){
-		File file=new File(MastodonApp.context.getFilesDir(), "accounts.json");
+		File tmpFile = new File(MastodonApp.context.getFilesDir(), "accounts.json~");
+		File file = new File(MastodonApp.context.getFilesDir(), "accounts.json");
 		try{
-			try(FileOutputStream out=new FileOutputStream(file)){
+			try(FileOutputStream out=new FileOutputStream(tmpFile)){
 				SessionsStorageWrapper w=new SessionsStorageWrapper();
 				w.accounts=new ArrayList<>(sessions.values());
 				OutputStreamWriter writer=new OutputStreamWriter(out, StandardCharsets.UTF_8);
 				MastodonAPIController.gson.toJson(w, writer);
 				writer.flush();
+				if (!tmpFile.renameTo(file)) Log.e(TAG, "Error renaming " + tmpFile.getPath() + " to " + file.getPath());
 			}
 		}catch(IOException x){
 			Log.e(TAG, "Error writing accounts file", x);
@@ -145,6 +158,11 @@ public class AccountSessionManager{
 	@Nullable
 	public AccountSession tryGetAccount(String id){
 		return sessions.get(id);
+	}
+
+	@Nullable
+	public AccountSession tryGetAccount(Account account) {
+		return sessions.get(account.getDomainFromURL() + "_" + account.id);
 	}
 
 	@Nullable
@@ -174,6 +192,7 @@ public class AccountSessionManager{
 		AccountSession session=getAccount(id);
 		session.getCacheController().closeDatabase();
 		MastodonApp.context.deleteDatabase(id+".db");
+		GlobalUserPreferences.removeAccount(id);
 		sessions.remove(id);
 		if(lastActiveAccountID.equals(id)){
 			if(sessions.isEmpty())
@@ -244,30 +263,44 @@ public class AccountSessionManager{
 	}
 
 	public void maybeUpdateLocalInfo(){
+		maybeUpdateLocalInfo(null);
+	}
+
+	public void maybeUpdateLocalInfo(AccountSession activeSession){
 		long now=System.currentTimeMillis();
 		HashSet<String> domains=new HashSet<>();
 		for(AccountSession session:sessions.values()){
 			domains.add(session.domain.toLowerCase());
-//			if(now-session.infoLastUpdated>24L*3600_000L){
-			updateSessionPreferences(session);
-			updateSessionLocalInfo(session);
-//			}
-//			if(now-session.filtersLastUpdated>3600_000L){
-			updateSessionWordFilters(session);
-//			}
+			if(now-session.infoLastUpdated>24L*3600_000L || session == activeSession){
+				updateSessionPreferences(session);
+				updateSessionLocalInfo(session);
+			}
+			if(now-session.filtersLastUpdated>3600_000L || session == activeSession){
+				updateSessionWordFilters(session);
+			}
+			updateSessionMarkers(session);
 		}
 		if(loadedInstances){
-			maybeUpdateCustomEmojis(domains);
+			maybeUpdateCustomEmojis(domains, activeSession != null ? activeSession.domain : null);
 		}
 	}
 
-	private void maybeUpdateCustomEmojis(Set<String> domains){
+	private void maybeUpdateCustomEmojis(Set<String> domains, String activeDomain){
 		long now=System.currentTimeMillis();
 		for(String domain:domains){
-//			Long lastUpdated=instancesLastUpdated.get(domain);
-//			if(lastUpdated==null || now-lastUpdated>24L*3600_000L){
-			updateInstanceInfo(domain);
-//			}
+			Long lastUpdated=instancesLastUpdated.get(domain);
+			if(lastUpdated==null || now-lastUpdated>24L*3600_000L || domain.equals(activeDomain)){
+				updateInstanceInfo(domain);
+			}
+		}
+	}
+
+	private void preferencesFromSource(AccountSession session, Account account) {
+		if (account != null && account.source != null && session.preferences != null) {
+			if (account.source.privacy != null)
+				session.preferences.postingDefaultVisibility = account.source.privacy;
+			if (account.source.language != null)
+				session.preferences.postingDefaultLanguage = account.source.language;
 		}
 	}
 
@@ -278,13 +311,12 @@ public class AccountSessionManager{
 					public void onSuccess(Account result){
 						session.self=result;
 						session.infoLastUpdated=System.currentTimeMillis();
+						preferencesFromSource(session, result);
 						writeAccountsFile();
 					}
 
 					@Override
-					public void onError(ErrorResponse error){
-
-					}
+					public void onError(ErrorResponse error){}
 				})
 				.exec(session.getID());
 	}
@@ -294,10 +326,14 @@ public class AccountSessionManager{
 			@Override
 			public void onSuccess(Preferences preferences) {
 				session.preferences=preferences;
+				preferencesFromSource(session, session.self);
 			}
 
 			@Override
-			public void onError(ErrorResponse error) {}
+			public void onError(ErrorResponse error) {
+				session.preferences = new Preferences();
+				preferencesFromSource(session, session.self);
+			}
 		}).exec(session.getID());
 	}
 
@@ -317,6 +353,21 @@ public class AccountSessionManager{
 					}
 				})
 				.exec(session.getID());
+	}
+
+	private void updateSessionMarkers(AccountSession session) {
+		new GetMarkers(EnumSet.allOf(Marker.Type.class)).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Markers markers) {
+				session.markers = markers;
+				writeAccountsFile();
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+
+			}
+		}).exec(session.getID());
 	}
 
 	public void updateInstanceInfo(String domain){
@@ -368,7 +419,9 @@ public class AccountSessionManager{
 
 					@Override
 					public void onError(ErrorResponse error){
-
+						InstanceInfoStorageWrapper wrapper=new InstanceInfoStorageWrapper();
+						wrapper.instance = instance;
+						MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, domain));
 					}
 				})
 				.execNoAuth(domain);
@@ -379,10 +432,13 @@ public class AccountSessionManager{
 	}
 
 	private void writeInstanceInfoFile(InstanceInfoStorageWrapper emojis, String domain){
-		try(FileOutputStream out=new FileOutputStream(getInstanceInfoFile(domain))){
+		File file = getInstanceInfoFile(domain);
+		File tmpFile = new File(file.getPath() + "~");
+		try(FileOutputStream out=new FileOutputStream(tmpFile)){
 			OutputStreamWriter writer=new OutputStreamWriter(out, StandardCharsets.UTF_8);
 			MastodonAPIController.gson.toJson(emojis, writer);
 			writer.flush();
+			if (!tmpFile.renameTo(file)) Log.e(TAG, "Error renaming " + tmpFile.getPath() + " to " + file.getPath());
 		}catch(IOException x){
 			Log.w(TAG, "Error writing instance info file for "+domain, x);
 		}
@@ -402,7 +458,7 @@ public class AccountSessionManager{
 		}
 		if(!loadedInstances){
 			loadedInstances=true;
-			maybeUpdateCustomEmojis(domains);
+			maybeUpdateCustomEmojis(domains, null);
 		}
 	}
 
@@ -424,10 +480,6 @@ public class AccountSessionManager{
 
 	public Instance getInstanceInfo(String domain){
 		return instances.get(domain);
-	}
-
-	public Instance getInstanceInfoForAccount(String account) {
-		return AccountSessionManager.getInstance().getInstanceInfo(instance.getAccount(account).domain);
 	}
 
 	public void updateAccountInfo(String id, Account account){

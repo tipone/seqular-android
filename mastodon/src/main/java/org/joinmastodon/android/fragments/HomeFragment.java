@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Fragment;
 import android.app.NotificationManager;
+import android.app.assist.AssistContent;
 import android.graphics.Outline;
 import android.os.Build;
 import android.os.Bundle;
@@ -16,23 +17,36 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import org.joinmastodon.android.PushNotificationReceiver;
+import androidx.annotation.IdRes;
+import androidx.annotation.Nullable;
+
+import com.squareup.otto.Subscribe;
+
+import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.notifications.GetNotifications;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.AllNotificationsSeenEvent;
+import org.joinmastodon.android.events.NotificationReceivedEvent;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
-import org.joinmastodon.android.fragments.discover.SearchFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TabBar;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Optional;
 
-import androidx.annotation.IdRes;
-import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.AppKitFragment;
 import me.grishka.appkit.fragments.LoaderFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
@@ -41,7 +55,7 @@ import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class HomeFragment extends AppKitFragment implements OnBackPressedListener{
+public class HomeFragment extends AppKitFragment implements OnBackPressedListener, ProvidesAssistContent, HasAccountID {
 	private FragmentRootLinearLayout content;
 	private HomeTabFragment homeTabFragment;
 	private NotificationsFragment notificationsFragment;
@@ -50,26 +64,34 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private TabBar tabBar;
 	private View tabBarWrap;
 	private ImageView tabBarAvatar;
+	private ImageView notificationTabIcon;
 	@IdRes
 	private int currentTab=R.id.tab_home;
 
 	private String accountID;
+	private boolean isPleroma;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		E.register(this);
 		accountID=getArguments().getString("account");
 		setTitle(R.string.sk_app_name);
+		isPleroma = AccountSessionManager.getInstance().getAccount(accountID).getInstance()
+				.map(Instance::isAkkoma)
+				.orElse(false);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 
+		// TODO: clean up
 		if(savedInstanceState==null){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			homeTabFragment=new HomeTabFragment();
 			homeTabFragment.setArguments(args);
 			args=new Bundle(args);
+			args.putBoolean("disableDiscover", isPleroma);
 			args.putBoolean("noAutoLoad", true);
 			searchFragment=new DiscoverFragment();
 			searchFragment.setArguments(args);
@@ -91,7 +113,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		content.setOrientation(LinearLayout.VERTICAL);
 
 		FrameLayout fragmentContainer=new FrameLayout(getActivity());
-		fragmentContainer.setId(R.id.fragment_wrap);
+		fragmentContainer.setId(me.grishka.appkit.R.id.fragment_wrap);
 		content.addView(fragmentContainer, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
 		inflater.inflate(R.layout.tab_bar, content);
@@ -110,12 +132,15 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		Account self=AccountSessionManager.getInstance().getAccount(accountID).self;
 		ViewImageLoader.load(tabBarAvatar, null, new UrlImageLoaderRequest(self.avatar, V.dp(28), V.dp(28)));
 
+		notificationTabIcon=content.findViewById(R.id.tab_notifications);
+		updateNotificationBadge();
+
 		if(savedInstanceState==null){
 			getChildFragmentManager().beginTransaction()
-					.add(R.id.fragment_wrap, homeTabFragment)
-					.add(R.id.fragment_wrap, searchFragment).hide(searchFragment)
-					.add(R.id.fragment_wrap, notificationsFragment).hide(notificationsFragment)
-					.add(R.id.fragment_wrap, profileFragment).hide(profileFragment)
+					.add(me.grishka.appkit.R.id.fragment_wrap, homeTabFragment)
+					.add(me.grishka.appkit.R.id.fragment_wrap, searchFragment).hide(searchFragment)
+					.add(me.grishka.appkit.R.id.fragment_wrap, notificationsFragment).hide(notificationsFragment)
+					.add(me.grishka.appkit.R.id.fragment_wrap, profileFragment).hide(profileFragment)
 					.commit();
 
 			String defaultTab=getArguments().getString("tab");
@@ -144,6 +169,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		notificationsFragment=(NotificationsFragment) getChildFragmentManager().getFragment(savedInstanceState, "notificationsFragment");
 		profileFragment=(ProfileFragment) getChildFragmentManager().getFragment(savedInstanceState, "profileFragment");
 		currentTab=savedInstanceState.getInt("selectedTab");
+		tabBar.selectTab(currentTab);
 		Fragment current=fragmentForTab(currentTab);
 		getChildFragmentManager().beginTransaction()
 				.hide(homeTabFragment)
@@ -200,6 +226,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		throw new IllegalArgumentException();
 	}
 
+	public void setCurrentTab(@IdRes int tab){
+		if(tab==currentTab)
+			return;
+		tabBar.selectTab(tab);
+		onTabSelected(tab);
+	}
+
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
@@ -211,8 +244,10 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		}
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
 		maybeTriggerLoading(newFragment);
+		if (newFragment instanceof HasFab fabulous && !fabulous.isScrolling()) fabulous.showFab();
 		currentTab=tab;
 		((FragmentStackActivity)getActivity()).invalidateSystemBarColors(this);
+		if (tab == R.id.tab_search && isPleroma) searchFragment.selectSearch();
 	}
 
 	private void maybeTriggerLoading(Fragment newFragment){
@@ -239,7 +274,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
 			}
-			new AccountSwitcherSheet(getActivity()).show();
+			new AccountSwitcherSheet(getActivity(), this).show();
 			return true;
 		}
 		return false;
@@ -268,5 +303,58 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if (searchFragment.isAdded()) getChildFragmentManager().putFragment(outState, "searchFragment", searchFragment);
 		if (notificationsFragment.isAdded()) getChildFragmentManager().putFragment(outState, "notificationsFragment", notificationsFragment);
 		if (profileFragment.isAdded()) getChildFragmentManager().putFragment(outState, "profileFragment", profileFragment);
+	}
+
+	public void updateNotificationBadge() {
+		AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+		Optional<Instance> instance = session.getInstance();
+		if (instance.isEmpty()) return; // avoiding incompatibility with akkoma
+
+		new GetNotifications(null, 1, EnumSet.allOf(Notification.Type.class), instance.get().isAkkoma())
+				.setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(List<Notification> notifications) {
+						if (notifications.size() > 0) {
+							try {
+								long newestId = Long.parseLong(notifications.get(0).id);
+								long lastSeenId = Long.parseLong(session.markers.notifications.lastReadId);
+								setNotificationBadge(newestId > lastSeenId);
+							} catch (Exception ignored) {
+								setNotificationBadge(false);
+							}
+						}
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						setNotificationBadge(false);
+					}
+				}).exec(accountID);
+	}
+
+	public void setNotificationBadge(boolean badge) {
+		notificationTabIcon.setImageResource(badge
+				? R.drawable.ic_fluent_alert_28_selector_badged
+				: R.drawable.ic_fluent_alert_28_selector);
+	}
+
+	@Subscribe
+	public void onNotificationReceived(NotificationReceivedEvent notificationReceivedEvent) {
+		if (notificationReceivedEvent.account.equals(accountID)) setNotificationBadge(true);
+	}
+
+	@Subscribe
+	public void onAllNotificationsSeen(AllNotificationsSeenEvent allNotificationsSeenEvent) {
+		setNotificationBadge(false);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(fragmentForTab(currentTab), assistContent);
 	}
 }

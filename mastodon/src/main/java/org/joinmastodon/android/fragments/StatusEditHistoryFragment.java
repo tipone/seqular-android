@@ -1,11 +1,13 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusEditHistory;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
@@ -23,13 +25,13 @@ import java.util.stream.Collectors;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class StatusEditHistoryFragment extends StatusListFragment{
-	private String id;
-
+	private String id, url;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		id=getArguments().getString("id");
+		url=getArguments().getString("url");
 		loadData();
 	}
 
@@ -55,7 +57,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, true, false, null, null);
 		int idx=data.indexOf(s);
 		if(idx>=0){
 			String date=UiUtils.DATE_TIME_FORMATTER.format(s.createdAt.atZone(ZoneId.systemDefault()));
@@ -155,5 +157,15 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 	@Override
 	public boolean isItemEnabled(String id){
 		return false;
+	}
+
+	@Override
+	protected Filter.FilterContext getFilterContext() {
+		return null;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(url);
 	}
 }

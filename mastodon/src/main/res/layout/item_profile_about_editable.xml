@@ -4,9 +4,7 @@
 	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?colorBackgroundLight"
-	android:elevation="2dp"
-	android:outlineProvider="background">
+	android:layout_marginBottom="4dp">
 
 	<ImageButton
 		android:id="@+id/remove_row_btn"
@@ -26,11 +24,12 @@
 		android:layout_height="wrap_content"
 		android:layout_toStartOf="@id/dragger_thingy"
 		android:layout_toEndOf="@id/remove_row_btn"
-		android:layout_marginTop="16dp"
+		android:minHeight="24dp"
+		android:paddingBottom="3dp"
+		android:gravity="bottom"
 		android:textAppearance="@style/m3_label_medium"
 		android:background="@drawable/bg_profile_field_edit_text"
 		android:hint="@string/field_label"
-		android:minHeight="16dp"
 		android:inputType="textCapSentences"
 		tools:text="Field title"/>
 
@@ -41,7 +40,9 @@
 		android:layout_below="@id/title"
 		android:layout_toStartOf="@id/dragger_thingy"
 		android:layout_toEndOf="@id/remove_row_btn"
-		android:layout_marginBottom="16dp"
+		android:minHeight="28dp"
+		android:paddingBottom="3dp"
+		android:gravity="bottom"
 		android:textAppearance="@style/m3_body_large"
 		android:background="@drawable/bg_profile_field_edit_text"
 		android:hint="@string/field_content"
@@ -55,7 +56,6 @@
 		android:layout_alignParentEnd="true"
 		android:layout_alignParentTop="true"
 		android:layout_alignBottom="@id/value"
-		android:layout_marginBottom="-16dp"
 		android:scaleType="center"
 		android:contentDescription="@string/reorder"
 		android:src="@drawable/ic_fluent_re_order_dots_vertical_24_regular"/>

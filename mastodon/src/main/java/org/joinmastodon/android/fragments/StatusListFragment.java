@@ -1,17 +1,20 @@
 package org.joinmastodon.android.fragments;
 
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
@@ -26,17 +29,23 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 
-public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
+public abstract class StatusListFragment extends BaseStatusListFragment<Status> {
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, true, null);
+		boolean addFooter = !GlobalUserPreferences.spectatorMode ||
+				(this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id));
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, addFooter, null, getFilterContext());
 	}
+
+	protected abstract Filter.FilterContext getFilterContext();
 
 	@Override
 	protected void addAccountToKnown(Status s){
 		if(!knownAccounts.containsKey(s.account.id))
 			knownAccounts.put(s.account.id, s.account);
+		if(s.reblog!=null && !knownAccounts.containsKey(s.reblog.account.id))
+			knownAccounts.put(s.reblog.account.id, s.reblog.account);
 	}
 
 	@Override
@@ -56,9 +65,10 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 		Status status=getContentStatusByID(id);
 		if(status==null)
 			return;
+		status.filterRevealed = true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		args.putParcelable("status", Parcels.wrap(status));
+		args.putParcelable("status", Parcels.wrap(status.clone()));
 		if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId))
 			args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status.inReplyToAccountId)));
 		Nav.go(getActivity(), ThreadFragment.class, args);
@@ -144,7 +154,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 
 	protected void onRemoveAccountPostsEvent(RemoveAccountPostsEvent ev){
 		List<Status> toRemove=Stream.concat(data.stream(), preloadedData.stream())
-				.filter(s->s.account.id.equals(ev.postsByAccountID) || (s.reblog!=null && s.reblog.account.id.equals(ev.postsByAccountID)))
+				.filter(s->s.account.id.equals(ev.postsByAccountID) || (!ev.isUnfollow && s.reblog!=null && s.reblog.account.id.equals(ev.postsByAccountID)))
 				.collect(Collectors.toList());
 		for(Status s:toRemove){
 			removeStatus(s);
@@ -173,7 +183,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status>{
 	}
 
 	@Override
-	public void onConfigurationChanged(Configuration newConfig){
+	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		if (getParentFragment() instanceof HomeTabFragment home) home.updateToolbarLogo();
 	}
