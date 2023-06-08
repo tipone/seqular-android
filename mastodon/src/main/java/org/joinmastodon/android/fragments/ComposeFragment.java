@@ -848,10 +848,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
 		buildLanguageSelector(languageButton);
 
+		if (isInstancePixelfed()) spoilerBtn.setVisibility(View.GONE);
 		if (isInstancePixelfed() || (editingStatus != null && scheduledStatus == null)) {
 			// editing an already published post
 			draftsBtn.setVisibility(View.GONE);
-			spoilerBtn.setVisibility(View.GONE);
 		}
 	}
 
