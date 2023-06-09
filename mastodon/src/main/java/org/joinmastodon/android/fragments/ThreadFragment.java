@@ -8,7 +8,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
@@ -38,6 +37,7 @@ import java.util.Collections;
 import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -118,7 +118,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					@Override
 					public void onSuccess(StatusContext result){
 						if (getContext() == null) return;
+						Map<String, Status> oldData = null;
 						if(refreshing){
+							oldData = new HashMap<>(data.size());
+							for (Status s : data) oldData.put(s.id, s);
 							data.clear();
 							ancestryMap.clear();
 							displayItems.clear();
@@ -150,6 +153,18 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 							adapter.notifyItemRemoved(prependedCount);
 							count--;
 						}
+
+						// restore previous spoiler/filter revealed states when refreshing
+						if (refreshing && oldData.size() > 0) {
+							for (Status s : data) {
+								Status oldStatus = oldData.get(s.id);
+								if (oldStatus != null) {
+									s.spoilerRevealed = oldStatus.spoilerRevealed;
+									s.filterRevealed = oldStatus.filterRevealed;
+								}
+							}
+						}
+
 						dataLoaded();
 						if(refreshing){
 							refreshDone();
@@ -187,6 +202,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	protected Object maybeApplyMainStatus() {
 		if (updatedStatus == null || !contextInitiallyRendered) return null;
+
+		// restore revealed states for main status because it gets updated after doLoadData
+		updatedStatus.filterRevealed = mainStatus.filterRevealed;
+		updatedStatus.spoilerRevealed = mainStatus.spoilerRevealed;
 
 		// returning fired event object to facilitate testing
 		Object event;
