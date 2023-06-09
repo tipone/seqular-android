@@ -8,6 +8,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.GlobalUserPreferences.AutoRevealMode;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
@@ -154,13 +156,18 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 							count--;
 						}
 
-						// restore previous spoiler/filter revealed states when refreshing
-						if (refreshing && oldData.size() > 0) {
-							for (Status s : data) {
-								Status oldStatus = oldData.get(s.id);
-								if (oldStatus != null) {
-									s.spoilerRevealed = oldStatus.spoilerRevealed;
-									s.filterRevealed = oldStatus.filterRevealed;
+						for (Status s : data) {
+							Status oldStatus = oldData == null ? null : oldData.get(s.id);
+							// restore previous spoiler/filter revealed states when refreshing
+							if (oldStatus != null) {
+								s.spoilerRevealed = oldStatus.spoilerRevealed;
+								s.filterRevealed = oldStatus.filterRevealed;
+							} else if (GlobalUserPreferences.autoRevealEqualSpoilers != AutoRevealMode.NEVER &&
+									s.spoilerText != null &&
+									s.spoilerText.equals(mainStatus.spoilerText) &&
+									mainStatus.spoilerRevealed) {
+								if (GlobalUserPreferences.autoRevealEqualSpoilers == AutoRevealMode.DISCUSSIONS || Objects.equals(mainStatus.account.id, s.account.id)) {
+									s.spoilerRevealed = true;
 								}
 							}
 						}

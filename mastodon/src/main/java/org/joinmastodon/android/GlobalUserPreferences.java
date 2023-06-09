@@ -49,6 +49,7 @@ public class GlobalUserPreferences{
 	public static boolean compactReblogReplyLine;
 	public static boolean confirmBeforeReblog;
 	public static boolean allowRemoteLoading;
+	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -129,6 +130,7 @@ public class GlobalUserPreferences{
 		accountsWithContentTypesEnabled=prefs.getStringSet("accountsWithContentTypesEnabled", new HashSet<>());
 		accountsDefaultContentTypes=fromJson(prefs.getString("accountsDefaultContentTypes", null), accountsDefaultContentTypesType, new HashMap<>());
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
+		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 
 		try {
 			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
@@ -179,6 +181,7 @@ public class GlobalUserPreferences{
 				.putStringSet("accountsWithContentTypesEnabled", accountsWithContentTypesEnabled)
 				.putString("accountsDefaultContentTypes", gson.toJson(accountsDefaultContentTypes))
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
+				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.apply();
 	}
 
@@ -197,5 +200,11 @@ public class GlobalUserPreferences{
 		AUTO,
 		LIGHT,
 		DARK
+	}
+
+	public enum AutoRevealMode {
+		NEVER,
+		THREADS,
+		DISCUSSIONS
 	}
 }

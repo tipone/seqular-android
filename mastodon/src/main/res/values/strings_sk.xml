@@ -297,4 +297,9 @@
     <string name="sk_error_loading_profile">Failed loading the profile via %s</string>
     <string name="sk_settings_allow_remote_loading">Load info from remote instances</string>
     <string name="sk_settings_allow_remote_loading_explanation">Try fetching more accurate listings for followers, likes and boosts by loading the information from the instance of origin.</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Reveal equal CWs in threads</string>
+    <string name="sk_settings_auto_reveal_never">Never</string>
+    <string name="sk_settings_auto_reveal_threads">Same author</string>
+    <string name="sk_settings_auto_reveal_discussions">Discussions</string>
+    <string name="sk_settings_auto_reveal_always">Always</string>
 </resources>
