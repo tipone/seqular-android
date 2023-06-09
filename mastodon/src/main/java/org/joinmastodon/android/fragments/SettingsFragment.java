@@ -560,14 +560,14 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 
 	private boolean onContentTypeChanged(MenuItem item, Button btn){
 		int id = item.getItemId();
-		ContentType contentType = switch (id) {
-			case R.id.content_type_plain -> ContentType.PLAIN;
-			case R.id.content_type_html -> ContentType.HTML;
-			case R.id.content_type_markdown -> ContentType.MARKDOWN;
-			case R.id.content_type_bbcode -> ContentType.BBCODE;
-			case R.id.content_type_misskey_markdown -> ContentType.MISSKEY_MARKDOWN;
-			default -> null;
-		};
+
+		ContentType contentType = null;
+		if (id == R.id.content_type_plain) contentType = ContentType.PLAIN;
+		else if (id == R.id.content_type_html) contentType = ContentType.HTML;
+		else if (id == R.id.content_type_markdown) contentType = ContentType.MARKDOWN;
+		else if (id == R.id.content_type_bbcode) contentType = ContentType.BBCODE;
+		else if (id == R.id.content_type_misskey_markdown) contentType = ContentType.MISSKEY_MARKDOWN;
+
 		GlobalUserPreferences.accountsDefaultContentTypes.put(accountID, contentType);
 		GlobalUserPreferences.save();
 		btn.setText(getContentTypeString(contentType));
