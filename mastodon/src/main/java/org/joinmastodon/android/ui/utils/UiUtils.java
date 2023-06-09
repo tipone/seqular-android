@@ -1127,7 +1127,7 @@ public class UiUtils {
 	}
 
 	public static void openURL(Context context, String accountID, String url, boolean launchBrowser) {
-		lookupURL(context, accountID, url, launchBrowser, (clazz, args) -> {
+		lookupURL(context, accountID, url, (clazz, args) -> {
 			if (clazz == null) {
 				if (args != null && args.containsKey("error")) Toast.makeText(context, args.getString("error"), Toast.LENGTH_SHORT).show();
 				if (launchBrowser) launchWebBrowser(context, url);
@@ -1192,7 +1192,7 @@ public class UiUtils {
 				}).exec(accountID);
 	}
 
-	public static Optional<MastodonAPIRequest<?>> lookupURL(Context context, String accountID, String url, boolean launchBrowser, BiConsumer<Class<? extends Fragment>, Bundle> go) {
+	public static Optional<MastodonAPIRequest<?>> lookupURL(Context context, String accountID, String url, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		Uri uri = Uri.parse(url);
 		List<String> path = uri.getPathSegments();
 		if (accountID != null && "https".equals(uri.getScheme())) {
@@ -1232,7 +1232,6 @@ public class UiUtils {
 									go.accept(ProfileFragment.class, args);
 									return;
 								}
-								if (launchBrowser) launchWebBrowser(context, url);
 								go.accept(null, bundleError(context.getString(R.string.sk_resource_not_found)));
 							}
 
