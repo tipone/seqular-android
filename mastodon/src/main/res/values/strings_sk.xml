@@ -30,7 +30,7 @@
     <string name="sk_user_post_notifications_off">Turned off post notifications for %s</string>
     <string name="sk_federated_timeline">Federation</string>
     <string name="sk_federated_timeline_info_banner">These are the most recent posts by the people in your federation.</string>
-    <string name="sk_bubble_timeline_info_banner">These are the most recent posts by the people in your Akkoma server\'s bubble.</string>
+    <string name="sk_bubble_timeline_info_banner">These are the most recent posts from the network curated by your instance admins.</string>
     <string name="sk_update_available">Megalodon %s is ready to download.</string>
     <string name="sk_update_ready">Megalodon %s is downloaded and ready to install.</string>
     <string name="sk_check_for_update">Check for update</string>
@@ -290,6 +290,16 @@
     <string name="sk_settings_default_content_type_explanation">This lets you have a content type be pre-selected when creating new posts, overriding the value set in “Posting preferences”.</string>
     <string name="sk_instance_info_unavailable">Instance info temporarily unavailable</string>
     <string name="sk_open_in_app">Open in app</string>
+    <string name="sk_open_in_app_failed">Could not open in app</string>
     <string name="sk_external_share_title">Share with account</string>
     <string name="sk_external_share_or_open_title">Share or open with account</string>
+    <string name="sk_no_remote_info_hint">remote info unavailable</string>
+    <string name="sk_error_loading_profile">Failed loading the profile via %s</string>
+    <string name="sk_settings_allow_remote_loading">Load info from remote instances</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Try fetching more accurate listings for followers, likes and boosts by loading the information from the instance of origin.</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Reveal equal CWs in threads</string>
+    <string name="sk_settings_auto_reveal_never">Never</string>
+    <string name="sk_settings_auto_reveal_threads">Same author</string>
+    <string name="sk_settings_auto_reveal_discussions">Discussions</string>
+    <string name="sk_settings_auto_reveal_always">Always</string>
 </resources>

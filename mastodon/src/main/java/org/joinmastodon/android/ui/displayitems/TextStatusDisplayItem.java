@@ -65,7 +65,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spoilerEmojiHelper.setText(parsedSpoilerText);
 		}
 		session = AccountSessionManager.getInstance().getAccount(parentFragment.getAccountID());
-		UiUtils.loadMaxWidth(parentFragment.getContext());
 	}
 
 	public void setTranslationShown(boolean translationShown) {
@@ -227,13 +226,13 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			spaceBelowText.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 
 			// remove additional padding when (transparently padded) translate button is visible
-			int pos = getAbsoluteAdapterPosition();
-			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(),
-					(translateVisible &&
-							item.parentFragment.getDisplayItems().size() >= pos + 1 &&
-							item.parentFragment.getDisplayItems().get(pos + 1) instanceof FooterStatusDisplayItem)
-							? 0 : V.dp(12)
-			);
+			int nextPos = getAbsoluteAdapterPosition() + 1;
+			boolean nextIsFooter = item.parentFragment.getDisplayItems().size() > nextPos &&
+					item.parentFragment.getDisplayItems().get(nextPos) instanceof FooterStatusDisplayItem;
+			int bottomPadding = (translateVisible && nextIsFooter) ? 0
+					: nextIsFooter ? V.dp(6)
+					: V.dp(12);
+			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 
 			if (!GlobalUserPreferences.collapseLongPosts) {
 				textScrollView.setLayoutParams(wrapParams);

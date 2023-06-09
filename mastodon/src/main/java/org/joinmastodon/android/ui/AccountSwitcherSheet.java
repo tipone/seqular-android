@@ -58,25 +58,24 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public class AccountSwitcherSheet extends BottomSheet{
 	private final Activity activity;
 	private final HomeFragment fragment;
-	private final BiConsumer<String, Boolean> onClick;
 	private final boolean externalShare, openInApp;
+	private BiConsumer<String, Boolean> onClick;
 	private UsableRecyclerView list;
 	private List<WrappedAccount> accounts;
 	private ListImageLoaderWrapper imgLoader;
 	private AccountsAdapter accountsAdapter;
 
 	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment){
-		this(activity, fragment, false, false, null);
+		this(activity, fragment, false, false);
 	}
 
-	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, boolean externalShare, boolean openInApp, BiConsumer<String, Boolean> onClick){
+	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, boolean externalShare, boolean openInApp){
 		super(activity);
 		this.activity=activity;
 		this.fragment=fragment;
 		this.externalShare = externalShare;
 		this.openInApp = openInApp;
-		this.onClick = onClick;
-		
+
 		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
 
 		list=new UsableRecyclerView(activity);
@@ -120,6 +119,10 @@ public class AccountSwitcherSheet extends BottomSheet{
 		content.addView(list);
 		setContentView(content);
 		setNavigationBarBackground(new ColorDrawable(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground)), !UiUtils.isDarkTheme());
+	}
+
+	public void setOnClick(BiConsumer<String, Boolean> onClick) {
+		this.onClick = onClick;
 	}
 
 	private void confirmLogOut(String accountID){

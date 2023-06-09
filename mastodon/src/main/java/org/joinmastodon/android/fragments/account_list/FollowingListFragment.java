@@ -13,18 +13,12 @@ public class FollowingListFragment extends AccountRelatedAccountListFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		targetAccount = account;
-		setSubtitle(getResources().getQuantityString(R.plurals.x_following, (int)(account.followingCount%1000), account.followingCount));
+		setSubtitle(initialSubtitle = getResources().getQuantityString(R.plurals.x_following, (int)(account.followingCount%1000), account.followingCount));
 	}
 
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
-		return new GetAccountFollowing(account.id, maxID, count);
-	}
-
-	@Override
-	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count) {
-		return new GetAccountFollowing(id, maxID, count);
+		return new GetAccountFollowing(getCurrentInfo().id, maxID, count);
 	}
 
 	@Override

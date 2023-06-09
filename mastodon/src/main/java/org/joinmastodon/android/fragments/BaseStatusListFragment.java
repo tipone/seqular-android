@@ -16,7 +16,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageButton;
@@ -39,6 +38,7 @@ import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
@@ -61,6 +61,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -72,7 +76,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, HasFab, ProvidesAssistContent.ProvidesWebUri, DomainDisplay {
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends RecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, IsOnTop, HasFab, ProvidesAssistContent.ProvidesWebUri {
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
@@ -83,8 +87,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
-
-	private final int THRESHOLD = 800;
+	protected boolean currentlyScrolling;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -98,7 +101,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		UiUtils.loadMaxWidth(getContext());
 		if(GlobalUserPreferences.disableMarquee){
 			setTitleMarqueeEnabled(false);
 			setSubtitleMarqueeEnabled(false);
@@ -295,6 +297,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		fab.startAnimation(animate);
 	}
 
+	public boolean isScrolling() {
+		return currentlyScrolling;
+	}
+
 	@Override
 	public void hideFab() {
 		View fab = getFab();
@@ -322,7 +328,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					currentPhotoViewer.offsetView(-dx, -dy);
 
 				View fab = getFab();
-				if (fab!=null && GlobalUserPreferences.autoHideFab) {
+				if (fab!=null && GlobalUserPreferences.autoHideFab && dy != UiUtils.SCROLL_TO_TOP_DELTA) {
 					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
 						hideFab();
 					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
@@ -334,6 +340,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 						}
 					}
 				}
+			}
+
+			@Override
+			public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				currentlyScrolling = newState != RecyclerView.SCROLL_STATE_IDLE;
 			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
@@ -378,7 +390,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				}
 				// shifting the selection box down
 				// see also: FooterStatusDisplayItem#onBind (setMargins)
-				if (isWarning || firstIndex < 0 || lastIndex < 0) return;
+				if (isWarning || firstIndex < 0 || lastIndex < 0 ||
+						!(list.getChildViewHolder(list.getChildAt(lastIndex))
+						instanceof FooterStatusDisplayItem.Holder)) return;
 				int prevIndex = firstIndex - 1, nextIndex = lastIndex + 1;
 				boolean prevIsWarning = prevIndex > 0 && prevIndex < list.getChildCount() &&
 						list.getChildViewHolder(list.getChildAt(prevIndex))
@@ -488,26 +502,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				}
 			}
 		}else{
-			if(holder.getItem().status.reloadWhenClicked){
-				Status queryStatus = holder.getItem().status;
-				UiUtils.lookupStatus(getContext(), queryStatus, accountID, null, status -> {
-					submitPollVote(holder.getItemID(), status.poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
-				});
-				return;
-			}
 			submitPollVote(holder.getItemID(), poll.id, Collections.singletonList(poll.options.indexOf(option)));
 		}
 	}
 
 	public void onPollVoteButtonClick(PollFooterStatusDisplayItem.Holder holder){
 		Poll poll=holder.getItem().poll;
-		if(holder.getItem().status.reloadWhenClicked){
-			Status queryStatus = holder.getItem().status;
-			UiUtils.lookupStatus(getContext(), queryStatus, accountID, null, status -> {
-				submitPollVote(holder.getItemID(), status.poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
-			});
-			return;
-		}
 		submitPollVote(holder.getItemID(), poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
 	}
 
@@ -686,8 +686,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	@Override
-	public boolean isScrolledToTop() {
-		return list.getChildAt(0) == null || list.getChildAt(0).getTop() == 0;
+	public boolean isOnTop() {
+		return isRecyclerViewOnTop(list);
 	}
 
 	protected int getListWidthForMediaLayout(){
@@ -757,6 +757,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onProvideAssistContent(AssistContent assistContent) {
 		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
+	}
+
+	@Override
+	protected void onDataLoaded(List<T> d, boolean more) {
+		super.onDataLoaded(d, more);
+		// more available, but the page isn't even full yet? seems wrong, let's load some more
+		if (more && d.size() < itemsPerPage) preloader.onScrolledToLastItem();
 	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{

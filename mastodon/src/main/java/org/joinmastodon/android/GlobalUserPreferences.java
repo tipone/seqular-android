@@ -33,6 +33,8 @@ public class GlobalUserPreferences{
 	public static boolean disableSwipe;
 	public static boolean showDividers;
 	public static boolean voteButtonForSingleChoice;
+	public static boolean enableDeleteNotifications;
+	public static boolean translateButtonOpenedOnly;
 	public static boolean uniformNotificationIcon;
 	public static boolean enableDeleteNotifications;
 	public static boolean relocatePublishButton;
@@ -55,6 +57,8 @@ public class GlobalUserPreferences{
 	public static boolean swapBookmarkWithBoostAction;
 	public static boolean loadRemoteAccountFollowers;
 	public static boolean mentionRebloggerAutomatically;
+	public static boolean allowRemoteLoading;
+	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
@@ -77,8 +81,7 @@ public class GlobalUserPreferences{
 	 */
 	public static String replyVisibility;
 
-
-	public static SharedPreferences getPrefs(){
+	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
 
@@ -116,6 +119,8 @@ public class GlobalUserPreferences{
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		voteButtonForSingleChoice=prefs.getBoolean("voteButtonForSingleChoice", true);
 		enableDeleteNotifications=prefs.getBoolean("enableDeleteNotifications", false);
+		translateButtonOpenedOnly=prefs.getBoolean("translateButtonOpenedOnly", false);
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		disableAltTextReminder=prefs.getBoolean("disableAltTextReminder", false);
@@ -147,6 +152,8 @@ public class GlobalUserPreferences{
 		replyVisibility=prefs.getString("replyVisibility", null);
 		accountsWithContentTypesEnabled=prefs.getStringSet("accountsWithContentTypesEnabled", new HashSet<>());
 		accountsDefaultContentTypes=fromJson(prefs.getString("accountsDefaultContentTypes", null), accountsDefaultContentTypesType, new HashMap<>());
+		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
+		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 
 		try {
 			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
@@ -187,6 +194,7 @@ public class GlobalUserPreferences{
 				.putBoolean("collapseLongPosts", collapseLongPosts)
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
+				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putString("publishButtonText", publishButtonText)
 				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
@@ -207,6 +215,8 @@ public class GlobalUserPreferences{
 				.putString("replyVisibility", replyVisibility)
 				.putStringSet("accountsWithContentTypesEnabled", accountsWithContentTypesEnabled)
 				.putString("accountsDefaultContentTypes", gson.toJson(accountsDefaultContentTypes))
+				.putBoolean("allowRemoteLoading", allowRemoteLoading)
+				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.apply();
 	}
 
@@ -226,5 +236,11 @@ public class GlobalUserPreferences{
 		AUTO,
 		LIGHT,
 		DARK
+	}
+
+	public enum AutoRevealMode {
+		NEVER,
+		THREADS,
+		DISCUSSIONS
 	}
 }

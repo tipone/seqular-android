@@ -129,7 +129,7 @@ public abstract class StatusDisplayItem{
 					: fragment.getString(R.string.in_reply_to, account.displayName);
 			replyLine = new ReblogOrReplyLineStatusDisplayItem(
 					parentID, fragment, text, account == null ? List.of() : account.emojis,
-					R.drawable.ic_fluent_arrow_reply_20_filled, null, null, fullText
+					R.drawable.ic_fluent_arrow_reply_20sp_filled, null, null, fullText
 			);
 		}
 
@@ -138,7 +138,7 @@ public abstract class StatusDisplayItem{
 			statusForContent.rebloggedBy = status.account;
 			String fullText = fragment.getString(R.string.user_boosted, status.account.displayName);
 			String text = GlobalUserPreferences.compactReblogReplyLine && replyLine != null ? status.account.displayName : fullText;
-			items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20_filled, isOwnPost ? status.visibility : null, i->{
+			items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20sp_filled, isOwnPost ? status.visibility : null, i->{
 				args.putParcelable("profileAccount", Parcels.wrap(status.account));
 				Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 			}, fullText));
@@ -153,7 +153,7 @@ public abstract class StatusDisplayItem{
 					// post contains a hashtag the user is following
 					.ifPresent(hashtag -> items.add(new ReblogOrReplyLineStatusDisplayItem(
 							parentID, fragment, hashtag.name, List.of(),
-							R.drawable.ic_fluent_number_symbol_20_filled, null,
+							R.drawable.ic_fluent_number_symbol_20sp_filled, null,
 							i -> {
 								args.putString("hashtag", hashtag.name);
 								Nav.go(fragment.getActivity(), HashtagTimelineFragment.class, args);

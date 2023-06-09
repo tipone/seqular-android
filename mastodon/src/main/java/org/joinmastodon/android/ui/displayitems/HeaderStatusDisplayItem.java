@@ -202,7 +202,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 							args.putBoolean("navigateToStatus", true);
 						}
 					}
-					if(!redraft && TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText)){
+					boolean isPixelfed = item.parentFragment.isInstancePixelfed();
+					boolean textEmpty = TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText);
+					if(!redraft && (isPixelfed || textEmpty)){
+						// pixelfed doesn't support /statuses/:id/source :/
+						if (isPixelfed) {
+							args.putString("sourceText", HtmlParser.text(item.status.content));
+							args.putString("sourceSpoiler", item.status.spoilerText);
+						}
 						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 					}else if(item.scheduledStatus!=null){
 						args.putString("sourceText", item.status.text);

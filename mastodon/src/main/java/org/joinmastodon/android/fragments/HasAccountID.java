@@ -17,6 +17,10 @@ public interface HasAccountID {
         return getInstance().map(Instance::isAkkoma).orElse(false);
     }
 
+    default boolean isInstancePixelfed() {
+        return getInstance().map(Instance::isPixelfed).orElse(false);
+    }
+
     default Optional<Instance> getInstance() {
         return getSession().getInstance();
     }

@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,7 +19,6 @@ import android.view.animation.BounceInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -59,8 +57,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
-		private final TextView reply, boost, favorite, bookmark;
-		private final ImageView share;
+		private final TextView replies, boosts, favorites;
+		private final View reply, boost, favorite, share, bookmark;
 		private static final Animation opacityOut, opacityIn;
 		private static AnimationSet animSet;
 
@@ -105,22 +103,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
-			reply=findViewById(R.id.reply);
-			boost=findViewById(R.id.boost);
-			favorite=findViewById(R.id.favorite);
-			bookmark=findViewById(R.id.bookmark);
-			share=findViewById(R.id.share);
-			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N){
-				UiUtils.fixCompoundDrawableTintOnAndroid6(reply);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(boost);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(favorite);
-				UiUtils.fixCompoundDrawableTintOnAndroid6(bookmark);
-			}
-			View reply=findViewById(R.id.reply_btn);
-			View boost=findViewById(R.id.boost_btn);
-			View favorite=findViewById(R.id.favorite_btn);
-			View share=findViewById(R.id.share_btn);
-			View bookmark=findViewById(R.id.bookmark_btn);
+			replies=findViewById(R.id.reply);
+			boosts=findViewById(R.id.boost);
+			favorites=findViewById(R.id.favorite);
+
+			reply=findViewById(R.id.reply_btn);
+			boost=findViewById(R.id.boost_btn);
+			favorite=findViewById(R.id.favorite_btn);
+			share=findViewById(R.id.share_btn);
+			bookmark=findViewById(R.id.bookmark_btn);
+
 			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
 			reply.setOnLongClickListener(this::onReplyLongClick);
@@ -145,9 +137,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void onBind(FooterStatusDisplayItem item){
-			bindButton(reply, item.status.repliesCount);
-			bindButton(boost, item.status.reblogsCount);
-			bindButton(favorite, item.status.favouritesCount);
+			bindText(replies, item.status.repliesCount);
+			bindText(boosts, item.status.reblogsCount);
+			bindText(favorites, item.status.favouritesCount);
 			// in thread view, direct descendant posts display one direct reply to themselves,
 			// hence in that case displaying whether there is another reply
 			int compareTo = item.isMainStatus || !item.hasDescendantNeighbor ? 0 : 1;
@@ -166,12 +158,12 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
 			params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
-					condenseBottom ? V.dp(-8) : 0);
+					condenseBottom ? V.dp(-5) : 0);
 
 			itemView.requestLayout();
 		}
 
-		private void bindButton(TextView btn, long count){
+		private void bindText(TextView btn, long count){
 			if(GlobalUserPreferences.showInteractionCounts && count>0 && !item.hideCounts){
 				btn.setText(UiUtils.abbreviateNumber(count));
 				btn.setCompoundDrawablePadding(V.dp(8));
@@ -195,8 +187,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			} else if (action == MotionEvent.ACTION_DOWN) {
 				longClickPerformed = false;
 				touchingView = v;
-				// 20dp to center in middle of icon, because: (icon width = 24dp) / 2 + (paddingStart = 8dp)
-				v.setPivotX(V.dp(20));
+				// 28dp to center in middle of icon, because:
+				// (icon width = 24dp) / 2 + (paddingStart = 8dp) + (paddingHorizontal = 8dp)
+				v.setPivotX(UiUtils.sp(v.getContext(), 28));
 				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
 				if (disabled) return true;
 				v.postDelayed(longClickRunnable, ViewConfiguration.getLongPressTimeout());
@@ -265,7 +258,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		private void boostConsumer(View v, Status r) {
 			v.startAnimation(opacityIn);
-			bindButton(boost, r.reblogsCount);
+			bindText(boosts, r.reblogsCount);
 		}
 
 		private boolean onBoostLongClick(View v){

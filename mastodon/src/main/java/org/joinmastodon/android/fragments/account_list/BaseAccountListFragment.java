@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.app.assist.AssistContent;
 import android.content.Intent;
@@ -47,6 +48,7 @@ import java.util.stream.Collectors;
 
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.APIRequest;
@@ -82,10 +84,7 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 		if(refreshing){
 			relationships.clear();
 		}
-		if(!d.isEmpty() && !d.get(0).account.reloadWhenClicked){
-			loadRelationships(d);
-		}
-
+		loadRelationships(d);
 		super.onDataLoaded(d, more);
 	}
 
@@ -248,22 +247,20 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 			UiUtils.enablePopupMenuIcons(getActivity(), contextMenu);
 		}
 
+		@SuppressLint("SetTextI18n")
 		@Override
 		public void onBind(AccountItem item){
 			name.setText(item.parsedName);
-			username.setText("@"+item.account.acct);
+			username.setText("@"+ (item.account.isRemote
+					? item.account.getFullyQualifiedName()
+					: item.account.acct));
 			bindRelationship();
 		}
 
 		public void bindRelationship(){
 			Relationship rel=relationships.get(item.account.id);
-			if(rel==null || AccountSessionManager.getInstance().isSelf(accountID, item.account)){
-				if(item.account.reloadWhenClicked){
-					button.setVisibility(View.VISIBLE);
-					button.setText(R.string.button_follow);
-				} else {
-					button.setVisibility(View.GONE);
-				}
+			if(rel==null || item.account.isRemote || AccountSessionManager.getInstance().isSelf(accountID, item.account)){
+				button.setVisibility(View.GONE);
 			}else{
 				button.setVisibility(View.VISIBLE);
 				UiUtils.setRelationshipToActionButton(rel, button);
@@ -290,18 +287,10 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 
 		@Override
 		public void onClick(){
-			if(item.account.reloadWhenClicked){
-				UiUtils.lookupAccount(getContext(), item.account, accountID, null, account -> {
-					Bundle args=new Bundle();
-					args.putString("account", accountID);
-					args.putParcelable("profileAccount", Parcels.wrap(account));
-					Nav.go(getActivity(), ProfileFragment.class, args);
-				});
-				return;
-			}
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-			args.putParcelable("profileAccount", Parcels.wrap(item.account));
+			if (item.account.isRemote) args.putParcelable("remoteAccount", Parcels.wrap(item.account));
+			else args.putParcelable("profileAccount", Parcels.wrap(item.account));
 			Nav.go(getActivity(), ProfileFragment.class, args);
 		}
 
@@ -441,6 +430,11 @@ public abstract class BaseAccountListFragment extends RecyclerFragment<BaseAccou
 			avaRequest=new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(50), V.dp(50));
 			emojiHelper=new CustomEmojiHelper();
 			emojiHelper.setText(parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis));
+		}
+
+		@Override
+		public boolean equals(@Nullable Object obj) {
+			return obj instanceof AccountItem i && i.account.url.equals(account.url);
 		}
 	}
 }

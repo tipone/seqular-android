@@ -1,14 +1,10 @@
 package org.joinmastodon.android.ui.text;
 
 import android.graphics.Typeface;
-import android.graphics.fonts.FontFamily;
-import android.graphics.fonts.FontStyle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
-import android.text.style.BackgroundColorSpan;
 import android.text.style.BulletSpan;
-import android.text.style.ForegroundColorSpan;
 import android.text.style.LeadingMarginSpan;
 import android.text.style.RelativeSizeSpan;
 import android.text.style.StrikethroughSpan;
@@ -17,13 +13,10 @@ import android.text.style.SubscriptSpan;
 import android.text.style.SuperscriptSpan;
 import android.text.style.TypefaceSpan;
 import android.text.style.UnderlineSpan;
-import android.util.TypedValue;
 import android.widget.TextView;
 
 import com.twitter.twittertext.Regex;
 
-import org.joinmastodon.android.MastodonApp;
-import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Mention;
@@ -249,6 +242,10 @@ public class HtmlParser{
 
 	public static String strip(String html){
 		return Jsoup.clean(html, Safelist.none());
+	}
+
+	public static String text(String html) {
+		return Jsoup.parse(html).body().wholeText();
 	}
 
 	public static CharSequence parseLinks(String text){

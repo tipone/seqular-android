@@ -274,4 +274,26 @@
     <string name="sk_settings_confirm_before_reblog">Vor dem Teilen bestätigen</string>
     <string name="sk_reacted">hat reagiert</string>
     <string name="sk_reacted_with">hat mit %s reagiert</string>
+    <string name="sk_external_share_title">Mit Konto teilen</string>
+    <string name="sk_external_share_or_open_title">Mit Konto teilen oder öffnen</string>
+    <string name="sk_timeline_bubble">Bubble</string>
+    <string name="sk_settings_default_content_type_explanation">Vorausgewählter Inhaltstyp für neue Beiträge – überschreibt den Wert, der unter „Einstellungen für Beiträge“ gesetzt ist.</string>
+    <string name="sk_open_in_app_failed">Konnte nicht in der App öffnen</string>
+    <string name="sk_content_type_unspecified">Nicht angegeben</string>
+    <string name="sk_content_type_plain">Nur Text</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_content_type">Inhaltstyp</string>
+    <string name="sk_bubble_timeline_info_banner">Das sind die neuesten Beiträge aus dem Netzwerk, das deine Instanz-Admins kuratiert haben.</string>
+    <string name="sk_settings_content_types">Formatierung aktivieren</string>
+    <string name="sk_settings_default_content_type">Standard-Inhaltstyp</string>
+    <string name="sk_instance_info_unavailable">Informationen zur Instanz momentan nicht verfügbar</string>
+    <string name="sk_open_in_app">In App öffnen</string>
+    <string name="sk_settings_content_types_explanation">Dadurch lässt beim Erstellen von Beiträgen ein Inhaltstyp wie Markdown angeben. Nicht alle Instanzen unterstützen das.</string>
+    <string name="sk_settings_allow_remote_loading">Infos von Remote-Instanzen laden</string>
+    <string name="sk_no_remote_info_hint">keine Remote-Infos abrufbar</string>
+    <string name="sk_error_loading_profile">Konnte das Profil via %s nicht laden</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower*innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
 </resources>

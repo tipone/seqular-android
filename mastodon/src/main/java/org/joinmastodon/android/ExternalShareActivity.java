@@ -6,8 +6,10 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.widget.Toast;
 
+import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
@@ -19,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
@@ -31,19 +34,23 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		if(savedInstanceState==null){
 
 			Optional<String> text = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT));
-			boolean isMastodonURL = text.map(UiUtils::looksLikeMastodonUrl).orElse(false);
+			Optional<Pair<String, Optional<String>>> fediHandle = text.flatMap(UiUtils::parseFediverseHandle);
+			boolean isFediUrl = text.map(UiUtils::looksLikeFediverseUrl).orElse(false);
+			boolean isOpenable = isFediUrl || fediHandle.isPresent();
 
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
-			if(sessions.isEmpty()){
+			if (sessions.isEmpty()){
 				Toast.makeText(this, R.string.err_not_logged_in, Toast.LENGTH_SHORT).show();
 				finish();
-			}else if(sessions.size()==1 && !isMastodonURL){
-				openComposeFragment(sessions.get(0).getID());
-			}else{
-				new AccountSwitcherSheet(this, null, true, isMastodonURL, (accountId, open) -> {
+			} else if (isOpenable || sessions.size() > 1) {
+				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, true, isOpenable);
+				sheet.setOnClick((accountId, open) -> {
 					if (open && text.isPresent()) {
-						UiUtils.lookupURL(this, accountId, text.get(), false, (clazz, args) -> {
+						BiConsumer<Class<? extends Fragment>, Bundle> callback = (clazz, args) -> {
 							if (clazz == null) {
+								Toast.makeText(this, R.string.sk_open_in_app_failed, Toast.LENGTH_SHORT).show();
+								// TODO: do something about the window getting leaked
+								sheet.dismiss();
 								finish();
 								return;
 							}
@@ -52,11 +59,25 @@ public class ExternalShareActivity extends FragmentStackActivity{
 							intent.putExtras(args);
 							finish();
 							startActivity(intent);
-						});
+						};
+
+						fediHandle
+								.<MastodonAPIRequest<?>>map(handle ->
+										UiUtils.lookupAccountHandle(this, accountId, handle, callback))
+								.or(() ->
+										UiUtils.lookupURL(this, accountId, text.get(), callback))
+								.ifPresent(req ->
+										req.wrapProgress(this, R.string.loading, true, d -> {
+											UiUtils.transformDialogForLookup(this, accountId, isFediUrl ? text.get() : null, d);
+											d.setOnDismissListener((ev) -> finish());
+										}));
 					} else {
 						openComposeFragment(accountId);
 					}
-				}).show();
+				});
+				sheet.show();
+			} else if (sessions.size() == 1) {
+				openComposeFragment(sessions.get(0).getID());
 			}
 		}
 	}

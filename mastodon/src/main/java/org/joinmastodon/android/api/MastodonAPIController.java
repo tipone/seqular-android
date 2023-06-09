@@ -17,6 +17,7 @@ import org.joinmastodon.android.api.gson.IsoInstantTypeAdapter;
 import org.joinmastodon.android.api.gson.IsoLocalDateTypeAdapter;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -161,6 +162,11 @@ public class MastodonAPIController{
 											respObj=gson.fromJson(reader, req.respClass);
 									}
 								}catch(JsonIOException|JsonSyntaxException x){
+									if (req.context != null && response.body().contentType().subtype().equals("html")) {
+										UiUtils.launchWebBrowser(req.context, response.request().url().toString());
+										req.cancel();
+										return;
+									}
 									if(BuildConfig.DEBUG)
 										Log.w(TAG, "["+(session==null ? "no-auth" : session.getID())+"] "+response+" error parsing or reading body", x);
 									req.onError(x.getLocalizedMessage(), response.code(), x);

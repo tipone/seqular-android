@@ -2,22 +2,25 @@ package org.joinmastodon.android.fragments;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Pair;
 import android.view.View;
 
-import org.joinmastodon.android.DomainManager;
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
+import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.GlobalUserPreferences.AutoRevealMode;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
+import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Filter;
-import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusContext;
+import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
@@ -40,31 +43,16 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
+import me.grishka.appkit.utils.V;
 
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
-	protected Status mainStatus;
-
-	/**
-	 * lists the hierarchy of ancestors and descendants in a thread. level 0 = the main status.
-	 * e.g.
-	 * <pre>
-	 * [0] ancestor:   -2 ↰
-	 * [1] ancestor:     -1 ↰
-	 * [2] main status:     0 ↰
-	 * [3] descendant:        1 ↰
-	 * [4] descendant:          2 ↰
-	 * [5] descendant:            3
-	 * [6] descendant:        1
-	 * [7] descendant:        1 ↰
-	 * [8] descendant:          2
-	 * </pre>
-	 * confused? good. /j
-	 */
-	private final List<Pair<String, Integer>> levels = new ArrayList<>();
+	protected Status mainStatus, updatedStatus;
 	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
+	protected boolean contextInitiallyRendered;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -96,10 +84,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 			NeighborAncestryInfo ancestryInfo = ancestryMap.get(s.id);
 			if (ancestryInfo != null) {
 				item.setAncestryInfo(
-						ancestryInfo.hasDescendantNeighbor(),
-						ancestryInfo.hasAncestoringNeighbor(),
+						ancestryInfo.descendantNeighbor != null,
+						ancestryInfo.ancestoringNeighbor != null,
 						s.id.equals(mainStatus.id),
-						ancestryInfo.getAncestoringNeighbor()
+						Optional.ofNullable(ancestryInfo.ancestoringNeighbor)
 								.map(ancestor -> ancestor.id.equals(mainStatus.id))
 								.orElse(false)
 				);
@@ -119,19 +107,23 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		}
 		for (int deleteThisItem : deleteTheseItems) itemsToModify.remove(deleteThisItem);
 		if(s.id.equals(mainStatus.id)) {
-			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, accountID, s.getContentStatus()));
+			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, s.getContentStatus()));
 		}
 		return items;
 	}
 
 	@Override
 	protected void doLoadData(int offset, int count){
+		if (refreshing) loadMainStatus();
 		currentRequest=new GetStatusContext(mainStatus.id)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(StatusContext result){
-						if (getActivity() == null) return;
+						if (getContext() == null) return;
+						Map<String, Status> oldData = null;
 						if(refreshing){
+							oldData = new HashMap<>(data.size());
+							for (Status s : data) oldData.put(s.id, s);
 							data.clear();
 							ancestryMap.clear();
 							displayItems.clear();
@@ -163,15 +155,79 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 							adapter.notifyItemRemoved(prependedCount);
 							count--;
 						}
+
+						for (Status s : data) {
+							Status oldStatus = oldData == null ? null : oldData.get(s.id);
+							// restore previous spoiler/filter revealed states when refreshing
+							if (oldStatus != null) {
+								s.spoilerRevealed = oldStatus.spoilerRevealed;
+								s.filterRevealed = oldStatus.filterRevealed;
+							} else if (GlobalUserPreferences.autoRevealEqualSpoilers != AutoRevealMode.NEVER &&
+									s.spoilerText != null &&
+									s.spoilerText.equals(mainStatus.spoilerText) &&
+									mainStatus.spoilerRevealed) {
+								if (GlobalUserPreferences.autoRevealEqualSpoilers == AutoRevealMode.DISCUSSIONS || Objects.equals(mainStatus.account.id, s.account.id)) {
+									s.spoilerRevealed = true;
+								}
+							}
+						}
+
 						dataLoaded();
 						if(refreshing){
 							refreshDone();
 							adapter.notifyDataSetChanged();
 						}
 						list.scrollToPosition(displayItems.size()-count);
+
+						// no animation is going to happen, so proceeding to apply right now
+						if (data.size() == 1) {
+							contextInitiallyRendered = true;
+							// for the case that the main status has already finished loading
+							maybeApplyMainStatus();
+						}
 					}
 				})
 				.exec(accountID);
+	}
+
+	private void loadMainStatus() {
+		new GetStatusByID(mainStatus.id)
+				.setCallback(new Callback<>() {
+					@Override
+					public void onSuccess(Status status) {
+						if (getContext() == null || status == null) return;
+						updatedStatus = status;
+						// for the case that the context has already loaded (and the animation has
+						// already finished), falling back to applying it ourselves:
+						maybeApplyMainStatus();
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {}
+				}).exec(accountID);
+	}
+
+	protected Object maybeApplyMainStatus() {
+		if (updatedStatus == null || !contextInitiallyRendered) return null;
+
+		// restore revealed states for main status because it gets updated after doLoadData
+		updatedStatus.filterRevealed = mainStatus.filterRevealed;
+		updatedStatus.spoilerRevealed = mainStatus.spoilerRevealed;
+
+		// returning fired event object to facilitate testing
+		Object event;
+		if (updatedStatus.editedAt != null &&
+				(mainStatus.editedAt == null ||
+						updatedStatus.editedAt.isAfter(mainStatus.editedAt))) {
+			event = new StatusUpdatedEvent(updatedStatus);
+		} else {
+			event = new StatusCountersUpdatedEvent(updatedStatus);
+		}
+
+		mainStatus = updatedStatus;
+		updatedStatus = null;
+		E.post(event);
+		return event;
 	}
 
 	public static List<NeighborAncestryInfo> mapNeighborhoodAncestry(Status mainStatus, StatusContext context) {
@@ -184,22 +240,21 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		int count = statuses.size();
 		for (int index = 0; index < count; index++) {
 			Status current = statuses.get(index);
-			NeighborAncestryInfo item = new NeighborAncestryInfo(current);
-
-			item.descendantNeighbor = Optional
-					.ofNullable(count > index + 1 ? statuses.get(index + 1) : null)
-					.filter(s -> s.inReplyToId.equals(current.id))
-					.orElse(null);
-
-			item.ancestoringNeighbor = Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
-					.filter(ancestor -> ancestor
-							.getDescendantNeighbor()
-							.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
-							.orElse(false))
-					.flatMap(NeighborAncestryInfo::getStatus)
-					.orElse(null);
-
-			ancestry.add(item);
+			ancestry.add(new NeighborAncestryInfo(
+					current,
+					// descendant neighbor
+					Optional
+							.ofNullable(count > index + 1 ? statuses.get(index + 1) : null)
+							.filter(s -> s.inReplyToId.equals(current.id))
+							.orElse(null),
+					// ancestoring neighbor
+					Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
+							.filter(ancestor -> Optional.ofNullable(ancestor.descendantNeighbor)
+									.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
+									.orElse(false))
+							.map(a -> a.status)
+							.orElse(null)
+			));
 		}
 
 		return ancestry;
@@ -269,17 +324,28 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		showContent();
 		if(!loaded)
 			footerProgress.setVisibility(View.VISIBLE);
+
+		list.setItemAnimator(new BetterItemAnimator() {
+			@Override
+			public void onAnimationFinished(@NonNull RecyclerView.ViewHolder viewHolder) {
+				super.onAnimationFinished(viewHolder);
+				contextInitiallyRendered = true;
+				// for the case that both requests are already done (and thus won't apply it)
+				maybeApplyMainStatus();
+			}
+		});
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
 		if(ev.status.inReplyToId!=null && getStatusByID(ev.status.inReplyToId)!=null){
+			data.add(ev.status);
 			onAppendItems(Collections.singletonList(ev.status));
 		}
 	}
 
 	@Override
 	public boolean isItemEnabled(String id){
-		return !id.equals(mainStatus.id);
+		return !id.equals(mainStatus.id) || !mainStatus.filterRevealed;
 	}
 
 	@Override
@@ -303,31 +369,13 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		return Uri.parse(mainStatus.url);
 	}
 
-	public static class NeighborAncestryInfo {
+	protected static class NeighborAncestryInfo {
 		protected Status status, descendantNeighbor, ancestoringNeighbor;
 
-		public NeighborAncestryInfo(@NonNull Status status) {
+		protected NeighborAncestryInfo(@NonNull Status status, Status descendantNeighbor, Status ancestoringNeighbor) {
 			this.status = status;
-		}
-
-		public Optional<Status> getStatus() {
-			return Optional.ofNullable(status);
-		}
-
-		public Optional<Status> getDescendantNeighbor() {
-			return Optional.ofNullable(descendantNeighbor);
-		}
-
-		public Optional<Status> getAncestoringNeighbor() {
-			return Optional.ofNullable(ancestoringNeighbor);
-		}
-
-		public boolean hasDescendantNeighbor() {
-			return getDescendantNeighbor().isPresent();
-		}
-
-		public boolean hasAncestoringNeighbor() {
-			return getAncestoringNeighbor().isPresent();
+			this.descendantNeighbor = descendantNeighbor;
+			this.ancestoringNeighbor = ancestoringNeighbor;
 		}
 
 		@Override
@@ -344,5 +392,17 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		public int hashCode() {
 			return Objects.hash(status, descendantNeighbor, ancestoringNeighbor);
 		}
+	}
+
+	@Override
+	protected void onErrorRetryClick(){
+		if(preloadingFailed){
+			preloadingFailed=false;
+			V.setVisibilityAnimated(footerProgress, View.VISIBLE);
+			V.setVisibilityAnimated(footerError, View.GONE);
+			doLoadData();
+			return;
+		}
+		super.onErrorRetryClick();
 	}
 }

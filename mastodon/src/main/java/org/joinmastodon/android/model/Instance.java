@@ -148,6 +148,10 @@ public class Instance extends BaseModel{
 		return pleroma != null;
 	}
 
+	public boolean isPixelfed() {
+		return version.contains("compatible; Pixelfed");
+	}
+
 	public boolean hasFeature(Feature feature) {
 		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
 				.map(p -> p.metadata)

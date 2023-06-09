@@ -466,6 +466,12 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		if (fragments[pager.getCurrentItem()] instanceof BaseStatusListFragment<?> l) l.hideFab();
 	}
 
+	@Override
+	public boolean isScrolling() {
+		return (fragments[pager.getCurrentItem()] instanceof HasFab fabulous)
+				&& fabulous.isScrolling();
+	}
+
 	private void updateSwitcherIcon(int i) {
 		timelineIcon.setImageResource(timelines[i].getIcon().iconRes);
 		timelineTitle.setText(timelines[i].getTitle(getContext()));

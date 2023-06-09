@@ -20,6 +20,7 @@ import org.parceler.Parcels;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
@@ -96,10 +97,11 @@ public class AccountTimelineFragment extends StatusListFragment{
 			if(ev.status.inReplyToAccountId!=null && !ev.status.inReplyToAccountId.equals(AccountSessionManager.getInstance().getAccount(accountID).self.id))
 				return;
 		}else if(filter==GetAccountStatuses.Filter.MEDIA){
-			if(ev.status.mediaAttachments.isEmpty())
+			if(Optional.ofNullable(ev.status.mediaAttachments).map(List::isEmpty).orElse(true))
 				return;
 		}
 		prependItems(Collections.singletonList(ev.status), true);
+		if (isOnTop()) scrollToTop();
 	}
 
 	protected void onStatusUnpinned(StatusUnpinnedEvent ev){

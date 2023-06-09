@@ -23,6 +23,7 @@
 	<attr name="bookmark_selected" format="color"/>
 	<attr name="profileHeaderBackground" format="color"/>
 	<attr name="toolbarBackground" format="color"/>
+	<attr name="colorIconDisabled" format="color"/>
 
 	<attr name="colorButtonBackgroundPrimaryDarkOnLight" format="color"/>
 	<attr name="colorButtonBackgroundPrimaryDarkOnLightDisabled" format="color"/>
@@ -75,6 +76,7 @@
 
 	<declare-styleable name="MaxWidthFrameLayout">
 		<attr name="android:maxWidth" format="dimension"/>
+		<attr name="defaultWidth" format="dimension" />
 	</declare-styleable>
 
 	<declare-styleable name="FloatingHintEditTextLayout">

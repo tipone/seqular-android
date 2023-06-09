@@ -46,7 +46,7 @@ public class StatusInteractionController{
 					@Override
 					public void onSuccess(Status result){
 						runningFavoriteRequests.remove(status.id);
-						result.favouritesCount = Math.max(0, status.favouritesCount) + (favorited ? 1 : -1);
+						result.favouritesCount = Math.max(0, status.favouritesCount + (favorited ? 1 : -1));
 						cb.accept(result);
 						if (updateCounters) E.post(new StatusCountersUpdatedEvent(result));
 					}
@@ -80,7 +80,7 @@ public class StatusInteractionController{
 					public void onSuccess(Status reblog){
 						Status result = reblog.getContentStatus();
 						runningReblogRequests.remove(status.id);
-						result.reblogsCount = Math.max(0, status.reblogsCount) + (reblogged ? 1 : -1);
+						result.reblogsCount = Math.max(0, status.reblogsCount + (reblogged ? 1 : -1));
 						cb.accept(result);
 						if (updateCounters) E.post(new StatusCountersUpdatedEvent(result));
 					}

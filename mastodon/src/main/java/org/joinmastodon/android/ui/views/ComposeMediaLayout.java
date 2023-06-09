@@ -23,7 +23,6 @@ public class ComposeMediaLayout extends ViewGroup{
 
 	public ComposeMediaLayout(Context context, AttributeSet attrs, int defStyle){
 		super(context, attrs, defStyle);
-		UiUtils.loadMaxWidth(context);
 	}
 
 	@Override

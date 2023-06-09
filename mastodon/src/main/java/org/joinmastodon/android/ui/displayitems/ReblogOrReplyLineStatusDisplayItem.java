@@ -73,9 +73,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	public void updateVisibility(StatusPrivacy visibility) {
 		this.visibility = visibility;
 		this.iconEnd = visibility != null ? switch (visibility) {
-			case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
-			case UNLISTED -> R.drawable.ic_fluent_lock_open_20_regular;
-			case PRIVATE -> R.drawable.ic_fluent_lock_closed_20_filled;
+			case PUBLIC -> R.drawable.ic_fluent_earth_20sp_regular;
+			case UNLISTED -> R.drawable.ic_fluent_lock_open_20sp_regular;
+			case PRIVATE -> R.drawable.ic_fluent_lock_closed_20sp_filled;
 			default -> 0;
 		} : 0;
 	}

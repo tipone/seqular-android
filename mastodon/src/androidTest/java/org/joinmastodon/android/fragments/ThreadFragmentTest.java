@@ -2,14 +2,14 @@ package org.joinmastodon.android.fragments;
 
 import static org.junit.Assert.*;
 
-import android.util.Pair;
-
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
+import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusContext;
 import org.junit.Test;
 
+import java.time.Instant;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class ThreadFragmentTest {
 
@@ -20,10 +20,7 @@ public class ThreadFragmentTest {
 	}
 
 	private ThreadFragment.NeighborAncestryInfo fakeInfo(Status s, Status d, Status a) {
-		ThreadFragment.NeighborAncestryInfo info = new ThreadFragment.NeighborAncestryInfo(s);
-		info.descendantNeighbor = d;
-		info.ancestoringNeighbor = a;
-		return info;
+		return new ThreadFragment.NeighborAncestryInfo(s, d, a);
 	}
 
 	@Test
@@ -53,6 +50,33 @@ public class ThreadFragmentTest {
 				fakeInfo(context.descendants.get(2), null, context.descendants.get(1)),
 				fakeInfo(context.descendants.get(3), null, null)
 		), neighbors);
+	}
+
+	@Test
+	public void maybeApplyMainStatus() {
+		ThreadFragment fragment = new ThreadFragment();
+		fragment.contextInitiallyRendered = true;
+		fragment.mainStatus = Status.ofFake("123456", "original text", Instant.EPOCH);
+
+		Status update1 = Status.ofFake("123456", "updated text", Instant.EPOCH);
+		update1.editedAt = Instant.ofEpochSecond(1);
+		fragment.updatedStatus = update1;
+		StatusUpdatedEvent event1 = (StatusUpdatedEvent) fragment.maybeApplyMainStatus();
+		assertEquals("fired update event", update1, event1.status);
+		assertEquals("updated main status", update1, fragment.mainStatus);
+
+		Status update2 = Status.ofFake("123456", "updated text", Instant.EPOCH);
+		update2.favouritesCount = 123;
+		fragment.updatedStatus = update2;
+		StatusCountersUpdatedEvent event2 = (StatusCountersUpdatedEvent) fragment.maybeApplyMainStatus();
+		assertEquals("only fired counter update event", update2.id, event2.id);
+		assertEquals("updated counter is correct", 123, event2.favorites);
+		assertEquals("updated main status", update2, fragment.mainStatus);
+
+		Status update3 = Status.ofFake("123456", "whatever", Instant.EPOCH);
+		fragment.contextInitiallyRendered = false;
+		fragment.updatedStatus = update3;
+		assertNull("no update when context hasn't been rendered", fragment.maybeApplyMainStatus());
 	}
 
 	@Test

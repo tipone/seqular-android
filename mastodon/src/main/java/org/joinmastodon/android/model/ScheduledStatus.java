@@ -1,5 +1,6 @@
 package org.joinmastodon.android.model;
 
+import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.model.Poll.Option;
 import org.parceler.Parcel;
@@ -16,7 +17,6 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
     public Instant scheduledAt;
     @RequiredField
     public Params params;
-    @RequiredField
     public List<Attachment> mediaAttachments;
 
     @Override
@@ -24,8 +24,17 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
         return id;
     }
 
+    @Override
+    public void postprocess() throws ObjectValidationException {
+        super.postprocess();
+        if (mediaAttachments == null) mediaAttachments = List.of();
+        for(Attachment a:mediaAttachments)
+            a.postprocess();
+        if (params != null) params.postprocess();
+    }
+
     @Parcel
-    public static class Params {
+    public static class Params extends BaseModel {
         @RequiredField
         public String text;
         public String spoilerText;
@@ -40,10 +49,16 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
         public String applicationId;
         public List<String> mediaIds;
         public ContentType contentType;
+
+        @Override
+        public void postprocess() throws ObjectValidationException {
+            super.postprocess();
+            if (poll != null) poll.postprocess();
+        }
     }
 
     @Parcel
-    public static class ScheduledPoll {
+    public static class ScheduledPoll extends BaseModel {
         @RequiredField
         public String expiresIn;
         @RequiredField
