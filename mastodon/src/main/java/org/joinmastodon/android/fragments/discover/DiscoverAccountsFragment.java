@@ -144,11 +144,6 @@ public class DiscoverAccountsFragment extends RecyclerFragment<DiscoverAccountsF
 	}
 
 	@Override
-	public boolean isScrolledToTop() {
-		return list.getChildAt(0).getTop() == 0;
-	}
-
-	@Override
 	public boolean isOnTop() {
 		return isRecyclerViewOnTop(list);
 	}

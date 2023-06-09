@@ -33,9 +33,4 @@ public class StatusReblogsListFragment extends StatusRelatedAccountListFragment{
 				? statusUri
 				: statusUri.buildUpon().appendPath("reblogs").build();
 	}
-
-	@Override
-	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count) {
-		return null;
-	}
 }

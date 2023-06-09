@@ -107,7 +107,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		}
 		for (int deleteThisItem : deleteTheseItems) itemsToModify.remove(deleteThisItem);
 		if(s.id.equals(mainStatus.id)) {
-			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, s.getContentStatus()));
+			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, getAccountID(), s.getContentStatus()));
 		}
 		return items;
 	}

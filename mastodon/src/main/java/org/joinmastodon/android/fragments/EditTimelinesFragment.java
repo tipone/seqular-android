@@ -240,11 +240,6 @@ public class EditTimelinesFragment extends RecyclerFragment<TimelineDefinition> 
     }
 
     @Override
-    public boolean isScrolledToTop() {
-        return list.getChildAt(0).getTop() == 0;
-    }
-
-    @Override
     public void onDestroy() {
         super.onDestroy();
         if (updated) UiUtils.restartApp();

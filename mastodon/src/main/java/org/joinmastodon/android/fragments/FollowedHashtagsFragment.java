@@ -72,10 +72,6 @@ public class FollowedHashtagsFragment extends RecyclerFragment<Hashtag> implemen
         return new HashtagsAdapter();
     }
 
-    @Override
-    public boolean isScrolledToTop() {
-        return list.getChildAt(0).getTop() == 0;
-    }
 
     @Override
     public void scrollToTop() {

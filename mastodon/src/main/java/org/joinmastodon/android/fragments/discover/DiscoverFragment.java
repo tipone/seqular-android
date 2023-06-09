@@ -225,15 +225,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	@Override
-	public boolean isScrolledToTop() {
-		if(!searchActive){
-			return ((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).isScrolledToTop();
-		}else{
-			return searchFragment.isScrolledToTop();
-		}
-	}
-
-	@Override
 	public void scrollToTop(){
 		if(!searchActive){
 			((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).scrollToTop();

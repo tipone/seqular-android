@@ -448,6 +448,25 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		V.setVisibilityAnimated(fab, View.VISIBLE);
 	}
 
+	public void setNote(String note){
+		this.note=note;
+		noteWrap.setVisibility(View.VISIBLE);
+		noteEdit.setVisibility(View.VISIBLE);
+		noteEdit.setText(note);
+	}
+
+	private void savePrivateNote(){
+		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Relationship result) {}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
+			}
+		}).exec(accountID);
+	}
+
 	@Override
 	protected void doLoadData(){
 		if (remoteAccount != null) {

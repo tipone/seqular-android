@@ -33,9 +33,4 @@ public class StatusFavoritesListFragment extends StatusRelatedAccountListFragmen
 				? statusUri
 				: statusUri.buildUpon().appendPath("favourites").build();
 	}
-
-	@Override
-	public HeaderPaginationRequest<Account> onCreateRemoteRequest(String id, String maxID, int count) {
-		return null;
-	}
 }

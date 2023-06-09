@@ -370,7 +370,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 								} else {
 									v.startAnimation(opacityIn);
 								}
-								bindButton(favorite, r.favouritesCount);
+								bindText(favorites, r.favouritesCount);
 							});
 						}
 				);
@@ -383,7 +383,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				} else {
 					v.startAnimation(opacityIn);
 				}
-				bindButton(favorite, r.favouritesCount);
+				bindText(favorites, r.favouritesCount);
 			});
 		}
 

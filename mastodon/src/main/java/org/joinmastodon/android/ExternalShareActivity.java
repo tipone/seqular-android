@@ -35,7 +35,7 @@ public class ExternalShareActivity extends FragmentStackActivity{
 
 			Optional<String> text = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT));
 			Optional<Pair<String, Optional<String>>> fediHandle = text.flatMap(UiUtils::parseFediverseHandle);
-			boolean isFediUrl = text.map(UiUtils::looksLikeFediverseUrl).orElse(false);
+			boolean isFediUrl = text.map(UiUtils::looksLikeMastodonUrl).orElse(false);
 			boolean isOpenable = isFediUrl || fediHandle.isPresent();
 
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();

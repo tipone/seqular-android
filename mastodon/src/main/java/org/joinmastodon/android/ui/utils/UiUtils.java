@@ -108,6 +108,7 @@ import java.lang.reflect.Method;
 import java.net.IDN;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -809,7 +810,6 @@ public class UiUtils {
 						}
 					})
 					.exec(accountID);
-		}
 	}
 
 
@@ -1282,7 +1282,7 @@ public class UiUtils {
 							}
 						})
 						.exec(accountID));
-			} else if (looksLikeFediverseUrl(url)) {
+			} else if (looksLikeMastodonUrl(url)) {
 				return Optional.of(new GetSearchResults(url, null, true)
 						.setCallback(new Callback<>() {
 							@Override

@@ -36,7 +36,6 @@ public class GlobalUserPreferences{
 	public static boolean enableDeleteNotifications;
 	public static boolean translateButtonOpenedOnly;
 	public static boolean uniformNotificationIcon;
-	public static boolean enableDeleteNotifications;
 	public static boolean relocatePublishButton;
 	public static boolean reduceMotion;
 	public static boolean keepOnlyLatestNotification;
@@ -81,7 +80,7 @@ public class GlobalUserPreferences{
 	 */
 	public static String replyVisibility;
 
-	private static SharedPreferences getPrefs(){
+	public static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
 
