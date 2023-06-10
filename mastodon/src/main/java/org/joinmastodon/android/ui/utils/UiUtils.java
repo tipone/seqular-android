@@ -779,6 +779,8 @@ public class UiUtils {
 			confirmToggleBlockUser(activity, accountID, account, true, resultCallback);
 		} else if (relationship.muting) {
 			confirmToggleMuteUser(activity, accountID, account, true, resultCallback);
+		} else if (!relationship.following && !relationship.requested) {
+			follow(activity, accountID, account,  true, progressCallback, resultCallback);
 		} else {
 			showConfirmationAlert(activity,
 					activity.getString(R.string.mo_confirm_unfollow_title),
@@ -792,6 +794,7 @@ public class UiUtils {
 	}
 
 	private static void follow(Activity activity, String accountID, Account account, boolean followed, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
+		progressCallback.accept(true);
 		new SetAccountFollowed(account.id, followed, true, false)
 				.setCallback(new Callback<>(){
 					@Override
