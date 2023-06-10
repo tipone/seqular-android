@@ -14,7 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.StatusEditHistoryFragment;
 import org.joinmastodon.android.fragments.account_list.StatusFavoritesListFragment;
@@ -76,8 +75,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			Status s=item.status;
 			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
 			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
-			if (!s.isBoostable(item.accountID))
-				reblogs.setVisibility(View.GONE);
+			reblogs.setVisibility(s.isReblogPermitted(item.accountID) ? View.VISIBLE : View.GONE);
 
 			if(s.editedAt!=null){
 				editHistory.setVisibility(View.VISIBLE);
