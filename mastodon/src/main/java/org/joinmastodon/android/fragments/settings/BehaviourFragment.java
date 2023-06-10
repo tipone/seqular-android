@@ -1,9 +1,12 @@
 package org.joinmastodon.android.fragments.settings;
 
+import android.view.Gravity;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -16,6 +19,9 @@ import java.util.ArrayList;
 import me.grishka.appkit.utils.V;
 
 public class BehaviourFragment extends SettingsBaseFragment{
+
+    SwitchItem alwaysRevealSpoilersItem;
+    ButtonItem autoRevealSpoilersItem;
     @Override
     public void addItems(ArrayList<Item> items) {
         items.add(new HeaderItem(R.string.settings_behavior));
@@ -31,9 +37,18 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.allowRemoteLoading=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
+        items.add(alwaysRevealSpoilersItem = new SettingsBaseFragment.SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
             GlobalUserPreferences.alwaysExpandContentWarnings=i.checked;
             GlobalUserPreferences.save();
+            if (list.findViewHolderForAdapterPosition(items.indexOf(autoRevealSpoilersItem)) instanceof SettingsBaseFragment.ButtonViewHolder bvh) bvh.rebind();
+        }));
+        items.add(autoRevealSpoilersItem = new SettingsBaseFragment.ButtonItem(R.string.sk_settings_auto_reveal_equal_spoilers, R.drawable.ic_fluent_eye_24_regular, b->{
+            PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
+            popupMenu.inflate(R.menu.settings_auto_reveal_spoiler);
+            popupMenu.setOnMenuItemClickListener(i -> onAutoRevealSpoilerClick(i, b));
+            b.setOnTouchListener(popupMenu.getDragToOpenListener());
+            b.setOnClickListener(v->popupMenu.show());
+            onAutoRevealSpoilerChanged(b);
         }));
 
         items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.string.mo_setting_disable_swipe_summary, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
@@ -106,6 +121,36 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.prefixRepliesWithRe=i.checked;
             GlobalUserPreferences.save();
         }));
+    }
+
+    private boolean onAutoRevealSpoilerClick(MenuItem item, Button btn) {
+        int id = item.getItemId();
+
+        GlobalUserPreferences.AutoRevealMode mode = GlobalUserPreferences.AutoRevealMode.NEVER;
+        if (id == R.id.auto_reveal_threads) mode = GlobalUserPreferences.AutoRevealMode.THREADS;
+        else if (id == R.id.auto_reveal_discussions) mode = GlobalUserPreferences.AutoRevealMode.DISCUSSIONS;
+
+        GlobalUserPreferences.alwaysExpandContentWarnings = false;
+        GlobalUserPreferences.autoRevealEqualSpoilers = mode;
+        GlobalUserPreferences.save();
+        onAutoRevealSpoilerChanged(btn);
+        return true;
+    }
+
+    private void onAutoRevealSpoilerChanged(Button b) {
+        if (GlobalUserPreferences.alwaysExpandContentWarnings) {
+            b.setText(R.string.sk_settings_auto_reveal_always);
+        } else {
+            b.setText(switch(GlobalUserPreferences.autoRevealEqualSpoilers){
+                case THREADS -> R.string.sk_settings_auto_reveal_threads;
+                case DISCUSSIONS -> R.string.sk_settings_auto_reveal_discussions;
+                default -> R.string.sk_settings_auto_reveal_never;
+            });
+            if (alwaysRevealSpoilersItem.checked != GlobalUserPreferences.alwaysExpandContentWarnings) {
+                alwaysRevealSpoilersItem.checked = GlobalUserPreferences.alwaysExpandContentWarnings;
+                if (list.findViewHolderForAdapterPosition(items.indexOf(alwaysRevealSpoilersItem)) instanceof SettingsBaseFragment.SwitchViewHolder svh) svh.rebind();
+            }
+        }
     }
 
     private void updatePublishText(Button btn) {
