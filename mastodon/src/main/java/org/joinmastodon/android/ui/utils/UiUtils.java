@@ -400,7 +400,10 @@ public class UiUtils {
 				.setTitle(title)
 				.setMessage(message)
 				.setPositiveButton(confirmButton, (dlg, i)->onConfirmed.run())
-				.setNegativeButton(R.string.cancel, (dialog, which) -> onDenied.run())
+				.setNegativeButton(R.string.cancel, (dialog, which) -> {
+					if (onDenied != null)
+						onDenied.run();
+				})
 				.setIcon(icon)
 				.show();
 	}
