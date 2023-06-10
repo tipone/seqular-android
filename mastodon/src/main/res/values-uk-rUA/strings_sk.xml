@@ -293,4 +293,8 @@
     <string name="sk_instance_info_unavailable">Сервер тимчасово недоступний</string>
     <string name="sk_external_share_or_open_title">Поділитися або відкрити за допомогою облікового запису</string>
     <string name="sk_open_in_app_failed">Не вдалося відкрити в застосунку</string>
+    <string name="sk_no_remote_info_hint">віддалена інформація недоступна</string>
+    <string name="sk_settings_allow_remote_loading">Завантажити інформацію з віддалених серверів</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Спробуйте отримати точніші списки підписників, вподобань і поширень, завантаживши інформацію з джерела.</string>
+    <string name="sk_error_loading_profile">Не вдалося завантажити профіль на ваш домашній сервер.</string>
 </resources>

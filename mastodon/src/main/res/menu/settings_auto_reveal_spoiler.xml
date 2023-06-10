@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/auto_reveal_never"
+        android:title="@string/sk_settings_auto_reveal_nobody" />
+    <item
+        android:id="@+id/auto_reveal_threads"
+        android:title="@string/sk_settings_auto_reveal_author" />
+    <item
+        android:id="@+id/auto_reveal_discussions"
+        android:title="@string/sk_settings_auto_reveal_anyone" />
+</menu>

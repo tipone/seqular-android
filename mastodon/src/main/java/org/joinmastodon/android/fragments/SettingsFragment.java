@@ -37,6 +37,7 @@ import com.squareup.otto.Subscribe;
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.GlobalUserPreferences.AutoRevealMode;
 import org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
@@ -85,8 +86,8 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 	private ArrayList<Item> items=new ArrayList<>();
 	private ThemeItem themeItem;
 	private NotificationPolicyItem notificationPolicyItem;
-	private SwitchItem showNewPostsItem, glitchModeItem, compactReblogReplyLineItem;
-	private ButtonItem defaultContentTypeButtonItem;
+	private SwitchItem showNewPostsItem, glitchModeItem, compactReblogReplyLineItem, alwaysRevealSpoilersItem;
+	private ButtonItem defaultContentTypeButtonItem, autoRevealSpoilersItem;
 	private String accountID;
 	private boolean needUpdateNotificationSettings;
 	private boolean needAppRestart;
@@ -189,9 +190,18 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			GlobalUserPreferences.showInteractionCounts=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
+		items.add(alwaysRevealSpoilersItem = new SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
 			GlobalUserPreferences.alwaysExpandContentWarnings=i.checked;
 			GlobalUserPreferences.save();
+			if (list.findViewHolderForAdapterPosition(items.indexOf(autoRevealSpoilersItem)) instanceof ButtonViewHolder bvh) bvh.rebind();
+		}));
+		items.add(autoRevealSpoilersItem = new ButtonItem(R.string.sk_settings_auto_reveal_equal_spoilers, R.drawable.ic_fluent_eye_24_regular, b->{
+			PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
+			popupMenu.inflate(R.menu.settings_auto_reveal_spoiler);
+			popupMenu.setOnMenuItemClickListener(i -> onAutoRevealSpoilerClick(i, b));
+			b.setOnTouchListener(popupMenu.getDragToOpenListener());
+			b.setOnClickListener(v->popupMenu.show());
+			onAutoRevealSpoilerChanged(b);
 		}));
 		items.add(new SwitchItem(R.string.sk_tabs_disable_swipe, R.drawable.ic_fluent_swipe_right_24_regular, GlobalUserPreferences.disableSwipe, i->{
 			GlobalUserPreferences.disableSwipe=i.checked;
@@ -276,7 +286,7 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			GlobalUserPreferences.collapseLongPosts=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_hide_interaction, R.drawable.ic_fluent_eye_24_regular, GlobalUserPreferences.spectatorMode, i->{
+		items.add(new SwitchItem(R.string.sk_settings_hide_interaction, R.drawable.ic_fluent_star_off_24_regular, GlobalUserPreferences.spectatorMode, i->{
 			GlobalUserPreferences.spectatorMode=i.checked;
 			GlobalUserPreferences.save();
 			needAppRestart=true;
@@ -531,6 +541,36 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 		return true;
 	}
 
+	private boolean onAutoRevealSpoilerClick(MenuItem item, Button btn) {
+		int id = item.getItemId();
+
+		AutoRevealMode mode = AutoRevealMode.NEVER;
+		if (id == R.id.auto_reveal_threads) mode = AutoRevealMode.THREADS;
+		else if (id == R.id.auto_reveal_discussions) mode = AutoRevealMode.DISCUSSIONS;
+
+		GlobalUserPreferences.alwaysExpandContentWarnings = false;
+		GlobalUserPreferences.autoRevealEqualSpoilers = mode;
+		GlobalUserPreferences.save();
+		onAutoRevealSpoilerChanged(btn);
+		return true;
+	}
+
+	private void onAutoRevealSpoilerChanged(Button b) {
+		if (GlobalUserPreferences.alwaysExpandContentWarnings) {
+			b.setText(R.string.sk_settings_auto_reveal_anyone);
+		} else {
+			b.setText(switch(GlobalUserPreferences.autoRevealEqualSpoilers){
+				case THREADS -> R.string.sk_settings_auto_reveal_author;
+				case DISCUSSIONS -> R.string.sk_settings_auto_reveal_anyone;
+				default -> R.string.sk_settings_auto_reveal_nobody;
+			});
+			if (alwaysRevealSpoilersItem.checked != GlobalUserPreferences.alwaysExpandContentWarnings) {
+				alwaysRevealSpoilersItem.checked = GlobalUserPreferences.alwaysExpandContentWarnings;
+				if (list.findViewHolderForAdapterPosition(items.indexOf(alwaysRevealSpoilersItem)) instanceof SwitchViewHolder svh) svh.rebind();
+			}
+		}
+	}
+
 	private void onTrueBlackThemeChanged(SwitchItem item){
 		GlobalUserPreferences.trueBlackTheme=item.checked;
 		GlobalUserPreferences.save();
@@ -560,14 +600,14 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 
 	private boolean onContentTypeChanged(MenuItem item, Button btn){
 		int id = item.getItemId();
-		ContentType contentType = switch (id) {
-			case R.id.content_type_plain -> ContentType.PLAIN;
-			case R.id.content_type_html -> ContentType.HTML;
-			case R.id.content_type_markdown -> ContentType.MARKDOWN;
-			case R.id.content_type_bbcode -> ContentType.BBCODE;
-			case R.id.content_type_misskey_markdown -> ContentType.MISSKEY_MARKDOWN;
-			default -> null;
-		};
+
+		ContentType contentType = null;
+		if (id == R.id.content_type_plain) contentType = ContentType.PLAIN;
+		else if (id == R.id.content_type_html) contentType = ContentType.HTML;
+		else if (id == R.id.content_type_markdown) contentType = ContentType.MARKDOWN;
+		else if (id == R.id.content_type_bbcode) contentType = ContentType.BBCODE;
+		else if (id == R.id.content_type_misskey_markdown) contentType = ContentType.MISSKEY_MARKDOWN;
+
 		GlobalUserPreferences.accountsDefaultContentTypes.put(accountID, contentType);
 		GlobalUserPreferences.save();
 		btn.setText(getContentTypeString(contentType));

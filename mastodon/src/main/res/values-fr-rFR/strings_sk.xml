@@ -294,4 +294,8 @@
     <string name="sk_timeline_bubble">Bulle</string>
     <string name="sk_instance_info_unavailable">Informations sur l\'instance temporairement indisponibles</string>
     <string name="sk_open_in_app_failed">Impossible de l\'ouvrir dans l\'application</string>
+    <string name="sk_settings_allow_remote_loading">Charger des informations à partir d\'instances distantes</string>
+    <string name="sk_no_remote_info_hint">informations distantes indisponibles</string>
+    <string name="sk_error_loading_profile">Échec du chargement du profil via %s</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Essayez de récupérer des listes plus précises pour les abonnés, les likes et les boosts en chargeant les informations à partir de l\'instance d\'origine.</string>
 </resources>
