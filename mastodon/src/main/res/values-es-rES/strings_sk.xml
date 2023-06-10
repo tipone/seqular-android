@@ -286,10 +286,19 @@
     <string name="sk_settings_default_content_type">Contenido por defecto</string>
     <string name="sk_settings_content_types_explanation">Permite establecer un tipo de contenido como Markdown al crear una entrada. Ten en cuenta que no todas las instancias lo admiten.</string>
     <string name="sk_settings_default_content_type_explanation">Permite preseleccionar un tipo de contenido al crear nuevas entradas, anulando el valor establecido en \"Preferencias de publicación\".</string>
-    <string name="sk_bubble_timeline_info_banner">Estas son las publicaciones más recientes de la gente en tu servidor de Akkoma.</string>
+    <string name="sk_bubble_timeline_info_banner">Estas son las publicaciones más recientes de la red seleccionadas por los administradores de tu instancia.</string>
     <string name="sk_timeline_bubble">Burbuja</string>
     <string name="sk_instance_info_unavailable">Información de la instancia temporalmente no disponible</string>
     <string name="sk_external_share_or_open_title">Compartir o abrir con una cuenta</string>
     <string name="sk_open_in_app">Abrir en la app</string>
     <string name="sk_external_share_title">Compartir con una cuenta</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar CW iguales en las respuestas de</string>
+    <string name="sk_settings_auto_reveal_nobody">nadie</string>
+    <string name="sk_settings_auto_reveal_author">autor</string>
+    <string name="sk_settings_auto_reveal_anyone">todos</string>
+    <string name="sk_open_in_app_failed">No se pudo abrir en la aplicación</string>
+    <string name="sk_no_remote_info_hint">no hay información remota disponible</string>
+    <string name="sk_error_loading_profile">No se pudo cargar el perfil a través de %s</string>
+    <string name="sk_settings_allow_remote_loading">Cargar la información desde las instancias remotas</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Intenta obtener listas más precisas de seguidores, Me gusta y promociones cargando la información desde la instancia de origen.</string>
 </resources>
