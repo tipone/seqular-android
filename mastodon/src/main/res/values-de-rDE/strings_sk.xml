@@ -296,4 +296,8 @@
     <string name="sk_no_remote_info_hint">keine Remote-Infos abrufbar</string>
     <string name="sk_error_loading_profile">Konnte das Profil via %s nicht laden</string>
     <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower*innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Gleiche CWs in deren Antworten zeigen</string>
+    <string name="sk_settings_auto_reveal_nobody">Niemand</string>
+    <string name="sk_settings_auto_reveal_author">Autor*in</string>
+    <string name="sk_settings_auto_reveal_anyone">Alle</string>
 </resources>
