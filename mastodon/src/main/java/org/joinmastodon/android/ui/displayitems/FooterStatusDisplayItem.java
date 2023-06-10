@@ -133,7 +133,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			boost.setSelected(item.status.reblogged);
 			favorite.setSelected(item.status.favourited);
 			bookmark.setSelected(item.status.bookmarked);
-			boost.setEnabled(item.status.isBoostable(item.accountID));
+			boost.setEnabled(item.status.isReblogPermitted(item.accountID));
 
 			int nextPos = getAbsoluteAdapterPosition() + 1;
 			boolean nextIsWarning = item.parentFragment.getDisplayItems().size() > nextPos &&

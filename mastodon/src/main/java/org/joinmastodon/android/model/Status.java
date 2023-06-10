@@ -21,8 +21,6 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.List;
 
-import androidx.annotation.NonNull;
-
 @Parcel
 public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	@RequiredField
@@ -174,9 +172,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return strippedText;
 	}
 
-	public boolean isBoostable(String accountID){
-		return (visibility==StatusPrivacy.PUBLIC || visibility==StatusPrivacy.UNLISTED || visibility==StatusPrivacy.LOCAL
-					|| (visibility==StatusPrivacy.PRIVATE && account.id.equals(AccountSessionManager.getInstance().getAccount(accountID).self.id)));
+	public boolean isReblogPermitted(String accountID){
+		return visibility.isReblogPermitted(account.id.equals(
+				AccountSessionManager.getInstance().getAccount(accountID).self.id
+		));
 	}
 
 	public static Status ofFake(String id, String text, Instant createdAt) {
