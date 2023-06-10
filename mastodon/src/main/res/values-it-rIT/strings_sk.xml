@@ -153,7 +153,7 @@
     <string name="sk_timelines">Timeline</string>
     <string name="sk_timeline_posts">Post</string>
     <string name="sk_timelines_add">Aggiungi</string>
-    <string name="sk_timeline">Timeline</string>
+    <string name="sk_timeline">Linea temporale</string>
     <string name="sk_list">Lista</string>
     <string name="sk_hashtag">Hashtag</string>
     <string name="sk_pin_timeline">Fissa timeline</string>
@@ -274,4 +274,16 @@
     <string name="sk_compact_reblog_reply_line">Linea boost/risposta compatta</string>
     <string name="sk_reacted_with">ha reagito con %s</string>
     <string name="sk_reply_line_above_avatar">Linea \"In risposta a\" sopra l\'avatar</string>
+    <string name="sk_settings_show_new_posts_button">Tasto \"Mostra nuovi post\"</string>
+    <string name="sk_content_type">Tipo di contenuto</string>
+    <string name="sk_content_type_unspecified">Non specificato</string>
+    <string name="sk_content_type_plain">Testo semplice</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Abilita la formattazione dei post</string>
+    <string name="sk_settings_content_types_explanation">Permette di impostare un tipo di contenuto, come Markdown, quando si crea un post. Tieni presente che non tutte le istanze lo supportano.</string>
+    <string name="sk_settings_default_content_type">Tipo di contenuto predefinito</string>
+    <string name="sk_settings_default_content_type_explanation">Ti permette di preselezionare un tipo di contenuto quando si creano nuovi post, sovrascrivendo il valore impostato in \"Preferenze di pubblicazione\".</string>
 </resources>
