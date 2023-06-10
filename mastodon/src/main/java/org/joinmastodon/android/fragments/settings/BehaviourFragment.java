@@ -8,6 +8,7 @@ import android.widget.Toast;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.fragments.SettingsFragment;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -26,8 +27,8 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.useCustomTabs=i.checked;
             GlobalUserPreferences.save();
         }));
-        items.add(new SwitchItem(R.string.mo_load_remote_followers, R.string.mo_setting_remote_follower_summary, R.drawable.ic_fluent_people_24_regular, GlobalUserPreferences.loadRemoteAccountFollowers, i -> {
-            GlobalUserPreferences.loadRemoteAccountFollowers=i.checked;
+        items.add(new SettingsBaseFragment.SwitchItem(R.string.sk_settings_allow_remote_loading, R.string.sk_settings_allow_remote_loading_explanation,  R.drawable.ic_fluent_communication_24_regular, GlobalUserPreferences.allowRemoteLoading, i->{
+            GlobalUserPreferences.allowRemoteLoading=i.checked;
             GlobalUserPreferences.save();
         }));
         items.add(new SwitchItem(R.string.sk_settings_always_reveal_content_warnings, R.drawable.ic_fluent_chat_warning_24_regular, GlobalUserPreferences.alwaysExpandContentWarnings, i->{
