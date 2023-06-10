@@ -67,7 +67,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		Status status=getContentStatusByID(id);
 		if(status==null)
 			return;
-		if(status.reloadWhenClicked){
+		if(status.isRemote){
 			UiUtils.lookupStatus(getContext(), status, accountID, null, status1 -> {
 				status1.filterRevealed = true;
 				Bundle args=new Bundle();

@@ -207,7 +207,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					translateButton.setClickable(false);
 					translateButton.animate().alpha(0.5f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
 
-					if(item.status.reloadWhenClicked){
+					if(item.status.isRemote){
 						UiUtils.lookupStatus(item.parentFragment.getContext(),
 								item.status,
 								item.parentFragment.getAccountID(),

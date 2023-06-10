@@ -450,7 +450,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				return;
 			}
 			Bundle args=new Bundle();
-			if(item.status != null && item.status.reloadWhenClicked){
+			if(item.status != null && item.status.isRemote){
 				UiUtils.lookupAccount(v.getContext(), item.status.account, item.accountID, null, account -> {
 					args.putString("account", item.accountID);
 					args.putParcelable("profileAccount", Parcels.wrap(account));

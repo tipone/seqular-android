@@ -84,7 +84,6 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public transient boolean hasGapAfter;
 	public transient TranslatedStatus translation;
 	public transient boolean translationShown;
-	public boolean reloadWhenClicked;
 	private transient String strippedText;
 
 	@Override

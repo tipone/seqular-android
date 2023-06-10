@@ -58,7 +58,7 @@ public class CustomLocalTimelineFragment extends StatusListFragment implements P
                         result.stream().forEach(status -> {
                             status.account.acct += "@"+domain;
                             status.mentions.forEach(mention -> mention.id = null);
-                            status.reloadWhenClicked = true;
+                            status.isRemote = true;
                         });
 
                         onDataLoaded(result, !result.isEmpty());

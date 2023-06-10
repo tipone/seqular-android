@@ -136,7 +136,6 @@ public class Account extends BaseModel implements Searchable{
 	public Instant muteExpiresAt;
 
 	public List<Role> roles;
-    public boolean reloadWhenClicked;
 
 	public @Nullable String fqn; // akkoma has this, mastodon't
 

@@ -199,7 +199,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onReplyClick(View v){
-			if(item.status.reloadWhenClicked){
+			if(item.status.isRemote){
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
@@ -240,7 +240,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				onBoostLongClick(v);
 				return;
 			}
-			if(item.status.reloadWhenClicked){
+			if(item.status.isRemote){
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
@@ -269,7 +269,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			Consumer<StatusPrivacy> doReblog = (visibility) -> {
 				v.startAnimation(opacityOut);
-				if(item.status.reloadWhenClicked){
+				if(item.status.isRemote){
 					UiUtils.lookupStatus(v.getContext(),
 							item.status, item.accountID, null,
 							status -> {
@@ -357,7 +357,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onFavoriteClick(View v){
-			if(item.status.reloadWhenClicked){
+			if(item.status.isRemote){
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
@@ -402,7 +402,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onBookmarkClick(View v){
-			if(item.status.reloadWhenClicked){
+			if(item.status.isRemote){
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
