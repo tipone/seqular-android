@@ -337,10 +337,60 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
-		if(ev.status.inReplyToId!=null && getStatusByID(ev.status.inReplyToId)!=null){
-			data.add(ev.status);
-			onAppendItems(Collections.singletonList(ev.status));
+		if (ev.status.inReplyToId == null) return;
+		Status repliedToStatus = getStatusByID(ev.status.inReplyToId);
+		if (repliedToStatus == null) return;
+		NeighborAncestryInfo ancestry = ancestryMap.get(repliedToStatus.id);
+
+		int nextDisplayItemsIndex = -1, indexOfPreviousDisplayItem = -1;
+
+		for (int i = 0; i < displayItems.size(); i++) {
+			StatusDisplayItem item = displayItems.get(i);
+			if (repliedToStatus.id.equals(item.parentID)) {
+				// saving the replied-to status' display items index to eventually reach the last one
+				indexOfPreviousDisplayItem = i;
+				item.hasDescendantNeighbor = true;
+			} else if (indexOfPreviousDisplayItem >= 0 && nextDisplayItemsIndex == -1) {
+				// previous display item was the replied-to status' display items
+				nextDisplayItemsIndex = i;
+				// nothing left to do if there's no other reply to that status
+				if (ancestry.descendantNeighbor == null) break;
+			}
+			if (ancestry.descendantNeighbor != null && item.parentID.equals(ancestry.descendantNeighbor.id)) {
+				// existing reply shall no longer have the replied-to status as its neighbor
+				item.hasAncestoringNeighbor = false;
+			}
 		}
+
+		// fall back to inserting the item at the end
+		nextDisplayItemsIndex = nextDisplayItemsIndex >= 0 ? nextDisplayItemsIndex : displayItems.size();
+		int nextDataIndex = data.indexOf(repliedToStatus) + 1;
+
+		// if replied-to status already has another reply...
+		if (ancestry.descendantNeighbor != null) {
+			// update the reply's ancestry to remove its ancestoring neighbor (as we did above)
+			ancestryMap.get(ancestry.descendantNeighbor.id).ancestoringNeighbor = null;
+			// make sure the existing reply has a reply line
+			if (nextDataIndex < data.size() &&
+					!(displayItems.get(nextDisplayItemsIndex) instanceof ReblogOrReplyLineStatusDisplayItem)) {
+				Status nextStatus = data.get(nextDataIndex);
+				if (!nextStatus.account.id.equals(repliedToStatus.account.id)) {
+					// create reply line manually since we're not building that status' items
+					displayItems.add(nextDisplayItemsIndex, StatusDisplayItem.buildReplyLine(
+							this, nextStatus, accountID, nextStatus, repliedToStatus.account, false
+					));
+				}
+			}
+		}
+
+		// update replied-to status' ancestry
+		ancestry.descendantNeighbor = ev.status;
+
+		// add ancestry for newly created status before building its display items
+		ancestryMap.put(ev.status.id, new NeighborAncestryInfo(ev.status, null, repliedToStatus));
+		displayItems.addAll(nextDisplayItemsIndex, buildDisplayItems(ev.status));
+		data.add(nextDataIndex, ev.status);
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override
