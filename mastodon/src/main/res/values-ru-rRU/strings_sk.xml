@@ -274,4 +274,16 @@
     <string name="sk_reacted">отреагировал</string>
     <string name="sk_notification_action_replied">Отправлен ответ на %s</string>
     <string name="sk_show_thread">Показать тему</string>
+    <string name="sk_content_type">Тип контента</string>
+    <string name="sk_content_type_unspecified">Не указан</string>
+    <string name="sk_content_type_plain">Обычный текст</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Включить форматирование публикаций</string>
+    <string name="sk_settings_content_types_explanation">Позволяет устанавливать тип разметки, такой как Markdown, при создании публикации. Имейте в виду, что не все инстансы поддерживают это.</string>
+    <string name="sk_settings_default_content_type">Тип контента по умолчанию</string>
+    <string name="sk_settings_default_content_type_explanation">Это позволяет вам предварительно выбирать тип контента при создании новых публикаций, переопределяя значение, установленное в “Настройках публикации”.</string>
+    <string name="sk_settings_show_new_posts_button">Кнопка \"Показать новые посты\"</string>
 </resources>
