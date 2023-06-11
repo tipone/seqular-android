@@ -101,7 +101,7 @@
     <string name="sk_already_reblogged">Bereits geteilt</string>
     <string name="sk_reply_as">Antworten mit anderem Konto</string>
     <string name="sk_settings_uniform_icon_for_notifications">Einheitliches Icon für alle Benachrichtigungen</string>
-    <string name="sk_forward_report_to">Weiterleiten zu %s</string>
+    <string name="sk_forward_report_to">Weiterleiten an %s</string>
     <string name="sk_unsent_posts">Nicht gesendete Beiträge</string>
     <string name="sk_draft">Entwurf</string>
     <string name="sk_schedule">Planen</string>
@@ -303,4 +303,5 @@
     <string name="sk_settings_prefix_replies_to_others">andere</string>
     <string name="sk_settings_prefix_replies_always">alle</string>
     <string name="sk_settings_prefix_replies_never">niemanden</string>
+    <string name="sk_settings_forward_report_default">Standardwert „Meldung weiterleiten“-Schalter</string>
 </resources>
