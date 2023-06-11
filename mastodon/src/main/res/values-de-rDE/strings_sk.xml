@@ -250,7 +250,7 @@
     <string name="sk_settings_see_new_posts_button">“Neue Beiträge anzeigen”-Button</string>
     <string name="sk_settings_server_version">Server-Version: %s</string>
     <string name="sk_notify_poll_results">Umfrage-Ergebnisse</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">CWs beim Antworten “re:” voranstellen</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Voranstellen von „re:“ an CWs in Antworten an</string>
     <string name="sk_filtered">Gefiltert: %s</string>
     <string name="sk_expand">Erweitern</string>
     <string name="sk_collapse">Einklappen</string>
@@ -300,4 +300,7 @@
     <string name="sk_settings_auto_reveal_nobody">niemandem</string>
     <string name="sk_settings_auto_reveal_author">Autor*in</string>
     <string name="sk_settings_auto_reveal_anyone">allen</string>
+    <string name="sk_settings_prefix_replies_to_others">andere</string>
+    <string name="sk_settings_prefix_replies_always">alle</string>
+    <string name="sk_settings_prefix_replies_never">niemanden</string>
 </resources>
