@@ -32,6 +32,7 @@
     <string name="mo_change_default_reply_visibility_to_unlisted">Reply as \'Unlisted\' by default</string>
     <string name="mo_composer_behavior">Composer\'s Behavior</string>
     <string name="mo_notification_management_settings">Manage Notifications</string>
+    <string name="mo_open_camera">Take picture</string>
     
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Add new poll option</string>
