@@ -188,7 +188,7 @@
     <string name="sk_icon_megaphone">Megafon</string>
     <string name="sk_icon_microphone">Mikrofon</string>
     <string name="sk_icon_microscope">Mikroskop</string>
-    <string name="sk_icon_keyboard">Keyboard</string>
+    <string name="sk_icon_keyboard">Papan tombol</string>
     <string name="sk_icon_coffee">Kopi</string>
     <string name="sk_icon_laugh">Tertawa</string>
     <string name="sk_icon_pi">Pi</string>
@@ -217,7 +217,7 @@
     <string name="sk_icon_briefcase">Koper</string>
     <string name="sk_icon_fire">Api</string>
     <string name="sk_icon_bug">Kutu</string>
-    <string name="sk_icon_pizza">Pizza</string>
+    <string name="sk_icon_pizza">Piza</string>
     <string name="sk_icon_gavel">Palu</string>
     <string name="sk_icon_headphones">Headphone</string>
     <string name="sk_icon_human">Manusia</string>
@@ -276,4 +276,16 @@
     <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
     <string name="sk_reacted_with">bereaksi dengan %s</string>
     <string name="sk_reacted">bereaksi</string>
+    <string name="sk_content_type">Jenis konten</string>
+    <string name="sk_content_type_unspecified">Tidak ditentukan</string>
+    <string name="sk_content_type_plain">Teks biasa</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_content_types">Aktifkan format kiriman</string>
+    <string name="sk_settings_content_types_explanation">Memungkinkan mengatur jenis konten seperti Markdown saat membuat kiriman. Perlu diingat bahwa tidak semua server mendukung ini.</string>
+    <string name="sk_settings_default_content_type">Jenis konten bawaan</string>
+    <string name="sk_settings_default_content_type_explanation">Ini memungkinkan Anda memiliki jenis konten untuk dipilihkan saat membuat kiriman baru, menimpa nilai yang ditetapkan dalam “Preferensi pengiriman”.</string>
+    <string name="sk_settings_show_new_posts_button">Tombol “Tampilkan kiriman baru”</string>
 </resources>
