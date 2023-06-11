@@ -56,4 +56,11 @@
     <string name="mo_setting_disable_swipe_summary">Проведите пальцем, чтобы изменить просматриваемую ленту</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Добавить пост в закладки или сделать репост из уведомления</string>
     <string name="mo_notification_audience_settings">Параметры уведомлений</string>
+    <string name="mo_severity_silence">Заглушенный</string>
+    <string name="mo_severity_suspend">Блокированный</string>
+    <string name="mo_swap_bookmark_with_reblog">Поменять местами функцию добавить в закладки и продвижения (репоста)</string>
+    <string name="mo_setting_default_reply_privacy_summary">Ответы будут скрыты из функций обнаружения (публичные ленты)</string>
+    <string name="mo_enable_dividers">Показать разделители публикаций</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Двойное нажатие для переключения между вкладками</string>
+    <string name="mo_load_remote_followers">Загружать подписки и подписчиков других инстансов</string>
 </resources>
