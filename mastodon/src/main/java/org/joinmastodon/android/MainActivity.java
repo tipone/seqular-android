@@ -1,20 +1,28 @@
 package org.joinmastodon.android;
 
+import static org.joinmastodon.android.fragments.ComposeFragment.CAMERA_PERMISSION_CODE;
+import static org.joinmastodon.android.fragments.ComposeFragment.CAMERA_PIC_REQUEST_CODE;
+
 import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.PictureTakenEvent;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
@@ -186,6 +194,27 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 			Fragment fragment=new HomeFragment();
 			fragment.setArguments(args);
 			showFragmentClearingBackStack(fragment);
+		}
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data){
+		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode== Activity.RESULT_OK){
+			Bitmap image = (Bitmap) data.getExtras().get("data");
+			String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), image, null, null);
+			E.post(new PictureTakenEvent(Uri.parse(path)));
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if (requestCode == CAMERA_PERMISSION_CODE && (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+		} else {
+			Toast.makeText(this, R.string.permission_required, Toast.LENGTH_SHORT);
 		}
 	}
 

@@ -72,6 +72,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 
 import com.github.bottomSoftwareFoundation.bottom.Bottom;
+import com.squareup.otto.Subscribe;
 import com.twitter.twittertext.TwitterTextEmojiRegex;
 
 import org.joinmastodon.android.E;
@@ -88,11 +89,14 @@ import org.joinmastodon.android.api.requests.statuses.GetAttachmentByID;
 import org.joinmastodon.android.api.requests.statuses.UploadAttachment;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.PictureTakenEvent;
 import org.joinmastodon.android.events.ScheduledStatusCreatedEvent;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
+import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
+import org.joinmastodon.android.fragments.settings.SettingsBaseFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.ContentType;
@@ -114,6 +118,7 @@ import org.joinmastodon.android.ui.text.ComposeAutocompleteSpan;
 import org.joinmastodon.android.ui.text.ComposeHashtagOrMentionSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
+import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.joinmastodon.android.utils.TransferSpeedTracker;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ComposeEditText;
@@ -162,8 +167,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private static final String GLITCH_LOCAL_ONLY_SUFFIX = "👁";
 	private static final Pattern GLITCH_LOCAL_ONLY_PATTERN = Pattern.compile("[\\s\\S]*" + GLITCH_LOCAL_ONLY_SUFFIX + "[\uFE00-\uFE0F]*");
 	private static final String TAG="ComposeFragment";
-	private static final int CAMERA_PERMISSION_CODE = 626938;
-	private static final int CAMERA_PIC_REQUEST_CODE = 6242069;
+	public static final int CAMERA_PERMISSION_CODE = 626938;
+	public static final int CAMERA_PIC_REQUEST_CODE = 6242069;
 
 	public static final Pattern MENTION_PATTERN=Pattern.compile("(^|[^\\/\\w])@(([a-z0-9_]+)@[a-z0-9\\.\\-]+[a-z0-9]+)", Pattern.CASE_INSENSITIVE);
 
@@ -249,6 +254,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		E.register(this);
 		setRetainInstance(true);
 		navigationBarColorBefore = getActivity().getWindow().getNavigationBarColor();
 		getActivity().getWindow().setNavigationBarColor(UiUtils.getThemeColor(getActivity(), R.attr.colorBackgroundLightest));
@@ -1459,6 +1465,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
 			addMediaAttachment(Uri.parse(path), null);
 		}
+	}
+
+	@Subscribe
+	public void onPictureTaken(PictureTakenEvent ev){
+		addMediaAttachment(ev.uri, null);
 	}
 
 	private boolean addMediaAttachment(Uri uri, String description){
