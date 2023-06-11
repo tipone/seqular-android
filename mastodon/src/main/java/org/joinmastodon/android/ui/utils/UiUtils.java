@@ -1425,16 +1425,6 @@ public class UiUtils {
 	}
 
 	/**
-	 * Scale the input value according to the device's scaled display density
-	 * @param sp Input value in scale-independent pixels (sp)
-	 * @return Scaled value in physical pixels (px)
-	 */
-	public static int sp(Context context, float sp){
-		// TODO: replace with V.sp in next AppKit version
-		return Math.round(sp*context.getApplicationContext().getResources().getDisplayMetrics().scaledDensity);
-	}
-
-	/**
 	 * Wraps a View.OnClickListener to filter multiple clicks in succession.
 	 * Useful for buttons that perform some action that changes their state asynchronously.
 	 * @param l
