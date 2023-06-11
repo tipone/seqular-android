@@ -295,6 +295,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	@Override
 	public void onDestroy(){
 		super.onDestroy();
+		E.unregister(this);
 		for(DraftMediaAttachment att:attachments){
 			if(att.isUploadingOrProcessing())
 				att.cancelUpload();
