@@ -8,4 +8,8 @@
         android:id="@+id/file"
         android:title="@string/sk_attach_file"
         android:icon="@drawable/ic_fluent_document_24_regular" />
+    <item
+        android:id="@+id/camera"
+        android:title="@string/mo_open_camera"
+        android:icon="@drawable/ic_fluent_camera_24_regular" />
 </menu>

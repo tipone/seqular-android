@@ -1,7 +1,5 @@
 package org.joinmastodon.android.fragments;
 
-import static android.os.ext.SdkExtensions.getExtensionVersion;
-
 import static org.joinmastodon.android.GlobalUserPreferences.recentLanguages;
 import static org.joinmastodon.android.api.requests.statuses.CreateStatus.DRAFTS_AFTER_INSTANT;
 import static org.joinmastodon.android.api.requests.statuses.CreateStatus.getDraftInstant;
@@ -9,6 +7,7 @@ import static org.joinmastodon.android.ui.utils.UiUtils.isPhotoPickerAvailable;
 import static org.joinmastodon.android.utils.MastodonLanguage.allLanguages;
 import static org.joinmastodon.android.utils.MastodonLanguage.defaultRecentLanguages;
 
+import android.Manifest;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -17,6 +16,7 @@ import android.app.TimePickerDialog;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -29,7 +29,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.icu.text.BreakIterator;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
-import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -69,6 +68,8 @@ import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.github.bottomSoftwareFoundation.bottom.Bottom;
 import com.twitter.twittertext.TwitterTextEmojiRegex;
@@ -161,6 +162,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private static final String GLITCH_LOCAL_ONLY_SUFFIX = "👁";
 	private static final Pattern GLITCH_LOCAL_ONLY_PATTERN = Pattern.compile("[\\s\\S]*" + GLITCH_LOCAL_ONLY_SUFFIX + "[\uFE00-\uFE0F]*");
 	private static final String TAG="ComposeFragment";
+	private static final int CAMERA_PERMISSION_CODE = 626938;
+	private static final int CAMERA_PIC_REQUEST_CODE = 6242069;
 
 	public static final Pattern MENTION_PATTERN=Pattern.compile("(^|[^\\/\\w])@(([a-z0-9_]+)@[a-z0-9\\.\\-]+[a-z0-9]+)", Pattern.CASE_INSENSITIVE);
 
@@ -369,7 +372,17 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			PopupMenu attachPopup = new PopupMenu(getContext(), mediaBtn);
 			attachPopup.inflate(R.menu.attach);
 			attachPopup.setOnMenuItemClickListener(i -> {
-				openFilePicker(i.getItemId() == R.id.media);
+				if (i.getItemId() == R.id.camera){
+					if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+						Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+						startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+					} else {
+						getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
+					}
+
+				} else {
+					openFilePicker(i.getItemId() == R.id.media);
+				}
 				return true;
 			});
 			UiUtils.enablePopupMenuIcons(getContext(), attachPopup);
@@ -567,6 +580,19 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		outState.putSerializable("contentType", contentType);
 		if (scheduledAt != null) outState.putSerializable("scheduledAt", scheduledAt);
 		if (scheduledStatus != null) outState.putParcelable("scheduledStatus", Parcels.wrap(scheduledStatus));
+	}
+
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if (requestCode == CAMERA_PERMISSION_CODE && (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+		} else {
+			Toast.makeText(getContext(), R.string.permission_required, Toast.LENGTH_SHORT);
+		}
 	}
 
 	@Override
@@ -1426,6 +1452,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					addMediaAttachment(clipData.getItemAt(i).getUri(), null);
 				}
 			}
+		}
+
+		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode==Activity.RESULT_OK){
+			Bitmap image = (Bitmap) data.getExtras().get("data");
+			String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
+			addMediaAttachment(Uri.parse(path), null);
 		}
 	}
 
