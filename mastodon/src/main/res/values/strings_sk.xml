@@ -304,4 +304,5 @@
     <string name="sk_settings_prefix_replies_always">everyone</string>
     <string name="sk_settings_prefix_replies_never">nobody</string>
     <string name="sk_settings_prefix_replies_to_others">others</string>
+    <string name="sk_settings_forward_report_default">“Forward report” switch default</string>
 </resources>

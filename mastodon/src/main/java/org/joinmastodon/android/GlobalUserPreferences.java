@@ -49,20 +49,22 @@ public class GlobalUserPreferences{
 	public static boolean compactReblogReplyLine;
 	public static boolean confirmBeforeReblog;
 	public static boolean allowRemoteLoading;
+	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static String publishButtonText;
 	public static ThemePreference theme;
 	public static ColorPreference color;
 
-	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
-	private final static Type pinnedTimelinesType = new TypeToken<Map<String, List<TimelineDefinition>>>() {}.getType();
-	private final static Type accountsDefaultContentTypesType = new TypeToken<Map<String, ContentType>>() {}.getType();
 	public static Map<String, List<String>> recentLanguages;
 	public static Map<String, List<TimelineDefinition>> pinnedTimelines;
 	public static Set<String> accountsWithLocalOnlySupport;
 	public static Set<String> accountsInGlitchMode;
 	public static Set<String> accountsWithContentTypesEnabled;
 	public static Map<String, ContentType> accountsDefaultContentTypes;
+
+	private final static Type recentLanguagesType = new TypeToken<Map<String, List<String>>>() {}.getType();
+	private final static Type pinnedTimelinesType = new TypeToken<Map<String, List<TimelineDefinition>>>() {}.getType();
+	private final static Type accountsDefaultContentTypesType = new TypeToken<Map<String, ContentType>>() {}.getType();
 
 	/**
 	 * Pleroma
@@ -131,6 +133,7 @@ public class GlobalUserPreferences{
 		accountsDefaultContentTypes=fromJson(prefs.getString("accountsDefaultContentTypes", null), accountsDefaultContentTypesType, new HashMap<>());
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
+		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 
 		if (prefs.contains("prefixRepliesWithRe")) {
 			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
@@ -191,6 +194,7 @@ public class GlobalUserPreferences{
 				.putString("accountsDefaultContentTypes", gson.toJson(accountsDefaultContentTypes))
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
+				.putBoolean("forwardReportDefault", forwardReportDefault)
 				.apply();
 	}
 

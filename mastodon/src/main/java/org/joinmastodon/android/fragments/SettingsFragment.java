@@ -239,6 +239,10 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			GlobalUserPreferences.confirmBeforeReblog=i.checked;
 			GlobalUserPreferences.save();
 		}));
+		items.add(new SwitchItem(R.string.sk_settings_forward_report_default, R.drawable.ic_fluent_arrow_forward_24_regular, GlobalUserPreferences.forwardReportDefault, i->{
+			GlobalUserPreferences.forwardReportDefault=i.checked;
+			GlobalUserPreferences.save();
+		}));
 		items.add(new SwitchItem(R.string.sk_settings_allow_remote_loading, R.drawable.ic_fluent_communication_24_regular, GlobalUserPreferences.allowRemoteLoading, i->{
 			GlobalUserPreferences.allowRemoteLoading=i.checked;
 			GlobalUserPreferences.save();
