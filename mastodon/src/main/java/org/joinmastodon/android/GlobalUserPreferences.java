@@ -40,7 +40,7 @@ public class GlobalUserPreferences{
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
 	public static boolean enablePreReleases;
-	public static boolean prefixRepliesWithRe;
+	public static PrefixRepliesMode prefixReplies;
 	public static boolean bottomEncoding;
 	public static boolean collapseLongPosts;
 	public static boolean spectatorMode;
@@ -112,7 +112,7 @@ public class GlobalUserPreferences{
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
 		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
-		prefixRepliesWithRe=prefs.getBoolean("prefixRepliesWithRe", false);
+		prefixReplies=PrefixRepliesMode.valueOf(prefs.getString("prefixReplies", PrefixRepliesMode.NEVER.name()));
 		bottomEncoding=prefs.getBoolean("bottomEncoding", false);
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
@@ -131,6 +131,15 @@ public class GlobalUserPreferences{
 		accountsDefaultContentTypes=fromJson(prefs.getString("accountsDefaultContentTypes", null), accountsDefaultContentTypesType, new HashMap<>());
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
+
+		if (prefs.contains("prefixRepliesWithRe")) {
+			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
+					? PrefixRepliesMode.TO_OTHERS : PrefixRepliesMode.NEVER;
+			prefs.edit()
+					.putString("prefixReplies", prefixReplies.name())
+					.remove("prefixRepliesWithRe")
+					.apply();
+		}
 
 		try {
 			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
@@ -162,7 +171,7 @@ public class GlobalUserPreferences{
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
 				.putBoolean("enablePreReleases", enablePreReleases)
-				.putBoolean("prefixRepliesWithRe", prefixRepliesWithRe)
+				.putString("prefixReplies", prefixReplies.name())
 				.putBoolean("collapseLongPosts", collapseLongPosts)
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
@@ -206,5 +215,11 @@ public class GlobalUserPreferences{
 		NEVER,
 		THREADS,
 		DISCUSSIONS
+	}
+
+	public enum PrefixRepliesMode {
+		NEVER,
+		ALWAYS,
+		TO_OTHERS
 	}
 }
