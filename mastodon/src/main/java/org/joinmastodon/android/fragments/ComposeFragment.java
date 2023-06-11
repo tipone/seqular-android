@@ -375,29 +375,28 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		view.findViewById(GlobalUserPreferences.replyLineAboveHeader ? R.id.reply_text_below : R.id.reply_text)
 				.setVisibility(View.GONE);
 
-		if (isPhotoPickerAvailable()) {
-			PopupMenu attachPopup = new PopupMenu(getContext(), mediaBtn);
-			attachPopup.inflate(R.menu.attach);
-			attachPopup.setOnMenuItemClickListener(i -> {
-				if (i.getItemId() == R.id.camera){
-					if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-						Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-						startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
-					} else {
-						getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
-					}
+		PopupMenu attachPopup = new PopupMenu(getContext(), mediaBtn);
+		attachPopup.inflate(R.menu.attach);
+		if(isPhotoPickerAvailable())
+			attachPopup.getMenu().findItem(R.id.media).setVisible(true);
 
+		attachPopup.setOnMenuItemClickListener(i -> {
+			if (i.getItemId() == R.id.camera){
+				if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+					Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+					startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
 				} else {
-					openFilePicker(i.getItemId() == R.id.media);
+					getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
 				}
-				return true;
-			});
-			UiUtils.enablePopupMenuIcons(getContext(), attachPopup);
-			mediaBtn.setOnClickListener(v->attachPopup.show());
-			mediaBtn.setOnTouchListener(attachPopup.getDragToOpenListener());
-		} else {
-			mediaBtn.setOnClickListener(v -> openFilePicker(false));
-		}
+
+			} else {
+				openFilePicker(i.getItemId() == R.id.media);
+			}
+			return true;
+		});
+		UiUtils.enablePopupMenuIcons(getContext(), attachPopup);
+		mediaBtn.setOnClickListener(v->attachPopup.show());
+		mediaBtn.setOnTouchListener(attachPopup.getDragToOpenListener());
 		if (isInstancePixelfed()) pollBtn.setVisibility(View.GONE);
 		pollBtn.setOnClickListener(v->togglePoll());
 		emojiBtn.setOnClickListener(v->emojiKeyboard.toggleKeyboardPopup(mainEditText));

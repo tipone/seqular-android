@@ -3,6 +3,7 @@
     <item
         android:id="@+id/media"
         android:title="@string/add_media"
+        android:visible="false"
         android:icon="@drawable/ic_fluent_image_24_regular" />
     <item
         android:id="@+id/file"
