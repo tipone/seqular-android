@@ -10,44 +10,57 @@
 &nbsp;
 <a href="#installation"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
-> A fork of the [official Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app and possibly won’t ever be implemented, such as the federated timeline, unlisted posting and an image description viewer.
+> A fork of the [Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app, focusing on [Glitch](https://github.com/glitch-soc/mastodon) compatibility, a pretty UI and adding new features that I feel make using the Fediverse a more pleasent experience.
 
 
 ## Key features
 
 ### **Unlisted posting**
 
-**Allows you to post publicly without having your post show up in trends, hashtags or public timelines (i.e., in the tabs “Community”, “Federated” and “Posts”).**
+<details>
+<p><summary>Allows you to post publicly without having your post show up in trends, hashtags or public timelines (i.e., in the tabs “Community”, “Federated” and “Posts”).</summary></p>
 
 When posting with Unlisted visibility, your posts will still be publicly accessible in your profile. They will also be shown in people’s Home timelines, but only if they follow you or someone they follow reblogged/replied to your post.
-  
+
 The Mastodon documentation has some more information about [Unlisted posting](https://docs.joinmastodon.org/user/posting/#unlisted) and [Public timelines](https://docs.joinmastodon.org/user/network/#timelines).
+</details>
 
 ### **Federated timeline**
 
-**This allows you to chronologically see all Public posts from people on all other Fediverse neighborhoods your home instance is connected to.**
+<details>
+<p><summary>This allows you to chronologically see all Public posts from people on all other Fediverse neighborhoods your home instance is connected to.</summary></p>
 
 Despite being one of the main features of federated social media, the Federated timeline wasn’t included in the official Mastodon app – supposedly, because this conflicts with Google’s safety requirements for apps on the Play Store.
   
 That’s one of the reasons why choosing a small, **well-moderated instance is important**. Instance admins and moderators should always make sure to ban abusive users and stop federating with instances who platform them. On well-moderated instances, the Federated timeline can be a welcoming place to meet new people!
+</details>
+
+### **Customizable timelines**
+
+<details>
+<p><summary>You can customize Megalodon’s home tab and not only add local and federated timelines, but also pin lists and hashtags.</summary></p>
+
+Even better: You can rename every timeline however you please and pick a distinct icon for each timeline. This way, you can pin the hashtag “#Caturday”, rename your timeline to “CUTENESS OVERLOAD” and set <img src="img/ic_fluent_animal_cat_24_regular.svg" alt="Cat icon from Microsoft Fluent UI icons"> as its icon. :3
+
+You can find the timelines editor by opening your home tab, tapping the `⋮` button in the top right and go to “Edit timelines”.
+</details>
 
 ### **Draft and schedule posts**
 
-**Allows for preparing a post and scheduling it to send it automatically at a specific time.**
+<details>
+<p><summary>
+Allows to prepare a post and schedule it to send it automatically at a specific time.</summary></p>
 
 You can create drafts, edit them, send them manually later or set a scheduled date. Drafts are technically saved as scheduled posts, so you can view and edit them from other apps that support scheduled posts. Scheduled posts are handled by your home instance, so they'll work even if you uninstall Megalodon.
-
-### **Image description viewer**
-
-**Allows you to quickly check whether an image or video has an alternative text attached to it.**
-
-This is important to **ensure the content you’re sharing is as accessible as possible** to people who can’t see the images and rely on software to read back the provided content descriptions. Thankfully, it’s quite common for people on the Fediverse to provide such alt texts, and hopefully things stay this way!
+</details>
 
 ### **Pinning posts**
 
-**This lets you can highlight important posts on your profile. A dedicated “Pinned” tab in people’s profiles shows all the posts they pinned.**
+<details>
+<p><summary>This lets you can highlight important posts on your profile. A dedicated “Pinned” tab in people’s profiles shows all the posts they pinned.</summary></p>
 
-On the Fediverse, it’s quite common for people to pin posts they want others to read before following them. You can pin/unpin posts yourself by clicking the `⋯` button in the top right corner of your posts.
+On the Fediverse, it’s quite common for people to pin posts they want others to read before following them. You can pin/unpin posts yourself by clicking the `⋮` button in the top right corner of your posts.
+</details>
 
 ## Installation
 
@@ -88,7 +101,7 @@ Megalodon makes use of [Mastodon for Android](https://github.com/mastodon/mastod
 
 ## Release variants
 
-All downloads can be found on the [Releases](https://github.com/sk22/megalodon/releases) page.
+All downloads can be found on the [Releases](https://github.com/sk22/megalodon/releases) page. When downloading a pre-release, expect to see unfinished features and bugs. If you don’t want that, just download the [latest full release](https://github.com/sk22/megalodon/releases/latest/download/megalodon.apk).
 
 **`megalodon.apk`**
 
