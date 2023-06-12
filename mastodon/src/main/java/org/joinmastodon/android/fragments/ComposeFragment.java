@@ -114,6 +114,7 @@ import org.joinmastodon.android.ui.text.ComposeAutocompleteSpan;
 import org.joinmastodon.android.ui.text.ComposeHashtagOrMentionSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
+import org.joinmastodon.android.utils.FileProvider;
 import org.joinmastodon.android.utils.TransferSpeedTracker;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ComposeEditText;
@@ -127,6 +128,8 @@ import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -240,6 +243,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private boolean creatingView;
 	private boolean ignoreSelectionChanges=false;
 	private Runnable updateUploadEtaRunnable;
+	private Uri photoUri;
 
 	private String language, encoding;
 	private ContentType contentType;
@@ -378,7 +382,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		attachPopup.setOnMenuItemClickListener(i -> {
 			if (i.getItemId() == R.id.camera){
-				openCamera();
+				try {
+					openCamera();
+				} catch (IOException e){
+					Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
+				}
+
 			} else {
 				openFilePicker(i.getItemId() == R.id.media);
 			}
@@ -1451,26 +1460,32 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode==Activity.RESULT_OK){
-			Bitmap image = (Bitmap) data.getExtras().get("data");
-			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-			String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
-			addMediaAttachment(Uri.parse(path), null);
+			addMediaAttachment(photoUri, null);
 		}
 	}
 
 	@Subscribe
-	public void onTakePictureRequest(TakePictureRequestEvent ev){
-		if(isVisible())
-			openCamera();
+	public void onTakePictureRequest(TakePictureRequestEvent ev) {
+		if(isVisible()) {
+			try {
+				openCamera();
+			} catch (IOException e) {
+				Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
+			}
+
+		}
 	}
 
-	private void openCamera(){
+	private void openCamera() throws IOException {
 		if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+			File photoFile = File.createTempFile("img", ".jpg");
+			photoUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", photoFile);
+
 			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
 			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
 		} else {
-			getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
+			getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
 		}
 	}
 
