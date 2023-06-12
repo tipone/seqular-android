@@ -565,6 +565,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingLabel.setText(getResources().getQuantityString(R.plurals.following, (int)Math.min(999, account.followingCount)));
 		postsLabel.setText(getResources().getQuantityString(R.plurals.posts, (int)Math.min(999, account.statusesCount)));
 
+		if (account.followersCount < 0) followersBtn.setVisibility(View.GONE);
+		if (account.followingCount < 0) followingBtn.setVisibility(View.GONE);
+
 		UiUtils.loadCustomEmojiInTextView(name);
 		UiUtils.loadCustomEmojiInTextView(bio);
 
