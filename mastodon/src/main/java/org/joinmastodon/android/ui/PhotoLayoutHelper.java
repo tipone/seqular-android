@@ -12,7 +12,7 @@ import androidx.annotation.NonNull;
 
 public class PhotoLayoutHelper{
 	public static final int MAX_WIDTH=1000;
-	public static final int MAX_HEIGHT=1777; // 9:16
+	public static final int MAX_HEIGHT=1400;
 	public static final int MIN_HEIGHT=250;
 	public static final float GAP=1.5f;
 
