@@ -124,7 +124,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ProgressBarButton actionButton, notifyButton;
 	private ViewPager2 pager;
 	private NestedRecyclerScrollView scrollView;
-	private AccountTimelineFragment postsFragment, postsWithRepliesFragment, pinnedPostsFragment, mediaFragment;
+	private AccountTimelineFragment postsFragment, postsWithRepliesFragment, mediaFragment;
+	private PinnedPostsListFragment pinnedPostsFragment;
 //	private ProfileAboutFragment aboutFragment;
 	private TabLayout tabbar;
 	private SwipeRefreshLayout refreshLayout;
@@ -421,8 +422,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(postsFragment==null){
 			postsFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.DEFAULT, true);
 			postsWithRepliesFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.INCLUDE_REPLIES, false);
-			pinnedPostsFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.PINNED, false);
 			mediaFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.MEDIA, false);
+
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putParcelable("profileAccount", Parcels.wrap(account));
+			args.putBoolean("__is_tab", true);
+			pinnedPostsFragment=new PinnedPostsListFragment();
+			pinnedPostsFragment.setArguments(args);
 //			aboutFragment=new ProfileAboutFragment();
 			setFields(fields);
 		}
