@@ -1461,7 +1461,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	@Subscribe
 	public void onTakePictureRequest(TakePictureRequestEvent ev){
-		openCamera();
+		if(isVisible())
+			openCamera();
 	}
 
 	private void openCamera(){
