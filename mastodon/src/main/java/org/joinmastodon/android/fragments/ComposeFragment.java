@@ -245,8 +245,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private ContentType contentType;
 	private MastodonLanguage.LanguageResolver languageResolver;
 
-	private Uri photoUri;
-
 	private int navigationBarColorBefore;
 
 	@Override
@@ -1453,11 +1451,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode==Activity.RESULT_OK){
-			// Bitmap image = (Bitmap) data.getExtras().get("data");
-			// ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-			// image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-			// String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
-			addMediaAttachment(photoUri), null);
+			Bitmap image = (Bitmap) data.getExtras().get("data");
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+			String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
+			addMediaAttachment(Uri.parse(path), null);
 		}
 	}
 
@@ -1469,11 +1467,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	private void openCamera(){
 		if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-			File photoFile = createImageFile(); // This method creates a file to store the image
-			photoUri = FileProvider.getUriForFile(getContext(), "org.joinmastodon.android.moshinda.fileprovider", photoFile);
 			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-
 			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
 		} else {
 			getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
