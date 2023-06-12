@@ -292,4 +292,15 @@
     <string name="sk_external_share_or_open_title">Compartir o abrir con una cuenta</string>
     <string name="sk_open_in_app">Abrir en la app</string>
     <string name="sk_external_share_title">Compartir con una cuenta</string>
+    <string name="sk_error_loading_profile">Fallo al cargar el perfil con %s</string>
+    <string name="sk_settings_allow_remote_loading">Cargar información de instancias remotas</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar Avisos de Contenidos iguales en hilos</string>
+    <string name="sk_settings_auto_reveal_never">Nunca</string>
+    <string name="sk_settings_auto_reveal_threads">Mismo autor</string>
+    <string name="sk_settings_auto_reveal_discussions">Conversaciones</string>
+    <string name="sk_settings_auto_reveal_always">Siempre</string>
+    <string name="sk_open_in_app_failed">No se pudo abrir en la app</string>
+    <string name="sk_no_remote_info_hint">información remota no disponible</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Intenta buscar una lista de seguidores, me gusta e impulsos más precisa cargando la información de la instancia de origen.</string>
+    <string name="sk_settings_show_new_posts_button">Botón \"Ver nuevas publicaciones\"</string>
 </resources>
