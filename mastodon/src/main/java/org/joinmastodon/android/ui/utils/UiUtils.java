@@ -1232,7 +1232,7 @@ public class UiUtils {
 									go.accept(ProfileFragment.class, args);
 									return;
 								}
-								go.accept(null, bundleError(context.getString(R.string.sk_resource_not_found)));
+								go.accept(null, null);
 							}
 
 							@Override
