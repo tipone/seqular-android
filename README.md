@@ -52,14 +52,6 @@ Allows to prepare a post and schedule it to send it automatically at a specific 
 You can create drafts, edit them, send them manually later or set a scheduled date. Drafts are technically saved as scheduled posts, so you can view and edit them from other apps that support scheduled posts. Scheduled posts are handled by your home instance, so they'll work even if you uninstall Megalodon.
 </details>
 
-### **Pinning posts**
-
-<details>
-<p><summary>This lets you can highlight important posts on your profile. A dedicated “Pinned” tab in people’s profiles shows all the posts they pinned.</summary></p>
-
-On the Fediverse, it’s quite common for people to pin posts they want others to read before following them. You can pin/unpin posts yourself by clicking the `⋮` button in the top right corner of your posts.
-</details>
-
 ## Installation
 
 ### IzzyOnDroid
@@ -165,6 +157,10 @@ There's also a bunch of custom strings exclusive to this project that need to be
 * [Soft-blocking (by blocking and immediately unblocking)](https://github.com/sk22/megalodon/commit/e75d350b7a2709259e9fc5138e0e1f361bdb0972)
 * [Pinnable custom timelines](https://github.com/sk22/megalodon/pull/338/commits)
 * Support for local-only posts
+* Support for copying the URL to posts/accounts/… in Pixel launcher’s Recent apps view
+* Compatibility for Akkoma Bubble timeline
+* Listings of followers/following/favorites/boosts can be loaded from the origin instance (there’s an option to disable this in in the settings)
+* Allow opening posts/accounts in-app by sharing a URL/handle to Megalodon (Originally implemented in [Moshidon](https://github.com/LucasGGamerM/moshidon), [PR](https://github.com/sk22/megalodon/pull/531))
 
 
 ### Behavior
@@ -190,6 +186,8 @@ There's also a bunch of custom strings exclusive to this project that need to be
 * Improved filtering using Mastodon 4.0 API: [#202](https://github.com/sk22/megalodon/pull/202), [#212](https://github.com/sk22/megalodon/pull/212), [#255](https://github.com/sk22/megalodon/pull/255) by [@thiagojedi](https://github.com/thiagojedi)
 * [Support admin notifications](https://github.com/sk22/megalodon/commit/c12a6eaee6b609bc53eb0a45d9199f37d5241801) and [notifications for edited reblogged posts](https://github.com/sk22/megalodon/commit/900e8fb2e9353002c16d15e06b78d2731e121601)
 * [Android file opener added back in addition to image picker](https://github.com/sk22/megalodon/commit/3a6ace53d5ab01e28077c9c930cb6ed487b78031)
+* [Replies are inserted below the replied-to post in thread view](https://github.com/sk22/megalodon/commit/87c37df370ec24aeea0d2dbaeb29468aa4fb5808)
+* Option to auto-reveal equal content warnings in threads
 
 
 ### Visual
@@ -207,6 +205,7 @@ There's also a bunch of custom strings exclusive to this project that need to be
 * Scale text according to system settings
 * Header in timeline for followed hashtags
 * [Indicator for missing alt texts](https://github.com/sk22/megalodon/commit/c0c276f03e793b78c478c17dfdef24a66ef7cedb)
+* Visually grouped (by removing divider lines and reducing padding) threaded replies in thread view
 
 
 ## Building
