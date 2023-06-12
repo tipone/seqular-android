@@ -22,6 +22,8 @@ public class BehaviourFragment extends SettingsBaseFragment{
 
     SwitchItem alwaysRevealSpoilersItem;
     ButtonItem autoRevealSpoilersItem;
+    ButtonItem publishButtonTextSetting;
+    SwitchItem relocatePublishButtonSetting;
     @Override
     public void addItems(ArrayList<Item> items) {
         items.add(new HeaderItem(R.string.settings_behavior));
@@ -67,7 +69,7 @@ public class BehaviourFragment extends SettingsBaseFragment{
         }));
 
         items.add(new HeaderItem(R.string.mo_composer_behavior));
-        items.add(new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
+        items.add(publishButtonTextSetting = new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
             updatePublishText(b);
             b.setOnClickListener(l -> {
                 if(!GlobalUserPreferences.relocatePublishButton) {
@@ -99,8 +101,11 @@ public class BehaviourFragment extends SettingsBaseFragment{
                             Toast.LENGTH_LONG).show();
                 }
             });
+
+            b.setAlpha(relocatePublishButtonSetting.checked ? 0.7f : 1f);
         }));
-        items.add(new SwitchItem(R.string.mo_relocate_publish_button, R.string.mo_setting_relocate_publish_summary, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
+        items.add(relocatePublishButtonSetting = new SwitchItem(R.string.mo_relocate_publish_button, R.string.mo_setting_relocate_publish_summary, R.drawable.ic_fluent_arrow_autofit_down_24_regular, GlobalUserPreferences.relocatePublishButton, i->{
+            if (list.findViewHolderForAdapterPosition(items.indexOf(publishButtonTextSetting)) instanceof SettingsBaseFragment.ButtonViewHolder bvh) bvh.rebind();
             GlobalUserPreferences.relocatePublishButton=i.checked;
             GlobalUserPreferences.save();
         }));
