@@ -69,8 +69,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-
 import com.github.bottomSoftwareFoundation.bottom.Bottom;
 import com.squareup.otto.Subscribe;
 import com.twitter.twittertext.TwitterTextEmojiRegex;
@@ -89,14 +87,12 @@ import org.joinmastodon.android.api.requests.statuses.GetAttachmentByID;
 import org.joinmastodon.android.api.requests.statuses.UploadAttachment;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.events.PictureTakenEvent;
+import org.joinmastodon.android.events.TakePictureRequestEvent;
 import org.joinmastodon.android.events.ScheduledStatusCreatedEvent;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
-import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
-import org.joinmastodon.android.fragments.settings.SettingsBaseFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.ContentType;
@@ -118,7 +114,6 @@ import org.joinmastodon.android.ui.text.ComposeAutocompleteSpan;
 import org.joinmastodon.android.ui.text.ComposeHashtagOrMentionSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
-import org.joinmastodon.android.updater.GithubSelfUpdater;
 import org.joinmastodon.android.utils.TransferSpeedTracker;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ComposeEditText;
@@ -131,6 +126,7 @@ import org.joinmastodon.android.utils.StatusTextEncoder;
 import org.parceler.Parcel;
 import org.parceler.Parcels;
 
+import java.io.ByteArrayOutputStream;
 import java.io.InterruptedIOException;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -382,13 +378,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		attachPopup.setOnMenuItemClickListener(i -> {
 			if (i.getItemId() == R.id.camera){
-				if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-					Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-					startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
-				} else {
-					getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
-				}
-
+				openCamera();
 			} else {
 				openFilePicker(i.getItemId() == R.id.media);
 			}
@@ -1462,14 +1452,25 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode==Activity.RESULT_OK){
 			Bitmap image = (Bitmap) data.getExtras().get("data");
+			ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+			image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 			String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
 			addMediaAttachment(Uri.parse(path), null);
 		}
 	}
 
 	@Subscribe
-	public void onPictureTaken(PictureTakenEvent ev){
-		addMediaAttachment(ev.uri, null);
+	public void onTakePictureRequest(TakePictureRequestEvent ev){
+		openCamera();
+	}
+
+	private void openCamera(){
+		if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+		} else {
+			getActivity().requestPermissions(new String[] { Manifest.permission.CAMERA }, CAMERA_PERMISSION_CODE);
+		}
 	}
 
 	private boolean addMediaAttachment(Uri uri, String description){

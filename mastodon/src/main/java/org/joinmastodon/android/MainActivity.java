@@ -22,7 +22,7 @@ import android.widget.Toast;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.events.PictureTakenEvent;
+import org.joinmastodon.android.events.TakePictureRequestEvent;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
@@ -197,22 +197,19 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		}
 	}
 
-	@Override
-	public void onActivityResult(int requestCode, int resultCode, Intent data){
-		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode== Activity.RESULT_OK){
-			Bitmap image = (Bitmap) data.getExtras().get("data");
-			String path = MediaStore.Images.Media.insertImage(this.getContentResolver(), image, null, null);
-			E.post(new PictureTakenEvent(Uri.parse(path)));
-		}
-	}
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data){
+//		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode== Activity.RESULT_OK){
+//			E.post(new TakePictureRequestEvent());
+//		}
+//	}
 
 	@Override
 	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
 		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
 		if (requestCode == CAMERA_PERMISSION_CODE && (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+			E.post(new TakePictureRequestEvent());
 		} else {
 			Toast.makeText(this, R.string.permission_required, Toast.LENGTH_SHORT);
 		}
