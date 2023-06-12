@@ -40,9 +40,7 @@ That’s one of the reasons why choosing a small, **well-moderated instance is i
 <details>
 <p><summary>You can customize Megalodon’s home tab and not only add local and federated timelines, but also pin lists and hashtags.</summary></p>
 
-Even better: You can rename every timeline however you please and pick a distinct icon for each timeline. This way, you can pin the hashtag “#Caturday”, rename your timeline to “CUTENESS OVERLOAD” and set <img src="img/ic_fluent_animal_cat_24_regular.svg" alt="Cat icon from Microsoft Fluent UI icons"> as its icon. :3
-
-You can find the timelines editor by opening your home tab, tapping the `⋮` button in the top right and go to “Edit timelines”.
+Even better: You can rename every timeline however you please and pick a distinct icon for each timeline. This way, you can pin the hashtag “#Caturday”, rename your timeline to “CUTENESS OVERLOAD” and set <img src="img/ic_fluent_animal_cat_24_regular.svg" alt="Cat icon from Microsoft Fluent UI icons"> as its icon. :3 You can find the timelines editor by opening your home tab, tapping the `⋮` button in the top right and going to “Edit timelines”.
 </details>
 
 ### **Draft and schedule posts**
