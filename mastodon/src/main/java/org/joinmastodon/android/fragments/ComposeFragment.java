@@ -1457,7 +1457,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			// ByteArrayOutputStream bytes = new ByteArrayOutputStream();
 			// image.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
 			// String path = MediaStore.Images.Media.insertImage(getContext().getContentResolver(), image, null, null);
-			addMediaAttachment(photoUri, null);
+			addMediaAttachment(photoUri), null);
 		}
 	}
 
