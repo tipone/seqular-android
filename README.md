@@ -121,11 +121,11 @@ Variant without the integrated updater. This is the variant to be published to F
 
 ### Translation
 
-As with the source code, the translation is sourced from the official project, which you can contribute to on the official “**Mastodon for Android**” Crowdin project: https://crowdin.com/project/mastodon-for-android
+The translation for the base of the app is sourced from the upstream **Mastodon for Android** project, which you can contribute to on its Crowdin project: [https://crowdin.com/project/mastodon-for-android](https://crowdin.com/project/mastodon-for-android)
 
-There's also a handful of custom strings exclusive to this projects that would need to be translated. You can help translate **Megalodon** on Weblate: https://translate.codeberg.org/projects/megalodon/
+There's also a bunch of custom strings exclusive to this project that need to be translated. You can help translate **Megalodon** on Weblate: [https://translate.codeberg.org/projects/megalodon](https://translate.codeberg.org/projects/megalodon)
 
-[![Translation status](https://translate.codeberg.org/widgets/megalodon/-/horizontal-auto.svg)](https://translate.codeberg.org/engage/megalodon/)
+[![Translation status](https://translate.codeberg.org/widgets/megalodon/-/horizontal-auto.svg)](https://translate.codeberg.org/engage/megalodon)
 
 
 ---
@@ -218,6 +218,8 @@ As this app is using Java 17 features, you need JDK 17 or newer to build it. Oth
 ```
 ./gradlew assembleRelease
 ```
+
+Note that Megalodon might be depending on an in-development version of [AppKit](https://github.com/grishka/appkit) – a library by Mastodon for Android’s developer. In case the used AppKit version isn’t published to Maven Central yet, you might have to clone, build and publish it to your local Maven repository. For more information, see [this GitHub issue](https://github.com/mastodon/mastodon-android/issues/375#issuecomment-1507678585).
 
 ## License
 
