@@ -31,7 +31,6 @@
 		<TextView android:id="@+id/title"
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:singleLine="true"
 			android:ellipsize="marquee"
 			android:textColor="?android:textColorPrimary"
 			android:textSize="16sp"
