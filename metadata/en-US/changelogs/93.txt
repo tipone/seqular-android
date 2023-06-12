@@ -1,5 +1,4 @@
 - Improved, clearer thread view
-- Fixed filtering logic
 - Open accounts/posts by sharing a website to Megalodon
 - Load followers/favorites/… listings from origin instance
 - Compatibility improvements for non-Mastodon servers
