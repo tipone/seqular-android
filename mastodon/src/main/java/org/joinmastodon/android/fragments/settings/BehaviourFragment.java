@@ -169,12 +169,12 @@ public class BehaviourFragment extends SettingsBaseFragment{
 
     private void onAutoRevealSpoilerChanged(Button b) {
         if (GlobalUserPreferences.alwaysExpandContentWarnings) {
-            b.setText(R.string.sk_settings_auto_reveal_always);
+            b.setText(R.string.sk_settings_auto_reveal_anyone);
         } else {
             b.setText(switch(GlobalUserPreferences.autoRevealEqualSpoilers){
-                case THREADS -> R.string.sk_settings_auto_reveal_threads;
-                case DISCUSSIONS -> R.string.sk_settings_auto_reveal_discussions;
-                default -> R.string.sk_settings_auto_reveal_never;
+                case THREADS -> R.string.sk_settings_auto_reveal_author;
+                case DISCUSSIONS -> R.string.sk_settings_auto_reveal_anyone;
+                default -> R.string.sk_settings_auto_reveal_nobody;
             });
             if (alwaysRevealSpoilersItem.checked != GlobalUserPreferences.alwaysExpandContentWarnings) {
                 alwaysRevealSpoilersItem.checked = GlobalUserPreferences.alwaysExpandContentWarnings;
