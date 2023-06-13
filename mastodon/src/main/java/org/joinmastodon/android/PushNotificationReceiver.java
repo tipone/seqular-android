@@ -1,5 +1,7 @@
 package org.joinmastodon.android;
 
+import static org.joinmastodon.android.GlobalUserPreferences.PrefixRepliesMode.ALWAYS;
+import static org.joinmastodon.android.GlobalUserPreferences.PrefixRepliesMode.TO_OTHERS;
 import static org.joinmastodon.android.GlobalUserPreferences.getPrefs;
 
 import android.app.Notification;

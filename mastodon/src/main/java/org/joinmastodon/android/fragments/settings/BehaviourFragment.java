@@ -122,10 +122,35 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
-        items.add(new SwitchItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, GlobalUserPreferences.prefixRepliesWithRe, i->{
-            GlobalUserPreferences.prefixRepliesWithRe=i.checked;
+        items.add(new SettingsBaseFragment.ButtonItem(R.string.sk_settings_prefix_reply_cw_with_re, R.drawable.ic_fluent_arrow_reply_24_regular, b->{
+            PopupMenu popupMenu=new PopupMenu(getActivity(), b, Gravity.CENTER_HORIZONTAL);
+            popupMenu.inflate(R.menu.settings_prefix_reply_mode);
+            popupMenu.setOnMenuItemClickListener(i -> onPrefixRepliesClick(i, b));
+            b.setOnTouchListener(popupMenu.getDragToOpenListener());
+            b.setOnClickListener(v->popupMenu.show());
+            b.setText(switch(GlobalUserPreferences.prefixReplies){
+                case TO_OTHERS -> R.string.sk_settings_prefix_replies_to_others;
+                case ALWAYS -> R.string.sk_settings_prefix_replies_always;
+                default -> R.string.sk_settings_prefix_replies_never;
+            });
             GlobalUserPreferences.save();
         }));
+    }
+
+    private boolean onPrefixRepliesClick(MenuItem item, Button btn) {
+        int id = item.getItemId();
+        GlobalUserPreferences.PrefixRepliesMode mode = GlobalUserPreferences.PrefixRepliesMode.NEVER;
+        if (id == R.id.prefix_replies_always) mode = GlobalUserPreferences.PrefixRepliesMode.ALWAYS;
+        else if (id == R.id.prefix_replies_to_others) mode = GlobalUserPreferences.PrefixRepliesMode.TO_OTHERS;
+        GlobalUserPreferences.prefixReplies = mode;
+
+        btn.setText(switch(GlobalUserPreferences.prefixReplies){
+            case TO_OTHERS -> R.string.sk_settings_prefix_replies_to_others;
+            case ALWAYS -> R.string.sk_settings_prefix_replies_always;
+            default -> R.string.sk_settings_prefix_replies_never;
+        });
+
+        return true;
     }
 
     private boolean onAutoRevealSpoilerClick(MenuItem item, Button btn) {
