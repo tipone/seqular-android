@@ -17,7 +17,7 @@
     <string name="mo_clear_recent_emoji">Wis recent gebruikte emoji</string>
     <string name="mo_no_image_desc">De bijgesloten afbeeldingen hebben geen omschrijving. Overweeg deze alsnog toe te voegen, zodat ook mensen met een visuele handicap kunnen deelnemen.</string>
     <string name="mo_share_open_url">Open in app</string>
-    <string name="mo_disable_reminder_to_add_alt_text">Uitschakelen herinnering om alt text toe te voegen</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Uitschakelen herinnering om alt tekst toe te voegen</string>
     <string name="mo_filtered">Filter: %s</string>
     <string name="mo_mute_label">Duur:</string>
     <string name="mo_duration_minutes_30">30 minuten</string>
@@ -48,4 +48,22 @@
     <string name="mo_notification_audience_settings">Doelgroep van meldingen</string>
     <string name="mo_setting_uniform_summary">Gebruik het icon van de app voor alle meldingen</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Bookmark of reblog vanuit de melding</string>
+    <string name="mo_instance_registration">Registratie</string>
+    <string name="mo_instance_status">Status</string>
+    <string name="mo_instance_users">Gebruikers</string>
+    <string name="mo_instance_contact">Contact</string>
+    <string name="mo_severity_silence">Genegeerd</string>
+    <string name="mo_instance_info_moderated_servers">Gemodereerde servers</string>
+    <string name="mo_instance_info_open_timeline">Lokale tijdlijn</string>
+    <string name="mo_instance_registration_approval">Toestemming vereist</string>
+    <string name="mo_instance_registration_open">Open</string>
+    <string name="mo_instance_admin">Beheerd door</string>
+    <string name="mo_open_camera">Maak foto</string>
+    <string name="mo_severity_suspend">Geblokkeerd</string>
+    <string name="mo_setting_remote_follower_summary">Toon volgers van andere instances</string>
+    <string name="mo_setting_reduced_motion_summary">Uitschakelen animatie bij interacties</string>
+    <string name="mo_setting_interaction_count_summary">Toon hoeveel mensen interactie hebben met een bericht op de tijdlijn</string>
+    <string name="mo_setting_default_reply_privacy_summary">Reacties worden niet meegenomen in de discovery features</string>
+    <string name="mo_setting_relocate_publish_summary">Verplaats de publiceerknop naar de onderste balk</string>
+    <string name="mo_setting_disable_swipe_summary">Niet swipen om de volgende tijdlijn te zien</string>
 </resources>
