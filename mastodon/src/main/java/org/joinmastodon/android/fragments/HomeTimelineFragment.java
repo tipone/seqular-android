@@ -42,23 +42,19 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	@Override
-	public String getDomain() {
-		return super.getDomain() + "/home";
-	}
-
-	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		if (getParentFragment() instanceof HomeTabFragment home) parent = home;
 		loadData();
 	}
 
+	private boolean typeFilterPredicate(Status s) {
+		return (GlobalUserPreferences.showReplies || s.inReplyToId == null) &&
+				(GlobalUserPreferences.showBoosts || s.reblog == null);
+	}
+
 	private List<Status> filterPosts(List<Status> items) {
-		// This is the function I must use to solve the filters thing for real
-		return items.stream().filter(i ->
-				(GlobalUserPreferences.showReplies || i.inReplyToId == null) &&
-				(GlobalUserPreferences.showBoosts || i.reblog == null)
-		).collect(Collectors.toList());
+		return items.stream().filter(this::typeFilterPredicate).collect(Collectors.toList());
 	}
 
 	@Override
@@ -107,24 +103,24 @@ public class HomeTimelineFragment extends StatusListFragment {
 	@Override
 	protected void onHidden(){
 		super.onHidden();
-//		if(!data.isEmpty()){
-//			String topPostID=displayItems.get(list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset()).parentID;
-//			if(!topPostID.equals(lastSavedMarkerID)){
-//				lastSavedMarkerID=topPostID;
-//				new SaveMarkers(topPostID, null)
-//						.setCallback(new Callback<>(){
-//							@Override
-//							public void onSuccess(SaveMarkers.Response result){
-//							}
-//
-//							@Override
-//							public void onError(ErrorResponse error){
-//								lastSavedMarkerID=null;
-//							}
-//						})
-//						.exec(accountID);
-//			}
-//		}
+		if(!data.isEmpty()){
+			String topPostID=displayItems.get(Math.max(0, list.getChildAdapterPosition(list.getChildAt(0))-getMainAdapterOffset())).parentID;
+			if(!topPostID.equals(lastSavedMarkerID)){
+				lastSavedMarkerID=topPostID;
+				new SaveMarkers(topPostID, null)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(SaveMarkers.Response result){
+							}
+
+							@Override
+							public void onError(ErrorResponse error){
+								lastSavedMarkerID=null;
+							}
+						})
+						.exec(accountID);
+			}
+		}
 	}
 
 	public void onStatusCreated(StatusCreatedEvent ev){
@@ -238,7 +234,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 							for(Status s:result){
 								if(idsBelowGap.contains(s.id))
 									break;
-								if(filterPredicate.test(s)){
+								if(typeFilterPredicate(s) && filterPredicate.test(s)){
 									targetList.addAll(buildDisplayItems(s));
 									insertedPosts.add(s);
 								}

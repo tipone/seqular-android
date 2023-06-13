@@ -320,7 +320,11 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		req.language = preferences.postingDefaultLanguage;
 		req.visibility = preferences.postingDefaultVisibility;
 		req.inReplyToId = notification.status.id;
-		if(!notification.status.spoilerText.isEmpty() && GlobalUserPreferences.prefixRepliesWithRe && !notification.status.spoilerText.startsWith("re: ")){
+
+		if (!notification.status.spoilerText.isEmpty() &&
+				(GlobalUserPreferences.prefixReplies == ALWAYS
+						|| (GlobalUserPreferences.prefixReplies == TO_OTHERS && !ownID.equals(notification.status.account.id)))
+				&& !notification.status.spoilerText.startsWith("re: ")) {
 			req.spoilerText = "re: " + notification.status.spoilerText;
 		}
 

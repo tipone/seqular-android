@@ -105,6 +105,21 @@ public abstract class StatusDisplayItem{
 		return buildItems(fragment, status, accountID, parentObject, knownAccounts, inset, addFooter, notification, false, filterContext);
 	}
 
+	public static ReblogOrReplyLineStatusDisplayItem buildReplyLine(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parent, Account account, boolean threadReply) {
+		String parentID = parent.getID();
+		String text = threadReply ? fragment.getString(R.string.sk_show_thread)
+				: account == null ? fragment.getString(R.string.sk_in_reply)
+				: GlobalUserPreferences.compactReblogReplyLine && status.reblog != null ? account.displayName
+				: fragment.getString(R.string.in_reply_to, account.displayName);
+		String fullText = threadReply ? fragment.getString(R.string.sk_show_thread)
+				: account == null ? fragment.getString(R.string.sk_in_reply)
+				: fragment.getString(R.string.in_reply_to, account.displayName);
+		return new ReblogOrReplyLineStatusDisplayItem(
+				parentID, fragment, text, account == null ? List.of() : account.emojis,
+				R.drawable.ic_fluent_arrow_reply_20sp_filled, null, null, fullText
+		);
+	}
+
 	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, Notification notification, boolean disableTranslate, Filter.FilterContext filterContext){
 		String parentID=parentObject.getID();
 		ArrayList<StatusDisplayItem> items=new ArrayList<>();
@@ -120,17 +135,7 @@ public abstract class StatusDisplayItem{
 
 		if(statusForContent.inReplyToAccountId!=null && !(threadReply && fragment instanceof ThreadFragment)){
 			Account account = knownAccounts.get(statusForContent.inReplyToAccountId);
-			String text = threadReply ? fragment.getString(R.string.sk_show_thread)
-					: account == null ? fragment.getString(R.string.sk_in_reply)
-					: GlobalUserPreferences.compactReblogReplyLine && status.reblog != null ? account.displayName
-					: fragment.getString(R.string.in_reply_to, account.displayName);
-			String fullText = threadReply ? fragment.getString(R.string.sk_show_thread)
-					: account == null ? fragment.getString(R.string.sk_in_reply)
-					: fragment.getString(R.string.in_reply_to, account.displayName);
-			replyLine = new ReblogOrReplyLineStatusDisplayItem(
-					parentID, fragment, text, account == null ? List.of() : account.emojis,
-					R.drawable.ic_fluent_arrow_reply_20sp_filled, null, null, fullText
-			);
+			replyLine = buildReplyLine(fragment, status, accountID, parentObject, account, threadReply);
 		}
 
 		if(status.reblog!=null){

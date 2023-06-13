@@ -178,13 +178,29 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	protected void removeStatus(Status status){
 		data.remove(status);
 		preloadedData.remove(status);
-		int index=-1;
+		int index=-1, ancestorFirstIndex = -1, ancestorLastIndex = -1;
 		for(int i=0;i<displayItems.size();i++){
-			if(status.id.equals(displayItems.get(i).parentID)){
+			StatusDisplayItem item = displayItems.get(i);
+			if(status.id.equals(item.parentID)){
 				index=i;
 				break;
 			}
+			if (item.parentID.equals(status.inReplyToId)) {
+				if (ancestorFirstIndex == -1) ancestorFirstIndex = i;
+				ancestorLastIndex = i;
+			}
 		}
+
+		// did we find an ancestor that is also the status' neighbor?
+		if (ancestorFirstIndex >= 0 && ancestorLastIndex == index - 1) {
+			for (int i = ancestorFirstIndex; i <= ancestorLastIndex; i++) {
+				StatusDisplayItem item = displayItems.get(i);
+				// update ancestor to have no descendant anymore
+				if (item.parentID.equals(status.inReplyToId)) item.hasDescendantNeighbor = false;
+			}
+			adapter.notifyItemRangeChanged(ancestorFirstIndex, ancestorLastIndex - ancestorFirstIndex + 1);
+		}
+
 		if(index==-1)
 			return;
 		int lastIndex;

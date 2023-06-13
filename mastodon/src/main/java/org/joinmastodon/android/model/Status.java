@@ -35,7 +35,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public Instant createdAt;
 	@RequiredField
 	public Account account;
-	//	@RequiredField
+//	@RequiredField
 	public String content;
 	@RequiredField
 	public StatusPrivacy visibility;
@@ -178,9 +178,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return strippedText;
 	}
 
-	public boolean canBeBoosted(String accountID){
-		return (visibility==StatusPrivacy.PUBLIC || visibility==StatusPrivacy.UNLISTED || visibility==StatusPrivacy.LOCAL
-					|| (visibility==StatusPrivacy.PRIVATE && account.id.equals(AccountSessionManager.getInstance().getAccount(accountID).self.id)));
+	public boolean isReblogPermitted(String accountID){
+		return visibility.isReblogPermitted(account.id.equals(
+				AccountSessionManager.getInstance().getAccount(accountID).self.id
+		));
 	}
 
 	public static Status ofFake(String id, String text, Instant createdAt) {

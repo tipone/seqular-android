@@ -52,7 +52,8 @@ import me.grishka.appkit.utils.V;
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
 	protected Status mainStatus, updatedStatus;
 	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
-	protected boolean contextInitiallyRendered;
+	private StatusContext result;
+	protected boolean contextInitiallyRendered, transitionFinished;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -105,11 +106,18 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					footer.hideCounts=true;
 			}
 		}
+    
 		for (int deleteThisItem : deleteTheseItems) itemsToModify.remove(deleteThisItem);
 		if(s.id.equals(mainStatus.id)) {
-			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, getAccountID(), s.getContentStatus()));
+			items.add(new ExtendedFooterStatusDisplayItem(s.id, this, accountID, s.getContentStatus()));
 		}
 		return items;
+	}
+
+	@Override
+	public void onTransitionFinished() {
+		transitionFinished = true;
+		maybeApplyContext();
 	}
 
 	@Override
@@ -119,72 +127,8 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(StatusContext result){
-						if (getContext() == null) return;
-						Map<String, Status> oldData = null;
-						if(refreshing){
-							oldData = new HashMap<>(data.size());
-							for (Status s : data) oldData.put(s.id, s);
-							data.clear();
-							ancestryMap.clear();
-							displayItems.clear();
-							data.add(mainStatus);
-							onAppendItems(Collections.singletonList(mainStatus));
-						}
-
-						// TODO: figure out how this code works
-						if(isInstanceAkkoma()) sortStatusContext(mainStatus, result);
-
-						result.descendants=filterStatuses(result.descendants);
-						result.ancestors=filterStatuses(result.ancestors);
-
-						for (NeighborAncestryInfo i : mapNeighborhoodAncestry(mainStatus, result)) {
-							ancestryMap.put(i.status.id, i);
-						}
-
-						if(footerProgress!=null)
-							footerProgress.setVisibility(View.GONE);
-						data.addAll(result.descendants);
-						int prevCount=displayItems.size();
-						onAppendItems(result.descendants);
-						int count=displayItems.size();
-						if(!refreshing)
-							adapter.notifyItemRangeInserted(prevCount, count-prevCount);
-						int prependedCount = prependItems(result.ancestors, !refreshing);
-						if (prependedCount > 0 && displayItems.get(prependedCount) instanceof ReblogOrReplyLineStatusDisplayItem) {
-							displayItems.remove(prependedCount);
-							adapter.notifyItemRemoved(prependedCount);
-							count--;
-						}
-
-						for (Status s : data) {
-							Status oldStatus = oldData == null ? null : oldData.get(s.id);
-							// restore previous spoiler/filter revealed states when refreshing
-							if (oldStatus != null) {
-								s.spoilerRevealed = oldStatus.spoilerRevealed;
-								s.filterRevealed = oldStatus.filterRevealed;
-							} else if (GlobalUserPreferences.autoRevealEqualSpoilers != AutoRevealMode.NEVER &&
-									s.spoilerText != null &&
-									s.spoilerText.equals(mainStatus.spoilerText) &&
-									mainStatus.spoilerRevealed) {
-								if (GlobalUserPreferences.autoRevealEqualSpoilers == AutoRevealMode.DISCUSSIONS || Objects.equals(mainStatus.account.id, s.account.id)) {
-									s.spoilerRevealed = true;
-								}
-							}
-						}
-
-						dataLoaded();
-						if(refreshing){
-							refreshDone();
-							adapter.notifyDataSetChanged();
-						}
-						list.scrollToPosition(displayItems.size()-count);
-
-						// no animation is going to happen, so proceeding to apply right now
-						if (data.size() == 1) {
-							contextInitiallyRendered = true;
-							// for the case that the main status has already finished loading
-							maybeApplyMainStatus();
-						}
+						ThreadFragment.this.result = result;
+						maybeApplyContext();
 					}
 				})
 				.exec(accountID);
@@ -205,6 +149,77 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					@Override
 					public void onError(ErrorResponse error) {}
 				}).exec(accountID);
+	}
+
+	protected void maybeApplyContext() {
+		if (!transitionFinished || result == null || getContext() == null) return;
+		Map<String, Status> oldData = null;
+		if(refreshing){
+			oldData = new HashMap<>(data.size());
+			for (Status s : data) oldData.put(s.id, s);
+			data.clear();
+			ancestryMap.clear();
+			displayItems.clear();
+			data.add(mainStatus);
+			onAppendItems(Collections.singletonList(mainStatus));
+		}
+
+		// TODO: figure out how this code works
+		if (isInstanceAkkoma()) sortStatusContext(mainStatus, result);
+
+		result.descendants=filterStatuses(result.descendants);
+		result.ancestors=filterStatuses(result.ancestors);
+
+		for (NeighborAncestryInfo i : mapNeighborhoodAncestry(mainStatus, result)) {
+			ancestryMap.put(i.status.id, i);
+		}
+
+		if(footerProgress!=null)
+			footerProgress.setVisibility(View.GONE);
+		data.addAll(result.descendants);
+		int prevCount=displayItems.size();
+		onAppendItems(result.descendants);
+		int count=displayItems.size();
+		if(!refreshing)
+			adapter.notifyItemRangeInserted(prevCount, count-prevCount);
+		int prependedCount = prependItems(result.ancestors, !refreshing);
+		if (prependedCount > 0 && displayItems.get(prependedCount) instanceof ReblogOrReplyLineStatusDisplayItem) {
+			displayItems.remove(prependedCount);
+			adapter.notifyItemRemoved(prependedCount);
+			count--;
+		}
+
+		for (Status s : data) {
+			Status oldStatus = oldData == null ? null : oldData.get(s.id);
+			// restore previous spoiler/filter revealed states when refreshing
+			if (oldStatus != null) {
+				s.spoilerRevealed = oldStatus.spoilerRevealed;
+				s.filterRevealed = oldStatus.filterRevealed;
+			} else if (GlobalUserPreferences.autoRevealEqualSpoilers != AutoRevealMode.NEVER &&
+					s.spoilerText != null &&
+					s.spoilerText.equals(mainStatus.spoilerText) &&
+					mainStatus.spoilerRevealed) {
+				if (GlobalUserPreferences.autoRevealEqualSpoilers == AutoRevealMode.DISCUSSIONS || Objects.equals(mainStatus.account.id, s.account.id)) {
+					s.spoilerRevealed = true;
+				}
+			}
+		}
+
+		dataLoaded();
+		if(refreshing){
+			refreshDone();
+			adapter.notifyDataSetChanged();
+		}
+		list.scrollToPosition(displayItems.size()-count);
+
+		// no animation is going to happen, so proceeding to apply right now
+		if (data.size() == 1) {
+			contextInitiallyRendered = true;
+			// for the case that the main status has already finished loading
+			maybeApplyMainStatus();
+		}
+
+		result = null;
 	}
 
 	protected Object maybeApplyMainStatus() {
@@ -337,10 +352,60 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 	}
 
 	protected void onStatusCreated(StatusCreatedEvent ev){
-		if(ev.status.inReplyToId!=null && getStatusByID(ev.status.inReplyToId)!=null){
-			data.add(ev.status);
-			onAppendItems(Collections.singletonList(ev.status));
+		if (ev.status.inReplyToId == null) return;
+		Status repliedToStatus = getStatusByID(ev.status.inReplyToId);
+		if (repliedToStatus == null) return;
+		NeighborAncestryInfo ancestry = ancestryMap.get(repliedToStatus.id);
+
+		int nextDisplayItemsIndex = -1, indexOfPreviousDisplayItem = -1;
+
+		for (int i = 0; i < displayItems.size(); i++) {
+			StatusDisplayItem item = displayItems.get(i);
+			if (repliedToStatus.id.equals(item.parentID)) {
+				// saving the replied-to status' display items index to eventually reach the last one
+				indexOfPreviousDisplayItem = i;
+				item.hasDescendantNeighbor = true;
+			} else if (indexOfPreviousDisplayItem >= 0 && nextDisplayItemsIndex == -1) {
+				// previous display item was the replied-to status' display items
+				nextDisplayItemsIndex = i;
+				// nothing left to do if there's no other reply to that status
+				if (ancestry.descendantNeighbor == null) break;
+			}
+			if (ancestry.descendantNeighbor != null && item.parentID.equals(ancestry.descendantNeighbor.id)) {
+				// existing reply shall no longer have the replied-to status as its neighbor
+				item.hasAncestoringNeighbor = false;
+			}
 		}
+
+		// fall back to inserting the item at the end
+		nextDisplayItemsIndex = nextDisplayItemsIndex >= 0 ? nextDisplayItemsIndex : displayItems.size();
+		int nextDataIndex = data.indexOf(repliedToStatus) + 1;
+
+		// if replied-to status already has another reply...
+		if (ancestry.descendantNeighbor != null) {
+			// update the reply's ancestry to remove its ancestoring neighbor (as we did above)
+			ancestryMap.get(ancestry.descendantNeighbor.id).ancestoringNeighbor = null;
+			// make sure the existing reply has a reply line
+			if (nextDataIndex < data.size() &&
+					!(displayItems.get(nextDisplayItemsIndex) instanceof ReblogOrReplyLineStatusDisplayItem)) {
+				Status nextStatus = data.get(nextDataIndex);
+				if (!nextStatus.account.id.equals(repliedToStatus.account.id)) {
+					// create reply line manually since we're not building that status' items
+					displayItems.add(nextDisplayItemsIndex, StatusDisplayItem.buildReplyLine(
+							this, nextStatus, accountID, nextStatus, repliedToStatus.account, false
+					));
+				}
+			}
+		}
+
+		// update replied-to status' ancestry
+		ancestry.descendantNeighbor = ev.status;
+
+		// add ancestry for newly created status before building its display items
+		ancestryMap.put(ev.status.id, new NeighborAncestryInfo(ev.status, null, repliedToStatus));
+		displayItems.addAll(nextDisplayItemsIndex, buildDisplayItems(ev.status));
+		data.add(nextDataIndex, ev.status);
+		adapter.notifyDataSetChanged();
 	}
 
 	@Override

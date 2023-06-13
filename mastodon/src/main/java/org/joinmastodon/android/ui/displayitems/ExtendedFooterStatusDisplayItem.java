@@ -76,10 +76,8 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		public void onBind(ExtendedFooterStatusDisplayItem item){
 			Status s=item.status;
 			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
-
 			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
-			if (!s.canBeBoosted(item.accountID))
-				reblogs.setVisibility(View.GONE);
+			reblogs.setVisibility(s.isReblogPermitted(item.accountID) ? View.VISIBLE : View.GONE);
 
 			if(s.editedAt!=null){
 				editHistory.setVisibility(View.VISIBLE);
@@ -88,7 +86,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 				editHistory.setVisibility(View.GONE);
 			}
 			String timeStr=item.status.createdAt != null ? TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault())) : null;
-
+			
 			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
 				time.setText(timeStr != null ? item.parentFragment.getString(R.string.timestamp_via_app, timeStr, "") : "");
 				applicationName.setText(item.status.application.name);
