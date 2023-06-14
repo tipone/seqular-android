@@ -40,7 +40,7 @@
     <string name="mo_add_custom_server_local_timeline">Toevoegen lokale tijdlijn van een aangepaste server</string>
     <string name="mo_confirm_unfollow_title">Ontvolg account</string>
     <string name="mo_notification_management_settings">Beheer meldingen</string>
-    <string name="mo_setting_true_black_summary">Kan batterij beparen bij AMOLED scherm</string>
+    <string name="mo_setting_true_black_summary">Kan batterij besparen bij AMOLED scherm</string>
     <string name="mo_confirm_unfollow">Bevestig ontvolgen van %s</string>
     <string name="mo_setting_play_gif_summary">Autoplay GIFs in avatars en emoji</string>
     <string name="mo_double_tap_to_swipe_between_tabs">Dubbeltikken om te swipen tussen tabs</string>
@@ -66,4 +66,6 @@
     <string name="mo_setting_default_reply_privacy_summary">Reacties worden niet meegenomen in de discovery features</string>
     <string name="mo_setting_relocate_publish_summary">Verplaats de publiceerknop naar de onderste balk</string>
     <string name="mo_setting_disable_swipe_summary">Niet swipen om de volgende tijdlijn te zien</string>
+    <string name="mo_setting_marquee_summary">Schakelt de horizontaal scrollende tekst uit</string>
+    <string name="mo_mention_reblogger_automatically">Automatisch in reacties het account erbij noteren, van degene die het bericht boost</string>
 </resources>
