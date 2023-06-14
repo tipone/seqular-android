@@ -169,7 +169,7 @@
     <string name="sk_icon_megaphone">Megafoon</string>
     <string name="sk_icon_microphone">Microfoon</string>
     <string name="sk_icon_microscope">Microscoop</string>
-    <string name="sk_icon_keyboard">Keyboard</string>
+    <string name="sk_icon_keyboard">Toetsenbord</string>
     <string name="sk_icon_coffee">Koffie</string>
     <string name="sk_icon_laugh">Lach</string>
     <string name="sk_edit_timeline">Bewerk tijdlijn</string>
@@ -256,7 +256,7 @@
     <string name="sk_settings_reply_visibility_all">Alle reacties</string>
     <string name="sk_settings_auto_reveal_never">Nooit</string>
     <string name="sk_settings_auto_reveal_always">Altijd</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Toon dezelfde CW\'s in gesprekken</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Toon dezelfde CW\'s in reacties van</string>
     <string name="sk_settings_auto_reveal_threads">Zelfde auteur</string>
     <string name="sk_settings_auto_reveal_discussions">Hele gesprek</string>
     <string name="sk_instance_info_unavailable">Instance (server) informatie tijdelijk niet beschikbaar</string>
@@ -267,4 +267,19 @@
     <string name="sk_settings_show_new_posts_button">\"Toon nieuwe berichten\" knop</string>
     <string name="sk_changelog">Changelog</string>
     <string name="sk_settings_confirm_before_reblog">Bevestig om te boosten</string>
+    <string name="sk_content_type_plain">Plain tekst</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_content_type_unspecified">Niet gespecificeerd</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_settings_content_types">Schakel berichtopmaak in</string>
+    <string name="sk_notification_action_replied">Reactie verzonden naar %s</string>
+    <string name="sk_open_in_app">Open in app</string>
+    <string name="sk_open_in_app_failed">Kan niet openen in app</string>
+    <string name="sk_external_share_title">Deel met account</string>
+    <string name="sk_external_share_or_open_title">Deel of open met account</string>
+    <string name="sk_no_remote_info_hint">remote informatie niet beschikbaar</string>
+    <string name="sk_error_loading_profile">Laden van het profiel via %s mislukt</string>
+    <string name="sk_compact_reblog_reply_line">Compacte boost/reply regel</string>
 </resources>
