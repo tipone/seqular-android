@@ -2,21 +2,30 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.MainActivity;
+import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.tags.GetHashtag;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.TimelineDefinition;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 
-public class CustomLocalTimelineFragment extends StatusListFragment implements ProvidesAssistContent.ProvidesWebUri {
+public class CustomLocalTimelineFragment extends PinnableStatusListFragment implements ProvidesAssistContent.ProvidesWebUri{
     //    private String name;
     private String domain;
 
@@ -75,6 +84,13 @@ public class CustomLocalTimelineFragment extends StatusListFragment implements P
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.custom_local_timelines, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+        UiUtils.enableOptionsMenuIcons(getContext(), menu, R.id.pin);
+    }
+
+    @Override
     protected Filter.FilterContext getFilterContext() {
         return null;
     }
@@ -82,5 +98,10 @@ public class CustomLocalTimelineFragment extends StatusListFragment implements P
     @Override
     public Uri getWebUri(Uri.Builder base) {
         return Uri.parse(domain);
+    }
+
+    @Override
+    protected TimelineDefinition makeTimelineDefinition() {
+        return TimelineDefinition.ofCustomLocalTimeline(domain);
     }
 }
