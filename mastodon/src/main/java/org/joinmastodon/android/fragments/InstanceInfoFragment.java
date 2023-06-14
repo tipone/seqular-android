@@ -367,6 +367,11 @@ public class InstanceInfoFragment extends LoaderFragment {
 	}
 
 	@Override
+	protected boolean wantsToolbarMenuIconsTinted() {
+		return false;
+	}
+
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		int id=item.getItemId();
 		if(id==R.id.share){
