@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.graphics.Outline;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -47,6 +48,7 @@ import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.CoverImageView;
 import org.joinmastodon.android.ui.views.LinkedTextView;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
 import java.net.URI;
@@ -67,7 +69,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class InstanceInfoFragment extends LoaderFragment {
+public class InstanceInfoFragment extends LoaderFragment implements ProvidesAssistContent.ProvidesWebUri {
 
 	private Instance instance;
 	private String extendedDescription;
@@ -168,12 +170,6 @@ public class InstanceInfoFragment extends LoaderFragment {
 					public void onSuccess(Instance result){
 						if (getActivity() == null) return;
 						instance = result;
-						try {
-							// This is for akkoma instances where the instance URI contains the https header as well, so this is to get rid of it
-							instance.uri = new URI(instance.uri).getHost();
-						} catch (URISyntaxException e) {
-							throw new RuntimeException(e);
-						}
 						bindViews();
 						dataLoaded();
 						invalidateOptionsMenu();
@@ -265,7 +261,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 		ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(instance.thumbnail, 1000, 1000));
 		uri.setText(instance.title);
 		setTitle(instance.title);
-		setSubtitle(instance.uri);
+		setSubtitle(targetDomain);
 
 		updateDescription();
 		collapseDescription();
@@ -276,7 +272,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 		if (instance.contactAccount != null) {
 			AccountField admin = new AccountField();
 			admin.parsedName=admin.name=getContext().getString(R.string.mo_instance_admin);
-			admin.parsedValue=buildLinkText(instance.contactAccount.url, instance.contactAccount.getDisplayUsername() + "@" + instance.uri);
+			admin.parsedValue=buildLinkText(instance.contactAccount.url, instance.contactAccount.getDisplayUsername() + "@" + targetDomain);
 			fields.add(admin);
 		}
 
@@ -370,7 +366,7 @@ public class InstanceInfoFragment extends LoaderFragment {
 		if (instance != null) {
 			inflater.inflate(R.menu.instance_info, menu);
 			UiUtils.enableOptionsMenuIcons(getActivity(), menu);
-			menu.findItem(R.id.share).setTitle(getString(R.string.share_user, instance.uri));
+			menu.findItem(R.id.share).setTitle(getString(R.string.share_user, targetDomain));
 
 		}
 	}
@@ -386,12 +382,12 @@ public class InstanceInfoFragment extends LoaderFragment {
 		if(id==R.id.share){
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");
-			intent.putExtra(Intent.EXTRA_TEXT, instance.uri);
+			intent.putExtra(Intent.EXTRA_TEXT, targetDomain);
 			startActivity(Intent.createChooser(intent, item.getTitle()));
 		} else if (id==R.id.open_timeline) {
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-			args.putString("domain", instance.uri);
+			args.putString("domain", targetDomain);
 			Nav.go(getActivity(), CustomLocalTimelineFragment.class, args);
 		}else if (id==R.id.rules) {
 			Bundle args=new Bundle();
@@ -432,6 +428,16 @@ public class InstanceInfoFragment extends LoaderFragment {
 	public void setFields(ArrayList<AccountField> fields){
 		metadataListData=fields;
 		if (adapter != null) adapter.notifyDataSetChanged();
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return Uri.parse(targetDomain);
 	}
 
 	private class MetadataAdapter extends UsableRecyclerView.Adapter<BaseViewHolder> {
