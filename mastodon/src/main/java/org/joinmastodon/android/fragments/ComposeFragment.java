@@ -1486,7 +1486,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-			startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+			if(getContext().getPackageManager().hasSystemFeature(PackageManager.FEATURE_CAMERA_ANY)){
+				startActivityForResult(cameraIntent, CAMERA_PIC_REQUEST_CODE);
+			} else {
+				Toast.makeText(getContext(), R.string.mo_camera_not_available, Toast.LENGTH_SHORT);
+			}
 		} else {
 			getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA}, CAMERA_PERMISSION_CODE);
 		}
