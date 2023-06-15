@@ -2,11 +2,15 @@ package org.joinmastodon.android.fragments.settings;
 
 import android.os.Build;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.PopupMenu;
 
+import androidx.annotation.Nullable;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.model.ContentType;
 
 import java.util.ArrayList;
 
@@ -21,6 +25,10 @@ public class AppearanceFragment extends SettingsBaseFragment {
             popupMenu.inflate(R.menu.color_palettes);
             popupMenu.getMenu().findItem(R.id.m3_color).setVisible(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S);
             popupMenu.setOnMenuItemClickListener(this::onColorPreferenceClick);
+
+            Menu colorTheme = popupMenu.getMenu();
+            colorTheme.findItem(getColorThemeRes(GlobalUserPreferences.color)).setChecked(true);
+
             b.setOnTouchListener(popupMenu.getDragToOpenListener());
             b.setOnClickListener(v -> popupMenu.show());
             b.setText(switch (GlobalUserPreferences.color) {
@@ -46,6 +54,20 @@ public class AppearanceFragment extends SettingsBaseFragment {
             GlobalUserPreferences.save();
             needAppRestart = true;
         }));
+    }
+
+    public static int getColorThemeRes(@Nullable GlobalUserPreferences.ColorPreference colorPreference) {
+        return colorPreference == null ? R.id.content_type_null : switch(colorPreference) {
+            case MATERIAL3 -> R.id.m3_color;
+            case PINK -> R.id.pink_color;
+            case PURPLE -> R.id.purple_color;
+            case GREEN -> R.id.green_color;
+            case BLUE -> R.id.blue_color;
+            case BROWN -> R.id.brown_color;
+            case RED -> R.id.red_color;
+            case YELLOW -> R.id.yellow_color;
+            case NORD -> R.id.nord_color;
+        };
     }
 
     private boolean onColorPreferenceClick(MenuItem item) {
