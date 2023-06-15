@@ -256,7 +256,7 @@
     <string name="sk_settings_collapse_long_posts">Minimizar publicaciones largas</string>
     <string name="sk_unfinished_attachments">¿Corregir adjuntos\?</string>
     <string name="sk_unfinished_attachments_message">Algunos adjuntos no han terminado de subirse.</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Añadir \"re:\" a respuestas a Advertencias de Contenido</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Añadir \"re:\" en respuestas a Advertencias de Contenido de</string>
     <string name="sk_spectator_mode">Modo espectador</string>
     <string name="sk_settings_hide_interaction">Ocultar los botones de interacción</string>
     <string name="sk_follow_as">Seguir desde otra cuenta</string>
@@ -294,7 +294,7 @@
     <string name="sk_external_share_title">Compartir con una cuenta</string>
     <string name="sk_error_loading_profile">Fallo al cargar el perfil con %s</string>
     <string name="sk_settings_allow_remote_loading">Cargar información de instancias remotas</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar Avisos de Contenidos iguales en hilos</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar Avisos de Contenidos iguales respuestas de</string>
     <string name="sk_settings_auto_reveal_never">Nunca</string>
     <string name="sk_settings_auto_reveal_threads">Mismo autor</string>
     <string name="sk_settings_auto_reveal_discussions">Conversaciones</string>
@@ -303,4 +303,11 @@
     <string name="sk_no_remote_info_hint">información remota no disponible</string>
     <string name="sk_settings_allow_remote_loading_explanation">Intenta buscar una lista de seguidores, me gusta e impulsos más precisa cargando la información de la instancia de origen.</string>
     <string name="sk_settings_show_new_posts_button">Botón \"Ver nuevas publicaciones\"</string>
+    <string name="sk_settings_auto_reveal_nobody">nadie</string>
+    <string name="sk_settings_auto_reveal_author">autor</string>
+    <string name="sk_settings_auto_reveal_anyone">todos</string>
+    <string name="sk_settings_prefix_replies_never">nadie</string>
+    <string name="sk_settings_prefix_replies_to_others">otros</string>
+    <string name="sk_settings_forward_report_default">\"Reenviar denuncia\" por defecto</string>
+    <string name="sk_settings_prefix_replies_always">todos</string>
 </resources>
