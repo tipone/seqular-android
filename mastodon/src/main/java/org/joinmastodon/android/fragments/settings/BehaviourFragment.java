@@ -67,6 +67,10 @@ public class BehaviourFragment extends SettingsBaseFragment{
             GlobalUserPreferences.confirmBeforeReblog=i.checked;
             GlobalUserPreferences.save();
         }));
+        items.add(new SettingsBaseFragment.SwitchItem(R.string.sk_settings_forward_report_default, R.drawable.ic_fluent_arrow_forward_24_regular, GlobalUserPreferences.forwardReportDefault, i->{
+            GlobalUserPreferences.forwardReportDefault=i.checked;
+            GlobalUserPreferences.save();
+        }));
 
         items.add(new HeaderItem(R.string.mo_composer_behavior));
         items.add(publishButtonTextSetting = new ButtonItem(R.string.sk_settings_publish_button_text, R.drawable.ic_fluent_send_24_regular, b-> {
