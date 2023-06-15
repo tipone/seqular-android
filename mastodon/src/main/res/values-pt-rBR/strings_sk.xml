@@ -128,13 +128,13 @@
     <string name="sk_create">Criar</string>
     <string name="sk_create_list_title">Criar lista</string>
     <string name="sk_list_replies_policy">Mostrar respostas para</string>
-    <string name="sk_list_replies_policy_list">listar membros</string>
+    <string name="sk_list_replies_policy_list">membros da lista</string>
     <string name="sk_list_replies_policy_none">ninguém</string>
     <string name="sk_delete_list">Excluir lista</string>
     <string name="sk_delete_list_confirm">Tem certeza que deseja excluir a lista “%s”\?</string>
     <string name="sk_edit_list_title">Editar lista</string>
     <string name="sk_your_lists">Suas listas</string>
-    <string name="sk_list_name_hint">Lista de nomes</string>
+    <string name="sk_list_name_hint">Nome da lista</string>
     <string name="sk_settings_reduce_motion">Reduzir movimento nas animações</string>
     <string name="sk_announcements">Comunicados</string>
     <string name="sk_settings_single_notification">Mostrar apenas uma notificação</string>
@@ -305,4 +305,8 @@
     <string name="sk_show_thread">Mostrar fio</string>
     <string name="sk_instance_info_unavailable">Informação de instância temporariamente inacessível</string>
     <string name="sk_open_in_app">Abrir no app</string>
+    <string name="sk_icon_feed">Feed</string>
+    <string name="sk_exclusive_list">Lista exclusiva</string>
+    <string name="sk_list_exclusive_switch">Tornar lista exclusiva</string>
+    <string name="sk_list_exclusive_switch_explanation">Membros de uma lista exclusiva não irão aparecer na sua linha do tempo inicial - somente se sua instância suportar.</string>
 </resources>
