@@ -30,6 +30,9 @@
 	*;
 }
 
+# i don't know how proguard works
+-keep class org.joinmastodon.android.** { *; }
+
 # Keep all enums for debugging purposes
 -keepnames public enum * {
 	*;
@@ -79,3 +82,6 @@
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 ##---------------End: proguard configuration for Gson  ----------
+
+
+-dontobfuscate

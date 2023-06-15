@@ -23,8 +23,8 @@ android {
 
 	buildTypes {
 		release {
-//			minifyEnabled true
-//			shrinkResources true
+			minifyEnabled true
+			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
 		}
 		debug{
@@ -32,16 +32,8 @@ android {
 			versionNameSuffix '-debug'
 			applicationIdSuffix '.debug'
 		}
-		githubRelease{
-			initWith release
-		}
-		playRelease{
-			initWith release
-			// TODO: fix proguard rules and re-enable these
-//			minifyEnabled true
-//			shrinkResources true
-			versionNameSuffix '-play'
-		}
+		githubRelease { initWith release }
+		playRelease { initWith release }
 	}
 	compileOptions {
 		sourceCompatibility JavaVersion.VERSION_17
