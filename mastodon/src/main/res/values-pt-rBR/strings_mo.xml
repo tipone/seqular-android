@@ -70,4 +70,5 @@
     <string name="mo_setting_play_gif_summary">Reproduzir automaticamente GIFs em fotos de perfil e emojis</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Salvar ou reblogar publicações pela notificação</string>
     <string name="mo_notification_audience_settings">Audiência de notificação</string>
+    <string name="mo_camera_not_available">Nenhuma camera disponível!</string>
 </resources>
