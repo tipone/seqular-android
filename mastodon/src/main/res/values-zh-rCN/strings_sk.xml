@@ -100,7 +100,7 @@
     <string name="sk_reblogged_as">已用 %s 转嘟</string>
     <string name="sk_already_reblogged">已转嘟过</string>
     <string name="sk_reply_as">用其他帐号回复</string>
-    <string name="sk_settings_uniform_icon_for_notifications">所有通知的统一图标</string>
+    <string name="sk_settings_uniform_icon_for_notifications">统一通知图标</string>
     <string name="sk_unsent_posts">未发送的嘟文</string>
     <string name="sk_confirm_delete_draft_title">删除草稿</string>
     <string name="sk_draft">草稿</string>
@@ -257,7 +257,7 @@
     <string name="sk_unfinished_attachments_message">部分附件尚未上传完毕。</string>
     <string name="sk_filtered">已过滤：%s</string>
     <string name="sk_settings_collapse_long_posts">折叠很长的嘟文</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">在回复带有内容警告的嘟文前加上 \"re:\"</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">回复时在内容警告前加上 “re:”</string>
     <string name="sk_spectator_mode">旁观模式</string>
     <string name="sk_settings_hide_interaction">隐藏互动按钮</string>
     <string name="sk_settings_reply_visibility_self">对我的回复</string>
@@ -275,7 +275,7 @@
     <string name="sk_show_thread">显示对话</string>
     <string name="sk_settings_show_new_posts_button">“显示新嘟文”按钮</string>
     <string name="sk_reacted">已回应</string>
-    <string name="sk_settings_confirm_before_reblog">转读前确认</string>
+    <string name="sk_settings_confirm_before_reblog">转嘟前确认</string>
     <string name="sk_reacted_with">已以 %s 回应</string>
     <string name="sk_content_type_plain">纯文本</string>
     <string name="sk_content_type_html">HTML</string>
@@ -288,4 +288,23 @@
     <string name="sk_content_type_unspecified">未指明</string>
     <string name="sk_settings_content_types_explanation">创建帖文时允许设置内容类型（如 Markdown）。请注意并非所有实例都支持该特性。</string>
     <string name="sk_settings_default_content_type_explanation">该选项允许你为创建的帖文预设一种内容类型，将覆盖「发帖偏好」中的设置参数。</string>
+    <string name="sk_timeline_bubble">局域气泡</string>
+    <string name="sk_instance_info_unavailable">暂时无法获取实例信息</string>
+    <string name="sk_open_in_app">在应用中打开</string>
+    <string name="sk_open_in_app_failed">无法在应用中打开</string>
+    <string name="sk_external_share_title">使用指定账户分享</string>
+    <string name="sk_external_share_or_open_title">使用指定账户分享或打开</string>
+    <string name="sk_no_remote_info_hint">无法获取远程信息</string>
+    <string name="sk_error_loading_profile">通过 %s 加载个人资料失败</string>
+    <string name="sk_settings_allow_remote_loading">从远程实例中加载信息</string>
+    <string name="sk_settings_allow_remote_loading_explanation">通过从原始实例中加载信息，尝试拉取更精确的关注者列表、喜欢以及转发。</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">一并显示含有相同内容警告的回复</string>
+    <string name="sk_settings_prefix_replies_always">所有人</string>
+    <string name="sk_settings_prefix_replies_to_others">其他人</string>
+    <string name="sk_settings_auto_reveal_nobody">无</string>
+    <string name="sk_settings_prefix_replies_never">无</string>
+    <string name="sk_settings_forward_report_default">默认开启“转发举报”至原始服务器</string>
+    <string name="sk_bubble_timeline_info_banner">这些是您所在实例的管理员所精选的网络上的最新嘟文。</string>
+    <string name="sk_settings_auto_reveal_author">作者</string>
+    <string name="sk_settings_auto_reveal_anyone">所有人</string>
 </resources>
