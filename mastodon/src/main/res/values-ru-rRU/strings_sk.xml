@@ -286,4 +286,20 @@
     <string name="sk_settings_default_content_type">Тип контента по умолчанию</string>
     <string name="sk_settings_default_content_type_explanation">Это позволяет вам предварительно выбирать тип контента при создании новых публикаций, переопределяя значение, установленное в “Настройках публикации”.</string>
     <string name="sk_settings_show_new_posts_button">Кнопка \"Показать новые посты\"</string>
+    <string name="sk_open_in_app">Открыть в приложении</string>
+    <string name="sk_open_in_app_failed">Не удалось открыть в приложении</string>
+    <string name="sk_external_share_or_open_title">Поделиться или открыть с помощью учетной записи</string>
+    <string name="sk_no_remote_info_hint">дистанционная информация недоступна</string>
+    <string name="sk_settings_allow_remote_loading">Загрузка информации из других инстансов</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Выявить одинаковые предупреждения в чатах</string>
+    <string name="sk_settings_auto_reveal_never">Никогда</string>
+    <string name="sk_settings_auto_reveal_threads">Тот же автор</string>
+    <string name="sk_settings_auto_reveal_discussions">Обсуждения</string>
+    <string name="sk_settings_auto_reveal_always">Всегда</string>
+    <string name="sk_bubble_timeline_info_banner">Это самые последние сообщения из сети, созданные администраторами вашего экземпляра.</string>
+    <string name="sk_timeline_bubble">Пузырь</string>
+    <string name="sk_instance_info_unavailable">Информация об инстансе временно недоступна</string>
+    <string name="sk_external_share_title">Поделиться с аккаунтом</string>
+    <string name="sk_error_loading_profile">Не удалось загрузить профиль через %s</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Попробуйте получить более точные данные о подписчиках, лайках и увеличениях, загрузив информацию из инстанса автора.</string>
 </resources>

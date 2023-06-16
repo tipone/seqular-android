@@ -63,4 +63,6 @@
     <string name="mo_enable_dividers">Показать разделители публикаций</string>
     <string name="mo_double_tap_to_swipe_between_tabs">Двойное нажатие для переключения между вкладками</string>
     <string name="mo_load_remote_followers">Загружать подписки и подписчиков других инстансов</string>
+    <string name="mo_open_camera">Сделать фото</string>
+    <string name="mo_setting_marquee_summary">Отключает прокрутку заголовка в виде эллипса</string>
 </resources>
