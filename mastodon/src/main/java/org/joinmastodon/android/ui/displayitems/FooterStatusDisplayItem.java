@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -244,6 +246,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							if(status == null)
 								return;
 							boost.setSelected(!status.reblogged);
+							vibrateForAction(boost, !status.reblogged);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
 						}
 				);
@@ -361,6 +364,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							if(status == null)
 								return;
 							favorite.setSelected(!status.favourited);
+							vibrateForAction(favorite, !status.favourited);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
 								if (status.favourited) {
 									v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
@@ -406,6 +410,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							if(status == null)
 								return;
 							bookmark.setSelected(!status.bookmarked);
+							vibrateForAction(bookmark, !status.bookmarked);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
 								v.startAnimation(opacityIn);
 							});
@@ -458,6 +463,12 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			if(id==R.id.share_btn)
 				return R.string.button_share;
 			return 0;
+		}
+
+		private static void vibrateForAction(View view, boolean isPositive) {
+			if (!GlobalUserPreferences.hapticFeedback) return;
+			if (Build.VERSION.SDK_INT < Build.VERSION_CODES.R) return;
+			view.performHapticFeedback(isPositive ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.REJECT);
 		}
 	}
 }
