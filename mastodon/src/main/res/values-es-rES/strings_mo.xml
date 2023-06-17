@@ -42,7 +42,7 @@
     <string name="mo_load_remote_followers">Cargar remotamente seguidores y seguidos del perfil</string>
     <string name="mo_mention_reblogger_automatically">Mencionar automáticamente la cuenta que impulsó la publicación en las respuestas</string>
     <string name="mo_confirm_unfollow_title">Dejar de seguir</string>
-    <string name="mo_confirm_unfollow">¿Quieres dejar de seguir a %s\?</string>
+    <string name="mo_confirm_unfollow">Confirmar para dejar de seguir a %s</string>
     <string name="mo_instance_contact">Contacto</string>
     <string name="mo_instance_users">Usuarios</string>
     <string name="mo_instance_status">Publicaciones</string>
@@ -70,4 +70,5 @@
     <string name="mo_setting_relocate_publish_summary">Mueve el botón de publicación a la barra inferior</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Añade un marcador o impulsa publicaciones desde la notificación</string>
     <string name="mo_open_camera">Hacer foto</string>
+    <string name="mo_camera_not_available">¡No hay cámara disponible!</string>
 </resources>
