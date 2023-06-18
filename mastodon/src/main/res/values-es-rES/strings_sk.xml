@@ -272,7 +272,7 @@
     <string name="sk_reply_line_above_avatar">\"En respuesta a\" línea sobre el avatar</string>
     <string name="sk_show_thread">Mostrar hilo</string>
     <string name="sk_compact_reblog_reply_line">Línea compacta compartida/respondida</string>
-    <string name="sk_settings_confirm_before_reblog">Confirmar antes de volver a publicar</string>
+    <string name="sk_settings_confirm_before_reblog">Confirmación antes de impulsar</string>
     <string name="sk_reacted_with">reaccionó con %s</string>
     <string name="sk_reacted">reaccionó</string>
     <string name="sk_content_type">Tipo del contenido</string>
@@ -294,7 +294,7 @@
     <string name="sk_external_share_title">Compartir con una cuenta</string>
     <string name="sk_error_loading_profile">Fallo al cargar el perfil con %s</string>
     <string name="sk_settings_allow_remote_loading">Cargar información de instancias remotas</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar Avisos de Contenidos iguales respuestas de</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar Avisos de Contenido para respuestas de</string>
     <string name="sk_settings_auto_reveal_never">Nunca</string>
     <string name="sk_settings_auto_reveal_threads">Mismo autor</string>
     <string name="sk_settings_auto_reveal_discussions">Conversaciones</string>
@@ -310,8 +310,8 @@
     <string name="sk_settings_prefix_replies_to_others">otros</string>
     <string name="sk_settings_forward_report_default">\"Reenviar denuncia\" por defecto</string>
     <string name="sk_settings_prefix_replies_always">todos</string>
-    <string name="sk_icon_feed">Feed</string>
-    <string name="sk_list_exclusive_switch">Hacer una lista exclusiva</string>
+    <string name="sk_icon_feed">Cronología</string>
+    <string name="sk_list_exclusive_switch">Crear una lista exclusiva</string>
     <string name="sk_exclusive_list">Lista exclusiva</string>
-    <string name="sk_list_exclusive_switch_explanation">Los miembros de una lista exclusiva no aparecerán en tu línea de tiempo de inicio, si tu instancia lo permite.</string>
+    <string name="sk_list_exclusive_switch_explanation">Los miembros de una lista exclusiva no aparecerán en tu cronología de inicio - si tu instancia lo permite.</string>
 </resources>
