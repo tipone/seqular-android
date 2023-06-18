@@ -264,7 +264,7 @@
     <string name="sk_settings_allow_remote_loading_explanation">Probeer meer accurate informatie te krijgen van volgers, favorieten en boosts, door informatie te laden van de originele instance (server).</string>
     <string name="sk_bubble_timeline_info_banner">Dit zijn de nieuwste berichten op het netwerk, samengesteld door de beheerders van je instance (server).</string>
     <string name="sk_settings_glitch_mode_explanation">Inschakelen als je home instance (server) draait op Glitch. Niet nodig voor Hometown of Akkoma.</string>
-    <string name="sk_settings_show_new_posts_button">\"Toon nieuwe berichten\" knop</string>
+    <string name="sk_settings_show_new_posts_button">Knop \"Toon nieuwe berichten\"</string>
     <string name="sk_changelog">Changelog</string>
     <string name="sk_settings_confirm_before_reblog">Bevestig om te boosten</string>
     <string name="sk_content_type_plain">Plain tekst</string>
@@ -282,4 +282,14 @@
     <string name="sk_no_remote_info_hint">remote informatie niet beschikbaar</string>
     <string name="sk_error_loading_profile">Laden van het profiel via %s mislukt</string>
     <string name="sk_compact_reblog_reply_line">Compacte boost/reply regel</string>
+    <string name="sk_settings_hide_fab">Automatisch Compose knop verbergen</string>
+    <string name="sk_reply_line_above_avatar">“In reply to” regel boven avatar</string>
+    <string name="sk_settings_auto_reveal_author">auteur</string>
+    <string name="sk_settings_prefix_replies_to_others">anderen</string>
+    <string name="sk_settings_forward_report_default">Standaardinstelling \"Forward report\"</string>
+    <string name="sk_settings_auto_reveal_nobody">niemand</string>
+    <string name="sk_settings_prefix_replies_never">niemand</string>
+    <string name="sk_settings_auto_reveal_anyone">iedereen</string>
+    <string name="sk_settings_prefix_replies_always">iedereen</string>
+    <string name="sk_list_exclusive_switch">Maak lijst exclusief</string>
 </resources>
