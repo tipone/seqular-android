@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_hide_compose_button_while_scrolling_setting">Verberg \"nieuw bericht\" knop tijdens scrollen</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Verberg knop \"Nieuw bericht\" tijdens scrollen</string>
     <string name="mo_personal_note">Voeg een notitie toe over dit profiel</string>
     <string name="mo_personal_note_confirm">Bevestig de wijzigingen aan de notitie</string>
     <string name="mo_personal_note_update_failed">Notitie bewaren mislukt</string>
@@ -9,7 +9,7 @@
     <string name="mo_update_available">Moshidon %s staat gereed om te downloaden.</string>
     <string name="mo_no_image_desc_title">Geen beschrijving bij afbeelding</string>
     <string name="mo_emoji_recent">Recent gebruikt</string>
-    <string name="mo_poll_option_add">Voeg nieuwe peiling optie toe</string>
+    <string name="mo_poll_option_add">Voeg een nieuwe peiling optie toe</string>
     <string name="mo_sending_error">Fout bij plaatsen bericht</string>
     <string name="mo_disable_dividers">Berichten scheidingslijn uitschakelen</string>
     <string name="mo_relocate_publish_button">Verplaats publiceerknop</string>
@@ -17,7 +17,7 @@
     <string name="mo_clear_recent_emoji">Wis recent gebruikte emoji</string>
     <string name="mo_no_image_desc">De bijgesloten afbeeldingen hebben geen omschrijving. Overweeg deze alsnog toe te voegen, zodat ook mensen met een visuele handicap kunnen deelnemen.</string>
     <string name="mo_share_open_url">Open in app</string>
-    <string name="mo_disable_reminder_to_add_alt_text">Uitschakelen herinnering om alt tekst toe te voegen</string>
+    <string name="mo_disable_reminder_to_add_alt_text">Herinnering uitschakelen om alt tekst toe te voegen</string>
     <string name="mo_filtered">Filter: %s</string>
     <string name="mo_mute_label">Duur:</string>
     <string name="mo_duration_minutes_30">30 minuten</string>
@@ -63,9 +63,9 @@
     <string name="mo_setting_remote_follower_summary">Toon volgers van andere instances</string>
     <string name="mo_setting_reduced_motion_summary">Uitschakelen animatie bij interacties</string>
     <string name="mo_setting_interaction_count_summary">Toon hoeveel mensen interactie hebben met een bericht op de tijdlijn</string>
-    <string name="mo_setting_default_reply_privacy_summary">Reacties worden niet meegenomen in de discovery features</string>
+    <string name="mo_setting_default_reply_privacy_summary">Reacties worden dan niet meegenomen in de discovery features</string>
     <string name="mo_setting_relocate_publish_summary">Verplaats de publiceerknop naar de onderste balk</string>
-    <string name="mo_setting_disable_swipe_summary">Niet swipen om de volgende tijdlijn te zien</string>
+    <string name="mo_setting_disable_swipe_summary">Niet naar andere tijdlijnen kunnen swipen</string>
     <string name="mo_setting_marquee_summary">Schakelt de horizontaal scrollende tekst uit</string>
-    <string name="mo_mention_reblogger_automatically">Automatisch in reacties het account erbij noteren, van degene die het bericht boost</string>
+    <string name="mo_mention_reblogger_automatically">In reacties automatisch ook het account erbij vermelden, van degene die het bericht boost</string>
 </resources>
