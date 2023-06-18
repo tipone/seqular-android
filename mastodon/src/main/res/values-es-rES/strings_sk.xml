@@ -282,7 +282,7 @@
     <string name="sk_content_type_markdown">Markdown</string>
     <string name="sk_content_type_bbcode">BBCode</string>
     <string name="sk_content_type_mfm">MFM</string>
-    <string name="sk_settings_content_types">Habilitar el formato de los mensajes</string>
+    <string name="sk_settings_content_types">Activar formato de publicaciones</string>
     <string name="sk_settings_default_content_type">Contenido por defecto</string>
     <string name="sk_settings_content_types_explanation">Permite establecer un tipo de contenido como Markdown al crear una entrada. Ten en cuenta que no todas las instancias lo admiten.</string>
     <string name="sk_settings_default_content_type_explanation">Permite preseleccionar un tipo de contenido al crear nuevas entradas, anulando el valor establecido en \"Preferencias de publicación\".</string>
