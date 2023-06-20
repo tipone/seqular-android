@@ -302,4 +302,15 @@
     <string name="sk_external_share_title">Поделиться с аккаунтом</string>
     <string name="sk_error_loading_profile">Не удалось загрузить профиль через %s</string>
     <string name="sk_settings_allow_remote_loading_explanation">Попробуйте получить более точные данные о подписчиках, лайках и увеличениях, загрузив информацию из инстанса автора.</string>
+    <string name="sk_icon_feed">Лента</string>
+    <string name="sk_settings_prefix_replies_to_others">Другим</string>
+    <string name="sk_settings_forward_report_default">Переключатель «Переслать отчет» по умолчанию</string>
+    <string name="sk_list_exclusive_switch_explanation">Участники эксклюзивного списка не будут отображаться на вашей домашней ленте– если ваш инстанс поддерживает это.</string>
+    <string name="sk_settings_auto_reveal_nobody">Никто</string>
+    <string name="sk_settings_auto_reveal_author">Автор</string>
+    <string name="sk_settings_auto_reveal_anyone">Все</string>
+    <string name="sk_settings_prefix_replies_always">Все</string>
+    <string name="sk_settings_prefix_replies_never">Никто</string>
+    <string name="sk_exclusive_list">Эксклюзивный список</string>
+    <string name="sk_list_exclusive_switch">Сделайте список эксклюзивным</string>
 </resources>
