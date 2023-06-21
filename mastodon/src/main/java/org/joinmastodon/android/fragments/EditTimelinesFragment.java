@@ -334,7 +334,7 @@ public class EditTimelinesFragment extends RecyclerFragment<TimelineDefinition> 
                     String name = editText.getText().toString().trim();
                     String mainHashtag = tagMain.getText().toString().trim();
                     if (TextUtils.isEmpty(mainHashtag)) mainHashtag = name;
-                    if (item == null && TextUtils.isEmpty(mainHashtag)) {
+                    if (TextUtils.isEmpty(mainHashtag)) {
                         Toast.makeText(ctx, R.string.sk_add_timeline_tag_error_empty, Toast.LENGTH_SHORT).show();
                         onSave.accept(null);
                         return;
