@@ -5,7 +5,7 @@
     <string name="mo_relocate_publish_button">Recolocar botón de publicación</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Esconder botón de escritura al deslizar</string>
     <string name="mo_welcome_text">Para empezar introduce el nombre del dominio de tu instancia debajo, por favor.</string>
-    <string name="mo_personal_note">Añade una nota sobre este perfil</string>
+    <string name="mo_personal_note">Añade una nota privada sobre el perfil</string>
     <string name="mo_personal_note_confirm">Confirmar cambios en la nota</string>
     <string name="mo_personal_note_update_failed">Fallo al guardar la nota</string>
     <string name="mo_update_available">Moshidon %s se puede descargar.</string>
