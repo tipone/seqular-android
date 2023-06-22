@@ -277,7 +277,6 @@
     <string name="sk_settings_auto_reveal_author">作者</string>
     <string name="sk_settings_auto_reveal_anyone">任何人</string>
     <string name="sk_open_in_app_failed">无法在应用程序中打开</string>
-    <string name="sk_external_share_title"></string>
     <string name="sk_no_remote_info_hint">远程信息不可用</string>
     <string name="sk_error_loading_profile">通过%s加载配置文件失败</string>
     <string name="sk_settings_allow_remote_loading">从远程实例加载信息</string>
