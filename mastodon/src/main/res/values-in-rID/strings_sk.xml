@@ -310,4 +310,23 @@
     <string name="sk_list_exclusive_switch">Buat daftar ekslusif</string>
     <string name="sk_exclusive_list">Daftar ekslusif</string>
     <string name="sk_list_exclusive_switch_explanation">Anggota dalam daftar ekslusif tidak akan muncul di lini masa beranda Anda — jika server Anda mendukungnya.</string>
+    <string name="sk_icon_bed">Tempat tidur</string>
+    <string name="sk_icon_recycle_bin">Tempat sampah</string>
+    <string name="sk_icon_verified">Terverifikasi</string>
+    <string name="sk_icon_doctor">Dokter</string>
+    <string name="sk_icon_diamond">Berlian</string>
+    <string name="sk_icon_umbrella">Payung</string>
+    <string name="sk_add_timeline">Tambahkan lini masa</string>
+    <string name="sk_edit_timeline_tag_main">Kiriman berisi tagar…</string>
+    <string name="sk_edit_timeline_tag_any">…atau salah satu dari ini</string>
+    <string name="sk_edit_timeline_tag_all">…dan setiap salah satu dari ini</string>
+    <string name="sk_edit_timeline_tag_none">…tetapi bukan yang ini</string>
+    <string name="sk_edit_timeline_tag_hint">Masukkan tagar…</string>
+    <string name="sk_edit_timeline_tags_hint">Masukkan tagar…</string>
+    <string name="sk_edit_timeline_tags_explanation">Harap diingat bahwa server menangani tindakan ini. Menggabungkannya mungkin tidak didukung.</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Hanya tampilkan kiriman lokal\?</string>
+    <string name="sk_add_timeline_tag_error_empty">Tagar harus diisi</string>
+    <string name="sk_advanced_options_show">Tampilkan opsi tingkat lanjut</string>
+    <string name="sk_advanced_options_hide">Sembunyikan opsi tingkat lanjut</string>
+    <string name="sk_icon_beaker">Gelas kimia</string>
 </resources>
