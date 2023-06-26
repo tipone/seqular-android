@@ -67,7 +67,7 @@ public class BehaviourFragment extends SettingsBaseFragment{
         items.add(new SwitchItem(R.string.mo_haptic_feedback, R.string.mo_setting_haptic_feedback_summary, R.drawable.ic_fluent_phone_vibrate_24_filled, GlobalUserPreferences.hapticFeedback, i -> {
             GlobalUserPreferences.hapticFeedback = i.checked;
             GlobalUserPreferences.save();
-        }, Build.VERSION.SDK_INT >= Build.VERSION_CODES.R));
+        }));
         items.add(new SwitchItem(R.string.sk_settings_confirm_before_reblog, R.drawable.ic_fluent_checkmark_circle_24_regular, GlobalUserPreferences.confirmBeforeReblog, i->{
             GlobalUserPreferences.confirmBeforeReblog=i.checked;
             GlobalUserPreferences.save();
