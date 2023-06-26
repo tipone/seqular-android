@@ -140,7 +140,7 @@ public class GlobalUserPreferences{
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
-		hapticFeedback=prefs.getBoolean("hapticFeedback", Build.VERSION.SDK_INT >= Build.VERSION_CODES.R);
+		hapticFeedback=prefs.getBoolean("hapticFeedback", true);
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
