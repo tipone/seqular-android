@@ -253,6 +253,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				return;
 			}
 			boost.setSelected(!item.status.reblogged);
+			vibrateForAction(boost, !item.status.reblogged);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
 		}
 
@@ -378,6 +379,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				return;
 			}
 			favorite.setSelected(!item.status.favourited);
+			vibrateForAction(favorite, !item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				if (item.status.favourited) {
 					v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
@@ -419,6 +421,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				return;
 			}
 			bookmark.setSelected(!item.status.bookmarked);
+			vibrateForAction(bookmark, !item.status.bookmarked);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked, r->{
 				v.startAnimation(opacityIn);
 			});
