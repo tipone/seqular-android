@@ -309,4 +309,21 @@
     <string name="sk_icon_feed">Cronología</string>
     <string name="sk_exclusive_list">Lista exclusiva</string>
     <string name="sk_list_exclusive_switch_explanation">Los miembros de una lista exclusiva no aparecerán en tu cronología de inicio - si tu instancia lo admite.</string>
+    <string name="sk_icon_verified">Comprobado</string>
+    <string name="sk_icon_doctor">Médico</string>
+    <string name="sk_icon_diamond">Diamante</string>
+    <string name="sk_icon_umbrella">Paraguas</string>
+    <string name="sk_edit_timeline_tag_main">Publicaciones que contienen hashtag…</string>
+    <string name="sk_edit_timeline_tag_any">...o alguno de estos</string>
+    <string name="sk_edit_timeline_tag_all">...y cada uno de estos</string>
+    <string name="sk_edit_timeline_tag_none">...pero ninguno de estos</string>
+    <string name="sk_hashtag_timeline_local_only_switch">¿Mostrar sólo los mensajes locales\?</string>
+    <string name="sk_add_timeline_tag_error_empty">El hashtag no debe estar vacío</string>
+    <string name="sk_advanced_options_show">Mostrar las opciones avanzadas</string>
+    <string name="sk_advanced_options_hide">Ocultar las opciones avanzadas</string>
+    <string name="sk_icon_recycle_bin">Papelera de reciclaje</string>
+    <string name="sk_add_timeline">Agregar una línea de tiempo</string>
+    <string name="sk_edit_timeline_tag_hint">Introduce el hashtag…</string>
+    <string name="sk_edit_timeline_tags_hint">Introduce los hashtags…</string>
+    <string name="sk_edit_timeline_tags_explanation">Por favor, ten en cuenta que el servidor gestiona estas operaciones. Puede que no sea posible combinarlas.</string>
 </resources>
