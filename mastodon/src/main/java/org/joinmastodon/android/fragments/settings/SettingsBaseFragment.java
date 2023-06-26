@@ -264,6 +264,15 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 			this.onChanged=onChanged;
 		}
 
+		public SwitchItem(@StringRes int title, @StringRes int summary, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged, boolean enabled){
+			this.title=getString(title);
+			this.summary=getString(summary);
+			this.icon=icon;
+			this.checked=checked;
+			this.onChanged=onChanged;
+			this.enabled=enabled;
+		}
+
 		public SwitchItem(@StringRes int title, @DrawableRes int icon, boolean checked, Consumer<SwitchItem> onChanged, boolean enabled){
 			this.title=getString(title);
 			this.icon=icon;

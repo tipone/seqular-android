@@ -52,6 +52,7 @@ public class GlobalUserPreferences{
 	public static boolean doubleTapToSwipe;
 	public static boolean compactReblogReplyLine;
 	public static boolean confirmBeforeReblog;
+	public static boolean hapticFeedback;
 	public static boolean replyLineAboveHeader;
 	public static boolean swapBookmarkWithBoostAction;
 	public static boolean loadRemoteAccountFollowers;
@@ -139,6 +140,7 @@ public class GlobalUserPreferences{
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
+		hapticFeedback=prefs.getBoolean("hapticFeedback", Build.VERSION.SDK_INT >= Build.VERSION_CODES.R);
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);

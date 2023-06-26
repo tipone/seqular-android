@@ -53,6 +53,7 @@
 
     <string name="mo_share_open_url">Open in App</string>
     <string name="mo_double_tap_to_swipe_between_tabs">Double tap to swipe between tabs</string>
+    <string name="mo_haptic_feedback">Haptic feedback</string>
     <string name="mo_swap_bookmark_with_reblog">Swap bookmark with reblog action</string>
     <string name="mo_download_latest_nightly_release">Download latest nightly release</string>
     <string name="mo_load_remote_followers">Load remote profile follows and followers</string>
@@ -83,6 +84,7 @@
     <string name="mo_setting_default_reply_privacy_summary">Replies will be opted out of discovery features</string>
     <string name="mo_setting_interaction_count_summary">Show how many people interacted with a post in the timeline</string>
     <string name="mo_setting_disable_swipe_summary">Swipe to change viewed timeline</string>
+    <string name="mo_setting_haptic_feedback_summary">Vibrate when interacting with posts</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Bookmark or reblog posts from the notification</string>
 
 <!--  Settings  -->
