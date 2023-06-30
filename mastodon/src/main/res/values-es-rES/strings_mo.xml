@@ -71,4 +71,6 @@
     <string name="mo_swap_bookmark_with_reblog_summary">Añade un marcador o impulsa publicaciones desde la notificación</string>
     <string name="mo_open_camera">Hacer foto</string>
     <string name="mo_camera_not_available">¡No hay cámara disponible!</string>
+    <string name="mo_setting_haptic_feedback_summary">Vibra cuando interactúas con publicaciones</string>
+    <string name="mo_haptic_feedback">Vibración</string>
 </resources>
