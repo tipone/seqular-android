@@ -66,4 +66,6 @@
     <string name="mo_open_camera">Сделать фото</string>
     <string name="mo_setting_marquee_summary">Отключает прокрутку заголовка в виде эллипса</string>
     <string name="mo_camera_not_available">Камера недоступна!</string>
+    <string name="mo_haptic_feedback">Тактильная обратная связь</string>
+    <string name="mo_setting_haptic_feedback_summary">Вибрировать при взаимодействии с постами</string>
 </resources>
