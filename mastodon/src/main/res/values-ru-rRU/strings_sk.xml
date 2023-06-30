@@ -313,4 +313,23 @@
     <string name="sk_settings_prefix_replies_never">Никто</string>
     <string name="sk_exclusive_list">Эксклюзивный список</string>
     <string name="sk_list_exclusive_switch">Сделайте список эксклюзивным</string>
+    <string name="sk_icon_bed">Кровать</string>
+    <string name="sk_icon_recycle_bin">Корзина</string>
+    <string name="sk_icon_verified">Верифицированный</string>
+    <string name="sk_icon_doctor">Врач</string>
+    <string name="sk_icon_diamond">Бриллиант</string>
+    <string name="sk_icon_umbrella">Зонтик</string>
+    <string name="sk_add_timeline">Добавить ленту</string>
+    <string name="sk_edit_timeline_tag_main">Посты, содержащие хэштег…</string>
+    <string name="sk_edit_timeline_tag_any">...или любой из этих</string>
+    <string name="sk_edit_timeline_tag_none">...но ни одно из этих</string>
+    <string name="sk_edit_timeline_tag_hint">Введите хэштег…</string>
+    <string name="sk_edit_timeline_tags_hint">Введите хэштеги…</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Показывать только локальные записи\?</string>
+    <string name="sk_add_timeline_tag_error_empty">Хэштег не должен быть пустым</string>
+    <string name="sk_advanced_options_show">Показать дополнительные параметры</string>
+    <string name="sk_icon_beaker">Мерный стакан</string>
+    <string name="sk_edit_timeline_tag_all">...и каждый из этих</string>
+    <string name="sk_edit_timeline_tags_explanation">Пожалуйста, обратите внимание, что сервер обрабатывает эти операции. Возможно, их объединение не поддерживается.</string>
+    <string name="sk_advanced_options_hide">Скрыть дополнительные параметры</string>
 </resources>
