@@ -253,4 +253,5 @@
     <string name="sk_scheduled_too_soon">فرسته باید برای حداقل 10 دقیقه در آینده برنامه ریزی شود.</string>
     <string name="sk_remove_follower">برداشتن به عنوان پی‌گیرنده</string>
     <string name="sk_alt_text_missing">حداقل یک پیوست حاوی توضیحات نیست.</string>
+    <string name="sk_alt_text_missing_title">متن جایگزین گم شده</string>
 </resources>
