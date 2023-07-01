@@ -292,4 +292,14 @@
     <string name="sk_settings_auto_reveal_anyone">iedereen</string>
     <string name="sk_settings_prefix_replies_always">iedereen</string>
     <string name="sk_list_exclusive_switch">Maak lijst exclusief</string>
+    <string name="sk_icon_bed">Bed</string>
+    <string name="sk_icon_doctor">Dokter</string>
+    <string name="sk_icon_diamond">Diamant</string>
+    <string name="sk_icon_umbrella">Paraplu</string>
+    <string name="sk_add_timeline">Tijdlijn toevoegen</string>
+    <string name="sk_edit_timeline_tag_main">Berichten met hashtag…</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Toon alleen lokale berichten\?</string>
+    <string name="sk_add_timeline_tag_error_empty">Hashtag mag niet leeg zijn</string>
+    <string name="sk_advanced_options_hide">Verberg geavanceerde opties</string>
+    <string name="sk_advanced_options_show">Toon geavanceerde opties</string>
 </resources>
