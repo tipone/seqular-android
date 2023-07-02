@@ -331,6 +331,6 @@
     <string name="sk_edit_timeline_tags_explanation">Por favor, ten en cuenta que es el servidor el que lleva a cabo estas operaciones. Puede no ser capaz de combinarlas.</string>
     <string name="sk_advanced_options_show">Mostrar opciones avanzadas</string>
     <string name="sk_advanced_options_hide">Ocultar opciones avanzadas</string>
-    <string name="sk_hashtag_timeline_local_only_switch">¿Mostrar sólo publicaciones locales\?</string>
+    <string name="sk_hashtag_timeline_local_only_switch">¿Mostrar sólo publicaciones de tu instancia\?</string>
     <string name="sk_add_timeline_tag_error_empty">La etiqueta no puede quedar vacía</string>
 </resources>
