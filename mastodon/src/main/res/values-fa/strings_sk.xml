@@ -254,4 +254,13 @@
     <string name="sk_remove_follower">برداشتن به عنوان پی‌گیرنده</string>
     <string name="sk_alt_text_missing">حداقل یک پیوست حاوی توضیحات نیست.</string>
     <string name="sk_alt_text_missing_title">متن جایگزین گم شده</string>
+    <string name="sk_icon_bed">تخت</string>
+    <string name="sk_icon_verified">تاییدشده</string>
+    <string name="sk_icon_doctor">دکتر</string>
+    <string name="sk_icon_diamond">الماس</string>
+    <string name="sk_add_timeline">افزودن خط زمانی</string>
+    <string name="sk_edit_timeline_tags_hint">واردکردن برچسب‌ها…</string>
+    <string name="sk_icon_aperture">دیافراگم</string>
+    <string name="sk_icon_recycle_bin">سطل زباله</string>
+    <string name="sk_edit_timeline_tag_hint">واردکردن برچسب…</string>
 </resources>
