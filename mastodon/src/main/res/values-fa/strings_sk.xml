@@ -263,4 +263,22 @@
     <string name="sk_icon_aperture">دیافراگم</string>
     <string name="sk_icon_recycle_bin">سطل زباله</string>
     <string name="sk_edit_timeline_tag_hint">واردکردن برچسب…</string>
+    <string name="sk_edit_timeline_tag_any">…یا هرکدام از این‌ها</string>
+    <string name="sk_edit_timeline_tag_all">…و هر یک از این‌ها</string>
+    <string name="sk_edit_timeline_tag_none">…اما هیچ‌کدام از این‌ها</string>
+    <string name="sk_edit_timeline_tag_main">فرسته‌های حاوی برچسب…</string>
+    <string name="sk_hashtag_timeline_local_only_switch">فقط فرسته‌های محلی نمایش داده شود؟</string>
+    <string name="sk_quoting_user">نقل قول %s</string>
+    <string name="sk_settings_reply_visibility">نمایانی پاسخ</string>
+    <string name="sk_welcome_text">کوسه به شما سلام می کند! برای شروع، لطفاً نام دامنه نمونه خانه خود را در زیر وارد کنید.</string>
+    <string name="sk_reblog_with_visibility">تقویت با نمایانی</string>
+    <string name="sk_settings_reduce_motion">کاهش حرکت در انیمیشن‌ها</string>
+    <string name="sk_notify_posts_info_banner">اگر آگاهی‌های فرسته را برای برخی از افراد فعال کنید، فرسته‌های جدید آنها در اینجا ظاهر می‌شود.</string>
+    <string name="sk_icon_stethoscope">گوش‌پزشکی</string>
+    <string name="sk_icon_light_bulb">لامپ روشنایی</string>
+    <string name="sk_icon_briefcase">کیف</string>
+    <string name="sk_edit_timelines">ویرایش خطوط زمانی</string>
+    <string name="sk_separator">·</string>
+    <string name="sk_advanced_options_show">نمایش گزینه‌های پیشرفته</string>
+    <string name="sk_advanced_options_hide">نهفتن گزینه‌های پیشرفته</string>
 </resources>
