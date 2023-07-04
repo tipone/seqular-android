@@ -41,4 +41,24 @@
     <string name="mo_download_latest_nightly_release">Pobierz najnowsze nocne wydanie</string>
     <string name="mo_load_remote_followers">Wczytaj listę obserwujących i obserwowanych profilu zdalnego</string>
     <string name="mo_mention_reblogger_automatically">Automatycznie oznaczaj konto, które zreblogowało wpis w odpowiedziach</string>
+    <string name="mo_confirm_unfollow_title">Przestań obserwować profil</string>
+    <string name="mo_instance_admin">Zarządzane przez</string>
+    <string name="mo_instance_contact">Kontakt</string>
+    <string name="mo_instance_users">Użytkownicy</string>
+    <string name="mo_instance_status">Status</string>
+    <string name="mo_open_camera">Zrób zdjęcie</string>
+    <string name="mo_instance_registration">Rejestracja</string>
+    <string name="mo_instance_registration_open">Otwórz</string>
+    <string name="mo_instance_registration_approval">Wymagane zatwierdzenie</string>
+    <string name="mo_instance_info_open_timeline">Lokalna oś czasu</string>
+    <string name="mo_instance_info_moderated_servers">Moderowane serwery</string>
+    <string name="mo_severity_silence">Wyciszone</string>
+    <string name="mo_severity_suspend">Zablokowane</string>
+    <string name="mo_setting_uniform_summary">Użyj ikony aplikacji dla wszystkich powiadomień</string>
+    <string name="mo_camera_not_available">Brak dostępu do apartu!</string>
+    <string name="mo_setting_reduced_motion_summary">Wyłącz animacje interakcji</string>
+    <string name="mo_setting_play_gif_summary">Automatycznie odtwarzaj awatary i emoji, które są GIFami</string>
+    <string name="mo_setting_remote_follower_summary">Pokaż obserwujących z innych instancji</string>
+    <string name="mo_notification_management_settings">Zarządzaj powiadomieniami</string>
+    <string name="mo_setting_true_black_summary">Może oszczędzić energię przy wyświetlaczach AMOLED</string>
 </resources>
