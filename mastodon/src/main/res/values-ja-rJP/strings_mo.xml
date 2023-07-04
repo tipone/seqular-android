@@ -1,4 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_confirm_unfollow">%s のフォローを解除しますか？</string>
+    <string name="mo_confirm_unfollow_title">アカウントのフォローを解除</string>
+    <string name="mo_personal_note">このプロフィールについてのメモを追加</string>
+    <string name="mo_personal_note_update_failed">メモの保存に失敗しました</string>
+    <string name="mo_settings_contribute">Moshidon に貢献</string>
+    <string name="mo_personal_note_confirm">メモの変更を確認</string>
+    <string name="mo_no_image_desc_title">画像の説明がありません</string>
+    <string name="mo_emoji_recent">最近使用した絵文字</string>
+    <string name="mo_clear_recent_emoji">最近使用した絵文字をクリア</string>
+    <string name="mo_update_available">Moshidon %s をダウンロードする準備ができました。</string>
+    <string name="mo_update_ready">Moshidon %s がダウンロードされ、インストールの準備ができました。</string>
+    <string name="mo_share_open_url">アプリで開く</string>
+    <string name="mo_instance_registration">登録</string>
+    <string name="mo_instance_users">ユーザー</string>
+    <string name="mo_open_camera">写真を撮る</string>
+    <string name="mo_haptic_feedback">ハプティックフィードバック</string>
+    <string name="mo_setting_marquee_summary">省略されたタイトルのスクロールを無効にする</string>
+    <string name="mo_setting_true_black_summary">AMOLED ディスプレイの消費電力を節約できるかもしれません</string>
+    <string name="mo_notification_audience_settings">通知の対象</string>
+    <string name="mo_fab_compose"></string>
+    <string name="mo_poll_option_add">新しい投票オプションを追加</string>
+    <string name="mo_instance_info_open_timeline">ローカルタイムライン</string>
+    <string name="mo_instance_registration_open">開く</string>
+    <string name="mo_camera_not_available">利用可能なカメラがありません！</string>
+    <string name="mo_instance_registration_approval">承認が必要です</string>
+    <string name="mo_duration_days_1">1 日</string>
+    <string name="mo_duration_hours_1">1 時間</string>
+    <string name="mo_duration_hours_6">6 時間</string>
+    <string name="mo_duration_days_3">3 日</string>
+    <string name="mo_duration_days_7">7 日</string>
+    <string name="mo_duration_minutes_30">30 分</string>
+    <string name="mo_duration_minutes_5">5 分</string>
+    <string name="mo_mute_label">期間:</string>
+    <string name="mo_add_custom_server_local_timeline">カスタムサーバーのローカルタイムラインを追加</string>
+    <string name="mo_setting_remote_follower_summary">他のインスタンスからのフォロワーを表示</string>
+    <string name="mo_filtered">フィルター済み: %s</string>
+    <string name="mo_enable_dividers">投稿に区切り線を表示</string>
+    <string name="mo_notification_management_settings">通知の管理</string>
 </resources>
