@@ -285,4 +285,5 @@
     <string name="sk_settings_content_types">Włącz formatowanie wpisu</string>
     <string name="sk_open_in_app">Otwórz w aplikacji</string>
     <string name="sk_external_share_title">Udostępnij z kontem</string>
+    <string name="sk_bubble_timeline_info_banner">To są najnowsze posty z sieci wybrane przez administratorów Twojej instancji.</string>
 </resources>
