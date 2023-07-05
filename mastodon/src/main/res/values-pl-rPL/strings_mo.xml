@@ -33,7 +33,7 @@
     <string name="mo_duration_days_7">7 dni</string>
     <string name="mo_composer_behavior">Zachowanie kompozytora</string>
     <string name="mo_notification_action_replied">Pomyślnie odpowiedziano na wpis %s</string>
-    <string name="mo_change_default_reply_visibility_to_unlisted">Zmień domyślną widoczność odpowiedzi na nielistowaną</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Domyślnie odpowiedz jako \'Niewidoczny\'</string>
     <string name="mo_miscellaneous_settings">Inne ustawienia</string>
     <string name="mo_share_open_url">Otwórz w aplikacji</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Wyłącz przełączanie się między kartami podwójnym kliknięciem</string>
@@ -61,4 +61,9 @@
     <string name="mo_setting_remote_follower_summary">Pokaż obserwujących z innych instancji</string>
     <string name="mo_notification_management_settings">Zarządzaj powiadomieniami</string>
     <string name="mo_setting_true_black_summary">Może oszczędzić energię przy wyświetlaczach AMOLED</string>
+    <string name="mo_confirm_unfollow">Potwierdź, aby przestać obserwować %s</string>
+    <string name="mo_setting_disable_swipe_summary">Przesuń, aby zmienić wyświetlaną oś czasu</string>
+    <string name="mo_setting_interaction_count_summary">Pokaż, ile osób weszło w interakcję z postem na osi czasu</string>
+    <string name="mo_setting_relocate_publish_summary">Przenieś przycisk publikowania na dolny pasek</string>
+    <string name="mo_enable_dividers">Pokaż separatory postów</string>
 </resources>
