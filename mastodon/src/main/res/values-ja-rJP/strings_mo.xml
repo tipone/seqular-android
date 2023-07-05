@@ -19,7 +19,6 @@
     <string name="mo_setting_marquee_summary">省略されたタイトルのスクロールを無効にする</string>
     <string name="mo_setting_true_black_summary">AMOLED ディスプレイの消費電力を節約できるかもしれません</string>
     <string name="mo_notification_audience_settings">通知の対象</string>
-    <string name="mo_fab_compose"></string>
     <string name="mo_poll_option_add">新しい投票オプションを追加</string>
     <string name="mo_instance_info_open_timeline">ローカルタイムライン</string>
     <string name="mo_instance_registration_open">開く</string>
