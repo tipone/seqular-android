@@ -16,7 +16,7 @@
     <string name="sk_follow_requests">フォローリクエスト</string>
     <string name="sk_update_ready">Megalodon %s がダウンロードされ、インストールの準備ができました。</string>
     <string name="sk_settings_contribute">Megalodon に貢献</string>
-    <string name="sk_settings_always_reveal_content_warnings">コンテンツに関する警告を常に表示</string>
+    <string name="sk_settings_always_reveal_content_warnings">警告コンテンツを常に表示</string>
     <string name="sk_notification_type_status">投稿</string>
     <string name="sk_color_palette_material3">システム</string>
     <string name="sk_notify_posts">お知らせの投稿</string>
@@ -174,7 +174,7 @@
     <string name="sk_open_with_account">他のアカウントで開く</string>
     <string name="sk_draft_saved">下書きを保存しました</string>
     <string name="sk_unpin_timeline">タイムラインのピン留めを解除</string>
-    <string name="sk_schedule_post">予約投稿</string>
+    <string name="sk_schedule_post">投稿を予約</string>
     <string name="sk_poll_allow_multiple">複数選択を許可</string>
     <string name="sk_settings_profile">プロフィール設定</string>
     <string name="sk_settings_auth">セキュリティ設定</string>
@@ -237,7 +237,9 @@
     <string name="sk_reblogged_as">%s としてブーストしました</string>
     <string name="sk_already_reblogged">既にブーストされています</string>
     <string name="sk_show_thread">スレッドを表示</string>
-    <string name="sk_settings_confirm_before_reblog">ブースト前に確認</string>
+    <string name="sk_settings_confirm_before_reblog">ブースト前に確認する</string>
     <string name="sk_compact_reblog_reply_line">ブースト/返信ラインを小さくする</string>
     <string name="sk_updater_enable_pre_releases">プレリリース版を有効にする</string>
+    <string name="sk_publish_anyway">気にせずに公開</string>
+    <string name="sk_settings_allow_remote_loading_explanation">発信元のインスタンスから情報を読み込むことで、より正確なフォロワーやお気に入り、ブーストのリストの取得を試みます。</string>
 </resources>
