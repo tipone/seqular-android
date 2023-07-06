@@ -39,7 +39,7 @@
     <string name="sk_clear_all_notifications_confirm_action">すべて削除</string>
     <string name="sk_clear_all_notifications">すべての通知を削除</string>
     <string name="sk_enable_delete_notifications">通知の削除を有効にする</string>
-    <string name="sk_settings_publish_button_text">公開ボタンのテキスト</string>
+    <string name="sk_settings_publish_button_text">公開ボタンの文字列</string>
     <string name="sk_copy_link_to_post">投稿リンクをコピー</string>
     <string name="sk_settings_translation_availability_note_available">%s は翻訳をサポートしています！</string>
     <string name="sk_bookmark_as">他のアカウントでブックマーク</string>
@@ -184,7 +184,7 @@
     <string name="sk_settings_default_content_type_explanation">新しい投稿を作成する際に、「投稿設定」で設定された値を上書きして、コンテンツタイプを事前に選択させることができます。</string>
     <string name="sk_confirm_delete_draft">本当にこの下書き投稿を削除しますか？</string>
     <string name="sk_clear_all_notifications_confirm">本当にすべての通知を削除しますか？</string>
-    <string name="sk_settings_publish_button_text_title">公開ボタンのテキストをカスタマイズ</string>
+    <string name="sk_settings_publish_button_text_title">公開ボタンの文字列をカスタマイズ</string>
     <string name="sk_settings_show_federated_timeline">連合タイムラインを表示</string>
     <string name="sk_settings_disable_alt_text_reminder">代替テキストの追加リマインダーを無効にする</string>
     <string name="sk_favorite_as">他のアカウントでお気に入りに登録</string>
@@ -242,4 +242,10 @@
     <string name="sk_updater_enable_pre_releases">プレリリース版を有効にする</string>
     <string name="sk_publish_anyway">気にせずに公開</string>
     <string name="sk_settings_allow_remote_loading_explanation">発信元のインスタンスから情報を読み込むことで、より正確なフォロワーやお気に入り、ブーストのリストの取得を試みます。</string>
+    <string name="sk_icon_map">地図</string>
+    <string name="sk_settings_reduce_motion">アニメーションの動きを軽減する</string>
+    <string name="sk_settings_single_notification">通知を1つだけ表示する</string>
+    <string name="sk_alt_text_missing_title">代替テキストがありません</string>
+    <string name="sk_alt_text_missing">少なくとも1つの添付ファイルに説明がありません。</string>
+    <string name="sk_recent_searches_placeholder">入力して検索を開始します</string>
 </resources>
