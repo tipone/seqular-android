@@ -46,4 +46,16 @@
     <string name="mo_disable_relocate_publish_button_to_enable_customization">カスタマイズの許可のために公開ボタンの位置の変更を無効にする</string>
     <string name="mo_double_tap_to_swipe_between_tabs">ダブルタップでタブ間をスワイプ</string>
     <string name="mo_setting_haptic_feedback_summary">投稿のインタラクト時に振動させる</string>
+    <string name="mo_duration_indefinite">無期限</string>
+    <string name="mo_setting_interaction_count_summary">タイムライン上で何人が投稿とインタラクションしたかを表示します</string>
+    <string name="mo_composer_behavior">編集画面の動作</string>
+    <string name="mo_instance_contact">お問い合わせ</string>
+    <string name="mo_instance_status">ステータス</string>
+    <string name="mo_setting_reduced_motion_summary">インタラクションのアニメーションを無効にする</string>
+    <string name="mo_setting_uniform_summary">すべての通知にアプリアイコンを使用する</string>
+    <string name="mo_disable_reminder_to_add_alt_text">代替テキストの追加リマインダーを無効にする</string>
+    <string name="mo_sending_error">公開中にエラーが発生しました</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">デフォルトで「未収載」として返信</string>
+    <string name="mo_download_latest_nightly_release">最新の Nightly Release をダウンロード</string>
+    <string name="mo_mention_reblogger_automatically">返信で投稿をリブログしたアカウントを自動的にメンションする</string>
 </resources>
