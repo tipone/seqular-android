@@ -2,7 +2,7 @@
 <resources>
     <string name="sk_content_type_markdown">Markdown</string>
     <string name="sk_content_type_mfm">MFM</string>
-    <string name="sk_settings_content_types">投稿の整形を有効にする</string>
+    <string name="sk_settings_content_types">投稿のフォーマットを有効にする</string>
     <string name="sk_settings_default_content_type">既定のコンテンツタイプ</string>
     <string name="sk_content_type">コンテンツタイプ</string>
     <string name="sk_content_type_bbcode">BBCode</string>
@@ -19,7 +19,7 @@
     <string name="sk_settings_always_reveal_content_warnings">コンテンツに関する警告を常に表示</string>
     <string name="sk_notification_type_status">投稿</string>
     <string name="sk_color_palette_material3">システム</string>
-    <string name="sk_notify_posts">お知らせを投稿</string>
+    <string name="sk_notify_posts">お知らせの投稿</string>
     <string name="sk_color_palette_pink">ピンク</string>
     <string name="sk_color_palette_purple">パープル</string>
     <string name="sk_color_palette_green">グリーン</string>
@@ -148,7 +148,7 @@
     <string name="sk_edit_timelines">タイムラインを編集</string>
     <string name="sk_post_edited">編集済み</string>
     <string name="sk_notification_type_update">編集済みの投稿</string>
-    <string name="sk_notify_update">ブーストされた投稿を編集</string>
+    <string name="sk_notify_update">ブーストされた投稿の編集</string>
     <string name="sk_settings_about">このアプリについて</string>
     <string name="sk_timelines_add">追加</string>
     <string name="sk_available_languages">利用可能な言語</string>
@@ -239,4 +239,5 @@
     <string name="sk_show_thread">スレッドを表示</string>
     <string name="sk_settings_confirm_before_reblog">ブースト前に確認</string>
     <string name="sk_compact_reblog_reply_line">ブースト/返信ラインを小さくする</string>
+    <string name="sk_updater_enable_pre_releases">プレリリース版を有効にする</string>
 </resources>
