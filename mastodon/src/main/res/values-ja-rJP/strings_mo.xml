@@ -37,4 +37,8 @@
     <string name="mo_filtered">フィルター済み: %s</string>
     <string name="mo_enable_dividers">投稿に区切り線を表示</string>
     <string name="mo_notification_management_settings">通知の管理</string>
+    <string name="mo_setting_disable_swipe_summary">スワイプでタイムラインを変更します</string>
+    <string name="mo_welcome_text">開始するには、以下にホームインスタンスのドメイン名を入力してください。</string>
+    <string name="mo_setting_play_gif_summary">動画アイコンと絵文字を自動的に再生します</string>
+    <string name="mo_color_palette_nord">Nord</string>
 </resources>
