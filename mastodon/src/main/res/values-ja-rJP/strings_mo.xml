@@ -41,4 +41,9 @@
     <string name="mo_welcome_text">開始するには、以下にホームインスタンスのドメイン名を入力してください。</string>
     <string name="mo_setting_play_gif_summary">動画アイコンと絵文字を自動的に再生します</string>
     <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_setting_relocate_publish_summary">公開ボタンを下のバーに移動します</string>
+    <string name="mo_relocate_publish_button">公開ボタンの位置を変更する</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">カスタマイズの許可のために公開ボタンの位置の変更を無効にする</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">ダブルタップでタブ間をスワイプ</string>
+    <string name="mo_setting_haptic_feedback_summary">投稿のインタラクト時に振動させる</string>
 </resources>
