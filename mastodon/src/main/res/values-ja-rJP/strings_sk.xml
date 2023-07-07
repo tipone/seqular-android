@@ -287,4 +287,6 @@
     <string name="sk_user_post_notifications_off">%s さんの投稿通知をオフにしました</string>
     <string name="sk_icon_gauge">計器</string>
     <string name="sk_icon_gavel">小槌</string>
+    <string name="sk_icon_aperture">絞り</string>
+    <string name="sk_settings_server_version">サーバーバージョン: %s</string>
 </resources>
