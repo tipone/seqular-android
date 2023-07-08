@@ -104,6 +104,7 @@
 	<attr name="colorGray200" format="color" />
 	<attr name="colorGray300" format="color" />
 	<attr name="colorGray400" format="color" />
+	<attr name="colorGray400t" format="color" />
 	<attr name="colorGray500" format="color" />
 	<attr name="colorGray600" format="color" />
 	<attr name="colorGray700" format="color" />

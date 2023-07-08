@@ -21,6 +21,7 @@
 		<item name="colorGray700">@color/gray_700</item>
 		<item name="colorGray600">@color/gray_600</item>
 		<item name="colorGray500">@color/gray_500</item>
+		<item name="colorGray400t">@color/gray_400t</item>
 		<item name="colorGray400">@color/gray_400</item>
 		<item name="colorGray300">@color/gray_300</item>
 		<item name="colorGray200">@color/gray_200</item>
@@ -197,6 +198,7 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
+		<item name="colorGray400t">@color/green_gray_400t</item>
 		<item name="colorGray400">@color/green_gray_400</item>
 		<item name="colorGray300">@color/green_gray_300</item>
 		<item name="colorGray200">@color/green_gray_200</item>
@@ -219,6 +221,7 @@
 		<item name="colorPrimary800">@color/blue_primary_800</item>
 		<item name="colorPrimary900">@color/blue_primary_900</item>
 
+		<item name="colorGray400t">@color/green_gray_400t</item>
 		<item name="colorGray400">@color/blue_gray_400</item>
 		<item name="colorGray300">@color/blue_gray_300</item>
 		<item name="colorGray200">@color/blue_gray_200</item>
@@ -248,6 +251,7 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
+		<item name="colorGray400t">@color/brown_gray_400t</item>
 		<item name="colorGray400">@color/brown_gray_400</item>
 		<item name="colorGray300">@color/brown_gray_300</item>
 		<item name="colorGray200">@color/brown_gray_200</item>
@@ -277,6 +281,7 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
+		<item name="colorGray400t">@color/yellow_gray_400t</item>
 		<item name="colorGray400">@color/yellow_gray_400</item>
 		<item name="colorGray300">@color/yellow_gray_300</item>
 		<item name="colorGray200">@color/yellow_gray_200</item>
@@ -307,6 +312,7 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
+		<item name="colorGray400t">@color/red_gray_400t</item>
 		<item name="colorGray400">@color/red_gray_400</item>
 		<item name="colorGray300">@color/red_gray_300</item>
 		<item name="colorGray200">@color/red_gray_200</item>
@@ -339,6 +345,7 @@
 		<item name="colorGray600">@color/nord_gray_600</item>
 		<item name="colorGray500">@color/nord_gray_500</item>
 
+		<item name="colorGray400t">@color/nord_gray_400t</item>
 		<item name="colorGray400">@color/nord_gray_400</item>
 		<item name="colorGray300">@color/nord_gray_300</item>
 		<item name="colorGray200">@color/nord_gray_200</item>
