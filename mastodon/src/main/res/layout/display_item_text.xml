@@ -156,6 +156,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginTop="8dp"
 			android:gravity="center_horizontal"
+			android:textColor="?android:textColorSecondary"
 			android:text="@string/tap_to_reveal"/>
 
 	</LinearLayout>
