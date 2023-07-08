@@ -128,7 +128,7 @@
 		<item name="android:colorBackground">?colorGray700</item>
 		<item name="android:textColorPrimary">?colorGray50</item>
 		<item name="android:textColorSecondary">?colorGray400</item>
-		<item name="colorIconDisabled">?colorGray500</item>
+		<item name="colorIconDisabled">?colorGray400t</item>
 		<item name="colorButtonText">?colorGray800</item>
 		<item name="colorSecondary">?colorGray200</item>
 		<item name="colorBackgroundLight">?colorGray700</item>
