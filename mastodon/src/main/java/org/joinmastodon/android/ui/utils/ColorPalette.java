@@ -26,7 +26,8 @@ public class ColorPalette {
             ColorPreference.BROWN, new ColorPalette(R.style.ColorPalette_Brown),
             ColorPreference.RED, new ColorPalette(R.style.ColorPalette_Red),
             ColorPreference.YELLOW, new ColorPalette(R.style.ColorPalette_Yellow),
-            ColorPreference.NORD, new ColorPalette(R.style.ColorPalette_Nord)
+            ColorPreference.NORD, new ColorPalette(R.style.ColorPalette_Nord),
+            ColorPreference.WHITE, new ColorPalette(R.style.ColorPalette_White)
     );
 
     private @StyleRes int base;

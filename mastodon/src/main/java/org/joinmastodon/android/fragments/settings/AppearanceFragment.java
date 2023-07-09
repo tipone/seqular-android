@@ -41,6 +41,7 @@ public class AppearanceFragment extends SettingsBaseFragment {
                 case RED -> R.string.sk_color_palette_red;
                 case YELLOW -> R.string.sk_color_palette_yellow;
                 case NORD -> R.string.mo_color_palette_nord;
+                case WHITE -> R.string.mo_color_palette_black_and_white;
             });
         }));
         items.add(new SwitchItem(R.string.theme_true_black, R.string.mo_setting_true_black_summary, R.drawable.ic_fluent_dark_theme_24_regular, GlobalUserPreferences.trueBlackTheme, this::onTrueBlackThemeChanged));
@@ -67,6 +68,7 @@ public class AppearanceFragment extends SettingsBaseFragment {
             case RED -> R.id.red_color;
             case YELLOW -> R.id.yellow_color;
             case NORD -> R.id.nord_color;
+            case WHITE -> R.id.black_and_white_color;
         };
     }
 
@@ -83,6 +85,7 @@ public class AppearanceFragment extends SettingsBaseFragment {
             else if (id == R.id.red_color) pref = GlobalUserPreferences.ColorPreference.RED;
             else if (id == R.id.yellow_color) pref = GlobalUserPreferences.ColorPreference.YELLOW;
             else if (id == R.id.nord_color) pref = GlobalUserPreferences.ColorPreference.NORD;
+            else if (id == R.id.black_and_white_color) pref = GlobalUserPreferences.ColorPreference.WHITE;
 
             if (pref == null) return false;
 

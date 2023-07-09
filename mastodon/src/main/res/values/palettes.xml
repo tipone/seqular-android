@@ -355,4 +355,36 @@
 		<item name="colorGray25">@color/nord_gray_25</item>
 	</style>
 
+	<style name="ColorPalette.White">
+		<item name="colorPrimary25">@color/white_primary_25</item>
+		<item name="colorPrimary50">@color/white_primary_50</item>
+		<item name="colorPrimary100">@color/white_primary_100</item>
+		<item name="colorPrimary200">@color/white_primary_200</item>
+		<item name="colorPrimary300">@color/white_primary_300</item>
+		<item name="colorPrimary400">@color/white_primary_400</item>
+		<item name="colorPrimary500">@color/white_primary_500</item>
+		<item name="colorPrimary600">@color/white_primary_600</item>
+		<item name="colorPrimary700">@color/white_primary_700</item>
+		<item name="colorPrimary800">@color/white_primary_800</item>
+		<item name="colorPrimary900">@color/white_primary_900</item>
+
+		<item name="colorGray900">@color/white_gray_900</item>
+		<item name="colorGray800t">@color/white_gray_800</item>
+		<item name="colorGray800">@color/white_gray_800</item>
+		<item name="colorGray700">@color/white_gray_700</item>
+		<item name="colorGray600">@color/white_gray_600</item>
+		<item name="colorGray500">@color/white_gray_500</item>
+
+		<item name="colorGray400t">@color/white_gray_400t</item>
+		<item name="colorGray400">@color/white_gray_400</item>
+		<item name="colorGray300">@color/white_gray_300</item>
+		<item name="colorGray200">@color/white_gray_200</item>
+		<item name="colorGray100">@color/white_gray_100</item>
+		<item name="colorGray50t">@color/white_gray_50</item>
+		<item name="colorGray50">@color/white_gray_50</item>
+		<item name="colorGray25">@color/white_gray_25</item>
+	</style>
+
+
+
 </resources>

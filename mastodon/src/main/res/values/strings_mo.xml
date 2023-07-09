@@ -5,6 +5,7 @@
     <string name="mo_app_name_nightly" translatable="false">Moshidon Nightly</string>
 
     <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_color_palette_black_and_white">Black and White</string>
     <string name="mo_app_username" translatable="false">\@moshidon</string>
     <string name="mo_enable_dividers">Show post dividers</string>
     <string name="mo_relocate_publish_button">Relocate publish button</string>

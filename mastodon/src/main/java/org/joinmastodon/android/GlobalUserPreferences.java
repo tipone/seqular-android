@@ -11,6 +11,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.TimelineDefinition;
+import org.joinmastodon.android.ui.utils.ColorPalette;
 
 import java.lang.reflect.Type;
 import java.util.HashMap;
@@ -245,8 +246,9 @@ public class GlobalUserPreferences{
 		BROWN,
 		RED,
 		YELLOW,
-		NORD
-	}
+		NORD,
+        WHITE
+    }
 
 	public enum ThemePreference{
 		AUTO,
