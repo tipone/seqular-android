@@ -309,4 +309,6 @@
     <string name="sk_reacted_with">با %s واکنش نشان داد</string>
     <string name="sk_reacted">واکنش نشان داد</string>
     <string name="sk_external_share_title">هم‌رسانی با حساب</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">پیشوند CW با “re:” در پاسخ به</string>
+    <string name="sk_unfinished_attachments">رفع مشکل پیوست‌ها؟</string>
 </resources>
