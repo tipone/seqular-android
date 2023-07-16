@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="sk_settings_prefix_reply_cw_with_re">Prefix AC cu \"re:\" în răspuns la</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Prefix AC cu \"re:\" când răspundeți</string>
     <string name="sk_filtered">Filtrat: %s</string>
     <string name="sk_collapse">Închideți</string>
     <string name="sk_expand">Extindeți</string>
@@ -45,10 +45,10 @@
     <string name="sk_update_available">Megalodon %s este gata pentru a fi descărcat.</string>
     <string name="sk_federated_timeline_info_banner">Acestea sunt cele mai recente postări de către oamenii din federația ta.</string>
     <string name="sk_reject_follow_request">Respingeți cererea de urmărire</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Dezvăluie aceleași AC în răspunsuri de la</string>
-    <string name="sk_settings_auto_reveal_author">autor</string>
-    <string name="sk_settings_auto_reveal_anyone">toată lumea</string>
-    <string name="sk_settings_auto_reveal_nobody">nimeni</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Dezvăluiți automat AC egale în răspunsuri</string>
+    <string name="sk_settings_auto_reveal_author">Răspunsuri de la același autor</string>
+    <string name="sk_settings_auto_reveal_anyone">Răspunsuri de la toată lumea</string>
+    <string name="sk_settings_auto_reveal_nobody">Niciodată</string>
     <string name="sk_confirm_clear_recent_languages">Sunteți sigur că doriți să ștergeți limbile folosite recent\?</string>
     <string name="sk_settings_translate_only_opened">Traduceți doar postările deschise</string>
     <string name="sk_bookmark_as">Salvați cu un alt cont</string>
@@ -97,9 +97,9 @@
     <string name="sk_draft">Schiță</string>
     <string name="sk_schedule">Program</string>
     <string name="sk_confirm_delete_draft_title">Ștergeți schița</string>
-    <string name="sk_settings_prefix_replies_always">toată lumea</string>
-    <string name="sk_settings_prefix_replies_to_others">alții</string>
-    <string name="sk_settings_prefix_replies_never">nimeni</string>
+    <string name="sk_settings_prefix_replies_always">În răspuns oricui</string>
+    <string name="sk_settings_prefix_replies_to_others">Doar în răspuns la alții</string>
+    <string name="sk_settings_prefix_replies_never">Niciodată</string>
     <string name="sk_mark_as_draft">Marcați ca schiță</string>
     <string name="sk_schedule_post">Programați postarea</string>
     <string name="sk_confirm_save_changes">Salvați modificările\?</string>
@@ -228,8 +228,8 @@
     <string name="sk_compact_reblog_reply_line">Line promovare/răspuns compactă</string>
     <string name="sk_settings_confirm_before_reblog">Confirmați înaintea promovării</string>
     <string name="sk_language_name">%1$s (%2$s)</string>
-    <string name="sk_reacted_with">a reacționat cu %s</string>
-    <string name="sk_reacted">a reacționat</string>
+    <string name="sk_reacted_with">%1$s a reacționat cu %2$s</string>
+    <string name="sk_reacted">%s a reacționat</string>
     <string name="sk_show_thread">Afișați discuția</string>
     <string name="sk_bubble_timeline_info_banner">Acestea sunt cele mai recente postări din rețeaua curată de administratorii instanței tale.</string>
     <string name="sk_list_timelines">Liste</string>
@@ -327,4 +327,15 @@
     <string name="sk_icon_globe">Glob</string>
     <string name="sk_edit_timeline">Editați cronologie</string>
     <string name="sk_edit_timelines">Editați cronologiile</string>
+    <string name="sk_settings_enable_marquee">Activați text derulant în bările de titlu</string>
+    <string name="sk_notification_type_posts">Notificări pentru postări</string>
+    <string name="sk_settings_enable_delete_notifications">Activați ștergerea notificărilor</string>
+    <string name="sk_gif_badge">GIF</string>
+    <string name="sk_spoiler_show">Arătați conținutul</string>
+    <string name="sk_pronouns_label">Pronume</string>
+    <string name="sk_switch_timeline">Schimbați cronologia</string>
+    <string name="sk_settings_instance">Instanță</string>
+    <string name="sk_settings_true_black">Mod negru complet</string>
+    <string name="sk_settings_tabs_disable_swipe">Dezactivați glisarea între file</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Dezactivați indicatorul de filă activă în formă de pastilă</string>
 </resources>
