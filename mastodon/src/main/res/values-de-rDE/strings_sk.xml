@@ -272,8 +272,8 @@
     <string name="sk_compact_reblog_reply_line">Kompakte Geteilt-/Geantwortet-Zeile</string>
     <string name="sk_reply_line_above_avatar">“Als Antwort auf”-Zeile über Profilbild</string>
     <string name="sk_settings_confirm_before_reblog">Vor dem Teilen bestätigen</string>
-    <string name="sk_reacted">hat reagiert</string>
-    <string name="sk_reacted_with">hat mit %s reagiert</string>
+    <string name="sk_reacted">%s hat reagiert</string>
+    <string name="sk_reacted_with">%1$s hat mit %2$s reagiert</string>
     <string name="sk_external_share_title">Mit Konto teilen</string>
     <string name="sk_external_share_or_open_title">Mit Konto teilen oder öffnen</string>
     <string name="sk_timeline_bubble">Bubble</string>
@@ -296,16 +296,16 @@
     <string name="sk_no_remote_info_hint">keine Remote-Infos abrufbar</string>
     <string name="sk_error_loading_profile">Konnte das Profil via %s nicht laden</string>
     <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower*innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Zeigen von gleichen CWs in Antworten von</string>
-    <string name="sk_settings_auto_reveal_nobody">niemandem</string>
-    <string name="sk_settings_auto_reveal_author">Autor*in</string>
-    <string name="sk_settings_auto_reveal_anyone">allen</string>
-    <string name="sk_settings_prefix_replies_to_others">andere</string>
-    <string name="sk_settings_prefix_replies_always">alle</string>
-    <string name="sk_settings_prefix_replies_never">niemanden</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Automatisches Aufdecken von gleichen CWs in Antworten von</string>
+    <string name="sk_settings_auto_reveal_nobody">Nie</string>
+    <string name="sk_settings_auto_reveal_author">Antworten, die von der gleichen Person verfasst wurden</string>
+    <string name="sk_settings_auto_reveal_anyone">Antworten von allen</string>
+    <string name="sk_settings_prefix_replies_to_others">Antworten an andere</string>
+    <string name="sk_settings_prefix_replies_always">Antworten an alle</string>
+    <string name="sk_settings_prefix_replies_never">Nie</string>
     <string name="sk_settings_forward_report_default">Standardwert „Meldung weiterleiten“-Schalter</string>
     <string name="sk_spoiler_show">Inhalt anzeigen</string>
-	<string name="sk_pronouns_label">Pronomen</string>
+    <string name="sk_pronouns_label">Pronomen</string>
     <string name="sk_icon_feed">Feed</string>
     <string name="sk_exclusive_list">Exklusive Liste</string>
     <string name="sk_list_exclusive_switch_explanation">Mitglieder einer exklusiven Liste werden auf deiner Start-Timeline nicht angezeigt – wenn deine Instanz es unterstützt.</string>
@@ -329,4 +329,9 @@
     <string name="sk_hashtag_timeline_local_only_switch">Nur lokale Beiträge anzeigen\?</string>
     <string name="sk_add_timeline_tag_error_empty">Hashtag darf nicht leer sein</string>
     <string name="sk_advanced_options_hide">Erweiterte Optionen ausblenden</string>
+    <string name="sk_switch_timeline">Timeline wechseln</string>
+    <string name="sk_settings_instance">Instanz</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Pillen-förmigen Indikator für aktiven Tab deaktivieren</string>
+    <string name="sk_settings_true_black">Stockfinster-Modus</string>
+    <string name="sk_gif_badge">GIF</string>
 </resources>
