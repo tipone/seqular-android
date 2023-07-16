@@ -154,7 +154,7 @@
     <string name="sk_alt_text_missing">Au moins une pièce jointe ne contient pas de description.</string>
     <string name="sk_publish_anyway">Publier quand même</string>
     <string name="sk_notify_posts_info_banner">Si vous activez les notifications de message pour certaines personnes, leurs nouveaux messages apparaîtront ici.</string>
-    <string name="sk_timelines">Chronologie</string>
+    <string name="sk_timelines">Chronologies</string>
     <string name="sk_timeline_posts">Messages</string>
     <string name="sk_timelines_add">Ajouter</string>
     <string name="sk_timeline">Chronologie</string>
