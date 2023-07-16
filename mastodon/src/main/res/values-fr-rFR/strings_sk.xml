@@ -306,4 +306,27 @@
     <string name="sk_settings_prefix_replies_never">personne</string>
     <string name="sk_settings_prefix_replies_to_others">autres</string>
     <string name="sk_settings_forward_report_default">\"Transférer le rapport\" par défaut</string>
+    <string name="sk_icon_recycle_bin">Corbeille</string>
+    <string name="sk_icon_verified">Vérifié</string>
+    <string name="sk_icon_doctor">Docteur</string>
+    <string name="sk_icon_diamond">Diamant</string>
+    <string name="sk_icon_umbrella">Parapluie</string>
+    <string name="sk_add_timeline">Ajouter une timeline</string>
+    <string name="sk_edit_timeline_tag_any">… ou l\'un d\'entre eux</string>
+    <string name="sk_edit_timeline_tag_all">… et chacun d\'entre eux</string>
+    <string name="sk_edit_timeline_tag_none">… mais aucun d\'entre eux</string>
+    <string name="sk_edit_timeline_tags_hint">Entrez les hashtags…</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Afficher uniquement les messages locaux \?</string>
+    <string name="sk_add_timeline_tag_error_empty">Le hashtag ne doit pas être vide</string>
+    <string name="sk_list_exclusive_switch">Rendre la liste exclusive</string>
+    <string name="sk_advanced_options_show">Afficher les options avancées</string>
+    <string name="sk_advanced_options_hide">Masquer les options avancées</string>
+    <string name="sk_icon_beaker">Gobelet</string>
+    <string name="sk_icon_bed">Lit</string>
+    <string name="sk_edit_timeline_tag_main">Messages contenant le hashtag…</string>
+    <string name="sk_edit_timeline_tag_hint">Entrez le hashtag…</string>
+    <string name="sk_edit_timeline_tags_explanation">Veuillez noter que le serveur gère ces opérations. Les combiner peut ne pas être prise en charge.</string>
+    <string name="sk_exclusive_list">Liste exclusive</string>
+    <string name="sk_list_exclusive_switch_explanation">Les membres d\'une liste exclusive n\'apparaîtront pas sur votre chronologie personnelle - si votre instance le prend en charge.</string>
+    <string name="sk_icon_feed">Flux</string>
 </resources>

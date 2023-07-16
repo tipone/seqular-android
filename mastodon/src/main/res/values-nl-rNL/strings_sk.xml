@@ -40,6 +40,7 @@
     <string name="sk_settings_show_federated_timeline">Toon gefedereerde tijdlijn</string>
     <string name="sk_notification_type_status">Berichten</string>
     <string name="sk_notification_type_posts">Een bericht publiceert</string>
+    <string name="sk_notify_posts">Een bericht publiceert</string>
     <string name="sk_timeline_local">Lokaal</string>
     <string name="sk_timeline_home">Home</string>
     <string name="sk_timeline_federated">Federatie</string>

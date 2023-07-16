@@ -309,4 +309,23 @@
     <string name="sk_exclusive_list">Список виключення</string>
     <string name="sk_list_exclusive_switch">Створити список виключень</string>
     <string name="sk_list_exclusive_switch_explanation">Учасники списку виключень не будуть показані на вашій домашній стрічці — якщо ваш сервер підтримує цю функцію.</string>
+    <string name="sk_icon_beaker">Лабораторна склянка</string>
+    <string name="sk_icon_bed">Ліжко</string>
+    <string name="sk_edit_timeline_tag_main">Дописи з хештегом…</string>
+    <string name="sk_edit_timeline_tag_any">…або з будь-чим із цього</string>
+    <string name="sk_edit_timeline_tag_all">…і з кожним з цього</string>
+    <string name="sk_edit_timeline_tag_none">…але не з жодним з цього</string>
+    <string name="sk_edit_timeline_tag_hint">Введіть хештег…</string>
+    <string name="sk_edit_timeline_tags_hint">Введіть хештеги…</string>
+    <string name="sk_edit_timeline_tags_explanation">Зауважте, що ці операції обробляються сервером. Об\'єднання їх може не підтримуватися.</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Показувати лише локальні дописи\?</string>
+    <string name="sk_add_timeline_tag_error_empty">Хештег не повинен бути порожнім</string>
+    <string name="sk_advanced_options_show">Показати додаткові опції</string>
+    <string name="sk_advanced_options_hide">Сховати додаткові опції</string>
+    <string name="sk_icon_recycle_bin">Смітник</string>
+    <string name="sk_icon_verified">Верифіковано</string>
+    <string name="sk_icon_doctor">Лікар</string>
+    <string name="sk_icon_diamond">Діамант</string>
+    <string name="sk_icon_umbrella">Парасолька</string>
+    <string name="sk_add_timeline">Додати стрічку</string>
 </resources>
