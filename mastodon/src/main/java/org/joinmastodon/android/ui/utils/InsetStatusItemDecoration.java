@@ -27,8 +27,8 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 
 	public InsetStatusItemDecoration(BaseStatusListFragment<?> listFragment){
 		this.listFragment=listFragment;
-		bgColor=UiUtils.getThemeColor(listFragment.getActivity(), android.R.attr.colorBackground);
-		borderColor=UiUtils.getThemeColor(listFragment.getActivity(), R.attr.colorPollVoted);
+		bgColor=UiUtils.getThemeColor(listFragment.getActivity(), R.attr.colorM3SurfaceVariant);
+		borderColor=UiUtils.getThemeColor(listFragment.getActivity(), R.attr.colorM3OutlineVariant);
 	}
 
 	@Override
@@ -94,10 +94,14 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 					outRect.left=pad;
 				if(insetRight)
 					outRect.right=pad;
-				if(!topSiblingInset)
-					outRect.top=pad;
-				if(!bottomSiblingInset)
-					outRect.bottom=pad;
+
+				// had to comment this out because animations with offsets aren't handled properly.
+				// can be worked around by manually applying top margins to items
+				// see InsetDummyStatusDisplayItem#onBinds
+//				if(!topSiblingInset)
+//					outRect.top=pad;
+//				if(!bottomSiblingInset)
+//					outRect.bottom=pad;
 			}
 		}
 	}
