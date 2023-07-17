@@ -335,4 +335,5 @@
     <string name="sk_disable_pill_shaped_active_indicator">Onemogoči indikator aktivnega zavihka v obliki tabletke</string>
     <string name="sk_settings_true_black">Čisto črni način</string>
     <string name="sk_settings_reply_visibility_self">Odgovori meni</string>
+    <string name="sk_search_fediverse">Iskanje v Fediverse</string>
 </resources>
