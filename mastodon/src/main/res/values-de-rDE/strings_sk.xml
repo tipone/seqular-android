@@ -311,7 +311,7 @@
     <string name="sk_list_exclusive_switch_explanation">Mitglieder einer exklusiven Liste werden auf deiner Start-Timeline nicht angezeigt – wenn deine Instanz es unterstützt.</string>
     <string name="sk_list_exclusive_switch">Liste exklusiv machen</string>
     <string name="sk_icon_diamond">Diamant</string>
-    <string name="sk_edit_timeline_tag_any">...oder einer der folgenden</string>
+    <string name="sk_edit_timeline_tag_any">…oder einem von diesen</string>
     <string name="sk_edit_timeline_tags_explanation">Bitte beachte, dass der Server die Timelines verarbeitet. Die Kombination dieser Vorgänge wird möglicherweise nicht unterstützt.</string>
     <string name="sk_advanced_options_show">Erweiterte Optionen einblenden</string>
     <string name="sk_icon_beaker">Becherglas</string>
@@ -322,11 +322,12 @@
     <string name="sk_icon_umbrella">Regenschirm</string>
     <string name="sk_add_timeline">Timeline hinzufügen</string>
     <string name="sk_edit_timeline_tag_main">Beiträge mit dem Hashtag…</string>
-    <string name="sk_edit_timeline_tag_all">...und jeder einzelne von diesen</string>
-    <string name="sk_edit_timeline_tag_none">… aber keinen von diesen</string>
+    <string name="sk_edit_timeline_tag_all">…und jedem von diesen</string>
+    <string name="sk_edit_timeline_tag_none">…aber keinen von diesen</string>
     <string name="sk_edit_timeline_tag_hint">Hashtag eingeben…</string>
     <string name="sk_edit_timeline_tags_hint">Hashtags eingeben…</string>
     <string name="sk_hashtag_timeline_local_only_switch">Nur lokale Beiträge anzeigen\?</string>
     <string name="sk_add_timeline_tag_error_empty">Hashtag darf nicht leer sein</string>
     <string name="sk_advanced_options_hide">Erweiterte Optionen ausblenden</string>
+	<string name="sk_search_fediverse">Fediverse durchsuchen</string>
 </resources>

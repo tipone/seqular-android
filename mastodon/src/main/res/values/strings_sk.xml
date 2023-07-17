@@ -335,4 +335,5 @@
 	<string name="sk_settings_instance">Instance</string>
 	<string name="sk_disable_pill_shaped_active_indicator">Disable pill-shaped active tab indicator</string>
 	<string name="sk_settings_true_black">Pitch black mode</string>
+	<string name="sk_search_fediverse">Search the Fediverse</string>
 </resources>

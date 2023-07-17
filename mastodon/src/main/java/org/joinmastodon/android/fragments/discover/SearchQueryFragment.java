@@ -166,7 +166,7 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
-		searchViewHelper=new SearchViewHelper(getActivity(), getToolbarContext(), getString(R.string.search_mastodon));
+		searchViewHelper=new SearchViewHelper(getActivity(), getToolbarContext(), getString(R.string.sk_search_fediverse));
 		searchViewHelper.setListeners(this::onQueryChanged, this::onQueryChangedNoDebounce);
 		searchViewHelper.addDivider(contentView);
 		searchViewHelper.setEnterCallback(this::onSearchViewEnter);
