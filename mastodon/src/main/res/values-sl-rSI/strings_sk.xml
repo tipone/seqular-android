@@ -258,4 +258,7 @@
     <string name="sk_filtered">Filtrirano: %s</string>
     <string name="sk_unfinished_attachments">Popravki prilog\?</string>
     <string name="sk_spectator_mode">Gledalski način</string>
+    <string name="sk_quoting_user">Citiranje %s</string>
+    <string name="sk_settings_reply_visibility_all">Vsi odgovori</string>
+    <string name="sk_settings_reply_visibility">Vidnost odgovorov</string>
 </resources>
