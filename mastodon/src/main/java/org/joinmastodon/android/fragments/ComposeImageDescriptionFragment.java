@@ -23,11 +23,13 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
+import org.joinmastodon.android.ui.utils.ColorPalette;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.FixedAspectRatioImageView;
 
@@ -61,6 +63,7 @@ public class ComposeImageDescriptionFragment extends MastodonToolbarFragment imp
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
 		themeWrapper=new ContextThemeWrapper(activity, R.style.Theme_Mastodon_Dark);
+		ColorPalette.palettes.get(GlobalUserPreferences.color).apply(themeWrapper, GlobalUserPreferences.ThemePreference.DARK);
 		setTitle(R.string.add_alt_text);
 	}
 

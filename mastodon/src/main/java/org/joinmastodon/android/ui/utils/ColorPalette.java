@@ -2,7 +2,6 @@ package org.joinmastodon.android.ui.utils;
 
 import static org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import static org.joinmastodon.android.GlobalUserPreferences.ThemePreference;
-import static org.joinmastodon.android.GlobalUserPreferences.theme;
 import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 
 import android.content.Context;
@@ -49,7 +48,11 @@ public class ColorPalette {
     public ColorPalette dark(@StyleRes int res, @StyleRes int auto) { dark = res; autoDark = auto; return this; }
     public ColorPalette black(@StyleRes int res, @StyleRes int auto) { dark = res; autoBlack = auto; return this; }
 
-    public void apply(Context context) {
+	public void apply(Context context) {
+		apply(context, GlobalUserPreferences.theme);
+	}
+
+    public void apply(Context context, ThemePreference theme) {
         if (!((dark != 0 && autoDark != 0) || (black != 0 && autoBlack != 0) || light != 0 || base != 0)) {
             throw new IllegalStateException("Invalid color scheme definition");
         }
