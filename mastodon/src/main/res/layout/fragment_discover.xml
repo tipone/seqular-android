@@ -35,7 +35,7 @@
 				android:singleLine="true"
 				android:textColor="?colorM3OnSurfaceVariant"
 				android:textAppearance="@style/m3_body_large"
-				android:text="@string/search_mastodon"/>
+				android:text="@string/sk_search_fediverse"/>
 
 		</LinearLayout>
 	</FrameLayout>
