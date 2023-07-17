@@ -252,7 +252,7 @@
     <string name="sk_notify_poll_results">Resultados da enquisa</string>
     <string name="sk_collapse">Contraer</string>
     <string name="sk_unfinished_attachments_message">Algúns arquivos adxuntos aínda non remataron de cargarse.</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Prefixar AC con \"re:\" nas respostas a</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Prefixar AC con \"re:\" cando respondes</string>
     <string name="sk_filtered">Filtrados: %s</string>
     <string name="sk_expand">Expandir</string>
     <string name="sk_settings_collapse_long_posts">Contraer publicacións moi longas</string>
@@ -273,8 +273,8 @@
     <string name="sk_show_thread">Mostrar chío</string>
     <string name="sk_compact_reblog_reply_line">Compactar liña de impulso/resposta</string>
     <string name="sk_settings_confirm_before_reblog">Confirma antes de impulsar</string>
-    <string name="sk_reacted_with">Redactado con %s</string>
-    <string name="sk_reacted">redactado</string>
+    <string name="sk_reacted_with">%1$s redactou con %2$s</string>
+    <string name="sk_reacted">%s redactado</string>
     <string name="sk_content_type_unspecified">Non especificado</string>
     <string name="sk_content_type_plain">Texto plano</string>
     <string name="sk_content_type_html">HTML</string>
@@ -295,11 +295,11 @@
     <string name="sk_icon_bed">Cama</string>
     <string name="sk_add_timeline">Engadir cronoloxía</string>
     <string name="sk_edit_timeline_tag_none">…pero ningún destes</string>
-    <string name="sk_edit_timeline_tags_explanation">Teña en conta que o servidor manexa estas operacións. Combinalos pode non ser soportado.</string>
+    <string name="sk_edit_timeline_tags_explanation">Teña en conta que o servidor manexa estas operacións. Combinalos pode non estar soportado.</string>
     <string name="sk_open_in_app_failed">Non se puido abrir la aplicación</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Revelar os mesmos ACs nas respostas de</string>
-    <string name="sk_settings_auto_reveal_nobody">ninguén</string>
-    <string name="sk_settings_auto_reveal_author">autor</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Auto-revelar os ACs iguais nas respostas</string>
+    <string name="sk_settings_auto_reveal_nobody">Nunca</string>
+    <string name="sk_settings_auto_reveal_author">Respostas co mesmo autor</string>
     <string name="sk_settings_auto_reveal_anyone">todos</string>
     <string name="sk_no_remote_info_hint">información remota non dispoñíbel</string>
     <string name="sk_error_loading_profile">Carga fallida do perfil vía %s</string>
@@ -327,4 +327,5 @@
     <string name="sk_advanced_options_show">Mostrar opcións avanzadas</string>
     <string name="sk_advanced_options_hide">Ocultar opcións avanzadas</string>
     <string name="sk_settings_forward_report_default">Opción \"Informe de reenvío\" por defecto</string>
+    <string name="sk_gif_badge">GIF</string>
 </resources>

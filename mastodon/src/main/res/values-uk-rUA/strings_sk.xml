@@ -254,7 +254,7 @@
     <string name="sk_expand">Розгорнути</string>
     <string name="sk_collapse">Згорнути</string>
     <string name="sk_unfinished_attachments">Виправити вкладення\?</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Префікс CW під час відповіді</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Префікс CW з «re:» під час відповіді</string>
     <string name="sk_settings_collapse_long_posts">Згортати надто довгі дописи</string>
     <string name="sk_unfinished_attachments_message">Деякі вкладення не повністю завантажилися.</string>
     <string name="sk_spectator_mode">Режим глядача</string>
@@ -273,8 +273,8 @@
     <string name="sk_show_thread">Показати потік</string>
     <string name="sk_compact_reblog_reply_line">Компактний рядок для поширеного допису/відповіді</string>
     <string name="sk_settings_confirm_before_reblog">Підтверджувати поширення</string>
-    <string name="sk_reacted">реагує</string>
-    <string name="sk_reacted_with">реагує з %s</string>
+    <string name="sk_reacted">%s реагує</string>
+    <string name="sk_reacted_with">%1$s реагує з %2$s</string>
     <string name="sk_content_type_unspecified">Не визначено</string>
     <string name="sk_content_type_plain">Звичайний текст</string>
     <string name="sk_content_type_html">HTML</string>
@@ -297,13 +297,13 @@
     <string name="sk_settings_allow_remote_loading">Завантажити інформацію з віддалених серверів</string>
     <string name="sk_settings_allow_remote_loading_explanation">Спробуйте отримати точніші списки підписників, вподобань і поширень, завантаживши інформацію з джерела.</string>
     <string name="sk_error_loading_profile">Не вдалося завантажити профіль через %s</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Виявити ті самі CW у відповідях від</string>
-    <string name="sk_settings_auto_reveal_nobody">нікого</string>
-    <string name="sk_settings_auto_reveal_author">автора</string>
-    <string name="sk_settings_auto_reveal_anyone">будь-кого</string>
-    <string name="sk_settings_prefix_replies_always">усіх</string>
-    <string name="sk_settings_prefix_replies_never">нікого</string>
-    <string name="sk_settings_prefix_replies_to_others">іншим</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Авторозгортання еквівалентних CW у відповідях</string>
+    <string name="sk_settings_auto_reveal_nobody">Ніколи</string>
+    <string name="sk_settings_auto_reveal_author">Відповіді того ж автора</string>
+    <string name="sk_settings_auto_reveal_anyone">Відповіді від усіх</string>
+    <string name="sk_settings_prefix_replies_always">Відповіді будь-кому</string>
+    <string name="sk_settings_prefix_replies_never">Ніколи</string>
+    <string name="sk_settings_prefix_replies_to_others">Лише у відповідь іншим</string>
     <string name="sk_settings_forward_report_default">Усталений перемикач “Пересилати звіт”</string>
     <string name="sk_icon_feed">Стрічка</string>
     <string name="sk_exclusive_list">Список виключення</string>
@@ -328,4 +328,11 @@
     <string name="sk_icon_diamond">Діамант</string>
     <string name="sk_icon_umbrella">Парасолька</string>
     <string name="sk_add_timeline">Додати стрічку</string>
+    <string name="sk_pronouns_label">Вимова</string>
+    <string name="sk_switch_timeline">Перемкнути стрічку</string>
+    <string name="sk_settings_instance">Сервер</string>
+    <string name="sk_settings_true_black">Абсолютно чорний режим</string>
+    <string name="sk_gif_badge">GIF</string>
+    <string name="sk_spoiler_show">Показати матеріали</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Вимкнути індикатор активної вкладки у формі таблетки</string>
 </resources>

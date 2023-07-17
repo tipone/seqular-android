@@ -271,4 +271,10 @@
     <string name="sk_reply_line_above_avatar">“In reply to” regel boven avatar</string>
     <string name="sk_settings_confirm_before_reblog">Bevestig om te boosten</string>
     <string name="sk_notification_action_replied">Reactie verzonden naar %s</string>
+    <string name="sk_open_in_app_failed">Kan niet geopend worden in app</string>
+    <string name="sk_error_loading_profile">Laden van het profiel mislukt via %s</string>
+    <string name="sk_spoiler_show">Toon inhoud</string>
+    <string name="sk_advanced_options_show">Toon geavanceerde opties</string>
+    <string name="sk_open_in_app">Open in app</string>
+    <string name="sk_advanced_options_hide">Verberg geavanceerde opties</string>
 </resources>
