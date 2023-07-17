@@ -333,4 +333,5 @@
     <string name="sk_disable_pill_shaped_active_indicator">نشانگر برگه فعال قرصی را ازکار بندازید</string>
     <string name="sk_list_exclusive_switch_explanation">اعضای یک سیاهه انحصاری در خط زمانی خانه شما نشان داده نمی شوند - اگر نمونه شما از آن پشتیبانی کند.</string>
     <string name="sk_settings_default_content_type_explanation">این به شما امکان می‌دهد هنگام نوشتن فرسته‌های جدید، نوع محتوا را از قبل انتخاب کنید و مقدار تنظیم‌شده در \"ترجیحات‌های ارسال\" را لغو کنید.</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">CW های برابر را در پاسخ‌ها به صورت خودکار آشکار کنید</string>
 </resources>
