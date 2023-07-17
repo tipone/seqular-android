@@ -258,7 +258,7 @@
     <string name="sk_settings_hide_interaction">Sembunyikan tombol interaksi</string>
     <string name="sk_follow_as">Ikuti dari akun lain</string>
     <string name="sk_followed_as">Diikuti dari %s</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Awali balasan peringatan konten dengan “re:”</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Awali peringatan konten dengan “re:” saat membalas</string>
     <string name="sk_settings_collapse_long_posts">Tutup kiriman yang sangat panjang</string>
     <string name="sk_unfinished_attachments">Perbaiki lampiran\?</string>
     <string name="sk_unfinished_attachments_message">Beberapa lampiran belum selesai diunggah.</string>
@@ -274,8 +274,8 @@
     <string name="sk_show_thread">Tampilkan utasan</string>
     <string name="sk_compact_reblog_reply_line">Baris berbagi/balasan</string>
     <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
-    <string name="sk_reacted_with">bereaksi dengan %s</string>
-    <string name="sk_reacted">bereaksi</string>
+    <string name="sk_reacted_with">%1$s bereaksi dengan %2$s</string>
+    <string name="sk_reacted">%s bereaksi</string>
     <string name="sk_content_type_plain">Teks biasa</string>
     <string name="sk_content_type_html">HTML</string>
     <string name="sk_content_type_markdown">Markdown</string>
@@ -298,13 +298,13 @@
     <string name="sk_settings_allow_remote_loading_explanation">Coba mendapatkan pendaftaran akurat untuk pengikut cr</string>
     <string name="sk_error_loading_profile">Gagal memuat profil melalui %s</string>
     <string name="sk_open_in_app_failed">Tidak dapat buka dalam aplikasi</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Tampilkan peringatan konten yang sama dari</string>
-    <string name="sk_settings_auto_reveal_nobody">bukan siapa pun</string>
-    <string name="sk_settings_auto_reveal_author">pembuat</string>
-    <string name="sk_settings_auto_reveal_anyone">semuanya</string>
-    <string name="sk_settings_prefix_replies_always">semuanya</string>
-    <string name="sk_settings_prefix_replies_never">bukan siapa pun</string>
-    <string name="sk_settings_prefix_replies_to_others">lainnya</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Buka peringatan konten yang sama secara otomatis dalam balasan</string>
+    <string name="sk_settings_auto_reveal_nobody">Tidak pernah</string>
+    <string name="sk_settings_auto_reveal_author">Balasan dari pembuat yang sama</string>
+    <string name="sk_settings_auto_reveal_anyone">Balasan dari semuanya</string>
+    <string name="sk_settings_prefix_replies_always">Membalas ke siapa pun</string>
+    <string name="sk_settings_prefix_replies_never">Tidak pernah</string>
+    <string name="sk_settings_prefix_replies_to_others">Hanya dalam balasan ke lainnya</string>
     <string name="sk_settings_forward_report_default">“Laporan diteruskan” ubah bawaan</string>
     <string name="sk_icon_feed">Umpan</string>
     <string name="sk_list_exclusive_switch">Buat daftar ekslusif</string>
@@ -329,4 +329,11 @@
     <string name="sk_advanced_options_show">Tampilkan opsi tingkat lanjut</string>
     <string name="sk_advanced_options_hide">Sembunyikan opsi tingkat lanjut</string>
     <string name="sk_icon_beaker">Gelas kimia</string>
+    <string name="sk_gif_badge">GIF</string>
+    <string name="sk_pronouns_label">Kata ganti</string>
+    <string name="sk_switch_timeline">Ubah lini masa</string>
+    <string name="sk_settings_instance">Server</string>
+    <string name="sk_settings_true_black">Mode gelap gulita</string>
+    <string name="sk_spoiler_show">Tampilkan konten</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Nonaktifkan indikator tab berbentuk pil yang aktif</string>
 </resources>
