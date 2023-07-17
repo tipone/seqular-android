@@ -338,4 +338,5 @@
     <string name="sk_settings_true_black">Mod negru complet</string>
     <string name="sk_settings_tabs_disable_swipe">Dezactivați glisarea între file</string>
     <string name="sk_disable_pill_shaped_active_indicator">Dezactivați indicatorul de filă activă în formă de pastilă</string>
+    <string name="sk_search_fediverse">Căutați în Fedivers</string>
 </resources>
