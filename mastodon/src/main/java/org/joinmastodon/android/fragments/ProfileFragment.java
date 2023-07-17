@@ -324,6 +324,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		fab.setOnClickListener(this::onFabClick);
 		fab.setOnLongClickListener(v->UiUtils.pickAccountForCompose(getActivity(), accountID, getPrefilledText()));
 
+		if(savedInstanceState!=null){
+			postsFragment=(AccountTimelineFragment) getChildFragmentManager().getFragment(savedInstanceState, "posts");
+			postsWithRepliesFragment=(AccountTimelineFragment) getChildFragmentManager().getFragment(savedInstanceState, "postsWithReplies");
+			mediaFragment=(AccountTimelineFragment) getChildFragmentManager().getFragment(savedInstanceState, "media");
+			pinnedPostsFragment=(PinnedPostsListFragment) getChildFragmentManager().getFragment(savedInstanceState, "pinnedPosts");
+		}
+
 		if(loaded){
 			bindHeaderView();
 			dataLoaded();
@@ -462,19 +469,24 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	public void dataLoaded(){
 		if(getActivity()==null)
 			return;
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putParcelable("profileAccount", Parcels.wrap(account));
+		args.putBoolean("__is_tab", true);
 		if(postsFragment==null){
 			postsFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.DEFAULT, true);
+		}
+		if(postsWithRepliesFragment==null){
 			postsWithRepliesFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.INCLUDE_REPLIES, false);
+		}
+		if(mediaFragment==null){
 			mediaFragment=AccountTimelineFragment.newInstance(accountID, account, GetAccountStatuses.Filter.MEDIA, false);
-
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("profileAccount", Parcels.wrap(account));
-			args.putBoolean("__is_tab", true);
+		}
+		if(pinnedPostsFragment==null){
 			pinnedPostsFragment=new PinnedPostsListFragment();
 			pinnedPostsFragment.setArguments(args);
-			setFields(fields);
 		}
+		setFields(fields);
 		pager.getAdapter().notifyDataSetChanged();
 		super.dataLoaded();
 	}
@@ -527,6 +539,21 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				return true;
 			}
 		});
+	}
+
+	@Override
+	public void onSaveInstanceState(Bundle outState){
+		super.onSaveInstanceState(outState);
+		if(postsFragment==null)
+			return;
+		if(postsFragment.isAdded())
+			getChildFragmentManager().putFragment(outState, "posts", postsFragment);
+		if(postsWithRepliesFragment.isAdded())
+			getChildFragmentManager().putFragment(outState, "postsWithReplies", postsWithRepliesFragment);
+		if(mediaFragment.isAdded())
+			getChildFragmentManager().putFragment(outState, "media", mediaFragment);
+		if(pinnedPostsFragment.isAdded())
+			getChildFragmentManager().putFragment(outState, "pinnedPosts", pinnedPostsFragment);
 	}
 
 	@Override
