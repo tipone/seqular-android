@@ -211,8 +211,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	public void loadData(){
-		if(postsFragment!=null && !postsFragment.loaded && !postsFragment.dataLoading)
-			postsFragment.loadData();
+		if(hashtagsFragment!=null && !hashtagsFragment.loaded && !hashtagsFragment.dataLoading)
+			hashtagsFragment.loadData();
 	}
 
 	private void enterSearch(){
