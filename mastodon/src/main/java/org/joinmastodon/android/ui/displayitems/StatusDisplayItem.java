@@ -25,7 +25,6 @@ import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
-import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
@@ -113,7 +112,7 @@ public abstract class StatusDisplayItem{
 			case SPOILER, FILTER_SPOILER -> new SpoilerStatusDisplayItem.Holder(activity, parent, type);
 			case SECTION_HEADER -> null; // new SectionHeaderStatusDisplayItem.Holder(activity, parent);
 			case NOTIFICATION_HEADER -> new NotificationHeaderStatusDisplayItem.Holder(activity, parent);
-			case DUMMY -> new InsetDummyStatusDisplayItem.Holder(activity);
+			case DUMMY -> new DummyStatusDisplayItem.Holder(activity);
 		};
 	}
 
@@ -240,13 +239,16 @@ public abstract class StatusDisplayItem{
 			}
 		}
 
+		boolean hasSpoiler=!TextUtils.isEmpty(statusForContent.spoilerText);
 		if(!TextUtils.isEmpty(statusForContent.content)){
 			SpannableStringBuilder parsedText=HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID);
 			HtmlParser.applyFilterHighlights(fragment.getActivity(), parsedText, status.filtered);
 			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
 			contentItems.add(text);
-		} else if (header!=null){
+		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
+		}else if(hasSpoiler){
+			contentItems.add(new DummyStatusDisplayItem(parentID, fragment, true));
 		}
 
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
@@ -287,7 +289,7 @@ public abstract class StatusDisplayItem{
 		boolean inset=(flags & FLAG_INSET)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
 		if (inset) {
-			items.add(new InsetDummyStatusDisplayItem(parentID, fragment,
+			items.add(new DummyStatusDisplayItem(parentID, fragment,
 					!contentItems.isEmpty() && contentItems
 							.get(contentItems.size() - 1) instanceof MediaGridStatusDisplayItem));
 		}
