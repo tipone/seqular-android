@@ -27,7 +27,7 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 
 	public InsetStatusItemDecoration(BaseStatusListFragment<?> listFragment){
 		this.listFragment=listFragment;
-		bgColor=UiUtils.getThemeColor(listFragment.getActivity(), R.attr.colorM3SurfaceVariant);
+		bgColor=UiUtils.getThemeColor(listFragment.getActivity(), R.attr.colorM3Surface);
 		borderColor=UiUtils.getThemeColor(listFragment.getActivity(), R.attr.colorM3OutlineVariant);
 	}
 
@@ -65,13 +65,13 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 		paint.setColor(bgColor);
 		rect.left=V.dp(12);
 		rect.right=list.getWidth()-V.dp(12);
-		rect.inset(V.dp(4), V.dp(4));
-		c.drawRoundRect(rect, V.dp(4), V.dp(4), paint);
+		rect.inset(V.dp(4), V.dp(0));
+		c.drawRoundRect(rect, V.dp(12), V.dp(12), paint);
 		paint.setStyle(Paint.Style.STROKE);
 		paint.setStrokeWidth(V.dp(1));
 		paint.setColor(borderColor);
 		rect.inset(paint.getStrokeWidth()/2f, paint.getStrokeWidth()/2f);
-		c.drawRoundRect(rect, V.dp(4), V.dp(4), paint);
+		c.drawRoundRect(rect, V.dp(12), V.dp(12), paint);
 	}
 
 	@Override
@@ -85,10 +85,10 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 				boolean topSiblingInset=pos>0 && displayItems.get(pos-1).inset;
 				boolean bottomSiblingInset=pos<displayItems.size()-1 && displayItems.get(pos+1).inset;
 				int pad;
-				if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder)
+//				if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder)
 					pad=V.dp(16);
-				else
-					pad=V.dp(12);
+//				else
+//					pad=V.dp(12);
 				boolean insetLeft=true, insetRight=true;
 				if(insetLeft)
 					outRect.left=pad;
@@ -97,7 +97,7 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 
 				// had to comment this out because animations with offsets aren't handled properly.
 				// can be worked around by manually applying top margins to items
-				// see InsetDummyStatusDisplayItem#onBinds
+				// see InsetDummyStatusDisplayItem#onBind
 //				if(!topSiblingInset)
 //					outRect.top=pad;
 //				if(!bottomSiblingInset)
