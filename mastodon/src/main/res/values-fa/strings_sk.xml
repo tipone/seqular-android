@@ -183,7 +183,7 @@
     <string name="sk_user_post_notifications_off">آگاهی‌های فرسته برای %s خاموش شد</string>
     <string name="sk_bubble_timeline_info_banner">اینها جدیدترین فرسته‌های شبکه هستند که توسط سرپرستان نمونه شما انتخاب شده‌اند.</string>
     <string name="sk_clear_recent_languages">زبان‌های اخیراً استفاده شده را پاک‌سازی کنید</string>
-    <string name="sk_settings_color_palette">تخته‌رنگ رنگی</string>
+    <string name="sk_settings_color_palette">تخته‌رنگ</string>
     <string name="sk_confirm_clear_recent_languages">آیا مطمئنید که می خواهید زبان های اخیراً استفاده شده خود را پاک کنید؟</string>
     <string name="sk_resource_not_found">منبع پیدا نشد</string>
     <string name="sk_favorited_as">به‌عنوان %s پسندیده شد</string>
@@ -207,7 +207,7 @@
     <string name="sk_pinned_timeline">به خانه سنجاق شد</string>
     <string name="sk_publish_anyway">انتشار به هرصورت</string>
     <string name="sk_settings_disable_alt_text_reminder">غیرفعال‌کردن یادآوری برای افزودن متن جایگزین</string>
-    <string name="sk_icon_color_palette">تخته‌رنگ رنگی</string>
+    <string name="sk_icon_color_palette">تخته‌رنگ</string>
     <string name="sk_icon_tag">برچسب</string>
     <string name="sk_icon_leaves">برگ‌ها</string>
     <string name="sk_icon_important">مهم</string>
@@ -334,4 +334,5 @@
     <string name="sk_list_exclusive_switch_explanation">اعضای یک سیاهه انحصاری در خط زمانی خانه شما نشان داده نمی شوند - اگر نمونه شما از آن پشتیبانی کند.</string>
     <string name="sk_settings_default_content_type_explanation">این به شما امکان می‌دهد هنگام نوشتن فرسته‌های جدید، نوع محتوا را از قبل انتخاب کنید و مقدار تنظیم‌شده در \"ترجیحات‌های ارسال\" را لغو کنید.</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">CW های برابر را در پاسخ‌ها به صورت خودکار آشکار کنید</string>
+    <string name="sk_settings_forward_report_default">پیش‌فرض سوئیچ “گزارش هدایت ”</string>
 </resources>
