@@ -336,4 +336,5 @@
     <string name="sk_settings_true_black">Mode noir absolu</string>
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_disable_pill_shaped_active_indicator">Désactiver l\'indicateur d\'onglet actif en forme de punaise</string>
+    <string name="sk_search_fediverse">Chercher sur le Fediverse</string>
 </resources>
