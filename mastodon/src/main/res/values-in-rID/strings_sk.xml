@@ -60,10 +60,10 @@
     <string name="sk_example_domain">contoh.social</string>
     <string name="sk_color_palette_red">Merah</string>
     <string name="sk_translated_using">Diterjemahkan menggunakan %s</string>
-    <string name="sk_welcome_text">Hiu menyapamu! Untuk memulai, silakan memasukkan nama domain instansi Anda di bawah.</string>
+    <string name="sk_welcome_text">Hiu menyapamu! Untuk memulai, silakan memasukkan nama domain server Anda di bawah.</string>
     <string name="sk_settings_tabs_disable_swipe">Nonaktifkan mengusap antara tab</string>
     <string name="sk_settings_profile">Atur profil</string>
-    <string name="sk_settings_filters">Atur profil</string>
+    <string name="sk_settings_filters">Atur penyaring</string>
     <string name="sk_settings_enable_delete_notifications">Aktifkan menghapus notifikasi</string>
     <string name="sk_settings_publish_button_text">Teks tombol Terbitkan</string>
     <string name="sk_settings_publish_button_text_title">Ubah teks tombol Terbitkan</string>
@@ -295,7 +295,7 @@
     <string name="sk_external_share_or_open_title">Bagikan atau buka dengan akun</string>
     <string name="sk_no_remote_info_hint">info jarak jauh tidak tersedia</string>
     <string name="sk_settings_allow_remote_loading">Muat info dari server jarak jauh</string>
-    <string name="sk_settings_allow_remote_loading_explanation">Coba mendapatkan pendaftaran akurat untuk pengikut cr</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Coba mendapatkan pendaftaran akurat untuk pengikut, favorit, dan pembagian dengan memuat informasi dari asal server.</string>
     <string name="sk_error_loading_profile">Gagal memuat profil melalui %s</string>
     <string name="sk_open_in_app_failed">Tidak dapat buka dalam aplikasi</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">Buka peringatan konten yang sama secara otomatis dalam balasan</string>
@@ -336,4 +336,5 @@
     <string name="sk_settings_true_black">Mode gelap gulita</string>
     <string name="sk_spoiler_show">Tampilkan konten</string>
     <string name="sk_disable_pill_shaped_active_indicator">Nonaktifkan indikator tab berbentuk pil yang aktif</string>
+    <string name="sk_search_fediverse">Cari di Fediverse</string>
 </resources>
