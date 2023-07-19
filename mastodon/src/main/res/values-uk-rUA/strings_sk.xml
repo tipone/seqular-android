@@ -335,4 +335,5 @@
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_spoiler_show">Показати матеріали</string>
     <string name="sk_disable_pill_shaped_active_indicator">Вимкнути індикатор активної вкладки у формі таблетки</string>
+    <string name="sk_search_fediverse">Пошук у Федівсесвіті</string>
 </resources>
