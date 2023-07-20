@@ -449,7 +449,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		} else if (getArguments().containsKey("sourceContentType")) {
 			try {
 				String val = getArguments().getString("sourceContentType");
-				contentType = val == null ? null : ContentType.valueOf(val);
+				if (val != null) contentType = ContentType.valueOf(val);
 			} catch (IllegalArgumentException ignored) {}
 		}
 
