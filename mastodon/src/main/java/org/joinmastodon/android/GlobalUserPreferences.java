@@ -57,6 +57,7 @@ public class GlobalUserPreferences{
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static ColorPreference color;
 	public static boolean disableM3PillActiveIndicator;
+	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -111,6 +112,9 @@ public class GlobalUserPreferences{
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
+		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
+		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
+		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
 
 		if (prefs.contains("prefixRepliesWithRe")) {
 			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
@@ -164,6 +168,9 @@ public class GlobalUserPreferences{
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.putBoolean("forwardReportDefault", forwardReportDefault)
 				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
+				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)
+				.putBoolean("displayPronounsInThreads", displayPronounsInThreads)
+				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
 				.apply();
 	}
 

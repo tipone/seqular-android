@@ -1028,13 +1028,11 @@ public class UiUtils {
 		return back;
 	}
 
-	public static boolean setExtraTextInfo(Context ctx, TextView extraText, TextView pronouns, boolean mentionedOnly, boolean localOnly, @Nullable Account account) {
+	public static boolean setExtraTextInfo(Context ctx, TextView extraText, TextView pronouns, boolean displayPronouns, boolean mentionedOnly, boolean localOnly, @Nullable Account account) {
 		List<String> extraParts = new ArrayList<>();
-		Optional<String> p=pronouns==null ? Optional.empty() : extractPronouns(ctx, account);
-		boolean setPronouns=false;
+		Optional<String> p=pronouns==null || !displayPronouns ? Optional.empty() : extractPronouns(ctx, account);
 		if(p.isPresent()) {
 			HtmlParser.setTextWithCustomEmoji(pronouns, p.get(), account.emojis);
-			setPronouns=true;
 			pronouns.setVisibility(View.VISIBLE);
 		}else if(pronouns!=null){
 			pronouns.setVisibility(View.GONE);

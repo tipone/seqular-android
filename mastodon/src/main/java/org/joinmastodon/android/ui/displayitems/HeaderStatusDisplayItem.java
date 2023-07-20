@@ -337,7 +337,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 			if(TextUtils.isEmpty(item.extraText)){
 				if (item.status != null) {
-					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, pronouns, item.status.visibility==StatusPrivacy.DIRECT, item.status.localOnly || item.status.visibility==StatusPrivacy.LOCAL, item.status.account);
+					boolean displayPronouns=item.parentFragment instanceof ThreadFragment ? GlobalUserPreferences.displayPronounsInThreads : GlobalUserPreferences.displayPronounsInTimelines;
+					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, pronouns, displayPronouns, item.status.visibility==StatusPrivacy.DIRECT, item.status.localOnly || item.status.visibility==StatusPrivacy.LOCAL, item.status.account);
 				}
 			}else{
 				extraText.setVisibility(View.VISIBLE);

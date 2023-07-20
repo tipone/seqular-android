@@ -336,4 +336,7 @@
 	<string name="sk_disable_pill_shaped_active_indicator">Disable pill-shaped active tab indicator</string>
 	<string name="sk_settings_true_black">Pitch black mode</string>
 	<string name="sk_search_fediverse">Search the Fediverse</string>
+	<string name="sk_settings_display_pronouns_in_timelines">Display pronouns in timelines</string>
+	<string name="sk_settings_display_pronouns_in_threads">Display pronouns in threads</string>
+	<string name="sk_settings_display_pronouns_in_user_listings">Display pronouns in user listings</string>
 </resources>

@@ -21,6 +21,7 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -124,7 +125,8 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		}
 
 		// you know what's cooler than followers or verified links? yep. pronouns
-		Optional<String> pronounsString = UiUtils.extractPronouns(itemView.getContext(), item.account);
+		Optional<String> pronounsString=GlobalUserPreferences.displayPronounsInUserListings
+				? UiUtils.extractPronouns(itemView.getContext(), item.account) : Optional.empty();
 		pronouns.setVisibility(pronounsString.isPresent() ? View.VISIBLE : View.GONE);
 		pronounsString.ifPresent(p -> HtmlParser.setTextWithCustomEmoji(pronouns, p, item.account.emojis));
 

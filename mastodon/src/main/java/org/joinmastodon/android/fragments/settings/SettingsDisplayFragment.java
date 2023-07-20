@@ -39,6 +39,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	// MEGALODON
 	private CheckableListItem<Void> trueBlackModeItem, marqueeItem, disableSwipeItem, reduceMotionItem, altIndicatorItem, noAltIndicatorItem, collapsePostsItem, spectatorModeItem, hideFabItem, translateOpenedItem, disablePillItem;
 	private ListItem<Void> colorItem, publishTextItem, autoRevealCWsItem;
+	private CheckableListItem<Void> pronounsInUserListingsItem, pronounsInTimelinesItem, pronounsInThreadsItem;
 
 	private AccountLocalPreferences lp;
 
@@ -67,7 +68,10 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, ()->toggleCheckableItem(spectatorModeItem)),
 				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, ()->toggleCheckableItem(hideFabItem)),
 				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, ()->toggleCheckableItem(translateOpenedItem)),
-				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem))
+				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem), true),
+				pronounsInTimelinesItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_timelines, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInTimelines, 0, ()->toggleCheckableItem(pronounsInTimelinesItem)),
+				pronounsInThreadsItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_threads, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInThreads, 0, ()->toggleCheckableItem(pronounsInThreadsItem)),
+				pronounsInUserListingsItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_user_listings, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInUserListings, 0, ()->toggleCheckableItem(pronounsInUserListingsItem))
 		));
 		trueBlackModeItem.checkedChangeListener=checked->onTrueBlackModeClick();
 	}
@@ -107,6 +111,9 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.autoHideFab=hideFabItem.checked;
 		GlobalUserPreferences.translateButtonOpenedOnly=translateOpenedItem.checked;
 		GlobalUserPreferences.disableM3PillActiveIndicator=disablePillItem.checked;
+		GlobalUserPreferences.displayPronounsInTimelines=pronounsInTimelinesItem.checked;
+		GlobalUserPreferences.displayPronounsInThreads=pronounsInThreadsItem.checked;
+		GlobalUserPreferences.displayPronounsInUserListings=pronounsInUserListingsItem.checked;
 		GlobalUserPreferences.save();
 		if(restartPlease) restartActivityToApplyNewTheme();
 		else E.post(new StatusDisplaySettingsChangedEvent(accountID));
