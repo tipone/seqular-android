@@ -126,12 +126,19 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		tabBarWrap=content.findViewById(R.id.tabbar_wrap);
 
 		// this one's for the pill haters (https://m3.material.io/components/navigation-bar/overview)
-		if (GlobalUserPreferences.disableM3PillActiveIndicator) {
+		if (GlobalUserPreferences.disableM3PillActiveIndicator){
 			for(int i=0; i<tabBar.getChildCount(); i++){
 				ViewGroup f=(ViewGroup) tabBar.getChildAt(i);
 				f.setBackgroundResource(R.drawable.bg_tabbar_tab_ripple);
 			}
 			tabBar.findViewById(R.id.tab_profile).setBackgroundResource(R.drawable.bg_tab_profile);
+		}
+
+		if (!GlobalUserPreferences.showNavigationLabels){
+			tabBar.findViewById(R.id.tab_home_label).setVisibility(View.GONE);
+			tabBar.findViewById(R.id.tab_search_label).setVisibility(View.GONE);
+			tabBar.findViewById(R.id.tab_notifications_label).setVisibility(View.GONE);
+			tabBar.findViewById(R.id.tab_profile_label).setVisibility(View.GONE);
 		}
 
 		tabBarAvatar=tabBar.findViewById(R.id.tab_profile_ava);

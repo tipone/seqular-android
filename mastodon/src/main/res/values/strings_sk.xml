@@ -339,4 +339,9 @@
 	<string name="sk_settings_display_pronouns_in_timelines">Display pronouns in timelines</string>
 	<string name="sk_settings_display_pronouns_in_threads">Display pronouns in threads</string>
 	<string name="sk_settings_display_pronouns_in_user_listings">Display pronouns in user listings</string>
+	<string name="sk_tab_home">Home</string>
+	<string name="sk_tab_search">Search</string>
+	<string name="sk_tab_notifications">Notifications</string>
+	<string name="sk_tab_profile">Profile</string>
+	<string name="sk_settings_show_labels_in_navigation_bar">Show tab labels in the navigation bar</string>
 </resources>

@@ -57,6 +57,7 @@ public class GlobalUserPreferences{
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static ColorPreference color;
 	public static boolean disableM3PillActiveIndicator;
+	public static boolean showNavigationLabels;
 	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
 
 	private static SharedPreferences getPrefs(){
@@ -112,6 +113,7 @@ public class GlobalUserPreferences{
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
+		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
 		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
@@ -168,6 +170,7 @@ public class GlobalUserPreferences{
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.putBoolean("forwardReportDefault", forwardReportDefault)
 				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
+				.putBoolean("showNavigationLabels", showNavigationLabels)
 				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)
 				.putBoolean("displayPronounsInThreads", displayPronounsInThreads)
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
