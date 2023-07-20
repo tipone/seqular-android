@@ -5,14 +5,13 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:paddingHorizontal="16dp"
-	android:layout_marginBottom="-12dp">
+	android:layout_marginBottom="-4dp">
 
 	<TextView
 		android:id="@+id/extra_text"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:paddingTop="16dp"
-		android:paddingBottom="6dp"
 		android:textAppearance="@style/m3_title_small"
 		android:textColor="?colorM3OnSurface"
 		android:drawableStart="@drawable/ic_fluent_arrow_reply_20sp_filled"
@@ -40,7 +39,6 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:paddingTop="16dp"
-		android:paddingBottom="6dp"
 		android:textAppearance="@style/m3_title_small"
 		android:textColor="?colorM3OnSurface"
 		android:drawableStart="@drawable/ic_fluent_arrow_repeat_all_20_filled"

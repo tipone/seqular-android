@@ -143,7 +143,9 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				}
 			}
 			String sep = getString(R.string.sk_separator);
-			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0, null, null));
+			ReblogOrReplyLineStatusDisplayItem line=new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0, null, null);
+			line.needBottomPadding=true;
+			items.add(0, line);
 		}
 		return items;
 	}

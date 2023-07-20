@@ -40,7 +40,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private int iconEnd;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper(), fullTextEmojiHelper;
 	private View.OnClickListener handleClick;
-	boolean needBottomPadding;
+	public boolean needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
 	CharSequence fullText;
 
