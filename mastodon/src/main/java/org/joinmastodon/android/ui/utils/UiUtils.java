@@ -1584,7 +1584,7 @@ public class UiUtils {
 	private static String extractPronounsFromField(String localizedPronouns, AccountField field) {
 		if(!field.name.toLowerCase().contains(localizedPronouns) &&
 				!field.name.toLowerCase().contains("pronouns")) return null;
-		String text=HtmlParser.strip(field.value);
+		String text=HtmlParser.text(field.value);
 		if(field.value.toLowerCase().contains("https://")){
 			for(String pronounUrl : pronounsUrls){
 				int index=text.indexOf(pronounUrl);
