@@ -242,6 +242,7 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			if(altTextAnimator!=null)
 				altTextAnimator.cancel();
 //			V.setVisibilityAnimated(hideSensitiveButton, View.GONE);
+			V.cancelVisibilityAnimation(altTextWrapper);
 			v.setVisibility(View.INVISIBLE);
 			int index=(Integer)v.getTag();
 			altTextIndex=index;
@@ -317,6 +318,7 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 				altTextAnimator.cancel();
 
 //			V.setVisibilityAnimated(hideSensitiveButton, item.status.sensitive ? View.VISIBLE : View.GONE);
+			V.cancelVisibilityAnimation(altTextWrapper);
 			View btn=controllers.get(altTextIndex).btnsWrap;
 			int i=0;
 			for(MediaAttachmentViewController c:controllers){
