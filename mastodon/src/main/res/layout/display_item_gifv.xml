@@ -33,7 +33,7 @@
 			android:layout_marginEnd="4dp"
 			android:importantForAccessibility="no"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="#FFF"
+			android:textColor="?colorM3DarkOnSurface"
 			android:gravity="center"
 			android:includeFontPadding="false"
 			android:background="@drawable/bg_image_alt_overlay"
