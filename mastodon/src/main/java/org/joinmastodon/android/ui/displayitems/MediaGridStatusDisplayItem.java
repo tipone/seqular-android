@@ -254,7 +254,7 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 			noAltText.setVisibility(!hasAltText && showNoAltIndicator ? View.VISIBLE : View.GONE);
 			altText.setText(att.description);
 			altTextWrapper.setVisibility(View.VISIBLE);
-			altTextWrapper.setBackgroundResource(hasAltText ? R.drawable.bg_image_alt_overlay : R.drawable.bg_image_no_alt_overlay);
+			altTextWrapper.setBackgroundResource(hasAltText ? R.drawable.bg_image_alt_text_overlay : R.drawable.bg_image_no_alt_overlay);
 			altTextWrapper.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener(){
 				@Override
 				public boolean onPreDraw(){
@@ -365,8 +365,8 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 				@Override
 				public void onAnimationEnd(Animator animation){
 					altTextAnimator=null;
-					altTextWrapper.setVisibility(View.GONE);
-					btn.setVisibility(View.VISIBLE);
+					V.setVisibilityAnimated(altTextWrapper, View.GONE);
+					V.setVisibilityAnimated(btn, View.VISIBLE);
 					btn.setAlpha(1);
 				}
 			});

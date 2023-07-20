@@ -24,7 +24,7 @@
 		android:layout_height="wrap_content"
 		android:layout_gravity="bottom"
 		android:textAppearance="@style/m3_label_large"
-		android:textColor="?colorGray25"
+		android:textColor="?colorM3DarkOnSurface"
 		android:gravity="center"
 		android:includeFontPadding="false"
 		android:paddingHorizontal="6dp"

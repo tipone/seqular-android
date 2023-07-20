@@ -7,7 +7,7 @@
 	android:layout_gravity="end|bottom"
 	android:layout_margin="12dp"
 	android:importantForAccessibility="noHideDescendants"
-	android:background="@drawable/bg_image_alt_overlay">
+	android:background="@drawable/bg_image_alt_text_overlay">
 
 	<ImageView
 		android:id="@+id/no_alt_button"
