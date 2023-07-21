@@ -160,7 +160,7 @@
     <string name="sk_in_reply">در پاسخ</string>
     <string name="sk_open_in_app">بازکردن در کاره</string>
     <string name="sk_settings_prefix_replies_never">هیچوقت</string>
-    <string name="sk_settings_prefix_replies_to_others">دیگران</string>
+    <string name="sk_settings_prefix_replies_to_others">فقط درپاسخ به دیگران</string>
     <string name="sk_schedule_or_draft">برنامه‌ریزی یا پیش‌نویس</string>
     <string name="sk_edit_list_title">ویرایش سیاهه</string>
     <string name="sk_icon_star">ستاره</string>
@@ -239,8 +239,8 @@
     <string name="sk_unfinished_attachments_message">بارگذاری برخی از پیوست‌ها به پایان نرسیده است.</string>
     <string name="sk_settings_hide_interaction">نهفتن دکمه های تعامل</string>
     <string name="sk_settings_auto_reveal_nobody">هیچوقت</string>
-    <string name="sk_settings_auto_reveal_author">نویسنده</string>
-    <string name="sk_settings_auto_reveal_anyone">هرکس</string>
+    <string name="sk_settings_auto_reveal_author">پاسخ های همان نویسنده</string>
+    <string name="sk_settings_auto_reveal_anyone">پاسخ های همه</string>
     <string name="sk_settings_prefix_replies_always">درپاسخ به هرکسی</string>
     <string name="sk_external_share_or_open_title">هم‌رسانی یا با حساب باز کنید</string>
     <string name="sk_content_type_mfm">MFM</string>
@@ -309,7 +309,7 @@
     <string name="sk_reacted_with">%1$s با %2$s واکنش نشان داد</string>
     <string name="sk_reacted">%s واکنش نشان داد</string>
     <string name="sk_external_share_title">هم‌رسانی با حساب</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">پیشوند CW با “re:” در پاسخ به</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">وارد کردن پیشوند CW با “re:” هنگام پاسخ دادن</string>
     <string name="sk_unfinished_attachments">رفع مشکل پیوست‌ها؟</string>
     <string name="sk_settings_allow_remote_loading">بارگیری اطلاعات از نمونه های راه دور</string>
     <string name="sk_error_loading_profile">بارگیری نمایه از طریق %s شکست خورد</string>
@@ -335,4 +335,5 @@
     <string name="sk_settings_default_content_type_explanation">این به شما امکان می‌دهد هنگام نوشتن فرسته‌های جدید، نوع محتوا را از قبل انتخاب کنید و مقدار تنظیم‌شده در \"ترجیحات‌های ارسال\" را لغو کنید.</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">CW های برابر را در پاسخ‌ها به صورت خودکار آشکار کنید</string>
     <string name="sk_settings_forward_report_default">پیش‌فرض سوئیچ “گزارش هدایت ”</string>
+    <string name="sk_search_fediverse">جستجوی فدیورس</string>
 </resources>
