@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.NotificationManager;
 import android.app.assist.AssistContent;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.service.notification.StatusBarNotification;
@@ -126,15 +127,27 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		tabBarWrap=content.findViewById(R.id.tabbar_wrap);
 
 		// this one's for the pill haters (https://m3.material.io/components/navigation-bar/overview)
-		if (GlobalUserPreferences.disableM3PillActiveIndicator){
-			for(int i=0; i<tabBar.getChildCount(); i++){
-				ViewGroup f=(ViewGroup) tabBar.getChildAt(i);
-				f.setBackgroundResource(R.drawable.bg_tabbar_tab_ripple);
+		if(GlobalUserPreferences.disableM3PillActiveIndicator){
+			tabBar.findViewById(R.id.tab_home_pill).setBackground(null);
+			tabBar.findViewById(R.id.tab_search_pill).setBackground(null);
+			tabBar.findViewById(R.id.tab_notifications_pill).setBackground(null);
+			tabBar.findViewById(R.id.tab_profile_pill).setBackgroundResource(R.drawable.bg_tab_profile);
+
+			View[] tabs={
+					tabBar.findViewById(R.id.tab_home),
+					tabBar.findViewById(R.id.tab_search),
+					tabBar.findViewById(R.id.tab_notifications),
+					tabBar.findViewById(R.id.tab_profile)
+			};
+
+			for(View tab : tabs){
+				tab.setBackgroundResource(R.drawable.bg_tabbar_tab_ripple);
+				((RippleDrawable) tab.getBackground())
+						.setRadius(V.dp(GlobalUserPreferences.showNavigationLabels ? 56 : 42));
 			}
-			tabBar.findViewById(R.id.tab_profile).setBackgroundResource(R.drawable.bg_tab_profile);
 		}
 
-		if (!GlobalUserPreferences.showNavigationLabels){
+		if(!GlobalUserPreferences.showNavigationLabels){
 			tabBar.findViewById(R.id.tab_home_label).setVisibility(View.GONE);
 			tabBar.findViewById(R.id.tab_search_label).setVisibility(View.GONE);
 			tabBar.findViewById(R.id.tab_notifications_label).setVisibility(View.GONE);

@@ -2,4 +2,4 @@
 <ripple
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:color="@color/m3_on_surface_variant_overlay"
-	android:radius="42dp" />
+	android:radius="56dp" />
