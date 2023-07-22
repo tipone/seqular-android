@@ -4,18 +4,14 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ProgressBar;
 import android.widget.TextView;
-
-import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.model.AltTextFilter;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.ui.drawables.SawtoothTearDrawable;
 
-import java.util.ArrayList;
 import java.util.List;
 
 // Mind the gap!
@@ -55,7 +51,11 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(WarningFilteredStatusDisplayItem item) {
 			filteredItems = item.filteredItems;
-			text.setText(item.parentFragment.getString(R.string.sk_filtered, item.applyingFilter.title));
+			if(item.applyingFilter instanceof AltTextFilter){
+				text.setText(item.parentFragment.getString(R.string.sk_filtered,item.parentFragment.getString(R.string.sk_no_alt_text)));
+			}else{
+				text.setText(item.parentFragment.getString(R.string.sk_filtered, item.applyingFilter.title));
+			}
 		}
 
         @Override

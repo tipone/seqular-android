@@ -1,9 +1,16 @@
 package org.joinmastodon.android.utils;
 
-import static org.joinmastodon.android.model.Filter.FilterAction.*;
-import static org.joinmastodon.android.model.Filter.FilterContext.*;
-import static org.junit.Assert.*;
+import static org.joinmastodon.android.model.Filter.FilterAction.HIDE;
+import static org.joinmastodon.android.model.Filter.FilterAction.WARN;
+import static org.joinmastodon.android.model.Filter.FilterContext.HOME;
+import static org.joinmastodon.android.model.Filter.FilterContext.PUBLIC;
+import static org.joinmastodon.android.model.Filter.FilterContext.THREAD;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
+import android.graphics.drawable.ColorDrawable;
+
+import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.Status;
 import org.junit.Test;
@@ -19,7 +26,9 @@ public class StatusFilterPredicateTest {
 
     private static final Status
             hideInHomePublic = Status.ofFake(null, "hide me, please", Instant.now()),
-            warnInHomePublic = Status.ofFake(null, "display me with a warning", Instant.now());
+            warnInHomePublic = Status.ofFake(null, "display me with a warning", Instant.now()),
+            noAltText = Status.ofFake(null, "display me with a warning", Instant.now()),
+            withAltText = Status.ofFake(null, "display me with a warning", Instant.now());
 
     static {
         hideMeFilter.phrase = "hide me";
@@ -29,6 +38,12 @@ public class StatusFilterPredicateTest {
         warnMeFilter.phrase = "warning";
         warnMeFilter.filterAction = WARN;
         warnMeFilter.context = EnumSet.of(PUBLIC, HOME);
+
+        noAltText.mediaAttachments = Attachment.createFakeAttachments("fakeurl", new ColorDrawable());
+        withAltText.mediaAttachments = Attachment.createFakeAttachments("fakeurl", new ColorDrawable());
+        for (Attachment mediaAttachment : withAltText.mediaAttachments) {
+            mediaAttachment.description = "Alt Text";
+        }
     }
 
     @Test
@@ -77,5 +92,17 @@ public class StatusFilterPredicateTest {
     public void testWarnWithHideText() {
         assertTrue("should pass because matching filter is for hiding",
                 new StatusFilterPredicate(allFilters, HOME, WARN).test(hideInHomePublic));
+    }
+
+    @Test
+    public void testAltTextFilterNoPass() {
+        assertFalse("should not pass because of no alt text",
+                new StatusFilterPredicate(allFilters, HOME).test(noAltText));
+    }
+
+    @Test
+    public void testAltTextFilterPass() {
+        assertTrue("should pass because of alt text",
+                new StatusFilterPredicate(allFilters, HOME).test(withAltText));
     }
 }
