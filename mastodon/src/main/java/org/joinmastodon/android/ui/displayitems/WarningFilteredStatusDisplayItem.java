@@ -51,11 +51,8 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(WarningFilteredStatusDisplayItem item) {
 			filteredItems = item.filteredItems;
-			if(item.applyingFilter instanceof AltTextFilter){
-				text.setText(item.parentFragment.getString(R.string.sk_filtered,item.parentFragment.getString(R.string.sk_no_alt_text)));
-			}else{
-				text.setText(item.parentFragment.getString(R.string.sk_filtered, item.applyingFilter.title));
-			}
+			String title = item.applyingFilter instanceof AltTextFilter ? item.parentFragment.getString(R.string.sk_no_alt_text) : item.applyingFilter.title;
+			text.setText(item.parentFragment.getString(R.string.sk_filtered, title));
 		}
 
         @Override

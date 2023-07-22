@@ -296,10 +296,6 @@ public class SettingsFragment extends MastodonToolbarFragment implements Provide
 			GlobalUserPreferences.showNoAltIndicator=i.checked;
 			GlobalUserPreferences.save();
 		}));
-		items.add(new SwitchItem(R.string.sk_settings_show_posts_without_alt, R.drawable.ic_fluent_eye_tracking_on_24_regular, GlobalUserPreferences.showPostsWithoutAlt, i->{
-			GlobalUserPreferences.showPostsWithoutAlt =i.checked;
-			GlobalUserPreferences.save();
-		}));
 		items.add(new SwitchItem(R.string.sk_settings_collapse_long_posts, R.drawable.ic_fluent_chevron_down_24_regular, GlobalUserPreferences.collapseLongPosts, i->{
 			GlobalUserPreferences.collapseLongPosts=i.checked;
 			GlobalUserPreferences.save();

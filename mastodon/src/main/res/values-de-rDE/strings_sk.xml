@@ -231,7 +231,6 @@
     <string name="sk_no_alt_text">Keine Bildbeschreibung</string>
     <string name="sk_settings_show_alt_indicator">Indikator für Bildbeschreibungen</string>
     <string name="sk_settings_show_no_alt_indicator">Indikator für fehlende Bildbeschreibungen</string>
-    <string name="sk_settings_show_posts_without_alt">Zeige Medienbeiträge ohne Bildbeschreibung</string>
     <string name="sk_updater_enable_pre_releases">Vorab-Versionen einschalten</string>
     <string name="sk_searching">Wird gesucht…</string>
     <string name="sk_save_draft_message">Änderungen speichern oder Entwurf jetzt veröffentlichen\?</string>

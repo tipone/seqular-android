@@ -64,7 +64,7 @@ public class TimeLineFragment extends SettingsBaseFragment{
             GlobalUserPreferences.save();
             needAppRestart=true;
         }));
-        items.add(new SwitchItem(R.string.sk_settings_show_posts_without_alt, R.drawable.ic_fluent_eye_tracking_on_24_regular, GlobalUserPreferences.showPostsWithoutAlt, i->{
+        items.add(new SwitchItem(R.string.mo_settings_show_posts_without_alt, R.string.mo_settings_show_posts_without_alt_summary, R.drawable.ic_fluent_eye_tracking_on_24_regular, GlobalUserPreferences.showPostsWithoutAlt, i->{
             GlobalUserPreferences.showPostsWithoutAlt =i.checked;
             GlobalUserPreferences.save();
             needAppRestart=true;

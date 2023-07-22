@@ -16,6 +16,6 @@ public class AltTextFilter extends Filter {
 
 	@Override
 	public boolean matches(Status status) {
-		return !GlobalUserPreferences.showPostsWithoutAlt && status.getContentStatus().mediaAttachments.stream().map(attachment -> attachment.description).anyMatch(StringUtil::isBlank);
+		return status.getContentStatus().mediaAttachments.stream().map(attachment -> attachment.description).anyMatch(StringUtil::isBlank);
 	}
 }

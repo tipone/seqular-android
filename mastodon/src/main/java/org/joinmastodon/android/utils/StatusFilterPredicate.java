@@ -8,6 +8,7 @@ import static org.joinmastodon.android.model.Filter.FilterContext.NOTIFICATIONS;
 import static org.joinmastodon.android.model.Filter.FilterContext.PUBLIC;
 import static org.joinmastodon.android.model.Filter.FilterContext.THREAD;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.AltTextFilter;
 import org.joinmastodon.android.model.Filter;
@@ -23,8 +24,7 @@ import java.util.stream.Stream;
 public class StatusFilterPredicate implements Predicate<Status> {
 
 	//Hide in timelines and warn in threads
-	private final List<Filter> clientFilters = List.of(	new AltTextFilter(HIDE, HOME, PUBLIC, ACCOUNT),
-														new AltTextFilter(WARN, THREAD, NOTIFICATIONS));
+	private final List<Filter> clientFilters;
 	private final List<Filter> filters;
 	private final Filter.FilterContext context;
 	private final Filter.FilterAction action;
@@ -39,6 +39,8 @@ public class StatusFilterPredicate implements Predicate<Status> {
 		this.filters = filters;
 		this.context = context;
 		this.action = action;
+		this.clientFilters = GlobalUserPreferences.showPostsWithoutAlt ? List.of()
+				: List.of(new AltTextFilter(HIDE, HOME, PUBLIC, ACCOUNT), new AltTextFilter(WARN, THREAD, NOTIFICATIONS));
 	}
 
 	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context) {
@@ -51,9 +53,9 @@ public class StatusFilterPredicate implements Predicate<Status> {
 	 *                status should not be hidden or should not display with warning
 	 */
 	public StatusFilterPredicate(String accountID, Filter.FilterContext context, Filter.FilterAction action) {
-		filters = AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f -> f.context.contains(context)).collect(Collectors.toList());
-		this.context = context;
-		this.action = action;
+		this(AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f -> f.context.contains(context)).collect(Collectors.toList()),
+				context,
+				action);
 	}
 
 	/**
@@ -65,9 +67,9 @@ public class StatusFilterPredicate implements Predicate<Status> {
 
 	/**
 	 * @return whether the status should be displayed without being hidden/warned about.
-	 *         will always return true if the context is null.
-	 *         true = display this status,
-	 *         false = filter this status
+	 * will always return true if the context is null.
+	 * true = display this status,
+	 * false = filter this status
 	 */
 	@Override
 	public boolean test(Status status) {
@@ -91,11 +93,8 @@ public class StatusFilterPredicate implements Predicate<Status> {
 		//Apply client filters if no server filter is triggered
 		if (applyingFilter.isEmpty()) {
 			applyingFilter = clientFilters.stream()
-					// only apply filters for given context
 					.filter(filter -> filter.context.contains(context))
-					// treating filterAction = null (from filters list) as FilterAction.HIDE
 					.filter(filter -> filter.filterAction == null ? action == HIDE : filter.filterAction == action)
-					//client filter has to match the status
 					.filter(filter -> filter.matches(status))
 					.findAny();
 		}
