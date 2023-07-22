@@ -88,8 +88,8 @@
     <string name="mo_setting_haptic_feedback_summary">Vibrate when interacting with posts</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Bookmark or reblog posts from the notification</string>
     <string name="mo_settings_show_posts_without_alt_summary">Posts will be hidden in all timelines, but can be revealed in threads and notifications</string>
+
 <!--  Settings  -->
     <string name="mo_notification_audience_settings">Notification Audience</string>
     <string name="mo_settings_show_posts_without_alt">Show media posts with missing alt text</string>
-
 </resources>
