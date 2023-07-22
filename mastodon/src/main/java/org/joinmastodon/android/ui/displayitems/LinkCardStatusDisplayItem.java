@@ -87,7 +87,10 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 				crossfadeDrawable.setBlurhashDrawable(card.blurhashPlaceholder);
 				crossfadeDrawable.setCrossfadeAlpha(item.status.spoilerRevealed ? 0f : 1f);
 				photo.setImageDrawable(crossfadeDrawable);
+				photo.setVisibility(View.VISIBLE);
 				didClear=false;
+			} else {
+				photo.setVisibility(View.GONE);
 			}
 
 			// if there's no image, we don't want to cover the inset borders
