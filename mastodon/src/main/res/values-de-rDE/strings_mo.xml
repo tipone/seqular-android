@@ -77,5 +77,4 @@
     <string name="mo_setting_play_gif_summary">GIFs in Profilbildern und Emojis automatisch abspielen</string>
     <string name="mo_settings_show_posts_without_alt">Zeige Medienbeiträge ohne Bildbeschreibung</string>
     <string name="mo_settings_show_posts_without_alt_summary">Beiräge werden in allen Timelines ausgeblendet, können aber in Threads und Benachrichtungen ausgeklappt werden</string>
-
 </resources>

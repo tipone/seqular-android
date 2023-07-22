@@ -32,8 +32,8 @@ public class StatusFilterPredicate implements Predicate<Status> {
 
 	/**
 	 * @param context null makes the predicate pass automatically
-	 * @param action  defines what the predicate should check:
-	 *                status should not be hidden or should not display with warning
+	 * @param action defines what the predicate should check:
+	 *               status should not be hidden or should not display with warning
 	 */
 	public StatusFilterPredicate(List<Filter> filters, Filter.FilterContext context, Filter.FilterAction action) {
 		this.filters = filters;
@@ -49,8 +49,8 @@ public class StatusFilterPredicate implements Predicate<Status> {
 
 	/**
 	 * @param context null makes the predicate pass automatically
-	 * @param action  defines what the predicate should check:
-	 *                status should not be hidden or should not display with warning
+	 * @param action defines what the predicate should check:
+	 *               status should not be hidden or should not display with warning
 	 */
 	public StatusFilterPredicate(String accountID, Filter.FilterContext context, Filter.FilterAction action) {
 		this(AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f -> f.context.contains(context)).collect(Collectors.toList()),
@@ -67,9 +67,9 @@ public class StatusFilterPredicate implements Predicate<Status> {
 
 	/**
 	 * @return whether the status should be displayed without being hidden/warned about.
-	 * will always return true if the context is null.
-	 * true = display this status,
-	 * false = filter this status
+	 * 		   will always return true if the context is null.
+	 *         true = display this status,
+	 *         false = filter this status
 	 */
 	@Override
 	public boolean test(Status status) {
