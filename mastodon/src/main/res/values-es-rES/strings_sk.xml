@@ -256,7 +256,7 @@
     <string name="sk_settings_collapse_long_posts">Minimizar publicaciones largas</string>
     <string name="sk_unfinished_attachments">¿Corregir adjuntos\?</string>
     <string name="sk_unfinished_attachments_message">Algunos adjuntos no han terminado de subirse.</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Añadir \"re:\" a Advertencias de Contenido para</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Prefijo CW con \"re:\" al responder</string>
     <string name="sk_spectator_mode">Modo espectador</string>
     <string name="sk_settings_hide_interaction">Ocultar los botones de interacción</string>
     <string name="sk_follow_as">Seguir desde otra cuenta</string>
@@ -273,8 +273,8 @@
     <string name="sk_show_thread">Mostrar hilo</string>
     <string name="sk_compact_reblog_reply_line">Línea compacta compartida/respondida</string>
     <string name="sk_settings_confirm_before_reblog">Confirmación antes de impulsar</string>
-    <string name="sk_reacted_with">reaccionó con %s</string>
-    <string name="sk_reacted">reaccionó</string>
+    <string name="sk_reacted_with">%1$s reaccionó con %2$s</string>
+    <string name="sk_reacted">%s reaccionó</string>
     <string name="sk_content_type">Tipo del contenido</string>
     <string name="sk_content_type_unspecified">Sin especificar</string>
     <string name="sk_content_type_plain">Texto sin formato</string>
@@ -292,18 +292,18 @@
     <string name="sk_external_share_or_open_title">Compartir o abrir con una cuenta</string>
     <string name="sk_open_in_app">Abrir en la app</string>
     <string name="sk_external_share_title">Compartir con una cuenta</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Mostrar Avisos de Contenido para respuestas de</string>
-    <string name="sk_settings_auto_reveal_nobody">nadie</string>
-    <string name="sk_settings_auto_reveal_author">autor</string>
-    <string name="sk_settings_auto_reveal_anyone">todos</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Revelar automáticamente los CW iguales en las respuestas</string>
+    <string name="sk_settings_auto_reveal_nobody">Nunca</string>
+    <string name="sk_settings_auto_reveal_author">Respuestas del mismo autor</string>
+    <string name="sk_settings_auto_reveal_anyone">Respuestas de todos</string>
     <string name="sk_open_in_app_failed">No se pudo abrir en la aplicación</string>
     <string name="sk_no_remote_info_hint">no hay información remota disponible</string>
     <string name="sk_error_loading_profile">No se pudo cargar el perfil a través de %s</string>
     <string name="sk_settings_allow_remote_loading">Cargar la información desde las instancias remotas</string>
     <string name="sk_settings_allow_remote_loading_explanation">Intenta obtener listas más precisas de seguidores, Me gusta y promociones cargando la información desde la instancia de origen.</string>
-    <string name="sk_settings_prefix_replies_always">Todas</string>
-    <string name="sk_settings_prefix_replies_never">Ninguna</string>
-    <string name="sk_settings_prefix_replies_to_others">A otros</string>
+    <string name="sk_settings_prefix_replies_always">Responder a cualquiera</string>
+    <string name="sk_settings_prefix_replies_never">Nunca</string>
+    <string name="sk_settings_prefix_replies_to_others">Solo en respuesta a otros</string>
     <string name="sk_settings_forward_report_default">\"Reenviar denuncia\" activado por defecto</string>
     <string name="sk_list_exclusive_switch">Hacer una lista exclusiva</string>
     <string name="sk_icon_feed">Cronología</string>
@@ -328,4 +328,9 @@
     <string name="sk_edit_timeline_tags_explanation">Por favor, ten en cuenta que es el servidor el gestiona estas operaciones. Puede que no sea factible combinarlas.</string>
     <string name="sk_icon_beaker">Ciencia</string>
     <string name="sk_icon_bed">Cama</string>
+    <string name="sk_gif_badge">GIF</string>
+    <string name="sk_spoiler_show">Mostrar el contenido</string>
+    <string name="sk_pronouns_label">Pronombres</string>
+    <string name="sk_switch_timeline">Cambiar la línea de tiempo</string>
+    <string name="sk_settings_instance">Instancia</string>
 </resources>
