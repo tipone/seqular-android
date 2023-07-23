@@ -85,7 +85,7 @@
     <string name="sk_delete_notification_confirm_action">حذف آگاهی</string>
     <string name="sk_settings_translation_availability_note_available">%s از ترجمه پشتیبانی می‌کند!</string>
     <string name="sk_copy_link_to_post">رونوشت پیوند فرسته</string>
-    <string name="sk_already_favorited">قبلا برگزیده بوده است</string>
+    <string name="sk_already_favorited">قبلا پسندیده بوده است</string>
     <string name="sk_favorite_as">برگزیدن با حساب دیگر</string>
     <string name="sk_unsent_posts">فرسته‌های ارسال نشده</string>
     <string name="sk_reblog_as">تقویت با حساب دیگر</string>
