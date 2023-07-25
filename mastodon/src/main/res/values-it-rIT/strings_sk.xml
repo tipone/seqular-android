@@ -150,7 +150,7 @@
     <string name="sk_changelog">Registro delle modifiche</string>
     <string name="sk_alt_text_missing_title">Testo alternativo mancante</string>
     <string name="sk_publish_anyway">Pubblica comunque</string>
-    <string name="sk_timelines">Timeline</string>
+    <string name="sk_timelines">Linee temporali</string>
     <string name="sk_timeline_posts">Post</string>
     <string name="sk_timelines_add">Aggiungi</string>
     <string name="sk_timeline">Timeline</string>
@@ -218,8 +218,8 @@
     <string name="sk_icon_headphones">Cuffie</string>
     <string name="sk_icon_human">Umano</string>
     <string name="sk_icon_globe">Mappamondo</string>
-    <string name="sk_edit_timeline">Modifica timeline</string>
-    <string name="sk_edit_timelines">Modifica timeline</string>
+    <string name="sk_edit_timeline">Modifica le timeline</string>
+    <string name="sk_edit_timelines">Modifica le timeline</string>
     <string name="sk_notify_update">Modifica un post boostato</string>
     <string name="sk_notification_type_update">Post modificati</string>
     <string name="sk_attach_file">Allega file</string>
@@ -314,8 +314,8 @@
     <string name="sk_edit_timeline_tag_any">…o qualsiasi di questi</string>
     <string name="sk_edit_timeline_tag_all">…e ognuno di questi</string>
     <string name="sk_edit_timeline_tag_none">…ma nessuno di questi</string>
-    <string name="sk_edit_timeline_tag_hint">Inserisci hashtag…</string>
-    <string name="sk_edit_timeline_tags_hint">Inserisci hashtag…</string>
+    <string name="sk_edit_timeline_tag_hint">Inserisci l\'hashtag…</string>
+    <string name="sk_edit_timeline_tags_hint">Inserisci l\'hashtag…</string>
     <string name="sk_edit_timeline_tags_explanation">Nota che il server gestisce queste operazioni. Combinarle poterebbe non essere supportato.</string>
     <string name="sk_hashtag_timeline_local_only_switch">Mostra post solo locali\?</string>
     <string name="sk_add_timeline_tag_error_empty">L\'hashtag non deve essere vuoto</string>
@@ -334,4 +334,5 @@
     <string name="sk_icon_feed">Feed</string>
     <string name="sk_list_exclusive_switch">Crea lista esclusiva</string>
     <string name="sk_list_exclusive_switch_explanation">I membri di una lista esclusiva non appariranno nella tua timeline home - se la tua istanza lo supporta.</string>
+    <string name="sk_search_fediverse">Cerca nel Fediverso</string>
 </resources>
