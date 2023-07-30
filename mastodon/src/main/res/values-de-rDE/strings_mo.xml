@@ -12,7 +12,7 @@
     <string name="mo_personal_note">Notiz zu diesem Profil hinzufügen</string>
     <string name="mo_personal_note_confirm">Änderungen der Notiz bestätigen</string>
     <string name="mo_personal_note_update_failed">Speichern der Notiz ist fehlgeschlagen</string>
-    <string name="mo_settings_contribute">Zu Megalodon beitragen</string>
+    <string name="mo_settings_contribute">Zu Moshidon beitragen</string>
     <string name="mo_update_available">Moshidon %s ist bereit zum herunterladen.</string>
     <string name="mo_update_ready">Moshidon %s ist heruntergeladen und bereit zur Installation.</string>
     <string name="mo_no_image_desc_title">Keine Bildbeschreibung</string>
@@ -75,4 +75,8 @@
     <string name="mo_setting_uniform_summary">App-Symbol für alle Benachrichtigungen verwenden</string>
     <string name="mo_setting_reduced_motion_summary">Animationen für Interaktionen deaktivieren</string>
     <string name="mo_setting_play_gif_summary">GIFs in Profilbildern und Emojis automatisch abspielen</string>
+    <string name="mo_color_palette_black_and_white">Schwarz und Weiß</string>
+    <string name="mo_haptic_feedback">Haptisches Feedback</string>
+    <string name="mo_setting_haptic_feedback_summary">Vibrieren bei Interaktion mit Beiträgen</string>
+    <string name="mo_camera_not_available">Keine Kamera vorhanden!</string>
 </resources>
