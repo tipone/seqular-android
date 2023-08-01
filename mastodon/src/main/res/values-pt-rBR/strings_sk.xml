@@ -266,7 +266,6 @@
     <string name="sk_sign_ups">Usuários se inscrevendo</string>
     <string name="sk_new_reports">Novas relatórios</string>
     <string name="sk_reported">reportado</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers"></string>
     <string name="sk_settings_auto_reveal_nobody">Nunca</string>
     <string name="sk_settings_auto_reveal_author">Respostas do mesmo autor</string>
     <string name="sk_settings_auto_reveal_anyone">Respostas de todos</string>
