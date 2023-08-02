@@ -52,7 +52,7 @@
     <string name="mo_instance_registration_approval">Genehmigung erforderlich</string>
     <string name="mo_instance_info_open_timeline">Lokale Timeline</string>
     <string name="mo_severity_silence">Stummgeschalten</string>
-    <string name="mo_severity_suspend">Gesperrt</string>
+    <string name="mo_severity_suspend">Blockiert</string>
     <string name="mo_instance_admin">Verwaltet von</string>
     <string name="mo_instance_contact">Kontakt</string>
     <string name="mo_instance_users">Benutzer*innen</string>
@@ -77,6 +77,6 @@
     <string name="mo_setting_play_gif_summary">GIFs in Profilbildern und Emojis automatisch abspielen</string>
     <string name="mo_color_palette_black_and_white">Schwarz und Weiß</string>
     <string name="mo_haptic_feedback">Haptisches Feedback</string>
-    <string name="mo_setting_haptic_feedback_summary">Vibrieren bei Interaktion mit Beiträgen</string>
-    <string name="mo_camera_not_available">Keine Kamera vorhanden!</string>
+    <string name="mo_setting_haptic_feedback_summary">Vibrieren beim Interagieren mit Posts</string>
+    <string name="mo_camera_not_available">Keine Kamera verfügbar!</string>
 </resources>
