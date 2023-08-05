@@ -45,7 +45,9 @@ import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.Log;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.SubMenu;
@@ -106,7 +108,6 @@ import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
@@ -118,6 +119,7 @@ import java.lang.reflect.Method;
 import java.net.IDN;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -135,6 +137,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.BiConsumer;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -531,31 +534,70 @@ public class UiUtils {
 							.exec(accountID);
 				});
 	}
+	public static void confirmToggleMuteUser(Context context, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback){
+		View durationView=LayoutInflater.from(context).inflate(R.layout.mute_user_dialog, null);
+		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+		params.setMargins(0, V.dp(-12), 0, 0);
+		durationView.setLayoutParams(params);
+		Button button=durationView.findViewById(R.id.button);
+		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.displayName));
 
-	public static void confirmToggleMuteUser(Activity activity, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback) {
-		showConfirmationAlert(activity, activity.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title),
-				activity.getString(currentlyMuted ? R.string.confirm_unmute : R.string.confirm_mute, account.displayName),
-				activity.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute),
-				currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular,
-				() -> {
-					new SetAccountMuted(account.id, !currentlyMuted)
-							.setCallback(new Callback<>() {
+		AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+
+		PopupMenu popupMenu=new PopupMenu(context, button, Gravity.CENTER_HORIZONTAL);
+		popupMenu.inflate(R.menu.mute_duration);
+		popupMenu.setOnMenuItemClickListener(item->{
+			int id=item.getItemId();
+			if(id==R.id.duration_indefinite)
+				muteDuration.set(Duration.ZERO);
+			else if(id==R.id.duration_minutes_5){
+				muteDuration.set(Duration.ofMinutes(5));
+			}else if(id==R.id.duration_minutes_30){
+				muteDuration.set(Duration.ofMinutes(30));
+			}else if(id==R.id.duration_hours_1){
+				muteDuration.set(Duration.ofHours(1));
+			}else if(id==R.id.duration_hours_6){
+				muteDuration.set(Duration.ofHours(6));
+			}else if(id==R.id.duration_days_1){
+				muteDuration.set(Duration.ofDays(1));
+			}else if(id==R.id.duration_days_3){
+				muteDuration.set(Duration.ofDays(3));
+			}else if(id==R.id.duration_days_7){
+				muteDuration.set(Duration.ofDays(7));
+			}
+			button.setText(item.getTitle());
+			return true;
+		});
+		button.setOnTouchListener(popupMenu.getDragToOpenListener());
+		button.setOnClickListener(v->popupMenu.show());
+		button.setText(popupMenu.getMenu().getItem(0).getTitle());
+
+		new M3AlertDialogBuilder(context)
+				.setTitle(context.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
+				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.displayName) : null)
+				.setView(currentlyMuted ? null : durationView)
+				.setPositiveButton(context.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)->{
+					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())
+							.setCallback(new Callback<>(){
 								@Override
-								public void onSuccess(Relationship result) {
+								public void onSuccess(Relationship result){
 									resultCallback.accept(result);
-									if (!currentlyMuted) {
+									if(!currentlyMuted){
 										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
 									}
 								}
 
 								@Override
-								public void onError(ErrorResponse error) {
-									error.showToast(activity);
+								public void onError(ErrorResponse error){
+									error.showToast(context);
 								}
 							})
-							.wrapProgress(activity, R.string.loading, false)
+							.wrapProgress(context, R.string.loading, false)
 							.exec(accountID);
-				});
+				})
+				.setNegativeButton(R.string.cancel, null)
+				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
+				.show();
 	}
 
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback) {
