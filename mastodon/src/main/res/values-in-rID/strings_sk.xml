@@ -271,7 +271,7 @@
     <string name="sk_settings_reply_visibility_self">Balasan kepada saya</string>
     <string name="sk_notification_action_replied">Mengirim balasan ke %s</string>
     <string name="sk_reply_line_above_avatar">Baris “Membalas ke” di atas avatar</string>
-    <string name="sk_show_thread">Tampilkan utasan</string>
+    <string name="sk_show_thread">Tampilkan utas</string>
     <string name="sk_compact_reblog_reply_line">Baris berbagi/balasan</string>
     <string name="sk_settings_confirm_before_reblog">Konfirmasi sebelum membagikan ulang</string>
     <string name="sk_reacted_with">%1$s bereaksi dengan %2$s</string>
@@ -337,4 +337,28 @@
     <string name="sk_spoiler_show">Tampilkan konten</string>
     <string name="sk_disable_pill_shaped_active_indicator">Nonaktifkan indikator tab berbentuk pil yang aktif</string>
     <string name="sk_search_fediverse">Cari di Fediverse</string>
+    <string name="sk_settings_unifiedpush_no_distributor">Tidak ada distributor yang ditemukan</string>
+    <string name="sk_settings_display_pronouns_in_threads">Tampilkan kata ganti dalam utas</string>
+    <string name="sk_settings_display_pronouns_in_user_listings">Tampilkan kata gamti dalam daftar pengguna</string>
+    <string name="sk_tab_home">Beranda</string>
+    <string name="sk_tab_search">Cari</string>
+    <string name="sk_tab_notifications">Notifikasi</string>
+    <string name="sk_tab_profile">Profil</string>
+    <string name="sk_mute_label">Durasi</string>
+    <string name="sk_duration_indefinite">Selamanya</string>
+    <string name="sk_duration_minutes_5">5 menit</string>
+    <string name="sk_duration_minutes_30">30 menit</string>
+    <string name="sk_duration_hours_1">1 jam</string>
+    <string name="sk_duration_hours_6">6 jam</string>
+    <string name="sk_duration_days_1">1 hari</string>
+    <string name="sk_duration_days_3">3 hari</string>
+    <string name="sk_duration_days_7">7 hari</string>
+    <string name="sk_notification_mention">Anda disebut oleh %s</string>
+    <string name="sk_settings_continues_playback">Hamparan audio</string>
+    <string name="sk_settings_continues_playback_summary">Perbolehkan memainkan media yang sudah diputar untuk terus memutar, menghamparkan pemutaran baru</string>
+    <string name="sk_settings_unifiedpush">Gunakan UnifiedPush</string>
+    <string name="sk_settings_unifiedpush_choose">Pilih distributor</string>
+    <string name="sk_settings_unifiedpush_no_distributor_body">Anda perlu memasang sebuah distributor supaya notifikasi UnifiedPush bekerja. Untuk informasi lanjut, kunjungi https://unifiedpush.org/</string>
+    <string name="sk_settings_display_pronouns_in_timelines">Tampilkan kata ganti dalam lini masa</string>
+    <string name="sk_settings_show_labels_in_navigation_bar">Tampilkan label tab dalam bilah navigasi</string>
 </resources>
