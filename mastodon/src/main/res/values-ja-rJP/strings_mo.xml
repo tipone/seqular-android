@@ -70,4 +70,5 @@
     <string name="mo_instance_info_moderated_servers">モデレートされたサーバー</string>
     <string name="mo_notification_action_replied">%s さんの投稿への返信に成功しました</string>
     <string name="mo_load_remote_followers">リモートプロフィールのフォローとフォロワーを読み込む</string>
+    <string name="mo_color_palette_black_and_white">白黒</string>
 </resources>
