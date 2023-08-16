@@ -69,4 +69,11 @@
     <string name="sk_update_ready">Megalodon %s er lasta ned og kan no installerast.</string>
     <string name="sk_settings_show_federated_timeline">Vis føderert tidsline</string>
     <string name="sk_translate_show_original">Vis original</string>
+    <string name="sk_settings_tabs_disable_swipe">Slå av sveiping mellom faner</string>
+    <string name="sk_settings_profile">Tilpass profil</string>
+    <string name="sk_settings_posting">Publiseringsinnstillingar</string>
+    <string name="sk_settings_filters">Konfigurer filter</string>
+    <string name="sk_settings_auth">Tryggleiksinnstillingar</string>
+    <string name="sk_settings_rules">Reglar</string>
+    <string name="sk_settings_about">Om appen</string>
 </resources>
