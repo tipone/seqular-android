@@ -76,4 +76,7 @@
     <string name="sk_settings_auth">Tryggleiksinnstillingar</string>
     <string name="sk_settings_rules">Reglar</string>
     <string name="sk_settings_about">Om appen</string>
+    <string name="sk_delete_notification_confirm_action">Slett varsel</string>
+    <string name="sk_settings_donate">Doner</string>
+    <string name="sk_delete_notification">Slett varsel</string>
 </resources>
