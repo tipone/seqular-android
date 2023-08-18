@@ -38,6 +38,9 @@ public class AccountLocalPreferences{
 	public String timelineReplyVisibility; // akkoma-only
 	public boolean keepOnlyLatestNotification;
 
+	public boolean emojiReactionsEnabled;
+	public boolean showEmojiReactionsInLists;
+
 	private final static Type recentLanguagesType = new TypeToken<ArrayList<String>>() {}.getType();
 	private final static Type timelinesType = new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
 
@@ -62,6 +65,8 @@ public class AccountLocalPreferences{
 		publishButtonText=prefs.getString("publishButtonText", null);
 		timelineReplyVisibility=prefs.getString("timelineReplyVisibility", null);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
+		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
+		showEmojiReactionsInLists=prefs.getBoolean("showEmojiReactionsInLists", false);
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -93,6 +98,8 @@ public class AccountLocalPreferences{
 				.putString("publishButtonText", publishButtonText)
 				.putString("timelineReplyVisibility", timelineReplyVisibility)
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
+				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
+				.putBoolean("showEmojiReactionsInLists", showEmojiReactionsInLists)
 				.apply();
 	}
 }

@@ -57,7 +57,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, null, StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, null, StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS);
 		int idx=data.indexOf(s);
 		if(idx>=0){
 			String date=UiUtils.DATE_TIME_FORMATTER.format(s.createdAt.atZone(ZoneId.systemDefault()));
@@ -143,9 +143,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				}
 			}
 			String sep = getString(R.string.sk_separator);
-			ReblogOrReplyLineStatusDisplayItem line=new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0, null, null);
-			line.needBottomPadding=true;
-			items.add(0, line);
+			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0, null, null));
 		}
 		return items;
 	}

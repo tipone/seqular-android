@@ -64,6 +64,7 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_MEDIA_FORCE_HIDDEN=1 << 3;
 	public static final int FLAG_NO_HEADER=1 << 4;
 	public static final int FLAG_NO_TRANSLATE=1 << 5;
+	public static final int FLAG_NO_EMOJI_REACTIONS=1 << 6;
 
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
@@ -102,6 +103,7 @@ public abstract class StatusDisplayItem{
 			case POLL_OPTION -> new PollOptionStatusDisplayItem.Holder(activity, parent);
 			case POLL_FOOTER -> new PollFooterStatusDisplayItem.Holder(activity, parent);
 			case CARD -> new LinkCardStatusDisplayItem.Holder(activity, parent);
+			case EMOJI_REACTIONS -> new EmojiReactionsStatusDisplayItem.Holder(activity, parent);
 			case FOOTER -> new FooterStatusDisplayItem.Holder(activity, parent);
 			case ACCOUNT_CARD -> new AccountCardStatusDisplayItem.Holder(activity, parent);
 			case ACCOUNT -> new AccountStatusDisplayItem.Holder(new AccountViewHolder(parentFragment, parent, null));
@@ -118,7 +120,7 @@ public abstract class StatusDisplayItem{
 		};
 	}
 
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean addFooter, boolean disableTranslate, FilterContext filterContext) {
+	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean showReactions, boolean addFooter, boolean disableTranslate, FilterContext filterContext) {
 		int flags=0;
 		if(inset)
 			flags|=FLAG_INSET;
@@ -126,6 +128,8 @@ public abstract class StatusDisplayItem{
 			flags|=FLAG_NO_FOOTER;
 		if (disableTranslate)
 			flags|=FLAG_NO_TRANSLATE;
+		if (!showReactions)
+			flags|=FLAG_NO_EMOJI_REACTIONS;
 		return buildItems(fragment, status, accountID, parentObject, knownAccounts, filterContext, flags);
 	}
 
@@ -204,7 +208,7 @@ public abstract class StatusDisplayItem{
 					items.add(replyLine);
 				}
 			}
-			
+
 			if((flags & FLAG_CHECKABLE)!=0)
 				items.add(header=new CheckableHeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null));
 			else
@@ -286,6 +290,9 @@ public abstract class StatusDisplayItem{
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);
 		}
+		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && AccountSessionManager.get(accountID).getLocalPreferences().emojiReactionsEnabled){
+			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent));
+		}
 		if((flags & FLAG_NO_FOOTER)==0){
 			FooterStatusDisplayItem footer=new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID);
 			footer.hideCounts=hideCounts;
@@ -340,6 +347,7 @@ public abstract class StatusDisplayItem{
 		POLL_OPTION,
 		POLL_FOOTER,
 		CARD,
+		EMOJI_REACTIONS,
 		FOOTER,
 		ACCOUNT_CARD,
 		ACCOUNT,

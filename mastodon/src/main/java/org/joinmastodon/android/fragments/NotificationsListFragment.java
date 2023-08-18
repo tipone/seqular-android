@@ -12,8 +12,8 @@ import android.view.View;
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
@@ -22,6 +22,7 @@ import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.NotificationHeaderStatusDisplayItem;
@@ -99,7 +100,11 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			return items;
 		}
 		if(n.status!=null){
-			int flags=titleItem==null ? 0 : (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET); // | StatusDisplayItem.FLAG_NO_HEADER);
+			int flags=titleItem==null ? 0 : (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS); // | StatusDisplayItem.FLAG_NO_HEADER);
+			if (GlobalUserPreferences.spectatorMode)
+				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+			if (!getLocalPrefs().showEmojiReactionsInLists)
+				flags |= StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS;
 			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, null, flags);
 			if(titleItem!=null)
 				items.add(0, titleItem);
@@ -254,6 +259,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						footer.rebind();
 					}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
 						footer.rebind();
+					}else if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && ev.viewHolder!=holder){
+						reactions.rebind();
 					}
 				}
 			}

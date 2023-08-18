@@ -16,6 +16,7 @@ import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
@@ -33,9 +34,13 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		boolean addFooter = !GlobalUserPreferences.spectatorMode ||
-				(this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id));
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), addFooter ? 0 : StatusDisplayItem.FLAG_NO_FOOTER);
+		boolean isMainThreadStatus = this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id);
+		int flags = 0;
+		if (GlobalUserPreferences.spectatorMode)
+			flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+		if (!getLocalPrefs().showEmojiReactionsInLists)
+			flags |= StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS;
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), isMainThreadStatus ? 0 : flags);
 	}
 
 	protected abstract FilterContext getFilterContext();
@@ -218,6 +223,8 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 							footer.rebind();
 						}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==s.getContentStatus()){
 							footer.rebind();
+						}else if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && ev.viewHolder!=holder){
+							reactions.rebind();
 						}
 					}
 				}

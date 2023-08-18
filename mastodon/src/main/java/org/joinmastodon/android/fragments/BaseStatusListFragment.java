@@ -31,6 +31,7 @@ import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
@@ -607,6 +608,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if (header != null) header.rebind();
 	}
 
+	public void updateEmojiReactions(Status status, String itemID){
+		EmojiReactionsStatusDisplayItem.Holder reactions=findHolderOfType(itemID, EmojiReactionsStatusDisplayItem.Holder.class);
+		if(reactions != null){
+			reactions.getItem().status.reactions.clear();
+			reactions.getItem().status.reactions.addAll(status.reactions);
+			reactions.rebind();
+		}
+	}
+
 	public void onGapClick(GapStatusDisplayItem.Holder item){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
@@ -780,6 +790,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(more && d.size() < itemsPerPage){
 			preloader.onScrolledToLastItem();
 		}
+	}
+
+	public void scrollBy(int x, int y) {
+		list.scrollBy(x, y);
 	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
