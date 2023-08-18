@@ -360,4 +360,18 @@
     <string name="sk_tab_notifications">Сповіщення</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Показувати ярлики вкладок на панелі навігації</string>
     <string name="sk_settings_display_pronouns_in_threads">Показувати займенники у гілках</string>
+    <string name="sk_settings_emoji_reactions_in_lists">Показувати реакції емоджі у стрічках</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Один користувач зреагував %2$s</item>
+        <item quantity="few">%1$,d користувачі зреагували %2$s</item>
+        <item quantity="many">%1$,d користувачів зреагували %2$s</item>
+        <item quantity="other">%1$,d користувачів зреагували %2$s</item>
+    </plurals>
+    <string name="sk_button_react">Реагуйте за допомогою емоджі</string>
+    <string name="sk_again_for_system_keyboard">Торкніться ще раз, щоб відкрити системну клавіатуру</string>
+    <string name="sk_settings_emoji_reactions">Увімкнути реакції з емоджі</string>
+    <string name="sk_settings_emoji_reactions_explanation">Показує реакції емоджі на дописи та дає змогу взаємодіяти з ними. Деякі модифіковані версії Mastodon підтримують цю функцію, але Mastodon не підтримує.</string>
+    <string name="sk_enter_emoji_toast">Вам потрібно ввести емоджі</string>
+    <string name="sk_enter_emoji_hint">Введіть, щоб відреагувати з емоджі</string>
+    <string name="sk_settings_emoji_reactions_in_lists_explanation">Чи відображати реакції емоджі у стрічках. Якщо цю опцію вимкнено, реакції емоджі показуватимуться лише під час перегляду гілки.</string>
 </resources>
