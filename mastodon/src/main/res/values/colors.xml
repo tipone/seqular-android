@@ -11,7 +11,7 @@
 	<color name="gray_600">#403b45</color>
 	<color name="gray_500">#5b565f</color>
 
-	<color name="gray_400t">#4d9998b3</color>
+<!--	<color name="gray_400t">#4d9998b3</color>-->
 	<color name="gray_400">#9998b3</color>
 	<color name="gray_300">#d1d1de</color>
 	<color name="gray_200">#e6e6ed</color>
@@ -243,7 +243,7 @@
 	<color name="brownish_gray_600">#3b373a</color>
 	<color name="brownish_gray_500">#625d60</color>
 
-	<color name="green_gray_400t">#4Da2b095</color>
+<!--	<color name="green_gray_400t">#4Da2b095</color>-->
 	<color name="green_gray_400">#a2b095</color>
 	<color name="green_gray_300">#bdcbaf</color>
 	<color name="green_gray_200">#d9e7ca</color>
@@ -264,7 +264,7 @@
 	<color name="blue_primary_800">#003354</color>
 	<color name="blue_primary_900">#001d33</color>
 
-	<color name="blue_gray_400t">#4d9998b3</color>
+<!--	<color name="blue_gray_400t">#4d9998b3</color>-->
 	<color name="blue_gray_400">#9eadbe</color>
 	<color name="blue_gray_300">#b9c8da</color>
 	<color name="blue_gray_200">#d5e4f7</color>
@@ -285,7 +285,7 @@
 	<color name="brown_primary_800">#482900</color>
 	<color name="brown_primary_900">#2b1700</color>
 
-	<color name="brown_gray_400t">#4dc3a689</color>
+<!--	<color name="brown_gray_400t">#4dc3a689</color>-->
 	<color name="brown_gray_400">#c3a689</color>
 	<color name="brown_gray_300">#e0c1a3</color>
 	<color name="brown_gray_200">#feddbd</color>
@@ -306,7 +306,7 @@
 	<color name="yellow_primary_800">#3c2f00</color>
 	<color name="yellow_primary_900">#231b00</color>
 
-	<color name="yellow_gray_400t">#4db8aa87</color>
+<!--	<color name="yellow_gray_400t">#4db8aa87</color>-->
 	<color name="yellow_gray_400">#b8aa87</color>
 	<color name="yellow_gray_300">#d4c5a1</color>
 	<color name="yellow_gray_200">#f1e1bb</color>
@@ -327,7 +327,7 @@
 	<color name="red_primary_800">#912018</color>
 	<color name="red_primary_900">#7A271A</color>
 
-	<color name="red_gray_400t">#4dd69f84</color>
+<!--	<color name="red_gray_400t">#4dd69f84</color>-->
 	<color name="red_gray_400">#d69f84</color>
 	<color name="red_gray_300">#f4ba9e</color>
 	<color name="red_gray_200">#ffdbcb</color>
@@ -349,7 +349,7 @@
 	<color name="nord_primary_900">#2e3440</color>
 
 	<color name="nord_gray_900">#3B4252</color>
-	<color name="nord_gray_800t">#cc2D343F</color>
+<!--	<color name="nord_gray_800t">#cc2D343F</color>-->
 	<color name="nord_gray_800">#2D343F</color>
 	<color name="nord_gray_700">#3A4250</color>
 	<color name="nord_gray_600">#404C5C</color>
@@ -358,7 +358,7 @@
 	<color name="nord_favorite_selected">#ebcb8b</color>
 	<color name="nord_bookmark_selected">#a3be8c</color>
 
-	<color name="nord_gray_400t">#4d8C96B4</color>
+<!--	<color name="nord_gray_400t">#4d8C96B4</color>-->
 	<color name="nord_gray_400">#8C96B4</color>
 	<color name="nord_gray_300">#c5c6d0</color>
 	<color name="nord_gray_200">#D5DCE6</color>
@@ -385,7 +385,7 @@
 	<color name="white_gray_200">#CCCCCC</color>
 	<color name="white_gray_300">#BFBFBF</color>
 	<color name="white_gray_400">#B3B3B3</color>
-	<color name="white_gray_400t">#4dB3B3B3</color>
+<!--	<color name="white_gray_400t">#4dB3B3B3</color>-->
 	<color name="white_gray_500">#595959</color>
 	<color name="white_gray_600">#404040</color>
 	<color name="white_gray_700">#262626</color>

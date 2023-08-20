@@ -98,6 +98,9 @@
 	<attr name="colorNeutral800" format="color" />
 	<attr name="colorNeutral900" format="color" />
 
+	<attr name="bookmark_selected" format="color" />
+	<attr name="favorite_selected" format="color" />
+
 	<declare-styleable name="MaxWidthFrameLayout">
 		<attr name="android:maxWidth" format="dimension"/>
 		<attr name="defaultWidth" format="dimension" />
