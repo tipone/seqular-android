@@ -3,6 +3,12 @@ buildscript {
 	repositories {
 		google()
 		mavenCentral()
+		maven {
+			url "https://www.jitpack.io"
+			content {
+				includeModule 'com.github.UnifiedPush', 'android-connector'
+			}
+		}
 		mavenLocal()
 	}
 	dependencies {
