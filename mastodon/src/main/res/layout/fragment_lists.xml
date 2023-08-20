@@ -14,5 +14,5 @@
         app:tabIndicatorAnimationMode="elastic"
         app:tabIndicatorColor="?android:textColorPrimary"
         app:tabMode="fixed"
-        android:background="@drawable/bg_discover_tabs"/>
+        android:background="@drawable/bg_note_edit"/>
 </LinearLayout>

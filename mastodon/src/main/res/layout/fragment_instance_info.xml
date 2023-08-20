@@ -19,7 +19,6 @@
                 android:id="@+id/cover"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
-                android:background="?profileHeaderBackground"
                 android:contentDescription="@string/profile_header"
                 android:scaleType="centerCrop" />
 
@@ -65,7 +64,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginHorizontal="16dp"
-                    android:background="@drawable/bg_text_button"
                     android:importantForAccessibility="no"
                     android:paddingHorizontal="8dp"
                     android:text="@string/sk_expand"
@@ -82,14 +80,13 @@
                 android:layout_height="0.5dp"
                 android:layout_below="@id/text_wrap"
                 android:layout_marginTop="16dp"
-                android:background="?attr/colorPollVoted" />
+				/>
 
             <me.grishka.appkit.views.UsableRecyclerView
                 android:id="@+id/metadata"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/border_top"
-                android:background="?colorBackgroundLightest"
                 android:paddingTop="4dp" />
         </RelativeLayout>
     </ScrollView>

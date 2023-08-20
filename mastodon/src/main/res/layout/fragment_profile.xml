@@ -200,14 +200,6 @@
 					android:visibility="gone"
 					app:labelTextColor="@color/m3_outlined_text_field_label">
 
-					<EditText
-						android:id="@+id/name_edit"
-						android:layout_width="match_parent"
-						android:layout_height="56dp"
-						android:layout_marginStart="16dp"
-						android:layout_marginTop="8dp"
-						android:layout_marginEnd="16dp"
-						android:background="@null"
 					<FrameLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -242,7 +234,7 @@
 							android:layout_marginEnd="8dp"
 							android:paddingHorizontal="8dp"
 							android:visibility="invisible"
-							android:backgroundTint="?colorBackgroundLightest"
+							android:backgroundTint="?colorM3SurfaceVariant"
 							android:layout_gravity="right|center_vertical"
 							android:tooltipText="@string/mo_personal_note_confirm"
 							android:contentDescription="@string/mo_personal_note_confirm"
@@ -264,21 +256,17 @@
 					<EditText
 						android:id="@+id/name_edit"
 						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:layout_below="@id/avatar_border"
-						android:layout_alignParentStart="true"
-						android:layout_marginHorizontal="16dp"
+						android:layout_height="56dp"
+						android:layout_marginStart="16dp"
 						android:layout_marginTop="8dp"
-						android:textAppearance="@style/m3_body_large"
-						android:textSize="16sp"
-						android:background="@drawable/edit_text_border"
-						android:inputType="textPersonName|textCapWords"
-						android:visibility="gone"
+						android:layout_marginEnd="16dp"
+						android:background="@null"
 						android:elevation="0dp"
 						android:hint="@string/display_name"
 						android:inputType="textPersonName|textCapWords"
 						android:padding="16dp"
-						tools:text="Eugen" />
+						tools:text="Eugen"
+						android:autofillHints="" />
 				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 
 				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
