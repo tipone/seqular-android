@@ -1,6 +1,5 @@
 package org.joinmastodon.android.fragments;
 
-import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -8,6 +7,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
@@ -15,8 +15,9 @@ import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
-import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
@@ -31,16 +32,20 @@ import java.util.stream.Stream;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 
-public abstract class StatusListFragment extends BaseStatusListFragment<Status> implements DomainDisplay{
+public abstract class StatusListFragment extends BaseStatusListFragment<Status> {
 	protected EventListener eventListener=new EventListener();
 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		boolean addFooter = !GlobalUserPreferences.spectatorMode ||
-				(this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id));
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, false, addFooter, null, getFilterContext());
+		boolean isMainThreadStatus = this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id);
+		int flags = 0;
+		if (GlobalUserPreferences.spectatorMode)
+			flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+		if (!getLocalPrefs().showEmojiReactionsInLists)
+			flags |= StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS;
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), isMainThreadStatus ? 0 : flags);
 	}
 
-	protected abstract Filter.FilterContext getFilterContext();
+	protected abstract FilterContext getFilterContext();
 
 	@Override
 	protected void addAccountToKnown(Status s){
@@ -79,7 +84,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			});
 			return;
 		}
-		status.filterRevealed = true;
+		status.filterRevealed=true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putParcelable("status", Parcels.wrap(status.clone()));
@@ -88,26 +93,26 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		Nav.go(getActivity(), ThreadFragment.class, args);
 	}
 
-	protected void onStatusCreated(StatusCreatedEvent ev){}
+	protected void onStatusCreated(Status status){}
 
-	protected void onStatusUpdated(StatusUpdatedEvent ev){
+	protected void onStatusUpdated(Status status){
 		ArrayList<Status> statusesForDisplayItems=new ArrayList<>();
 		for(int i=0;i<data.size();i++){
 			Status s=data.get(i);
-			if(s.reblog!=null && s.reblog.id.equals(ev.status.id)){
-				s.reblog=ev.status;
+			if(s.reblog!=null && s.reblog.id.equals(status.id)){
+				s.reblog=status.clone();
 				statusesForDisplayItems.add(s);
-			}else if(s.id.equals(ev.status.id)){
-				data.set(i, ev.status);
-				statusesForDisplayItems.add(ev.status);
+			}else if(s.id.equals(status.id)){
+				data.set(i, status);
+				statusesForDisplayItems.add(status);
 			}
 		}
 		for(int i=0;i<preloadedData.size();i++){
 			Status s=preloadedData.get(i);
-			if(s.reblog!=null && s.reblog.id.equals(ev.status.id)){
-				s.reblog=ev.status;
-			}else if(s.id.equals(ev.status.id)){
-				preloadedData.set(i, ev.status);
+			if(s.reblog!=null && s.reblog.id.equals(status.id)){
+				s.reblog=status.clone();
+			}else if(s.id.equals(status.id)){
+				preloadedData.set(i, status);
 			}
 		}
 
@@ -225,12 +230,15 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			for(Status s:data){
 				if(s.getContentStatus().id.equals(ev.id)){
 					s.getContentStatus().update(ev);
+					AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
 					for(int i=0;i<list.getChildCount();i++){
 						RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
 						if(holder instanceof FooterStatusDisplayItem.Holder footer && footer.getItem().status==s.getContentStatus()){
 							footer.rebind();
 						}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==s.getContentStatus()){
 							footer.rebind();
+						}else if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && ev.viewHolder!=holder){
+							reactions.rebind();
 						}
 					}
 				}
@@ -238,6 +246,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			for(Status s:preloadedData){
 				if(s.getContentStatus().id.equals(ev.id)){
 					s.getContentStatus().update(ev);
+					AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
 				}
 			}
 		}
@@ -256,12 +265,12 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		public void onStatusCreated(StatusCreatedEvent ev){
 			if(!ev.accountID.equals(accountID))
 				return;
-			StatusListFragment.this.onStatusCreated(ev);
+			StatusListFragment.this.onStatusCreated(ev.status.clone());
 		}
 
 		@Subscribe
 		public void onStatusUpdated(StatusUpdatedEvent ev){
-			StatusListFragment.this.onStatusUpdated(ev);
+			StatusListFragment.this.onStatusUpdated(ev.status);
 		}
 
 		@Subscribe
@@ -271,7 +280,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			for(Status status:data){
 				Status contentStatus=status.getContentStatus();
 				if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
-					updatePoll(status.id, status, ev.poll);
+					updatePoll(status.id, contentStatus, ev.poll);
 				}
 			}
 		}

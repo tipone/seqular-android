@@ -3,6 +3,7 @@ package org.joinmastodon.android.model;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -13,10 +14,6 @@ import org.joinmastodon.android.ui.utils.BlurHashDrawable;
 import org.parceler.Parcel;
 import org.parceler.ParcelConstructor;
 import org.parceler.ParcelProperty;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 @Parcel
 public class Attachment extends BaseModel{
@@ -46,39 +43,29 @@ public class Attachment extends BaseModel{
 				blurhashPlaceholder=new BlurHashDrawable(placeholder, getWidth(), getHeight());
 		}
 	}
-	public static List<Attachment> createFakeAttachments(String url, Drawable drawable){
-		Attachment att=new Attachment();
-		att.type=Attachment.Type.IMAGE;
-		att.url=url;
-		att.meta=new Attachment.Metadata();
-		att.meta.width=drawable.getIntrinsicWidth();
-		att.meta.height=drawable.getIntrinsicHeight();
-		return Collections.singletonList(att);
-	}
-
 
 	public int getWidth(){
 		if(meta==null)
-			return 1920;
+			return 0;
 		if(meta.width>0)
 			return meta.width;
 		if(meta.original!=null && meta.original.width>0)
 			return meta.original.width;
 		if(meta.small!=null && meta.small.width>0)
 			return meta.small.width;
-		return 1920;
+		return 0;
 	}
 
 	public int getHeight(){
 		if(meta==null)
-			return 1080;
+			return 0;
 		if(meta.height>0)
 			return meta.height;
 		if(meta.original!=null && meta.original.height>0)
 			return meta.original.height;
 		if(meta.small!=null && meta.small.height>0)
 			return meta.small.height;
-		return 1080;
+		return 0;
 	}
 
 	public double getDuration(){
@@ -89,6 +76,13 @@ public class Attachment extends BaseModel{
 		if(meta.original!=null && meta.original.duration>0)
 			return meta.original.duration;
 		return 0;
+	}
+
+	public boolean hasSound() {
+		MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+		retriever.setDataSource(url);
+		String hasAudioStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_AUDIO);
+		return "yes".equals(hasAudioStr);
 	}
 
 	@Override
@@ -147,6 +141,7 @@ public class Attachment extends BaseModel{
 		public PointF focus;
 		public SizeMetadata original;
 		public SizeMetadata small;
+		public ColorsMetadata colors;
 
 		@Override
 		public String toString(){
@@ -158,6 +153,7 @@ public class Attachment extends BaseModel{
 					", focus="+focus+
 					", original="+original+
 					", small="+small+
+					", colors="+colors+
 					'}';
 		}
 	}
@@ -178,6 +174,22 @@ public class Attachment extends BaseModel{
 					", aspect="+aspect+
 					", duration="+duration+
 					", bitrate="+bitrate+
+					'}';
+		}
+	}
+
+	@Parcel
+	public static class ColorsMetadata{
+		public String background;
+		public String foreground;
+		public String accent;
+
+		@Override
+		public String toString(){
+			return "ColorsMetadata{"+
+					"background='"+background+'\''+
+					", foreground='"+foreground+'\''+
+					", accent='"+accent+'\''+
 					'}';
 		}
 	}

@@ -5,6 +5,10 @@ import static org.joinmastodon.android.api.MastodonAPIController.gsonWithoutDese
 
 import androidx.annotation.Nullable;
 
+import android.text.TextUtils;
+
+import androidx.annotation.NonNull;
+
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -21,6 +25,7 @@ import org.parceler.Parcel;
 
 import java.lang.reflect.Type;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -54,8 +59,6 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public long favouritesCount;
 	public long repliesCount;
 	public Instant editedAt;
-	// might not be provided (by older mastodon servers),
-	// so megalodon will use the locally cached filters if filtered == null
 	public List<FilterResult> filtered;
 
 	public String url;
@@ -78,19 +81,22 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 
 	public Status quote; // can be boolean in calckey
 
+	public List<EmojiReaction> reactions;
+	protected List<EmojiReaction> emojiReactions; // akkoma
+
 	public transient boolean filterRevealed;
 	public transient boolean spoilerRevealed;
+	public transient boolean sensitiveRevealed;
 	public transient boolean textExpanded, textExpandable;
 	public transient boolean hasGapAfter;
 	public transient TranslatedStatus translation;
 	public transient boolean translationShown;
 	private transient String strippedText;
 
+	public Status(){}
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
-		if(spoilerText!=null && !spoilerText.isEmpty() && !sensitive)
-			sensitive=true;
-
 		super.postprocess();
 		if(application!=null)
 			application.postprocess();
@@ -111,11 +117,15 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		if(reblog!=null)
 			reblog.postprocess();
 		if(filtered!=null)
-			for(FilterResult fr : filtered)
+			for(FilterResult fr:filtered)
 				fr.postprocess();
 
-		spoilerRevealed=GlobalUserPreferences.alwaysExpandContentWarnings || !sensitive;
-		if (visibility.equals(StatusPrivacy.LOCAL)) localOnly = true;
+		if(!TextUtils.isEmpty(spoilerText)) sensitive=true;
+		spoilerRevealed=TextUtils.isEmpty(spoilerText);
+		sensitiveRevealed=!sensitive;
+		if(visibility.equals(StatusPrivacy.LOCAL)) localOnly=true;
+		if(emojiReactions!=null) reactions=emojiReactions;
+		if(reactions==null) reactions=new ArrayList<>();
 	}
 
 	@Override
@@ -137,6 +147,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 				", reblogsCount="+reblogsCount+
 				", favouritesCount="+favouritesCount+
 				", repliesCount="+repliesCount+
+				", editedAt="+editedAt+
 				", url='"+url+'\''+
 				", inReplyToId='"+inReplyToId+'\''+
 				", inReplyToAccountId='"+inReplyToAccountId+'\''+
@@ -145,11 +156,15 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 				", card="+card+
 				", language='"+language+'\''+
 				", text='"+text+'\''+
+				", filtered="+filtered+
 				", favourited="+favourited+
 				", reblogged="+reblogged+
 				", muted="+muted+
 				", bookmarked="+bookmarked+
 				", pinned="+pinned+
+				", spoilerRevealed="+spoilerRevealed+
+				", hasGapAfter="+hasGapAfter+
+				", strippedText='"+strippedText+'\''+
 				'}';
 	}
 
@@ -166,6 +181,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		reblogged=ev.reblogged;
 		bookmarked=ev.bookmarked;
 		pinned=ev.pinned;
+		reactions.clear();
+		reactions.addAll(ev.reactions);
 	}
 
 	public Status getContentStatus(){
@@ -176,6 +193,12 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		if(strippedText==null)
 			strippedText=HtmlParser.strip(content);
 		return strippedText;
+	}
+
+	@NonNull
+	@Override
+	public Status clone(){
+		return (Status) super.clone();
 	}
 
 	public boolean isReblogPermitted(String accountID){
@@ -195,6 +218,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		s.mentions = List.of();
 		s.tags = List.of();
 		s.emojis = List.of();
+		s.filtered = List.of();
 		return s;
 	}
 

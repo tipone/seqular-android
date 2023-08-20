@@ -6,7 +6,7 @@ import org.joinmastodon.android.model.Relationship;
 public class SetAccountMuted extends MastodonAPIRequest<Relationship>{
 	public SetAccountMuted(String id, boolean muted, long duration){
 		super(HttpMethod.POST, "/accounts/"+id+"/"+(muted ? "mute" : "unmute"), Relationship.class);
-		setRequestBody(muted ? new Request(duration): new Object());
+		setRequestBody(new Request(duration));
 	}
 
 	private static class Request{
