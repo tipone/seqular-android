@@ -291,7 +291,8 @@ public abstract class StatusDisplayItem{
 			items.addAll(contentItems);
 		}
 		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && AccountSessionManager.get(accountID).getLocalPreferences().emojiReactionsEnabled){
-			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent));
+			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
+			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus));
 		}
 		if((flags & FLAG_NO_FOOTER)==0){
 			FooterStatusDisplayItem footer=new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID);

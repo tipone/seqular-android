@@ -21,6 +21,7 @@ import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
@@ -199,7 +200,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			if(item.parentFragment.getDisplayItems().size() > nextPos){
 				if(item.parentFragment.getDisplayItems().get(nextPos) instanceof FooterStatusDisplayItem) bottomPadding=V.dp(6);
 				if(item.parentFragment.getDisplayItems().get(nextPos) instanceof EmojiReactionsStatusDisplayItem){
-					bottomPadding=item.status.reactions.isEmpty() ? V.dp(6) : 0;
+					boolean reactionsHidden=item.status.reactions.isEmpty() && !(item.parentFragment instanceof ThreadFragment);
+					bottomPadding=reactionsHidden ? V.dp(6) : 0;
 				}
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
