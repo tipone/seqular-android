@@ -361,4 +361,15 @@
     <string name="sk_settings_unifiedpush_no_distributor_body">Anda perlu memasang sebuah distributor supaya notifikasi UnifiedPush bekerja. Untuk informasi lanjut, kunjungi https://unifiedpush.org/</string>
     <string name="sk_settings_display_pronouns_in_timelines">Tampilkan kata ganti dalam lini masa</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Tampilkan label tab dalam bilah navigasi</string>
+    <string name="sk_settings_emoji_reactions_in_lists">Tampilkan reaksi emoji di lini masa</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="other">%1$,d pengguna bereaksi dengan %2$s</item>
+    </plurals>
+    <string name="sk_enter_emoji_toast">Anda perlu mengetik sebuah emoji</string>
+    <string name="sk_enter_emoji_hint">Ketik untuk bereaksi dengan sebuah emoji</string>
+    <string name="sk_settings_emoji_reactions">Aktifkan reaksi emoji</string>
+    <string name="sk_settings_emoji_reactions_explanation">Menampilkan reaksi emoji di kiriman dan memungkinkan Anda untuk berinteraksi. Beberapa versi Mastodon yang dimodifikasi mendukung ini, tetapi Mastodon sendiri tidak mendukungnya.</string>
+    <string name="sk_settings_emoji_reactions_in_lists_explanation">"Menentukan apakah reaksi emoji ditampilkan  di lini masa. Jika opsi ini mati, reaksi emoji hanya akan ditampilkan ketika melihat sebuah utas."</string>
+    <string name="sk_button_react">Bereaksi dengan emoji</string>
+    <string name="sk_again_for_system_keyboard">Ketuk lagi untuk Papan Ketik Sistem</string>
 </resources>
