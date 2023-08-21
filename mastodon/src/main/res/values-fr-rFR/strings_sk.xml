@@ -361,4 +361,17 @@
     <string name="sk_settings_unifiedpush_no_distributor_body">Vous devez installer un distributeur pour que les notifications UnifiedPush fonctionnent. Pour plus d\'informations, visitez https://unifiedpush.org/</string>
     <string name="sk_settings_display_pronouns_in_timelines">Afficher les pronoms dans les timelines</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Afficher les étiquettes des onglets dans la barre de navigation</string>
+    <string name="sk_settings_emoji_reactions">Activer les réactions emoji</string>
+    <string name="sk_settings_emoji_reactions_explanation">Affiche les réactions emoji aux messages et vous permet d\'interagir avec elles. Certaines versions modifiées de Mastodon le supportent, mais pas Mastodon.</string>
+    <string name="sk_settings_emoji_reactions_in_lists">Afficher les réactions emoji dans les timelines</string>
+    <string name="sk_settings_emoji_reactions_in_lists_explanation">Si les réactions emoji doivent être affichées sur les timelines. Si cette option est désactivée, les réactions emoji ne seront affichées que lors de l\'affichage d\'un fil de discussion.</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Un utilisateur a réagi avec %2$s</item>
+        <item quantity="many">%1$,d utilisateurs ont réagi avec %2$s</item>
+        <item quantity="other">%1$,d utilisateurs ont réagi avec %2$s</item>
+    </plurals>
+    <string name="sk_button_react">Réagissez avec des emojis</string>
+    <string name="sk_again_for_system_keyboard">Appuyez à nouveau pour le clavier système</string>
+    <string name="sk_enter_emoji_hint">Tapez pour réagir avec un emoji</string>
+    <string name="sk_enter_emoji_toast">Vous devez saisir un emoji</string>
 </resources>

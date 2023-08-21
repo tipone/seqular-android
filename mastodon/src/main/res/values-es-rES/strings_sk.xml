@@ -360,4 +360,17 @@
     <string name="sk_settings_display_pronouns_in_timelines">Mostrar pronombres en líneas de tiempo</string>
     <string name="sk_settings_display_pronouns_in_threads">Mostrar pronombres en los hilos</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Mostrar las etiquetas de las pestañas en la barra de navegación</string>
+    <string name="sk_settings_emoji_reactions_in_lists">Mostrar las reacciones con los emoticonos en las líneas de tiempo</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Un usuario reaccionó con %2$s</item>
+        <item quantity="many">%1$,d usuarios reaccionaron con %2$s</item>
+        <item quantity="other">%1$,d usuarios reaccionaron con %2$s</item>
+    </plurals>
+    <string name="sk_enter_emoji_toast">Necesitas escribir un emoticono</string>
+    <string name="sk_enter_emoji_hint">Escribe para reaccionar con un emoticono</string>
+    <string name="sk_settings_emoji_reactions">Activar las reacciones con los emoticonos</string>
+    <string name="sk_settings_emoji_reactions_explanation">Muestra las reacciones con los emoticonos a los mensajes y te permite interactuar con ellos. Algunas versiones modificadas de Mastodon lo soportan, pero Mastodon no.</string>
+    <string name="sk_settings_emoji_reactions_in_lists_explanation">Las reacciones con los emoticonos deben mostrarse en las líneas de tiempo. Si esta opción está desactivada, las reacciones con los emoticonos solo se mostrarán al ver un hilo.</string>
+    <string name="sk_button_react">Reacciona con un emoticono</string>
+    <string name="sk_again_for_system_keyboard">Pulsa de nuevo para el Teclado del sistema</string>
 </resources>
