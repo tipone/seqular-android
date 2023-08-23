@@ -140,6 +140,8 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 			case BROWN -> R.string.sk_color_palette_brown;
 			case RED -> R.string.sk_color_palette_red;
 			case YELLOW -> R.string.sk_color_palette_yellow;
+			case NORD -> R.string.mo_color_palette_nord;
+			case WHITE -> R.string.mo_color_palette_black_and_white;
 		};
 	}
 
