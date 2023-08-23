@@ -205,7 +205,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			itemView.requestLayout();
 
 			reactKeyboardVisible=false;
-			emojiKeyboard=new CustomEmojiPopupKeyboard(activity, AccountSessionManager.getInstance().getCustomEmojis(accountSession.domain), accountSession.domain, true);
+			emojiKeyboard=new CustomEmojiPopupKeyboard(activity, AccountSessionManager.getInstance().getCustomEmojis(accountSession.domain), accountSession.domain, true, item.accountID);
 			emojiKeyboard.setListener(new CustomEmojiPopupKeyboard.Listener(){
 				@Override
 				public void onEmojiSelected(Emoji emoji) {

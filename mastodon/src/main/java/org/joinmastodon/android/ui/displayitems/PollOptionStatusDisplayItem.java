@@ -25,7 +25,6 @@ import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 	private CharSequence text;
 	public final Poll.Option option;
-	public final Status status;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private boolean showResults;
 	private float votesFraction; // 0..1
@@ -38,7 +37,6 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 		this.optionIndex=optionIndex;
 		option=poll.options.get(optionIndex);
 		this.poll=poll;
-		this.status=status;
 		text=HtmlParser.parseCustomEmoji(option.title, poll.emojis);
 		emojiHelper.setText(text);
 		showResults=poll.isExpired() || poll.voted;
