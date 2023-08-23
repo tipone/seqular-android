@@ -8,6 +8,7 @@ import android.view.MenuInflater;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -85,7 +86,7 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment impl
     }
 
     @Override
-    protected Filter.FilterContext getFilterContext() {
+    protected FilterContext getFilterContext() {
         return null;
     }
 
