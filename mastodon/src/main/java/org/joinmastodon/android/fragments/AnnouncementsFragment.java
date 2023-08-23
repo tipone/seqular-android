@@ -75,7 +75,6 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 				HeaderStatusDisplayItem.fromAnnouncement(a, fakeStatus, instanceUser, this, accountID, this::onMarkAsRead),
 				textItem,
 				new EmojiReactionsStatusDisplayItem(a.id, this, fakeStatus, accountID, false, true)
-//				new DummyStatusDisplayItem(a.id, this)
 		);
 	}
 
