@@ -32,6 +32,8 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.utils.StatusTextEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -195,13 +197,21 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 
 			// remove additional padding when (transparently padded) translate button is visible
-			int nextPos = getAbsoluteAdapterPosition() + 1;
+			int nextPos=getAbsoluteAdapterPosition() + 1;
 			int bottomPadding=V.dp(12);
-			if(item.parentFragment.getDisplayItems().size() > nextPos){
-				if(item.parentFragment.getDisplayItems().get(nextPos) instanceof FooterStatusDisplayItem) bottomPadding=V.dp(6);
-				if(item.parentFragment.getDisplayItems().get(nextPos) instanceof EmojiReactionsStatusDisplayItem){
-					boolean reactionsHidden=item.status.reactions.isEmpty() && !(item.parentFragment instanceof ThreadFragment);
-					bottomPadding=reactionsHidden ? V.dp(6) : 0;
+			List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
+			if(displayItems.size() > nextPos){
+				StatusDisplayItem next=displayItems.get(nextPos);
+				if(next instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()){
+					next=displayItems.size() > ++nextPos ? displayItems.get(nextPos) : null;
+				}
+
+				if(next instanceof FooterStatusDisplayItem){
+					bottomPadding=V.dp(6);
+					// why does java code always end up looking like this
+				} else if((!item.inset && next instanceof DummyStatusDisplayItem) ||
+						next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()){
+					bottomPadding=0;
 				}
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
@@ -239,7 +249,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 			// compensate for spoiler's bottom margin
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
-			params.setMargins(params.leftMargin, (item.inset || GlobalUserPreferences.spectatorMode) && hasSpoiler ? V.dp(-16) : 0,
+			params.setMargins(params.leftMargin, item.inset && hasSpoiler ? V.dp(-16) : 0,
 					params.rightMargin, params.bottomMargin);
 		}
 

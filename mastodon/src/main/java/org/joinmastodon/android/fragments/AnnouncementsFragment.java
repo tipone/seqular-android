@@ -68,6 +68,7 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 		instanceUser.emojis = List.of();
 		Status fakeStatus = a.toStatus();
 		TextStatusDisplayItem textItem = new TextStatusDisplayItem(a.id, HtmlParser.parse(a.content, a.emojis, a.mentions, a.tags, accountID), this, fakeStatus, true);
+		// TODO: emoji reactions!
 		textItem.textSelectable = true;
 		return List.of(
 				HeaderStatusDisplayItem.fromAnnouncement(a, fakeStatus, instanceUser, this, accountID, this::onMarkAsRead),

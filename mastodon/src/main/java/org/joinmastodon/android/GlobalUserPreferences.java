@@ -164,7 +164,6 @@ public class GlobalUserPreferences{
 				.putBoolean("enablePreReleases", enablePreReleases)
 				.putString("prefixReplies", prefixReplies.name())
 				.putBoolean("collapseLongPosts", collapseLongPosts)
-				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putString("color", color.name())

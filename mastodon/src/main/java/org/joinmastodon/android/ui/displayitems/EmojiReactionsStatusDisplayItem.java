@@ -56,6 +56,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	private final Drawable placeholder;
 	private final boolean hideAdd;
 	private final String accountID;
+	private boolean hidden;
 
     public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideAdd) {
 		super(parentID, parentFragment);
@@ -64,6 +65,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		this.accountID=accountID;
 		placeholder=parentFragment.getContext().getDrawable(R.drawable.image_placeholder).mutate();
 		placeholder.setBounds(0, 0, V.sp(24), V.sp(24));
+		updateHidden();
     }
 
 	@Override
@@ -81,7 +83,15 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
         return Type.EMOJI_REACTIONS;
     }
 
-    public static class Holder extends StatusDisplayItem.Holder<EmojiReactionsStatusDisplayItem> implements ImageLoaderViewHolder, CustomEmojiPopupKeyboard.Listener {
+	public boolean isHidden(){
+		return hidden;
+	}
+
+	private void updateHidden(){
+		hidden=status.reactions.isEmpty() && hideAdd;
+	}
+
+	public static class Holder extends StatusDisplayItem.Holder<EmojiReactionsStatusDisplayItem> implements ImageLoaderViewHolder, CustomEmojiPopupKeyboard.Listener {
 		private final UsableRecyclerView list;
 		private final LinearLayout root, line;
 		private CustomEmojiPopupKeyboard emojiKeyboard;
@@ -116,10 +126,10 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			emojiKeyboard.setListener(this);
 			space.setVisibility(View.GONE);
 			root.addView(emojiKeyboard.getView());
-			boolean nothingToShow=item.status.reactions.isEmpty() && item.hideAdd;
-			root.setVisibility(nothingToShow ? View.GONE : View.VISIBLE);
-			line.setVisibility(nothingToShow ? View.GONE : View.VISIBLE);
-			line.setPadding(list.getPaddingLeft(), nothingToShow ? 0 : V.dp(8), list.getPaddingRight(), 0);
+			item.updateHidden();
+			root.setVisibility(item.hidden ? View.GONE : View.VISIBLE);
+			line.setVisibility(item.hidden ? View.GONE : View.VISIBLE);
+			line.setPadding(list.getPaddingLeft(), item.hidden ? 0 : V.dp(8), list.getPaddingRight(), 0);
 			imgLoader.updateImages();
 			adapter.notifyDataSetChanged();
         }
