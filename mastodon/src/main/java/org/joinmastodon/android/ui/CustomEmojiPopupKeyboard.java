@@ -1,7 +1,5 @@
 package org.joinmastodon.android.ui;
 
-import static org.joinmastodon.android.GlobalUserPreferences.recentEmojis;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;

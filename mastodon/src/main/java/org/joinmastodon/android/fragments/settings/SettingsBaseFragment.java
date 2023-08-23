@@ -37,7 +37,7 @@ import org.joinmastodon.android.api.PushSubscriptionManager;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.DomainDisplay;
-import org.joinmastodon.android.fragments.InstanceInfoFragment;
+//import org.joinmastodon.android.fragments.InstanceInfoFragment;
 import org.joinmastodon.android.fragments.MastodonToolbarFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.PushNotification;

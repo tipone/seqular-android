@@ -12,7 +12,7 @@ import android.widget.Toast;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.fragments.SettingsFragment;
+//import org.joinmastodon.android.fragments.SettingsFragment;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 
 import java.util.ArrayList;
