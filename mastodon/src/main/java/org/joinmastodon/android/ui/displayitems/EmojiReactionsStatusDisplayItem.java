@@ -276,13 +276,6 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			@NonNull
 			@Override
 			public EmojiReactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-//				FrameLayout frame=new FrameLayout(parent.getContext());
-//				frame.setPaddingRelative(0, 0, V.dp(8), 0);
-//				Button btn=new Button(parent.getContext(), null, 0, R.style.Widget_Mastodon_M3_Button_Outlined_Icon);
-//				btn.setCompoundDrawableTintList(null);
-//				btn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
-//				btn.setCompoundDrawables(item.placeholder, null, null, null);
-//				frame.addView(btn);
 				return new EmojiReactionViewHolder(parent.getContext(), list);
 			}
 
