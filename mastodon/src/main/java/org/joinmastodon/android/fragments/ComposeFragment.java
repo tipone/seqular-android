@@ -312,7 +312,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	@Override
 	public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		creatingView=true;
-		emojiKeyboard=new CustomEmojiPopupKeyboard(getActivity(), customEmojis, instanceDomain);
+		emojiKeyboard=new CustomEmojiPopupKeyboard(getActivity(), customEmojis, instanceDomain, getAccountID());
 		emojiKeyboard.setListener(new CustomEmojiPopupKeyboard.Listener(){
 			@Override
 			public void onEmojiSelected(Emoji emoji){

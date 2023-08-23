@@ -9,11 +9,14 @@ import android.content.SharedPreferences;
 import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.model.ContentType;
+import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class AccountLocalPreferences{
 	private final SharedPreferences prefs;
@@ -44,6 +47,10 @@ public class AccountLocalPreferences{
 	private final static Type recentLanguagesType = new TypeToken<ArrayList<String>>() {}.getType();
 	private final static Type timelinesType = new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
 
+	// MOSHIDON
+	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
+	public Map<String, Integer> recentEmojis;
+
 	public AccountLocalPreferences(SharedPreferences prefs, AccountSession session){
 		this.prefs=prefs;
 		showInteractionCounts=prefs.getBoolean("interactionCounts", false);
@@ -67,6 +74,9 @@ public class AccountLocalPreferences{
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
 		showEmojiReactionsInLists=prefs.getBoolean("showEmojiReactionsInLists", false);
+
+		// MOSHIDON
+		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -100,6 +110,9 @@ public class AccountLocalPreferences{
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
 				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
 				.putBoolean("showEmojiReactionsInLists", showEmojiReactionsInLists)
+
+				// MOSHIDON
+				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.apply();
 	}
 }

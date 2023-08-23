@@ -136,9 +136,6 @@ public class GlobalUserPreferences{
 
 		// MOSHIDON
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
-		showInteractionCounts=prefs.getBoolean("showInteractionCounts", false);
-		alwaysExpandContentWarnings=prefs.getBoolean("alwaysExpandContentWarnings", false);
-		disableMarquee=prefs.getBoolean("disableMarquee", false);
 		showDividers =prefs.getBoolean("showDividers", false);
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
@@ -150,18 +147,7 @@ public class GlobalUserPreferences{
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
-		publishButtonText=prefs.getString("publishButtonText", "");
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
-		recentLanguages=fromJson(prefs.getString("recentLanguages", "{}"), recentLanguagesType, new HashMap<>());
-		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
-		publishButtonText=prefs.getString("publishButtonText", "");
-		pinnedTimelines=fromJson(prefs.getString("pinnedTimelines", null), pinnedTimelinesType, new HashMap<>());
-		accountsWithLocalOnlySupport=prefs.getStringSet("accountsWithLocalOnlySupport", new HashSet<>());
-		accountsInGlitchMode=prefs.getStringSet("accountsInGlitchMode", new HashSet<>());
-		replyVisibility=prefs.getString("replyVisibility", null);
-		accountsWithContentTypesEnabled=prefs.getStringSet("accountsWithContentTypesEnabled", new HashSet<>());
-		accountsDefaultContentTypes=fromJson(prefs.getString("accountsDefaultContentTypes", null), accountsDefaultContentTypesType, new HashMap<>());
-
 
 
 		if (prefs.contains("prefixRepliesWithRe")) {
@@ -227,16 +213,6 @@ public class GlobalUserPreferences{
 				.putBoolean("overlayMedia", overlayMedia)
 
 				// MOSHIDON
-				.putString("recentLanguages", gson.toJson(recentLanguages))
-				.putString("pinnedTimelines", gson.toJson(pinnedTimelines))
-				.putString("recentEmojis", gson.toJson(recentEmojis))
-				.putStringSet("accountsWithLocalOnlySupport", accountsWithLocalOnlySupport)
-				.putStringSet("accountsInGlitchMode", accountsInGlitchMode)
-				.putString("replyVisibility", replyVisibility)
-				.putStringSet("accountsWithContentTypesEnabled", accountsWithContentTypesEnabled)
-				.putString("accountsDefaultContentTypes", gson.toJson(accountsDefaultContentTypes))
-				.putString("publishButtonText", publishButtonText)
-				.putBoolean("bottomEncoding", bottomEncoding)
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
 				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
