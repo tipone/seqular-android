@@ -294,7 +294,7 @@ public abstract class StatusDisplayItem{
 		if((flags & FLAG_NO_EMOJI_REACTIONS)==0
 				&& AccountSessionManager.get(accountID).getLocalPreferences().emojiReactionsEnabled){
 			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
-			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus));
+			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus, false));
 		}
 		FooterStatusDisplayItem footer=null;
 		if((flags & FLAG_NO_FOOTER)==0){

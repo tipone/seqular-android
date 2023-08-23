@@ -7,7 +7,6 @@ import android.widget.Space;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.model.Status;
 
 import me.grishka.appkit.utils.V;
 

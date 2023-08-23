@@ -21,6 +21,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
+import org.joinmastodon.android.api.requests.announcements.AddAnnouncementReaction;
+import org.joinmastodon.android.api.requests.announcements.DeleteAnnouncementReaction;
 import org.joinmastodon.android.api.requests.statuses.AddStatusReaction;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatusReaction;
 import org.joinmastodon.android.api.requests.statuses.PleromaAddStatusReaction;
@@ -31,6 +33,7 @@ import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.account_list.StatusEmojiReactionsListFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiReaction;
 import org.joinmastodon.android.model.Status;
@@ -54,14 +57,15 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	public final Status status;
 	private final Drawable placeholder;
-	private final boolean hideAdd;
+	private final boolean hideAdd, forAnnouncement;
 	private final String accountID;
 	private boolean hidden;
 
-    public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideAdd) {
+    public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideAdd, boolean forAnnouncement) {
 		super(parentID, parentFragment);
 		this.status=status;
 		this.hideAdd=hideAdd;
+		this.forAnnouncement=forAnnouncement;
 		this.accountID=accountID;
 		placeholder=parentFragment.getContext().getDrawable(R.drawable.image_placeholder).mutate();
 		placeholder.setBounds(0, 0, V.sp(24), V.sp(24));
@@ -89,6 +93,31 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 	private void updateHidden(){
 		hidden=status.reactions.isEmpty() && hideAdd;
+	}
+
+	private MastodonAPIRequest<?> createRequest(String name, boolean delete, Runnable cb){
+		boolean ak=parentFragment.isInstanceAkkoma();
+		if(forAnnouncement){
+			MastodonAPIRequest<Object> req=delete
+					? new DeleteAnnouncementReaction(status.id, name)
+					: new AddAnnouncementReaction(status.id, name);
+			return req.setCallback(new Callback<>(){
+				@Override
+				public void onSuccess(Object result){ cb.run(); }
+				@Override
+				public void onError(ErrorResponse error){ error.showToast(parentFragment.getContext()); }
+			});
+		}else{
+			MastodonAPIRequest<Status> req=delete
+					? (ak ? new PleromaDeleteStatusReaction(status.id, name) : new DeleteStatusReaction(status.id, name))
+					: (ak ? new PleromaAddStatusReaction(status.id, name) : new AddStatusReaction(status.id, name));
+			return req.setCallback(new Callback<>(){
+				@Override
+				public void onSuccess(Status result){ cb.run(); }
+				@Override
+				public void onError(ErrorResponse error){ error.showToast(parentFragment.getContext()); }
+			});
+		}
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<EmojiReactionsStatusDisplayItem> implements ImageLoaderViewHolder, CustomEmojiPopupKeyboard.Listener {
@@ -129,7 +158,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			item.updateHidden();
 			root.setVisibility(item.hidden ? View.GONE : View.VISIBLE);
 			line.setVisibility(item.hidden ? View.GONE : View.VISIBLE);
-			line.setPadding(list.getPaddingLeft(), item.hidden ? 0 : V.dp(8), list.getPaddingRight(), 0);
+			line.setPadding(
+					list.getPaddingLeft(),
+					item.hidden ? 0 : V.dp(8),
+					list.getPaddingRight(),
+					item.forAnnouncement ? V.dp(8) : 0
+			);
 			imgLoader.updateImages();
 			adapter.notifyDataSetChanged();
         }
@@ -154,37 +188,25 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 		private void addEmojiReaction(String emoji, Emoji info) {
 			if(item.status.reactions.stream().filter(r->r.name.equals(emoji) && r.me).findAny().isPresent()) return;
-
-			MastodonAPIRequest<Status> req = item.parentFragment.isInstanceAkkoma()
-					? new PleromaAddStatusReaction(item.status.id, emoji)
-					: new AddStatusReaction(item.status.id, emoji);
-			req.setCallback(new Callback<>() {
-						@Override
-						public void onSuccess(Status result) {
-							Account me=AccountSessionManager.get(item.accountID).self;
-							boolean found=false;
-							for(int i=0; i<item.status.reactions.size(); i++){
-								EmojiReaction r=item.status.reactions.get(i);
-								if(r.name.equals(emoji)){
-									found=true;
-									r.add(me);
-									adapter.notifyItemChanged(i);
-									break;
-								}
-							}
-							if(!found){
-								item.status.reactions.add(info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
-								adapter.notifyItemRangeInserted(item.status.reactions.size() - 1, 1);
-							}
-							E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
-						}
-
-						@Override
-						public void onError(ErrorResponse error) {
-							error.showToast(item.parentFragment.getContext());
-						}
-					})
-					.exec(item.accountID);
+			
+			item.createRequest(emoji, false, ()->{
+				Account me=AccountSessionManager.get(item.accountID).self;
+				boolean found=false;
+				for(int i=0; i<item.status.reactions.size(); i++){
+					EmojiReaction r=item.status.reactions.get(i);
+					if(r.name.equals(emoji)){
+						found=true;
+						r.add(me);
+						adapter.notifyItemChanged(i);
+						break;
+					}
+				}
+				if(!found){
+					item.status.reactions.add(info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
+					adapter.notifyItemRangeInserted(item.status.reactions.size() - 1, 1);
+				}
+				E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
+			}).exec(item.accountID);
 		}
 
 		@Override
@@ -298,42 +320,29 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					btn.setCompoundDrawablesRelative(item.first.placeholder, null, null, null);
 				}
 				btn.setSelected(reaction.me);
-				btn.setOnClickListener(e -> {
+				btn.setOnClickListener(e->{
 					boolean deleting=reaction.me;
-					boolean ak=parent.parentFragment.isInstanceAkkoma();
-					MastodonAPIRequest<Status> req = deleting
-							? (ak ? new PleromaDeleteStatusReaction(parent.status.id, reaction.name) : new DeleteStatusReaction(parent.status.id, reaction.name))
-							: (ak ? new PleromaAddStatusReaction(parent.status.id, reaction.name) : new AddStatusReaction(parent.status.id, reaction.name));
-					req.setCallback(new Callback<>() {
-								@Override
-								public void onSuccess(Status result) {
-									EmojiReactionsAdapter adapter = (EmojiReactionsAdapter) getBindingAdapter();
+					parent.createRequest(reaction.name, deleting, ()->{
+						EmojiReactionsAdapter adapter = (EmojiReactionsAdapter) getBindingAdapter();
 
-									for(int i=0; i<parent.status.reactions.size(); i++){
-										EmojiReaction r=parent.status.reactions.get(i);
-										if(!r.name.equals(reaction.name)) continue;
-										if(deleting && r.count==1) {
-											parent.status.reactions.remove(i);
-											adapter.notifyItemRemoved(i);
-											break;
-										}
-										r.me=!deleting;
-										if(deleting) r.count--;
-										else r.count++;
-										adapter.notifyItemChanged(i);
-										break;
-									}
+						for(int i=0; i<parent.status.reactions.size(); i++){
+							EmojiReaction r=parent.status.reactions.get(i);
+							if(!r.name.equals(reaction.name)) continue;
+							if(deleting && r.count==1) {
+								parent.status.reactions.remove(i);
+								adapter.notifyItemRemoved(i);
+								break;
+							}
+							r.me=!deleting;
+							if(deleting) r.count--;
+							else r.count++;
+							adapter.notifyItemChanged(i);
+							break;
+						}
 
-									E.post(new StatusCountersUpdatedEvent(parent.status, adapter.parentHolder));
-									adapter.parentHolder.imgLoader.updateImages();
-								}
-
-								@Override
-								public void onError(ErrorResponse error) {
-									error.showToast(itemView.getContext());
-								}
-							})
-							.exec(parent.parentFragment.getAccountID());
+						E.post(new StatusCountersUpdatedEvent(parent.status, adapter.parentHolder));
+						adapter.parentHolder.imgLoader.updateImages();
+					}).exec(parent.parentFragment.getAccountID());
 				});
 
 				if (parent.parentFragment.isInstanceAkkoma()) {

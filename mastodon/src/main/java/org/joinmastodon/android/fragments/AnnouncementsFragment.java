@@ -26,6 +26,8 @@ import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
@@ -68,11 +70,12 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 		instanceUser.emojis = List.of();
 		Status fakeStatus = a.toStatus();
 		TextStatusDisplayItem textItem = new TextStatusDisplayItem(a.id, HtmlParser.parse(a.content, a.emojis, a.mentions, a.tags, accountID), this, fakeStatus, true);
-		// TODO: emoji reactions!
 		textItem.textSelectable = true;
 		return List.of(
 				HeaderStatusDisplayItem.fromAnnouncement(a, fakeStatus, instanceUser, this, accountID, this::onMarkAsRead),
-				textItem
+				textItem,
+				new EmojiReactionsStatusDisplayItem(a.id, this, fakeStatus, accountID, false, true)
+//				new DummyStatusDisplayItem(a.id, this)
 		);
 	}
 
