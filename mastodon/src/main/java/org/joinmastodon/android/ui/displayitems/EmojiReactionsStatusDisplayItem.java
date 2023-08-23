@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -222,17 +223,16 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				FrameLayout frame=new FrameLayout(parent.getContext());
 				frame.setPaddingRelative(0, 0, V.dp(8), 0);
 				Button btn=new Button(parent.getContext(), null, 0, R.style.Widget_Mastodon_M3_Button_Outlined_Icon);
-				ViewGroup.MarginLayoutParams params=new ViewGroup.MarginLayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 				btn.setCompoundDrawableTintList(null);
 				btn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
 				btn.setCompoundDrawables(item.placeholder, null, null, null);
 				frame.addView(btn);
-				return new EmojiReactionViewHolder(frame, item);
+				return new EmojiReactionViewHolder(frame);
 			}
 
 			@Override
 			public void onBindViewHolder(EmojiReactionViewHolder holder, int position){
-				holder.bind(item.status.reactions.get(position));
+				holder.bind(Pair.create(item, item.status.reactions.get(position)));
 				super.onBindViewHolder(holder, position);
 			}
 
@@ -252,14 +252,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			}
 		}
 
-		private static class EmojiReactionViewHolder extends BindableViewHolder<EmojiReaction> implements ImageLoaderViewHolder{
+		private static class EmojiReactionViewHolder extends BindableViewHolder<Pair<EmojiReactionsStatusDisplayItem, EmojiReaction>> implements ImageLoaderViewHolder{
 			private final Button btn;
-			private final EmojiReactionsStatusDisplayItem parent;
 
-			public EmojiReactionViewHolder(@NonNull View itemView, EmojiReactionsStatusDisplayItem parent){
+			public EmojiReactionViewHolder(@NonNull View itemView){
 				super(itemView);
 				btn=(Button) ((FrameLayout) itemView).getChildAt(0);
-				this.parent=parent;
 			}
 
 			@Override
@@ -271,29 +269,31 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 			@Override
 			public void clearImage(int index){
-				setImage(index, parent.placeholder);
+				setImage(index, item.first.placeholder);
 			}
 
 			@Override
-			public void onBind(EmojiReaction item){
-				btn.setText(UiUtils.abbreviateNumber(item.count));
-				btn.setContentDescription(item.name);
-				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) btn.setTooltipText(item.name);
-				if(item.url==null){
+			public void onBind(Pair<EmojiReactionsStatusDisplayItem, EmojiReaction> item){
+				EmojiReactionsStatusDisplayItem parent=item.first;
+				EmojiReaction reaction=item.second;
+				btn.setText(UiUtils.abbreviateNumber(reaction.count));
+				btn.setContentDescription(reaction.name);
+				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) btn.setTooltipText(reaction.name);
+				if(reaction.url==null){
 					Paint p=new Paint();
 					p.setTextSize(V.sp(18));
-					TextDrawable drawable=new TextDrawable(p, item.name);
+					TextDrawable drawable=new TextDrawable(p, reaction.name);
 					btn.setCompoundDrawablesRelative(drawable, null, null, null);
 				}else{
-					btn.setCompoundDrawablesRelative(parent.placeholder, null, null, null);
+					btn.setCompoundDrawablesRelative(item.first.placeholder, null, null, null);
 				}
-				btn.setSelected(item.me);
+				btn.setSelected(reaction.me);
 				btn.setOnClickListener(e -> {
-					boolean deleting=item.me;
+					boolean deleting=reaction.me;
 					boolean ak=parent.parentFragment.isInstanceAkkoma();
 					MastodonAPIRequest<Status> req = deleting
-							? (ak ? new PleromaDeleteStatusReaction(parent.status.id, item.name) : new DeleteStatusReaction(parent.status.id, item.name))
-							: (ak ? new PleromaAddStatusReaction(parent.status.id, item.name) : new AddStatusReaction(parent.status.id, item.name));
+							? (ak ? new PleromaDeleteStatusReaction(parent.status.id, reaction.name) : new DeleteStatusReaction(parent.status.id, reaction.name))
+							: (ak ? new PleromaAddStatusReaction(parent.status.id, reaction.name) : new AddStatusReaction(parent.status.id, reaction.name));
 					req.setCallback(new Callback<>() {
 								@Override
 								public void onSuccess(Status result) {
@@ -301,7 +301,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 									for(int i=0; i<parent.status.reactions.size(); i++){
 										EmojiReaction r=parent.status.reactions.get(i);
-										if(!r.name.equals(item.name)) continue;
+										if(!r.name.equals(reaction.name)) continue;
 										if(deleting && r.count==1) {
 											parent.status.reactions.remove(i);
 											adapter.notifyItemRemoved(i);

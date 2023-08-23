@@ -175,8 +175,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		reblogged=ev.reblogged;
 		bookmarked=ev.bookmarked;
 		pinned=ev.pinned;
-		reactions.clear();
-		reactions.addAll(ev.reactions);
+		reactions=ev.reactions;
 	}
 
 	public Status getContentStatus(){
