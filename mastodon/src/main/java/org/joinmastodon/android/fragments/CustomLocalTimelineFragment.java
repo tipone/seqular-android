@@ -45,20 +45,15 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment impl
     }
 
     @Override
-    public String getDomain() {
-        return domain;
-    }
-
-    @Override
     protected void doLoadData(int offset, int count){
-        currentRequest=new GetPublicTimeline(true, false, refreshing ? null : maxID, count)
+        currentRequest=new GetPublicTimeline(true, false, refreshing ? null : maxID, count, getLocalPrefs().timelineReplyVisibility)
                 .setCallback(new SimpleCallback<>(this){
                     @Override
                     public void onSuccess(List<Status> result){
                         if(!result.isEmpty())
                             maxID=result.get(result.size()-1).id;
                         if (getActivity() == null) return;
-                        result=result.stream().filter(new StatusFilterPredicate(accountID, Filter.FilterContext.PUBLIC)).collect(Collectors.toList());
+                        result=result.stream().filter(new StatusFilterPredicate(accountID, FilterContext.PUBLIC)).collect(Collectors.toList());
                         result.stream().forEach(status -> {
                             status.account.acct += "@"+domain;
                             status.mentions.forEach(mention -> mention.id = null);
