@@ -3,8 +3,6 @@ package org.joinmastodon.android.fragments.settings;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Fragment;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
-import android.view.WindowManager;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.LinearInterpolator;
 import android.widget.Button;
@@ -33,10 +30,8 @@ import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.PushSubscriptionManager;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -95,7 +90,6 @@ public abstract class SettingsBaseFragment extends MastodonToolbarFragment imple
 		session = AccountSessionManager.getInstance().getAccount(accountID);
 		instance = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 		instanceName = UiUtils.getInstanceName(accountID);
-		DomainManager.getInstance().setCurrentDomain(session.domain + "/settings");
 
 		if (GithubSelfUpdater.needSelfUpdating())
 			E.register(this);

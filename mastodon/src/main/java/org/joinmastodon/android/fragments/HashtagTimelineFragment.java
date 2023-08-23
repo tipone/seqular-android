@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import org.joinmastodon.android.DomainManager;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.tags.GetHashtag;
@@ -48,11 +47,6 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 		return true;
 	}
 
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/tags/" + hashtag;
-	}
-
 
 	@Override
 	public void onAttach(Activity activity){
@@ -64,7 +58,6 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 		all=getArguments().getStringArrayList("all");
 		none=getArguments().getStringArrayList("none");
 		setHasOptionsMenu(true);
-		DomainManager.getInstance().setCurrentDomain(getDomain());
 	}
 
 	private void updateTitle(String hashtagName) {

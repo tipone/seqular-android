@@ -5,13 +5,9 @@ import android.net.Uri;
 import android.view.Menu;
 import android.view.MenuInflater;
 
-import org.joinmastodon.android.DomainManager;
-import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.requests.tags.GetHashtag;
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.model.Filter;
-import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -21,8 +17,6 @@ import org.joinmastodon.android.utils.StatusFilterPredicate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import me.grishka.appkit.api.Callback;
-import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 
 public class CustomLocalTimelineFragment extends PinnableStatusListFragment implements ProvidesAssistContent.ProvidesWebUri{
