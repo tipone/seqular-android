@@ -1335,7 +1335,7 @@ public class UiUtils {
 							}
 						})
 						.execNoAuth(uri.getHost()));
-			} else if (looksLikeFediverseUrl(url)) {
+			} else if (looksLikeMastodonUrl(url)) {
 				return Optional.of(new GetSearchResults(url, null, true)
 						.setCallback(new Callback<>() {
 							@Override
