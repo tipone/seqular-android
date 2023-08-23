@@ -1,6 +1,7 @@
 package org.joinmastodon.android.ui.displayitems;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -10,13 +11,13 @@ import android.util.DisplayMetrics;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
@@ -40,6 +41,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.ui.views.ProgressBarButton;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -95,17 +97,34 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		hidden=status.reactions.isEmpty() && hideAdd;
 	}
 
-	private MastodonAPIRequest<?> createRequest(String name, boolean delete, Runnable cb){
+	// borrowed from ProfileFragment
+	private void setActionProgressVisible(Holder.EmojiReactionViewHolder vh, boolean visible){
+		if(vh==null) return;
+		vh.progress.setVisibility(visible ? View.VISIBLE : View.GONE);
+		if(visible)
+			vh.progress.setIndeterminateTintList(vh.btn.getTextColors());
+		vh.btn.setClickable(!visible);
+	}
+
+	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Runnable cb){
+		setActionProgressVisible(vh, true);
 		boolean ak=parentFragment.isInstanceAkkoma();
+		boolean keepSpinning=delete && count == 1;
 		if(forAnnouncement){
 			MastodonAPIRequest<Object> req=delete
 					? new DeleteAnnouncementReaction(status.id, name)
 					: new AddAnnouncementReaction(status.id, name);
 			return req.setCallback(new Callback<>(){
 				@Override
-				public void onSuccess(Object result){ cb.run(); }
+				public void onSuccess(Object result){
+					if(!keepSpinning) setActionProgressVisible(vh, false);
+					cb.run();
+				}
 				@Override
-				public void onError(ErrorResponse error){ error.showToast(parentFragment.getContext()); }
+				public void onError(ErrorResponse error){
+					setActionProgressVisible(vh, false);
+					error.showToast(parentFragment.getContext());
+				}
 			});
 		}else{
 			MastodonAPIRequest<Status> req=delete
@@ -113,9 +132,15 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					: (ak ? new PleromaAddStatusReaction(status.id, name) : new AddStatusReaction(status.id, name));
 			return req.setCallback(new Callback<>(){
 				@Override
-				public void onSuccess(Status result){ cb.run(); }
+				public void onSuccess(Status result){
+					if(!keepSpinning) setActionProgressVisible(vh, false);
+					cb.run();
+				}
 				@Override
-				public void onError(ErrorResponse error){ error.showToast(parentFragment.getContext()); }
+				public void onError(ErrorResponse error){
+					setActionProgressVisible(vh, false);
+					error.showToast(parentFragment.getContext());
+				}
 			});
 		}
 	}
@@ -188,25 +213,24 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 		private void addEmojiReaction(String emoji, Emoji info) {
 			if(item.status.reactions.stream().filter(r->r.name.equals(emoji) && r.me).findAny().isPresent()) return;
-			
-			item.createRequest(emoji, false, ()->{
-				Account me=AccountSessionManager.get(item.accountID).self;
-				boolean found=false;
-				for(int i=0; i<item.status.reactions.size(); i++){
-					EmojiReaction r=item.status.reactions.get(i);
-					if(r.name.equals(emoji)){
-						found=true;
-						r.add(me);
-						adapter.notifyItemChanged(i);
-						break;
-					}
+
+			Account me=AccountSessionManager.get(item.accountID).self;
+			EmojiReaction existing=null;
+			for(int i=0; i<item.status.reactions.size(); i++){
+				EmojiReaction r=item.status.reactions.get(i);
+				if(r.name.equals(emoji)){
+					existing=r;
+					r.add(me);
+					adapter.notifyItemChanged(i);
+					break;
 				}
-				if(!found){
-					item.status.reactions.add(info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
-					adapter.notifyItemRangeInserted(item.status.reactions.size() - 1, 1);
-				}
-				E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
-			}).exec(item.accountID);
+			}
+			if(existing==null){
+				item.status.reactions.add(0, info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
+				adapter.notifyItemRangeInserted(0, 1);
+			}
+			E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
+			item.createRequest(emoji, existing==null ? 1 : existing.count, false, null, ()->{}).exec(item.accountID);
 		}
 
 		@Override
@@ -252,14 +276,14 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			@NonNull
 			@Override
 			public EmojiReactionViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-				FrameLayout frame=new FrameLayout(parent.getContext());
-				frame.setPaddingRelative(0, 0, V.dp(8), 0);
-				Button btn=new Button(parent.getContext(), null, 0, R.style.Widget_Mastodon_M3_Button_Outlined_Icon);
-				btn.setCompoundDrawableTintList(null);
-				btn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
-				btn.setCompoundDrawables(item.placeholder, null, null, null);
-				frame.addView(btn);
-				return new EmojiReactionViewHolder(frame);
+//				FrameLayout frame=new FrameLayout(parent.getContext());
+//				frame.setPaddingRelative(0, 0, V.dp(8), 0);
+//				Button btn=new Button(parent.getContext(), null, 0, R.style.Widget_Mastodon_M3_Button_Outlined_Icon);
+//				btn.setCompoundDrawableTintList(null);
+//				btn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
+//				btn.setCompoundDrawables(item.placeholder, null, null, null);
+//				frame.addView(btn);
+				return new EmojiReactionViewHolder(parent.getContext(), list);
 			}
 
 			@Override
@@ -285,11 +309,13 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		}
 
 		private static class EmojiReactionViewHolder extends BindableViewHolder<Pair<EmojiReactionsStatusDisplayItem, EmojiReaction>> implements ImageLoaderViewHolder{
-			private final Button btn;
+			private final ProgressBarButton btn;
+			private final ProgressBar progress;
 
-			public EmojiReactionViewHolder(@NonNull View itemView){
-				super(itemView);
-				btn=(Button) ((FrameLayout) itemView).getChildAt(0);
+			public EmojiReactionViewHolder(Context context, RecyclerView list){
+				super(context, R.layout.item_emoji_reaction, list);
+				btn=findViewById(R.id.btn);
+				progress=findViewById(R.id.progress);
 			}
 
 			@Override
@@ -306,6 +332,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 			@Override
 			public void onBind(Pair<EmojiReactionsStatusDisplayItem, EmojiReaction> item){
+				item.first.setActionProgressVisible(this, false);
 				EmojiReactionsStatusDisplayItem parent=item.first;
 				EmojiReaction reaction=item.second;
 				btn.setText(UiUtils.abbreviateNumber(reaction.count));
@@ -322,9 +349,8 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				btn.setSelected(reaction.me);
 				btn.setOnClickListener(e->{
 					boolean deleting=reaction.me;
-					parent.createRequest(reaction.name, deleting, ()->{
+					parent.createRequest(reaction.name, reaction.count, deleting, this, ()->{
 						EmojiReactionsAdapter adapter = (EmojiReactionsAdapter) getBindingAdapter();
-
 						for(int i=0; i<parent.status.reactions.size(); i++){
 							EmojiReaction r=parent.status.reactions.get(i);
 							if(!r.name.equals(reaction.name)) continue;
