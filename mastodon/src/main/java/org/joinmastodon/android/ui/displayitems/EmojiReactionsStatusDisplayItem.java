@@ -17,6 +17,7 @@ import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
@@ -42,6 +43,8 @@ import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
+
+import java.util.Optional;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -216,7 +219,16 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		}
 
 		private void addEmojiReaction(String emoji, Emoji info) {
-			if(item.status.reactions.stream().filter(r->r.name.equals(emoji) && r.me).findAny().isPresent()) return;
+			for(int i=0; i<item.status.reactions.size(); i++){
+				EmojiReaction r=item.status.reactions.get(i);
+				if(r.name.equals(emoji) && r.me){
+					RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
+					scroller.setTargetPosition(i);
+					list.getLayoutManager().startSmoothScroll(scroller);
+					return; // nothing to do, already added
+				}
+			}
+
 			progress.setVisibility(View.VISIBLE);
 			addButton.setClickable(false);
 			addButton.setAlpha(0.55f);
