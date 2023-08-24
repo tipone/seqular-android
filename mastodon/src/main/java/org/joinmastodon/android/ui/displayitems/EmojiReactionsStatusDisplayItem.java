@@ -106,7 +106,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		vh.btn.setClickable(!visible);
 	}
 
-	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Runnable cb){
+	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Runnable cb, Runnable err){
 		setActionProgressVisible(vh, true);
 		boolean ak=parentFragment.isInstanceAkkoma();
 		boolean keepSpinning=delete && count == 1;
@@ -124,6 +124,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				public void onError(ErrorResponse error){
 					setActionProgressVisible(vh, false);
 					error.showToast(parentFragment.getContext());
+					if(err!=null) err.run();
 				}
 			});
 		}else{
@@ -140,6 +141,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				public void onError(ErrorResponse error){
 					setActionProgressVisible(vh, false);
 					error.showToast(parentFragment.getContext());
+					if(err!=null) err.run();
 				}
 			});
 		}
@@ -151,6 +153,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		private CustomEmojiPopupKeyboard emojiKeyboard;
 		private final View space;
 		private final ImageButton addButton;
+		private final ProgressBar progress;
 		private final EmojiReactionsAdapter adapter;
 		private final ListImageLoaderWrapper imgLoader;
 
@@ -162,6 +165,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			imgLoader=new ListImageLoaderWrapper(activity, list, new RecyclerViewDelegate(list), null);
 			list.setAdapter(adapter=new EmojiReactionsAdapter(this, imgLoader));
 			addButton=findViewById(R.id.add_btn);
+			progress=findViewById(R.id.progress);
 			addButton.setOnClickListener(this::onReactClick);
 			space=findViewById(R.id.space);
 			list.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
@@ -213,24 +217,36 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 		private void addEmojiReaction(String emoji, Emoji info) {
 			if(item.status.reactions.stream().filter(r->r.name.equals(emoji) && r.me).findAny().isPresent()) return;
+			progress.setVisibility(View.VISIBLE);
+			addButton.setClickable(false);
+			addButton.setAlpha(0.55f);
 
+			Runnable resetBtn=()->{
+				progress.setVisibility(View.GONE);
+				addButton.setClickable(true);
+				addButton.setAlpha(1f);
+			};
 			Account me=AccountSessionManager.get(item.accountID).self;
 			EmojiReaction existing=null;
 			for(int i=0; i<item.status.reactions.size(); i++){
 				EmojiReaction r=item.status.reactions.get(i);
 				if(r.name.equals(emoji)){
 					existing=r;
-					r.add(me);
-					adapter.notifyItemChanged(i);
 					break;
 				}
 			}
-			if(existing==null){
-				item.status.reactions.add(0, info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
-				adapter.notifyItemRangeInserted(0, 1);
-			}
-			E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
-			item.createRequest(emoji, existing==null ? 1 : existing.count, false, null, ()->{}).exec(item.accountID);
+			EmojiReaction finalExisting=existing;
+			item.createRequest(emoji, existing==null ? 1 : existing.count, false, null, ()->{
+				resetBtn.run();
+				if(finalExisting==null){
+					item.status.reactions.add(0, info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
+					adapter.notifyItemRangeInserted(0, 1);
+				}else{
+					finalExisting.add(me);
+					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
+				}
+				E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
+			}, resetBtn).exec(item.accountID);
 		}
 
 		@Override
@@ -362,7 +378,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 						E.post(new StatusCountersUpdatedEvent(parent.status, adapter.parentHolder));
 						adapter.parentHolder.imgLoader.updateImages();
-					}).exec(parent.parentFragment.getAccountID());
+					}, null).exec(parent.parentFragment.getAccountID());
 				});
 
 				if (parent.parentFragment.isInstanceAkkoma()) {
