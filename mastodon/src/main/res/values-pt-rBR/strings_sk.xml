@@ -309,4 +309,22 @@
     <string name="sk_exclusive_list">Lista exclusiva</string>
     <string name="sk_list_exclusive_switch">Tornar lista exclusiva</string>
     <string name="sk_list_exclusive_switch_explanation">Membros de uma lista exclusiva não irão aparecer na sua linha do tempo inicial - somente se sua instância suportar.</string>
+    <string name="sk_icon_bed">Cama</string>
+    <string name="sk_icon_verified">Verificado</string>
+    <string name="sk_icon_doctor">Doutor</string>
+    <string name="sk_icon_diamond">Diamante</string>
+    <string name="sk_icon_umbrella">Guarda-chuva</string>
+    <string name="sk_edit_timeline_tag_main">Publicações contendo a hashtag…</string>
+    <string name="sk_edit_timeline_tag_any">…ou qualquer um destes</string>
+    <string name="sk_edit_timeline_tag_all">…e cada um destes</string>
+    <string name="sk_edit_timeline_tag_none">…mas nenhum destes</string>
+    <string name="sk_edit_timeline_tags_hint">Insira hashtags…</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Mostrar apenas publicações locais\?</string>
+    <string name="sk_advanced_options_hide">Ocultar opções avançadas</string>
+    <string name="sk_add_timeline">Adicionar linha do tempo</string>
+    <string name="sk_edit_timeline_tag_hint">Insira a hashtag…</string>
+    <string name="sk_edit_timeline_tags_explanation">Observe que o servidor lida com essas operações. Combiná-los pode não ser compatível.</string>
+    <string name="sk_advanced_options_show">Mostrar opções avançadas</string>
+    <string name="sk_icon_beaker">Taça</string>
+    <string name="sk_settings_show_new_posts_button">Exibir botão “Mostrar novas publicações”</string>
 </resources>
