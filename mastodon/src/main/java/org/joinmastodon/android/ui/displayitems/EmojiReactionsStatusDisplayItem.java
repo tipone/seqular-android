@@ -65,6 +65,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	private final boolean hideAdd, forAnnouncement;
 	private final String accountID;
 	private boolean hidden;
+	private static final float ALPHA_DISABLED=0.55f;
 
     public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideAdd, boolean forAnnouncement) {
 		super(parentID, parentFragment);
@@ -104,9 +105,8 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	private void setActionProgressVisible(Holder.EmojiReactionViewHolder vh, boolean visible){
 		if(vh==null) return;
 		vh.progress.setVisibility(visible ? View.VISIBLE : View.GONE);
-		if(visible)
-			vh.progress.setIndeterminateTintList(vh.btn.getTextColors());
 		vh.btn.setClickable(!visible);
+		vh.btn.setAlpha(visible ? ALPHA_DISABLED : 1);
 	}
 
 	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Runnable cb, Runnable err){
@@ -231,7 +231,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 			progress.setVisibility(View.VISIBLE);
 			addButton.setClickable(false);
-			addButton.setAlpha(0.55f);
+			addButton.setAlpha(ALPHA_DISABLED);
 
 			Runnable resetBtn=()->{
 				progress.setVisibility(View.GONE);
@@ -251,8 +251,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			item.createRequest(emoji, existing==null ? 1 : existing.count, false, null, ()->{
 				resetBtn.run();
 				if(finalExisting==null){
-					item.status.reactions.add(0, info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
-					adapter.notifyItemRangeInserted(0, 1);
+					int pos=item.status.reactions.size();
+					item.status.reactions.add(pos, info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
+					adapter.notifyItemRangeInserted(pos, 1);
+					RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
+					scroller.setTargetPosition(pos);
+					list.getLayoutManager().startSmoothScroll(scroller);
 				}else{
 					finalExisting.add(me);
 					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
