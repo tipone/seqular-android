@@ -118,7 +118,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 		content.setBackgroundResource(R.drawable.bg_bottom_sheet);
 		content.addView(list);
 		setContentView(content);
-		setNavigationBarBackground(new ColorDrawable(UiUtils.getThemeColor(getContext(), R.attr.colorWindowBackground)), !UiUtils.isDarkTheme());
+		setNavigationBarBackground(new ColorDrawable(UiUtils.getThemeColor(getContext(), R.attr.colorM3Surface)), !UiUtils.isDarkTheme());
 	}
 
 	public void setOnClick(BiConsumer<String, Boolean> onClick) {
