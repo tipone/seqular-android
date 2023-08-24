@@ -5,7 +5,11 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
+import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -14,6 +18,8 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -465,6 +471,28 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			if(id==R.id.share_btn)
 				return R.string.button_share;
 			return 0;
+		}
+
+		private static void vibrateForAction(View view, boolean isPositive) {
+			if (!GlobalUserPreferences.hapticFeedback) return;
+
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+				view.performHapticFeedback(isPositive ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.REJECT);
+			} else {
+				Vibrator vibrator = view.getContext().getSystemService(Vibrator.class);
+
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+					vibrator.vibrate(VibrationEffect.createPredefined(isPositive ? VibrationEffect.EFFECT_CLICK : VibrationEffect.EFFECT_DOUBLE_CLICK));
+				} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+					VibrationEffect effect = isPositive
+							? VibrationEffect.createOneShot(75L, 128)
+							: VibrationEffect.createWaveform(new long[]{0L, 75L, 75L, 75L}, new int[]{0, 128, 0, 128}, -1);
+					vibrator.vibrate(effect);
+				} else {
+					if (isPositive) vibrator.vibrate(75L);
+					else vibrator.vibrate(new long[]{0L, 75L, 75L, 75L}, -1);
+				}
+			}
 		}
 	}
 }
