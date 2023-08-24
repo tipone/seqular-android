@@ -71,11 +71,12 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 		Status fakeStatus = a.toStatus();
 		TextStatusDisplayItem textItem = new TextStatusDisplayItem(a.id, HtmlParser.parse(a.content, a.emojis, a.mentions, a.tags, accountID), this, fakeStatus, true);
 		textItem.textSelectable = true;
-		return List.of(
-				HeaderStatusDisplayItem.fromAnnouncement(a, fakeStatus, instanceUser, this, accountID, this::onMarkAsRead),
-				textItem,
-				new EmojiReactionsStatusDisplayItem(a.id, this, fakeStatus, accountID, false, true)
-		);
+
+		List<StatusDisplayItem> items=new ArrayList<>();
+		items.add(HeaderStatusDisplayItem.fromAnnouncement(a, fakeStatus, instanceUser, this, accountID, this::onMarkAsRead));
+		items.add(textItem);
+		if(!isInstanceAkkoma()) items.add(new EmojiReactionsStatusDisplayItem(a.id, this, fakeStatus, accountID, false, true));
+		return items;
 	}
 
 	public void onMarkAsRead(String id) {
