@@ -143,8 +143,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					switch (NotificationAction.values()[intent.getIntExtra("notificationAction", 0)]) {
 						case FAVORITE -> new SetStatusFavorited(statusID, true).exec(accountID);
 						case BOOKMARK -> new SetStatusBookmarked(statusID, true).exec(accountID);
-						case REBLOG -> new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
-						case UNDO_REBLOG -> new SetStatusReblogged(notification.status.id, false, preferences.postingDefaultVisibility).exec(accountID);
+						case BOOST -> new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
+						case UNBOOST -> new SetStatusReblogged(notification.status.id, false, preferences.postingDefaultVisibility).exec(accountID);
 						case REPLY -> handleReplyAction(context, accountID, intent, notification, notificationId, preferences);
 						case FOLLOW_BACK -> new SetAccountFollowed(notification.account.id, true, true, false).exec(accountID);
 						default -> Log.w(TAG, "onReceive: Failed to get NotificationAction");
