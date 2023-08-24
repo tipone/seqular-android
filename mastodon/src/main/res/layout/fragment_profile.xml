@@ -200,6 +200,21 @@
 					android:visibility="gone"
 					app:labelTextColor="@color/m3_outlined_text_field_label">
 
+					<EditText
+						android:id="@+id/name_edit"
+						android:layout_width="match_parent"
+						android:layout_height="56dp"
+						android:layout_marginStart="16dp"
+						android:layout_marginTop="8dp"
+						android:layout_marginEnd="16dp"
+						android:background="@null"
+						android:elevation="0dp"
+						android:hint="@string/display_name"
+						android:inputType="textPersonName|textCapWords"
+						android:padding="16dp"
+						tools:text="Eugen"
+						android:autofillHints="" />
+
 					<FrameLayout
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -252,21 +267,6 @@
 <!--						android:textAppearance="@style/m3_body_large"-->
 <!--						android:textSize="16sp"-->
 <!--						tools:text="Founder, CEO and lead developer @Mastodon, Germany." />-->
-
-					<EditText
-						android:id="@+id/name_edit"
-						android:layout_width="match_parent"
-						android:layout_height="56dp"
-						android:layout_marginStart="16dp"
-						android:layout_marginTop="8dp"
-						android:layout_marginEnd="16dp"
-						android:background="@null"
-						android:elevation="0dp"
-						android:hint="@string/display_name"
-						android:inputType="textPersonName|textCapWords"
-						android:padding="16dp"
-						tools:text="Eugen"
-						android:autofillHints="" />
 				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 
 				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout

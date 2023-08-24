@@ -72,7 +72,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 	private MergeRecyclerAdapter adapter=new MergeRecyclerAdapter();
 	private String domain;
 	private String accountID;
-	private Map<String, Integer> recentEmojis = AccountSessionManager.get(accountID).getLocalPreferences().recentEmojis;
+	private Map<String, Integer> recentEmojis;
 
 	private int spanCount=6;
 	private Listener listener;
@@ -90,6 +90,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 		this.domain=domain;
 		this.accountID=accountID;
 		this.forReaction=forReaction;
+		recentEmojis = AccountSessionManager.get(accountID).getLocalPreferences().recentEmojis;
 	}
 
 	@Override
