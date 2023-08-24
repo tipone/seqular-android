@@ -309,6 +309,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				super(context, R.layout.item_emoji_reaction, list);
 				btn=findViewById(R.id.btn);
 				progress=findViewById(R.id.progress);
+				itemView.setClickable(true);
 			}
 
 			@Override
