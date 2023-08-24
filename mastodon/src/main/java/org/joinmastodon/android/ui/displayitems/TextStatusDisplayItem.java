@@ -206,8 +206,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					next=displayItems.size() > ++nextPos ? displayItems.get(nextPos) : null;
 				}
 
-				if(next instanceof FooterStatusDisplayItem
-						|| (!item.inset && next instanceof DummyStatusDisplayItem)
+				if(next instanceof FooterStatusDisplayItem) bottomPadding=V.dp(6);
+				else if((!item.inset && next instanceof DummyStatusDisplayItem)
 						|| next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()
 				) bottomPadding=0;
 			}
