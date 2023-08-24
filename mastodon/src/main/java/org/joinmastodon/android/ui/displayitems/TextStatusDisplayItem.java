@@ -206,13 +206,10 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					next=displayItems.size() > ++nextPos ? displayItems.get(nextPos) : null;
 				}
 
-				if(next instanceof FooterStatusDisplayItem){
-					bottomPadding=V.dp(6);
-					// why does java code always end up looking like this
-				} else if((!item.inset && next instanceof DummyStatusDisplayItem) ||
-						next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()){
-					bottomPadding=0;
-				}
+				if(next instanceof FooterStatusDisplayItem
+						|| (!item.inset && next instanceof DummyStatusDisplayItem)
+						|| next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()
+				) bottomPadding=0;
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 
