@@ -509,7 +509,7 @@
 				android:tooltipText="@string/sk_content_type"
 				android:src="@drawable/ic_fluent_text_edit_style_24_selector"/>
 
-			<Button
+			<ImageButton
 				android:id="@+id/drafts_btn"
 				android:layout_width="32dp"
 				android:layout_height="32dp"
