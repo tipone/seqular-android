@@ -237,7 +237,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 							footer.rebind();
 						}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==s.getContentStatus()){
 							footer.rebind();
-						}else if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && ev.viewHolder!=holder){
+						}else if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && reactions.getItem().status==s.getContentStatus() && ev.viewHolder!=holder){
 							reactions.rebind();
 						}
 					}

@@ -417,6 +417,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		adapter.notifyDataSetChanged();
 	}
 
+	public Status getMainStatus(){
+		return mainStatus;
+	}
+
 	@Override
 	public boolean isItemEnabled(String id){
 		return !id.equals(mainStatus.id) || !mainStatus.filterRevealed;

@@ -18,6 +18,7 @@ import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTabFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
+import org.joinmastodon.android.fragments.ScheduledStatusListFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
@@ -49,7 +50,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 
 public abstract class StatusDisplayItem{
 	public final String parentID;
-	public final BaseStatusListFragment parentFragment;
+	public final BaseStatusListFragment<?> parentFragment;
 	public boolean inset;
 	public int index;
 	public boolean
@@ -78,7 +79,7 @@ public abstract class StatusDisplayItem{
 		this.isDirectDescendant = isDirectDescendant;
 	}
 
-	public StatusDisplayItem(String parentID, BaseStatusListFragment parentFragment){
+	public StatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment){
 		this.parentID=parentID;
 		this.parentFragment=parentFragment;
 	}
@@ -257,7 +258,7 @@ public abstract class StatusDisplayItem{
 		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
 		}else if(hasSpoiler){
-			contentItems.add(new DummyStatusDisplayItem(parentID, fragment, true));
+			contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
 		}
 
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
@@ -293,11 +294,14 @@ public abstract class StatusDisplayItem{
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);
 		}
-		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && AccountSessionManager.get(accountID).getLocalPreferences().emojiReactionsEnabled){
-			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent));
+		if((flags & FLAG_NO_EMOJI_REACTIONS)==0
+				&& AccountSessionManager.get(accountID).getLocalPreferences().emojiReactionsEnabled){
+			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
+			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus, false));
 		}
+		FooterStatusDisplayItem footer=null;
 		if((flags & FLAG_NO_FOOTER)==0){
-			FooterStatusDisplayItem footer=new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID);
+			footer=new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID);
 			footer.hideCounts=hideCounts;
 			items.add(footer);
 			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
@@ -306,10 +310,12 @@ public abstract class StatusDisplayItem{
 		int i=1;
 		boolean inset=(flags & FLAG_INSET)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
-		if (inset) {
-			items.add(new DummyStatusDisplayItem(parentID, fragment,
-					!contentItems.isEmpty() && contentItems
-							.get(contentItems.size() - 1) instanceof MediaGridStatusDisplayItem));
+		if(inset || footer==null){
+			items.add(new DummyStatusDisplayItem(parentID, fragment));
+			// in case we ever need the dummy to display a margin for the media grid again:
+			// (i forgot why we apparently don't need this anymore)
+			// !contentItems.isEmpty() && contentItems
+			// 	.get(contentItems.size() - 1) instanceof MediaGridStatusDisplayItem));
 		}
 		for(StatusDisplayItem item:items){
 			item.inset=inset;

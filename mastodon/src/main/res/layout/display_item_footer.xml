@@ -127,40 +127,6 @@
 			</FrameLayout>
 
 			<FrameLayout
-				android:id="@+id/react_layout"
-				android:layout_weight="1"
-				android:layout_width="0dp"
-				android:layout_height="match_parent">
-				<FrameLayout
-					android:id="@+id/react_btn"
-					android:layout_width="wrap_content"
-					android:layout_height="match_parent"
-					android:paddingVertical="12dp">
-					<ImageView
-						android:id="@+id/react"
-						android:layout_width="24sp"
-						android:layout_height="24sp"
-						android:layout_gravity="center_vertical"
-						android:layout_marginHorizontal="16dp"
-						android:src="@drawable/ic_fluent_emoji_laugh_24_regular"
-						android:tint="@color/bookmark_icon"
-						android:gravity="center_vertical"
-						android:textAppearance="@style/m3_label_large" />
-				</FrameLayout>
-				<LinearLayout
-					android:layout_width="wrap_content"
-					android:layout_height="wrap_content"
-					android:visibility="gone">
-					<EditText
-						android:layout_width="100dp"
-						android:layout_height="20dp"
-						android:focusable="true"
-						android:focusableInTouchMode="true"
-						android:id="@+id/react_input"/>
-				</LinearLayout>
-			</FrameLayout>
-
-			<FrameLayout
 				android:layout_weight="1"
 				android:layout_width="0dp"
 				android:layout_height="match_parent">

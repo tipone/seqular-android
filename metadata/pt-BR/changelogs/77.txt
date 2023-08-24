@@ -1,0 +1,4 @@
+- Pressione e segure o botão seguir para seguir perfis de outra conta
+- Opção para abrir perfis em outra conta
+- Ocultar automaticamente o botão de composição ao rolar a linha do tempo
+- Correção de falha ao abrir os perfis do administrador do servidor

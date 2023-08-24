@@ -21,6 +21,7 @@ import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
@@ -31,6 +32,8 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.utils.StatusTextEncoder;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -183,13 +186,19 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 
 			// remove additional padding when (transparently padded) translate button is visible
-			int nextPos = getAbsoluteAdapterPosition() + 1;
+			int nextPos=getAbsoluteAdapterPosition() + 1;
 			int bottomPadding=V.dp(12);
-			if(item.parentFragment.getDisplayItems().size() > nextPos){
-				if(item.parentFragment.getDisplayItems().get(nextPos) instanceof FooterStatusDisplayItem) bottomPadding=V.dp(6);
-				if(item.parentFragment.getDisplayItems().get(nextPos) instanceof EmojiReactionsStatusDisplayItem){
-					bottomPadding=item.status.reactions.isEmpty() ? V.dp(6) : 0;
+			List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
+			if(displayItems.size() > nextPos){
+				StatusDisplayItem next=displayItems.get(nextPos);
+				if(next instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()){
+					next=displayItems.size() > ++nextPos ? displayItems.get(nextPos) : null;
 				}
+
+				if(next instanceof FooterStatusDisplayItem) bottomPadding=V.dp(6);
+				else if((!item.inset && next instanceof DummyStatusDisplayItem)
+						|| next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()
+				) bottomPadding=0;
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 
@@ -226,7 +235,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 			// compensate for spoiler's bottom margin
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
-			params.setMargins(params.leftMargin, (item.inset || GlobalUserPreferences.spectatorMode) && hasSpoiler ? V.dp(-16) : 0,
+			params.setMargins(params.leftMargin, item.inset && hasSpoiler ? V.dp(-16) : 0,
 					params.rightMargin, params.bottomMargin);
 		}
 

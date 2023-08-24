@@ -5,14 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.DisplayMetrics;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.view.HapticFeedbackConstants;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -21,41 +14,26 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
-import android.view.inputmethod.InputMethodManager;
-import android.view.animation.AnimationSet;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.RotateAnimation;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.MastodonAPIRequest;
-import org.joinmastodon.android.api.requests.statuses.AddStatusReaction;
-import org.joinmastodon.android.api.requests.statuses.PleromaAddStatusReaction;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ComposeFragment;
-import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
-import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
 import java.util.function.Consumer;
-import java.util.regex.Pattern;
 
 import me.grishka.appkit.Nav;
-import me.grishka.appkit.api.Callback;
-import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
@@ -76,14 +54,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
-		private final FrameLayout reactLayout;
 		private final TextView replies, boosts, favorites;
-		private final View reply, boost, favorite, share, bookmark, react;
-		private final InputMethodManager imm;
-		private CustomEmojiPopupKeyboard emojiKeyboard;
-		private LinearLayout emojiKeyboardContainer;
-		private boolean reactKeyboardVisible;
-		private final Activity activity;
+		private final View reply, boost, favorite, share, bookmark;
 		private static final Animation opacityOut, opacityIn;
 		private static AnimationSet animSet;
 
@@ -130,10 +102,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
-			this.activity = activity;
-
-			reactLayout=findViewById(R.id.react_layout);
-			emojiKeyboardContainer=findViewById(R.id.footer_emoji_keyboard_container);
 
 			replies=findViewById(R.id.reply);
 			boosts=findViewById(R.id.boost);
@@ -144,7 +112,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite=findViewById(R.id.favorite_btn);
 			share=findViewById(R.id.share_btn);
 			bookmark=findViewById(R.id.bookmark_btn);
-			react=findViewById(R.id.react_btn);
 
 			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
@@ -158,9 +125,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite.setOnClickListener(this::onFavoriteClick);
 			favorite.setOnLongClickListener(this::onFavoriteLongClick);
 			favorite.setAccessibilityDelegate(buttonAccessibilityDelegate);
-			react.setOnTouchListener(this::onButtonTouch);
-			react.setOnClickListener(this::onReactClick);
-			react.setAccessibilityDelegate(buttonAccessibilityDelegate);
 			bookmark.setOnTouchListener(this::onButtonTouch);
 			bookmark.setOnClickListener(this::onBookmarkClick);
 			bookmark.setOnLongClickListener(this::onBookmarkLongClick);
@@ -169,8 +133,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			share.setOnClickListener(this::onShareClick);
 			share.setOnLongClickListener(this::onShareLongClick);
 			share.setAccessibilityDelegate(buttonAccessibilityDelegate);
-
-			imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
 		}
 
 		@Override
@@ -187,11 +149,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			bookmark.setSelected(item.status.bookmarked);
 			boost.setEnabled(item.status.isReblogPermitted(item.accountID));
 
-			AccountSession accountSession=AccountSessionManager.get(item.accountID);
-			reactLayout.setVisibility(accountSession.getLocalPreferences().emojiReactionsEnabled
-						? View.VISIBLE
-						: View.GONE);
-
 			int nextPos = getAbsoluteAdapterPosition() + 1;
 			boolean nextIsWarning = item.parentFragment.getDisplayItems().size() > nextPos &&
 					item.parentFragment.getDisplayItems().get(nextPos) instanceof WarningFilteredStatusDisplayItem;
@@ -203,28 +160,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 					condenseBottom ? V.dp(-5) : 0);
 
 			itemView.requestLayout();
-
-			reactKeyboardVisible=false;
-			emojiKeyboard=new CustomEmojiPopupKeyboard(activity, AccountSessionManager.getInstance().getCustomEmojis(accountSession.domain), accountSession.domain, true, item.accountID);
-			emojiKeyboard.setListener(new CustomEmojiPopupKeyboard.Listener(){
-				@Override
-				public void onEmojiSelected(Emoji emoji) {
-					addEmojiReaction(emoji.shortcode);
-					emojiKeyboard.toggleKeyboardPopup(null);
-				}
-
-				@Override
-				public void onEmojiSelected(String emoji){
-					addEmojiReaction(emoji);
-					emojiKeyboard.toggleKeyboardPopup(null);
-				}
-
-				@Override
-				public void onBackspace() {}
-			});
-
-			emojiKeyboardContainer.removeAllViews();
-			emojiKeyboardContainer.addView(emojiKeyboard.getView());
 		}
 
 		private void bindText(TextView btn, long count){
@@ -468,29 +403,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			return true;
 		}
 
-		private boolean resetReact(View v){
-			if(!reactKeyboardVisible) return false;
-			if(emojiKeyboard.isVisible()) emojiKeyboard.toggleKeyboardPopup(null);
-			reactKeyboardVisible=false;
-			v.setAlpha(1);
-			v.startAnimation(opacityIn);
-			return true;
-		}
-
-		private void onReactClick(View v){
-			if (resetReact(v)) return;
-			reactKeyboardVisible=true;
-			emojiKeyboard.toggleKeyboardPopup(null);
-			DisplayMetrics displayMetrics = new DisplayMetrics();
-			int[] locationOnScreen = new int[2];
-			activity.getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
-			v.getLocationOnScreen(locationOnScreen);
-			double fromScreenTop = (double) locationOnScreen[1] / displayMetrics.heightPixels;
-			if (fromScreenTop > 0.75) {
-				item.parentFragment.scrollBy(0, (int) (displayMetrics.heightPixels * 0.3));
-			}
-		}
-
 		private void onBookmarkClick(View v){
 			if(item.status.isRemote){
 				UiUtils.lookupStatus(v.getContext(),
@@ -552,51 +464,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				return R.string.add_bookmark;
 			if(id==R.id.share_btn)
 				return R.string.button_share;
-			if(id==R.id.react_btn)
-				return R.string.sk_button_react;
 			return 0;
-		}
-
-		private void addEmojiReaction(String emoji) {
-			MastodonAPIRequest<Status> req = item.parentFragment.isInstanceAkkoma()
-					? new PleromaAddStatusReaction(item.status.id, emoji)
-					: new AddStatusReaction(item.status.id, emoji);
-			req.setCallback(new Callback<>() {
-				@Override
-				public void onSuccess(Status result) {
-					item.parentFragment.updateEmojiReactions(result, getItemID());
-				}
-
-				@Override
-				public void onError(ErrorResponse error) {
-					error.showToast(item.parentFragment.getContext());
-				}
-			})
-			.exec(item.accountID);
-			reactKeyboardVisible=false;
-			react.startAnimation(opacityIn);
-		}
-
-		private static void vibrateForAction(View view, boolean isPositive) {
-			if (!GlobalUserPreferences.hapticFeedback) return;
-
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-				view.performHapticFeedback(isPositive ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.REJECT);
-			} else {
-				Vibrator vibrator = view.getContext().getSystemService(Vibrator.class);
-
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-					vibrator.vibrate(VibrationEffect.createPredefined(isPositive ? VibrationEffect.EFFECT_CLICK : VibrationEffect.EFFECT_DOUBLE_CLICK));
-				} else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-					VibrationEffect effect = isPositive
-						? VibrationEffect.createOneShot(75L, 128)
-						: VibrationEffect.createWaveform(new long[]{0L, 75L, 75L, 75L}, new int[]{0, 128, 0, 128}, -1);
-					vibrator.vibrate(effect);
-				} else {
-					if (isPositive) vibrator.vibrate(75L);
-					else vibrator.vibrate(new long[]{0L, 75L, 75L, 75L}, -1);
-				}
-			}
 		}
 	}
 }

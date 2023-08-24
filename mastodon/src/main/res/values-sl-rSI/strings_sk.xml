@@ -252,7 +252,7 @@
     <string name="sk_icon_gauge">Merilnik</string>
     <string name="sk_expand">Razširi</string>
     <string name="sk_unfinished_attachments_message">Nekatere priloge se niso naložile do konca.</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">CW predpona odgovora z »re:«</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">CW predpona odgovora z “re:”</string>
     <string name="sk_collapse">Strni</string>
     <string name="sk_settings_collapse_long_posts">Strni zelo dolge objave</string>
     <string name="sk_filtered">Filtrirano: %s</string>
@@ -312,4 +312,28 @@
     <string name="sk_reacted_with">%1$s se je odzval z %2$s</string>
     <string name="sk_reacted">%s se je odzval</string>
     <string name="sk_bubble_timeline_info_banner">To so najnovejše objave iz omrežja, ki so jih kurirali skrbniki vaše instance.</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Samodejno razkrij enake CW-je v odgovorih</string>
+    <string name="sk_settings_auto_reveal_nobody">Nikoli</string>
+    <string name="sk_settings_auto_reveal_author">Odgovori istega avtorja</string>
+    <string name="sk_settings_auto_reveal_anyone">Odgovori vseh</string>
+    <string name="sk_settings_prefix_replies_always">V odgovor komurkoli</string>
+    <string name="sk_settings_prefix_replies_never">Nikoli</string>
+    <string name="sk_settings_prefix_replies_to_others">Samo v odgovoru drugim</string>
+    <string name="sk_list_exclusive_switch_explanation">Člani ekskluzivnega seznama ne bodo prikazani na vaši domači časovnici – če to podpira vaša instanca.</string>
+    <string name="sk_advanced_options_show">Prikaži napredne možnosti</string>
+    <string name="sk_advanced_options_hide">Skrij napredne možnosti</string>
+    <string name="sk_exclusive_list">Ekskluzivni seznam</string>
+    <string name="sk_list_exclusive_switch">Naj bo seznam ekskluziven</string>
+    <string name="sk_settings_forward_report_default">Privzeto stikalo “Posreduj poročilo”</string>
+    <string name="sk_followed_as">Spremljan od %s</string>
+    <string name="sk_settings_default_content_type_explanation">To vam omogoča, da pri ustvarjanju novih objav predhodno izberete vrsto vsebine, s čimer prepišete vrednost, nastavljeno v »Nastavitvah objav«.</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Poskusite pridobiti natančnejše sezname za sledilce, všečke in spodbude, tako da naložite informacije iz originalne instance.</string>
+    <string name="sk_spoiler_show">Prikaži vsebino</string>
+    <string name="sk_pronouns_label">Zaimki</string>
+    <string name="sk_switch_timeline">Preklopi časovnico</string>
+    <string name="sk_settings_instance">Instanca</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Onemogoči indikator aktivnega zavihka v obliki tabletke</string>
+    <string name="sk_settings_true_black">Čisto črni način</string>
+    <string name="sk_settings_reply_visibility_self">Odgovori meni</string>
+    <string name="sk_search_fediverse">Iskanje v Fediverse</string>
 </resources>

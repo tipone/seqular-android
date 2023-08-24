@@ -106,7 +106,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 			t.postprocess();
 		for(Emoji e:emojis)
 			e.postprocess();
-		if (mediaAttachments == null) mediaAttachments = List.of();
+		if (mediaAttachments == null) mediaAttachments=List.of();
 		for(Attachment a:mediaAttachments)
 			a.postprocess();
 		account.postprocess();
@@ -181,8 +181,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		reblogged=ev.reblogged;
 		bookmarked=ev.bookmarked;
 		pinned=ev.pinned;
-		reactions.clear();
-		reactions.addAll(ev.reactions);
+		reactions=ev.reactions;
 	}
 
 	public Status getContentStatus(){
@@ -208,17 +207,18 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	}
 
 	public static Status ofFake(String id, String text, Instant createdAt) {
-		Status s = new Status();
-		s.id = id;
-		s.mediaAttachments = List.of();
-		s.createdAt = createdAt;
-		s.content = s.text = text;
-		s.spoilerText = "";
-		s.visibility = StatusPrivacy.PUBLIC;
-		s.mentions = List.of();
-		s.tags = List.of();
-		s.emojis = List.of();
-		s.filtered = List.of();
+		Status s=new Status();
+		s.id=id;
+		s.mediaAttachments=List.of();
+		s.createdAt=createdAt;
+		s.content=s.text=text;
+		s.spoilerText="";
+		s.visibility=StatusPrivacy.PUBLIC;
+		s.reactions=List.of();
+		s.mentions=List.of();
+		s.tags =List.of();
+		s.emojis=List.of();
+		s.filtered=List.of();
 		return s;
 	}
 
@@ -230,21 +230,21 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public static class StatusDeserializer implements JsonDeserializer<Status> {
 		@Override
 		public Status deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) throws JsonParseException {
-			JsonObject obj = json.getAsJsonObject();
+			JsonObject obj=json.getAsJsonObject();
 
-			Status quote = null;
+			Status quote=null;
 			if (obj.has("quote") && obj.get("quote").isJsonObject())
-				quote = gson.fromJson(obj.get("quote"), Status.class);
+				quote=gson.fromJson(obj.get("quote"), Status.class);
 			obj.remove("quote");
 
-			Status reblog = null;
+			Status reblog=null;
 			if (obj.has("reblog"))
-				reblog = gson.fromJson(obj.get("reblog"), Status.class);
+				reblog=gson.fromJson(obj.get("reblog"), Status.class);
 			obj.remove("reblog");
 
-			Status status = gsonWithoutDeserializer.fromJson(json, Status.class);
-			status.quote = quote;
-			status.reblog = reblog;
+			Status status=gsonWithoutDeserializer.fromJson(json, Status.class);
+			status.quote=quote;
+			status.reblog=reblog;
 
 			return status;
 		}

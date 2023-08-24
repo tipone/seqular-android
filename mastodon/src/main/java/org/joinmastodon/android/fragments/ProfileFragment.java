@@ -1186,6 +1186,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		);
 
 		name.setVisibility(View.GONE);
+		rolesView.setVisibility(View.GONE);
 		username.setVisibility(View.GONE);
 		bio.setVisibility(View.GONE);
 		countersLayout.setVisibility(View.GONE);
@@ -1234,6 +1235,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		nameEditWrap.setVisibility(View.GONE);
 		bioEditWrap.setVisibility(View.GONE);
 		name.setVisibility(View.VISIBLE);
+		rolesView.setVisibility(View.VISIBLE);
 		username.setVisibility(View.VISIBLE);
 		bio.setVisibility(View.VISIBLE);
 		countersLayout.setVisibility(View.VISIBLE);
