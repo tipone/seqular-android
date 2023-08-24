@@ -24,10 +24,6 @@ public class DiscoverPostsFragment extends StatusListFragment{
 		bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.TRENDING_POSTS, accountID);
 	}
 
-	@Override
-	public String getDomain() {
-		return super.getDomain() + "/explore/posts";
-	}
 
 	@Override
 	protected void doLoadData(int offset, int count){
