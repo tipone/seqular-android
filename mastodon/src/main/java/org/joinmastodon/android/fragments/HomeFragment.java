@@ -270,7 +270,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
 			if (tab == R.id.tab_search)
-				searchFragment.onSelect();
+				discoverFragment.openSearch();
 			else if(newFragment instanceof ScrollableToTop scrollable)
 				scrollable.scrollToTop();
 			return;
@@ -311,7 +311,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if(tab==R.id.tab_search){
 			onTabSelected(R.id.tab_search);
 			tabBar.selectTab(R.id.tab_search);
-			searchFragment.openSearch();
+			discoverFragment.openSearch();
 			return true;
 		}
 		if(tab==R.id.tab_home){
