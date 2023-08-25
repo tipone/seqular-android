@@ -57,7 +57,7 @@
 		<item name="colorBoost">?colorM3Primary</item>
 		<item name="colorPoll">@color/bookmark_selected</item>
 		<item name="colorTabBarAlpha">#14000000</item>
-		<item name="colorFilledCardAlpha">#30000000</item>
+		<item name="colorFilledCardAlpha">#22000000</item>
 
 		<item name="colorM3DisabledBackground">#1F1F1F1F</item>
 		<item name="colorM3Error">#B3261E</item>

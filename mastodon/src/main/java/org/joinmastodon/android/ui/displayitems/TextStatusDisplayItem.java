@@ -32,8 +32,6 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 import org.joinmastodon.android.utils.StatusTextEncoder;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 import java.util.regex.Pattern;
 
@@ -196,21 +194,13 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 
-			// remove additional padding when (transparently padded) translate button is visible
-			int nextPos=getAbsoluteAdapterPosition() + 1;
-			int bottomPadding=V.dp(12);
-			List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
-			if(displayItems.size() > nextPos){
-				StatusDisplayItem next=displayItems.get(nextPos);
-				if(next instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()){
-					next=displayItems.size() > ++nextPos ? displayItems.get(nextPos) : null;
-				}
-
-				if(next instanceof FooterStatusDisplayItem) bottomPadding=V.dp(6);
-				else if((!item.inset && next instanceof DummyStatusDisplayItem)
-						|| next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()
-				) bottomPadding=0;
-			}
+			StatusDisplayItem next=getNextVisibleDisplayItem().orElse(null);
+			int bottomPadding=next instanceof FooterStatusDisplayItem
+					? V.dp(6)
+					: (!item.inset && next instanceof DummyStatusDisplayItem) ||
+						next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()
+					? 0
+					: V.dp(12);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 
 			if (!GlobalUserPreferences.collapseLongPosts) {
