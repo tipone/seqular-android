@@ -18,7 +18,6 @@ import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTabFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
-import org.joinmastodon.android.fragments.ScheduledStatusListFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
@@ -51,7 +50,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public abstract class StatusDisplayItem{
 	public final String parentID;
 	public final BaseStatusListFragment<?> parentFragment;
-	public boolean inset;
+	public boolean inset, insetPadding=true;
 	public int index;
 	public boolean
 			hasDescendantNeighbor = false,
