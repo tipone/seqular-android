@@ -62,8 +62,7 @@
 						android:layout_alignParentStart="true"
 						android:layout_marginStart="12dp"
 						android:layout_marginTop="-44dp"
-						android:background="@drawable/profile_ava_bg"
-						android:outlineProvider="@null">
+						android:background="?colorM3Surface">
 
 						<ImageView
 							android:id="@+id/avatar"

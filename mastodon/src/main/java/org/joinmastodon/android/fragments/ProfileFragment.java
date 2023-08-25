@@ -258,6 +258,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		list=content.findViewById(R.id.metadata);
 		rolesView=content.findViewById(R.id.roles);
 
+		avatarBorder.setOutlineProvider(OutlineProviders.roundedRect(26));
+		avatarBorder.setClipToOutline(true);
 		avatar.setOutlineProvider(OutlineProviders.roundedRect(24));
 		avatar.setClipToOutline(true);
 
