@@ -206,18 +206,19 @@
 						android:visibility="gone"
 						android:hint="@string/mo_personal_note"/>
 
-					<Button
+					<ImageButton
 						android:id="@+id/note_edit_confirm"
 						android:layout_width="wrap_content"
 						android:layout_height="wrap_content"
 						android:layout_marginEnd="8dp"
-						android:paddingBottom="8dp"
+						android:paddingHorizontal="6dp"
+						android:layout_marginBottom="8dp"
 						android:visibility="invisible"
-						android:backgroundTint="?colorM3SurfaceVariant"
 						android:layout_gravity="right|bottom"
+						android:background="@drawable/bg_button_m3_tonal_circle"
 						android:tooltipText="@string/mo_personal_note_confirm"
 						android:contentDescription="@string/mo_personal_note_confirm"
-						android:drawableStart="@drawable/ic_fluent_checkmark_24_regular"
+						android:src="@drawable/ic_fluent_checkmark_24_regular"
 						/>
 				</FrameLayout>
 

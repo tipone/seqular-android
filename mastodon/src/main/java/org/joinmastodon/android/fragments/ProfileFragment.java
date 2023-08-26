@@ -270,7 +270,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		noteEdit = content.findViewById(R.id.note_edit);
 		noteWrap = content.findViewById(R.id.note_edit_wrap);
-		Button noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
+		ImageButton noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
 
 		noteEditConfirm.setOnClickListener((v -> {
 			if (!noteEdit.getText().toString().trim().equals(note)) {
