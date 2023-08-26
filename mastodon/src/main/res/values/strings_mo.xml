@@ -66,6 +66,9 @@
     <string name="mo_severity_silence">Silenced</string>
     <string name="mo_severity_suspend">Blocked</string>
 
+	<string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+	<string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
+
 <!--    Settings summaries-->
     <string name="mo_setting_true_black_summary">Might save power on AMOLED displays</string>
     <string name="mo_setting_marquee_summary">Disables the ellipsized title scrolling</string>
