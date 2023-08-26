@@ -554,16 +554,16 @@
 
 
 			<ImageButton
+				style="@style/Widget.Mastodon.M3.Button.Filled.Elevated"
 				android:id="@+id/publish"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginStart="12dp"
+				android:layout_marginHorizontal="12dp"
 				android:paddingHorizontal="12dp"
 				android:visibility="gone"
 				android:tooltipText="@string/publish"
 				android:contentDescription="@string/publish"
 				android:src="@drawable/ic_fluent_send_24_selector"
-				style="@style/Widget.Mastodon.M3.Button.Filled.Elevated"
 				/>
 
 		</LinearLayout>
