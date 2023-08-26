@@ -177,7 +177,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	private Button publishButton, languageButton, scheduleTimeBtn;
 	private PopupMenu languagePopup, contentTypePopup, visibilityPopup, draftOptionsPopup;
-	private ImageButton mediaBtn, pollBtn, emojiBtn, spoilerBtn, draftsBtn, scheduleDraftDismiss, contentTypeBtn;
+	private ImageButton publishButtonRelocated, mediaBtn, pollBtn, emojiBtn, spoilerBtn, draftsBtn, scheduleDraftDismiss, contentTypeBtn;
 	private View sensitiveBtn;
 	private TextView replyText;
 	private LinearLayout scheduleDraftView;
@@ -336,17 +336,16 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		View view=inflater.inflate(R.layout.fragment_compose, container, false);
 
 		if(GlobalUserPreferences.relocatePublishButton){
-			publishButton=view.findViewById(R.id.publish);
+			publishButtonRelocated=view.findViewById(R.id.publish);
 //			publishButton.setText(editingStatus==null || redraftStatus ? R.string.publish : R.string.save);
-			publishButton.setEllipsize(TextUtils.TruncateAt.END);
-			publishButton.setOnClickListener(v -> {
+//			publishButton.setEllipsize(TextUtils.TruncateAt.END);
+			publishButtonRelocated.setOnClickListener(v -> {
 				if(GlobalUserPreferences.altTextReminders && editingStatus==null)
 					checkAltTextsAndPublish();
 				else
 					publish();
 			});
-			publishButton.setSingleLine(true);
-			publishButton.setVisibility(View.VISIBLE);
+			publishButtonRelocated.setVisibility(View.VISIBLE);
 
 			draftsBtn=view.findViewById(R.id.drafts_btn);
 			draftsBtn.setVisibility(View.VISIBLE);
@@ -910,12 +909,22 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		languageButton = wrap.findViewById(R.id.language_btn);
 		languageButton.setOnClickListener(v->showLanguageAlert());
 
-		publishButton.setOnClickListener(v -> {
-			if(GlobalUserPreferences.altTextReminders && editingStatus==null)
-				checkAltTextsAndPublish();
-			else
-				publish();
-		});
+		if(GlobalUserPreferences.relocatePublishButton){
+			publishButtonRelocated.setOnClickListener(v -> {
+				if(GlobalUserPreferences.altTextReminders && editingStatus==null)
+					checkAltTextsAndPublish();
+				else
+					publish();
+			});
+		} else {
+			publishButton.setOnClickListener(v -> {
+				if(GlobalUserPreferences.altTextReminders && editingStatus==null)
+					checkAltTextsAndPublish();
+				else
+					publish();
+			});
+		}
+
 		draftsBtn.setOnClickListener(v-> draftOptionsPopup.show());
 		draftsBtn.setOnTouchListener(draftOptionsPopup.getDragToOpenListener());
 		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
@@ -1016,6 +1025,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	public void updatePublishButtonState(){
 		uuid=null;
+		if(GlobalUserPreferences.relocatePublishButton && publishButtonRelocated != null){
+			publishButtonRelocated.setEnabled((!isInstancePixelfed() || !mediaViewController.isEmpty()) && (trimmedCharCount>0 || !mediaViewController.isEmpty()) && charCount<=charLimit && mediaViewController.getNonDoneAttachmentCount()==0 && (pollViewController.isEmpty() || pollViewController.getNonEmptyOptionsCount()>1));
+		}
+
 		if(publishButton==null)
 			return;
 		publishButton.setEnabled((!isInstancePixelfed() || !mediaViewController.isEmpty()) && (trimmedCharCount>0 || !mediaViewController.isEmpty()) && charCount<=charLimit && mediaViewController.getNonDoneAttachmentCount()==0 && (pollViewController.isEmpty() || pollViewController.getNonEmptyOptionsCount()>1));
@@ -1539,8 +1552,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				draftsBtn.setImageDrawable(getContext().getDrawable(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_drafts_24_regular : R.drawable.ic_fluent_drafts_20_filled));
 
 				if(GlobalUserPreferences.relocatePublishButton){
-					publishButton.setCompoundDrawablesWithIntrinsicBounds(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
-						? R.drawable.ic_fluent_save_24_selector : R.drawable.ic_fluent_drafts_24_selector, 0, 0, 0);
+					publishButtonRelocated.setImageResource(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
+						? R.drawable.ic_fluent_save_24_selector : R.drawable.ic_fluent_drafts_24_selector);
 				}else{
 					publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
 							? R.string.save : R.string.sk_draft);
@@ -1560,8 +1573,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				draftsBtn.setImageDrawable(getContext().getDrawable(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_clock_24_filled : R.drawable.ic_fluent_clock_20_filled));
 				if(GlobalUserPreferences.relocatePublishButton)
 				{
-					publishButton.setCompoundDrawablesWithIntrinsicBounds(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
-							? R.drawable.ic_fluent_save_24_selector : R.drawable.ic_fluent_clock_24_selector, 0, 0, 0);
+					publishButtonRelocated.setImageResource(scheduledStatus != null && scheduledStatus.scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)
+							? R.drawable.ic_fluent_save_24_selector : R.drawable.ic_fluent_clock_24_selector);
 				}else{
 					publishButton.setText(scheduledStatus != null && scheduledStatus.scheduledAt.equals(scheduledAt)
 							? R.string.save : R.string.sk_schedule);
@@ -1570,7 +1583,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		} else {
 			draftsBtn.setImageDrawable(getContext().getDrawable(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_clock_24_regular : R.drawable.ic_fluent_clock_20_regular));
 			if(GlobalUserPreferences.relocatePublishButton){
-				publishButton.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_fluent_send_24_selector, 0, 0, 0);
+				publishButtonRelocated.setImageResource(R.drawable.ic_fluent_send_24_selector);
 			}
 			resetPublishButtonText();
 		}

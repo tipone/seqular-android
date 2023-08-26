@@ -553,15 +553,17 @@
 				tools:text="500"/>
 
 
-			<Button
+			<ImageButton
 				android:id="@+id/publish"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_marginStart="12dp"
+				android:paddingHorizontal="12dp"
 				android:visibility="gone"
 				android:tooltipText="@string/publish"
 				android:contentDescription="@string/publish"
-				android:drawableStart="@drawable/ic_fluent_send_24_selector"
+				android:src="@drawable/ic_fluent_send_24_selector"
+				style="@style/Widget.Mastodon.M3.Button.Filled.Elevated"
 				/>
 
 		</LinearLayout>
