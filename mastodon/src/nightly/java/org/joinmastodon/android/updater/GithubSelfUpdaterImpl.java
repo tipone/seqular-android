@@ -319,6 +319,16 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		}
 	}
 
+	@Override
+	public void reset(){
+		getPrefs().edit().clear().apply();
+		File apk=getUpdateApkFile();
+		if(apk.exists())
+			apk.delete();
+		state=UpdateState.NO_UPDATE;
+	}
+
+
 	/*public static class InstallerStatusReceiver extends BroadcastReceiver{
 
 		@Override
