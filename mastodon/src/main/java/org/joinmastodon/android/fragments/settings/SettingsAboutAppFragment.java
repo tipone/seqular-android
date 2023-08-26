@@ -29,11 +29,11 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setTitle(getString(R.string.about_app, getString(R.string.sk_app_name)));
+		setTitle(getString(R.string.about_app, getString(R.string.mo_app_name)));
 		AccountSession s=AccountSessionManager.get(accountID);
 		onDataLoaded(List.of(
 				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.donate_url))),
-				new ListItem<>(R.string.sk_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.repo_url))),
+				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.repo_url))),
 				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+s.domain+"/terms")),
 				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
 				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick)
@@ -56,7 +56,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 		versionInfo.setTextAppearance(R.style.m3_label_medium);
 		versionInfo.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Outline));
 		versionInfo.setGravity(Gravity.CENTER);
-		versionInfo.setText(getString(R.string.sk_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+		versionInfo.setText(getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
 		adapter.addAdapter(new SingleViewRecyclerAdapter(versionInfo));
 
 		return adapter;
