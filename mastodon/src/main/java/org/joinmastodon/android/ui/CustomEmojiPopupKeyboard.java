@@ -24,33 +24,22 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.squareup.otto.Subscribe;
 
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiUpdatedEvent;
-import org.joinmastodon.android.fragments.HasAccountID;
-import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiCategory;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Pattern;
-import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.ListImageLoaderWrapper;
@@ -62,18 +51,13 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccountID{
-	//determines how many emoji need to be clicked, before it disappears from the recent emojis
-	private static final int NEW_RECENT_VALUE=15;
-
+public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 	private List<EmojiCategory> emojis;
 	private UsableRecyclerView list;
 	private ListImageLoaderWrapper imgLoader;
 	private MergeRecyclerAdapter adapter=new MergeRecyclerAdapter();
 	private String domain;
 	private String accountID;
-	private Map<String, Integer> recentEmojis;
-
 	private int spanCount=6;
 	private Listener listener;
 	private boolean forReaction;
@@ -90,7 +74,6 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 		this.domain=domain;
 		this.accountID=accountID;
 		this.forReaction=forReaction;
-		recentEmojis = AccountSessionManager.get(accountID).getLocalPreferences().recentEmojis;
 	}
 
 	@Override
@@ -118,17 +101,6 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 		list.setPadding(V.dp(16), 0, V.dp(16), 0);
 		imgLoader=new ListImageLoaderWrapper(activity, list, new RecyclerViewDelegate(list), null);
 
-		// inject category with last used emojis
-		if (!recentEmojis.isEmpty()) {
-			List<Emoji> allAvailableEmojis =  emojis.stream().flatMap(category -> category.emojis.stream()).collect(Collectors.toList());
-			List<Emoji> recentEmojiList = new ArrayList<>();
-			for (String emojiCode : recentEmojis.keySet().stream().sorted(Comparator.comparingInt(getLocalPrefs().recentEmojis::get).reversed()).collect(Collectors.toList())) {
-				Optional<Emoji> element = allAvailableEmojis.stream().filter(e -> e.shortcode.equals(emojiCode)).findFirst();
-				element.ifPresent(recentEmojiList::add);
-			}
-			emojis.add(0, new EmojiCategory(activity.getString(R.string.mo_emoji_recent), recentEmojiList));
-		}
-
 		for(EmojiCategory category:emojis)
 			adapter.addAdapter(new SingleCategoryAdapter(category));
 		list.setAdapter(adapter);
@@ -152,13 +124,13 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 		new StickyHeadersOverlay(activity, 0).install(list);
 
 		LinearLayout ll=new LinearLayout(activity) {
-				@Override
-				public boolean onInterceptTouchEvent(MotionEvent e){
-					if (e.getAction() == MotionEvent.ACTION_MOVE) {
-						getParent().requestDisallowInterceptTouchEvent(true);
-					}
-					return false;
+			@Override
+			public boolean onInterceptTouchEvent(MotionEvent e){
+				if (e.getAction() == MotionEvent.ACTION_MOVE) {
+					getParent().requestDisallowInterceptTouchEvent(true);
 				}
+				return false;
+			}
 		};
 		ll.setOrientation(LinearLayout.VERTICAL);
 		ll.setElevation(V.dp(3));
@@ -218,30 +190,11 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 			bottomPanel.addView(backspace, new FrameLayout.LayoutParams(V.dp(48), V.dp(48), Gravity.END | Gravity.CENTER_VERTICAL));
 		}
 
-		//remove recently used afterwards, it would get duplicated otherwise
-		if (!recentEmojis.isEmpty()) {
-			emojis.remove(0);
-		}
-
-		return list;
+		return ll;
 	}
 
 	public void setListener(Listener listener){
 		this.listener=listener;
-	}
-
-	private void increaseEmojiCount(Emoji emoji) {
-		Integer usageCount = recentEmojis.get(emoji.shortcode);
-		if (usageCount != null) {
-			recentEmojis.put(emoji.shortcode, usageCount + 1);
-		} else {
-			recentEmojis.put(emoji.shortcode, NEW_RECENT_VALUE);
-		}
-
-		recentEmojis.entrySet().removeIf(e -> e.getValue() <= 0);
-		recentEmojis.replaceAll((k, v) -> v - 1);
-		AccountSessionManager.get(accountID).getLocalPreferences().recentEmojis = recentEmojis;
-		AccountSessionManager.get(accountID).getLocalPreferences().save();
 	}
 
 	@SuppressLint("NotifyDataSetChanged")
@@ -251,11 +204,6 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 			emojis=AccountSessionManager.getInstance().getCustomEmojis(domain);
 			adapter.notifyDataSetChanged();
 		}
-	}
-
-	@Override
-	public String getAccountID(){
-		return accountID;
 	}
 
 	private class SingleCategoryAdapter extends UsableRecyclerView.Adapter<RecyclerView.ViewHolder> implements ImageLoaderRecyclerAdapter{
@@ -358,7 +306,6 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 
 		@Override
 		public void onClick(){
-			increaseEmojiCount(item);
 			listener.onEmojiSelected(item);
 		}
 	}
