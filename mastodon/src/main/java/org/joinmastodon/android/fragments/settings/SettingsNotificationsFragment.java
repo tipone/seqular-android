@@ -61,6 +61,9 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> uniformIconItem, deleteItem, onlyLatestItem, unifiedPushItem;
 	private CheckableListItem<Void> postsItem, updateItem;
 
+	// MOSHIDON
+	private CheckableListItem<Void> swapBookmarkWithReblogItem;
+
 	private AccountLocalPreferences lp;
 
 	@Override
@@ -84,7 +87,8 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 				updateItem=new CheckableListItem<>(R.string.sk_notification_type_update, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.update, R.drawable.ic_fluent_history_24_regular, ()->toggleCheckableItem(updateItem)),
 				postsItem=new CheckableListItem<>(R.string.sk_notification_type_posts, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.status, R.drawable.ic_fluent_chat_24_regular, ()->toggleCheckableItem(postsItem), true),
 
-				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, ()->toggleCheckableItem(uniformIconItem)),
+				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, R.string.mo_setting_uniform_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, ()->toggleCheckableItem(uniformIconItem)),
+				swapBookmarkWithReblogItem=new CheckableListItem<>(R.string.mo_swap_bookmark_with_reblog, R.string.mo_swap_bookmark_with_reblog_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.swapBookmarkWithBoostAction, R.drawable.ic_boost, ()->toggleCheckableItem(swapBookmarkWithReblogItem)),
 				deleteItem=new CheckableListItem<>(R.string.sk_settings_enable_delete_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enableDeleteNotifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, ()->toggleCheckableItem(deleteItem)),
 				onlyLatestItem=new CheckableListItem<>(R.string.sk_settings_single_notification, 0, CheckableListItem.Style.SWITCH, lp.keepOnlyLatestNotification, R.drawable.ic_fluent_convert_range_24_regular, ()->toggleCheckableItem(onlyLatestItem), true),
 				unifiedPushItem=new CheckableListItem<>(R.string.sk_settings_unifiedpush, 0, CheckableListItem.Style.SWITCH, useUnifiedPush, R.drawable.ic_fluent_alert_arrow_up_24_regular, this::onUnifiedPush, true)
@@ -116,6 +120,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 				|| pollsItem.checked!=ps.alerts.poll;
 		GlobalUserPreferences.uniformNotificationIcon=uniformIconItem.checked;
 		GlobalUserPreferences.enableDeleteNotifications=deleteItem.checked;
+		GlobalUserPreferences.swapBookmarkWithBoostAction=swapBookmarkWithReblogItem.checked;
 		GlobalUserPreferences.save();
 		lp.keepOnlyLatestNotification=onlyLatestItem.checked;
 		lp.save();
