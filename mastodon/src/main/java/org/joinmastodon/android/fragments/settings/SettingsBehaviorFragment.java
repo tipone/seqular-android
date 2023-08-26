@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.settings;
 
 import android.os.Bundle;
+import android.provider.Settings;
 
 import androidx.annotation.StringRes;
 
@@ -32,6 +33,9 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 	private ListItem<Void> prefixRepliesItem, replyVisibilityItem;
 	private CheckableListItem<Void> forwardReportsItem, remoteLoadingItem, showBoostsItem, showRepliesItem, loadNewPostsItem, seeNewPostsBtnItem, overlayMediaItem;
 
+	// MOSHIDON
+    private CheckableListItem<Void> mentionRebloggerAutomaticallyItem, hapticFeedbackItem;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -56,7 +60,9 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 				forwardReportsItem=new CheckableListItem<>(R.string.sk_settings_forward_report_default, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.forwardReportDefault, R.drawable.ic_fluent_arrow_forward_24_regular, ()->toggleCheckableItem(forwardReportsItem)),
 				loadNewPostsItem=new CheckableListItem<>(R.string.sk_settings_load_new_posts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.loadNewPosts, R.drawable.ic_fluent_arrow_sync_24_regular, this::onLoadNewPostsClick),
 				seeNewPostsBtnItem=new CheckableListItem<>(R.string.sk_settings_show_new_posts_button, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNewPostsButton, R.drawable.ic_fluent_arrow_up_24_regular, ()->toggleCheckableItem(seeNewPostsBtnItem)),
-				remoteLoadingItem=new CheckableListItem<>(R.string.sk_settings_allow_remote_loading, R.string.sk_settings_allow_remote_loading_explanation, CheckableListItem.Style.SWITCH, GlobalUserPreferences.allowRemoteLoading, R.drawable.ic_fluent_communication_24_regular, ()->toggleCheckableItem(remoteLoadingItem), true),
+				remoteLoadingItem=new CheckableListItem<>(R.string.sk_settings_allow_remote_loading, R.string.sk_settings_allow_remote_loading_explanation, CheckableListItem.Style.SWITCH, GlobalUserPreferences.allowRemoteLoading, R.drawable.ic_fluent_communication_24_regular, ()->toggleCheckableItem(remoteLoadingItem)),
+				mentionRebloggerAutomaticallyItem=new CheckableListItem<>(R.string.mo_mention_reblogger_automatically, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.mentionRebloggerAutomatically, R.drawable.ic_fluent_comment_mention_24_regular, ()->toggleCheckableItem(mentionRebloggerAutomaticallyItem)),
+				hapticFeedbackItem=new CheckableListItem<>(R.string.mo_haptic_feedback, R.string.mo_setting_haptic_feedback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.hapticFeedback, R.drawable.ic_fluent_phone_vibrate_24_regular,()->toggleCheckableItem(hapticFeedbackItem), true),
 				showBoostsItem=new CheckableListItem<>(R.string.sk_settings_show_boosts, 0, CheckableListItem.Style.SWITCH, lp.showBoosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, ()->toggleCheckableItem(showBoostsItem)),
 				showRepliesItem=new CheckableListItem<>(R.string.sk_settings_show_replies, 0, CheckableListItem.Style.SWITCH, lp.showReplies, R.drawable.ic_fluent_arrow_reply_24_regular, ()->toggleCheckableItem(showRepliesItem))
 		));
@@ -173,6 +179,8 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.loadNewPosts=loadNewPostsItem.checked;
 		GlobalUserPreferences.showNewPostsButton=seeNewPostsBtnItem.checked;
 		GlobalUserPreferences.allowRemoteLoading=remoteLoadingItem.checked;
+		GlobalUserPreferences.mentionRebloggerAutomatically=mentionRebloggerAutomaticallyItem.checked;
+		GlobalUserPreferences.hapticFeedback=hapticFeedbackItem.checked;
 		GlobalUserPreferences.save();
 		AccountLocalPreferences lp=getLocalPrefs();
 		lp.showBoosts=showBoostsItem.checked;
