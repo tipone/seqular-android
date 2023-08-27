@@ -143,7 +143,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 							!item.status.visibility.isLessVisibleThan(StatusPrivacy.UNLISTED) &&
 							item.status.language != null &&
 							// todo: compare to mastodon locale instead (how do i query that?!)
-							!item.status.language.equalsIgnoreCase(Locale.getDefault().getLanguage())));
+							!item.status.language.equalsIgnoreCase(Locale.getDefault().getLanguage())))
+					&& (!GlobalUserPreferences.translateButtonOpenedOnly || item.textSelectable);
 			translateWrap.setVisibility(translateVisible ? View.VISIBLE : View.GONE);
 			translateButton.setText(item.translationShown ? R.string.sk_translate_show_original : R.string.sk_translate_post);
 			translateInfo.setText(item.translationShown ? itemView.getResources().getString(R.string.sk_translated_using, bottomText != null ? "bottom-java" : item.status.translation.provider) : "");
