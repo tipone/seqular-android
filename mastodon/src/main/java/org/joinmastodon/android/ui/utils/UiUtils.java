@@ -747,9 +747,6 @@ public class UiUtils {
 		if(relationship.blocking){
 			button.setText(R.string.button_blocked);
 			styleRes=R.style.Widget_Mastodon_M3_Button_Tonal_Error;
-		}else if(relationship.blockedBy){
-			button.setText(R.string.button_follow);
-			styleRes=R.style.Widget_Mastodon_M3_Button_Filled;
 		}else if(relationship.requested){
 			button.setText(R.string.button_follow_pending);
 			styleRes=R.style.Widget_Mastodon_M3_Button_Tonal;
@@ -761,7 +758,6 @@ public class UiUtils {
 			styleRes=R.style.Widget_Mastodon_M3_Button_Tonal;
 		}
 
-		button.setEnabled(!relationship.blockedBy);
 		TypedArray ta=button.getContext().obtainStyledAttributes(styleRes, new int[]{android.R.attr.background});
 		button.setBackground(ta.getDrawable(0));
 		ta.recycle();
