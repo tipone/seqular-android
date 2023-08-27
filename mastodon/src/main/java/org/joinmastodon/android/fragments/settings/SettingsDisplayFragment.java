@@ -43,7 +43,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> pronounsInUserListingsItem, pronounsInTimelinesItem, pronounsInThreadsItem;
 
 	// MOSHIDON
-	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem;
+	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem;
 
 	private AccountLocalPreferences lp;
 
@@ -74,6 +74,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, ()->toggleCheckableItem(spectatorModeItem)),
 				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, ()->toggleCheckableItem(hideFabItem)),
 				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, ()->toggleCheckableItem(translateOpenedItem)),
+				showPostDividersItem=new CheckableListItem<>(R.string.mo_enable_dividers, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showDividers, R.drawable.ic_fluent_timeline_24_regular, ()->toggleCheckableItem(showPostDividersItem)),
 				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem)),
 				showNavigationLabelsItem=new CheckableListItem<>(R.string.sk_settings_show_labels_in_navigation_bar, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNavigationLabels, R.drawable.ic_fluent_tag_24_regular, ()->toggleCheckableItem(showNavigationLabelsItem), true),
 				pronounsInTimelinesItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_timelines, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInTimelines, 0, ()->toggleCheckableItem(pronounsInTimelinesItem)),
@@ -120,6 +121,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.spectatorMode=spectatorModeItem.checked;
 		GlobalUserPreferences.autoHideFab=hideFabItem.checked;
 		GlobalUserPreferences.translateButtonOpenedOnly=translateOpenedItem.checked;
+		GlobalUserPreferences.showDividers=showPostDividersItem.checked;
 		GlobalUserPreferences.disableM3PillActiveIndicator=disablePillItem.checked;
 		GlobalUserPreferences.showNavigationLabels=showNavigationLabelsItem.checked;
 		GlobalUserPreferences.displayPronounsInTimelines=pronounsInTimelinesItem.checked;
