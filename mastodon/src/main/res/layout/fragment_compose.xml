@@ -552,19 +552,21 @@
 				android:textColor="?colorM3OnSurface"
 				tools:text="500"/>
 
-
 			<ImageButton
-				style="@style/Widget.Mastodon.M3.Button.Filled.Elevated"
 				android:id="@+id/publish"
+				style="@style/Widget.Mastodon.M3.Button.Filled"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_marginHorizontal="12dp"
-				android:paddingHorizontal="12dp"
-				android:visibility="gone"
+				android:layout_marginEnd="8dp"
+				android:minHeight="48dp"
+				android:minWidth="56dp"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				android:drawablePadding="0dp"
 				android:tooltipText="@string/publish"
 				android:contentDescription="@string/publish"
 				android:src="@drawable/ic_fluent_send_24_selector"
-				/>
+				android:singleLine="true" />
 
 		</LinearLayout>
 	</LinearLayout>
