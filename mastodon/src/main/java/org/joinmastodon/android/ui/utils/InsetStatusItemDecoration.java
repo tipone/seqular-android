@@ -9,6 +9,8 @@ import android.view.View;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 
 import java.util.List;
 
