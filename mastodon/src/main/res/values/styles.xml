@@ -145,6 +145,7 @@
 		<item name="android:colorBackground">?colorM3OnSurfaceVariant</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="android:textColorAlertDialogListItem">?colorM3OnSurface</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dialog.Alert.Dark" parent="android:Theme.Material.Dialog.Alert">
@@ -159,6 +160,7 @@
 		<item name="android:colorBackground">?colorM3OnSurfaceVariant</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="android:textColorAlertDialogListItem">?colorM3OnSurface</item>
 	</style>
 
 	<style name="Widget.Mastodon.ButtonBarButton" parent="android:Widget.Material.Button.Borderless">
