@@ -251,7 +251,7 @@
     <string name="sk_unfinished_attachments">Corrigir anexos\?</string>
     <string name="sk_settings_glitch_mode_explanation">Habilite isso se sua instância inicial for executada no Glitch. Não é necessário para Hometown ou Akkoma.</string>
     <string name="sk_collapse">Mostrar menos</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Prefixe com “Aviso de gatilho” ao responder</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Prefixe com “Aviso de conteúdo” ao responder</string>
     <string name="sk_spectator_mode">Modo espectador</string>
     <string name="sk_timeline_bubble">Bolha</string>
     <string name="sk_bubble_timeline_info_banner">Esses são as publicações mais recentes da rede com curadoria dos administradores da sua instância.</string>
@@ -367,5 +367,6 @@
     <string name="sk_tab_notifications">Notificações</string>
     <string name="sk_tab_profile">Perfil</string>
     <string name="sk_notification_mention">Você foi mencionado por %s</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">Revelar automaticamente Avisos de Gatilho nas respostas</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">Revelar automaticamente Avisos de Conteúdo nas respostas</string>
+    <string name="sk_icon_recycle_bin">Lixeira de reciclagem</string>
 </resources>
