@@ -1136,7 +1136,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		overlayParams.token=mainEditText.getWindowToken();
 		wm.addView(sendingOverlay, overlayParams);
 
-		publishButton.setEnabled(false);
+		if(GlobalUserPreferences.relocatePublishButton){
+			publishButtonRelocated.setEnabled(false);
+		} else {
+			publishButton.setEnabled(false);
+		}
+
 		V.setVisibilityAnimated(sendProgress, View.VISIBLE);
 
 		mediaViewController.saveAltTextsBeforePublishing(this::actuallyPublish, this::handlePublishError);
