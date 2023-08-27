@@ -44,7 +44,7 @@
     <string name="mo_confirm_unfollow_title">Dejar de seguir</string>
     <string name="mo_confirm_unfollow">Confirmar para dejar de seguir a %s</string>
     <string name="mo_instance_contact">Contacto</string>
-    <string name="mo_instance_users">Usuarios</string>
+    <string name="mo_instance_users">Usuarixs</string>
     <string name="mo_instance_status">Publicaciones</string>
     <string name="mo_instance_registration_open">Abrir</string>
     <string name="mo_instance_registration_approval">Requiere aprobación</string>
@@ -73,4 +73,5 @@
     <string name="mo_camera_not_available">¡No hay cámara disponible!</string>
     <string name="mo_setting_haptic_feedback_summary">Vibra cuando interactúas con publicaciones</string>
     <string name="mo_haptic_feedback">Vibración</string>
+    <string name="mo_color_palette_black_and_white">Blanco y Negro</string>
 </resources>

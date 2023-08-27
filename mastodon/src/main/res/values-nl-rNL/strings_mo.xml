@@ -68,4 +68,7 @@
     <string name="mo_setting_disable_swipe_summary">Niet naar andere tijdlijnen kunnen swipen</string>
     <string name="mo_setting_marquee_summary">Schakelt de horizontaal scrollende tekst uit</string>
     <string name="mo_mention_reblogger_automatically">In reacties automatisch ook het account erbij vermelden, van degene die het bericht boost</string>
+    <string name="mo_color_palette_black_and_white">Zwart Wit</string>
+    <string name="mo_setting_haptic_feedback_summary">Tril bij interactie met berichten</string>
+    <string name="mo_camera_not_available">Geen camera beschikbaar!</string>
 </resources>

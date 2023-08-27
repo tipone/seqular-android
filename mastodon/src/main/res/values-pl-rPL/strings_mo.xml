@@ -66,4 +66,7 @@
     <string name="mo_setting_interaction_count_summary">Pokaż, ile osób weszło w interakcję z postem na osi czasu</string>
     <string name="mo_setting_relocate_publish_summary">Przenieś przycisk publikowania na dolny pasek</string>
     <string name="mo_enable_dividers">Pokaż separatory postów</string>
+    <string name="mo_color_palette_black_and_white">Czarny i biały</string>
+    <string name="mo_swap_bookmark_with_reblog_summary">Dodawaj do zakładek lub podbijaj wpisy z poziomu powiadomień</string>
+    <string name="mo_setting_haptic_feedback_summary">Wibruj podczas interakcji z wpisami</string>
 </resources>

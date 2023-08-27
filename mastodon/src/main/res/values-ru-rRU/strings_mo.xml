@@ -68,4 +68,6 @@
     <string name="mo_camera_not_available">Камера недоступна!</string>
     <string name="mo_haptic_feedback">Тактильная обратная связь</string>
     <string name="mo_setting_haptic_feedback_summary">Вибрировать при взаимодействии с постами</string>
+    <string name="mo_color_palette_black_and_white">Чёрно-белая</string>
+    <string name="mo_composer_behavior">Поведение экрана создания публикации</string>
 </resources>

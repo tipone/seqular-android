@@ -71,4 +71,6 @@
     <string name="mo_swap_bookmark_with_reblog_summary">Salvar ou reblogar publicações pela notificação</string>
     <string name="mo_notification_audience_settings">Audiência de notificação</string>
     <string name="mo_camera_not_available">Nenhuma camera disponível!</string>
+    <string name="mo_color_palette_black_and_white">Preto e Branco</string>
+    <string name="mo_setting_haptic_feedback_summary">Vibrar ao interagir com publicações</string>
 </resources>

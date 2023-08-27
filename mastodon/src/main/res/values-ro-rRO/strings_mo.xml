@@ -70,4 +70,5 @@
     <string name="mo_notification_audience_settings">Audiența Notificărilor</string>
     <string name="mo_load_remote_followers">Încărcați urmăritori și urmăriți ai unui profil de la distanță</string>
     <string name="mo_mention_reblogger_automatically">Menționați automat contul care a promovat postarea în răspunsuri</string>
+    <string name="mo_color_palette_black_and_white">Negru și alb</string>
 </resources>
