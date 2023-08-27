@@ -30,6 +30,7 @@
         android:tint="?colorM3OnSurfaceVariant"
         android:contentDescription="@string/sk_schedule_or_draft"
         android:tooltipText="@string/sk_schedule_or_draft"
+		android:visibility="gone"
         tools:targetApi="o" />
 
     <TextView

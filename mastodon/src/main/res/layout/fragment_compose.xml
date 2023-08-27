@@ -566,6 +566,7 @@
 				android:tooltipText="@string/publish"
 				android:contentDescription="@string/publish"
 				android:src="@drawable/ic_fluent_send_24_selector"
+				android:visibility="gone"
 				android:singleLine="true" />
 
 		</LinearLayout>
