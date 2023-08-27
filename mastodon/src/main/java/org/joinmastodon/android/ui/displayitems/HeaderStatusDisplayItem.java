@@ -317,7 +317,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			else if (item.status != null && item.status.editedAt != null)
 				time=item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt));
 
-			this.username.setText("@" + item.user.acct);
+			this.username.setText(item.user.getDisplayUsername());
 			this.timeUsernameSeparator.setVisibility(time==null ? View.GONE : View.VISIBLE);
 			this.time.setVisibility(time==null ? View.GONE : View.VISIBLE);
 			if(time!=null) this.time.setText(time);
