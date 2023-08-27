@@ -113,13 +113,22 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 			View card=findViewById(R.id.card);
 			card.setOutlineProvider(OutlineProviders.roundedRect(12));
 			card.setClipToOutline(true);
-			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
+			avatar.setOutlineProvider(OutlineProviders.roundedRect(15));
 			avatar.setClipToOutline(true);
-			cover.setOutlineProvider(OutlineProviders.roundedRect(12));
+			View border=findViewById(R.id.avatar_border);
+			border.setOutlineProvider(OutlineProviders.roundedRect(17));
+			border.setClipToOutline(true);
+			cover.setOutlineProvider(OutlineProviders.roundedRect(9));
 			cover.setClipToOutline(true);
 			actionButton.setOnClickListener(this::onActionButtonClick);
 			acceptButton.setOnClickListener(this::onFollowRequestButtonClick);
 			rejectButton.setOnClickListener(this::onFollowRequestButtonClick);
+			card.setOnClickListener(v->onClick());
+		}
+
+		@Override
+		public boolean isEnabled(){
+			return false;
 		}
 
 		@Override
@@ -132,18 +141,19 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 			postsCount.setText(UiUtils.abbreviateNumber(item.account.statusesCount));
 			followersLabel.setText(item.parentFragment.getResources().getQuantityString(R.plurals.followers, (int)Math.min(999, item.account.followersCount)));
 			followingLabel.setText(item.parentFragment.getResources().getQuantityString(R.plurals.following, (int)Math.min(999, item.account.followingCount)));
-			postsLabel.setText(item.parentFragment.getResources().getQuantityString(R.plurals.x_posts, (int)(item.account.statusesCount%1000), item.account.statusesCount));
+			postsLabel.setText(item.parentFragment.getResources().getQuantityString(R.plurals.sk_posts_count_label, (int)(item.account.statusesCount%1000), item.account.statusesCount));
 			followersCount.setVisibility(item.account.followersCount < 0 ? View.GONE : View.VISIBLE);
 			followersLabel.setVisibility(item.account.followersCount < 0 ? View.GONE : View.VISIBLE);
 			followingCount.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			followingLabel.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			relationship=item.parentFragment.getRelationship(item.account.id);
-			if(item.notification.type == Notification.Type.FOLLOW_REQUEST && (relationship == null || !relationship.followedBy)){
+			UiUtils.setExtraTextInfo(item.parentFragment.getContext(), null, findViewById(R.id.pronouns), true, false, false, item.account);
+
+			if(item.notification.type==Notification.Type.FOLLOW_REQUEST && (relationship==null || !relationship.followedBy)){
 				actionWrap.setVisibility(View.GONE);
 				acceptWrap.setVisibility(View.VISIBLE);
 				rejectWrap.setVisibility(View.VISIBLE);
 			
-				// i hate that i wasn't able to do this in xml
 				acceptButton.setCompoundDrawableTintList(acceptButton.getTextColors());
 				acceptProgress.setIndeterminateTintList(acceptButton.getTextColors());
 				rejectButton.setCompoundDrawableTintList(rejectButton.getTextColors());
@@ -163,7 +173,7 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 		private void onFollowRequestButtonClick(View v) {
 			itemView.setHasTransientState(true);
 			UiUtils.handleFollowRequest((Activity) v.getContext(), item.account, item.parentFragment.getAccountID(), null, v == acceptButton, relationship, rel -> {
-				if(v.getContext()==null) return;
+				if(v.getContext()==null || rel==null) return;
 				itemView.setHasTransientState(false);
 				item.parentFragment.putRelationship(item.account.id, rel);
 				RecyclerView.Adapter<? extends RecyclerView.ViewHolder> adapter = getBindingAdapter();

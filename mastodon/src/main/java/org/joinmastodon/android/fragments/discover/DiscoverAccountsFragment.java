@@ -43,7 +43,6 @@ import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -198,7 +197,7 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 		}
 	}
 
-	private class AccountViewHolder extends BindableViewHolder<AccountWrapper> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
+	private class AccountViewHolder extends BindableViewHolder<AccountWrapper> implements ImageLoaderViewHolder, UsableRecyclerView.DisableableClickable{
 		private final ImageView cover, avatar;
 		private final TextView name, username, bio, followersCount, followingCount, postsCount, followersLabel, followingLabel, postsLabel;
 		private final ProgressBarButton actionButton;
@@ -224,13 +223,22 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 			actionProgress=findViewById(R.id.action_progress);
 			actionWrap=findViewById(R.id.action_btn_wrap);
 
+			avatar.setOutlineProvider(OutlineProviders.roundedRect(15));
+			avatar.setClipToOutline(true);
+			View border=findViewById(R.id.avatar_border);
+			border.setOutlineProvider(OutlineProviders.roundedRect(17));
+			border.setClipToOutline(true);
+			cover.setOutlineProvider(OutlineProviders.roundedRect(9));
+			cover.setClipToOutline(true);
 			itemView.setOutlineProvider(OutlineProviders.roundedRect(12));
 			itemView.setClipToOutline(true);
-			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
-			avatar.setClipToOutline(true);
-			cover.setOutlineProvider(OutlineProviders.roundedRect(12));
-			cover.setClipToOutline(true);
 			actionButton.setOnClickListener(this::onActionButtonClick);
+			itemView.setOnClickListener(v->this.onClick());
+		}
+
+		@Override
+		public boolean isEnabled(){
+			return false;
 		}
 
 		@Override
@@ -243,12 +251,14 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 			postsCount.setText(UiUtils.abbreviateNumber(item.account.statusesCount));
 			followersLabel.setText(getResources().getQuantityString(R.plurals.followers, (int)Math.min(999, item.account.followersCount)));
 			followingLabel.setText(getResources().getQuantityString(R.plurals.following, (int)Math.min(999, item.account.followingCount)));
-			postsLabel.setText(getResources().getQuantityString(R.plurals.x_posts, (int)(item.account.statusesCount%1000), item.account.statusesCount));
+			postsLabel.setText(getResources().getQuantityString(R.plurals.sk_posts_count_label, (int)(item.account.statusesCount%1000), item.account.statusesCount));
 			followersCount.setVisibility(item.account.followersCount < 0 ? View.GONE : View.VISIBLE);
 			followersLabel.setVisibility(item.account.followersCount < 0 ? View.GONE : View.VISIBLE);
 			followingCount.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			followingLabel.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			relationship=relationships.get(item.account.id);
+			UiUtils.setExtraTextInfo(getContext(), null, findViewById(R.id.pronouns), true, false, false, item.account);
+
 			if(relationship==null){
 				actionWrap.setVisibility(View.GONE);
 			}else{

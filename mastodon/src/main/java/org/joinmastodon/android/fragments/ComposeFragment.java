@@ -732,10 +732,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					? UiUtils.formatRelativeTimestamp(getContext(), status.createdAt)
 					: getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(getContext(), status.editedAt));
 
-			String sepp = getString(R.string.sk_separator);
-			String username = status.account.getDisplayUsername();
-			((TextView) view.findViewById(R.id.time_and_username)).setText(time == null ? username :
-					username + " " + sepp + " " + time);
+			((TextView) view.findViewById(R.id.username)).setText(status.account.getDisplayUsername());
+			view.findViewById(R.id.separator).setVisibility(time==null ? View.GONE : View.VISIBLE);
+			view.findViewById(R.id.time).setVisibility(time==null ? View.GONE : View.VISIBLE);
+			if(time!=null) ((TextView) view.findViewById(R.id.time)).setText(time);
+
 			if (status.spoilerText != null && !status.spoilerText.isBlank()) {
 				TextView replyToSpoiler = view.findViewById(R.id.reply_to_spoiler);
 				replyToSpoiler.setVisibility(View.VISIBLE);

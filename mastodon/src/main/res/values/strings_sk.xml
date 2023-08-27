@@ -372,4 +372,8 @@
 	<string name="sk_duration_days_3">3 days</string>
 	<string name="sk_duration_days_7">7 days</string>
 	<string name="sk_notification_mention">You were mentioned by %s</string>
+	<plurals name="sk_posts_count_label">
+		<item quantity="one">post</item>
+		<item quantity="other">posts</item>
+	</plurals>
 </resources>

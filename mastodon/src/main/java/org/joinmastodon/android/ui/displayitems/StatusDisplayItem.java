@@ -18,7 +18,6 @@ import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTabFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
-import org.joinmastodon.android.fragments.ScheduledStatusListFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
@@ -51,7 +50,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public abstract class StatusDisplayItem{
 	public final String parentID;
 	public final BaseStatusListFragment<?> parentFragment;
-	public boolean inset;
+	public boolean inset, insetPadding=true;
 	public int index;
 	public boolean
 			hasDescendantNeighbor = false,
@@ -390,6 +389,43 @@ public abstract class StatusDisplayItem{
 		@Override
 		public void onClick(){
 			item.parentFragment.onItemClick(item.parentID);
+		}
+
+		public Optional<StatusDisplayItem> getNextVisibleDisplayItem(){
+			Optional<StatusDisplayItem> next=getNextDisplayItem();
+			for(int offset=1; next.isPresent(); next=getDisplayItemOffset(++offset)){
+				if(!next.map(n->
+						(n instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()) ||
+						(n instanceof DummyStatusDisplayItem)
+				).orElse(false)) return next;
+			}
+			return Optional.empty();
+		}
+//			int nextNextPos=getAbsoluteAdapterPosition() + 2;
+//			if(next.map(n->n instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()).orElse(false)){
+//				List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
+//				return displayItems.size() > nextNextPos
+//						? Optional.of(displayItems.get(nextNextPos))
+//						: Optional.empty();
+//			}else{
+//				return next;
+//			}
+		public Optional<StatusDisplayItem> getNextDisplayItem(){
+			return getDisplayItemOffset(1);
+		}
+
+		public Optional<StatusDisplayItem> getDisplayItemOffset(int offset){
+			int nextPos=getAbsoluteAdapterPosition() + offset;
+			List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
+			return displayItems.size() > nextPos
+					? Optional.of(displayItems.get(nextPos))
+					: Optional.empty();
+		}
+
+		public boolean isLastDisplayItemForStatus(){
+			return getNextVisibleDisplayItem()
+					.map(n->!n.parentID.equals(item.parentID))
+					.orElse(true);
 		}
 
 		@Override

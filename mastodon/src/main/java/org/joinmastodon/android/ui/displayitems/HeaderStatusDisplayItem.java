@@ -132,8 +132,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final TextView name, timeAndUsername, extraText, pronouns;
-		private final View collapseBtn;
+		private final TextView name, time, username, extraText, pronouns;
+		private final View collapseBtn, timeUsernameSeparator;
 		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, markAsRead, collapseBtnIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
@@ -148,7 +148,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		protected Holder(Activity activity, @LayoutRes int layout, ViewGroup parent){
 			super(activity, layout, parent);
 			name=findViewById(R.id.name);
-			timeAndUsername=findViewById(R.id.time_and_username);
+			time=findViewById(R.id.time);
+			username=findViewById(R.id.username);
+			timeUsernameSeparator=findViewById(R.id.separator);
 			avatar=findViewById(R.id.avatar);
 			more=findViewById(R.id.more);
 			visibility=findViewById(R.id.visibility);
@@ -318,10 +320,10 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			else if (item.status != null && item.status.editedAt != null)
 				time=item.parentFragment.getString(R.string.edited_timestamp, UiUtils.formatRelativeTimestamp(itemView.getContext(), item.status.editedAt));
 
-			String sepp = item.parentFragment.getString(R.string.sk_separator);
-			String username = "@" + item.user.acct;
-			timeAndUsername.setText(time == null ? username :
-				username + " " + sepp + " " + time);
+			this.username.setText(item.user.getDisplayUsername());
+			this.timeUsernameSeparator.setVisibility(time==null ? View.GONE : View.VISIBLE);
+			this.time.setVisibility(time==null ? View.GONE : View.VISIBLE);
+			if(time!=null) this.time.setText(time);
 
 			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification!=null && !item.inset ? View.VISIBLE : View.GONE);
 			if (item.hasVisibilityToggle){
