@@ -18,7 +18,6 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.TimelineDefinition;
-import org.joinmastodon.android.ui.utils.ColorPalette;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -48,6 +47,7 @@ public class GlobalUserPreferences{
 	public static boolean reduceMotion;
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
+	public static boolean showPostsWithoutAlt;
 	public static boolean enablePreReleases;
 	public static PrefixRepliesMode prefixReplies;
 	public static boolean collapseLongPosts;
@@ -118,6 +118,7 @@ public class GlobalUserPreferences{
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
+		showPostsWithoutAlt =prefs.getBoolean("showPostsWithoutAlt", true);
 		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
 		prefixReplies=PrefixRepliesMode.valueOf(prefs.getString("prefixReplies", PrefixRepliesMode.NEVER.name()));
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
@@ -195,6 +196,7 @@ public class GlobalUserPreferences{
 				.putBoolean("reduceMotion", reduceMotion)
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
+				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
 				.putBoolean("enablePreReleases", enablePreReleases)
 				.putString("prefixReplies", prefixReplies.name())
 				.putBoolean("collapseLongPosts", collapseLongPosts)

@@ -82,9 +82,11 @@
     <string name="mo_setting_disable_swipe_summary">Swipe to change viewed timeline</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrate when interacting with posts</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Bookmark or reblog posts from the notification</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Posts will be hidden in all timelines, but can be revealed in threads and notifications</string>
 
 <!--  Settings  -->
     <string name="mo_notification_audience_settings">Notification Audience</string>
+    <string name="mo_settings_show_posts_without_alt">Show media posts with missing alt text</string>
 	<string name="mo_double_tap_to_swipe_between_tabs">Double tap to swipe between tabs</string>
 	<string name="mo_haptic_feedback">Haptic feedback</string>
 	<string name="mo_swap_bookmark_with_reblog">Swap bookmark with reblog action</string>

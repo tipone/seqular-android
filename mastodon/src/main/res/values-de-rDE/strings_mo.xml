@@ -75,6 +75,8 @@
     <string name="mo_setting_uniform_summary">App-Symbol für alle Benachrichtigungen verwenden</string>
     <string name="mo_setting_reduced_motion_summary">Animationen für Interaktionen deaktivieren</string>
     <string name="mo_setting_play_gif_summary">GIFs in Profilbildern und Emojis automatisch abspielen</string>
+    <string name="mo_settings_show_posts_without_alt">Zeige Medienbeiträge ohne Bildbeschreibung</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Beiträge werden in allen Timelines ausgeblendet, können aber in Threads und Benachrichtungen angezeigt werden</string>
     <string name="mo_color_palette_black_and_white">Schwarz und Weiß</string>
     <string name="mo_haptic_feedback">Haptisches Feedback</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrieren beim Interagieren mit Posts</string>
