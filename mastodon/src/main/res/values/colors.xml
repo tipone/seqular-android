@@ -344,7 +344,7 @@
 	<color name="nord_primary_500">#4c566a</color>
 	<color name="nord_primary_600">#4c566a</color>
 	<color name="nord_primary_700">#81a1c1</color>
-	<color name="nord_primary_800">#3b4252</color>
+	<color name="nord_primary_800">#4c566a</color>
 	<color name="nord_primary_900">#2e3440</color>
 
 	<color name="nord_gray_900">#2e3440</color>
