@@ -36,13 +36,13 @@
 		android:id="@+id/button_bar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:background="?colorM3OnBackground"
+		android:background="?colorM3SurfaceVariant"
 		android:outlineProvider="bounds"
 		android:orientation="horizontal"
 		android:elevation="0dp">
 
 		<Button
-			style="?android:buttonBarStyle"
+			style="@style/Widget.Mastodon.M3.Button.Filled"
 			android:id="@+id/btn_next"
 			android:minWidth="145dp"
 			android:layout_width="0dp"
