@@ -12,7 +12,7 @@
 		<item name="colorPrimary700">@color/primary_700</item>
 		<item name="colorPrimary800">@color/primary_800</item>
 		<item name="colorPrimary900">@color/primary_900</item>
-		<item name="bookmark_selected">@color/bookmark_selected</item>
+		<item name="colorBookmark">@color/bookmark_selected</item>
 
 		<item name="colorGray900">@color/gray_900</item>
 		<item name="colorGray800">@color/gray_800</item>
@@ -452,7 +452,7 @@
 		<item name="colorPrimary800">@color/nord_primary_800</item>
 		<item name="colorPrimary900">@color/nord_primary_900</item>
 
-		<item name="bookmark_selected">@color/nord_bookmark_selected</item>
+		<item name="colorBookmark">@color/nord_bookmark_selected</item>
 		<item name="colorFavorite">@color/nord_favorite</item>
 
 		<item name="colorGray900">@color/nord_gray_900</item>
