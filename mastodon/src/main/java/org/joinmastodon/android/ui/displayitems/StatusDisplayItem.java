@@ -306,7 +306,7 @@ public abstract class StatusDisplayItem{
 		int i=1;
 		boolean inset=(flags & FLAG_INSET)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
-		if(inset || footer==null){
+		if((inset || footer==null) && (flags & FLAG_CHECKABLE)==0){
 			items.add(new DummyStatusDisplayItem(parentID, fragment));
 			// in case we ever need the dummy to display a margin for the media grid again:
 			// (i forgot why we apparently don't need this anymore)
