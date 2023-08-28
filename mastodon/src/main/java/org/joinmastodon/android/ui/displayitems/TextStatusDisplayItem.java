@@ -198,8 +198,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			if(next!=null && !next.parentID.equals(item.parentID)) next=null;
 			int bottomPadding=next instanceof FooterStatusDisplayItem ? V.dp(6)
 					: item.inset ? V.dp(12)
-					: next!=null ? V.dp(12)
-					: 0;
+					: (next instanceof EmojiReactionsStatusDisplayItem || next==null) ? 0
+					: V.dp(12);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 
 			if (!GlobalUserPreferences.collapseLongPosts) {
