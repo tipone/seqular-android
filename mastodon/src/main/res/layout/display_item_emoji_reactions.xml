@@ -43,6 +43,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginStart="-4dp"
 			android:paddingStart="8dp"
+			android:paddingEnd="3dp"
 			android:clipToPadding="false"
 			android:requiresFadingEdge="horizontal"
 			android:fadingEdgeLength="24dp" />
