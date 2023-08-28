@@ -348,7 +348,7 @@
 	<color name="nord_primary_800">#3b4252</color>
 	<color name="nord_primary_900">#2e3440</color>
 
-	<color name="nord_gray_900">#3B4252</color>
+	<color name="nord_gray_900">#2e3440</color>
 <!--	<color name="nord_gray_800t">#cc2D343F</color>-->
 	<color name="nord_gray_800">#2D343F</color>
 	<color name="nord_gray_700">#3A4250</color>
