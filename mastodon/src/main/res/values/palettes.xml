@@ -13,7 +13,6 @@
 		<item name="colorPrimary800">@color/primary_800</item>
 		<item name="colorPrimary900">@color/primary_900</item>
 		<item name="bookmark_selected">@color/bookmark_selected</item>
-		<item name="favorite_selected">@color/favorite_selected</item>
 
 		<item name="colorGray900">@color/gray_900</item>
 		<item name="colorGray800">@color/gray_800</item>
@@ -56,7 +55,7 @@
 		<item name="colorM3DarkOnSurface">?colorGray100</item>
 		<item name="colorM3PrimaryInverse">?colorPrimary200</item>
 
-		<item name="colorFavorite">@color/favorite_selected</item>
+		<item name="colorFavorite">@color/warning_500</item>
 		<item name="colorBoost">?colorM3Primary</item>
 		<item name="colorPoll">@color/bookmark_selected</item>
 		<item name="colorTabBarAlpha">#14000000</item>
@@ -454,7 +453,7 @@
 		<item name="colorPrimary900">@color/nord_primary_900</item>
 
 		<item name="bookmark_selected">@color/nord_bookmark_selected</item>
-		<item name="favorite_selected">@color/nord_favorite_selected</item>
+		<item name="colorFavorite">@color/nord_favorite</item>
 
 		<item name="colorGray900">@color/nord_gray_900</item>
 <!--		<item name="colorGray800t">@color/nord_gray_800t</item>-->
