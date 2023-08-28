@@ -114,8 +114,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 			for(FilterResult fr:filtered)
 				fr.postprocess();
 
-		if(!TextUtils.isEmpty(spoilerText)) sensitive=true;
-		spoilerRevealed=TextUtils.isEmpty(spoilerText);
+		spoilerRevealed=!hasSpoiler();
+		if(!spoilerRevealed) sensitive=true;
 		sensitiveRevealed=!sensitive;
 		if(visibility.equals(StatusPrivacy.LOCAL)) localOnly=true;
 		if(emojiReactions!=null) reactions=emojiReactions;

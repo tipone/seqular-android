@@ -226,7 +226,7 @@ public abstract class StatusDisplayItem{
 		}
 
 		ArrayList<StatusDisplayItem> contentItems;
-		if(!TextUtils.isEmpty(statusForContent.spoilerText)){
+		if(statusForContent.hasSpoiler()){
 			if (AccountSessionManager.get(accountID).getLocalPreferences().revealCWs) statusForContent.spoilerRevealed = true;
 			SpoilerStatusDisplayItem spoilerItem=new SpoilerStatusDisplayItem(parentID, fragment, null, statusForContent, Type.SPOILER);
 			items.add(spoilerItem);
