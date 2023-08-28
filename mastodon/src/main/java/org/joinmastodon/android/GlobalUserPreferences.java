@@ -47,7 +47,6 @@ public class GlobalUserPreferences{
 	public static boolean reduceMotion;
 	public static boolean showAltIndicator;
 	public static boolean showNoAltIndicator;
-	public static boolean showPostsWithoutAlt;
 	public static boolean enablePreReleases;
 	public static PrefixRepliesMode prefixReplies;
 	public static boolean collapseLongPosts;
@@ -74,6 +73,7 @@ public class GlobalUserPreferences{
 	public static boolean swapBookmarkWithBoostAction;
 	public static boolean loadRemoteAccountFollowers;
 	public static boolean mentionRebloggerAutomatically;
+	public static boolean showPostsWithoutAlt;
 
 	public static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -118,7 +118,6 @@ public class GlobalUserPreferences{
 		reduceMotion=prefs.getBoolean("reduceMotion", false);
 		showAltIndicator=prefs.getBoolean("showAltIndicator", true);
 		showNoAltIndicator=prefs.getBoolean("showNoAltIndicator", true);
-		showPostsWithoutAlt =prefs.getBoolean("showPostsWithoutAlt", true);
 		enablePreReleases=prefs.getBoolean("enablePreReleases", false);
 		prefixReplies=PrefixRepliesMode.valueOf(prefs.getString("prefixReplies", PrefixRepliesMode.NEVER.name()));
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
@@ -148,6 +147,8 @@ public class GlobalUserPreferences{
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
+		showPostsWithoutAlt =prefs.getBoolean("showPostsWithoutAlt", true);
+
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 
 
@@ -196,7 +197,6 @@ public class GlobalUserPreferences{
 				.putBoolean("reduceMotion", reduceMotion)
 				.putBoolean("showAltIndicator", showAltIndicator)
 				.putBoolean("showNoAltIndicator", showNoAltIndicator)
-				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
 				.putBoolean("enablePreReleases", enablePreReleases)
 				.putString("prefixReplies", prefixReplies.name())
 				.putBoolean("collapseLongPosts", collapseLongPosts)
@@ -227,6 +227,8 @@ public class GlobalUserPreferences{
 				.putBoolean("showDividers", showDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
+
 				.putInt("theme", theme.ordinal())
 
 				.apply();

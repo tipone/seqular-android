@@ -1,7 +1,6 @@
 package org.joinmastodon.android.fragments.settings;
 
 import android.os.Bundle;
-import android.provider.Settings;
 
 import androidx.annotation.StringRes;
 
@@ -34,7 +33,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 	private CheckableListItem<Void> forwardReportsItem, remoteLoadingItem, showBoostsItem, showRepliesItem, loadNewPostsItem, seeNewPostsBtnItem, overlayMediaItem;
 
 	// MOSHIDON
-    private CheckableListItem<Void> mentionRebloggerAutomaticallyItem, hapticFeedbackItem, unlistedRepliesItem;
+    private CheckableListItem<Void> mentionRebloggerAutomaticallyItem, hapticFeedbackItem, unlistedRepliesItem, showPostsWithoutAltItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -50,6 +49,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		List<ListItem<Void>> items = new ArrayList<>(List.of(
 				languageItem=new ListItem<>(getString(R.string.default_post_language), postLanguage!=null ? postLanguage.getDisplayName(getContext()) : null, R.drawable.ic_fluent_local_language_24_regular, this::onDefaultLanguageClick),
 				altTextItem=new CheckableListItem<>(R.string.settings_alt_text_reminders, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.altTextReminders, R.drawable.ic_fluent_image_alt_text_24_regular, ()->toggleCheckableItem(altTextItem)),
+				showPostsWithoutAltItem=new CheckableListItem<>(R.string.mo_settings_show_posts_without_alt, R.string.mo_settings_show_posts_without_alt_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showPostsWithoutAlt, R.drawable.ic_fluent_eye_tracking_on_24_regular, ()->toggleCheckableItem(showPostsWithoutAltItem)),
 				playGifsItem=new CheckableListItem<>(R.string.settings_gif, R.string.mo_setting_play_gif_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.playGifs, R.drawable.ic_fluent_gif_24_regular, ()->toggleCheckableItem(playGifsItem)),
 				unlistedRepliesItem=new CheckableListItem<>(R.string.mo_change_default_reply_visibility_to_unlisted, R.string.mo_setting_default_reply_privacy_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.defaultToUnlistedReplies, R.drawable.ic_fluent_lock_open_24_regular, ()->toggleCheckableItem(unlistedRepliesItem)),
 				overlayMediaItem=new CheckableListItem<>(R.string.sk_settings_continues_playback, R.string.sk_settings_continues_playback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.overlayMedia, R.drawable.ic_fluent_play_circle_hint_24_regular, ()->toggleCheckableItem(overlayMediaItem)),
@@ -183,6 +183,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.mentionRebloggerAutomatically=mentionRebloggerAutomaticallyItem.checked;
 		GlobalUserPreferences.hapticFeedback=hapticFeedbackItem.checked;
 		GlobalUserPreferences.defaultToUnlistedReplies=unlistedRepliesItem.checked;
+		GlobalUserPreferences.showPostsWithoutAlt=showPostsWithoutAltItem.checked;
 		GlobalUserPreferences.save();
 		AccountLocalPreferences lp=getLocalPrefs();
 		lp.showBoosts=showBoostsItem.checked;

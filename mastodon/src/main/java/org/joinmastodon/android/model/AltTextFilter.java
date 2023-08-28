@@ -1,12 +1,10 @@
 package org.joinmastodon.android.model;
 
-import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.R;
 import org.jsoup.internal.StringUtil;
 
 import java.util.EnumSet;
 
-public class AltTextFilter extends Filter {
+public class AltTextFilter extends LegacyFilter {
 
 	public AltTextFilter(FilterAction filterAction, FilterContext firstContext, FilterContext... restContexts) {
 		this.filterAction = filterAction;

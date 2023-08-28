@@ -1,6 +1,16 @@
 package org.joinmastodon.android.utils;
 
+import static org.joinmastodon.android.model.FilterAction.HIDE;
+import static org.joinmastodon.android.model.FilterAction.WARN;
+import static org.joinmastodon.android.model.FilterContext.ACCOUNT;
+import static org.joinmastodon.android.model.FilterContext.HOME;
+import static org.joinmastodon.android.model.FilterContext.NOTIFICATIONS;
+import static org.joinmastodon.android.model.FilterContext.PUBLIC;
+import static org.joinmastodon.android.model.FilterContext.THREAD;
+
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.AltTextFilter;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
@@ -34,7 +44,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 	}
 
 	public StatusFilterPredicate(List<LegacyFilter> filters, FilterContext context){
-		this(filters, context, FilterAction.HIDE);
+		this(filters, context, HIDE);
 	}
 
 	/**
@@ -52,7 +62,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 	 * @param context null makes the predicate pass automatically
 	 */
 	public StatusFilterPredicate(String accountID, FilterContext context){
-		this(accountID, context, FilterAction.HIDE);
+		this(accountID, context, HIDE);
 	}
 
 	/**
@@ -77,11 +87,12 @@ public class StatusFilterPredicate implements Predicate<Status>{
 				// only apply filters for given context
 				.filter(filter -> filter.context.contains(context))
 				// treating filterAction = null (from filters list) as FilterAction.HIDE
-				.filter(filter -> filter.filterAction == null ? action == FilterAction.HIDE : filter.filterAction == action)
+				.filter(filter -> filter.filterAction == null ? action == HIDE : filter.filterAction == action)
 				.findAny();
 
 		//Apply client filters if no server filter is triggered
-		if (applyingFilter.isEmpty()) {
+		if (applyingFilter.isEmpty() && clientFilters != null) {
+			System.out.println("It got here");
 			applyingFilter = clientFilters.stream()
 					.filter(filter -> filter.context.contains(context))
 					.filter(filter -> filter.filterAction == null ? action == HIDE : filter.filterAction == action)
