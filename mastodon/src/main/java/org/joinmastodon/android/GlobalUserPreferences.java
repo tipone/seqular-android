@@ -220,6 +220,7 @@ public class GlobalUserPreferences{
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
 				.putBoolean("loadRemoteAccountFollowers", loadRemoteAccountFollowers)
+				.putBoolean("hapticFeedback", hapticFeedback)
 				.putBoolean("mentionRebloggerAutomatically", mentionRebloggerAutomatically)
 				.putBoolean("showDividers", showDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
