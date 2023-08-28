@@ -1059,7 +1059,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		actionButton.setText(R.string.save_changes);
 		pager.setVisibility(View.GONE);
 		tabbar.setVisibility(View.GONE);
-		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay).mutate();
+		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay, getActivity().getTheme()).mutate();
 		avatar.setForeground(overlay);
 		updateMetadataHeight();
 
