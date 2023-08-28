@@ -192,7 +192,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 						}
 					}
 					boolean isPixelfed = item.parentFragment.isInstancePixelfed();
-					boolean textEmpty = TextUtils.isEmpty(item.status.content) && TextUtils.isEmpty(item.status.spoilerText);
+					boolean textEmpty = TextUtils.isEmpty(item.status.content) && !item.status.hasSpoiler();
 					if(!redraft && (isPixelfed || textEmpty)){
 						// pixelfed doesn't support /statuses/:id/source :/
 						if (isPixelfed) {
@@ -324,11 +324,16 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification!=null && !item.inset ? View.VISIBLE : View.GONE);
 			if (item.hasVisibilityToggle){
-				boolean disabled = !item.status.sensitiveRevealed ||
-						(!TextUtils.isEmpty(item.status.spoilerText) &&
-								!item.status.spoilerRevealed);
-				visibility.setEnabled(!disabled);
-				V.setVisibilityAnimated(visibility, disabled ? View.INVISIBLE : View.VISIBLE);
+				boolean hidden = !item.status.sensitiveRevealed || (item.status.hasSpoiler() && !item.status.spoilerRevealed);
+
+				// doing this because V.setVisibilityAnimated ignores changes between INVISIBLE and GONE
+				int newVis=hidden ? View.INVISIBLE : View.VISIBLE;
+				if(newVis==View.INVISIBLE && visibility.getVisibility()==View.GONE)
+					visibility.setVisibility(newVis);
+				else
+					V.setVisibilityAnimated(visibility, newVis);
+
+				visibility.setEnabled(!hidden);
 				visibility.setContentDescription(item.parentFragment.getString(item.status.sensitiveRevealed ? R.string.spoiler_hide : R.string.spoiler_show));
 				if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
 					visibility.setTooltipText(visibility.getContentDescription());

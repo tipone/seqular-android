@@ -188,6 +188,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return strippedText;
 	}
 
+	public boolean hasSpoiler(){
+		return !TextUtils.isEmpty(spoilerText);
+	}
+
 	@NonNull
 	@Override
 	public Status clone(){
