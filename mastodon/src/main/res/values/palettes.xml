@@ -132,7 +132,7 @@
 		<item name="colorM3OnSurface">?colorGray100</item>
 		<item name="colorM3SurfaceVariant">?colorNeutral700</item>
 		<item name="colorM3OnSurfaceVariant">?colorNeutral100</item>
-		<item name="colorM3Outline">?colorNeutral500</item>
+		<item name="colorM3Outline">?colorGray300</item>
 		<item name="colorM3OutlineVariant">?colorNeutral700</item>
 		<item name="colorM3PressedOverlay">?colorPrimary200</item>
 
