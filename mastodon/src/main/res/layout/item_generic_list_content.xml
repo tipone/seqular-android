@@ -22,6 +22,7 @@
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:minHeight="24dp"
+			android:ellipsize="end"
 			android:gravity="center_vertical"
 			android:textAppearance="@style/m3_body_large"
 			android:textColor="?colorM3OnSurface"
