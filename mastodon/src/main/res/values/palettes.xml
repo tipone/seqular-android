@@ -120,7 +120,7 @@
 		<item name="colorM3Secondary">?colorSecondary200</item>
 		<item name="colorM3OnSecondary">?colorSecondary800</item>
 		<!-- TODO: replace this -->
-		<item name="colorM3SecondaryContainer">?colorNeutral600</item>
+		<item name="colorM3SecondaryContainer">?colorSecondary800</item>
 		<item name="colorM3OnSecondaryContainer">?colorSecondary100</item>
 		<item name="colorM3Tertiary">?colorTertiary200</item>
 		<item name="colorM3OnTertiary">?colorTertiary800</item>
