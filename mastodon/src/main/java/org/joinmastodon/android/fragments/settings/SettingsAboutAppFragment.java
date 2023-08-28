@@ -51,7 +51,6 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 		adapter.addAdapter(super.getAdapter());
 
 		TextView versionInfo=new TextView(getActivity());
-		versionInfo.setSingleLine();
 		versionInfo.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(32)));
 		versionInfo.setTextAppearance(R.style.m3_label_medium);
 		versionInfo.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Outline));
