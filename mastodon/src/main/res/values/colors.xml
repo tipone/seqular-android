@@ -93,7 +93,6 @@
 	<color name="navigation_bar_bg_light">#282C37</color>
 	<color name="highlight_over_dark">#30FFFFFF</color>
 
-	<color name="favorite_selected">@color/warning_500</color>
 	<color name="bookmark_selected">@color/success_500</color>
 
 	<color name="shortcut_icon_background">@color/gray_25</color>
@@ -339,7 +338,7 @@
 	<color name="nord_primary_25">#fafaff</color>
 	<color name="nord_primary_50">#eff0ff</color>
 	<color name="nord_primary_100">#eceff4</color>
-	<color name="nord_primary_200">#e5e9f0</color>
+	<color name="nord_primary_200">#88c0d0</color>
 	<color name="nord_primary_300">#d8dee9</color>
 	<color name="nord_primary_400">#88c0d0</color>
 	<color name="nord_primary_500">#4c566a</color>
@@ -348,14 +347,14 @@
 	<color name="nord_primary_800">#3b4252</color>
 	<color name="nord_primary_900">#2e3440</color>
 
-	<color name="nord_gray_900">#3B4252</color>
+	<color name="nord_gray_900">#2e3440</color>
 <!--	<color name="nord_gray_800t">#cc2D343F</color>-->
 	<color name="nord_gray_800">#2D343F</color>
 	<color name="nord_gray_700">#3A4250</color>
 	<color name="nord_gray_600">#404C5C</color>
 	<color name="nord_gray_500">#aa8C96B4</color>
 
-	<color name="nord_favorite_selected">#ebcb8b</color>
+	<color name="nord_favorite">#ebcb8b</color>
 	<color name="nord_bookmark_selected">#a3be8c</color>
 
 <!--	<color name="nord_gray_400t">#4d8C96B4</color>-->
