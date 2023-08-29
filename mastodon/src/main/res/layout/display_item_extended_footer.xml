@@ -5,7 +5,7 @@
 	android:padding="8dp"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:background="?colorM3SurfaceVariant">
+	android:background="@drawable/bg_m3_surface3">
 
 	<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
 		android:id="@+id/button_bar"
