@@ -152,6 +152,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 	private void onLogOutClick(){
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.log_out)
 				.setMessage(getString(R.string.confirm_log_out, session.getFullUsername()))
 				.setPositiveButton(R.string.log_out, (dialog, which)->account.logOut(getActivity(), ()->{
 					loggedOut=true;

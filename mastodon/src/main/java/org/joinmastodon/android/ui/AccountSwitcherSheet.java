@@ -130,7 +130,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		new M3AlertDialogBuilder(activity)
 				.setTitle(R.string.log_out)
-				.setMessage(activity.getString(R.string.confirm_log_out))
+				.setMessage(activity.getString(R.string.confirm_log_out, session.getFullUsername()))
 				.setPositiveButton(R.string.log_out, (dialog, which) -> logOut(accountID))
 				.setNegativeButton(R.string.cancel, null)
 				.show();
