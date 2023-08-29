@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class StatusFilterPredicate implements Predicate<Status>{
-	private List<LegacyFilter> clientFilters;
+	private final List<LegacyFilter> clientFilters;
 	private final List<LegacyFilter> filters;
 	private final FilterContext context;
 	private final FilterAction action;
@@ -40,7 +40,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		this.context = context;
 		this.action = action;
 		this.clientFilters = GlobalUserPreferences.showPostsWithoutAlt ? List.of()
-				: List.of(new AltTextFilter(HIDE, HOME, PUBLIC, ACCOUNT), new AltTextFilter(WARN, THREAD, NOTIFICATIONS));
+				: List.of(new AltTextFilter(WARN, HOME, PUBLIC, ACCOUNT, THREAD, NOTIFICATIONS));
 	}
 
 	public StatusFilterPredicate(List<LegacyFilter> filters, FilterContext context){
@@ -56,6 +56,8 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(context)).collect(Collectors.toList());
 		this.context = context;
 		this.action = action;
+		this.clientFilters = GlobalUserPreferences.showPostsWithoutAlt ? List.of()
+				: List.of(new AltTextFilter(WARN, HOME, PUBLIC, ACCOUNT, THREAD, NOTIFICATIONS));
 	}
 
 	/**
@@ -91,8 +93,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 				.findAny();
 
 		//Apply client filters if no server filter is triggered
-		if (applyingFilter.isEmpty() && clientFilters != null) {
-			System.out.println("It got here");
+		if (applyingFilter.isEmpty() && !clientFilters.isEmpty()) {
 			applyingFilter = clientFilters.stream()
 					.filter(filter -> filter.context.contains(context))
 					.filter(filter -> filter.filterAction == null ? action == HIDE : filter.filterAction == action)
