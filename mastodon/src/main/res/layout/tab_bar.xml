@@ -49,6 +49,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
 				android:text="@string/sk_tab_home" />
@@ -88,6 +90,8 @@
 				android:layout_height="wrap_content"
 				android:textColor="@color/m3_on_surface_selector"
 				android:layout_gravity="center_horizontal"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:text="@string/sk_tab_search" />
 
@@ -143,6 +147,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
 				android:text="@string/sk_tab_notifications" />
@@ -187,6 +193,8 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:layout_gravity="center_horizontal"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
 				android:text="@string/sk_tab_profile" />
