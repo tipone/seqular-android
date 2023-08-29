@@ -369,4 +369,5 @@
     <string name="sk_notification_mention">Você foi mencionado por %s</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">Revelar automaticamente Avisos de Conteúdo nas respostas</string>
     <string name="sk_icon_recycle_bin">Lixeira de reciclagem</string>
+    <string name="sk_tab_search">Pesquisar</string>
 </resources>
