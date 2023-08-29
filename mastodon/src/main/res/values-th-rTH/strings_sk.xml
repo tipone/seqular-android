@@ -1,3 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sk_delete_and_redraft">ลบแล้วร่างใหม่</string>
+    <string name="sk_confirm_delete_and_redraft_title">ลบแล้วร่างโพสต์ใหม่</string>
+    <string name="sk_pin_post">ปักหมุดไปยังโปรไฟล์</string>
+    <string name="sk_confirm_pin_post_title">ปักหมุดโพสต์ไปยังโปรไฟล์</string>
+    <string name="sk_pinning">กำลังปักหมุดโพสต์…</string>
+    <string name="sk_unpin_post">เลิกปักหมุดจากโปรไฟล์</string>
+    <string name="sk_confirm_unpin_post_title">เลิกปักหมุดโพสต์จากโปรไฟล์</string>
+    <string name="sk_confirm_unpin_post">คุณแน่ใจหรือไม่ว่าต้องการเลิกปักหมุดโพสต์นี้\?</string>
+    <string name="sk_unpinning">กำลังเลิกปักหมุดโพสต์…</string>
+    <string name="sk_image_description">คำอธิบายภาพ</string>
+    <string name="sk_pinned_posts">ปักหมุด</string>
+    <string name="sk_confirm_delete_and_redraft">คุณแน่ใจหรือไม่ว่าต้องการลบและร่างโพสต์นี้ใหม่\?</string>
+    <string name="sk_confirm_pin_post">คุณต้องการปักหมุดโพสต์นี้ไปยังโปรไฟล์ของคุณหรือไม่\?</string>
 </resources>
