@@ -465,7 +465,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			hasSpoiler=true;
 			spoilerWrap.setVisibility(View.VISIBLE);
 			spoilerBtn.setSelected(true);
-		}else if(editingStatus!=null && !TextUtils.isEmpty(editingStatus.spoilerText)){
+		}else if(editingStatus!=null && editingStatus.hasSpoiler()){
 			hasSpoiler=true;
 			spoilerWrap.setVisibility(View.VISIBLE);
 			spoilerEdit.setText(getArguments().getString("sourceSpoiler", editingStatus.spoilerText));
@@ -737,7 +737,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			view.findViewById(R.id.time).setVisibility(time==null ? View.GONE : View.VISIBLE);
 			if(time!=null) ((TextView) view.findViewById(R.id.time)).setText(time);
 
-			if (status.spoilerText != null && !status.spoilerText.isBlank()) {
+			if (status.hasSpoiler()) {
 				TextView replyToSpoiler = view.findViewById(R.id.reply_to_spoiler);
 				replyToSpoiler.setVisibility(View.VISIBLE);
 				replyToSpoiler.setText(status.spoilerText);

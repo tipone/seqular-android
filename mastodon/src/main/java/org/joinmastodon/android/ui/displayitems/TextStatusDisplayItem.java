@@ -185,11 +185,10 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			readMore.setText(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
 
 			StatusDisplayItem next=getNextVisibleDisplayItem().orElse(null);
-			int bottomPadding=next instanceof FooterStatusDisplayItem
-					? V.dp(6)
-					: (!item.inset && next instanceof DummyStatusDisplayItem) ||
-						next instanceof EmojiReactionsStatusDisplayItem e && !e.isHidden()
-					? 0
+			if(next!=null && !next.parentID.equals(item.parentID)) next=null;
+			int bottomPadding=next instanceof FooterStatusDisplayItem ? V.dp(6)
+					: item.inset ? V.dp(12)
+					: (next instanceof EmojiReactionsStatusDisplayItem || next==null) ? 0
 					: V.dp(12);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
 

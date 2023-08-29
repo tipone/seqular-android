@@ -5,7 +5,6 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:paddingTop="8dp"
-	android:paddingEnd="16dp"
 	android:clipToPadding="false"
 	android:background="?colorM3Background"
 	tools:ignore="RtlSymmetry">
@@ -26,6 +25,7 @@
 		android:layout_height="48dp"
 		android:layout_alignParentEnd="true"
 		android:layout_marginStart="8dp"
+		android:layout_marginEnd="8dp"
 		android:scaleType="center"
 		android:tint="?colorM3OnSurface"
 		android:background="?android:actionBarItemBackground"

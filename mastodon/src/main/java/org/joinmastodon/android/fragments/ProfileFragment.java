@@ -1169,7 +1169,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		actionButton.setText(R.string.save_changes);
 		pager.setVisibility(View.GONE);
 		tabbar.setVisibility(View.GONE);
-		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay).mutate();
+		Drawable overlay=getResources().getDrawable(R.drawable.edit_avatar_overlay, getActivity().getTheme()).mutate();
 		avatar.setForeground(overlay);
 		updateMetadataHeight();
 
@@ -1541,16 +1541,14 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 	}
 
-	private class AboutViewHolder extends BaseViewHolder implements ImageLoaderViewHolder {
+	private class AboutViewHolder extends BaseViewHolder implements ImageLoaderViewHolder{
 		private final TextView title;
 		private final LinkedTextView value;
-//		private final ImageView verifiedIcon;
 
 		public AboutViewHolder(){
 			super(R.layout.item_profile_about);
 			title=findViewById(R.id.title);
 			value=findViewById(R.id.value);
-//			verifiedIcon=findViewById(R.id.verified_icon);
 		}
 
 		@Override
@@ -1558,7 +1556,18 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			super.onBind(item);
 			title.setText(item.parsedName);
 			value.setText(item.parsedValue);
-//			verifiedIcon.setVisibility(item.verifiedAt!=null ? View.VISIBLE : View.GONE);
+			if(item.verifiedAt!=null){
+				int textColor=UiUtils.isDarkTheme() ? 0xFF89bb9c : 0xFF5b8e63;
+				value.setTextColor(textColor);
+				value.setLinkTextColor(textColor);
+				Drawable check=getResources().getDrawable(R.drawable.ic_fluent_checkmark_starburst_20_regular, getActivity().getTheme()).mutate();
+				check.setTint(textColor);
+				value.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, check, null);
+			}else{
+				value.setTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.textColorPrimary));
+				value.setLinkTextColor(UiUtils.getThemeColor(getActivity(), android.R.attr.colorAccent));
+				value.setCompoundDrawables(null, null, null, null);
+			}
 		}
 
 		@Override
