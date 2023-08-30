@@ -792,7 +792,7 @@ public class UiUtils {
 			confirmToggleMuteUser(activity, accountID, account, true, resultCallback);
 		} else if (!relationship.following && !relationship.requested) {
 			follow(activity, accountID, account,  true, progressCallback, resultCallback);
-		} else {
+		} else if (GlobalUserPreferences.confirmUnfollow){
 			showConfirmationAlert(activity,
 					activity.getString(R.string.mo_confirm_unfollow_title),
 					activity.getString(R.string.mo_confirm_unfollow, account.getDisplayUsername()),
@@ -800,8 +800,9 @@ public class UiUtils {
 					0,
 					() -> follow(activity, accountID, account, false, progressCallback, resultCallback),
 					() -> progressCallback.accept(false));
+		} else {
+			follow(activity, accountID, account, false, progressCallback, resultCallback);
 		}
-
 	}
 
 	private static void follow(Activity activity, String accountID, Account account, boolean followed, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
