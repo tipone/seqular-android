@@ -1291,7 +1291,13 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		wm.removeView(sendingOverlay);
 		sendingOverlay=null;
 		V.setVisibilityAnimated(sendProgress, View.GONE);
-		publishButton.setEnabled(true);
+
+		if(GlobalUserPreferences.relocatePublishButton) {
+			publishButtonRelocated.setEnabled(true);
+		} else {
+			publishButton.setEnabled(true);
+		}
+
 		if(error instanceof MastodonErrorResponse me){
 			new M3AlertDialogBuilder(getActivity())
 					.setTitle(R.string.post_failed)
