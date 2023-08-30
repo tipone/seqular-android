@@ -71,4 +71,8 @@
     <string name="mo_color_palette_black_and_white">Zwart Wit</string>
     <string name="mo_setting_haptic_feedback_summary">Tril bij interactie met berichten</string>
     <string name="mo_camera_not_available">Geen camera beschikbaar!</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_settings_show_posts_without_alt">Toon berichten zonder alt tekst in media</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Berichten worden verborgen in tijdlijnen, maar kunnen zichtbaar zijn in threads en meldingen</string>
+    <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
 </resources>
