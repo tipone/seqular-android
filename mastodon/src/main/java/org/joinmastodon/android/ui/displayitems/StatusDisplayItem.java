@@ -120,19 +120,6 @@ public abstract class StatusDisplayItem{
 		};
 	}
 
-	public static ArrayList<StatusDisplayItem> buildItems(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parentObject, Map<String, Account> knownAccounts, boolean inset, boolean showReactions, boolean addFooter, boolean disableTranslate, FilterContext filterContext) {
-		int flags=0;
-		if(inset)
-			flags|=FLAG_INSET;
-		if(!addFooter)
-			flags|=FLAG_NO_FOOTER;
-		if (disableTranslate)
-			flags|=FLAG_NO_TRANSLATE;
-		if (!showReactions)
-			flags|=FLAG_NO_EMOJI_REACTIONS;
-		return buildItems(fragment, status, accountID, parentObject, knownAccounts, filterContext, flags);
-	}
-
 	public static ReblogOrReplyLineStatusDisplayItem buildReplyLine(BaseStatusListFragment<?> fragment, Status status, String accountID, DisplayItemsParent parent, Account account, boolean threadReply) {
 		String parentID = parent.getID();
 		String text = threadReply ? fragment.getString(R.string.sk_show_thread)
@@ -293,8 +280,8 @@ public abstract class StatusDisplayItem{
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);
 		}
-		if((flags & FLAG_NO_EMOJI_REACTIONS)==0
-				&& AccountSessionManager.get(accountID).getLocalPreferences().emojiReactionsEnabled){
+		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && fragment.getLocalPrefs().emojiReactionsEnabled &&
+				(fragment.getLocalPrefs().emojiReactionsInTimelines || fragment instanceof ThreadFragment)){
 			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
 			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus, false));
 		}
@@ -401,15 +388,7 @@ public abstract class StatusDisplayItem{
 			}
 			return Optional.empty();
 		}
-//			int nextNextPos=getAbsoluteAdapterPosition() + 2;
-//			if(next.map(n->n instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()).orElse(false)){
-//				List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
-//				return displayItems.size() > nextNextPos
-//						? Optional.of(displayItems.get(nextNextPos))
-//						: Optional.empty();
-//			}else{
-//				return next;
-//			}
+
 		public Optional<StatusDisplayItem> getNextDisplayItem(){
 			return getDisplayItemOffset(1);
 		}

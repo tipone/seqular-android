@@ -31,11 +31,10 @@ import org.joinmastodon.android.api.requests.statuses.PleromaAddStatusReaction;
 import org.joinmastodon.android.api.requests.statuses.PleromaDeleteStatusReaction;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
+import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.account_list.StatusEmojiReactionsListFragment;
 import org.joinmastodon.android.model.Account;
-import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiReaction;
 import org.joinmastodon.android.model.Status;
@@ -43,8 +42,6 @@ import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
-
-import java.util.Optional;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -62,20 +59,18 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	public final Status status;
 	private final Drawable placeholder;
-	private final boolean hideAdd, forAnnouncement;
+	private final boolean hideEmpty, forAnnouncement;
 	private final String accountID;
-	private boolean hidden;
 	private static final float ALPHA_DISABLED=0.55f;
 
-    public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideAdd, boolean forAnnouncement) {
+    public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideEmpty, boolean forAnnouncement) {
 		super(parentID, parentFragment);
 		this.status=status;
-		this.hideAdd=hideAdd;
+		this.hideEmpty=hideEmpty;
 		this.forAnnouncement=forAnnouncement;
 		this.accountID=accountID;
 		placeholder=parentFragment.getContext().getDrawable(R.drawable.image_placeholder).mutate();
 		placeholder.setBounds(0, 0, V.sp(24), V.sp(24));
-		updateHidden();
     }
 
 	@Override
@@ -94,11 +89,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
     }
 
 	public boolean isHidden(){
-		return hidden;
-	}
-
-	private void updateHidden(){
-		hidden=status.reactions.isEmpty() && hideAdd;
+		return status.reactions.isEmpty() && hideEmpty;
 	}
 
 	// borrowed from ProfileFragment
@@ -187,12 +178,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			emojiKeyboard.setListener(this);
 			space.setVisibility(View.GONE);
 			root.addView(emojiKeyboard.getView());
-			item.updateHidden();
-			root.setVisibility(item.hidden ? View.GONE : View.VISIBLE);
-			line.setVisibility(item.hidden ? View.GONE : View.VISIBLE);
+			boolean hidden=item.isHidden();
+			root.setVisibility(hidden ? View.GONE : View.VISIBLE);
+			line.setVisibility(hidden ? View.GONE : View.VISIBLE);
 			line.setPadding(
 					list.getPaddingLeft(),
-					item.hidden ? 0 : V.dp(8),
+					hidden ? 0 : V.dp(8),
 					list.getPaddingRight(),
 					item.forAnnouncement ? V.dp(8) : 0
 			);
@@ -219,6 +210,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		}
 
 		private void addEmojiReaction(String emoji, Emoji info) {
+			int countBefore=item.status.reactions.size();
 			for(int i=0; i<item.status.reactions.size(); i++){
 				EmojiReaction r=item.status.reactions.get(i);
 				if(r.name.equals(emoji) && r.me){
@@ -261,7 +253,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					finalExisting.add(me);
 					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
 				}
-				E.post(new StatusCountersUpdatedEvent(item.status, adapter.parentHolder));
+				E.post(new EmojiReactionsUpdatedEvent(item.status.id, item.status.reactions, countBefore==0, adapter.parentHolder));
 			}, resetBtn).exec(item.accountID);
 		}
 
@@ -392,7 +384,11 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 							break;
 						}
 
-						E.post(new StatusCountersUpdatedEvent(parent.status, adapter.parentHolder));
+						if(parent.isHidden()){
+							adapter.parentHolder.root.setVisibility(View.GONE);
+							adapter.parentHolder.line.setVisibility(View.GONE);
+						}
+						E.post(new EmojiReactionsUpdatedEvent(parent.status.id, parent.status.reactions, parent.status.reactions.isEmpty(), adapter.parentHolder));
 						adapter.parentHolder.imgLoader.updateImages();
 					}, null).exec(parent.parentFragment.getAccountID());
 				});

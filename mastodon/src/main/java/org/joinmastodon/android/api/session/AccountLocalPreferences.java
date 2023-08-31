@@ -42,7 +42,7 @@ public class AccountLocalPreferences{
 	public boolean keepOnlyLatestNotification;
 
 	public boolean emojiReactionsEnabled;
-	public boolean showEmojiReactionsInLists;
+	public boolean emojiReactionsInTimelines;
 
 	private final static Type recentLanguagesType = new TypeToken<ArrayList<String>>() {}.getType();
 	private final static Type timelinesType = new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
@@ -73,7 +73,7 @@ public class AccountLocalPreferences{
 		timelineReplyVisibility=prefs.getString("timelineReplyVisibility", null);
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
-		showEmojiReactionsInLists=prefs.getBoolean("showEmojiReactionsInLists", false);
+		emojiReactionsInTimelines=prefs.getBoolean("emojiReactionsInTimelines", true);
 
 		// MOSHIDON
 		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
@@ -109,7 +109,7 @@ public class AccountLocalPreferences{
 				.putString("timelineReplyVisibility", timelineReplyVisibility)
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
 				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
-				.putBoolean("showEmojiReactionsInLists", showEmojiReactionsInLists)
+				.putBoolean("emojiReactionsInTimelines", emojiReactionsInTimelines)
 
 				// MOSHIDON
 				.putString("recentEmojis", gson.toJson(recentEmojis))

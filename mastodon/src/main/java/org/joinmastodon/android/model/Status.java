@@ -15,10 +15,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
@@ -181,6 +181,9 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		reblogged=ev.reblogged;
 		bookmarked=ev.bookmarked;
 		pinned=ev.pinned;
+	}
+
+	public void update(EmojiReactionsUpdatedEvent ev){
 		reactions=ev.reactions;
 	}
 
