@@ -43,7 +43,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
-import me.grishka.appkit.views.FragmentRootLinearLayout;
 
 public class NotificationsListFragment extends BaseStatusListFragment<Notification> {
 	private boolean onlyMentions;
