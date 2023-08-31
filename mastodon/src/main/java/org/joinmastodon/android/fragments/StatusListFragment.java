@@ -38,7 +38,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		int flags = 0;
 		if (GlobalUserPreferences.spectatorMode)
 			flags |= StatusDisplayItem.FLAG_NO_FOOTER;
-		if (!getLocalPrefs().showEmojiReactionsInLists)
+		if (!getLocalPrefs().emojiReactionsInTimelines)
 			flags |= StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS;
 		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), isMainThreadStatus ? 0 : flags);
 	}

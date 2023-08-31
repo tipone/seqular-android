@@ -278,7 +278,7 @@ public abstract class StatusDisplayItem{
 			items.addAll(contentItems);
 		}
 		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && fragment.getLocalPrefs().emojiReactionsEnabled &&
-				(fragment.getLocalPrefs().showEmojiReactionsInLists || fragment instanceof ThreadFragment)){
+				(fragment.getLocalPrefs().emojiReactionsInTimelines || fragment instanceof ThreadFragment)){
 			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
 			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus, false));
 		}
