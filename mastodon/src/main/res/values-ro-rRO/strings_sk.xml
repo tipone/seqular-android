@@ -363,4 +363,23 @@
     <string name="sk_settings_continues_playback">Suprapunere audio</string>
     <string name="sk_settings_continues_playback_summary">Permiteți continuarea redării media curente, suprapunând noua redare</string>
     <string name="sk_notification_mention">Ați fost menționați de către %s</string>
+    <string name="sk_settings_show_new_posts_button">Buton \"Arătați postări noi\"</string>
+    <string name="sk_settings_emoji_reactions_in_lists">Afișați reacții emoji în cronologii</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Un utilizator a reacționat cu %2$s</item>
+        <item quantity="few">%1$,d utilizatori au reacționat cu %2$s</item>
+        <item quantity="other">%1$,d utilizatori au reacționat cu %2$s</item>
+    </plurals>
+    <string name="sk_button_react">Reacționați cu emoji</string>
+    <string name="sk_enter_emoji_toast">Trebuie să tastați un emoji</string>
+    <string name="sk_enter_emoji_hint">Scrieți pentru a reacționa cu un emoji</string>
+    <string name="sk_settings_emoji_reactions">Activați reacții emoji</string>
+    <string name="sk_settings_emoji_reactions_explanation">Afișează reacțiile emoji la postări și vă permite să interacționați cu ele. Unele versiuni modificate de Mastodon acceptă acest lucru, dar Mastodon nu.</string>
+    <string name="sk_again_for_system_keyboard">Apăsați din nou pentru tastatura de sistem</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">postare</item>
+        <item quantity="few">postări</item>
+        <item quantity="other">postări</item>
+    </plurals>
+    <string name="sk_settings_emoji_reactions_in_lists_explanation">Dacă reacțiile emoji ar trebui să fie afișate pe cronologii. Dacă această opțiune este dezactivată, reacțiile emoji vor fi afișate doar atunci când vizualizați o discuție.</string>
 </resources>
