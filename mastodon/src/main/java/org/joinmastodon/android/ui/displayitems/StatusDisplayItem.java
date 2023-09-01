@@ -1,5 +1,8 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import static org.joinmastodon.android.api.session.AccountLocalPreferences.ShowEmojiReactions.ALWAYS;
+import static org.joinmastodon.android.api.session.AccountLocalPreferences.ShowEmojiReactions.ONLY_OPENED;
+
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
@@ -12,6 +15,7 @@ import android.view.ViewGroup;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -277,10 +281,12 @@ public abstract class StatusDisplayItem{
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);
 		}
-		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && fragment.getLocalPrefs().emojiReactionsEnabled &&
-				(fragment.getLocalPrefs().emojiReactionsInTimelines || fragment instanceof ThreadFragment)){
+		AccountLocalPreferences lp=fragment.getLocalPrefs();
+		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && lp.emojiReactionsEnabled &&
+				(lp.showEmojiReactions!=ONLY_OPENED || fragment instanceof ThreadFragment)){
 			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
-			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !isMainStatus, false));
+			boolean showAddButton=lp.showEmojiReactions==ALWAYS || isMainStatus;
+			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !showAddButton, false));
 		}
 		FooterStatusDisplayItem footer=null;
 		if((flags & FLAG_NO_FOOTER)==0){

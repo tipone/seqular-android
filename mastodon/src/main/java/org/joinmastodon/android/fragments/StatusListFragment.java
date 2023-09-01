@@ -1,5 +1,7 @@
 package org.joinmastodon.android.fragments;
 
+import static org.joinmastodon.android.api.session.AccountLocalPreferences.ShowEmojiReactions.ONLY_OPENED;
+
 import android.content.res.Configuration;
 import android.os.Bundle;
 
@@ -7,6 +9,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
@@ -38,9 +41,10 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
 		boolean isMainThreadStatus = this instanceof ThreadFragment t && s.id.equals(t.mainStatus.id);
 		int flags = 0;
+		AccountLocalPreferences lp=getLocalPrefs();
 		if (GlobalUserPreferences.spectatorMode)
 			flags |= StatusDisplayItem.FLAG_NO_FOOTER;
-		if (!getLocalPrefs().emojiReactionsInTimelines)
+		if (!lp.emojiReactionsEnabled || lp.showEmojiReactions==ONLY_OPENED)
 			flags |= StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS;
 		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), isMainThreadStatus ? 0 : flags);
 	}

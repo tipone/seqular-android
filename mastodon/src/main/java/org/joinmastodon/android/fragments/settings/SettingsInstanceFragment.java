@@ -2,10 +2,14 @@ package org.joinmastodon.android.fragments.settings;
 
 import android.os.Bundle;
 
+import androidx.annotation.StringRes;
+
+import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
 import org.joinmastodon.android.fragments.HasAccountID;
 import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.viewmodel.CheckableListItem;
@@ -15,12 +19,13 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import me.grishka.appkit.Nav;
 
 public class SettingsInstanceFragment extends BaseSettingsFragment<Void> implements HasAccountID{
-	private CheckableListItem<Void> contentTypesItem, emojiReactionsItem, emojiReactionsInTimelinesItem, localOnlyItem, glitchModeItem;
-	private ListItem<Void> defaultContentTypeItem;
+	private CheckableListItem<Void> contentTypesItem, emojiReactionsItem, localOnlyItem, glitchModeItem;
+	private ListItem<Void> defaultContentTypeItem, showEmojiReactionsItem;
 	private AccountLocalPreferences lp;
 
 	@Override
@@ -37,14 +42,14 @@ public class SettingsInstanceFragment extends BaseSettingsFragment<Void> impleme
 				contentTypesItem=new CheckableListItem<>(R.string.sk_settings_content_types, R.string.sk_settings_content_types_explanation, CheckableListItem.Style.SWITCH, lp.contentTypesEnabled, R.drawable.ic_fluent_text_edit_style_24_regular, this::onContentTypeClick),
 				defaultContentTypeItem=new ListItem<>(R.string.sk_settings_default_content_type, lp.defaultContentType.getName(), R.drawable.ic_fluent_text_bold_24_regular, this::onDefaultContentTypeClick, 0, true),
 				emojiReactionsItem=new CheckableListItem<>(R.string.sk_settings_emoji_reactions, R.string.sk_settings_emoji_reactions_explanation, CheckableListItem.Style.SWITCH, lp.emojiReactionsEnabled, R.drawable.ic_fluent_emoji_laugh_24_regular, this::onEmojiReactionsClick),
-				emojiReactionsInTimelinesItem=new CheckableListItem<>(R.string.sk_settings_emoji_reactions_in_lists, R.string.sk_settings_emoji_reactions_in_lists_explanation, CheckableListItem.Style.SWITCH, lp.emojiReactionsInTimelines, R.drawable.ic_fluent_emoji_24_regular, ()->toggleCheckableItem(emojiReactionsInTimelinesItem), true),
+				showEmojiReactionsItem=new ListItem<>(R.string.sk_settings_show_emoji_reactions, getShowEmojiReactionsString(), R.drawable.ic_fluent_emoji_24_regular, this::onShowEmojiReactionsClick, 0, true),
 				localOnlyItem=new CheckableListItem<>(R.string.sk_settings_support_local_only, R.string.sk_settings_local_only_explanation, CheckableListItem.Style.SWITCH, lp.localOnlySupported, R.drawable.ic_fluent_eye_24_regular, this::onLocalOnlyClick),
 				glitchModeItem=new CheckableListItem<>(R.string.sk_settings_glitch_instance, R.string.sk_settings_glitch_mode_explanation, CheckableListItem.Style.SWITCH, lp.glitchInstance, R.drawable.ic_fluent_eye_24_filled, ()->toggleCheckableItem(glitchModeItem))
 		));
 		contentTypesItem.checkedChangeListener=checked->onContentTypeClick();
 		defaultContentTypeItem.isEnabled=contentTypesItem.checked;
 		emojiReactionsItem.checkedChangeListener=checked->onEmojiReactionsClick();
-		emojiReactionsInTimelinesItem.isEnabled=emojiReactionsItem.checked;
+		showEmojiReactionsItem.isEnabled=emojiReactionsItem.checked;
 		localOnlyItem.checkedChangeListener=checked->onLocalOnlyClick();
 		glitchModeItem.isEnabled=localOnlyItem.checked;
 	}
@@ -57,10 +62,10 @@ public class SettingsInstanceFragment extends BaseSettingsFragment<Void> impleme
 		super.onHidden();
 		lp.contentTypesEnabled=contentTypesItem.checked;
 		lp.emojiReactionsEnabled=emojiReactionsItem.checked;
-		lp.emojiReactionsInTimelines=emojiReactionsInTimelinesItem.checked;
 		lp.localOnlySupported=localOnlyItem.checked;
 		lp.glitchInstance=glitchModeItem.checked;
 		lp.save();
+		E.post(new StatusDisplaySettingsChangedEvent(accountID));
 	}
 
 	private void onServerClick(){
@@ -107,10 +112,34 @@ public class SettingsInstanceFragment extends BaseSettingsFragment<Void> impleme
 				.show();
 	}
 
+	private void onShowEmojiReactionsClick(){
+		int selected=lp.showEmojiReactions.ordinal();
+		int[] newSelected={selected};
+		new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.sk_settings_show_emoji_reactions)
+				.setSingleChoiceItems((String[]) IntStream.of(R.string.sk_settings_show_emoji_reactions_hide_empty, R.string.sk_settings_show_emoji_reactions_only_opened, R.string.sk_settings_show_emoji_reactions_always).mapToObj(this::getString).toArray(String[]::new),
+						selected, (dlg, item)->newSelected[0]=item)
+				.setPositiveButton(R.string.ok, (dlg, item)->{
+					lp.showEmojiReactions=AccountLocalPreferences.ShowEmojiReactions.values()[newSelected[0]];
+					showEmojiReactionsItem.subtitleRes=getShowEmojiReactionsString();
+					rebindItem(showEmojiReactionsItem);
+				})
+				.setNegativeButton(R.string.cancel, null)
+				.show();
+	}
+
+	private @StringRes int getShowEmojiReactionsString(){
+		return switch(lp.showEmojiReactions){
+			case HIDE_EMPTY -> R.string.sk_settings_show_emoji_reactions_hide_empty;
+			case ONLY_OPENED -> R.string.sk_settings_show_emoji_reactions_only_opened;
+			case ALWAYS -> R.string.sk_settings_show_emoji_reactions_always;
+		};
+	}
+
 	private void onEmojiReactionsClick(){
 		toggleCheckableItem(emojiReactionsItem);
-		emojiReactionsInTimelinesItem.checked=emojiReactionsInTimelinesItem.isEnabled=emojiReactionsItem.checked;
-		rebindItem(emojiReactionsInTimelinesItem);
+		showEmojiReactionsItem.isEnabled=emojiReactionsItem.checked;
+		rebindItem(showEmojiReactionsItem);
 	}
 
 	private void onLocalOnlyClick(){
