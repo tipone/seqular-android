@@ -25,6 +25,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.StringRes;
+
 public class GlobalUserPreferences{
 	private static final String TAG="GlobalUserPreferences";
 
@@ -32,6 +34,7 @@ public class GlobalUserPreferences{
 	public static boolean useCustomTabs;
 	public static boolean altTextReminders, confirmUnfollow, confirmBoost, confirmDeletePost;
 	public static ThemePreference theme;
+	public static LoadMissingPostsPreference loadMissingPosts;
 
 	// MEGALODON
 	public static boolean trueBlackTheme;
@@ -119,6 +122,7 @@ public class GlobalUserPreferences{
 		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
 		overlayMedia=prefs.getBoolean("overlayMedia", false);
+		loadMissingPosts=LoadMissingPostsPreference.values()[prefs.getInt("loadMissingItems", 0)];
 
 		if (prefs.contains("prefixRepliesWithRe")) {
 			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
@@ -177,6 +181,7 @@ public class GlobalUserPreferences{
 				.putBoolean("displayPronounsInThreads", displayPronounsInThreads)
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
 				.putBoolean("overlayMedia", overlayMedia)
+				.putInt("loadMissingItems", loadMissingPosts.ordinal())
 				.apply();
 	}
 
@@ -270,5 +275,17 @@ public class GlobalUserPreferences{
 		NEVER,
 		ALWAYS,
 		TO_OTHERS
+	}
+
+	public enum LoadMissingPostsPreference{
+		NEWEST_FIRST(R.string.sk_load_missing_posts_newest_first), // Downwards, default
+		OLDEST_FIRST(R.string.sk_load_missing_posts_oldest_first); // Upwards
+
+		@StringRes
+		public int labelRes;
+
+		LoadMissingPostsPreference(@StringRes int labelRes){
+			this.labelRes=labelRes;
+		}
 	}
 }
