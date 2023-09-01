@@ -247,8 +247,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Subscribe
 	public void onStatusCountersUpdated(StatusCountersUpdatedEvent ev){
 		for(Notification n:data){
-			if (n.status == null) continue;
-			if(n.status.getContentStatus().id.equals(ev.id)){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
 				n.status.getContentStatus().update(ev);
 				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 				for(int i=0;i<list.getChildCount();i++){
@@ -262,8 +261,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			}
 		}
 		for(Notification n:preloadedData){
-			if (n.status == null) continue;
-			if(n.status.getContentStatus().id.equals(ev.id)){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
 				n.status.getContentStatus().update(ev);
 				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 			}
@@ -273,7 +271,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Subscribe
 	public void onEmojiReactionsChanged(EmojiReactionsUpdatedEvent ev){
 		for(Notification n : data){
-			if(n.status.getContentStatus().id.equals(ev.id)){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
 				n.status.getContentStatus().update(ev);
 				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 				for(int i=0; i<list.getChildCount(); i++){
@@ -287,7 +285,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			}
 		}
 		for(Notification n : preloadedData){
-			if(n.status.getContentStatus().id.equals(ev.id)){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
 				n.status.getContentStatus().update(ev);
 				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 			}
