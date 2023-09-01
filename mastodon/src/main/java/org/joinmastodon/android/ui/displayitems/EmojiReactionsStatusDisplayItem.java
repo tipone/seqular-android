@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.requests.announcements.AddAnnouncementReaction;
@@ -59,7 +60,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	public final Status status;
 	private final Drawable placeholder;
-	private final boolean hideEmpty, forAnnouncement;
+	private final boolean hideEmpty, forAnnouncement, playGifs;
 	private final String accountID;
 	private static final float ALPHA_DISABLED=0.55f;
 
@@ -71,11 +72,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		this.accountID=accountID;
 		placeholder=parentFragment.getContext().getDrawable(R.drawable.image_placeholder).mutate();
 		placeholder.setBounds(0, 0, V.sp(24), V.sp(24));
+		playGifs=GlobalUserPreferences.playGifs;
     }
 
 	@Override
 	public int getImageCount(){
-		return (int) status.reactions.stream().filter(r->r.url != null).count();
+		return (int) status.reactions.stream().filter(r->r.getUrl(playGifs)!=null).count();
 	}
 
 	@Override
@@ -169,8 +171,9 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
         public void onBind(EmojiReactionsStatusDisplayItem item) {
 			if(emojiKeyboard != null) root.removeView(emojiKeyboard.getView());
 			AccountSession session=item.parentFragment.getSession();
-			item.status.reactions.forEach(r->
-					r.request=r.url != null ? new UrlImageLoaderRequest(r.url, V.sp(24), V.sp(24)) : null);
+			item.status.reactions.forEach(r->r.request=r.getUrl(item.playGifs)!=null
+					? new UrlImageLoaderRequest(r.getUrl(item.playGifs), V.sp(24), V.sp(24))
+					: null);
 			emojiKeyboard=new CustomEmojiPopupKeyboard(
 					(Activity) item.parentFragment.getContext(),
 					AccountSessionManager.getInstance().getCustomEmojis(session.domain),
@@ -283,7 +286,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 		@Override
 		public void clearImage(int index){
-			if(item.status.reactions.get(index).url==null) return;
+			if(item.status.reactions.get(index).getUrl(item.playGifs)==null) return;
 			setImage(index, item.placeholder);
 		}
 
@@ -316,7 +319,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 			@Override
 			public int getImageCountForItem(int position){
-				return item.status.reactions.get(position).url == null ? 0 : 1;
+				return item.status.reactions.get(position).getUrl(item.playGifs)==null ? 0 : 1;
 			}
 
 			@Override
@@ -356,7 +359,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				btn.setText(UiUtils.abbreviateNumber(reaction.count));
 				btn.setContentDescription(reaction.name);
 				if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) btn.setTooltipText(reaction.name);
-				if(reaction.url==null){
+				if(reaction.getUrl(parent.playGifs)==null){
 					Paint p=new Paint();
 					p.setTextSize(V.sp(18));
 					TextDrawable drawable=new TextDrawable(p, reaction.name);
@@ -402,7 +405,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 						args.putString("statusID", parent.status.id);
 						int atSymbolIndex = emojiReaction.name.indexOf("@");
 						args.putString("emoji", atSymbolIndex != -1 ? emojiReaction.name.substring(0, atSymbolIndex) : emojiReaction.name);
-						args.putString("url", emojiReaction.url);
+						args.putString("url", emojiReaction.getUrl(parent.playGifs));
 						args.putInt("count", emojiReaction.count);
 						Nav.go(parent.parentFragment.getActivity(), StatusEmojiReactionsListFragment.class, args);
 						return true;
