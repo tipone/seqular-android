@@ -214,7 +214,7 @@
 						android:layout_marginBottom="7dp"
 						android:visibility="invisible"
 						android:layout_gravity="right|bottom"
-						android:background="@drawable/bg_button_m3_tonal_circle"
+						android:background="@drawable/bg_button_m3_text_circle"
 						android:tooltipText="@string/mo_personal_note_confirm"
 						android:contentDescription="@string/mo_personal_note_confirm"
 						android:src="@drawable/ic_fluent_checkmark_24_regular"
