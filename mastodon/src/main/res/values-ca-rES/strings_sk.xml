@@ -372,4 +372,8 @@
     <string name="sk_bubble_timeline_info_banner">Aquestes són les publicacions més recents de la xarxa seleccionades per l\'administració de la instància.</string>
     <string name="sk_icon_gauge">Indicador</string>
     <string name="sk_search_fediverse">Cerca al fedivers</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">publicació</item>
+        <item quantity="other">publicacions</item>
+    </plurals>
 </resources>
