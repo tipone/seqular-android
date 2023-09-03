@@ -74,4 +74,6 @@
     </plurals>
     <string name="sk_announcements">الإعلانات</string>
     <string name="sk_settings_about_instance">عن مثيل الخادم</string>
+    <string name="sk_welcome_title">مرحبًا!</string>
+    <string name="sk_welcome_text">للبداية، ندعوك إلى إدخال عنوان اسم نطاق خادمك هنا.</string>
 </resources>
