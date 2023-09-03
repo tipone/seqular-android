@@ -31,4 +31,18 @@
     <string name="sk_user_post_notifications_off">عطل إشعارات النشر لـ %s</string>
     <string name="sk_check_for_update">تحقق من وجود تحديثات</string>
     <string name="sk_no_update_available">لا يتوفر تحديث</string>
+    <string name="sk_duration_hours_1">ساعة واحدة</string>
+    <string name="sk_duration_hours_6">6 ساعات</string>
+    <string name="sk_duration_days_1">يوم واحد</string>
+    <string name="sk_duration_days_3">3 أيام</string>
+    <string name="sk_duration_days_7">7 أيام</string>
+    <string name="sk_federated_timeline">الفديرالية</string>
+    <string name="sk_timeline_local">المحلي</string>
+    <string name="sk_tab_notifications">الإشعارات</string>
+    <string name="sk_mute_label">المدة</string>
+    <string name="sk_settings_show_boosts">إظهار المعاد نشرها</string>
+    <string name="sk_duration_minutes_5">5 دقائق</string>
+    <string name="sk_timeline_home">الرئيسي</string>
+    <string name="sk_duration_minutes_30">30 دقيقة</string>
+    <string name="sk_tab_home">الرئيسي</string>
 </resources>
