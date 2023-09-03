@@ -12,9 +12,11 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.HasAccountID;
 import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -24,9 +26,11 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
+public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> implements HasAccountID{
 	private ListItem<Void> mediaCacheItem;
 
+	// MOSHIDON
+	private ListItem<Void> clearRecentEmojisItem;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -37,6 +41,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_repo_url))),
 				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+s.domain+"/terms")),
 				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
+				clearRecentEmojisItem=new ListItem<>(R.string.mo_clear_recent_emoji, 0, this::onClearRecentEmojisClick),
 				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick)
 		));
 
@@ -73,10 +78,21 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 		});
 	}
 
+	private void onClearRecentEmojisClick(){
+		getLocalPrefs().recentEmojis=new HashMap<>();
+		getLocalPrefs().save();
+		Toast.makeText(getContext(), R.string.mo_recent_emoji_cleared, Toast.LENGTH_SHORT).show();
+	}
+
 	private void updateMediaCacheItem(){
 		long size=ImageCache.getInstance(getActivity()).getDiskCache().size();
 		mediaCacheItem.subtitle=UiUtils.formatFileSize(getActivity(), size, false);
 		mediaCacheItem.isEnabled=size>0;
 		rebindItem(mediaCacheItem);
+	}
+
+	@Override
+	public String getAccountID(){
+		return accountID;
 	}
 }

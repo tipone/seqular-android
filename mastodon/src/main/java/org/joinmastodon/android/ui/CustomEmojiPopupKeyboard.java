@@ -30,11 +30,15 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiUpdatedEvent;
+import org.joinmastodon.android.fragments.HasAccountID;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiCategory;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -52,7 +56,9 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class CustomEmojiPopupKeyboard extends PopupKeyboard{
+public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccountID{
+	//determines how many emoji need to be clicked, before it disappears from the recent emojis
+	private static final int NEW_RECENT_VALUE=15;
 	private List<EmojiCategory> emojis;
 	private UsableRecyclerView list;
 	private ListImageLoaderWrapper imgLoader;
@@ -103,6 +109,17 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		list.setLayoutManager(lm);
 		list.setPadding(V.dp(16), 0, V.dp(16), 0);
 		imgLoader=new ListImageLoaderWrapper(activity, list, new RecyclerViewDelegate(list), null);
+
+		// inject category with last used emojis
+		if (!getLocalPrefs().recentEmojis.isEmpty()) {
+			List<Emoji> allAvailableEmojis =  emojis.stream().flatMap(category -> category.emojis.stream()).collect(Collectors.toList());
+			List<Emoji> recentEmojiList = new ArrayList<>();
+			for (String emojiCode : getLocalPrefs().recentEmojis.keySet().stream().sorted(Comparator.comparingInt(getLocalPrefs().recentEmojis::get).reversed()).collect(Collectors.toList())) {
+				Optional<Emoji> element = allAvailableEmojis.stream().filter(e -> e.shortcode.equals(emojiCode)).findFirst();
+				element.ifPresent(recentEmojiList::add);
+			}
+			emojis.add(0, new EmojiCategory(activity.getString(R.string.mo_emoji_recent), recentEmojiList));
+		}
 
 		for(EmojiCategory category:emojis)
 			adapter.addAdapter(new SingleCategoryAdapter(category));
@@ -193,6 +210,11 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 			bottomPanel.addView(backspace, new FrameLayout.LayoutParams(V.dp(48), V.dp(48), Gravity.END | Gravity.CENTER_VERTICAL));
 		}
 
+		//remove recently used afterwards, it would get duplicated otherwise
+		if (!getLocalPrefs().recentEmojis.isEmpty()) {
+			emojis.remove(0);
+		}
+
 		return ll;
 	}
 
@@ -207,6 +229,11 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 			emojis=AccountSessionManager.getInstance().getCustomEmojis(domain);
 			adapter.notifyDataSetChanged();
 		}
+	}
+
+	@Override
+	public String getAccountID(){
+		return accountID;
 	}
 
 	private class SingleCategoryAdapter extends UsableRecyclerView.Adapter<RecyclerView.ViewHolder> implements ImageLoaderRecyclerAdapter{
@@ -278,6 +305,19 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		}
 	}
 
+	private void increaseEmojiCount(Emoji emoji) {
+		Integer usageCount = getLocalPrefs().recentEmojis.get(emoji.shortcode);
+		if (usageCount != null) {
+			getLocalPrefs().recentEmojis.put(emoji.shortcode, usageCount + 1);
+		} else {
+			getLocalPrefs().recentEmojis.put(emoji.shortcode, NEW_RECENT_VALUE);
+		}
+
+		getLocalPrefs().recentEmojis.entrySet().removeIf(e -> e.getValue() <= 0);
+		getLocalPrefs().recentEmojis.replaceAll((k, v) -> v - 1);
+		getLocalPrefs().save();
+	}
+
 	private class EmojiViewHolder extends BindableViewHolder<Emoji> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable{
 		public int positionWithinCategory;
 		public EmojiViewHolder(){
@@ -309,6 +349,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		@Override
 		public void onClick(){
+			increaseEmojiCount(item);
 			listener.onEmojiSelected(item);
 		}
 	}
