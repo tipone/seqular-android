@@ -87,6 +87,7 @@
 <!--  Settings  -->
     <string name="mo_notification_audience_settings">Notification Audience</string>
     <string name="mo_settings_show_posts_without_alt">Show media posts with missing alt text</string>
+	<string name="mo_double_tap_to_search">Double tap to open search</string>
 	<string name="mo_double_tap_to_swipe_between_tabs">Double tap to swipe between tabs</string>
 	<string name="mo_haptic_feedback">Haptic feedback</string>
 	<string name="mo_swap_bookmark_with_reblog">Swap bookmark with reblog action</string>

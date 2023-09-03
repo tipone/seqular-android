@@ -269,7 +269,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
 		if(tab==currentTab){
-			if (tab == R.id.tab_search)
+			if (tab == R.id.tab_search && GlobalUserPreferences.doubleTapToSearch)
 				discoverFragment.openSearch();
 			else if(newFragment instanceof ScrollableToTop scrollable)
 				scrollable.scrollToTop();
