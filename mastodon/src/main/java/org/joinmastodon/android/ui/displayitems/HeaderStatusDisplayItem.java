@@ -134,12 +134,10 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView name, time, username, extraText, pronouns;
 		private final View collapseBtn, timeUsernameSeparator;
-		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, markAsRead, collapseBtnIcon;
+		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, markAsRead, collapseBtnIcon, botIcon;
 		private final PopupMenu optionsMenu;
 		private Relationship relationship;
 		private APIRequest<?> currentRelationshipRequest;
-
-		//TODO: readd
 
 		public Holder(Activity activity, ViewGroup parent){
 			this(activity, R.layout.display_item_header, parent);
@@ -159,7 +157,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			markAsRead=findViewById(R.id.mark_as_read);
 			collapseBtn=findViewById(R.id.collapse_btn);
 			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
-//			botIcon=findViewById(R.id.bot_icon);
+			botIcon=findViewById(R.id.bot_icon);
 			extraText=findViewById(R.id.extra_text);
 			pronouns=findViewById(R.id.pronouns);
 			avatar.setOnClickListener(this::onAvaClick);
@@ -324,6 +322,9 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			this.timeUsernameSeparator.setVisibility(time==null ? View.GONE : View.VISIBLE);
 			this.time.setVisibility(time==null ? View.GONE : View.VISIBLE);
 			if(time!=null) this.time.setText(time);
+
+			botIcon.setVisibility(item.user.bot ? View.VISIBLE : View.GONE);
+			botIcon.setColorFilter(username.getCurrentTextColor());
 
 			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification!=null && !item.inset ? View.VISIBLE : View.GONE);
 			if (item.hasVisibilityToggle){
