@@ -304,7 +304,7 @@
     <string name="sk_settings_auto_reveal_anyone">Réponses de tout le monde</string>
     <string name="sk_settings_prefix_replies_always">En réponse à n\'importe qui</string>
     <string name="sk_settings_prefix_replies_never">Jamais</string>
-    <string name="sk_settings_prefix_replies_to_others">autres</string>
+    <string name="sk_settings_prefix_replies_to_others">Uniquement en réponse aux autres</string>
     <string name="sk_settings_forward_report_default">\"Transférer le rapport\" par défaut</string>
     <string name="sk_icon_recycle_bin">Corbeille</string>
     <string name="sk_icon_verified">Vérifié</string>
@@ -375,8 +375,8 @@
     <string name="sk_enter_emoji_hint">Tapez pour réagir avec un emoji</string>
     <string name="sk_enter_emoji_toast">Vous devez saisir un emoji</string>
     <plurals name="sk_posts_count_label">
-        <item quantity="one">message</item>
-        <item quantity="many">messages</item>
-        <item quantity="other">messages</item>
+        <item quantity="one">publication</item>
+        <item quantity="many">publications</item>
+        <item quantity="other">publications</item>
     </plurals>
 </resources>

@@ -71,4 +71,8 @@
     <string name="mo_load_remote_followers">Încărcați urmăritori și urmăriți ai unui profil de la distanță</string>
     <string name="mo_mention_reblogger_automatically">Menționați automat contul care a promovat postarea în răspunsuri</string>
     <string name="mo_color_palette_black_and_white">Negru și alb</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Postările vor fi ascunse în toate cronologiile, dar pot fi dezvăluite în discuții și notificări</string>
+    <string name="mo_settings_show_posts_without_alt">Afișați postările media cu text alternativ lipsă</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
 </resources>

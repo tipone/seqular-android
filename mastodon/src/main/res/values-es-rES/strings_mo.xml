@@ -74,4 +74,8 @@
     <string name="mo_setting_haptic_feedback_summary">Vibra cuando interactúas con publicaciones</string>
     <string name="mo_haptic_feedback">Vibración</string>
     <string name="mo_color_palette_black_and_white">Blanco y Negro</string>
+    <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
+    <string name="mo_settings_show_posts_without_alt">Mostrar las publicaciones de los medios a las que les falta un texto alternativo</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Las publicaciones estarán ocultas en todas las líneas de tiempo, pero se pueden revelar en los hilos y las notificaciones</string>
 </resources>
