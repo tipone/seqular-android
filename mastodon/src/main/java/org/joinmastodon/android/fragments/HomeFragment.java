@@ -309,13 +309,13 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			return true;
 		}
 		if(tab==R.id.tab_search){
-			//int previousTab = currentTab;
+//			int previousTab = currentTab;
 
 			onTabSelected(R.id.tab_search);
 			tabBar.selectTab(R.id.tab_search);
 
-			//if(previousTab != R.id.tab_search)
-			discoverFragment.openSearch();
+			if(!GlobalUserPreferences.doubleTapToSearch)
+				discoverFragment.openSearch();
 
 			return true;
 		}
