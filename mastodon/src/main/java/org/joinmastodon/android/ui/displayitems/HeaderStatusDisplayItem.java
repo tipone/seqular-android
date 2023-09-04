@@ -148,6 +148,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			name=findViewById(R.id.name);
 			time=findViewById(R.id.time);
 			username=findViewById(R.id.username);
+			botIcon=findViewById(R.id.bot_icon);
 			timeUsernameSeparator=findViewById(R.id.separator);
 			avatar=findViewById(R.id.avatar);
 			more=findViewById(R.id.more);
