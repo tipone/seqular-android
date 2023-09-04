@@ -289,8 +289,8 @@ public class GlobalUserPreferences{
 
 	public enum ColorPreference{
 		MATERIAL3,
-		PINK,
 		PURPLE,
+		PINK,
 		GREEN,
 		BLUE,
 		BROWN,
