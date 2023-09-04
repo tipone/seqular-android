@@ -12,6 +12,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
@@ -208,6 +209,11 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	@Override
 	public void scrollToTop(){
 		if(!searchActive){
+			if (((IsOnTop)getFragmentForPage(pager.getCurrentItem())).isOnTop() && GlobalUserPreferences.doubleTapToSwipe){
+				int nextPage=(pager.getCurrentItem()+1)%tabViews.length;
+				pager.setCurrentItem(nextPage, true);
+				return;
+			}
 			((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).scrollToTop();
 		}else{
 			searchFragment.scrollToTop();

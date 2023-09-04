@@ -43,7 +43,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> pronounsInUserListingsItem, pronounsInTimelinesItem, pronounsInThreadsItem;
 
 	// MOSHIDON
-	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem;
+	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem, enableDoubleTapToSearchItem;
 
 	private AccountLocalPreferences lp;
 
@@ -66,6 +66,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				emojiInNamesItem=new CheckableListItem<>(R.string.settings_show_emoji_in_names, 0, CheckableListItem.Style.SWITCH, lp.customEmojiInNames, R.drawable.ic_fluent_emoji_24_regular, ()->toggleCheckableItem(emojiInNamesItem)),
 				marqueeItem=new CheckableListItem<>(R.string.sk_settings_enable_marquee, R.string.mo_setting_marquee_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.toolbarMarquee, R.drawable.ic_fluent_text_more_24_regular, ()->toggleCheckableItem(marqueeItem)),
 				reduceMotionItem=new CheckableListItem<>(R.string.sk_settings_reduce_motion, R.string.mo_setting_reduced_motion_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.reduceMotion, R.drawable.ic_fluent_star_emphasis_24_regular, ()->toggleCheckableItem(reduceMotionItem)),
+				enableDoubleTapToSearchItem=new CheckableListItem<>(R.string.mo_double_tap_to_search, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.doubleTapToSearch, R.drawable.ic_fluent_search_24_regular, ()->toggleCheckableItem(enableDoubleTapToSearchItem)),
 				disableSwipeItem=new CheckableListItem<>(R.string.sk_settings_tabs_disable_swipe, R.string.mo_setting_disable_swipe_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableSwipe, R.drawable.ic_fluent_swipe_right_24_regular, ()->toggleCheckableItem(disableSwipeItem)),
 				enableDoubleTapToSwipeItem=new CheckableListItem<>(R.string.mo_double_tap_to_swipe_between_tabs, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.doubleTapToSwipe, R.drawable.ic_fluent_double_tap_swipe_right_24_regular, ()->toggleCheckableItem(enableDoubleTapToSwipeItem)),
 				altIndicatorItem=new CheckableListItem<>(R.string.sk_settings_show_alt_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showAltIndicator, R.drawable.ic_fluent_scan_text_24_regular, ()->toggleCheckableItem(altIndicatorItem)),
@@ -114,6 +115,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.relocatePublishButton=relocatePublishButtonItem.checked;
 		GlobalUserPreferences.reduceMotion=reduceMotionItem.checked;
 		GlobalUserPreferences.disableSwipe=disableSwipeItem.checked;
+		GlobalUserPreferences.doubleTapToSearch=enableDoubleTapToSearchItem.checked;
 		GlobalUserPreferences.doubleTapToSwipe=enableDoubleTapToSwipeItem.checked;
 		GlobalUserPreferences.showAltIndicator=altIndicatorItem.checked;
 		GlobalUserPreferences.showNoAltIndicator=noAltIndicatorItem.checked;

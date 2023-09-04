@@ -66,6 +66,7 @@ public class GlobalUserPreferences{
 	public static boolean showDividers;
 	public static boolean relocatePublishButton;
 	public static boolean defaultToUnlistedReplies;
+	public static boolean doubleTapToSearch;
 	public static boolean doubleTapToSwipe;
 	public static boolean confirmBeforeReblog;
 	public static boolean hapticFeedback;
@@ -140,6 +141,7 @@ public class GlobalUserPreferences{
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
 		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
+		doubleTapToSearch =prefs.getBoolean("doubleTapToSearch", true);
 		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
@@ -216,6 +218,7 @@ public class GlobalUserPreferences{
 
 				// MOSHIDON
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
+				.putBoolean("doubleTapToSearch", doubleTapToSearch)
 				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
