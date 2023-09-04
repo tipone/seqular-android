@@ -384,4 +384,5 @@
 		<item quantity="one">post</item>
 		<item quantity="other">posts</item>
 	</plurals>
+	<string name="sk_post_contains_media">Post contains media</string>
 </resources>
