@@ -96,7 +96,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		if (n.type == Notification.Type.FOLLOW_REQUEST) {
 			ArrayList<StatusDisplayItem> items = new ArrayList<>();
 			items.add(titleItem);
-			items.add(new AccountCardStatusDisplayItem(n.id, this, n.account, n));
+			items.add(new AccountCardStatusDisplayItem(n.id, this, accountID, n.account, n));
 			return items;
 		}
 		if(n.status!=null){

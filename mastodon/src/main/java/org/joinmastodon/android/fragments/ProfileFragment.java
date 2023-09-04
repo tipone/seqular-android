@@ -601,7 +601,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private void bindHeaderView(){
 		setTitle(account.displayName);
 		setSubtitle(getResources().getQuantityString(R.plurals.x_posts, (int)(account.statusesCount%1000), account.statusesCount));
-		ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(100), V.dp(100)));
+		ViewImageLoader.load(avatar, null, new UrlImageLoaderRequest(
+				TextUtils.isEmpty(account.avatar) ? getSession().getDefaultAvatarUrl() :
+						GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic,
+				V.dp(100), V.dp(100)));
 		ViewImageLoader.load(cover, null, new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.header : account.headerStatic, 1000, 1000));
 		SpannableStringBuilder ssb=new SpannableStringBuilder(account.displayName);
 		if(AccountSessionManager.get(accountID).getLocalPreferences().customEmojiInNames)
@@ -1229,7 +1232,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(ava==null)
 				return;
 			int radius=V.dp(25);
-			currentPhotoViewer=new PhotoViewer(getActivity(), createFakeAttachments(account.avatar, ava), 0,
+			currentPhotoViewer=new PhotoViewer(getActivity(), createFakeAttachments(TextUtils.isEmpty(account.avatar) ? getSession().getDefaultAvatarUrl() : account.avatar, ava), 0,
 					new SingleImagePhotoViewerListener(avatar, avatarBorder, new int[]{radius, radius, radius, radius}, this, ()->currentPhotoViewer=null, ()->ava, null, null));
 		}
 	}
