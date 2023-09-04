@@ -182,7 +182,7 @@
 			android:visibility="gone"
 			android:importantForAccessibility="no"
 			android:contentDescription="@string/sk_icon_bot"
-			android:src="@drawable/ic_fluent_bot_16_filled" />
+			android:src="@drawable/ic_fluent_bot_20_filled" />
 
 		<TextView
 			android:id="@+id/separator"
