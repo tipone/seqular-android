@@ -1,3 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <string name="sk_pinned_posts">固定</string>
+    <string name="sk_delete_and_redraft">削除して再編集</string>
+    <string name="sk_confirm_delete_and_redraft_title">投稿を削除して再編集</string>
+    <string name="sk_confirm_delete_and_redraft">本当にこの投稿を削除して再編集しますか？</string>
+    <string name="sk_pin_post">プロファイルに固定</string>
+    <string name="sk_confirm_pin_post_title">投稿をプロフィールに固定</string>
+    <string name="sk_confirm_pin_post">この投稿をあなたのプロフィールに固定しますか？</string>
+    <string name="sk_pinning">投稿を固定しています…</string>
+    <string name="sk_unpin_post">プロフィールへの固定を解除</string>
+    <string name="sk_confirm_unpin_post_title">プロフィールへの投稿の固定を解除</string>
+    <string name="sk_confirm_unpin_post">本当にこの投稿の固定を解除しますか？</string>
+    <string name="sk_unpinning">投稿の固定を解除しています…</string>
+    <string name="sk_image_description">画像の説明</string>
+    <string name="sk_visibility_unlisted">未収載</string>
+    <string name="sk_settings_show_replies">返信を表示</string>
+    <string name="sk_settings_reply_visibility">返信の公開範囲</string>
+    <string name="sk_settings_reply_visibility_all">すべての返信</string>
+    <string name="sk_settings_continues_playback">音声のオーバーレイ</string>
+    <string name="sk_settings_continues_playback_summary">既に再生されているメディアを停止することなく、新たなメディアを再生できるようにします</string>
 </resources>
