@@ -5,7 +5,7 @@
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_relocate_publish_button">Déplacer le bouton publier</string>
     <string name="mo_personal_note_update_failed">Échec de la sauvegarde de la note</string>
-    <string name="mo_no_image_desc">Les images incluses n\'ont aucune description. Veuillez pensez en ajoutant un pour permettre les personnes malvoyantes de participer.</string>
+    <string name="mo_no_image_desc">Les images incluses n’ont aucune description. Veuillez penser à en ajouter une pour permettre aux personnes malvoyantes de participer.</string>
     <string name="mo_filtered">Filtré : %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Désactiver le rappel d’ajout d’un texte alternatif</string>
     <string name="mo_add_custom_server_local_timeline">Ajouter le fil local d’un serveur personnalisé</string>
@@ -17,12 +17,12 @@
     <string name="mo_clear_recent_emoji">Vider les emojis utilisés récemment</string>
     <string name="mo_disable_dividers">Désactiver les séparateur des postes</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Cacher le bouton compose pendant le défilement</string>
-    <string name="mo_welcome_text">Pour commencer, veuillez entrer le domaine de votre instance ci-desdous</string>
+    <string name="mo_welcome_text">Pour commencer, veuillez saisir le nom de domaine de votre instance ci-dessous.</string>
     <string name="mo_personal_note">Ajouter une note à propos de ce profil</string>
     <string name="mo_personal_note_confirm">Confirmer les modifications de la note</string>
     <string name="mo_settings_contribute">Contribuer à Moshidon</string>
     <string name="mo_update_available">Moshidon %s est prêt à télécharger.</string>
-    <string name="mo_update_ready">Moshidon %s est téléchargé et prêt à être installé</string>
+    <string name="mo_update_ready">Moshidon %s est téléchargé et est prêt à être installé.</string>
     <string name="mo_no_image_desc_title">Aucune description de l\'image</string>
     <string name="mo_emoji_recent">Utilisé récemment</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Désactiver « Déplacer le bouton publier » pour permettre la personnalisation</string>
@@ -66,4 +66,10 @@
     <string name="mo_setting_remote_follower_summary">Afficher les abonné·e·s depuis les autres instances</string>
     <string name="mo_setting_uniform_summary">Utiliser l\'icône de l’app dans toutes les notifications</string>
     <string name="mo_confirm_unfollow">Confirmer le désabonnement de %s</string>
+    <string name="mo_setting_true_black_summary">Pourrait économiser de l’énergie sur les écrans AMOLED</string>
+    <string name="mo_mention_reblogger_automatically">Mentionner automatiquement, dans les réponses, le compte ayant partagé une publication</string>
+    <string name="mo_swap_bookmark_with_reblog_summary">Permettre de partager ou d’ajouter une publication à vos signets directement depuis les notifications</string>
+    <string name="mo_double_tap_to_search">Appuyer deux fois pour ouvrir la recherche</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Appuyer deux fois pour pouvoir basculer entre les onglets</string>
+    <string name="mo_recent_emoji_cleared">Les émojis récents ont été effacés</string>
 </resources>
