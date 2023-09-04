@@ -158,7 +158,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			markAsRead=findViewById(R.id.mark_as_read);
 			collapseBtn=findViewById(R.id.collapse_btn);
 			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
-			botIcon=findViewById(R.id.bot_icon);
 			extraText=findViewById(R.id.extra_text);
 			pronouns=findViewById(R.id.pronouns);
 			avatar.setOnClickListener(this::onAvaClick);
