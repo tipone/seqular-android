@@ -379,4 +379,9 @@
         <item quantity="many">publications</item>
         <item quantity="other">publications</item>
     </plurals>
+    <string name="sk_settings_show_new_posts_button">Bouton « Afficher les nouvelles publications »</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Uniquement lorsque la publication est ouverte</string>
+    <string name="sk_settings_show_emoji_reactions_always">Toujours afficher le bouton « ajouter »</string>
+    <string name="sk_settings_show_emoji_reactions">Afficher les réactions émoji dans les fils</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Masquer les réactions émojis vides</string>
 </resources>
