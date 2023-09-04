@@ -1715,7 +1715,9 @@ public class TabLayout extends HorizontalScrollView implements CustomViewHelper{
                 child.getLayoutParams().height);
 
         int childWidthMeasureSpec =
-            MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY);
+            MeasureSpec.makeMeasureSpec(
+					getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),
+					MeasureSpec.EXACTLY);
         child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
       }
     }

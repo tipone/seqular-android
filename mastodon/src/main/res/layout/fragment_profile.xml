@@ -384,11 +384,12 @@
 					android:layout_width="match_parent"
 					android:layout_height="48dp"
 					android:background="@drawable/bg_onboarding_panel"
+					android:clipToPadding="false"
+					android:paddingHorizontal="4dp"
 					app:tabGravity="start"
 					app:tabIndicator="@drawable/tab_indicator_m3"
 					app:tabIndicatorAnimationMode="elastic"
 					app:tabIndicatorColor="?colorM3Primary"
-					android:paddingHorizontal="4dp"
 					app:tabIndicatorFullWidth="false"
 					app:tabMinWidth="0dp"
 					app:tabMode="scrollable" />
