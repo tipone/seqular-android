@@ -377,7 +377,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		});
 
-		username.setOnLongClickListener(v->{
+		content.findViewById(R.id.username_wrap).setOnLongClickListener(v->{
 			String usernameString=account.acct;
 			if(!usernameString.contains("@")){
 				usernameString+="@"+domain;
