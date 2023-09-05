@@ -75,4 +75,9 @@
     <string name="mo_setting_haptic_feedback_summary">Vibrar ao interagir com publicações</string>
     <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Postagens serão escondidas nas linhas do tempo, mas podem ser reveladas em fios e notificações</string>
+    <string name="mo_settings_show_posts_without_alt">Mostrar postagens de mídia sem texto de descrição</string>
+    <string name="mo_recent_emoji_cleared">Emojis recentes foram limpos</string>
+    <string name="mo_double_tap_to_search">Toque duplo para abrir caixa de pesquisa</string>
+    <string name="mo_haptic_feedback">Resposta táctil</string>
 </resources>
