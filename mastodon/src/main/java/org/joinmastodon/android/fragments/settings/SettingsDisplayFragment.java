@@ -62,6 +62,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				relocatePublishButtonItem=new CheckableListItem<>(R.string.mo_relocate_publish_button, R.string.mo_setting_relocate_publish_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.relocatePublishButton, R.drawable.ic_fluent_arrow_autofit_down_24_regular, ()->toggleCheckableItem(relocatePublishButtonItem)),
 				revealCWsItem=new CheckableListItem<>(R.string.sk_settings_always_reveal_content_warnings, 0, CheckableListItem.Style.SWITCH, lp.revealCWs, R.drawable.ic_fluent_chat_warning_24_regular, ()->toggleCheckableItem(revealCWsItem)),
 				hideSensitiveMediaItem=new CheckableListItem<>(R.string.settings_hide_sensitive_media, 0, CheckableListItem.Style.SWITCH, lp.hideSensitiveMedia, R.drawable.ic_fluent_flag_24_regular, ()->toggleCheckableItem(hideSensitiveMediaItem)),
+				showMediaPreviewItem=new CheckableListItem<>(R.string.mo_show_media_preview, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showMediaPreview, R.drawable.ic_fluent_image_24_regular, ()->toggleCheckableItem(showMediaPreviewItem)),
 				interactionCountsItem=new CheckableListItem<>(R.string.settings_show_interaction_counts, R.string.mo_setting_interaction_count_summary, CheckableListItem.Style.SWITCH, lp.showInteractionCounts, R.drawable.ic_fluent_number_row_24_regular, ()->toggleCheckableItem(interactionCountsItem)),
 				emojiInNamesItem=new CheckableListItem<>(R.string.settings_show_emoji_in_names, 0, CheckableListItem.Style.SWITCH, lp.customEmojiInNames, R.drawable.ic_fluent_emoji_24_regular, ()->toggleCheckableItem(emojiInNamesItem)),
 				marqueeItem=new CheckableListItem<>(R.string.sk_settings_enable_marquee, R.string.mo_setting_marquee_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.toolbarMarquee, R.drawable.ic_fluent_text_more_24_regular, ()->toggleCheckableItem(marqueeItem)),
@@ -104,7 +105,8 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 
 		boolean restartPlease=
 				GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked ||
-				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked;
+				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
+				GlobalUserPreferences.showDividers!=showPostDividersItem.checked;
 
 		lp.revealCWs=revealCWsItem.checked;
 		lp.hideSensitiveMedia=hideSensitiveMediaItem.checked;
