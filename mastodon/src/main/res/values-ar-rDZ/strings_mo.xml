@@ -1,2 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="mo_setting_uniform_summary">استخدم أيقونة التطبيق في كافة الإشعارات</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
+    <string name="mo_load_remote_followers">تحميل الملفات التعريفية البعيدة للمتابِعين والمتابَعين</string>
+    <string name="mo_download_latest_nightly_release">تنزيل آخر إصدار ليلي</string>
+    <string name="mo_double_tap_to_search">الضغط مرتان لفتح البحث</string>
+</resources>
