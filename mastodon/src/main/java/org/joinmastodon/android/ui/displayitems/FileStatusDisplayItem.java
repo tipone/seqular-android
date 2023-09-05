@@ -66,17 +66,25 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
         @Override
         public void onBind(FileStatusDisplayItem item) {
             Uri url = Uri.parse(getUrl());
-            title.setText(item.attachment.description != null
-                    ? item.attachment.description
-                    : url.getLastPathSegment());
 
 			if(!item.attachment.type.isImage()) {
+				title.setText(item.attachment.description != null
+						? item.attachment.description
+						: url.getLastPathSegment());
+
 				title.setEllipsize(item.attachment.description != null ? TextUtils.TruncateAt.END : TextUtils.TruncateAt.MIDDLE);
 				domain.setText(url.getHost());
+
 				icon.setImageDrawable(context.getDrawable(R.drawable.ic_fluent_attach_24_regular));
 			} else {
+				title.setText(item.attachment.description != null
+						? item.attachment.description
+						: context.getString(R.string.sk_no_alt_text));
 				title.setSingleLine(false);
-				domain.setVisibility(View.GONE);
+
+				domain.setText(item.status.sensitive ? context.getString(R.string.sensitive_content_explain) : null);
+				domain.setVisibility(item.status.sensitive ? View.VISIBLE : View.GONE);
+
 				icon.setImageDrawable(context.getDrawable(R.drawable.ic_fluent_image_24_regular));
 			}
         }
