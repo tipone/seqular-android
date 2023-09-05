@@ -73,4 +73,6 @@
     <string name="mo_camera_not_available">Nenhuma camera disponível!</string>
     <string name="mo_color_palette_black_and_white">Preto e Branco</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrar ao interagir com publicações</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
 </resources>
