@@ -253,7 +253,7 @@ public abstract class StatusDisplayItem{
 		}
 
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
-		if(!imageAttachments.isEmpty() && ((flags & FLAG_NO_MEDIA_PREVIEW)!=0)){
+		if(!imageAttachments.isEmpty() && (flags & FLAG_NO_MEDIA_PREVIEW)==0){
 			int color = UiUtils.getThemeColor(fragment.getContext(), R.attr.colorM3SurfaceVariant);
 			for (Attachment att : imageAttachments) {
 				if (att.blurhashPlaceholder == null) {
@@ -268,7 +268,7 @@ public abstract class StatusDisplayItem{
 				statusForContent.sensitiveRevealed=true;
 			contentItems.add(mediaGrid);
 		}
-		if((flags & FLAG_NO_MEDIA_PREVIEW)==0){
+		if((flags & FLAG_NO_MEDIA_PREVIEW)!=0){
 			for(Attachment att:imageAttachments){
 				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att, statusForContent));
 			}
