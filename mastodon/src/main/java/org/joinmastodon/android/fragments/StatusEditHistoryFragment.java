@@ -9,6 +9,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusEditHistory;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
@@ -144,6 +145,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 			}
 			String sep = getString(R.string.sk_separator);
 			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0, null, null));
+			items.add(1, new DummyStatusDisplayItem(s.id, this));
 		}
 		return items;
 	}

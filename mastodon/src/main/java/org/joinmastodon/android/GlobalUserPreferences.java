@@ -61,6 +61,7 @@ public class GlobalUserPreferences{
 	public static boolean showNavigationLabels;
 	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
 	public static boolean overlayMedia;
+	public static boolean showSuicideHelp;
 
 	// MOSHIDON
 	public static boolean showDividers;
@@ -134,6 +135,7 @@ public class GlobalUserPreferences{
 		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
 		overlayMedia=prefs.getBoolean("overlayMedia", false);
+		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
 
 		// MOSHIDON
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
@@ -215,6 +217,7 @@ public class GlobalUserPreferences{
 				.putBoolean("displayPronounsInThreads", displayPronounsInThreads)
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
 				.putBoolean("overlayMedia", overlayMedia)
+				.putBoolean("showSuicideHelp", showSuicideHelp)
 
 				// MOSHIDON
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)

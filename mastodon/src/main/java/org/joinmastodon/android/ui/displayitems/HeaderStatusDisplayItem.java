@@ -86,10 +86,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, CharSequence extraText, Notification notification, ScheduledStatus scheduledStatus){
 		super(parentID, parentFragment);
-		user=scheduledStatus != null ? AccountSessionManager.getInstance().getAccount(accountID).self : user;
+		AccountSession session = AccountSessionManager.get(accountID);
+		user=scheduledStatus != null ? session.self : user;
 		this.user=user;
 		this.createdAt=createdAt;
-		avaRequest=new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? user.avatar : user.avatarStatic, V.dp(50), V.dp(50));
+		avaRequest=new UrlImageLoaderRequest(
+				TextUtils.isEmpty(user.avatar) ? session.getDefaultAvatarUrl() :
+						GlobalUserPreferences.playGifs ? user.avatar : user.avatarStatic,
+				V.dp(50), V.dp(50));
 		this.accountID=accountID;
 		parsedName=new SpannableStringBuilder(user.displayName);
 		this.status=status;
@@ -430,6 +434,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onAvaClick(View v){
+			if (TextUtils.isEmpty(item.user.url))
+				return;
 			if (item.announcement != null) {
 				UiUtils.openURL(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.user.url);
 				return;

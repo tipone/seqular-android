@@ -15,7 +15,7 @@
 		android:layout_width="32dp"
 		android:layout_height="32dp"
 		android:layout_marginEnd="16dp"
-		android:tint="?colorM3OnPrimaryContainer"
+		android:tint="?colorM3Primary"
 		android:scaleType="center"
 		android:importantForAccessibility="no"
 		tools:src="@drawable/ic_fluent_arrow_trending_24_regular"/>

@@ -167,19 +167,21 @@
 
 				</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
 
-				<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+				<LinearLayout
 					android:id="@+id/username_wrap"
+					android:orientation="horizontal"
 					android:layout_width="wrap_content"
 					android:layout_height="wrap_content"
 					android:layout_marginStart="16dp"
 					android:layout_marginEnd="12dp"
+					android:layout_marginTop="2dp"
 					android:layout_marginBottom="8dp">
 
 					<TextView
 						android:id="@+id/username"
-						android:layout_width="wrap_content"
+						android:layout_width="0dp"
 						android:layout_height="wrap_content"
-						android:layout_marginTop="2dp"
+						android:layout_weight="1"
 						android:layout_marginEnd="4dp"
 						android:maxLines="1"
 						android:ellipsize="end"
@@ -187,36 +189,29 @@
 						android:textColor="?colorM3OnSurfaceVariant"
 						tools:text="\@Gargron" />
 
-					<LinearLayout
-						android:layout_width="wrap_content"
-						android:layout_height="match_parent"
-						android:layout_marginTop="2dp">
+					<ImageView
+						android:id="@+id/lock_icon"
+						android:layout_width="18sp"
+						android:layout_height="18sp"
+						android:layout_marginEnd="4dp"
+						android:layout_gravity="center_vertical"
+						android:visibility="gone"
+						android:importantForAccessibility="no"
+						android:contentDescription="@string/manually_approves_followers"
+						android:src="@drawable/ic_fluent_lock_closed_20_filled" />
 
-						<ImageView
-							android:id="@+id/lock_icon"
-							android:layout_width="18sp"
-							android:layout_height="18sp"
-							android:layout_marginEnd="4dp"
-							android:layout_gravity="center_vertical"
-							android:visibility="gone"
-							android:importantForAccessibility="no"
-							android:contentDescription="@string/manually_approves_followers"
-							android:src="@drawable/ic_fluent_lock_closed_20_filled" />
+					<ImageView
+						android:id="@+id/bot_icon"
+						android:layout_width="18sp"
+						android:layout_height="18sp"
+						android:layout_marginEnd="4dp"
+						android:layout_gravity="center_vertical"
+						android:visibility="gone"
+						android:importantForAccessibility="no"
+						android:contentDescription="@string/sk_icon_bot"
+						android:src="@drawable/ic_fluent_bot_20_filled" />
 
-						<ImageView
-							android:id="@+id/bot_icon"
-							android:layout_width="18sp"
-							android:layout_height="18sp"
-							android:layout_marginEnd="4dp"
-							android:layout_gravity="center_vertical"
-							android:visibility="gone"
-							android:importantForAccessibility="no"
-							android:contentDescription="@string/sk_icon_bot"
-							android:src="@drawable/ic_fluent_bot_20_filled" />
-
-					</LinearLayout>
-
-				</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+				</LinearLayout>
 
 				<FrameLayout
 					android:layout_width="match_parent"
@@ -443,11 +438,12 @@
 					android:layout_width="match_parent"
 					android:layout_height="48dp"
 					android:background="@drawable/bg_onboarding_panel"
+					android:clipToPadding="false"
+					android:paddingHorizontal="4dp"
 					app:tabGravity="start"
 					app:tabIndicator="@drawable/tab_indicator_m3"
 					app:tabIndicatorAnimationMode="elastic"
 					app:tabIndicatorColor="?colorM3Primary"
-					android:paddingHorizontal="4dp"
 					app:tabIndicatorFullWidth="false"
 					app:tabMinWidth="0dp"
 					app:tabMode="scrollable" />

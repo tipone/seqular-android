@@ -45,6 +45,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
+
 		<org.joinmastodon.android.ui.tabs.TabLayout
 			android:id="@+id/tabbar"
 			android:layout_width="match_parent"
@@ -56,6 +57,8 @@
 			app:tabIndicatorFullWidth="false"
 			app:tabMinWidth="90dp"
 			app:tabMode="scrollable"
+			android:clipToPadding="false"
+			android:paddingHorizontal="4dp"
 			android:background="?colorM3Surface"/>
 
 		<View
