@@ -103,6 +103,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			int flags=titleItem==null ? 0 : (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS); // | StatusDisplayItem.FLAG_NO_HEADER);
 			if (GlobalUserPreferences.spectatorMode)
 				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+			if (!GlobalUserPreferences.showMediaPreview)
+				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
 			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, null, flags);
 			if(titleItem!=null)
 				items.add(0, titleItem);
