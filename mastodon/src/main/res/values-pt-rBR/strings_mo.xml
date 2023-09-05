@@ -80,4 +80,5 @@
     <string name="mo_recent_emoji_cleared">Emojis recentes foram limpos</string>
     <string name="mo_double_tap_to_search">Toque duplo para abrir caixa de pesquisa</string>
     <string name="mo_haptic_feedback">Resposta táctil</string>
+    <string name="mo_show_media_preview">Mostrar prévia de mídia nas linhas do tempo</string>
 </resources>
