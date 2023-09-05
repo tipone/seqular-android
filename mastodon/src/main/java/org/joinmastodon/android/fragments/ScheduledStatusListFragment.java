@@ -2,8 +2,11 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.WindowInsets;
 import android.widget.ImageButton;
 
 import com.squareup.otto.Subscribe;
@@ -26,6 +29,7 @@ import java.util.List;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
+import me.grishka.appkit.utils.V;
 
 public class ScheduledStatusListFragment extends BaseStatusListFragment<ScheduledStatus> {
 	private String nextMaxID;
@@ -184,6 +188,21 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 			}
 		}
 		return null;
+	}
+
+	@Override
+	public void onApplyWindowInsets(WindowInsets insets){
+		if(contentView!=null){
+			if(Build.VERSION.SDK_INT>=29 && insets.getTappableElementInsets().bottom==0){
+				int insetBottom=insets.getSystemWindowInsetBottom();
+				((ViewGroup.MarginLayoutParams) list.getLayoutParams()).bottomMargin=insetBottom;
+				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+insetBottom;
+				insets=insets.inset(0, 0, 0, insetBottom);
+			}else{
+				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16);
+			}
+		}
+		super.onApplyWindowInsets(insets);
 	}
 
 	@Override
