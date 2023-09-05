@@ -85,7 +85,13 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
 				domain.setText(item.status.sensitive ? context.getString(R.string.sensitive_content_explain) : null);
 				domain.setVisibility(item.status.sensitive ? View.VISIBLE : View.GONE);
 
-				icon.setImageDrawable(context.getDrawable(R.drawable.ic_fluent_image_24_regular));
+				if(item.attachment.type == Attachment.Type.IMAGE)
+					icon.setImageDrawable(context.getDrawable(R.drawable.ic_fluent_image_24_regular));
+				if(item.attachment.type == Attachment.Type.VIDEO)
+					icon.setImageDrawable(context.getDrawable(R.drawable.ic_fluent_video_clip_24_regular));
+				if(item.attachment.type == Attachment.Type.GIFV)
+					icon.setImageDrawable(context.getDrawable(R.drawable.ic_fluent_gif_24_regular));
+
 			}
         }
 
