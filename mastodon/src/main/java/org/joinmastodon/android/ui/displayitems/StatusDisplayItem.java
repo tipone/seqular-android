@@ -69,6 +69,7 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_NO_HEADER=1 << 4;
 	public static final int FLAG_NO_TRANSLATE=1 << 5;
 	public static final int FLAG_NO_EMOJI_REACTIONS=1 << 6;
+	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 7;
 
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
@@ -252,7 +253,7 @@ public abstract class StatusDisplayItem{
 		}
 
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
-		if(!imageAttachments.isEmpty()){
+		if(!imageAttachments.isEmpty() && ((flags & FLAG_NO_MEDIA_PREVIEW)!=0)){
 			int color = UiUtils.getThemeColor(fragment.getContext(), R.attr.colorM3SurfaceVariant);
 			for (Attachment att : imageAttachments) {
 				if (att.blurhashPlaceholder == null) {
@@ -266,6 +267,11 @@ public abstract class StatusDisplayItem{
 			else if(statusForContent.sensitive && AccountSessionManager.get(accountID).getLocalPreferences().revealCWs && !AccountSessionManager.get(accountID).getLocalPreferences().hideSensitiveMedia)
 				statusForContent.sensitiveRevealed=true;
 			contentItems.add(mediaGrid);
+		}
+		if((flags & FLAG_NO_MEDIA_PREVIEW)==0){
+			for(Attachment att:imageAttachments){
+				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att, statusForContent));
+			}
 		}
 		for(Attachment att:statusForContent.mediaAttachments){
 			if(att.type==Attachment.Type.AUDIO){

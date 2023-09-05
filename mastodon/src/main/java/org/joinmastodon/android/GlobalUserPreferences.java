@@ -76,6 +76,7 @@ public class GlobalUserPreferences{
 	public static boolean loadRemoteAccountFollowers;
 	public static boolean mentionRebloggerAutomatically;
 	public static boolean showPostsWithoutAlt;
+	public static boolean showMediaPreview;
 
 	public static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -151,7 +152,8 @@ public class GlobalUserPreferences{
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
-		showPostsWithoutAlt =prefs.getBoolean("showPostsWithoutAlt", true);
+		showPostsWithoutAlt=prefs.getBoolean("showPostsWithoutAlt", true);
+		showMediaPreview=prefs.getBoolean("showMediaPreview", true);
 
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 
@@ -234,6 +236,7 @@ public class GlobalUserPreferences{
 				.putBoolean("relocatePublishButton", relocatePublishButton)
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
+				.putBoolean("showMediaPreview", showMediaPreview)
 
 				.putInt("theme", theme.ordinal())
 

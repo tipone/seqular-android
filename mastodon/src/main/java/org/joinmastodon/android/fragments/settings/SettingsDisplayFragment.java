@@ -43,7 +43,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> pronounsInUserListingsItem, pronounsInTimelinesItem, pronounsInThreadsItem;
 
 	// MOSHIDON
-	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem, enableDoubleTapToSearchItem;
+	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem, enableDoubleTapToSearchItem, showMediaPreviewItem;
 
 	private AccountLocalPreferences lp;
 
@@ -131,6 +131,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.displayPronounsInTimelines=pronounsInTimelinesItem.checked;
 		GlobalUserPreferences.displayPronounsInThreads=pronounsInThreadsItem.checked;
 		GlobalUserPreferences.displayPronounsInUserListings=pronounsInUserListingsItem.checked;
+		GlobalUserPreferences.showMediaPreview=showMediaPreviewItem.checked;
 		GlobalUserPreferences.save();
 		if(restartPlease) restartActivityToApplyNewTheme();
 		else E.post(new StatusDisplaySettingsChangedEvent(accountID));
