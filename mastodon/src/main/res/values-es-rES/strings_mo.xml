@@ -78,4 +78,7 @@
     <string name="mo_settings_show_posts_without_alt">Mostrar las publicaciones de los medios a las que les falta un texto alternativo</string>
     <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
     <string name="mo_settings_show_posts_without_alt_summary">Las publicaciones estarán ocultas en todas las líneas de tiempo, pero se pueden revelar en los hilos y las notificaciones</string>
+    <string name="mo_show_media_preview">Mostrar previsualización de multimedia en la cronología</string>
+    <string name="mo_recent_emoji_cleared">Emojis recientes eliminados</string>
+    <string name="mo_double_tap_to_search">Doble toque para abrir la búsqueda</string>
 </resources>
