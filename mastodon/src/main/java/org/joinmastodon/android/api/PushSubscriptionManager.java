@@ -130,12 +130,11 @@ public class PushSubscriptionManager{
 			return;
 		}
 
-		String endpoint = "https://app.joinmastodon.org/relay-to/fcm/"+deviceToken+"/"+accountID;
+		String endpoint = "https://app.joinmastodon.org/relay-to/fcm/"+deviceToken+"/";
 		registerAccountForPush(subscription, endpoint);
 	}
 
 	public void registerAccountForPush(PushSubscription subscription, String endpoint){
-
 		MastodonAPIController.runInBackground(()->{
 			Log.d(TAG, "registerAccountForPush: started for "+accountID);
 			String encodedPublicKey, encodedAuthKey, pushAccountID;
@@ -164,7 +163,13 @@ public class PushSubscriptionManager{
 				Log.e(TAG, "registerAccountForPush: error generating encryption key", e);
 				return;
 			}
-			new RegisterForPushNotifications(endpoint,
+
+			//work-around for adding the randomAccountId
+			String newEndpoint = endpoint;
+			if (endpoint.startsWith("https://app.joinmastodon.org/relay-to/fcm/"))
+				newEndpoint += pushAccountID;
+
+			new RegisterForPushNotifications(newEndpoint,
 					encodedPublicKey,
 					encodedAuthKey,
 					subscription==null ? PushSubscription.Alerts.ofAll() : subscription.alerts,
