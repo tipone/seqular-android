@@ -16,7 +16,7 @@
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Désactiver appuyer deux fois pour balayer entre onglets</string>
     <string name="mo_clear_recent_emoji">Vider les emojis utilisés récemment</string>
     <string name="mo_disable_dividers">Désactiver les séparateur des postes</string>
-    <string name="mo_hide_compose_button_while_scrolling_setting">Cacher le bouton compose pendant le défilement</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Cacher le bouton de publication pendant le défilement</string>
     <string name="mo_welcome_text">Pour commencer, veuillez saisir le nom de domaine de votre instance ci-dessous.</string>
     <string name="mo_personal_note">Ajouter une note à propos de ce profil</string>
     <string name="mo_personal_note_confirm">Confirmer les modifications de la note</string>
@@ -72,4 +72,11 @@
     <string name="mo_double_tap_to_search">Appuyer deux fois pour ouvrir la recherche</string>
     <string name="mo_double_tap_to_swipe_between_tabs">Appuyer deux fois pour pouvoir basculer entre les onglets</string>
     <string name="mo_recent_emoji_cleared">Les émojis récents ont été effacés</string>
+    <string name="mo_swap_bookmark_with_reblog">Échanger « Ajouter aux signets » avec l’action de partage</string>
+    <string name="mo_setting_default_reply_privacy_summary">Les réponses seront désactivées des fonctionnalités de découverte</string>
+    <string name="mo_setting_interaction_count_summary">Afficher le nombre de personnes ayant ont interagi avec une publication dans le fil</string>
+    <string name="mo_setting_disable_swipe_summary">Faire glisser pour basculer entre les fils</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Les publications seront masquées dans tout les fils mais pourront être révélées dans les fils de discussion et dans les notifications.</string>
+    <string name="mo_notification_audience_settings">Audience des notifications</string>
+    <string name="mo_show_media_preview">Afficher l’aperçu des médias dans les fils</string>
 </resources>
