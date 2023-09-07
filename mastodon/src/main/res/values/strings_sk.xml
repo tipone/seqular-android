@@ -385,4 +385,7 @@
 		<item quantity="other">posts</item>
 	</plurals>
 	<string name="sk_post_contains_media">Post contains media</string>
+    <string name="sk_settings_load_missing_posts">Load missing posts behavior</string>
+	<string name="sk_load_missing_posts_newest_first">Newest first (downwards)</string>
+	<string name="sk_load_missing_posts_oldest_first">Oldest first (upwards)</string>
 </resources>
