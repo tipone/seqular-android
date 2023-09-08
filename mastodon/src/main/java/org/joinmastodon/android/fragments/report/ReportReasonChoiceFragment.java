@@ -83,7 +83,7 @@ public class ReportReasonChoiceFragment extends StatusListFragment{
 		reportStatus=Parcels.unwrap(getArguments().getParcelable("status"));
 		if(reportStatus!=null){
 			Status hiddenStatus=reportStatus.clone();
-			hiddenStatus.spoilerText=getString(R.string.post_hidden);
+			if(hiddenStatus.spoilerText==null) hiddenStatus.spoilerText=getString(R.string.post_hidden);
 			onDataLoaded(Collections.singletonList(hiddenStatus));
 			setTitle(R.string.report_title_post);
 		}else{
@@ -169,17 +169,6 @@ public class ReportReasonChoiceFragment extends StatusListFragment{
 
 		if(reportStatus!=null){
 			list.addItemDecoration(new RecyclerView.ItemDecoration(){
-				@Override
-				public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state){
-					RecyclerView.ViewHolder holder=parent.getChildViewHolder(view);
-					if(holder instanceof LinkCardStatusDisplayItem.Holder || holder instanceof MediaGridStatusDisplayItem.Holder){
-						outRect.left=V.dp(16);
-						outRect.right=V.dp(16);
-					}
-				}
-			});
-
-			list.addItemDecoration(new RecyclerView.ItemDecoration(){
 				private Paint paint=new Paint(Paint.ANTI_ALIAS_FLAG);
 				{
 					paint.setStyle(Paint.Style.STROKE);
@@ -222,10 +211,6 @@ public class ReportReasonChoiceFragment extends StatusListFragment{
 					if(holder instanceof StatusDisplayItem.Holder<?>){
 						outRect.left=outRect.right=V.dp(16);
 					}
-					int index=holder.getAbsoluteAdapterPosition()-mergeAdapter.getPositionForAdapter(adapter);
-					if(index==displayItems.size()){
-						outRect.top=V.dp(32);
-					}
 				}
 			});
 		}
@@ -249,18 +234,6 @@ public class ReportReasonChoiceFragment extends StatusListFragment{
 	@Override
 	protected FilterContext getFilterContext(){
 		return null;
-	}
-
-	@Override
-	protected void onModifyItemViewHolder(BindableViewHolder<StatusDisplayItem> holder){
-		if((Object)holder instanceof MediaGridStatusDisplayItem.Holder h){
-			View layout=h.getLayout();
-			layout.setOutlineProvider(OutlineProviders.roundedRect(8));
-			layout.setClipToOutline(true);
-			View overlay=h.getSensitiveOverlay();
-			overlay.setOutlineProvider(OutlineProviders.roundedRect(8));
-			overlay.setClipToOutline(true);
-		}
 	}
 
 	@Override
