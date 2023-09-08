@@ -378,4 +378,16 @@
         <item quantity="many">temas</item>
         <item quantity="other">temas</item>
     </plurals>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Ocultar emoji vacíos</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Sólo cuando se abre un tema</string>
+    <string name="sk_settings_show_emoji_reactions_always">Mostrar siempre el botón de añadir</string>
+    <string name="sk_search_suicide_hotlines">Encontrar un teléfono de ayuda</string>
+    <string name="sk_do_not_show_again">No mostrar de nuevo</string>
+    <string name="sk_post_contains_media">El tema contiene medios</string>
+    <string name="sk_load_missing_posts_oldest_first">El más antiguo primero (hacia arriba)</string>
+    <string name="sk_settings_show_emoji_reactions">Mostrar los emoji en las líneas de tiempo</string>
+    <string name="sk_search_suicide_title">En caso de que estés en apuros…</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
+    <string name="sk_settings_load_missing_posts">Cargar los mensajes que faltan</string>
+    <string name="sk_load_missing_posts_newest_first">Lo más nuevo primero (hacia abajo)</string>
 </resources>
