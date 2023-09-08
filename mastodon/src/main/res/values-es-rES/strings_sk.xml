@@ -224,8 +224,8 @@
     <string name="sk_updater_enable_pre_releases">Activar versiones beta</string>
     <string name="sk_timeline_posts">Publicaciones</string>
     <string name="sk_timelines_add">Añadir</string>
-    <string name="sk_timeline">Cronología</string>
-    <string name="sk_hashtag">Etiqueta</string>
+    <string name="sk_timeline">Línea de tiempo</string>
+    <string name="sk_hashtag">Hashtag</string>
     <string name="sk_pin_timeline">Anclar cronología</string>
     <string name="sk_unpin_timeline">Desanclar cronología</string>
     <string name="sk_pinned_timeline">Anclado a inicio</string>
@@ -306,7 +306,7 @@
     <string name="sk_settings_prefix_replies_to_others">Solo en respuesta a otros</string>
     <string name="sk_settings_forward_report_default">\"Reenviar denuncia\" activado por defecto</string>
     <string name="sk_list_exclusive_switch">Hacer una lista exclusiva</string>
-    <string name="sk_icon_feed">Cronología</string>
+    <string name="sk_icon_feed">Feed</string>
     <string name="sk_exclusive_list">Lista exclusiva</string>
     <string name="sk_list_exclusive_switch_explanation">Los miembros de una lista exclusiva no aparecerán en tu cronología de inicio - si tu instancia lo admite.</string>
     <string name="sk_icon_verified">Verificado</string>
@@ -366,10 +366,10 @@
         <item quantity="many">%1$,d usuarios reaccionaron con %2$s</item>
         <item quantity="other">%1$,d usuarios reaccionaron con %2$s</item>
     </plurals>
-    <string name="sk_enter_emoji_toast">Necesitas escribir un emoticono</string>
+    <string name="sk_enter_emoji_toast">Por favor, introduce un emoticono</string>
     <string name="sk_enter_emoji_hint">Escribe para reaccionar con un emoticono</string>
     <string name="sk_settings_emoji_reactions">Activar las reacciones con los emoticonos</string>
-    <string name="sk_settings_emoji_reactions_explanation">Muestra las reacciones con los emoticonos a los mensajes y te permite interactuar con ellos. Algunas versiones modificadas de Mastodon lo soportan, pero Mastodon no.</string>
+    <string name="sk_settings_emoji_reactions_explanation">Muestra las reacciones con los emoticonos a los mensajes y te permite añadir las tuyas. Varios servidores de Fediverse lo soportan, pero Mastodon no.</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">Las reacciones con los emoticonos deben mostrarse en las líneas de tiempo. Si esta opción está desactivada, las reacciones con los emoticonos solo se mostrarán al ver un hilo.</string>
     <string name="sk_button_react">Reacciona con un emoticono</string>
     <string name="sk_again_for_system_keyboard">Pulsa de nuevo para el Teclado del sistema</string>
@@ -390,4 +390,12 @@
     <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
     <string name="sk_settings_load_missing_posts">Cargar los mensajes que faltan</string>
     <string name="sk_load_missing_posts_newest_first">Lo más nuevo primero (hacia abajo)</string>
+    <string name="sk_time_minutes">%d minutos</string>
+    <string name="sk_time_hours">%d horas</string>
+    <string name="sk_time_days">%d días</string>
+    <string name="sk_suicide_search_terms">Suicidio</string>
+    <string name="sk_search_suicide_message">Si buscas una señal para no suicidarte, es ésta. Considera la posibilidad de ponerte en contacto con una línea directa para la ayuda al suicido si estás angustiado.</string>
+    <string name="sk_load_missing_posts_below">Cargar los mensajes más antiguos</string>
+    <string name="sk_time_seconds">%d segundos</string>
+    <string name="sk_load_missing_posts_above">Cargar los mensajes más recientes</string>
 </resources>
