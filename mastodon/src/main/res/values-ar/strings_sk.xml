@@ -249,4 +249,21 @@
     <string name="sk_notify_poll_results">نتيجة استطلاع الرأي</string>
     <string name="sk_filtered">تمت تصفيته: %s</string>
     <string name="sk_search_fediverse">البحث في الفديفرس</string>
+    <string name="sk_suicide_search_terms">انتحار, انتِحار, الانتحار, الإنتحار, أنتحر</string>
+    <string name="sk_search_suicide_title">إن كنت في مِحنة وبحاجة إلى مساعدة…</string>
+    <string name="sk_search_suicide_message">إذا كنت تبحث عن إشارة لعدم الانتحار، فها هي. إذا كنت تعاني من ضائقة و/أو تراودك أفكار انتحارية، وإذا كنت بحاجة إلى مساعدة، فيمكنك الاتصال بخط المساعدة للوقاية من الانتحار إن كنت في مِحنة.</string>
+    <string name="sk_load_missing_posts_above">حمِّل المنشورات الحديثة</string>
+    <string name="sk_load_missing_posts_below">حمِّل المنشورات القديمة</string>
+    <string name="sk_time_seconds">%d ثواني</string>
+    <string name="sk_time_minutes">%d دقائق</string>
+    <string name="sk_time_hours">%d ساعات</string>
+    <string name="sk_time_days">%d أيام</string>
+    <string name="sk_search_suicide_hotlines">للعثور على خط للمساعدة</string>
+    <string name="sk_confirm_delete_scheduled_post_title">احذف المنشور المُبَرمَج</string>
+    <string name="sk_compose_scheduled">مُبَرمَج لـ</string>
+    <string name="sk_do_remove_follower">إزالة</string>
+    <string name="sk_icon_academic_cap">قبعة جامعية</string>
+    <string name="sk_icon_tag">ملصقة</string>
+    <string name="sk_add_timeline_tag_error_empty">لا يجب أن يُترَك الوسم فارغًا</string>
+    <string name="sk_unfinished_attachments">إصلاح المرفقات؟</string>
 </resources>
