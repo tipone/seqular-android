@@ -397,10 +397,11 @@ public abstract class StatusDisplayItem{
 		}
 
 		public Optional<StatusDisplayItem> getDisplayItemOffset(int offset){
-			int nextPos=getAbsoluteAdapterPosition() + offset;
 			List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
-			return displayItems.size() > nextPos
-					? Optional.of(displayItems.get(nextPos))
+			int thisPos=displayItems.indexOf(item);
+			int offsetPos=thisPos + offset;
+			return displayItems.size() > offsetPos && thisPos >= 0 && offsetPos >= 0
+					? Optional.of(displayItems.get(offsetPos))
 					: Optional.empty();
 		}
 
