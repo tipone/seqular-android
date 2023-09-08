@@ -383,4 +383,18 @@
     <string name="sk_disable_pill_shaped_active_indicator">Desativar indicador de guia ativa em forma de comprimido</string>
     <string name="sk_tab_home">Início</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Mostrar nomes das guias na barra de navegação</string>
+    <string name="sk_load_missing_posts_below">Carregar publicações mais antigas</string>
+    <string name="sk_do_not_show_again">Não mostrar novamente</string>
+    <string name="sk_search_suicide_hotlines">Encontre uma linha de apoio</string>
+    <string name="sk_trending_links_info_banner">Estas são as notícias mais comentadas em seu servidor.</string>
+    <string name="sk_post_contains_media">A publicação contém mídia</string>
+    <string name="sk_load_missing_posts_above">Carregar publicações mais recentes</string>
+    <string name="sk_search_suicide_message">Se você está procurando um sinal para não se matar, aqui está. Por favor, caso esteja deprimido e/ou tendo pensamentos suicidas, considere entrar em contato com uma linha de apoio para prevenção do suicídio.</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com/br</string>
+    <string name="sk_trending_posts_info_banner">Essas são as publicações que estão ganhando força no seu servidor.</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">publicação</item>
+        <item quantity="many">publicações</item>
+        <item quantity="other">publicações</item>
+    </plurals>
 </resources>
