@@ -342,7 +342,7 @@
     </plurals>
     <string name="sk_mute_label">Duração</string>
     <string name="sk_button_react">Reaja com emoji</string>
-    <string name="sk_enter_emoji_toast">Você precisa digitar um emoji</string>
+    <string name="sk_enter_emoji_toast">Por favor, digite um emoji</string>
     <string name="sk_enter_emoji_hint">Digite para reagir com um emoji</string>
     <string name="sk_again_for_system_keyboard">Toque novamente para Teclado do Sistema</string>
     <string name="sk_duration_minutes_5">5 minutos</string>
@@ -375,4 +375,12 @@
     <string name="sk_suicide_search_terms">Suicídio</string>
     <string name="sk_time_seconds">%d segundos</string>
     <string name="sk_time_days">%d dias</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Somente quando a publicação for aberta</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Ocultar reações de emoji vazias</string>
+    <string name="sk_settings_show_emoji_reactions">Mostrar reações com emojis nas linhas do tempo</string>
+    <string name="sk_settings_show_emoji_reactions_always">Sempre mostrar o botão adicionar</string>
+    <string name="sk_search_suicide_title">Caso você precise de ajuda…</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Desativar indicador de guia ativa em forma de comprimido</string>
+    <string name="sk_tab_home">Início</string>
+    <string name="sk_settings_show_labels_in_navigation_bar">Mostrar nomes das guias na barra de navegação</string>
 </resources>
