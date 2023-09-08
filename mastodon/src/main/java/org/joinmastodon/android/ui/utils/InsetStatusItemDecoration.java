@@ -74,24 +74,19 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 
 	@Override
 	public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state){
-		List<StatusDisplayItem> displayItems=listFragment.getDisplayItems();
+//		List<StatusDisplayItem> displayItems=listFragment.getDisplayItems();
 		RecyclerView.ViewHolder holder=parent.getChildViewHolder(view);
 		if(holder instanceof StatusDisplayItem.Holder<?> sdi){
 			boolean inset=sdi.getItem().inset;
-			int pos=holder.getAbsoluteAdapterPosition();
+//			int pos=holder.getAbsoluteAdapterPosition();
 			if(inset){
-				boolean topSiblingInset=pos>0 && displayItems.get(pos-1).inset;
-				boolean bottomSiblingInset=pos<displayItems.size()-1 && displayItems.get(pos+1).inset;
-				int pad;
+//				boolean topSiblingInset=pos>0 && displayItems.get(pos-1).inset;
+//				boolean bottomSiblingInset=pos<displayItems.size()-1 && displayItems.get(pos+1).inset;
 //				if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder)
-					pad=V.dp(16);
-//				else
-//					pad=V.dp(12);
-				boolean insetPadding=((StatusDisplayItem.Holder<?>) holder).getItem().insetPadding;
-				if(insetPadding)
-					outRect.left=pad;
-				if(insetPadding)
-					outRect.right=pad;
+				int pad=V.dp(16);
+//				else pad=V.dp(12);
+				outRect.left=pad;
+				outRect.right=pad;
 
 				// had to comment this out because animations with offsets aren't handled properly.
 				// can be worked around by manually applying top margins to items

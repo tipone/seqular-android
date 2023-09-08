@@ -54,7 +54,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public abstract class StatusDisplayItem{
 	public final String parentID;
 	public final BaseStatusListFragment<?> parentFragment;
-	public boolean inset, insetPadding=true;
+	public boolean inset;
 	public int index;
 	public boolean
 			hasDescendantNeighbor = false,
