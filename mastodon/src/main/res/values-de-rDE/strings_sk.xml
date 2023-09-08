@@ -348,4 +348,38 @@
     <string name="sk_tab_search">Suche</string>
     <string name="sk_tab_notifications">Benachrichtigungen</string>
     <string name="sk_tab_profile">Profil</string>
+    <string name="sk_enter_emoji_toast">Bitte geben Sie ein Emoji ein</string>
+    <string name="sk_settings_emoji_reactions">Emoji-Reaktionen einschalten</string>
+    <string name="sk_settings_emoji_reactions_explanation">Zeigt Emoji-Reaktionen zu Beiträgen an und lässt dich eigene hinzufügen. Einige Fediverse-Server unterstützen das, Mastodon jedoch nicht.</string>
+    <string name="sk_button_react">Mit Emoji reagieren</string>
+    <string name="sk_mute_label">Dauer</string>
+    <string name="sk_settings_show_emoji_reactions">Emoji-Reaktionen in Timelines anzeigen</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Nur wenn der Beitrag geöffnet ist</string>
+    <string name="sk_duration_days_3">3 Tage</string>
+    <string name="sk_search_suicide_message">Wenn du auf ein Zeichen wartest, keinen Suizid zu begehen – das hier ist es. Bitte ziehe in Erwägung, eine Suizid-Hotline zu kontaktieren, wenn du Hilfe brauchst.</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Leere Emoji-Reaktionen verbergen</string>
+    <string name="sk_settings_show_emoji_reactions_always">Hinzufügen-Button immer anzeigen</string>
+    <string name="sk_enter_emoji_hint">Emoji zum Reagieren eintippen</string>
+    <string name="sk_duration_indefinite">Unbestimmt</string>
+    <string name="sk_duration_minutes_5">5 Minuten</string>
+    <string name="sk_duration_minutes_30">30 Minuten</string>
+    <string name="sk_duration_hours_1">1 Stunde</string>
+    <string name="sk_duration_hours_6">6 Stunden</string>
+    <string name="sk_duration_days_1">1 Tag</string>
+    <string name="sk_duration_days_7">7 Tage</string>
+    <string name="sk_notification_mention">Du wurdest von %s erwähnt</string>
+    <string name="sk_suicide_search_terms">Suizid</string>
+    <string name="sk_search_suicide_title">Falls es dir schlecht geht…</string>
+    <string name="sk_search_suicide_hotlines">Hotline finden</string>
+    <string name="sk_do_not_show_again">Nicht mehr anzeigen</string>
+    <string name="sk_post_contains_media">Beitrag enthält Medien</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Ein User hat mit %2$s reagiert</item>
+        <item quantity="other">%1$,d User haben mit %2$s reagiert</item>
+    </plurals>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">Beitrag</item>
+        <item quantity="other">Beiträge</item>
+    </plurals>
+    <string name="sk_settings_show_labels_in_navigation_bar">Tab-Bezeichnungen in der Navigationsleiste anzeigen</string>
 </resources>
