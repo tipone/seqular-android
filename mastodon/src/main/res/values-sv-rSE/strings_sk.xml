@@ -152,4 +152,5 @@
     <string name="sk_reply_as">Svara med annat konto</string>
     <string name="sk_unsent_posts">Opublicerade inlägg</string>
     <string name="sk_draft_saved">Utkast sparat</string>
+    <string name="sk_quoting_user">Citerar %s</string>
 </resources>

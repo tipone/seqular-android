@@ -331,10 +331,10 @@
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_spoiler_show">Mostrar el contenido</string>
     <string name="sk_pronouns_label">Pronombres</string>
-    <string name="sk_switch_timeline">Cambiar la línea de tiempo</string>
+    <string name="sk_switch_timeline">Cambiar la cronología</string>
     <string name="sk_settings_instance">Instancia</string>
     <string name="sk_disable_pill_shaped_active_indicator">Desactivar el indicador de pestaña activa en forma de pastilla</string>
-    <string name="sk_settings_true_black">Modo negro intenso</string>
+    <string name="sk_settings_true_black">Usar tema negro</string>
     <string name="sk_search_fediverse">Buscar en el Fediverso</string>
     <string name="sk_settings_unifiedpush_choose">Selecciona un distribuidor</string>
     <string name="sk_settings_unifiedpush_no_distributor">No se ha encontrado ningún distribuidor</string>
