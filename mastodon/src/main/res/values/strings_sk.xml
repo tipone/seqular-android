@@ -33,7 +33,9 @@
     <string name="sk_federated_timeline">Federation</string>
     <string name="sk_federated_timeline_info_banner">These are the most recent posts by the people in your federation.</string>
     <string name="sk_bubble_timeline_info_banner">These are the most recent posts from the network curated by your instance admins.</string>
-    <string name="sk_update_available">Megalodon %s is ready to download.</string>
+	<string name="sk_trending_posts_info_banner">These are the posts gaining traction on your server.</string>
+	<string name="sk_trending_links_info_banner">These are the news stories getting talked about on your server.</string>
+	<string name="sk_update_available">Megalodon %s is ready to download.</string>
     <string name="sk_update_ready">Megalodon %s is downloaded and ready to install.</string>
     <string name="sk_check_for_update">Check for update</string>
     <string name="sk_no_update_available">No update available</string>
