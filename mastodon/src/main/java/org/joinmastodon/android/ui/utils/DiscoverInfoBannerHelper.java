@@ -46,7 +46,7 @@ public class DiscoverInfoBannerHelper{
 			TextView text=banner.findViewById(R.id.banner_text);
 			text.setText(switch(type){
 				case TRENDING_POSTS -> list.getResources().getString(R.string.sk_trending_posts_info_banner);
-				case TRENDING_LINKS -> list.getResources().getString(R.string.trending_links_info_banner);
+				case TRENDING_LINKS -> list.getResources().getString(R.string.sk_trending_links_info_banner);
 				case FEDERATED_TIMELINE -> list.getResources().getString(R.string.sk_federated_timeline_info_banner);
 				case POST_NOTIFICATIONS -> list.getResources().getString(R.string.sk_notify_posts_info_banner);
 				case BUBBLE_TIMELINE -> list.getResources().getString(R.string.sk_bubble_timeline_info_banner);
