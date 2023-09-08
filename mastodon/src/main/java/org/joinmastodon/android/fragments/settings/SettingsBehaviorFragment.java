@@ -23,7 +23,7 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> implements HasAccountID{
-	private ListItem<Void> languageItem, loadMissingPostsItem;
+	private ListItem<Void> languageItem;
 	private CheckableListItem<Void> altTextItem, playGifsItem, customTabsItem, confirmUnfollowItem, confirmBoostItem, confirmDeleteItem;
 	private MastodonLanguage postLanguage;
 	private ComposeLanguageAlertViewController.SelectedOption newPostLanguage;
@@ -46,7 +46,6 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 
 		List<ListItem<Void>> items = new ArrayList<>(List.of(
 				languageItem=new ListItem<>(getString(R.string.default_post_language), postLanguage!=null ? postLanguage.getDisplayName(getContext()) : null, R.drawable.ic_fluent_local_language_24_regular, this::onDefaultLanguageClick),
-				loadMissingPostsItem=new ListItem<>(R.string.sk_settings_load_missing_posts, GlobalUserPreferences.loadMissingPosts.labelRes, R.drawable.ic_fluent_arrow_maximize_vertical_24_regular, this::onLoadMissingPostsClick),
 				altTextItem=new CheckableListItem<>(R.string.settings_alt_text_reminders, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.altTextReminders, R.drawable.ic_fluent_image_alt_text_24_regular, ()->toggleCheckableItem(altTextItem)),
 				playGifsItem=new CheckableListItem<>(R.string.settings_gif, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.playGifs, R.drawable.ic_fluent_gif_24_regular, ()->toggleCheckableItem(playGifsItem)),
 				overlayMediaItem=new CheckableListItem<>(R.string.sk_settings_continues_playback, R.string.sk_settings_continues_playback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.overlayMedia, R.drawable.ic_fluent_play_circle_hint_24_regular, ()->toggleCheckableItem(overlayMediaItem)),
@@ -124,27 +123,6 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 					GlobalUserPreferences.prefixReplies=GlobalUserPreferences.PrefixRepliesMode.values()[newSelected[0]];
 					prefixRepliesItem.subtitleRes=getPrefixWithRepliesString();
 					rebindItem(prefixRepliesItem);
-				})
-				.setNegativeButton(R.string.cancel, null)
-				.show();
-	}
-
-	private void onLoadMissingPostsClick(){
-		GlobalUserPreferences.LoadMissingPostsPreference[] values=GlobalUserPreferences.LoadMissingPostsPreference.values();
-		int selected=GlobalUserPreferences.loadMissingPosts.ordinal();
-		int[] newSelected={selected};
-		new M3AlertDialogBuilder(getActivity())
-				.setTitle(R.string.sk_settings_load_missing_posts)
-				.setSingleChoiceItems(Stream.of(values).map(pref->getString(pref.labelRes)).toArray(String[]::new),
-						selected, (dlg, item)->newSelected[0]=item)
-				.setPositiveButton(R.string.ok, (dlg, item)->{
-					GlobalUserPreferences.LoadMissingPostsPreference pref=values[newSelected[0]];
-					if(pref!=GlobalUserPreferences.loadMissingPosts){
-						GlobalUserPreferences.loadMissingPosts=pref;
-						GlobalUserPreferences.save();
-						loadMissingPostsItem.subtitleRes=pref.labelRes;
-						rebindItem(loadMissingPostsItem);
-					}
 				})
 				.setNegativeButton(R.string.cancel, null)
 				.show();

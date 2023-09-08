@@ -34,7 +34,6 @@ public class GlobalUserPreferences{
 	public static boolean useCustomTabs;
 	public static boolean altTextReminders, confirmUnfollow, confirmBoost, confirmDeletePost;
 	public static ThemePreference theme;
-	public static LoadMissingPostsPreference loadMissingPosts;
 
 	// MEGALODON
 	public static boolean trueBlackTheme;
@@ -124,7 +123,6 @@ public class GlobalUserPreferences{
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
 		overlayMedia=prefs.getBoolean("overlayMedia", false);
 		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
-		loadMissingPosts=LoadMissingPostsPreference.values()[prefs.getInt("loadMissingItems", 0)];
 
 		if (prefs.contains("prefixRepliesWithRe")) {
 			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
@@ -184,7 +182,6 @@ public class GlobalUserPreferences{
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
 				.putBoolean("overlayMedia", overlayMedia)
 				.putBoolean("showSuicideHelp", showSuicideHelp)
-				.putInt("loadMissingItems", loadMissingPosts.ordinal())
 				.apply();
 	}
 
@@ -278,17 +275,5 @@ public class GlobalUserPreferences{
 		NEVER,
 		ALWAYS,
 		TO_OTHERS
-	}
-
-	public enum LoadMissingPostsPreference{
-		NEWEST_FIRST(R.string.sk_load_missing_posts_newest_first), // Downwards, default
-		OLDEST_FIRST(R.string.sk_load_missing_posts_oldest_first); // Upwards
-
-		@StringRes
-		public int labelRes;
-
-		LoadMissingPostsPreference(@StringRes int labelRes){
-			this.labelRes=labelRes;
-		}
 	}
 }

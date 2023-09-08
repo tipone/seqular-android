@@ -617,7 +617,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 	}
 
-	public void onGapClick(GapStatusDisplayItem.Holder item){}
+	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
 		int startPos = warning.getAbsoluteAdapterPosition();

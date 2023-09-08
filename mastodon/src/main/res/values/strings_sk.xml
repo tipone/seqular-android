@@ -388,4 +388,10 @@
     <string name="sk_settings_load_missing_posts">Load missing posts behavior</string>
 	<string name="sk_load_missing_posts_newest_first">Newest first (downwards)</string>
 	<string name="sk_load_missing_posts_oldest_first">Oldest first (upwards)</string>
+	<string name="sk_load_missing_posts_above">Load newer posts</string>
+	<string name="sk_load_missing_posts_below">Load older posts</string>
+	<string name="sk_time_seconds">%d seconds</string>
+	<string name="sk_time_minutes">%d minutes</string>
+	<string name="sk_time_hours">%d hours</string>
+	<string name="sk_time_days">%d days</string>
 </resources>

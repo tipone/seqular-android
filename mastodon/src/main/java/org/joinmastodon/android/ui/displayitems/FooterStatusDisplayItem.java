@@ -1,5 +1,8 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import static org.joinmastodon.android.ui.utils.UiUtils.opacityIn;
+import static org.joinmastodon.android.ui.utils.UiUtils.opacityOut;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -12,8 +15,6 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.TextView;
@@ -56,7 +57,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
 		private final TextView replies, boosts, favorites;
 		private final View reply, boost, favorite, share, bookmark;
-		private static final Animation opacityOut, opacityIn;
 
 		private View touchingView = null;
 		private boolean longClickPerformed = false;
@@ -76,18 +76,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				info.setText(item.parentFragment.getString(descriptionForId(host.getId())));
 			}
 		};
-
-		private static final float ALPHA_PRESSED=0.55f;
-
-		static {
-			opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
-			opacityOut.setDuration(300);
-			opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			opacityOut.setFillAfter(true);
-			opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
-			opacityIn.setDuration(400);
-			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
-		}
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
