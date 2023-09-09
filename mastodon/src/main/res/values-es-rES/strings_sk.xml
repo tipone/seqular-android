@@ -398,4 +398,6 @@
     <string name="sk_load_missing_posts_below">Cargar los mensajes más antiguos</string>
     <string name="sk_time_seconds">%d segundos</string>
     <string name="sk_load_missing_posts_above">Cargar los mensajes más recientes</string>
+    <string name="sk_trending_posts_info_banner">Estos son los posts que ganan popularidad en tu servidor.</string>
+    <string name="sk_trending_links_info_banner">Estas son las noticias de las que se habla en tu servidor.</string>
 </resources>
