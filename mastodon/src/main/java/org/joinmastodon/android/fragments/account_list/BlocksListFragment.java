@@ -20,7 +20,7 @@ public class BlocksListFragment extends AccountRelatedAccountListFragment{
 
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
-		return new GetAccountBlocks();
+		return new GetAccountBlocks(maxID, count);
 	}
 
 	@Override

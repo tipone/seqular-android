@@ -19,7 +19,7 @@ public class MutesListFragment extends AccountRelatedAccountListFragment{
 
 	@Override
 	public HeaderPaginationRequest<Account> onCreateRequest(String maxID, int count){
-		return new GetAccountMutes();
+		return new GetAccountMutes(maxID, count);
 	}
 
 	@Override
