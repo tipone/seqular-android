@@ -394,4 +394,6 @@
     <string name="sk_time_days">%d days</string>
 	<string name="sk_muted_account">Muted accounts</string>
 	<string name="sk_mutes">Mutes</string>
+	<string name="sk_blocked_account">Blocked accounts</string>
+	<string name="sk_blocks">Blocks</string>
 </resources>
