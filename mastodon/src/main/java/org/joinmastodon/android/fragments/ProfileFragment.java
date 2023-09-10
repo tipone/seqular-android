@@ -62,6 +62,7 @@ import org.joinmastodon.android.api.requests.instance.GetInstance;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowingListFragment;
+import org.joinmastodon.android.fragments.account_list.MutesListFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.fragments.settings.SettingsServerFragment;
 import org.joinmastodon.android.model.Account;
@@ -827,6 +828,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				args.putString("profileDisplayUsername", account.getDisplayUsername());
 			}
 			Nav.go(getActivity(), ListsFragment.class, args);
+		}else if(id==R.id.mutes){
+			final Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putParcelable("targetAccount", Parcels.wrap(account));
+			Nav.go(getActivity(), MutesListFragment.class, args);
 		}else if(id==R.id.followed_hashtags){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
