@@ -44,9 +44,9 @@
     <string name="mo_confirm_unfollow_title">Dejar de seguir</string>
     <string name="mo_confirm_unfollow">Confirmar para dejar de seguir a %s</string>
     <string name="mo_instance_contact">Contacto</string>
-    <string name="mo_instance_users">Usuarixs</string>
+    <string name="mo_instance_users">Cuentas</string>
     <string name="mo_instance_status">Publicaciones</string>
-    <string name="mo_instance_registration_open">Abrir</string>
+    <string name="mo_instance_registration_open">Abierto</string>
     <string name="mo_instance_registration_approval">Requiere aprobación</string>
     <string name="mo_instance_info_open_timeline">Cronología Local</string>
     <string name="mo_instance_info_moderated_servers">Servidores moderados</string>
@@ -77,7 +77,7 @@
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_settings_show_posts_without_alt">Mostrar las publicaciones de los medios a las que les falta un texto alternativo</string>
     <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
-    <string name="mo_settings_show_posts_without_alt_summary">Las publicaciones estarán ocultas en todas las líneas de tiempo, pero se pueden revelar en los hilos y las notificaciones</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Las publicaciones estarán ocultas en todas las cronologías, pero se pueden mostrar en los hilos y las notificaciones</string>
     <string name="mo_show_media_preview">Mostrar previsualización de multimedia en la cronología</string>
     <string name="mo_recent_emoji_cleared">Emojis recientes eliminados</string>
     <string name="mo_double_tap_to_search">Doble toque para abrir la búsqueda</string>
