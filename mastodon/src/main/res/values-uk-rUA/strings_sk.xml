@@ -380,4 +380,18 @@
         <item quantity="many">дописів</item>
         <item quantity="other">дописів</item>
     </plurals>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Лише коли допис відкрито</string>
+    <string name="sk_search_suicide_hotlines">Знайти гарячу лінію</string>
+    <string name="sk_do_not_show_again">Не показувати знову</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
+    <string name="sk_post_contains_media">Допис містить медіа</string>
+    <string name="sk_settings_load_missing_posts">Поведінка завантаження пропущених дописів</string>
+    <string name="sk_load_missing_posts_oldest_first">Спочатку найдавніші (за зростанням)</string>
+    <string name="sk_settings_show_emoji_reactions">Показувати реакції емоджі у стрічках</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Сховати реакції без емоджі</string>
+    <string name="sk_settings_show_emoji_reactions_always">Завжди показувати кнопку Додати</string>
+    <string name="sk_suicide_search_terms">Самогубство</string>
+    <string name="sk_search_suicide_title">Якщо ви потрапили в біду…</string>
+    <string name="sk_search_suicide_message">Якщо ви шукаєте знак, щоб не накладати на себе руки, то це він. Якщо ви перебуваєте у скрутному становищі, зверніться на місцеву гарячу лінію з питань самогубств.</string>
+    <string name="sk_load_missing_posts_newest_first">Спочатку найновіші (за спаданням)</string>
 </resources>

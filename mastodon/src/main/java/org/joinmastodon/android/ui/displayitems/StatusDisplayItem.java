@@ -54,7 +54,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public abstract class StatusDisplayItem{
 	public final String parentID;
 	public final BaseStatusListFragment<?> parentFragment;
-	public boolean inset, insetPadding=true;
+	public boolean inset;
 	public int index;
 	public boolean
 			hasDescendantNeighbor = false,
@@ -136,7 +136,7 @@ public abstract class StatusDisplayItem{
 				: fragment.getString(R.string.in_reply_to, account.displayName);
 		return new ReblogOrReplyLineStatusDisplayItem(
 				parentID, fragment, text, account == null ? List.of() : account.emojis,
-				R.drawable.ic_fluent_arrow_reply_20sp_filled, null, null, fullText
+				R.drawable.ic_fluent_arrow_reply_20sp_filled, null, null, fullText, status
 		);
 	}
 
@@ -171,7 +171,7 @@ public abstract class StatusDisplayItem{
 				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20sp_filled, isOwnPost ? status.visibility : null, i->{
 					args.putParcelable("profileAccount", Parcels.wrap(status.account));
 					Nav.go(fragment.getActivity(), ProfileFragment.class, args);
-				}, fullText));
+				}, fullText, status));
 			} else if (!(status.tags.isEmpty() ||
 					fragment instanceof HashtagTimelineFragment ||
 					fragment instanceof ListTimelineFragment
@@ -187,7 +187,7 @@ public abstract class StatusDisplayItem{
 								i -> {
 									args.putString("hashtag", hashtag.name);
 									Nav.go(fragment.getActivity(), HashtagTimelineFragment.class, args);
-								}
+								}, status
 						)));
 			}
 
@@ -303,7 +303,7 @@ public abstract class StatusDisplayItem{
 			footer.hideCounts=hideCounts;
 			items.add(footer);
 			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
-				items.add(new GapStatusDisplayItem(parentID, fragment));
+				items.add(new GapStatusDisplayItem(parentID, fragment, status));
 		}
 		int i=1;
 		boolean inset=(flags & FLAG_INSET)!=0;
@@ -406,10 +406,11 @@ public abstract class StatusDisplayItem{
 		}
 
 		public Optional<StatusDisplayItem> getDisplayItemOffset(int offset){
-			int nextPos=getAbsoluteAdapterPosition() + offset;
 			List<StatusDisplayItem> displayItems=item.parentFragment.getDisplayItems();
-			return displayItems.size() > nextPos
-					? Optional.of(displayItems.get(nextPos))
+			int thisPos=displayItems.indexOf(item);
+			int offsetPos=thisPos + offset;
+			return displayItems.size() > offsetPos && thisPos >= 0 && offsetPos >= 0
+					? Optional.of(displayItems.get(offsetPos))
 					: Optional.empty();
 		}
 

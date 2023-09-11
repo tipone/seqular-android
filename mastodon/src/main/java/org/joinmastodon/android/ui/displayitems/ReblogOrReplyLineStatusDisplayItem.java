@@ -17,6 +17,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
@@ -43,18 +44,20 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	public boolean needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
 	CharSequence fullText;
+	Status status;
 
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick) {
-		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, text);
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, Status status) {
+		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, text, status);
 	}
 
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText) {
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText, Status status) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		HtmlParser.parseCustomEmoji(ssb, emojis);
 		this.text=ssb;
 		emojiHelper.setText(ssb);
 		this.icon=icon;
+		this.status=status;
 		this.handleClick=handleClick;
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);

@@ -1,5 +1,8 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import static org.joinmastodon.android.ui.utils.UiUtils.opacityIn;
+import static org.joinmastodon.android.ui.utils.UiUtils.opacityOut;
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;

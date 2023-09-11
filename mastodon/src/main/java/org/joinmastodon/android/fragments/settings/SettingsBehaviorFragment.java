@@ -20,6 +20,7 @@ import org.joinmastodon.android.utils.MastodonLanguage;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> implements HasAccountID{
 	private ListItem<Void> languageItem;

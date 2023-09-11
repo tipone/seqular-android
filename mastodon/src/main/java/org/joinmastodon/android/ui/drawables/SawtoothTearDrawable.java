@@ -23,9 +23,9 @@ import me.grishka.appkit.utils.V;
 public class SawtoothTearDrawable extends Drawable{
 	private final Paint topPaint, bottomPaint;
 
-	private static final int TOP_SAWTOOTH_HEIGHT=5;
-	private static final int BOTTOM_SAWTOOTH_HEIGHT=3;
-	private static final int STROKE_WIDTH=2;
+	private static final int TOP_SAWTOOTH_HEIGHT=4;
+	private static final int BOTTOM_SAWTOOTH_HEIGHT=4;
+	private static final int STROKE_WIDTH=1;
 	private static final int SAWTOOTH_PERIOD=14;
 
 	public SawtoothTearDrawable(Context context){

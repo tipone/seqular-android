@@ -75,4 +75,15 @@
     <string name="sk_settings_tabs_disable_swipe">ปิดใช้การปัดระหว่างแท็บ</string>
     <string name="sk_update_ready">Megalodon รุ่น %s ดาวน์โหลดเสร็จและพร้อมให้ติดตั้งแล้ว</string>
     <string name="sk_clear_all_notifications">ล้างการแจ้งเตือนทั้งหมด</string>
+    <string name="sk_settings_translation_availability_note_available">%s รองรับการแปล!</string>
+    <string name="sk_settings_translation_availability_note_unavailable">ดูเหมือนว่า %s ไม่รองรับการแปล</string>
+    <string name="sk_loading_fediverse_resource_title">กำลังค้นหาบนเฟดิเวิร์ส</string>
+    <string name="sk_undo_reblog">เลิกดันโพสต์</string>
+    <string name="sk_reblog_with_visibility">ดันด้วยการมองเห็น</string>
+    <string name="sk_quote_post">โพสต์เกี่ยวกับสิ่งนี้</string>
+    <string name="sk_copy_link_to_post">คัดลอกลิงก์ไปยังโพสต์</string>
+    <string name="sk_hashtags_you_follow">แฮชแท็กที่คุณติดตาม</string>
+    <string name="sk_loading_resource_on_instance_title">กำลังค้นหาบน %s</string>
+    <string name="sk_open_with_account">เปิดด้วยบัญชีอื่น</string>
+    <string name="sk_resource_not_found">ไม่พบทรัพยากร</string>
 </resources>

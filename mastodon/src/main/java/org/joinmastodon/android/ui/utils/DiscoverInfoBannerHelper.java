@@ -10,6 +10,7 @@ import android.widget.TextView;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.util.EnumSet;
 
@@ -44,8 +45,8 @@ public class DiscoverInfoBannerHelper{
 			banner=((Activity)list.getContext()).getLayoutInflater().inflate(R.layout.discover_info_banner, list, false);
 			TextView text=banner.findViewById(R.id.banner_text);
 			text.setText(switch(type){
-				case TRENDING_POSTS -> list.getResources().getString(R.string.trending_posts_info_banner);
-				case TRENDING_LINKS -> list.getResources().getString(R.string.trending_links_info_banner);
+				case TRENDING_POSTS -> list.getResources().getString(R.string.sk_trending_posts_info_banner);
+				case TRENDING_LINKS -> list.getResources().getString(R.string.sk_trending_links_info_banner);
 				case FEDERATED_TIMELINE -> list.getResources().getString(R.string.sk_federated_timeline_info_banner);
 				case POST_NOTIFICATIONS -> list.getResources().getString(R.string.sk_notify_posts_info_banner);
 				case BUBBLE_TIMELINE -> list.getResources().getString(R.string.sk_bubble_timeline_info_banner);
@@ -57,8 +58,10 @@ public class DiscoverInfoBannerHelper{
 				case TRENDING_POSTS -> R.drawable.ic_fluent_arrow_trending_24_regular;
 				case TRENDING_LINKS -> R.drawable.ic_fluent_news_24_regular;
 				case ACCOUNTS -> R.drawable.ic_fluent_people_add_24_regular;
-				// no icon because those are displayed as timelines - with icon in top left
-				case LOCAL_TIMELINE, FEDERATED_TIMELINE, BUBBLE_TIMELINE, POST_NOTIFICATIONS -> 0;
+				case LOCAL_TIMELINE -> TimelineDefinition.LOCAL_TIMELINE.getDefaultIcon().iconRes;
+				case FEDERATED_TIMELINE -> TimelineDefinition.FEDERATED_TIMELINE.getDefaultIcon().iconRes;
+				case BUBBLE_TIMELINE -> TimelineDefinition.BUBBLE_TIMELINE.getDefaultIcon().iconRes;
+				case POST_NOTIFICATIONS -> TimelineDefinition.POSTS_TIMELINE.getDefaultIcon().iconRes;
 			});
 			adapter.addAdapter(new SingleViewRecyclerAdapter(banner));
 		}

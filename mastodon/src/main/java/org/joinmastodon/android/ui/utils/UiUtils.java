@@ -54,6 +54,8 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -97,7 +99,6 @@ import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
-import org.joinmastodon.android.fragments.settings.SettingsServerAboutFragment;
 import org.joinmastodon.android.fragments.settings.SettingsServerFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
@@ -175,6 +176,19 @@ public class UiUtils {
 	private static final DateTimeFormatter TIME_FORMATTER=DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT);
 	public static int MAX_WIDTH, SCROLL_TO_TOP_DELTA;
 
+	public static final float ALPHA_PRESSED=0.55f;
+	public static final Animation opacityOut, opacityIn;
+
+	static {
+		opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
+		opacityOut.setDuration(300);
+		opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
+		opacityOut.setFillAfter(true);
+		opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
+		opacityIn.setDuration(400);
+		opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
+	}
+
 	private UiUtils() {
 	}
 
@@ -194,28 +208,33 @@ public class UiUtils {
 	}
 
 	public static String formatRelativeTimestamp(Context context, Instant instant) {
-		long t = instant.toEpochMilli();
-		long now = System.currentTimeMillis();
+		return formatPeriodBetween(context, instant, null);
+	}
+
+	public static String formatPeriodBetween(Context context, Instant since, Instant until) {
+		boolean ago = until == null;
+		long t = since.toEpochMilli();
+		long now = ago ? System.currentTimeMillis() : until.toEpochMilli();
 		long diff = now - t;
 		if(diff<1000L){
 			return context.getString(R.string.time_now);
 		}else if(diff<60_000L){
-			return context.getString(R.string.time_seconds_ago_short, diff/1000L);
+			return context.getString(ago ? R.string.time_seconds_ago_short : R.string.sk_time_seconds, diff/1000L);
 		}else if(diff<3600_000L){
-			return context.getString(R.string.time_minutes_ago_short, diff/60_000L);
+			return context.getString(ago ? R.string.time_minutes_ago_short : R.string.sk_time_minutes, diff/60_000L);
 		}else if(diff<3600_000L*24L){
-			return context.getString(R.string.time_hours_ago_short, diff/3600_000L);
+			return context.getString(ago ? R.string.time_hours_ago_short : R.string.sk_time_hours, diff/3600_000L);
 		} else {
 			int days = (int) (diff / (3600_000L * 24L));
-			if (days > 30) {
-				ZonedDateTime dt = instant.atZone(ZoneId.systemDefault());
+			if (ago && days > 30) {
+				ZonedDateTime dt = since.atZone(ZoneId.systemDefault());
 				if (dt.getYear() == ZonedDateTime.now().getYear()) {
 					return DATE_FORMATTER_SHORT.format(dt);
 				} else {
 					return DATE_FORMATTER_SHORT_WITH_YEAR.format(dt);
 				}
 			}
-			return context.getString(R.string.time_days_ago_short, days);
+			return context.getString(ago ? R.string.time_days_ago_short : R.string.sk_time_days, days);
 		}
 	}
 

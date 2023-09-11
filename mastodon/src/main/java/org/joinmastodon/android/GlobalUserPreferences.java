@@ -26,6 +26,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import androidx.annotation.StringRes;
+
 public class GlobalUserPreferences{
 	private static final String TAG="GlobalUserPreferences";
 

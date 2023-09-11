@@ -13,25 +13,24 @@ import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineMarkers;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
-import org.joinmastodon.android.utils.StatusFilterPredicate;
 
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.utils.V;
 
 public class HomeTimelineFragment extends StatusListFragment {
 	private HomeTabFragment parent;
@@ -176,15 +175,23 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	@Override
-	public void onGapClick(GapStatusDisplayItem.Holder item){
+	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){
 		if(dataLoading)
 			return;
-		item.getItem().loading=true;
-		V.setVisibilityAnimated(item.progress, View.VISIBLE);
-		V.setVisibilityAnimated(item.text, View.GONE);
 		GapStatusDisplayItem gap=item.getItem();
+		gap.loading=true;
 		dataLoading=true;
-		currentRequest=new GetHomeTimeline(item.getItemID(), null, 20, null, getLocalPrefs().timelineReplyVisibility)
+
+		String maxID = null;
+		String minID = null;
+		if (downwards) {
+			maxID = item.getItemID();
+		} else {
+			int gapPos=displayItems.indexOf(gap);
+			StatusDisplayItem nextItem=displayItems.get(gapPos + 1);
+			minID=nextItem.parentID;
+		}
+		currentRequest=new GetHomeTimeline(maxID, minID, 20, null, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(List<Status> result){
@@ -204,52 +211,96 @@ public class HomeTimelineFragment extends StatusListFragment {
 								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(gapStatus), false);
 							}
 						}else{
-							Set<String> idsBelowGap=new HashSet<>();
-							boolean belowGap=false;
-							int gapPostIndex=0;
-							for(Status s:data){
-								if(belowGap){
-									idsBelowGap.add(s.id);
-								}else if(s.id.equals(gap.parentID)){
-									belowGap=true;
-									s.hasGapAfter=false;
-									AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(s), false);
-								}else{
-									gapPostIndex++;
+							if(downwards) {
+								Set<String> idsBelowGap=new HashSet<>();
+								boolean belowGap=false;
+								int gapPostIndex=0;
+								for(Status s:data){
+									if(belowGap){
+										idsBelowGap.add(s.id);
+									}else if(s.id.equals(gap.parentID)){
+										belowGap=true;
+										s.hasGapAfter=false;
+										AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(s), false);
+									}else{
+										gapPostIndex++;
+									}
 								}
-							}
-							int endIndex=0;
-							for(Status s:result){
-								endIndex++;
-								if(idsBelowGap.contains(s.id))
-									break;
-							}
-							if(endIndex==result.size()){
-								result.get(result.size()-1).hasGapAfter=true;
-							}else{
-								result=result.subList(0, endIndex);
-							}
-							List<StatusDisplayItem> targetList=displayItems.subList(gapPos, gapPos+1);
-							targetList.clear();
-							List<Status> insertedPosts=data.subList(gapPostIndex+1, gapPostIndex+1);
-							StatusFilterPredicate filterPredicate=new StatusFilterPredicate(accountID, getFilterContext());
-							for(Status s:result){
-								if(idsBelowGap.contains(s.id))
-									break;
-								if(typeFilterPredicate(s) && filterPredicate.test(s)){
+								int endIndex=0;
+								for(Status s:result){
+									endIndex++;
+									if(idsBelowGap.contains(s.id))
+										break;
+								}
+								if(endIndex==result.size()){
+									result.get(result.size()-1).hasGapAfter=true;
+								}else{
+									result=result.subList(0, endIndex);
+								}
+								AccountSessionManager.get(accountID).filterStatuses(result, FilterContext.HOME);
+								List<StatusDisplayItem> targetList=displayItems.subList(gapPos, gapPos+1);
+								targetList.clear();
+								List<Status> insertedPosts=data.subList(gapPostIndex+1, gapPostIndex+1);
+								for(Status s:result){
+									if(idsBelowGap.contains(s.id))
+										break;
 									targetList.addAll(buildDisplayItems(s));
 									insertedPosts.add(s);
 								}
+								if(targetList.isEmpty()){
+									// oops. We didn't add new posts, but at least we know there are none.
+									adapter.notifyItemRemoved(getMainAdapterOffset()+gapPos);
+								}else{
+									adapter.notifyItemChanged(getMainAdapterOffset()+gapPos);
+									adapter.notifyItemRangeInserted(getMainAdapterOffset()+gapPos+1, targetList.size()-1);
+								}
+								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(insertedPosts, false);
+							} else {
+								String aboveGapID = gap.parentID;
+								int gapPostIndex = 0;
+								for (;gapPostIndex<data.size();gapPostIndex++){
+									if (Objects.equals(aboveGapID, data.get(gapPostIndex).id)) {
+										break;
+									}
+								}
+								// find if there's an overlap between the new data and the current data
+								int indexOfGapInResponse = 0;
+								for (;indexOfGapInResponse<result.size();indexOfGapInResponse++){
+									if (Objects.equals(aboveGapID, result.get(indexOfGapInResponse).id)) {
+										break;
+									}
+								}
+								// there is an overlap between new and current data
+								List<StatusDisplayItem> targetList=displayItems.subList(gapPos, gapPos+1);
+								if(indexOfGapInResponse<result.size()){
+									result=result.subList(indexOfGapInResponse+1,result.size());
+									Optional<Status> gapStatus=data.stream()
+											.filter(s->Objects.equals(s.id, gap.parentID))
+											.findFirst();
+									if (gapStatus.isPresent()) {
+										gapStatus.get().hasGapAfter=false;
+										AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(gapStatus.get()), false);
+									}
+									targetList.clear();
+								} else {
+									gap.loading=false;
+								}
+								List<Status> insertedPosts=data.subList(gapPostIndex+1, gapPostIndex+1);
+								for(Status s:result){
+									targetList.addAll(buildDisplayItems(s));
+									insertedPosts.add(s);
+								}
+								AccountSessionManager.get(accountID).filterStatuses(insertedPosts, FilterContext.HOME);
+								if(targetList.isEmpty()){
+									// oops. We didn't add new posts, but at least we know there are none.
+									adapter.notifyItemRemoved(getMainAdapterOffset()+gapPos);
+								}else{
+									adapter.notifyItemChanged(getMainAdapterOffset()+gapPos);
+									adapter.notifyItemRangeInserted(getMainAdapterOffset()+gapPos+1, targetList.size()-1);
+								}
+								list.scrollToPosition(getMainAdapterOffset()+gapPos+targetList.size());
+								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(insertedPosts, false);
 							}
-							AccountSessionManager.get(accountID).filterStatuses(insertedPosts, getFilterContext());
-							if(targetList.isEmpty()){
-								// oops. We didn't add new posts, but at least we know there are none.
-								adapter.notifyItemRemoved(getMainAdapterOffset()+gapPos);
-							}else{
-								adapter.notifyItemChanged(getMainAdapterOffset()+gapPos);
-								adapter.notifyItemRangeInserted(getMainAdapterOffset()+gapPos+1, targetList.size()-1);
-							}
-							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(insertedPosts, false);
 						}
 					}
 
