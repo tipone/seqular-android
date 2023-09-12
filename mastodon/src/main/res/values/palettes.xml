@@ -590,8 +590,18 @@
 		<item name="colorGray50t">@color/white_gray_50</item>
 		<item name="colorGray50">@color/white_gray_50</item>
 		<item name="colorGray25">@color/white_gray_25</item>
+
+		<item name="colorNeutral900">@color/white_gray_900</item>
+		<item name="colorNeutral800">@color/white_gray_800</item>
+		<item name="colorNeutral700">@color/white_gray_700</item>
+		<item name="colorNeutral600">@color/white_gray_600</item>
+		<item name="colorNeutral500">@color/white_gray_500</item>
+		<item name="colorNeutral400">@color/white_gray_400</item>
+		<item name="colorNeutral300">@color/white_gray_300</item>
+		<item name="colorNeutral200">@color/white_gray_200</item>
+		<item name="colorNeutral100">@color/white_gray_100</item>
+		<item name="colorNeutral50t">@color/white_gray_50</item>
+		<item name="colorNeutral50">@color/white_gray_50</item>
+		<item name="colorNeutral25">@color/white_gray_25</item>
 	</style>
-
-
-
 </resources>
