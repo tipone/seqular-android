@@ -28,6 +28,20 @@
 		<item name="colorGray50t">@color/gray_50t</item>
 		<item name="colorGray50">@color/gray_50</item>
 		<item name="colorGray25">@color/gray_25</item>
+
+		<item name="colorNeutral900">@color/gray_900</item>
+		<item name="colorNeutral800">@color/gray_800</item>
+		<item name="colorNeutral700">@color/gray_700</item>
+		<item name="colorNeutral600">@color/gray_600</item>
+		<item name="colorNeutral500">@color/gray_500</item>
+		<!--		<item name="colorNeutral400t">@color/gray_400t</item>-->
+		<item name="colorNeutral400">@color/gray_400</item>
+		<item name="colorNeutral300">@color/gray_300</item>
+		<item name="colorNeutral200">@color/gray_200</item>
+		<item name="colorNeutral100">@color/gray_100</item>
+		<item name="colorNeutral50t">@color/gray_50t</item>
+		<item name="colorNeutral50">@color/gray_50</item>
+		<item name="colorNeutral25">@color/gray_25</item>
 	</style>
 
 	<style name="ColorPalette">
@@ -120,7 +134,7 @@
 		<item name="colorM3Secondary">?colorSecondary200</item>
 		<item name="colorM3OnSecondary">?colorSecondary800</item>
 		<!-- TODO: replace this -->
-		<item name="colorM3SecondaryContainer">?colorSecondary800</item>
+		<item name="colorM3SecondaryContainer">?colorNeutral600</item>
 		<item name="colorM3OnSecondaryContainer">?colorSecondary100</item>
 		<item name="colorM3Tertiary">?colorTertiary200</item>
 		<item name="colorM3OnTertiary">?colorTertiary800</item>
