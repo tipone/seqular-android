@@ -460,6 +460,18 @@
 		<item name="colorGray50t">@color/yellow_gray_50t</item>
 		<item name="colorGray50">@color/yellow_gray_50</item>
 		<item name="colorGray25">@color/yellow_gray_25</item>
+
+		<item name="colorNeutral25">@color/yellow_neutral_10</item>
+		<item name="colorNeutral50">@color/yellow_neutral_50</item>
+		<item name="colorNeutral100">@color/yellow_neutral_100</item>
+		<item name="colorNeutral200">@color/yellow_neutral_200</item>
+		<item name="colorNeutral300">@color/yellow_neutral_300</item>
+		<item name="colorNeutral400">@color/yellow_neutral_400</item>
+		<item name="colorNeutral500">@color/yellow_neutral_500</item>
+		<item name="colorNeutral600">@color/yellow_neutral_600</item>
+		<item name="colorNeutral700">@color/yellow_neutral_700</item>
+		<item name="colorNeutral800">@color/yellow_neutral_800</item>
+		<item name="colorNeutral900">@color/yellow_neutral_900</item>
 	</style>
 
 
