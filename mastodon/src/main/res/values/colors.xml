@@ -251,6 +251,19 @@
 	<color name="green_gray_50">#e8f5d8</color>
 	<color name="green_gray_25">#f7f8fa</color>
 
+	<color name="green_neutral_10">#fafaff</color>
+	<color name="green_neutral_50">#E6F4D7</color>
+	<color name="green_neutral_100">#D7E5C7</color>
+	<color name="green_neutral_200">#BCC9AE</color>
+	<color name="green_neutral_300">#A1AF94</color>
+	<color name="green_neutral_400">#87947B</color>
+	<color name="green_neutral_500">#6C7962</color>
+	<color name="green_neutral_600">#55614B</color>
+	<color name="green_neutral_700">#3D4935</color>
+	<color name="green_neutral_800">#27331F</color>
+	<color name="green_neutral_900">#141D0C</color>
+
+
 	<color name="blue_primary_25">#fafaff</color>
 	<color name="blue_primary_50">#e8f2ff</color>
 	<color name="blue_primary_100">#cee5ff</color>
@@ -272,6 +285,18 @@
 	<color name="blue_gray_50">#e8f2ff</color>
 	<color name="blue_gray_25">#f7f8fa</color>
 
+	<color name="blue_neutral_10">#FBFAFD</color>
+	<color name="blue_neutral_50">#E9EBFD</color>
+	<color name="blue_neutral_100">#D3E2F6</color>
+	<color name="blue_neutral_200">#BAC0D9</color>
+	<color name="blue_neutral_300">#9EA5BD</color>
+	<color name="blue_neutral_400">#838AA3</color>
+	<color name="blue_neutral_500">#6B6E89</color>
+	<color name="blue_neutral_600">#535B6F</color>
+	<color name="blue_neutral_700">#404359</color>
+	<color name="blue_neutral_800">#2B3042</color>
+	<color name="blue_neutral_900">#191D2F</color>
+
 	<color name="brown_primary_25">#fafaff</color>
 	<color name="brown_primary_50">#ffeedf</color>
 	<color name="brown_primary_100">#ffdcbb</color>
@@ -285,13 +310,25 @@
 	<color name="brown_primary_900">#2b1700</color>
 
 <!--	<color name="brown_gray_400t">#4dc3a689</color>-->
-	<color name="brown_gray_400">#c3a689</color>
-	<color name="brown_gray_300">#e0c1a3</color>
-	<color name="brown_gray_200">#feddbd</color>
-	<color name="brown_gray_100">#ffeedf</color>
+	<color name="brown_gray_400">#C1A588</color>
+	<color name="brown_gray_300">#DFBFA2</color>
+	<color name="brown_gray_200">#FCDBBC</color>
+	<color name="brown_gray_100">#FDECDE</color>
 	<color name="brown_gray_50t">#ccffeedf</color>
-	<color name="brown_gray_50">#ffeedf</color>
+	<color name="brown_gray_50">#FDECDE</color>
 	<color name="brown_gray_25">#f7f8fa</color>
+
+	<color name="brown_neutral_10">#FDF7FD</color>
+	<color name="brown_neutral_50">#FBEFDB</color>
+	<color name="brown_neutral_100">#F8E2B5</color>
+	<color name="brown_neutral_200">#DAC49B</color>
+	<color name="brown_neutral_300">#BDAA82</color>
+	<color name="brown_neutral_400">#A2906B</color>
+	<color name="brown_neutral_500">#877352</color>
+	<color name="brown_neutral_600">#6D5E3E</color>
+	<color name="brown_neutral_700">#56482C</color>
+	<color name="brown_neutral_800">#40331A</color>
+	<color name="brown_neutral_900">#2B2000</color>
 
 	<color name="yellow_primary_25">#fafaff</color>
 	<color name="yellow_primary_50">#fff0ca</color>

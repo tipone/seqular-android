@@ -112,18 +112,19 @@
 		<item name="colorTertiary800">?colorPrimary800</item>
 		<item name="colorTertiary900">?colorPrimary900</item>
 
-		<item name="colorNeutral900">?colorGray900</item>
-		<item name="colorNeutral800">?colorGray800</item>
-		<item name="colorNeutral700">?colorGray700</item>
-		<item name="colorNeutral600">?colorGray600</item>
-		<item name="colorNeutral500">?colorGray500</item>
-		<item name="colorNeutral400">?colorGray400</item>
-		<item name="colorNeutral300">?colorGray300</item>
-		<item name="colorNeutral200">?colorGray200</item>
-		<item name="colorNeutral100">?colorGray100</item>
-		<item name="colorNeutral50t">?colorGray50t</item>
-		<item name="colorNeutral50">?colorGray50</item>
-		<item name="colorNeutral25">?colorGray25</item>
+<!--		Now we are having neutral colors in themes, so no need for this now-->
+<!--		<item name="colorNeutral900">?colorGray900</item>-->
+<!--		<item name="colorNeutral800">?colorGray800</item>-->
+<!--		<item name="colorNeutral700">?colorGray700</item>-->
+<!--		<item name="colorNeutral600">?colorGray600</item>-->
+<!--		<item name="colorNeutral500">?colorGray500</item>-->
+<!--		<item name="colorNeutral400">?colorGray400</item>-->
+<!--		<item name="colorNeutral300">?colorGray300</item>-->
+<!--		<item name="colorNeutral200">?colorGray200</item>-->
+<!--		<item name="colorNeutral100">?colorGray100</item>-->
+<!--		<item name="colorNeutral50t">?colorGray50t</item>-->
+<!--		<item name="colorNeutral50">?colorGray50</item>-->
+<!--		<item name="colorNeutral25">?colorGray25</item>-->
 	</style>
 
 	<style name="ColorPalette.Dark">
@@ -340,6 +341,18 @@
 		<item name="colorGray50t">@color/green_gray_50t</item>
 		<item name="colorGray50">@color/green_gray_50</item>
 		<item name="colorGray25">@color/green_gray_25</item>
+
+		<item name="colorNeutral25">@color/green_neutral_10</item>
+		<item name="colorNeutral50">@color/green_neutral_50</item>
+		<item name="colorNeutral100">@color/green_neutral_100</item>
+		<item name="colorNeutral200">@color/green_neutral_200</item>
+		<item name="colorNeutral300">@color/green_neutral_300</item>
+		<item name="colorNeutral400">@color/green_neutral_400</item>
+		<item name="colorNeutral500">@color/green_neutral_500</item>
+		<item name="colorNeutral600">@color/green_neutral_600</item>
+		<item name="colorNeutral700">@color/green_neutral_700</item>
+		<item name="colorNeutral800">@color/green_neutral_800</item>
+		<item name="colorNeutral900">@color/green_neutral_900</item>
 	</style>
 
 	<style name="ColorPalette.Blue">
@@ -363,6 +376,20 @@
 		<item name="colorGray50t">@color/blue_gray_50t</item>
 		<item name="colorGray50">@color/blue_gray_50</item>
 		<item name="colorGray25">@color/blue_gray_25</item>
+
+		<item name="colorNeutral25">@color/blue_neutral_10</item>
+		<item name="colorNeutral50">@color/blue_neutral_50</item>
+		<item name="colorNeutral100">@color/blue_neutral_100</item>
+		<item name="colorNeutral200">@color/blue_neutral_200</item>
+		<item name="colorNeutral300">@color/blue_neutral_300</item>
+		<item name="colorNeutral400">@color/blue_neutral_400</item>
+		<item name="colorNeutral500">@color/blue_neutral_500</item>
+		<item name="colorNeutral600">@color/blue_neutral_600</item>
+		<item name="colorNeutral700">@color/blue_neutral_700</item>
+		<item name="colorNeutral800">@color/blue_neutral_800</item>
+		<item name="colorNeutral900">@color/blue_neutral_900</item>
+
+
 	</style>
 
 	<style name="ColorPalette.Brown">
@@ -392,6 +419,18 @@
 		<item name="colorGray50t">@color/brown_gray_50t</item>
 		<item name="colorGray50">@color/brown_gray_50</item>
 		<item name="colorGray25">@color/brown_gray_25</item>
+
+		<item name="colorNeutral25">@color/brown_neutral_10</item>
+		<item name="colorNeutral50">@color/brown_neutral_50</item>
+		<item name="colorNeutral100">@color/brown_neutral_100</item>
+		<item name="colorNeutral200">@color/brown_neutral_200</item>
+		<item name="colorNeutral300">@color/brown_neutral_300</item>
+		<item name="colorNeutral400">@color/brown_neutral_400</item>
+		<item name="colorNeutral500">@color/brown_neutral_500</item>
+		<item name="colorNeutral600">@color/brown_neutral_600</item>
+		<item name="colorNeutral700">@color/brown_neutral_700</item>
+		<item name="colorNeutral800">@color/brown_neutral_800</item>
+		<item name="colorNeutral900">@color/brown_neutral_900</item>
 	</style>
 
 	<style name="ColorPalette.Yellow">
