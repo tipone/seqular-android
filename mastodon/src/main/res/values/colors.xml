@@ -384,6 +384,20 @@
 	<color name="red_gray_50">#ffede6</color>
 	<color name="red_gray_25">#f7f8fa</color>
 
+	<color name="red_neutral_900">@color/brownish_gray_900</color>
+	<color name="red_neutral_800">@color/brownish_gray_800</color>
+	<color name="red_neutral_700">@color/brownish_gray_700</color>
+	<color name="red_neutral_600">#F04438</color>
+	<color name="red_neutral_500">#CCD69F84</color>
+	<color name="red_neutral_400">#d69f84</color>
+	<color name="red_neutral_300">#f4ba9e</color>
+	<color name="red_neutral_200">#ffdbcb</color>
+	<color name="red_neutral_100">#ffedea</color>
+	<color name="red_neutral_50t">#ffede6ca</color>
+	<color name="red_neutral_50">#ffede6</color>
+	<color name="red_neutral_25">#f7f8fa</color>
+
+
 	<color name="nord_primary_25">#fafaff</color>
 	<color name="nord_primary_50">#eff0ff</color>
 	<color name="nord_primary_100">#eceff4</color>

@@ -502,6 +502,18 @@
 		<item name="colorGray50t">@color/red_gray_50t</item>
 		<item name="colorGray50">@color/red_gray_50</item>
 		<item name="colorGray25">@color/red_gray_25</item>
+
+		<item name="colorNeutral25">@color/red_neutral_25</item>
+		<item name="colorNeutral50">@color/red_neutral_50</item>
+		<item name="colorNeutral100">@color/red_neutral_100</item>
+		<item name="colorNeutral200">@color/red_neutral_200</item>
+		<item name="colorNeutral300">@color/red_neutral_300</item>
+		<item name="colorNeutral400">@color/red_neutral_400</item>
+		<item name="colorNeutral500">@color/red_neutral_500</item>
+		<item name="colorNeutral600">@color/red_neutral_600</item>
+		<item name="colorNeutral700">@color/red_neutral_700</item>
+		<item name="colorNeutral800">@color/red_neutral_800</item>
+		<item name="colorNeutral900">@color/red_neutral_900</item>
 	</style>
 
 	<style name="ColorPalette.Nord">
