@@ -325,7 +325,7 @@
 	<color name="brown_neutral_300">#BDAA82</color>
 	<color name="brown_neutral_400">#A2906B</color>
 	<color name="brown_neutral_500">#877352</color>
-	<color name="brown_neutral_600">#6D5E3E</color>
+	<color name="brown_neutral_600">@color/brown_primary_600</color>
 	<color name="brown_neutral_700">#56482C</color>
 	<color name="brown_neutral_800">#40331A</color>
 	<color name="brown_neutral_900">#2B2000</color>
