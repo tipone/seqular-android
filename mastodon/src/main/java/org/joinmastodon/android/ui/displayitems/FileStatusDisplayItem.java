@@ -99,10 +99,8 @@ public class FileStatusDisplayItem extends StatusDisplayItem{
 			if(!item.attachment.type.isImage()) {
 				UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), getUrl());
 			} else {
-				List<Attachment> attachmentArray = new ArrayList<>();
-				attachmentArray.add(item.attachment);
-
-				currentPhotoViewer=new PhotoViewer((Activity) context, attachmentArray, 0,
+				// TODO make the cool animation work decently with multiple FileStatusDisplayItems
+				currentPhotoViewer=new PhotoViewer((Activity) context, item.status.mediaAttachments, item.status.mediaAttachments.indexOf(item.attachment),
 						new SingleImagePhotoViewerListener(title, inner, new int[]{V.dp(28), V.dp(28), V.dp(28), V.dp(28)}, item.parentFragment, ()->currentPhotoViewer=null, ()->context.getDrawable(R.drawable.bg_search_field), null, null));
 			}
         }
