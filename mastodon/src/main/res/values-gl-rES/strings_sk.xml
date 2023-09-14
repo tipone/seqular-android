@@ -328,4 +328,11 @@
     <string name="sk_advanced_options_hide">Ocultar opcións avanzadas</string>
     <string name="sk_settings_forward_report_default">Opción \"Informe de reenvío\" por defecto</string>
     <string name="sk_gif_badge">GIF</string>
+    <string name="sk_settings_unifiedpush_no_distributor_body">Debe instalar un distribuidor para que as notificacións UnifiedPush funcionen. Para máis información, visita https://unifiedpush.org/</string>
+    <string name="sk_settings_unifiedpush_no_distributor">Non se atopou ningún distribuidor</string>
+    <string name="sk_trending_posts_info_banner">Estas son publicacións que están a gañar tracción no teu servidor.</string>
+    <string name="sk_settings_unifiedpush_choose">Escoller un distribuidor</string>
+    <string name="sk_settings_continues_playback">Superposición de audio</string>
+    <string name="sk_trending_links_info_banner">Estas son as novas historias das que se está a falar no teu servidor.</string>
+    <string name="sk_settings_unifiedpush">Empregar UnifiedPush</string>
 </resources>
