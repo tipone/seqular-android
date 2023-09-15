@@ -266,4 +266,20 @@
     <string name="sk_icon_tag">ملصقة</string>
     <string name="sk_add_timeline_tag_error_empty">لا يجب أن يُترَك الوسم فارغًا</string>
     <string name="sk_unfinished_attachments">إصلاح المرفقات؟</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="zero">لا منشور</item>
+        <item quantity="one">منشور واحد</item>
+        <item quantity="two">منشورَيْنِ</item>
+        <item quantity="few">منشورات</item>
+        <item quantity="many">منشورًا</item>
+        <item quantity="other">منشور</item>
+    </plurals>
+    <string name="sk_notification_mention">لقد قام %s بذِكرك</string>
+    <string name="sk_settings_emoji_reactions">تمكين الوجوه التعبيرية للتفاعل</string>
+    <string name="sk_icon_verified">مُتحَقَّق مِنه</string>
+    <string name="sk_switch_timeline">تبديل الخيط الزمني</string>
+    <string name="sk_settings_show_emoji_reactions_always">إظهار زر الإضافة دائما</string>
+    <string name="sk_do_not_show_again">لا تظهر مرة أخرى</string>
+    <string name="sk_settings_display_pronouns_in_user_listings">إظهار الأسماء في قوائم المستخدِمين</string>
+    <string name="sk_post_contains_media">يحتوي المنشور على وسائط</string>
 </resources>
