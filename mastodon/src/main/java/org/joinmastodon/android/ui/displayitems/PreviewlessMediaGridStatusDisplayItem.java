@@ -138,9 +138,7 @@ public class PreviewlessMediaGridStatusDisplayItem extends StatusDisplayItem{
 					default -> throw new IllegalStateException("Unexpected value: "+att.type);
 				});
 				if(c.view.getLayoutParams()==null)
-					c.view.setLayoutParams(new PreviewlessMediaGridLayout.LayoutParams(item.tiledLayout.tiles[i]));
-				else
-					((MediaGridLayout.LayoutParams) c.view.getLayoutParams()).tile=item.tiledLayout.tiles[i];
+					c.view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 				layout.addView(c.view);
 				c.view.setOnClickListener(clickListener);
 				c.view.setTag(i);
