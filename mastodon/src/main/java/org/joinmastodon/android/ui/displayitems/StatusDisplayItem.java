@@ -116,6 +116,7 @@ public abstract class StatusDisplayItem{
 			case GAP -> new GapStatusDisplayItem.Holder(activity, parent);
 			case EXTENDED_FOOTER -> new ExtendedFooterStatusDisplayItem.Holder(activity, parent);
 			case MEDIA_GRID -> new MediaGridStatusDisplayItem.Holder(activity, parent);
+			case PREVIEWLESS_MEDIA_GRID -> new PreviewlessMediaGridStatusDisplayItem.Holder(activity, parent);
 			case WARNING -> new WarningFilteredStatusDisplayItem.Holder(activity, parent);
 			case FILE -> new FileStatusDisplayItem.Holder(activity, parent);
 			case SPOILER, FILTER_SPOILER -> new SpoilerStatusDisplayItem.Holder(activity, parent, type);
@@ -269,9 +270,8 @@ public abstract class StatusDisplayItem{
 			contentItems.add(mediaGrid);
 		}
 		if((flags & FLAG_NO_MEDIA_PREVIEW)!=0){
-			for(Attachment att:imageAttachments){
-				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att, statusForContent));
-			}
+			contentItems.add(new PreviewlessMediaGridStatusDisplayItem(parentID, fragment, null, imageAttachments, statusForContent));
+
 		}
 		for(Attachment att:statusForContent.mediaAttachments){
 			if(att.type==Attachment.Type.AUDIO){
@@ -362,6 +362,7 @@ public abstract class StatusDisplayItem{
 		GAP,
 		EXTENDED_FOOTER,
 		MEDIA_GRID,
+		PREVIEWLESS_MEDIA_GRID,
 		WARNING,
 		FILE,
 		SPOILER,

@@ -44,6 +44,7 @@ import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollOptionStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.PreviewlessMediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.SpoilerStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
@@ -51,6 +52,7 @@ import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
+import org.joinmastodon.android.ui.utils.PreviewlessMediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.TypedObjectPool;
@@ -90,6 +92,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
+	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, PreviewlessMediaAttachmentViewController> previewlessAttachmentViewsPool=new TypedObjectPool<>(this::makeNewPreviewlessMediaAttachmentView);
+
 	protected boolean currentlyScrolling;
 
 	public BaseStatusListFragment(){
@@ -275,6 +279,79 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			}
 
 			private MediaAttachmentViewController findPhotoViewHolder(int index){
+				return gridHolder.getViewController(index);
+			}
+		});
+	}
+
+
+	public void openPreviewlessMediaPhotoViewer(String parentID, Status _status, int attachmentIndex, PreviewlessMediaGridStatusDisplayItem.Holder gridHolder){
+		final Status status=_status.getContentStatus();
+		currentPhotoViewer=new PhotoViewer(getActivity(), status.mediaAttachments, attachmentIndex, new PhotoViewer.Listener(){
+			private PreviewlessMediaAttachmentViewController transitioningHolder;
+
+			@Override
+			public void setPhotoViewVisibility(int index, boolean visible){
+
+			}
+
+			@Override
+			public boolean startPhotoViewTransition(int index, @NonNull Rect outRect, @NonNull int[] outCornerRadius){
+				PreviewlessMediaAttachmentViewController holder=findPhotoViewHolder(index);
+				if(holder!=null && list!=null){
+					transitioningHolder=holder;
+					View view=transitioningHolder.inner;
+					int[] pos={0, 0};
+					view.getLocationOnScreen(pos);
+					outRect.set(pos[0], pos[1], pos[0]+view.getWidth(), pos[1]+view.getHeight());
+					list.setClipChildren(false);
+					gridHolder.setClipChildren(false);
+					transitioningHolder.view.setElevation(1f);
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public void setTransitioningViewTransform(float translateX, float translateY, float scale){
+				View view=transitioningHolder.inner;
+				view.setTranslationX(translateX);
+				view.setTranslationY(translateY);
+				view.setScaleX(scale);
+				view.setScaleY(scale);
+			}
+
+			@Override
+			public void endPhotoViewTransition(){
+				View view=transitioningHolder.inner;
+				view.setTranslationX(0f);
+				view.setTranslationY(0f);
+				view.setScaleX(1f);
+				view.setScaleY(1f);
+				transitioningHolder.view.setElevation(0f);
+				if(list!=null)
+					list.setClipChildren(true);
+				gridHolder.setClipChildren(true);
+				transitioningHolder=null;
+			}
+
+			@Nullable
+			@Override
+			public Drawable getPhotoViewCurrentDrawable(int index){
+				return null;
+			}
+
+			@Override
+			public void photoViewerDismissed(){
+				currentPhotoViewer=null;
+			}
+
+			@Override
+			public void onRequestPermissions(String[] permissions){
+				requestPermissions(permissions, PhotoViewer.PERMISSION_REQUEST);
+			}
+
+			private PreviewlessMediaAttachmentViewController findPhotoViewHolder(int index){
 				return gridHolder.getViewController(index);
 			}
 		});
@@ -768,8 +845,16 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		return new MediaAttachmentViewController(getActivity(), type);
 	}
 
+	private PreviewlessMediaAttachmentViewController makeNewPreviewlessMediaAttachmentView(MediaGridStatusDisplayItem.GridItemType type){
+		return new PreviewlessMediaAttachmentViewController(getActivity(), type);
+	}
+
 	public TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> getAttachmentViewsPool(){
 		return attachmentViewsPool;
+	}
+
+	public TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, PreviewlessMediaAttachmentViewController> getPreviewlessAttachmentViewsPool(){
+		return previewlessAttachmentViewsPool;
 	}
 
 	@Override
