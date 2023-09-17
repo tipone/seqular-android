@@ -224,6 +224,21 @@
 	<color name="pink_primary_800">#ae218a</color>
 	<color name="pink_primary_900">#6d1556</color>
 
+<!--	This is jank. But its all for the sake of the pink dark theme-->
+	<color name="pink_neutral_900">#18131c</color>
+	<color name="pink_neutral_800">#1E1824</color>
+	<color name="pink_neutral_700">#2c2631</color>
+	<color name="pink_neutral_600">#80e055bd</color>
+	<color name="pink_neutral_500">#5b565f</color>
+	<color name="pink_neutral_400">#9998b3</color>
+	<color name="pink_neutral_300">#d1d1de</color>
+	<color name="pink_neutral_200">#e6e6ed</color>
+	<color name="pink_neutral_100">#f2f2f7</color>
+	<color name="pink_neutral_50t">#ccf5f5f9</color>
+	<color name="pink_neutral_50">#f5f5f9</color>
+	<color name="pink_neutral_25">#f7f8fa</color>
+
+
 	<color name="green_primary_25">#fafaff</color>
 	<color name="green_primary_50">#d1feaf</color>
 	<color name="green_primary_100">#bbf294</color>

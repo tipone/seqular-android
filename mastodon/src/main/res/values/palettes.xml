@@ -298,6 +298,18 @@
 		<item name="colorPrimary700">@color/pink_primary_700</item>
 		<item name="colorPrimary800">@color/pink_primary_800</item>
 		<item name="colorPrimary900">@color/pink_primary_900</item>
+
+		<item name="colorNeutral25">@color/pink_neutral_25</item>
+		<item name="colorNeutral50">@color/pink_neutral_50</item>
+		<item name="colorNeutral100">@color/pink_neutral_100</item>
+		<item name="colorNeutral200">@color/pink_neutral_200</item>
+		<item name="colorNeutral300">@color/pink_neutral_300</item>
+		<item name="colorNeutral400">@color/pink_neutral_400</item>
+		<item name="colorNeutral500">@color/pink_neutral_500</item>
+		<item name="colorNeutral600">@color/pink_neutral_600</item>
+		<item name="colorNeutral700">@color/pink_neutral_700</item>
+		<item name="colorNeutral800">@color/pink_neutral_800</item>
+		<item name="colorNeutral900">@color/pink_neutral_900</item>
 	</style>
 
 	<style name="ColorPalette.Purple">
