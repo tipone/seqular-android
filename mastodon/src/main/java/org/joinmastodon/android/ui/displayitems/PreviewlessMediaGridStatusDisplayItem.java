@@ -103,7 +103,9 @@ public class PreviewlessMediaGridStatusDisplayItem extends StatusDisplayItem{
 			wrapper=(FrameLayout)itemView;
 			layout= new LinearLayout(activity);
 			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+			params.setMargins(V.dp(16), 0, V.dp(16), 0);
 			layout.setLayoutParams(params);
+			layout.setOrientation(LinearLayout.VERTICAL);
 			wrapper.addView(layout);
 			wrapper.setClipToPadding(false);
 
