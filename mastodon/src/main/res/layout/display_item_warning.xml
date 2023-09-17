@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
 	android:minHeight="75dp"
     android:id="@+id/warning_wrap"
-    android:background="@drawable/bg_timeline_gap"
+    android:background="@drawable/bg_m3_surface3"
 	android:orientation="horizontal">
 
     <TextView
