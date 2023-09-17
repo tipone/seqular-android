@@ -287,6 +287,20 @@
 	</style>
 
 	<style name="ColorPalette.Pink">
+		<item name="colorPrimary25">@color/pink_primary_25</item>
+		<item name="colorPrimary50">@color/pink_primary_50</item>
+		<item name="colorPrimary100">@color/pink_primary_100</item>
+		<item name="colorPrimary200">@color/pink_primary_200</item>
+		<item name="colorPrimary300">@color/pink_primary_300</item>
+		<item name="colorPrimary400">@color/pink_primary_400</item>
+		<item name="colorPrimary500">@color/pink_primary_500</item>
+		<item name="colorPrimary600">@color/pink_primary_600</item>
+		<item name="colorPrimary700">@color/pink_primary_700</item>
+		<item name="colorPrimary800">@color/pink_primary_800</item>
+		<item name="colorPrimary900">@color/pink_primary_900</item>
+	</style>
+
+	<style name="ColorPalette.Purple">
 		<item name="colorPrimary25">@color/primary_25</item>
 		<item name="colorPrimary50">@color/primary_50</item>
 		<item name="colorPrimary100">@color/primary_100</item>
@@ -298,20 +312,6 @@
 		<item name="colorPrimary700">@color/primary_700</item>
 		<item name="colorPrimary800">@color/primary_800</item>
 		<item name="colorPrimary900">@color/primary_900</item>
-	</style>
-
-	<style name="ColorPalette.Purple">
-		<item name="colorPrimary25">@color/purple_primary_25</item>
-		<item name="colorPrimary50">@color/purple_primary_50</item>
-		<item name="colorPrimary100">@color/purple_primary_100</item>
-		<item name="colorPrimary200">@color/purple_primary_200</item>
-		<item name="colorPrimary300">@color/purple_primary_300</item>
-		<item name="colorPrimary400">@color/purple_primary_400</item>
-		<item name="colorPrimary500">@color/purple_primary_500</item>
-		<item name="colorPrimary600">@color/purple_primary_600</item>
-		<item name="colorPrimary700">@color/purple_primary_700</item>
-		<item name="colorPrimary800">@color/purple_primary_800</item>
-		<item name="colorPrimary900">@color/purple_primary_900</item>
 	</style>
 
 	<style name="ColorPalette.Green">
