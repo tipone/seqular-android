@@ -46,4 +46,5 @@
     <string name="mo_notification_audience_settings">جمهور الإشعارات</string>
     <string name="mo_welcome_text">للبداية، يرجى إدخال اسم نطاق خادمك هنا.</string>
     <string name="mo_recent_emoji_cleared">تم مسح وجوه الإيموجي التعبيرية</string>
+    <string name="mo_show_media_preview">إظهار معاينات الوسائط في الخيوط الزمنية</string>
 </resources>
