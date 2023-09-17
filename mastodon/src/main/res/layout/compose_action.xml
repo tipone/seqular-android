@@ -12,7 +12,7 @@
         android:id="@+id/language_btn"
         style="@style/Widget.Mastodon.M3.Button.Text"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingStart="12dp"
         android:paddingEnd="12dp"
         android:drawableStart="@drawable/ic_fluent_local_language_16_regular"
