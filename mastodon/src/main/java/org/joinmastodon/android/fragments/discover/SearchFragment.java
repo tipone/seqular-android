@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -23,7 +22,6 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HashtagStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
-import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
@@ -31,13 +29,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.utils.V;
 
 public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	private String currentQuery;
@@ -113,7 +110,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	}
 
 	@Override
-	protected void doLoadData(int offset, int count){
+	protected void doLoadData(int _offset, int count){
 		GetSearchResults.Type type;
 		if(currentFilter.size()==1){
 			type=switch(currentFilter.iterator().next()){
@@ -128,7 +125,21 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 			dataLoaded();
 			return;
 		}
-		currentRequest=new GetSearchResults(currentQuery, type, true)
+		String maxID=null;
+		// TODO server-side bug
+		/*int offset=0;
+		if(_offset>0){
+			if(type==GetSearchResults.Type.STATUSES){
+				if(!preloadedData.isEmpty())
+					maxID=preloadedData.get(preloadedData.size()-1).status.id;
+				else if(!data.isEmpty())
+					maxID=data.get(data.size()-1).status.id;
+			}else{
+				offset=_offset;
+			}
+		}*/
+		int offset=_offset;
+		currentRequest=new GetSearchResults(currentQuery, type, type==null, maxID, offset, type==null ? 0 : count)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(SearchResults result){
@@ -142,12 +153,15 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 								results.add(new SearchResult(tag));
 						}
 						if(result.statuses!=null){
-							for(Status status:result.statuses)
-								results.add(new SearchResult(status));
+							Set<String> alreadyLoadedStatuses=data.stream().filter(r->r.type==SearchResult.Type.STATUS).map(r->r.status.id).collect(Collectors.toSet());
+							for(Status status:result.statuses){
+								if(!alreadyLoadedStatuses.contains(status.id))
+									results.add(new SearchResult(status));
+							}
 						}
 						prevDisplayItems=new ArrayList<>(displayItems);
 						unfilteredResults=results;
-						onDataLoaded(filterSearchResults(results), false);
+						onDataLoaded(filterSearchResults(results), type!=null && !results.isEmpty());
 					}
 
 					@Override

@@ -122,7 +122,7 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 				recentsHeader.setVisible(!data.isEmpty());
 			});
 		}else{
-			currentRequest=new GetSearchResults(currentQuery, null, false)
+			currentRequest=new GetSearchResults(currentQuery, null, false, null, 0, 0)
 					.limit(2)
 					.setCallback(new SimpleCallback<>(this){
 						@Override
