@@ -1,53 +1,24 @@
 package org.joinmastodon.android.ui.displayitems;
 
-import static org.joinmastodon.android.GlobalUserPreferences.*;
-
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.app.Activity;
-import android.graphics.Rect;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.LayerDrawable;
-import android.text.Layout;
-import android.text.TextUtils;
-import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
-import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
-import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
-import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.PreviewlessMediaAttachmentViewController;
-import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.FrameLayoutThatOnlyMeasuresFirstChild;
-import org.joinmastodon.android.ui.views.MaxWidthFrameLayout;
-import org.joinmastodon.android.ui.views.MediaGridLayout;
-import org.joinmastodon.android.ui.views.PreviewlessMediaGridLayout;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
-import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
-import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
 public class PreviewlessMediaGridStatusDisplayItem extends StatusDisplayItem{
