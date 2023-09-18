@@ -147,7 +147,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 						toolbarWrap.setPadding(0, 0, 0, 0);
 						videoControls.setPadding(0, 0, 0, 0);
 					}
-					insets=insets.replaceSystemWindowInsets(tappable.left, tappable.top, tappable.right, tappable.bottom);
+					insets=insets.replaceSystemWindowInsets(tappable.left, tappable.top, tappable.right, insets.getSystemWindowInsetBottom());
 				}
 				uiOverlay.dispatchApplyWindowInsets(insets);
 				int bottomInset=insets.getSystemWindowInsetBottom();
