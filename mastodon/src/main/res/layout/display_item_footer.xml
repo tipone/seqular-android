@@ -47,6 +47,7 @@
 						android:minWidth="16dp"
 						android:gravity="center_vertical"
 						android:textAppearance="@style/m3_label_large"
+						android:textColor="?android:textColorSecondary"
 						android:maxLines="1"
 						android:ellipsize="end"
 						tools:text="123"
