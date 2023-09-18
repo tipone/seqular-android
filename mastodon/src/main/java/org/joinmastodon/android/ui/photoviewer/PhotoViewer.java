@@ -602,7 +602,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 
 	private void updateVideoPosition(){
 		if(videoPositionNeedsUpdating){
-			int currentPosition=videoInitialPosition+(int)(SystemClock.uptimeMillis()-videoInitialPositionTime);
+			int currentPosition=(videoInitialPosition+(int)(SystemClock.uptimeMillis()-videoInitialPositionTime))%videoDuration;
 			videoSeekBar.setProgress(Math.round((float)currentPosition/videoDuration*10000f));
 			updateVideoTimeText(currentPosition);
 			windowView.postOnAnimation(videoPositionUpdater);
