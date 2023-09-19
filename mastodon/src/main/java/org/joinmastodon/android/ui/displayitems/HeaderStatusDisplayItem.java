@@ -250,7 +250,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
 				}else if(id==R.id.mute){
 					UiUtils.confirmToggleMuteUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.muting, r->{});
-				}else if (id==R.id.mute_conversation) {
+				}else if (id==R.id.mute_conversation || id==R.id.unmute_conversation) {
 					UiUtils.confirmToggleMuteConversation(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, ()->{});
 				}else if(id==R.id.block){
 					UiUtils.confirmToggleBlockUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.blocking, r->{});
