@@ -75,10 +75,18 @@
     <string name="mo_haptic_feedback">Vibración</string>
     <string name="mo_color_palette_black_and_white">Blanco y Negro</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
-    <string name="mo_settings_show_posts_without_alt">Mostrar las publicaciones de los medios a las que les falta un texto alternativo</string>
+    <string name="mo_settings_show_posts_without_alt">Mostrar las publicaciones con multimedia que carece de un texto alternativo</string>
     <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
     <string name="mo_settings_show_posts_without_alt_summary">Las publicaciones estarán ocultas en todas las cronologías, pero se pueden mostrar en los hilos y las notificaciones</string>
     <string name="mo_show_media_preview">Mostrar previsualización de multimedia en la cronología</string>
     <string name="mo_recent_emoji_cleared">Emojis recientes eliminados</string>
     <string name="mo_double_tap_to_search">Doble toque para abrir la búsqueda</string>
+    <string name="mo_unmuted_conversation_successfully">Conversación sin silencio</string>
+    <string name="mo_confirm_to_unmute_conversation">¿Quieres dejar de silenciar la conversación\?</string>
+    <string name="mo_confirm_to_mute_conversation">¿Quieres silenciar la conversación\?</string>
+    <string name="mo_muted_conversation_successfully">Conversación silenciada</string>
+    <string name="mo_unmute_conversation">No silenciar conversación</string>
+    <string name="mo_mute_conversation">Silenciar conversación</string>
+    <string name="mo_muting">Silenciando…</string>
+    <string name="mo_unmuting">Quitando silencio…</string>
 </resources>
