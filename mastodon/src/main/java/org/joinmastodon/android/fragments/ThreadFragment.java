@@ -7,14 +7,17 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.otto.Subscribe;
+
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.GlobalUserPreferences.AutoRevealMode;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
-import org.joinmastodon.android.events.StatusCreatedEvent;
+import org.joinmastodon.android.events.StatusMuteChangedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.FilterContext;
@@ -23,6 +26,7 @@ import org.joinmastodon.android.model.StatusContext;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
@@ -66,6 +70,29 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		onAppendItems(Collections.singletonList(mainStatus));
 		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.displayName), mainStatus.account.emojis));
 		transitionFinished = getArguments().getBoolean("noTransition", false);
+
+		E.register(this);
+	}
+
+	@Override
+	public void onDestroy(){
+		super.onDestroy();
+		E.unregister(this);
+	}
+
+	@Subscribe
+	public void onStatusMuteChaged(StatusMuteChangedEvent ev){
+		List<Status> statuses = getDirectDescendants(ev.id, data);
+		for(Status s:statuses){
+			s.getContentStatus().update(ev);
+			AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
+			for(int i=0;i<list.getChildCount();i++){
+				RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+				if(holder instanceof HeaderStatusDisplayItem.Holder header && header.getItem().status==s.getContentStatus()){
+					header.rebind();
+				}
+			}
+		}
 	}
 
 	@Override

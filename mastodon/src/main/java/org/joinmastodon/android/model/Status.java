@@ -20,6 +20,7 @@ import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
+import org.joinmastodon.android.events.StatusMuteChangedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
 
@@ -27,8 +28,6 @@ import java.lang.reflect.Type;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-
-import androidx.annotation.NonNull;
 
 @Parcel
 public class Status extends BaseModel implements DisplayItemsParent, Searchable{
@@ -181,6 +180,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		reblogged=ev.reblogged;
 		bookmarked=ev.bookmarked;
 		pinned=ev.pinned;
+	}
+
+	public void update(StatusMuteChangedEvent ev) {
+		muted=ev.muted;
 	}
 
 	public void update(EmojiReactionsUpdatedEvent ev){
