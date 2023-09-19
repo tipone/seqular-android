@@ -321,7 +321,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	private static List<Status> getDirectDescendants(String id, List<Status> statuses){
 		return statuses.stream()
-				.filter(s -> s.inReplyToId.equals(id))
+				.filter(s -> id.equals(s.inReplyToId))
 				.collect(Collectors.toList());
 	}
 
