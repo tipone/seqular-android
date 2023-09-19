@@ -81,4 +81,7 @@
     <string name="mo_haptic_feedback">Haptisches Feedback</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrieren beim Interagieren mit Posts</string>
     <string name="mo_camera_not_available">Keine Kamera verfügbar!</string>
+    <string name="mo_show_media_preview">Medienvorschau in Timelines anzeigen</string>
+    <string name="mo_recent_emoji_cleared">Neueste Emoji gelöscht</string>
+    <string name="mo_double_tap_to_search">Doppeltippen zum Öffnen der Suche</string>
 </resources>
