@@ -85,6 +85,7 @@ import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
+import org.joinmastodon.android.api.requests.statuses.SetStatusMuted;
 import org.joinmastodon.android.api.requests.statuses.SetStatusPinned;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -663,6 +664,31 @@ public class UiUtils {
 						})
 						.wrapProgress(activity, R.string.deleting, false)
 						.exec(accountID)
+		);
+	}
+
+	public static void confirmToggleMuteConversation(Activity activity, String accountID, Status status, Runnable resultCallback) {
+		showConfirmationAlert(activity,
+				status.muted ? R.string.mo_unmute_conversation : R.string.mo_mute_conversation,
+				status.muted ? R.string.mo_confirm_to_unmute_conversation : R.string.mo_confirm_to_mute_conversation,
+				status.muted ? R.string.do_unmute : R.string.do_mute,
+				status.muted ? R.drawable.ic_fluent_alert_28_regular : R.drawable.ic_fluent_alert_off_28_regular,
+				() -> new SetStatusMuted(status.id, !status.muted)
+						.setCallback(new Callback<Status>(){
+							@Override
+							public void onSuccess(Status result){
+								resultCallback.run();
+								//TODO make an event for this
+							}
+
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(activity);
+							}
+						})
+						.wrapProgress(activity, status.muted ? R.string.mo_unmuting : R.string.mo_muting, false)
+						.exec(accountID)
+
 		);
 	}
 

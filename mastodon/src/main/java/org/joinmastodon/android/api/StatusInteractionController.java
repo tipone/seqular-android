@@ -6,6 +6,7 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.api.requests.statuses.SetStatusBookmarked;
 import org.joinmastodon.android.api.requests.statuses.SetStatusFavorited;
+import org.joinmastodon.android.api.requests.statuses.SetStatusMuted;
 import org.joinmastodon.android.api.requests.statuses.SetStatusReblogged;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Status;
@@ -23,6 +24,7 @@ public class StatusInteractionController{
 	private final HashMap<String, SetStatusFavorited> runningFavoriteRequests=new HashMap<>();
 	private final HashMap<String, SetStatusReblogged> runningReblogRequests=new HashMap<>();
 	private final HashMap<String, SetStatusBookmarked> runningBookmarkRequests=new HashMap<>();
+	private final HashMap<String, SetStatusMuted> runningMuteRequests=new HashMap<>();
 
 	public StatusInteractionController(String accountID, boolean updateCounters) {
 		this.accountID=accountID;
@@ -133,6 +135,38 @@ public class StatusInteractionController{
 				.exec(accountID);
 		runningBookmarkRequests.put(status.id, req);
 		status.bookmarked=bookmarked;
+		if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
+	}
+
+	public void setMuted(Status status, boolean muted, Consumer<Status> cb){
+		if(!Looper.getMainLooper().isCurrentThread())
+			throw new IllegalStateException("Can only be called from main thread");
+
+		SetStatusMuted current=runningMuteRequests.remove(status.id);
+		if(current!=null){
+			current.cancel();
+		}
+		SetStatusMuted req=(SetStatusMuted) new SetStatusMuted(status.id, muted)
+				.setCallback(new Callback<>(){
+					@Override
+					public void onSuccess(Status result){
+						runningMuteRequests.remove(status.id);
+						cb.accept(result);
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(result));
+					}
+
+					@Override
+					public void onError(ErrorResponse error){
+						runningMuteRequests.remove(status.id);
+						error.showToast(MastodonApp.context);
+						status.muted=!muted;
+						cb.accept(status);
+						if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
+					}
+				})
+				.exec(accountID);
+		runningMuteRequests.put(status.id, req);
+		status.muted=muted;
 		if (updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 	}
 }

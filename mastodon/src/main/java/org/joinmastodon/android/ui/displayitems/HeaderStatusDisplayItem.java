@@ -38,6 +38,7 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Announcement;
+import org.joinmastodon.android.model.Mention;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
@@ -56,6 +57,7 @@ import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import androidx.annotation.LayoutRes;
@@ -248,6 +250,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
 				}else if(id==R.id.mute){
 					UiUtils.confirmToggleMuteUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.muting, r->{});
+				}else if (id==R.id.mute_conversation) {
+					UiUtils.confirmToggleMuteConversation(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, ()->{});
 				}else if(id==R.id.block){
 					UiUtils.confirmToggleBlockUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.blocking, r->{});
 				}else if(id==R.id.report){
@@ -507,6 +511,12 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			menu.findItem(R.id.delete_and_redraft).setVisible(!isPostScheduled && item.status!=null && isOwnPost);
 			menu.findItem(R.id.pin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && !item.status.pinned);
 			menu.findItem(R.id.unpin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && item.status.pinned);
+			menu.findItem(R.id.mute_conversation).setVisible((item.status!=null && !item.status.muted) && (isOwnPost || item.status.mentions.stream().anyMatch(m->{
+				if(m==null)
+					return false;
+				return m.id.equals(AccountSessionManager.get(item.parentFragment.getAccountID()).self.id);
+			})));
+			menu.findItem(R.id.unmute_conversation).setVisible(item.status!=null && item.status.muted);
 			menu.findItem(R.id.open_in_browser).setVisible(!isPostScheduled && item.status!=null);
 			menu.findItem(R.id.copy_link).setVisible(!isPostScheduled && item.status!=null);
 			MenuItem blockDomain=menu.findItem(R.id.block_domain);
