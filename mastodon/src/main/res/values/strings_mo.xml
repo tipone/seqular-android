@@ -35,6 +35,8 @@
     <string name="mo_notification_management_settings">Manage Notifications</string>
     <string name="mo_open_camera">Take picture</string>
     <string name="mo_camera_not_available">No camera available!</string>
+	<string name="mo_muted_conversation_successfully">Successfully muted conversation</string>
+	<string name="mo_unmuted_conversation_successfully">Successfully unmuted conversation</string>
 	<string name="mo_muting">Muting…</string>
 	<string name="mo_unmuting">Unmuting…</string>
 	<string name="mo_mute_conversation">Mute conversation</string>

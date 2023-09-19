@@ -677,6 +677,7 @@ public class UiUtils {
 							@Override
 							public void onSuccess(Status result){
 								resultCallback.run();
+								Toast.makeText(activity, result.muted ? R.string.mo_muted_conversation_successfully : R.string.mo_unmuted_conversation_successfully, Toast.LENGTH_SHORT).show();
 								E.post(new StatusMuteChangedEvent(result));
 							}
 
