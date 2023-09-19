@@ -82,8 +82,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	@Subscribe
 	public void onStatusMuteChaged(StatusMuteChangedEvent ev){
-		List<Status> statuses = getDirectDescendants(ev.id, data);
-		for(Status s:statuses){
+		for(Status s:data){
 			s.getContentStatus().update(ev);
 			AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
 			for(int i=0;i<list.getChildCount();i++){
