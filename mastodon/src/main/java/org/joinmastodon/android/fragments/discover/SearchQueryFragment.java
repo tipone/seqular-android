@@ -475,6 +475,8 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 	}
 
 	private void deliverResult(String query, SearchResult.Type typeFilter){
+		if(query.isEmpty())
+			return;
 		Bundle res=new Bundle();
 		res.putString("query", query);
 		if(typeFilter!=null)
