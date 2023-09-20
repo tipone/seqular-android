@@ -382,6 +382,19 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				if (position == 4) tab.view.setVisibility(View.GONE);
 			}
 		});
+		tabbar.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener(){
+			@Override
+			public void onTabSelected(TabLayout.Tab tab){}
+
+			@Override
+			public void onTabUnselected(TabLayout.Tab tab){}
+
+			@Override
+			public void onTabReselected(TabLayout.Tab tab){
+				if(getFragmentForPage(tab.getPosition()) instanceof ScrollableToTop stt)
+					stt.scrollToTop();
+			}
+		});
 
 		cover.setOutlineProvider(new ViewOutlineProvider(){
 			@Override
