@@ -1599,7 +1599,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		} else {
 			draftsBtn.setImageDrawable(getContext().getDrawable(GlobalUserPreferences.relocatePublishButton ? R.drawable.ic_fluent_clock_24_regular : R.drawable.ic_fluent_clock_20_regular));
 			if(GlobalUserPreferences.relocatePublishButton){
-				publishButtonRelocated.setImageResource(R.drawable.ic_fluent_send_24_selector);
+				publishButtonRelocated.setImageResource(R.drawable.ic_fluent_send_24_regular);
 			}
 			resetPublishButtonText();
 		}
