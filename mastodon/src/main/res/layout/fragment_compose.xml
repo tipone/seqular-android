@@ -382,7 +382,7 @@
 		</LinearLayout>
 	</ScrollView>
 
-	<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+	<LinearLayout
 		android:id="@+id/schedule_draft_view"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -397,6 +397,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="6dp"
+			android:ellipsize="end"
 			android:drawableStart="@drawable/ic_fluent_drafts_20_regular"
 			android:drawableTint="?android:textColorSecondary"
 			android:drawablePadding="16dp"
@@ -431,7 +432,7 @@
 			android:tooltipText="@string/sk_compose_no_schedule"
 			android:contentDescription="@string/sk_compose_no_schedule" />
 
-	</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+	</LinearLayout>
 
 	<LinearLayout
 		android:id="@+id/bottom_bar"
