@@ -576,6 +576,8 @@
 				android:drawablePadding="0dp"
 				android:tooltipText="@string/publish"
 				android:contentDescription="@string/publish"
+				android:tint="@color/compose_button"
+				android:tintMode="src_in"
 				android:src="@drawable/ic_fluent_send_24_selector"
 				android:visibility="gone"
 				android:singleLine="true" />
