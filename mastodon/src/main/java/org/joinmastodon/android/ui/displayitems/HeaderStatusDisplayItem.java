@@ -514,7 +514,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			menu.findItem(R.id.mute_conversation).setVisible((item.status!=null && !item.status.muted) && (isOwnPost || item.status.mentions.stream().anyMatch(m->{
 				if(m==null)
 					return false;
-				return m.id.equals(AccountSessionManager.get(item.parentFragment.getAccountID()).self.id);
+				return AccountSessionManager.get(item.parentFragment.getAccountID()).self.id.equals(m.id);
 			})));
 			menu.findItem(R.id.unmute_conversation).setVisible(item.status!=null && item.status.muted);
 			menu.findItem(R.id.open_in_browser).setVisible(!isPostScheduled && item.status!=null);
