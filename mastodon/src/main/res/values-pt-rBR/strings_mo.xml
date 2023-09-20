@@ -82,8 +82,8 @@
     <string name="mo_haptic_feedback">Resposta táctil</string>
     <string name="mo_show_media_preview">Mostrar prévia de mídia nas linhas do tempo</string>
     <string name="mo_unmuted_conversation_successfully">Conversa dessilenciada com sucesso</string>
-    <string name="mo_confirm_to_unmute_conversation">Você tem certeza que quer dessilenciar a conversa\?</string>
-    <string name="mo_confirm_to_mute_conversation">Você tem certeza que quer silenciar a conversa\?</string>
+    <string name="mo_confirm_to_unmute_conversation">Você tem certeza que quer dessilenciar esta conversa\?</string>
+    <string name="mo_confirm_to_mute_conversation">Você tem certeza que quer silenciar esta conversa\?</string>
     <string name="mo_muted_conversation_successfully">Conversa silenciada com sucesso</string>
     <string name="mo_unmute_conversation">Dessilenciar conversa</string>
     <string name="mo_mute_conversation">Silenciar conversa</string>
