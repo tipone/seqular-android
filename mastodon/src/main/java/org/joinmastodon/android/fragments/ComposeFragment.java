@@ -1419,7 +1419,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		boolean usePhotoPicker=photoPicker && UiUtils.isPhotoPickerAvailable();
 		if(usePhotoPicker){
 			intent=new Intent(MediaStore.ACTION_PICK_IMAGES);
-			intent.putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, mediaViewController.getMaxAttachments()-mediaViewController.getMediaAttachmentsCount());
+			if(mediaViewController.getMaxAttachments()-mediaViewController.getMediaAttachmentsCount()>1)
+				intent.putExtra(MediaStore.EXTRA_PICK_IMAGES_MAX, mediaViewController.getMaxAttachments()-mediaViewController.getMediaAttachmentsCount());
 		}else{
 			intent=new Intent(Intent.ACTION_GET_CONTENT);
 			intent.addCategory(Intent.CATEGORY_OPENABLE);
