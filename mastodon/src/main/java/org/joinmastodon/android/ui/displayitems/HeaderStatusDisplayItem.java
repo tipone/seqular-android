@@ -515,7 +515,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				if(m==null)
 					return false;
 				return AccountSessionManager.get(item.parentFragment.getAccountID()).self.id.equals(m.id) ||
-						AccountSessionManager.get(item.parentFragment.getAccountID()).self.getFullyQualifiedName().equals(m.username);
+						AccountSessionManager.get(item.parentFragment.getAccountID()).self.getFullyQualifiedName().equals(m.username) ||
+						AccountSessionManager.get(item.parentFragment.getAccountID()).self.acct.equals(m.acct);
 			})));
 			menu.findItem(R.id.unmute_conversation).setVisible(item.status!=null && item.status.muted);
 			menu.findItem(R.id.open_in_browser).setVisible(!isPostScheduled && item.status!=null);
