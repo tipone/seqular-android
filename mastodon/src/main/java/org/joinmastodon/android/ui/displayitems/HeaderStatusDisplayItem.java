@@ -511,7 +511,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			menu.findItem(R.id.delete_and_redraft).setVisible(!isPostScheduled && item.status!=null && isOwnPost);
 			menu.findItem(R.id.pin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && !item.status.pinned);
 			menu.findItem(R.id.unpin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && item.status.pinned);
-			menu.findItem(R.id.mute_conversation).setVisible((item.status!=null && !item.status.muted) && (isOwnPost || item.status.mentions.stream().anyMatch(m->{
+			menu.findItem(R.id.mute_conversation).setVisible((item.status!=null && !item.status.muted && !isPostScheduled) && (isOwnPost || item.status.mentions.stream().anyMatch(m->{
 				if(m==null)
 					return false;
 				return AccountSessionManager.get(item.parentFragment.getAccountID()).self.id.equals(m.id) ||
