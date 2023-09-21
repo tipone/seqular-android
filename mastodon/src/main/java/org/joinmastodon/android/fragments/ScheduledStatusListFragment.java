@@ -195,10 +195,7 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 	public void onApplyWindowInsets(WindowInsets insets){
 		if(contentView!=null){
 			if(Build.VERSION.SDK_INT>=29 && insets.getTappableElementInsets().bottom==0){
-				int insetBottom=insets.getSystemWindowInsetBottom();
-				((ViewGroup.MarginLayoutParams) list.getLayoutParams()).bottomMargin=insetBottom;
-				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+insetBottom;
-				insets=insets.inset(0, 0, 0, insetBottom);
+				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+insets.getSystemWindowInsetBottom();
 			}else{
 				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16);
 			}
