@@ -335,7 +335,7 @@
     <string name="sk_settings_continues_playback">Superposición de audio</string>
     <string name="sk_trending_links_info_banner">Estas son as novas historias das que se está a falar no teu servidor.</string>
     <string name="sk_settings_unifiedpush">Empregar UnifiedPush</string>
-    <string name="sk_disable_pill_shaped_active_indicator">Desactivar o indicador de pestana activa en forma de pílula</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Desactivar o indicador de lapela activa en forma de pílula</string>
     <string name="sk_tab_profile">Perfil</string>
     <string name="sk_tab_home">Inicio</string>
     <string name="sk_settings_emoji_reactions">Activar reaccións con emoticonas</string>
@@ -344,7 +344,7 @@
     <string name="sk_settings_instance">Instancia</string>
     <string name="sk_settings_display_pronouns_in_timelines">Mostrar os pronomes nas cronoloxías</string>
     <string name="sk_switch_timeline">Cambiar cronoloxía</string>
-    <string name="sk_settings_show_labels_in_navigation_bar">Mostrar pestana de etiquetas na barra de navegación</string>
+    <string name="sk_settings_show_labels_in_navigation_bar">Mostrar lapela de etiquetas na barra de navegación</string>
     <string name="sk_tab_search">Busca</string>
     <string name="sk_settings_true_black">Modo escuridade total</string>
     <string name="sk_settings_display_pronouns_in_threads">Mostrar pronomes nos chíos</string>
@@ -353,4 +353,43 @@
     <string name="sk_search_fediverse">Buscar o Fediverso</string>
     <string name="sk_tab_notifications">Notificacións</string>
     <string name="sk_pronouns_label">Pronomes</string>
+    <string name="sk_time_seconds">%d segundos</string>
+    <string name="sk_mute_label">Duración</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Só cando as publicacións son abertas</string>
+    <string name="sk_time_hours">%d horas</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Ocultar reaccións de emoticonas valeiras</string>
+    <string name="sk_settings_show_emoji_reactions">Mostrar reaccións de emoticonas nas cronoloxías</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">Publicación</item>
+        <item quantity="other">Publicacións</item>
+    </plurals>
+    <string name="sk_notification_mention">Fuches mencionado por %s</string>
+    <string name="sk_suicide_search_terms">Suicidio</string>
+    <string name="sk_duration_minutes_5">5 minutos</string>
+    <string name="sk_load_missing_posts_above">Cargar publicacións máis recentes</string>
+    <string name="sk_time_days">%d días</string>
+    <string name="sk_settings_show_emoji_reactions_always">Amosar sempre o botón engadir</string>
+    <string name="sk_duration_indefinite">Indefinido</string>
+    <string name="sk_search_suicide_hotlines">Buscar unha liña de axuda</string>
+    <string name="sk_duration_hours_1">1 hora</string>
+    <string name="sk_duration_hours_6">6 horas</string>
+    <string name="sk_enter_emoji_hint">Escribe para reaccionar cunha emoticona</string>
+    <string name="sk_duration_days_7">7 días</string>
+    <string name="sk_do_not_show_again">Non amosar outra vez</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com/es</string>
+    <string name="sk_enter_emoji_toast">Por favor escriba unha emoticona</string>
+    <string name="sk_duration_minutes_30">30 minutos</string>
+    <string name="sk_button_react">Reaccionar cunha emoticona</string>
+    <string name="sk_duration_days_1">1 día</string>
+    <string name="sk_load_missing_posts_below">Cargar publicacións máis antigas</string>
+    <string name="sk_settings_emoji_reactions_explanation">Mostra reaccións de emoticonas ás publicacións e déixate engadir as túas propias. Varios servidores do Fediverso soportan isto, pero Mastodon non.</string>
+    <string name="sk_duration_days_3">3 días</string>
+    <string name="sk_search_suicide_title">En caso de que esteas en apuros…</string>
+    <string name="sk_time_minutes">%d minutos</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Un usuario reaccionou con %2$s</item>
+        <item quantity="other">%1$,d usuarios reaccionaron con %2$s</item>
+    </plurals>
+    <string name="sk_search_suicide_message">Se estás a buscar para non suicidarte, é este. Por favor considera poñerte en contacto coa túa liña de suicidios local se estás en apuros</string>
+    <string name="sk_post_contains_media">A publicación contén contido multimedia</string>
 </resources>
