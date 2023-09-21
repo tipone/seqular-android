@@ -134,7 +134,8 @@ public class ComposePollViewController{
 				DraftPollOption opt=createDraftPollOption(false);
 				opt.edit.setText(eopt.title);
 			}
-			pollDuration=(int)fragment.editingStatus.poll.expiresAt.minus(fragment.editingStatus.createdAt.toEpochMilli(), ChronoUnit.MILLIS).getEpochSecond();
+			if(fragment.editingStatus.poll.expiresAt!=null)
+				pollDuration=(int)fragment.editingStatus.poll.expiresAt.minus(fragment.editingStatus.createdAt.toEpochMilli(), ChronoUnit.MILLIS).getEpochSecond();
 			updatePollOptionHints();
 			pollDurationValue.setText(UiUtils.formatDuration(fragment.getContext(), pollDuration));
 			pollIsMultipleChoice=fragment.editingStatus.poll.multiple;
