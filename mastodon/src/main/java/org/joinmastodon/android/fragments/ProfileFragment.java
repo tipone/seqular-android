@@ -155,7 +155,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private TextView followsYouView;
 	private ViewGroup rolesView;
 	private LinearLayout countersLayout;
-	private View nameEditWrap, bioEditWrap;
+	private View nameEditWrap, bioEditWrap, usernameWrap;
 	private View tabsDivider;
 	private View actionButtonWrap;
 	private CustomDrawingOrderLinearLayout scrollableContent;
@@ -261,6 +261,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bioEdit=content.findViewById(R.id.bio_edit);
 		nameEditWrap=content.findViewById(R.id.name_edit_wrap);
 		bioEditWrap=content.findViewById(R.id.bio_edit_wrap);
+		usernameWrap=content.findViewById(R.id.username_wrap);
 		actionProgress=content.findViewById(R.id.action_progress);
 		notifyProgress=content.findViewById(R.id.notify_progress);
 		fab=content.findViewById(R.id.fab);
@@ -1191,7 +1192,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		name.setVisibility(View.GONE);
 		rolesView.setVisibility(View.GONE);
-		username.setVisibility(View.GONE);
+		usernameWrap.setVisibility(View.GONE);
 		bio.setVisibility(View.GONE);
 		countersLayout.setVisibility(View.GONE);
 
@@ -1240,7 +1241,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bioEditWrap.setVisibility(View.GONE);
 		name.setVisibility(View.VISIBLE);
 		rolesView.setVisibility(View.VISIBLE);
-		username.setVisibility(View.VISIBLE);
+		usernameWrap.setVisibility(View.VISIBLE);
 		bio.setVisibility(View.VISIBLE);
 		countersLayout.setVisibility(View.VISIBLE);
 		refreshLayout.setEnabled(true);
