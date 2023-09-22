@@ -140,8 +140,6 @@ public class Account extends BaseModel implements Searchable{
 	 */
 	public Instant muteExpiresAt;
 	public boolean noindex;
-	public boolean indexable;
-	public boolean hideCollections;
 
 	public List<Role> roles;
 
@@ -242,8 +240,6 @@ public class Account extends BaseModel implements Searchable{
 				", suspended="+suspended+
 				", muteExpiresAt="+muteExpiresAt+
 				", noindex="+noindex+
-				", indexable="+indexable+
-				", hideCollections="+hideCollections+
 				'}';
 	}
 }
