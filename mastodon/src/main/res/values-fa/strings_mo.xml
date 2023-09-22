@@ -80,4 +80,5 @@
     <string name="mo_swap_bookmark_with_reblog_summary">پست‌ها را از اعلان نشانک‌گذاری کنید یا دوباره بلاگ کنید</string>
     <string name="mo_confirm_unfollow">برای لغو فالو %s تأیید کنید</string>
     <string name="mo_fab_compose">نوشتن</string>
+    <string name="mo_disable_reminder_to_add_alt_text">یادآوری را برای افزودن متن جایگزین غیرفعال کنید</string>
 </resources>
