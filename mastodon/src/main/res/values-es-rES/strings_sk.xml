@@ -305,10 +305,10 @@
     <string name="sk_settings_prefix_replies_never">Nunca</string>
     <string name="sk_settings_prefix_replies_to_others">Solo es respuestas a otros</string>
     <string name="sk_settings_forward_report_default">\"Reenviar denuncia\" activado por defecto</string>
-    <string name="sk_list_exclusive_switch">Crear una lista dedicada</string>
+    <string name="sk_list_exclusive_switch">Crear una lista excluyente</string>
     <string name="sk_icon_feed">Feed</string>
-    <string name="sk_exclusive_list">Lista dedicada</string>
-    <string name="sk_list_exclusive_switch_explanation">Los miembros de una lista dedicada no aparecerán en tu cronología de inicio - si tu instancia lo permite.</string>
+    <string name="sk_exclusive_list">Lista excluyente</string>
+    <string name="sk_list_exclusive_switch_explanation">Los miembros de una lista excluyente no aparecerán en tu cronología de inicio - si tu instancia lo permite.</string>
     <string name="sk_icon_verified">Verificado</string>
     <string name="sk_icon_doctor">Médico</string>
     <string name="sk_icon_diamond">Diamante</string>
