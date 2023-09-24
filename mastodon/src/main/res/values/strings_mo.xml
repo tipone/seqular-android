@@ -106,4 +106,7 @@
 	<string name="mo_confirm_unfollow">Confirm to unfollow %s</string>
 	<string name="mo_recent_emoji_cleared">Recent emoji cleared</string>
 	<string name="mo_show_media_preview">Show media preview in timelines</string>
+
+
+	<string name="mo_mute_hashtag">Mute Hashtag</string>
 </resources>

@@ -13,17 +13,23 @@ import android.widget.Toast;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.filters.GetFilters;
 import org.joinmastodon.android.api.requests.tags.GetHashtag;
 import org.joinmastodon.android.api.requests.tags.SetHashtagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
 import org.joinmastodon.android.events.HashtagUpdatedEvent;
+import org.joinmastodon.android.fragments.settings.EditFilterFragment;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.FilterContext;
+import org.joinmastodon.android.model.FilterKeyword;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.StatusFilterPredicate;
+import org.parceler.Parcels;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -116,6 +122,14 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 				}
 			}).exec(accountID);
 			return true;
+		} else if (item.getItemId() == R.id.mute_hashtag) {
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			FilterKeyword hashtagFilter=new FilterKeyword();
+			hashtagFilter.wholeWord=true;
+			hashtagFilter.keyword=hashtag;
+			args.putParcelableArrayList("words", new ArrayList<>(List.of(Parcels.wrap(hashtagFilter))));
+			Nav.go(getActivity(), EditFilterFragment.class, args);
 		}
 		return false;
 	}
