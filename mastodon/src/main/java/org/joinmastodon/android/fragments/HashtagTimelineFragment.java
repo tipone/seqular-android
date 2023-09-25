@@ -172,7 +172,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	private void muteHashtag() {
 		FilterKeyword hashtagFilter=new FilterKeyword();
 		hashtagFilter.wholeWord=true;
-		hashtagFilter.keyword=hashtag;
+		hashtagFilter.keyword="#"+hashtag;
 		new CreateFilter("#"+hashtag, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<Filter>(){
 			@Override
 			public void onSuccess(Filter result){
