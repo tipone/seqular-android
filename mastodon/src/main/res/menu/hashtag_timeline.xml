@@ -5,13 +5,14 @@
         android:title="@string/sk_pin_timeline"
         android:icon="@drawable/ic_fluent_pin_24_regular"
         android:showAsAction="always" />
+	<item
+		android:id="@+id/mute_hashtag"
+		android:icon="@drawable/ic_fluent_speaker_mute_24_regular"
+		android:showAsAction="always"
+		android:title="@string/mo_mute_hashtag"/>
     <item
         android:id="@+id/follow_hashtag"
         android:icon="@drawable/ic_fluent_person_add_24_regular"
         android:showAsAction="always"
         android:title="@string/button_follow"/>
-	<item
-        android:id="@+id/mute_hashtag"
-        android:icon="@drawable/ic_fluent_speaker_mute_24_regular"
-        android:title="@string/mo_mute_hashtag"/>
 </menu>
