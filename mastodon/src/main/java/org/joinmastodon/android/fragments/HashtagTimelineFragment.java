@@ -166,17 +166,27 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	}
 	private void unmuteHashtag() {
 		//safe to get, this only called if filter is present
-		new DeleteFilter(filter.get().id).exec(accountID);
+		new DeleteFilter(filter.get().id).setCallback(new Callback<>(){
+			@Override
+			public void onSuccess(Void result){
+				updateMuteState(false);
+			}
+
+			@Override
+			public void onError(ErrorResponse error){
+				error.showToast(getContext());
+			}
+		}).exec(accountID);
 	}
 
 	private void muteHashtag() {
 		FilterKeyword hashtagFilter=new FilterKeyword();
 		hashtagFilter.wholeWord=true;
 		hashtagFilter.keyword="#"+hashtag;
-		new CreateFilter("#"+hashtag, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<Filter>(){
+		new CreateFilter("#"+hashtag, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<>(){
 			@Override
 			public void onSuccess(Filter result){
-				filter = Optional.of(result);
+				filter=Optional.of(result);
 				updateMuteState(true);
 			}
 
