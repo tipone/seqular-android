@@ -43,7 +43,11 @@
 	<string name="mo_unmute_conversation">Unmute conversation</string>
 	<string name="mo_confirm_to_mute_conversation">Are you sure you want to mute this conversation?</string>
 	<string name="mo_confirm_to_unmute_conversation">Are you sure you want to unmute this conversation?</string>
-    
+	<string name="mo_mute_hashtag">Mute hashtag</string>
+	<string name="mo_unmute_hashtag">Unmute hashtag</string>
+	<string name="mo_confirm_to_mute_hashtag">Are you sure you want to mute this hashtag?</string>
+	<string name="mo_confirm_to_unmute_hashtag">Are you sure you want to unmute this hashtag?</string>
+
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Add new poll option</string>
     <string name="mo_fab_compose">Compose</string>
@@ -106,4 +110,5 @@
 	<string name="mo_confirm_unfollow">Confirm to unfollow %s</string>
 	<string name="mo_recent_emoji_cleared">Recent emoji cleared</string>
 	<string name="mo_show_media_preview">Show media preview in timelines</string>
+
 </resources>
