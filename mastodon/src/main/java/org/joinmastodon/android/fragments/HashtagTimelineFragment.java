@@ -13,6 +13,8 @@ import android.widget.Toast;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.filters.CreateFilter;
+import org.joinmastodon.android.api.requests.filters.DeleteFilter;
 import org.joinmastodon.android.api.requests.filters.GetFilters;
 import org.joinmastodon.android.api.requests.tags.GetHashtag;
 import org.joinmastodon.android.api.requests.tags.SetHashtagFollowed;
@@ -20,6 +22,7 @@ import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
 import org.joinmastodon.android.events.HashtagUpdatedEvent;
 import org.joinmastodon.android.fragments.settings.EditFilterFragment;
 import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterKeyword;
 import org.joinmastodon.android.model.Hashtag;
@@ -30,7 +33,9 @@ import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
@@ -47,6 +52,8 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 	private boolean following;
 	private boolean localOnly;
 	private MenuItem followButton;
+	private MenuItem muteButton;
+	private Optional<Filter> filter = Optional.empty();
 
 	@Override
 	protected boolean wantsComposeButton() {
@@ -78,19 +85,38 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 		E.post(new HashtagUpdatedEvent(hashtag, following));
 	}
 
+	private void updateMuteState(boolean newMute) {
+		muteButton.setTitle(getString(newMute ? R.string.unmute_user : R.string.mute_user, "#" + hashtag));
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.hashtag_timeline, menu);
 		super.onCreateOptionsMenu(menu, inflater);
 		followButton = menu.findItem(R.id.follow_hashtag);
 		updateFollowingState(following);
-
+		muteButton = menu.findItem(R.id.mute_hashtag);
+		updateMuteState(filter.isPresent());
 		new GetHashtag(hashtag).setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(Hashtag hashtag) {
 				if (getActivity() == null) return;
 				updateTitle(hashtag.name);
 				updateFollowingState(hashtag.following);
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
+			}
+		}).exec(accountID);
+
+		new GetFilters().setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(List<Filter> filters) {
+				if (getActivity() == null) return;
+				filter=filters.stream().filter(filter->filter.title.equals("#"+hashtag)).findAny();
+				updateMuteState(filter.isPresent());
 			}
 
 			@Override
@@ -123,16 +149,45 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 			}).exec(accountID);
 			return true;
 		} else if (item.getItemId() == R.id.mute_hashtag) {
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			FilterKeyword hashtagFilter=new FilterKeyword();
-			hashtagFilter.wholeWord=true;
-			hashtagFilter.keyword=hashtag;
-			args.putParcelableArrayList("words", new ArrayList<>(List.of(Parcels.wrap(hashtagFilter))));
-			Nav.go(getActivity(), EditFilterFragment.class, args);
+			showMuteDialog(filter.isPresent());
+			return true;
 		}
 		return false;
 	}
+
+	private void showMuteDialog(boolean mute) {
+		UiUtils.showConfirmationAlert(getContext(),
+										   mute ? R.string.mo_unmute_hashtag : R.string.mo_mute_hashtag,
+										   mute ? R.string.mo_confirm_to_unmute_hashtag : R.string.mo_confirm_to_mute_hashtag,
+										   mute ? R.string.do_unmute : R.string.do_mute,
+										   mute ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_off_28_regular,
+				mute ? this::unmuteHashtag : this::muteHashtag
+		);
+	}
+	private void unmuteHashtag() {
+		//safe to get, this only called if filter is present
+		new DeleteFilter(filter.get().id).exec(accountID);
+	}
+
+	private void muteHashtag() {
+		FilterKeyword hashtagFilter=new FilterKeyword();
+		hashtagFilter.wholeWord=true;
+		hashtagFilter.keyword=hashtag;
+		new CreateFilter("#"+hashtag, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<Filter>(){
+			@Override
+			public void onSuccess(Filter result){
+				filter = Optional.of(result);
+				updateMuteState(true);
+			}
+
+			@Override
+			public void onError(ErrorResponse error){
+				error.showToast(getContext());
+			}
+		}).exec(accountID);
+	}
+
+
 
 	@Override
 	protected TimelineDefinition makeTimelineDefinition() {
