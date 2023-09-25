@@ -44,7 +44,7 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareFragment{
-	static final int MAX_FIELDS=Integer.MAX_VALUE;
+	static final int MAX_FIELDS=4;
 
 	public UsableRecyclerView list;
 	private List<AccountField> fields=Collections.emptyList();
