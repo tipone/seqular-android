@@ -189,6 +189,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				});
 			}
 		}
+		tabBar.selectTab(currentTab);
 
 		return content;
 	}
