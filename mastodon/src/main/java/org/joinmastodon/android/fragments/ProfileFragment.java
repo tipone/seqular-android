@@ -361,6 +361,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
 		pager.setAdapter(new ProfilePagerAdapter());
 		pager.getLayoutParams().height=getResources().getDisplayMetrics().heightPixels;
+		pager.setVisibility(View.GONE); // Prevents a strange NPE when search is opened on the search tab. Shown in onShown()
 
 		scrollView.setScrollableChildSupplier(this::getScrollableRecyclerView);
 		scrollView.getViewTreeObserver().addOnGlobalLayoutListener(this::updateMetadataHeight);
@@ -1422,6 +1423,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private boolean isActionButtonInView(){
 		return actionButton.getVisibility()==View.VISIBLE && actionButtonWrap.getTop()+actionButtonWrap.getHeight()>scrollView.getScrollY();
+	}
+
+	@Override
+	protected void onShown(){
+		super.onShown();
+		pager.setVisibility(View.VISIBLE);
 	}
 
 	private class ProfilePagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
