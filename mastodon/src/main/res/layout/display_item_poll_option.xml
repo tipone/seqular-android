@@ -11,7 +11,7 @@
 	<LinearLayout
 		android:id="@+id/button"
 		android:layout_width="match_parent"
-		android:layout_height="48dp"
+		android:layout_height="wrap_content"
 		android:background="@drawable/bg_poll_option_clickable"
 		android:duplicateParentState="true"
 		android:layoutDirection="locale">
