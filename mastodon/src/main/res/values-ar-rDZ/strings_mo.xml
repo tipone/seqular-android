@@ -7,7 +7,7 @@
     <string name="mo_download_latest_nightly_release">تنزيل آخر إصدار ليلي</string>
     <string name="mo_double_tap_to_search">الضغط مرتان لفتح البحث</string>
     <string name="mo_color_palette_black_and_white">أبيض وأسود</string>
-    <string name="mo_personal_note">إضافة ملاحظة إلى هذا الملف التعريفي</string>
+    <string name="mo_personal_note">إضافة ملاحظة حول الملف التعريفي هذا</string>
     <string name="mo_personal_note_confirm">تأكيد التغييرات التي طرأت على الملاحظة</string>
     <string name="mo_personal_note_update_failed">فشل حفظ الملاحظة</string>
     <string name="mo_settings_contribute">المساهمة على Moshidon</string>
@@ -47,4 +47,10 @@
     <string name="mo_welcome_text">للبداية، يرجى إدخال اسم نطاق خادمك هنا.</string>
     <string name="mo_recent_emoji_cleared">تم مسح وجوه الإيموجي التعبيرية</string>
     <string name="mo_show_media_preview">إظهار معاينات الوسائط في الخيوط الزمنية</string>
+    <string name="mo_settings_show_posts_without_alt">إظهار الوسائط الخالية مِن نص بديل</string>
+    <string name="mo_setting_interaction_count_summary">إظهار عدد الأشخاص الذين تفاعلوا مع منشور ما في الخيوط الزمنية</string>
+    <string name="mo_confirm_to_mute_conversation">أتريد حقا كتم هذه المحادَثة؟</string>
+    <string name="mo_unmute_conversation">إلغاء كتم المحادَثة</string>
+    <string name="mo_mute_conversation">كتم المحادَثة</string>
+    <string name="mo_confirm_unfollow">تأكيد إلغاء متابَعة %s</string>
 </resources>
