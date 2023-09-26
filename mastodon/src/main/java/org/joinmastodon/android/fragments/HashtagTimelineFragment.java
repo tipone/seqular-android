@@ -170,6 +170,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment {
 		new DeleteFilter(filter.get().id).setCallback(new Callback<>(){
 			@Override
 			public void onSuccess(Void result){
+				filter=Optional.empty();
 				updateMuteState(false);
 			}
 
