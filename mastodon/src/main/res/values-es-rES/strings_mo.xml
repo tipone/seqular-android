@@ -89,4 +89,10 @@
     <string name="mo_mute_conversation">Silenciar conversación</string>
     <string name="mo_muting">Silenciando…</string>
     <string name="mo_unmuting">Quitando silencio…</string>
+    <string name="mo_unmute_hashtag">No silenciar etiqueta</string>
+    <string name="mo_muted_accounts">Cuentas silenciadas</string>
+    <string name="mo_confirm_to_unmute_hashtag">¿Seguro que quieres dejar de silenciar esta etiqueta\?</string>
+    <string name="mo_blocked_accounts">Cuentas bloqueadas</string>
+    <string name="mo_mute_hashtag">Silenciar etiqueta</string>
+    <string name="mo_confirm_to_mute_hashtag">¿Seguro que quieres silenciar esta etiqueta\?</string>
 </resources>
