@@ -91,8 +91,8 @@
     <string name="mo_unmuting">Dessilenciando…</string>
     <string name="mo_unmute_hashtag">Dessilenciar hashtag</string>
     <string name="mo_confirm_to_unmute_hashtag">Você tem certeza que quer dessilenciar esta hashtag\?</string>
-    <string name="mo_blocked_account">Contas bloqueadas</string>
-    <string name="mo_muted_account">Contas silenciadas</string>
+    <string name="mo_blocked_accounts">Contas bloqueadas</string>
+    <string name="mo_muted_accounts">Contas silenciadas</string>
     <string name="mo_blocks">Usuários bloqueados</string>
     <string name="mo_mute_hashtag">Silenciar hashtag</string>
     <string name="mo_confirm_to_mute_hashtag">Você tem certeza que quer silenciar esta hashtag\?</string>

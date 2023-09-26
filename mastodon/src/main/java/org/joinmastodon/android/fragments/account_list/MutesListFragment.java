@@ -14,7 +14,7 @@ public class MutesListFragment extends AccountRelatedAccountListFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setTitle(R.string.mo_muted_account);
+		setTitle(R.string.mo_muted_accounts);
 	}
 
 	@Override
