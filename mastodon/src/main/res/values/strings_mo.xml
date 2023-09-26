@@ -111,4 +111,9 @@
 	<string name="mo_recent_emoji_cleared">Recent emoji cleared</string>
 	<string name="mo_show_media_preview">Show media preview in timelines</string>
 
+<!--	Temporary Strings. They exist in strings_sk.xml, but are not available on Megalodon's weblate-->
+	<string name="mo_muted_account">Muted accounts</string>
+	<string name="mo_mutes">Mutes</string>
+	<string name="mo_blocked_account">Blocked accounts</string>
+	<string name="mo_blocks">Blocks</string>
 </resources>

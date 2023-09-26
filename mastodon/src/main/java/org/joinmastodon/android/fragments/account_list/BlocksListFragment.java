@@ -15,7 +15,7 @@ public class BlocksListFragment extends AccountRelatedAccountListFragment{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setTitle(R.string.sk_blocked_account);
+		setTitle(R.string.mo_blocked_account);
 	}
 
 	@Override
