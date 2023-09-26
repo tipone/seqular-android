@@ -282,4 +282,22 @@
     <string name="sk_do_not_show_again">لا تظهر مرة أخرى</string>
     <string name="sk_settings_display_pronouns_in_user_listings">إظهار الأسماء في قوائم المستخدِمين</string>
     <string name="sk_post_contains_media">يحتوي المنشور على وسائط</string>
+    <string name="sk_settings_see_new_posts_button">أظهر زِرّ ”إظهار المنشورات الجديدة“</string>
+    <string name="sk_followed_as">مُتابَع عبر %s</string>
+    <string name="sk_settings_allow_remote_loading">تحميل المعلومات مِن الخوادم البعيدة</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_reacted">تَفاعَل %s</string>
+    <string name="sk_reacted_with">تَفاعَلَ %1$s مع %2$s</string>
+    <string name="sk_external_share_or_open_title">إعادة نشر أو فتح بحساب آخَر</string>
+    <string name="sk_content_type_plain">نص عادي</string>
+    <string name="sk_settings_prefix_replies_always">ردًّا على أي كان</string>
+    <string name="sk_settings_forward_report_default">إعادة ”تحويل الإبلاغ“ افتراضيا</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_settings_hide_fab">إخفاء زر التحرير مبدئيا</string>
+    <string name="sk_enter_emoji_hint">اضغط للتفاعل بوجوه تعبيرية</string>
+    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_enter_emoji_toast">يُرجى إدخال إيموجي</string>
+    <string name="sk_in_reply">ردّا على</string>
+    <string name="sk_open_in_app_failed">لا يمكن فتحه في التطبيق</string>
 </resources>
