@@ -8,6 +8,7 @@
 	<item
 		android:id="@+id/mute_hashtag"
 		android:icon="@drawable/ic_fluent_speaker_mute_24_regular"
+		android:showAsAction="always"
 		android:title="@string/mo_mute_hashtag"/>
     <item
         android:id="@+id/follow_hashtag"
