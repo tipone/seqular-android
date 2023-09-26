@@ -75,4 +75,11 @@
     <string name="mo_settings_show_posts_without_alt">Toon berichten zonder alt tekst in media</string>
     <string name="mo_settings_show_posts_without_alt_summary">Berichten worden verborgen in tijdlijnen, maar kunnen zichtbaar zijn in threads en meldingen</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
+    <string name="mo_unmute_hashtag">Hashtag niet meer negeren</string>
+    <string name="mo_show_media_preview">Toon media preview in tijdlijnen</string>
+    <string name="mo_muted_accounts">Genegeerde accounts</string>
+    <string name="mo_confirm_to_unmute_hashtag">Weet je zeker dat je deze hashtag niet meer wilt negeren\?</string>
+    <string name="mo_blocked_accounts">Geblokkeerde accounts</string>
+    <string name="mo_mute_hashtag">Hashtag negeren</string>
+    <string name="mo_confirm_to_mute_hashtag">Weet je zeker dat je deze hashtag wilt negeren\?</string>
 </resources>
