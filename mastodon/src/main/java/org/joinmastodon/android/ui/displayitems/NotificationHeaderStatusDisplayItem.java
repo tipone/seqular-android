@@ -113,7 +113,6 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final ImageView icon, avatar;
 		private final TextView text;
-		private final int selectableItemBackground;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_notification_header, parent);
@@ -124,10 +123,8 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
 			avatar.setClipToOutline(true);
 
-			itemView.setOnClickListener(this::onItemClick);
-			TypedValue outValue = new TypedValue();
-			context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-			selectableItemBackground = outValue.resourceId;
+			icon.setOnClickListener(this::onItemClick);
+			avatar.setOnClickListener(this::onItemClick);
 		}
 
 		@Override
@@ -170,10 +167,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				case POLL -> R.attr.colorPoll;
 				default -> android.R.attr.colorAccent;
 			})));
-			itemView.setBackgroundResource(item.notification.type != Notification.Type.POLL
-					&& item.notification.type != Notification.Type.REPORT ?
-					selectableItemBackground : 0);
-			itemView.setClickable(item.notification.type != Notification.Type.POLL);
+			itemView.setBackgroundResource(0);
 		}
 
 		public void onItemClick(View v) {
