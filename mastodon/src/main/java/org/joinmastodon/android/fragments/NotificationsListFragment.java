@@ -38,6 +38,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -93,7 +94,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}else{
 			titleItem=new NotificationHeaderStatusDisplayItem(n.id, this, n, accountID);
 		}
-		if (n.type == Notification.Type.FOLLOW_REQUEST) {
+		if (n.type == Notification.Type.FOLLOW_REQUEST || n.type == Notification.Type.FOLLOW) {
 			ArrayList<StatusDisplayItem> items = new ArrayList<>();
 			items.add(titleItem);
 			items.add(new AccountCardStatusDisplayItem(n.id, this, accountID, n.account, n));
@@ -134,6 +135,13 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 					public void onSuccess(PaginatedResponse<List<Notification>> result){
 						if(getActivity()==null)
 							return;
+
+						Set<String> needRelationships=result.items.stream()
+								.filter(ntf->ntf.status==null && !relationships.containsKey(ntf.account.id))
+								.map(ntf->ntf.account.id)
+								.collect(Collectors.toSet());
+						loadRelationships(needRelationships);
+
 						maxID=result.maxID;
 						onDataLoaded(result.items.stream().filter(n->n.type!=null).collect(Collectors.toList()), !result.items.isEmpty());
 						reloadingFromCache=false;
@@ -142,6 +150,17 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						}
 					}
 				});
+	}
+	
+	@Override
+	protected void onRelationshipsLoaded(){
+		if(getActivity()==null)
+			return;
+		for(int i=0;i<list.getChildCount();i++){
+			RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+			if(holder instanceof AccountCardStatusDisplayItem.Holder accountHolder)
+				accountHolder.rebind();
+		}
 	}
 
 	@Override
