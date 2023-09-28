@@ -55,7 +55,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 		onDataLoaded(List.of(
 				new ListItem<>(R.string.settings_behavior, 0, R.drawable.ic_fluent_settings_24_regular, this::onBehaviorClick),
 				new ListItem<>(R.string.settings_display, 0, R.drawable.ic_fluent_color_24_regular, this::onDisplayClick),
-				new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_privacy_tip_24px, this::onPrivacyClick),
+//				new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_privacy_tip_24px, this::onPrivacyClick),
 				new ListItem<>(R.string.settings_notifications, 0, R.drawable.ic_fluent_alert_24_regular, this::onNotificationsClick),
 				new ListItem<>(R.string.sk_settings_instance, 0, R.drawable.ic_fluent_server_24_regular, this::onInstanceClick),
 				new ListItem<>(getString(R.string.about_app, getString(R.string.mo_app_name)), null, R.drawable.ic_fluent_info_24_regular, this::onAboutClick, null, 0, true),
@@ -134,9 +134,9 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 		Nav.go(getActivity(), SettingsDisplayFragment.class, makeFragmentArgs());
 	}
 
-	private void onPrivacyClick(){
-		Nav.go(getActivity(), SettingsPrivacyFragment.class, makeFragmentArgs());
-	}
+//	private void onPrivacyClick(){
+//		Nav.go(getActivity(), SettingsPrivacyFragment.class, makeFragmentArgs());
+//	}
 
 	private void onFiltersClick(){
 		Nav.go(getActivity(), SettingsFiltersFragment.class, makeFragmentArgs());
