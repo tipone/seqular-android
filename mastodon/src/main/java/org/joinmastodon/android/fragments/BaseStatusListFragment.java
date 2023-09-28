@@ -931,9 +931,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		private Paint dividerPaint=new Paint();
 
 		{
-			dividerPaint.setColor(UiUtils.getThemeColor(getActivity(), GlobalUserPreferences.showDividers ? R.attr.colorM3Outline : R.attr.colorM3Surface));
+			dividerPaint.setColor(UiUtils.getThemeColor(getActivity(), GlobalUserPreferences.showDividers ? R.attr.colorM3OutlineVariant : R.attr.colorM3Surface));
 			dividerPaint.setStyle(Paint.Style.STROKE);
-			dividerPaint.setStrokeWidth(V.dp(0.5f));
+			dividerPaint.setStrokeWidth(V.dp(1f));
 		}
 
 		@Override
