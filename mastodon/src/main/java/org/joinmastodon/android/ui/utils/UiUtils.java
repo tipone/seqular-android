@@ -633,7 +633,7 @@ public class UiUtils {
 							.exec(accountID);
 				})
 				.setNegativeButton(R.string.cancel, null)
-				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
+				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
 				.show();
 	}
 
