@@ -14,6 +14,7 @@ public class Hashtag extends BaseModel implements DisplayItemsParent{
 	public boolean following;
 	public List<History> history;
 	public int statusesCount;
+	public boolean following;
 
 	@Override
 	public String toString(){
@@ -23,6 +24,7 @@ public class Hashtag extends BaseModel implements DisplayItemsParent{
 				", following="+following+
 				", history="+history+
 				", statusesCount="+statusesCount+
+				", following="+following+
 				'}';
 	}
 
