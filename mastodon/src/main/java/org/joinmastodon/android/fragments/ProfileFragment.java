@@ -361,7 +361,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		pager.setUserInputEnabled(!GlobalUserPreferences.disableSwipe);
 		pager.setAdapter(new ProfilePagerAdapter());
 		pager.getLayoutParams().height=getResources().getDisplayMetrics().heightPixels;
-		pager.setVisibility(View.GONE); // Prevents a strange NPE when search is opened on the search tab. Shown in onShown()
 
 		scrollView.setScrollableChildSupplier(this::getScrollableRecyclerView);
 		scrollView.getViewTreeObserver().addOnGlobalLayoutListener(this::updateMetadataHeight);
@@ -756,7 +755,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
 		followersLabel.setText(getResources().getQuantityString(R.plurals.followers, (int)Math.min(999, account.followersCount)));
 		followingLabel.setText(getResources().getQuantityString(R.plurals.following, (int)Math.min(999, account.followingCount)));
-		
+
 		if (account.followersCount < 0) followersBtn.setVisibility(View.GONE);
 		if (account.followingCount < 0) followingBtn.setVisibility(View.GONE);
 		if (account.followersCount < 0 || account.followingCount < 0)
@@ -1425,19 +1424,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		return actionButton.getVisibility()==View.VISIBLE && actionButtonWrap.getTop()+actionButtonWrap.getHeight()>scrollView.getScrollY();
 	}
 
-	@Override
-	protected void onShown(){
-		super.onShown();
-		pager.setVisibility(View.VISIBLE);
-	}
-
 	private class ProfilePagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
 		@NonNull
 		@Override
 		public SimpleViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType){
-			FrameLayout view=tabViews[viewType];
-			if (view.getParent() != null) ((ViewGroup)view.getParent()).removeView(view);
-			view.setVisibility(View.VISIBLE);
+			FrameLayout view=new FrameLayout(parent.getContext());
 			view.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
 			return new SimpleViewHolder(view);
 		}
@@ -1445,8 +1436,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		@Override
 		public void onBindViewHolder(@NonNull SimpleViewHolder holder, int position){
 			Fragment fragment=getFragmentForPage(position);
+			FrameLayout fragmentView=tabViews[position];
+			fragmentView.setVisibility(View.VISIBLE);
+			if(fragmentView.getParent() instanceof ViewGroup parent)
+				parent.removeView(fragmentView);
+			((FrameLayout)holder.itemView).addView(fragmentView);
 			if(!fragment.isAdded()){
-				getChildFragmentManager().beginTransaction().add(holder.itemView.getId(), fragment).commit();
+				getChildFragmentManager().beginTransaction().add(fragmentView.getId(), fragment).commit();
 				holder.itemView.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener(){
 					@Override
 					public boolean onPreDraw(){
