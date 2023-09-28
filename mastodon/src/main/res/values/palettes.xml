@@ -563,7 +563,7 @@
 		<item name="colorNeutral900">@color/nord_gray_900</item>
 		<item name="colorNeutral800">@color/nord_gray_800</item>
 		<item name="colorNeutral700">@color/nord_gray_700</item>
-		<item name="colorNeutral600">@color/nord_gray_600</item>
+		<item name="colorNeutral600">@color/nord_gray_500</item>
 		<item name="colorNeutral500">@color/nord_gray_500</item>
 		<item name="colorNeutral400">@color/nord_gray_400</item>
 		<item name="colorNeutral300">@color/nord_gray_300</item>
