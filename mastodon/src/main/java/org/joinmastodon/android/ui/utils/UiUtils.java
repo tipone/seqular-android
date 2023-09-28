@@ -1227,7 +1227,7 @@ public class UiUtils {
 			return Optional.empty();
 		}
 
-		return Optional.of(new GetSearchResults(query.getQuery(), type, true).setCallback(new Callback<>() {
+		return Optional.of(new GetSearchResults(query.getQuery(), type, true, null, 0, 0).setCallback(new Callback<>() {
 			@Override
 			public void onSuccess(SearchResults results) {
 				Optional<T> result = extractResult.apply(results);
@@ -1324,7 +1324,7 @@ public class UiUtils {
 	}
 	public static MastodonAPIRequest<SearchResults> lookupAccountHandle(Context context, String accountID, Pair<String, Optional<String>> queryHandle, BiConsumer<Class<? extends Fragment>, Bundle> go) {
 		String fullHandle = ("@" + queryHandle.first) + (queryHandle.second.map(domain -> "@" + domain).orElse(""));
-		return new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true)
+		return new GetSearchResults(fullHandle, GetSearchResults.Type.ACCOUNTS, true, null, 0, 0)
 				.setCallback(new Callback<>() {
 					@Override
 					public void onSuccess(SearchResults results) {
@@ -1387,7 +1387,7 @@ public class UiUtils {
 						})
 						.execNoAuth(uri.getHost()));
 			} else if (looksLikeMastodonUrl(url)) {
-				return Optional.of(new GetSearchResults(url, null, true)
+				return Optional.of(new GetSearchResults(url, null, true, null, 0, 0)
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(SearchResults results) {

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -35,6 +36,7 @@ import java.util.stream.Collectors;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
+import me.grishka.appkit.utils.V;
 
 public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	private String currentQuery;

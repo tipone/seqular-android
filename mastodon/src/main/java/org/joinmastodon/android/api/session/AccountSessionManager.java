@@ -315,7 +315,7 @@ public class AccountSessionManager{
 	}
 
 
-	private void updateSessionLocalInfo(AccountSession session){
+	public void updateSessionLocalInfo(AccountSession session){
 		new GetOwnAccount()
 				.setCallback(new Callback<>(){
 					@Override
