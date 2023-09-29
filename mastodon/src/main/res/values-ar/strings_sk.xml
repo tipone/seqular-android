@@ -300,4 +300,12 @@
     <string name="sk_enter_emoji_toast">يُرجى إدخال إيموجي</string>
     <string name="sk_in_reply">ردّا على</string>
     <string name="sk_open_in_app_failed">لا يمكن فتحه في التطبيق</string>
+    <string name="sk_settings_enable_delete_notifications">تمكين حذف الإشعارات</string>
+    <string name="sk_clear_all_notifications_confirm">أتريد حقا حذف كافة الإشعارات؟</string>
+    <string name="sk_already_bookmarked">موجود بالفعل في الفواصل المرجعية</string>
+    <string name="sk_resource_not_found">المَورِد غير موجود</string>
+    <string name="sk_delete_notification_confirm">أتريد حقا حذف هذا الإشعار؟</string>
+    <string name="sk_draft_or_schedule">تحرير مسودة أو برمجتها</string>
+    <string name="sk_trending_links_info_banner">هذه هي القصص الإخبارية التي يُتَحدّث عنها في خادمكم.</string>
+    <string name="sk_notification_type_posts">إشعارات المنشورات</string>
 </resources>
