@@ -29,6 +29,7 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -826,6 +827,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		publishButton = wrap.findViewById(R.id.publish_btn);
 		languageButton = wrap.findViewById(R.id.language_btn);
 		languageButton.setOnClickListener(v->showLanguageAlert());
+		languageButton.setOnLongClickListener(v->{
+			languageButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+			if(!getLocalPrefs().bottomEncoding){
+				getLocalPrefs().bottomEncoding=true;
+				getLocalPrefs().save();
+			}
+			return false;
+		});
 
 		publishButton.setOnClickListener(v -> {
 			if(GlobalUserPreferences.altTextReminders && editingStatus==null)
