@@ -1,0 +1,9 @@
+- Fragment de setări complet reproiectat
+- O nouă comandă rapidă a camerei adăugată la fragmentul Compoziție
+- Corectează mai multe blocaje pe Calckey
+- Multe îmbunătățiri la Akkoma/Pleroma
+- Multe îmbunătățiri la comportamentul filtrelor
+- O nouă foaie de cont reproiectată
+- Adăugarea opțiunii de schimbare a stilului de conținut al postărilor (Text simplu, markdown etc.) la instanțele care o acceptă
+- Adăugarea posibilității de a vedea informațiile despre serverul cuiva prin atingerea numelui de utilizator în interiorul profilului oricui
+- Multe, multe mici corecturi și îmbunătățiri
