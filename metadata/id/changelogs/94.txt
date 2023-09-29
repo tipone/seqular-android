@@ -1,0 +1,8 @@
+- Tampilan utas ditingkatkan dan lebih jelas
+- Buka akun/kiriman dengan membagikan situs web ke Megalodon
+- Muat daftar pengikut/favorit/… dari server asal
+- Peningkatan kompatibilitas untuk server non-Mastodon
+- Opsi untuk mengatur jenis konten kiriman
+- Dukungan untuk menyalin URL dari aplikasi Terkini pada perangkat Pixel
+- Otomatis memunculkan peringatan konten yang sama dalam utas
+- Perbaikan kutu dan peningkatan antarmuka pengguna

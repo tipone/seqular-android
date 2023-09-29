@@ -357,12 +357,12 @@
     <string name="sk_notification_mention">شما توسط %s نام‌برده شده اید</string>
     <string name="sk_settings_unifiedpush">استفاده از UnifiedPush</string>
     <string name="sk_duration_days_7">7 روز</string>
-    <string name="sk_settings_unifiedpush_no_distributor_body">برای کارکردن آگاهی‌های UnifiedPush باید یک توزیع‌کننده نصب کنید. برای اطلاعات بیشتر به https://unifiedpush.org/ مراجعه کنید.</string>
+    <string name="sk_settings_unifiedpush_no_distributor_body">برای کارکردن آگاهی‌های یونیفیتاید پوش باید یک توزیع‌کننده نصب کنید. برای اطلاعات بیشتر به https://unifiedpush.org/ مراجعه کنید</string>
     <string name="sk_settings_continues_playback">پوشش صوتی</string>
     <string name="sk_settings_continues_playback_summary">به رسانه‌ای که از قبل پخش می‌شود اجازه دهید به پخش ادامه دهد و پخش جدید را پوشش دهد</string>
     <string name="sk_button_react">واکنش با ایموجی</string>
     <string name="sk_again_for_system_keyboard">دوباره برای کیبورد سامانه ضربه بزنید</string>
-    <string name="sk_enter_emoji_toast">باید یک ایموجی تایپ کنید</string>
+    <string name="sk_enter_emoji_toast">لطفا یک ایموجی تایپ کنید</string>
     <string name="sk_enter_emoji_hint">برای واکنش با ایموجی تایپ کنید</string>
     <plurals name="sk_users_reacted_with">
         <item quantity="one">یک کاربر با %2$s واکنش نشان داد</item>
@@ -371,5 +371,28 @@
     <string name="sk_settings_emoji_reactions">به‌کار انداختن واکنش های ایموجی</string>
     <string name="sk_settings_emoji_reactions_in_lists">نمایش واکنش های ایموجی در خطوط زمانی</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">اینکه آیا واکنش های ایموجی باید در خطوط زمانی نمایش داده شود یا خیر. اگر این گزینه خاموش باشد، واکنش های ایموجی فقط هنگام مشاهده یک موضوع نمایش داده می شود.</string>
-    <string name="sk_settings_emoji_reactions_explanation">واکنش‌های ایموجی را به فرسته‌ها نشان می‌دهد و به شما امکان می‌دهد با آنها تعامل داشته باشید. برخی از نسخه های اصلاح شده ماستودون از این پشتیبانی می کنند، اما ماستودون اینطور نیست.</string>
+    <string name="sk_settings_emoji_reactions_explanation">واکنش‌های ایموجی را به فرسته‌ها نشان می‌دهد و به شما امکان می‌دهد عکس‌العمل خود را اضافه کنید.. سرور های مختلف فدیورس از این پشتیبانی می کنند، اما ماستودون اینطور نیست.</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">فقط زمانی که فرسته باز شود</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">نهفتن واکنش‌های ایموجی خالی</string>
+    <string name="sk_settings_show_emoji_reactions">نمایش واکنش های ایموجی در خطوط زمانی</string>
+    <string name="sk_time_seconds">%d ثانیه</string>
+    <string name="sk_time_hours">%d ساعت</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">فرسته</item>
+        <item quantity="other">فرسته‌ها</item>
+    </plurals>
+    <string name="sk_suicide_search_terms">خودکشی</string>
+    <string name="sk_load_missing_posts_above">بارگذاری فرسته‌های جدیدتر</string>
+    <string name="sk_time_days">%d روز</string>
+    <string name="sk_settings_show_emoji_reactions_always">دکمه افزودن همیشه نشان داده شود</string>
+    <string name="sk_search_suicide_hotlines">یک راه کمکی بیابید</string>
+    <string name="sk_do_not_show_again">دوباره نمایش نده</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
+    <string name="sk_trending_posts_info_banner">اینها فرسته‌هایی هستند که در کارساز شما مورد توجه قرار می گیرند.</string>
+    <string name="sk_load_missing_posts_below">بارگذاری فرسته‌های قدیمی‌تر</string>
+    <string name="sk_search_suicide_title">اگر نیازمند کمک هستید…</string>
+    <string name="sk_time_minutes">%d دقیقه</string>
+    <string name="sk_search_suicide_message">اگر به دنبال نشانه ای برای خودکشی نیستید، همین است. لطفاً اگر نیازمند کمک هستید با شماره تلفن محلی خودکشی تماس بگیرید.</string>
+    <string name="sk_trending_links_info_banner">اینها اخباری است که در کارساز شما در مورد آنها صحبت می شود.</string>
+    <string name="sk_post_contains_media">فرسته حاوی رسانه‌ست</string>
 </resources>

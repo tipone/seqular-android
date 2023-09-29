@@ -1,0 +1,5 @@
+- Sukai/markahi/balas langsung dari bilah pemberitahuan
+- Tajuk yang lebih indah dan konsisten untuk pembagian ulang dan balasan di lini masa
+- Tanda notifikasi (yang belum benar-benar memuat notifikasi saat ini)
+- Untuk pengguna Akkoma: Keterlihatan balasan, balasan utas yang diurutkan, kutipan, …
+- Perbaikan mogokan dan sedikit penyesuaian

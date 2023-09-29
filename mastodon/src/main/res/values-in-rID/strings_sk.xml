@@ -365,14 +365,33 @@
     <plurals name="sk_users_reacted_with">
         <item quantity="other">%1$,d pengguna bereaksi dengan %2$s</item>
     </plurals>
-    <string name="sk_enter_emoji_toast">Anda perlu mengetik sebuah emoji</string>
+    <string name="sk_enter_emoji_toast">Silakan ketik emoji</string>
     <string name="sk_enter_emoji_hint">Ketik untuk bereaksi dengan sebuah emoji</string>
     <string name="sk_settings_emoji_reactions">Aktifkan reaksi emoji</string>
-    <string name="sk_settings_emoji_reactions_explanation">Menampilkan reaksi emoji di kiriman dan memungkinkan Anda untuk berinteraksi. Beberapa versi Mastodon yang dimodifikasi mendukung ini, tetapi Mastodon sendiri tidak mendukungnya.</string>
+    <string name="sk_settings_emoji_reactions_explanation">Menampilkan reaksi emoji di kiriman dan memungkinkan Anda untuk menambahkan sendiri. Banyak server Fediverse yang mendukung ini, tetapi Mastodon tidak mendukungnya.</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">"Menentukan apakah reaksi emoji ditampilkan  di lini masa. Jika opsi ini mati, reaksi emoji hanya akan ditampilkan ketika melihat sebuah utas."</string>
     <string name="sk_button_react">Bereaksi dengan emoji</string>
     <string name="sk_again_for_system_keyboard">Ketuk lagi untuk Papan Ketik Sistem</string>
     <plurals name="sk_posts_count_label">
         <item quantity="other">kiriman</item>
     </plurals>
+    <string name="sk_time_seconds">%d detik</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Hanya ketika kiriman dibuka</string>
+    <string name="sk_time_hours">%d jam</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Sembunyikan reaksi emoji kosong</string>
+    <string name="sk_settings_show_emoji_reactions">Tampilkan reaksi emoji di lini masa</string>
+    <string name="sk_suicide_search_terms">Bunuh diri</string>
+    <string name="sk_load_missing_posts_above">Muat kiriman baru</string>
+    <string name="sk_time_days">%d hari</string>
+    <string name="sk_settings_show_emoji_reactions_always">Selalu tampilkan tombol tambahkan</string>
+    <string name="sk_search_suicide_hotlines">Temukan hotline</string>
+    <string name="sk_do_not_show_again">Jangan tampilkan lagi</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com/id</string>
+    <string name="sk_trending_posts_info_banner">Di bawah adalah kiriman yang mendapatkan daya tarik di server Anda.</string>
+    <string name="sk_load_missing_posts_below">Muat kiriman lama</string>
+    <string name="sk_search_suicide_title">Jika Anda dalam kesulitan…</string>
+    <string name="sk_time_minutes">%d menit</string>
+    <string name="sk_search_suicide_message">Jika Anda mencari tanda untuk tidak melakukan bunuh diri, ini adalah tanda itu. Tolong pertimbangkan untuk menghubungi hotline bunuh diri lokal jika Anda dalam kesulitan.</string>
+    <string name="sk_trending_links_info_banner">Di bawah adalah berita yang dibicarakan di server Anda.</string>
+    <string name="sk_post_contains_media">Kiriman berisi media</string>
 </resources>
