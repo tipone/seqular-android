@@ -40,19 +40,10 @@ public abstract class MastodonRecyclerFragment<T> extends BaseRecyclerFragment<T
 	@CallSuper
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
-		if (getParentFragment() instanceof HasElevationOnScrollListener elevator)
-			list.addOnScrollListener(elevator.getElevationOnScrollListener());
-		else if(wantsElevationOnScrollEffect())
+		if(wantsElevationOnScrollEffect())
 			list.addOnScrollListener(elevationOnScrollListener=new ElevationOnScrollListener((FragmentRootLinearLayout) view, getViewsForElevationEffect()));
-		if(refreshLayout!=null)
+		if(refreshLayout!=null){
 			setRefreshLayoutColors(refreshLayout);
-
-		// This is to set the color of the 'This list is empty'
-		for (int i = 0; i < ((LinearLayout) emptyView).getChildCount(); i++) {
-			View v = ((LinearLayout) emptyView).getChildAt(i);
-			if(v instanceof TextView) {
-				((TextView) v).setTextColor(UiUtils.getThemeColor(getContext(), android.R.attr.textColorSecondary));
-			}
 		}
 	}
 

@@ -44,6 +44,7 @@
 		<item name="android:textColor">?colorM3OnSurface</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="appkitEmptyTextAppearance">@style/empty_text</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark" parent="Theme.AppKit">
@@ -86,6 +87,7 @@
 		<item name="android:textColor">?colorM3OnSurface</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="appkitEmptyTextAppearance">@style/empty_text</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark.SplashFragment">
@@ -382,5 +384,9 @@
 
 	<style name="window_fade_out">
 		<item name="android:windowExitAnimation">@anim/fade_out_fast</item>
+	</style>
+
+	<style name="empty_text" parent="m3_body_large">
+		<item name="android:textColor">?colorM3OnSurfaceVariant</item>
 	</style>
 </resources>
