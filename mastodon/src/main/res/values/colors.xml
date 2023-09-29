@@ -96,7 +96,7 @@
 
 	<color name="bookmark_selected">@color/success_500</color>
 
-	<color name="shortcut_icon_background">@color/gray_25</color>
+	<color name="shortcut_icon_background">#282C37</color>
 	<color name="shortcut_icon_foreground">@color/primary_400</color>
 
 	<!-- M3 dynamic colors -->
