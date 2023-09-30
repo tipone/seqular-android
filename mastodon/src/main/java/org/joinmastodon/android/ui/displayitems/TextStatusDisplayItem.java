@@ -237,7 +237,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				}else{ // LOADING
 					translationProgress.setVisibility(View.VISIBLE);
 					translationButton.setEnabled(false);
-					translationButton.startAnimation(opacityIn);
+					translationButton.setAlpha(0.5f);
 					translationInfo.setVisibility(View.INVISIBLE);
 					UiUtils.beginLayoutTransition((ViewGroup) translationButton.getParent());
 				}
