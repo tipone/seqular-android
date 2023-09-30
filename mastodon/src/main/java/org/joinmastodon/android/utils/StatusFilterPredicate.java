@@ -17,6 +17,7 @@ import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -39,8 +40,7 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		this.filters = filters;
 		this.context = context;
 		this.action = action;
-		this.clientFilters = GlobalUserPreferences.showPostsWithoutAlt ? List.of()
-				: List.of(new AltTextFilter(WARN, HOME, PUBLIC, ACCOUNT, THREAD, NOTIFICATIONS));
+		this.clientFilters = getClientFilters();
 	}
 
 	public StatusFilterPredicate(List<LegacyFilter> filters, FilterContext context){
@@ -56,8 +56,15 @@ public class StatusFilterPredicate implements Predicate<Status>{
 		filters=AccountSessionManager.getInstance().getAccount(accountID).wordFilters.stream().filter(f->f.context.contains(context)).collect(Collectors.toList());
 		this.context = context;
 		this.action = action;
-		this.clientFilters = GlobalUserPreferences.showPostsWithoutAlt ? List.of()
-				: List.of(new AltTextFilter(WARN, HOME, PUBLIC, ACCOUNT, THREAD, NOTIFICATIONS));
+		this.clientFilters = getClientFilters();
+	}
+
+	private List<LegacyFilter> getClientFilters() {
+		List<LegacyFilter> filters = new ArrayList<>();
+		if(!GlobalUserPreferences.showPostsWithoutAlt) {
+			filters.add(new AltTextFilter(WARN, HOME, PUBLIC, ACCOUNT, THREAD, NOTIFICATIONS));
+		}
+		return filters;
 	}
 
 	/**

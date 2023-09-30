@@ -331,6 +331,10 @@ public abstract class StatusDisplayItem{
 			applyingFilter = predicate.getApplyingFilter();
 		}
 
+		// Hide statuses that have a filter action of hide
+		if(!new StatusFilterPredicate(accountID, filterContext, FilterAction.HIDE).test(status))
+			return new ArrayList<StatusDisplayItem>() ;
+
 		return statusForContent.filterRevealed ? items :
 				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
 	}
