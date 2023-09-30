@@ -140,7 +140,7 @@
 					android:includeFontPadding="false"
 					android:minWidth="16dp"
 					android:textAppearance="@style/m3_label_small"
-					android:textColor="@color/white"
+					android:textColor="?colorM3Surface"
 					tools:text="222" />
 
 			</RelativeLayout>
