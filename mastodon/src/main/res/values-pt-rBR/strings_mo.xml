@@ -97,4 +97,5 @@
     <string name="mo_mute_hashtag">Silenciar hashtag</string>
     <string name="mo_confirm_to_mute_hashtag">Você tem certeza que quer silenciar esta hashtag\?</string>
     <string name="mo_mutes">Silenciados</string>
+    <string name="mo_filter_notifications">Filtrar notificações</string>
 </resources>
