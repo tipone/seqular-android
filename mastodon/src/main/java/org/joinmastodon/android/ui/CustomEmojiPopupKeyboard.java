@@ -17,6 +17,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -34,6 +36,7 @@ import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiCategory;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -125,13 +128,13 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		new StickyHeadersOverlay(activity, 0).install(list);
 
 		LinearLayout ll=new LinearLayout(activity) {
-				@Override
-				public boolean onInterceptTouchEvent(MotionEvent e){
-					if (e.getAction() == MotionEvent.ACTION_MOVE) {
-						getParent().requestDisallowInterceptTouchEvent(true);
-					}
-					return false;
+			@Override
+			public boolean onInterceptTouchEvent(MotionEvent e){
+				if (e.getAction() == MotionEvent.ACTION_MOVE) {
+					getParent().requestDisallowInterceptTouchEvent(true);
 				}
+				return false;
+			}
 		};
 		ll.setOrientation(LinearLayout.VERTICAL);
 		ll.setElevation(V.dp(3));
@@ -139,43 +142,52 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		ll.addView(list, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 0, 1f));
 
-		FrameLayout bottomPanel=new FrameLayout(activity);
-		bottomPanel.setPadding(V.dp(16), V.dp(8), V.dp(16), V.dp(8));
-		bottomPanel.setBackgroundResource(R.drawable.bg_m3_surface2);
-		ll.addView(bottomPanel, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
 		if(forReaction){
+			FrameLayout topPanel=new FrameLayout(activity);
+			topPanel.setPadding(V.dp(16), V.dp(12), V.dp(16), V.dp(12));
+			topPanel.setBackgroundResource(R.drawable.bg_m3_surface2);
+			ll.addView(topPanel, 0, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+			
 			InputMethodManager imm=(InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
-
-			// TODO: support filtering custom emoji
 			EditText input=new EditText(activity);
 			input.setHint(R.string.sk_enter_emoji_hint);
 			input.addTextChangedListener(new TextWatcher() {
 				@Override
-				public void onTextChanged(CharSequence s, int start, int before, int count) {
-					if (!s.toString().isEmpty()) {
-						if (emojiRegex.matcher(s.toString()).find()) {
+				public void onTextChanged(CharSequence s, int start, int before, int count){
+					// Only check the emoji regex if the text field was empty before
+					if(start == 0){
+						if(emojiRegex.matcher(s.toString()).find()){
 							imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
 							listener.onEmojiSelected(s.toString().substring(before));
 							input.getText().clear();
-						} else {
-							Toast.makeText(activity, R.string.sk_enter_emoji_toast, Toast.LENGTH_SHORT).show();
-							input.getText().clear();
 						}
+					}
+					for(int i=0; i<adapter.getAdapterCount(); i++){
+						SingleCategoryAdapter currentAdapter=(SingleCategoryAdapter) adapter.getAdapterAt(i);
+						currentAdapter.getFilter().filter(s.toString());
 					}
 				}
 
 				@Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 				@Override public void afterTextChanged(Editable s) {}
 			});
+			input.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener(){
+				@Override
+				public void onViewAttachedToWindow(@NonNull View view){}
 
-			FrameLayout.LayoutParams params=new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT, Gravity.START);
-			int pad=forReaction ? 0 : V.dp(36 + 16);
-			params.setMargins(pad, V.dp(8), pad, V.dp(8));
-			bottomPanel.addView(input, params);
-		}
+				@Override
+				public void onViewDetachedFromWindow(@NonNull View view){
+					input.getText().clear();
+				}
+			});
+			topPanel.addView(input);
 
-		if(!forReaction){
+		}else{ // in compose fragment
+			FrameLayout bottomPanel=new FrameLayout(activity);
+			bottomPanel.setPadding(V.dp(16), V.dp(8), V.dp(16), V.dp(8));
+			bottomPanel.setBackgroundResource(R.drawable.bg_m3_surface2);
+			ll.addView(bottomPanel, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
 			ImageButton hideKeyboard=new ImageButton(activity);
 			hideKeyboard.setImageResource(R.drawable.ic_fluent_keyboard_dock_24_regular);
 			hideKeyboard.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(activity, R.attr.colorM3OnSurfaceVariant)));
@@ -207,13 +219,16 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		}
 	}
 
-	private class SingleCategoryAdapter extends UsableRecyclerView.Adapter<RecyclerView.ViewHolder> implements ImageLoaderRecyclerAdapter{
-		private final EmojiCategory category;
-		private final List<ImageLoaderRequest> requests;
+	private class SingleCategoryAdapter extends UsableRecyclerView.Adapter<RecyclerView.ViewHolder> implements ImageLoaderRecyclerAdapter, Filterable{
+		private EmojiCategory category;
+
+		private final EmojiCategory originalCategory;
+		private List<ImageLoaderRequest> requests;
 
 		public SingleCategoryAdapter(EmojiCategory category){
 			super(imgLoader);
 			this.category=category;
+			this.originalCategory=new EmojiCategory(category);
 			requests=category.emojis.stream().map(e->new UrlImageLoaderRequest(e.getUrl(playGifs), V.dp(24), V.dp(24))).collect(Collectors.toList());
 		}
 
@@ -225,17 +240,22 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		@Override
 		public void onBindViewHolder(RecyclerView.ViewHolder holder, int position){
+			if(category.emojis.size() == 0) {
+				holder.itemView.setVisibility(View.GONE);
+			}
 			if(holder instanceof EmojiViewHolder evh){
 				evh.bind(category.emojis.get(position-1));
 				evh.positionWithinCategory=position-1;
 			}else if(holder instanceof SectionHeaderViewHolder shvh){
 				shvh.bind(TextUtils.isEmpty(category.title) ? domain : category.title);
 			}
+
 			super.onBindViewHolder(holder, position);
 		}
 
 		@Override
 		public int getItemCount(){
+			if(category.emojis.size() == 0) return 0;
 			return category.emojis.size()+1;
 		}
 
@@ -253,6 +273,39 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 		public ImageLoaderRequest getImageRequest(int position, int image){
 			return requests.get(position-1);
 		}
+
+		@Override
+		public Filter getFilter(){
+			return emojiFilter;
+		}
+		private final Filter emojiFilter = new Filter(){
+			@Override
+			protected FilterResults performFiltering(CharSequence charSequence){
+				List<Emoji> filteredEmoji=new ArrayList<>();
+				String search=charSequence.toString().toLowerCase().trim();
+
+				if(charSequence==null || charSequence.length()==0){
+					filteredEmoji.addAll(originalCategory.emojis);
+				}else{
+					for(Emoji emoji : originalCategory.emojis){
+						if(emoji.shortcode.toLowerCase().contains(search)){
+							filteredEmoji.add(emoji);
+						}
+					}
+
+				}
+				FilterResults results=new FilterResults();
+				results.values=filteredEmoji;
+				return results;
+			}
+			@Override
+			protected void publishResults(CharSequence charSequence, FilterResults filterResults){
+				category.emojis.clear();
+				category.emojis.addAll((List) filterResults.values);
+				requests=category.emojis.stream().map(e->new UrlImageLoaderRequest(e.getUrl(playGifs), V.dp(24), V.dp(24))).collect(Collectors.toList());
+				notifyDataSetChanged();
+			}
+		};
 	}
 
 	private class SectionHeaderViewHolder extends BindableViewHolder<String> implements StickyHeadersOverlay.HeaderViewHolder{
