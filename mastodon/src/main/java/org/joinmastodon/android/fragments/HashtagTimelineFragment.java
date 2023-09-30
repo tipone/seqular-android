@@ -23,6 +23,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.filters.CreateFilter;
 import org.joinmastodon.android.api.requests.filters.DeleteFilter;
+import org.joinmastodon.android.api.requests.filters.GetFilters;
 import org.joinmastodon.android.api.requests.tags.GetTag;
 import org.joinmastodon.android.api.requests.tags.SetTagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
@@ -286,13 +287,23 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		followMenuItem.setVisible(toolbarContentVisible);
 		followMenuItem.setTitle(getString(hashtag.following ? R.string.unfollow_user : R.string.follow_user, "#"+hashtagName));
 		followMenuItem.setIcon(hashtag.following ? R.drawable.ic_fluent_person_delete_24_filled : R.drawable.ic_fluent_person_add_24_regular);
-		pinMenuItem.setShowAsAction(toolbarContentVisible ? MenuItem.SHOW_AS_ACTION_NEVER : MenuItem.SHOW_AS_ACTION_ALWAYS);
 		super.updatePinButton(pinMenuItem);
-		if(toolbarContentVisible){
-			UiUtils.enableOptionsMenuIcons(getContext(), optionsMenu);
-		}else{
-			UiUtils.enableOptionsMenuIcons(getContext(), optionsMenu, R.id.pin);
-		}
+
+		muteMenuItem = optionsMenu.findItem(R.id.mute_hashtag);
+		updateMuteState(filter.isPresent());
+		new GetFilters().setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(List<Filter> filters) {
+				if (getActivity() == null) return;
+				filter=filters.stream().filter(filter->filter.title.equals("#"+hashtag)).findAny();
+				updateMuteState(filter.isPresent());
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
+			}
+		}).exec(accountID);
 	}
 
 	@Override
@@ -315,6 +326,9 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		if (super.onOptionsItemSelected(item)) return true;
 		if (item.getItemId() == R.id.follow_hashtag && hashtag!=null) {
 			setFollowed(!hashtag.following);
+		} else if (item.getItemId() == R.id.mute_hashtag) {
+			showMuteDialog(filter.isPresent());
+			return true;
 		}
 		return true;
 	}
@@ -370,7 +384,10 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		if(followMenuItem!=null){
 			followMenuItem.setTitle(getString(hashtag.following ? R.string.unfollow_user : R.string.follow_user, "#"+hashtagName));
 			followMenuItem.setIcon(hashtag.following ? R.drawable.ic_fluent_person_delete_24_filled : R.drawable.ic_fluent_person_add_24_regular);
-			UiUtils.insetPopupMenuIcon(getContext(), followMenuItem);
+		}
+		if(muteMenuItem!=null){
+			muteMenuItem.setTitle(getString(filter.isPresent() ? R.string.unmute_user : R.string.mute_user, "#" + hashtag));
+			muteMenuItem.setIcon(filter.isPresent() ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 		}
 	}
 
