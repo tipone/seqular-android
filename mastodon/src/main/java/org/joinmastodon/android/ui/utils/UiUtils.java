@@ -218,11 +218,20 @@ public class UiUtils {
 		if(diff<1000L){
 			return context.getString(R.string.time_now);
 		}else if(diff<60_000L){
-			return context.getString(ago ? R.string.time_seconds_ago_short : R.string.sk_time_seconds, diff/1000L);
+			long time = diff/1000L;
+			return ago ?
+					context.getString(R.string.time_seconds_ago_short, time) :
+					context.getResources().getQuantityString(R.plurals.sk_time_seconds, (int) time, time);
 		}else if(diff<3600_000L){
-			return context.getString(ago ? R.string.time_minutes_ago_short : R.string.sk_time_minutes, diff/60_000L);
+			long time = diff/60_000L;
+			return ago ?
+					context.getString(R.string.time_minutes_ago_short, time) :
+					context.getResources().getQuantityString(R.plurals.sk_time_minutes, (int) time, time);
 		}else if(diff<3600_000L*24L){
-			return context.getString(ago ? R.string.time_hours_ago_short : R.string.sk_time_hours, diff/3600_000L);
+			long time = diff/3600_000L;
+			return ago ?
+					context.getString(R.string.time_hours_ago_short, time) :
+					context.getResources().getQuantityString(R.plurals.sk_time_hours, (int) time, time);
 		} else {
 			int days = (int) (diff / (3600_000L * 24L));
 			if (ago && days > 30) {
@@ -233,7 +242,7 @@ public class UiUtils {
 					return DATE_FORMATTER_SHORT_WITH_YEAR.format(dt);
 				}
 			}
-			return context.getString(ago ? R.string.time_days_ago_short : R.string.sk_time_days, days);
+			return ago ? context.getString(R.string.time_days_ago_short, days) : context.getResources().getQuantityString(R.plurals.sk_time_days, days, days);
 		}
 	}
 
