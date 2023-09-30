@@ -26,6 +26,8 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.polls.SubmitPollVote;
+import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.model.Account;
@@ -860,6 +862,61 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void onProvideAssistContent(AssistContent assistContent) {
 		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
+	}
+
+	public void togglePostTranslation(Status status, String itemID){
+		switch(status.translationState){
+			case LOADING -> {
+				return;
+			}
+			case SHOWN -> {
+				status.translationState=Status.TranslationState.HIDDEN;
+			}
+			case HIDDEN -> {
+				if(status.translation!=null){
+					status.translationState=Status.TranslationState.SHOWN;
+				}else{
+					status.translationState=Status.TranslationState.LOADING;
+					new TranslateStatus(status.getContentStatus().id, Locale.getDefault().getLanguage())
+							.setCallback(new Callback<>(){
+								@Override
+								public void onSuccess(Translation result){
+									if(getActivity()==null)
+										return;
+									status.translation=result;
+									status.translationState=Status.TranslationState.SHOWN;
+									TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
+									if(text!=null){
+										text.updateTranslation(true);
+										imgLoader.bindViewHolder((ImageLoaderRecyclerAdapter) list.getAdapter(), text, text.getAbsoluteAdapterPosition());
+									}
+								}
+
+								@Override
+								public void onError(ErrorResponse error){
+									if(getActivity()==null)
+										return;
+									status.translationState=Status.TranslationState.HIDDEN;
+									TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
+									if(text!=null){
+										text.updateTranslation(true);
+									}
+									new M3AlertDialogBuilder(getActivity())
+											.setTitle(R.string.error)
+											.setMessage(R.string.translation_failed)
+											.setPositiveButton(R.string.ok, null)
+											.show();
+								}
+							})
+							.exec(accountID);
+				}
+			}
+		}
+		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
+		if(text!=null){
+			text.updateTranslation(true);
+			imgLoader.bindViewHolder((ImageLoaderRecyclerAdapter) list.getAdapter(), text, text.getAbsoluteAdapterPosition());
+		}
 	}
 
 	public void rebuildAllDisplayItems(){

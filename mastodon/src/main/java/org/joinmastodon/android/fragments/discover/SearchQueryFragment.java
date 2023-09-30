@@ -378,7 +378,7 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 
 	private void openHashtag(SearchResult res){
 		wrapSuicideDialog(()->{
-			UiUtils.openHashtagTimeline(getActivity(), accountID, res.hashtag.name, res.hashtag.following);
+			UiUtils.openHashtagTimeline(getActivity(), accountID, res.hashtag);
 			AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putRecentSearch(res);
 		});
 	}
@@ -438,7 +438,7 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 			String q=searchViewHelper.getQuery();
 			if(q.startsWith("#"))
 				q=q.substring(1);
-			UiUtils.openHashtagTimeline(getActivity(), accountID, q, null);
+			UiUtils.openHashtagTimeline(getActivity(), accountID, q);
 		});
 	}
 

@@ -303,6 +303,10 @@ public class AccountSession{
 		});
 	}
 
+	public void updateAccountInfo(){
+		AccountSessionManager.getInstance().updateSessionLocalInfo(this);
+	}
+
 	public Optional<Instance> getInstance() {
 		return Optional.ofNullable(AccountSessionManager.getInstance().getInstanceInfo(domain));
 	}
@@ -318,9 +322,5 @@ public class AccountSession{
 		return getInstance()
 				.map(instance->"https://"+domain+(instance.isAkkoma() ? "/images/avi.png" : "/avatars/original/missing.png"))
 				.orElse("");
-	}
-
-	public void updateAccountInfo(){
-		AccountSessionManager.getInstance().updateSessionLocalInfo(this);
 	}
 }

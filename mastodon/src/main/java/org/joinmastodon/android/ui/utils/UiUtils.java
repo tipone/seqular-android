@@ -106,6 +106,7 @@ import org.joinmastodon.android.model.AccountField;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
+import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
@@ -219,20 +220,11 @@ public class UiUtils {
 		if(diff<1000L){
 			return context.getString(R.string.time_now);
 		}else if(diff<60_000L){
-			long time = diff/1000L;
-			return ago ?
-					context.getString(R.string.time_seconds_ago_short, time) :
-					context.getResources().getQuantityString(R.plurals.sk_time_seconds, (int) time, time);
+			return context.getString(ago ? R.string.time_seconds_ago_short : R.string.sk_time_seconds, diff/1000L);
 		}else if(diff<3600_000L){
-			long time = diff/60_000L;
-			return ago ?
-					context.getString(R.string.time_minutes_ago_short, time) :
-					context.getResources().getQuantityString(R.plurals.sk_time_minutes, (int) time, time);
+			return context.getString(ago ? R.string.time_minutes_ago_short : R.string.sk_time_minutes, diff/60_000L);
 		}else if(diff<3600_000L*24L){
-			long time = diff/3600_000L;
-			return ago ?
-					context.getString(R.string.time_hours_ago_short, time) :
-					context.getResources().getQuantityString(R.plurals.sk_time_hours, (int) time, time);
+			return context.getString(ago ? R.string.time_hours_ago_short : R.string.sk_time_hours, diff/3600_000L);
 		} else {
 			int days = (int) (diff / (3600_000L * 24L));
 			if (ago && days > 30) {
@@ -243,7 +235,7 @@ public class UiUtils {
 					return DATE_FORMATTER_SHORT_WITH_YEAR.format(dt);
 				}
 			}
-			return ago ? context.getString(R.string.time_days_ago_short, days) : context.getResources().getQuantityString(R.plurals.sk_time_days, days, days);
+			return context.getString(ago ? R.string.time_days_ago_short : R.string.sk_time_days, days);
 		}
 	}
 
@@ -456,12 +448,18 @@ public class UiUtils {
 		Nav.go((Activity) context, ProfileFragment.class, args);
 	}
 
-	public static void openHashtagTimeline(Context context, String accountID, String hashtag, @Nullable Boolean following) {
-		Bundle args = new Bundle();
+	public static void openHashtagTimeline(Context context, String accountID, Hashtag hashtag){
+		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		args.putString("hashtag", hashtag);
-		if (following != null) args.putBoolean("following", following);
-		Nav.go((Activity) context, HashtagTimelineFragment.class, args);
+		args.putParcelable("hashtag", Parcels.wrap(hashtag));
+		Nav.go((Activity)context, HashtagTimelineFragment.class, args);
+	}
+
+	public static void openHashtagTimeline(Context context, String accountID, String hashtag){
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putString("hashtagName", hashtag);
+		Nav.go((Activity)context, HashtagTimelineFragment.class, args);
 	}
 
 	public static void showConfirmationAlert(Context context, @StringRes int title, @StringRes int message, @StringRes int confirmButton, Runnable onConfirmed) {
@@ -1386,7 +1384,7 @@ public class UiUtils {
 							}
 						})
 						.execNoAuth(uri.getHost()));
-			} else if (looksLikeMastodonUrl(url)) {
+			} else if (looksLikeFediverseUrl(url)) {
 				return Optional.of(new GetSearchResults(url, null, true, null, 0, 0)
 						.setCallback(new Callback<>() {
 							@Override

@@ -28,6 +28,7 @@ import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.SpoilerStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
@@ -81,7 +82,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 	}
 
 	@Subscribe
-	public void onStatusMuteChaged(StatusMuteChangedEvent ev){
+	public void onStatusMuteChanged(StatusMuteChangedEvent ev){
 		for(Status s:data){
 			s.getContentStatus().update(ev);
 			AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
@@ -131,6 +132,12 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					text.textSelectable=true;
 				else if(item instanceof FooterStatusDisplayItem footer)
 					footer.hideCounts=true;
+				else if(item instanceof SpoilerStatusDisplayItem spoiler){
+					for(StatusDisplayItem subItem:spoiler.contentItems){
+						if(subItem instanceof TextStatusDisplayItem text)
+							text.textSelectable=true;
+					}
+				}
 			}
 		}
     

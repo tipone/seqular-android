@@ -369,6 +369,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		tabbar.setTabTextColors(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSurfaceVariant), UiUtils.getThemeColor(getActivity(), R.attr.colorM3Primary));
 		tabbar.setTabTextSize(V.dp(14));
+		tabLayoutMediator=new TabLayoutMediator(tabbar, pager, (tab, position)->tab.setText(switch(position){
+			case 0 -> R.string.profile_featured;
+			case 1 -> R.string.profile_timeline;
+			case 2 -> R.string.profile_about;
+			default -> throw new IllegalStateException();
+		}));
 		tabLayoutMediator=new TabLayoutMediator(tabbar, pager, new TabLayoutMediator.TabConfigurationStrategy(){
 			@Override
 			public void onConfigureTab(@NonNull TabLayout.Tab tab, int position){
@@ -755,7 +761,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
 		followersLabel.setText(getResources().getQuantityString(R.plurals.followers, (int)Math.min(999, account.followersCount)));
 		followingLabel.setText(getResources().getQuantityString(R.plurals.following, (int)Math.min(999, account.followingCount)));
-
+		
 		if (account.followersCount < 0) followersBtn.setVisibility(View.GONE);
 		if (account.followingCount < 0) followingBtn.setVisibility(View.GONE);
 		if (account.followersCount < 0 || account.followingCount < 0)
