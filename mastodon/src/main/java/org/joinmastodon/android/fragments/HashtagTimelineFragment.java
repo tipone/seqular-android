@@ -16,12 +16,20 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonErrorResponse;
+import org.joinmastodon.android.api.requests.filters.CreateFilter;
+import org.joinmastodon.android.api.requests.filters.DeleteFilter;
 import org.joinmastodon.android.api.requests.tags.GetTag;
 import org.joinmastodon.android.api.requests.tags.SetTagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
+import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
+import org.joinmastodon.android.model.FilterKeyword;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
@@ -61,6 +69,8 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	private boolean localOnly;
 	private Menu optionsMenu;
 	private MenuInflater optionsMenuInflater;
+
+	private Optional<Filter> filter = Optional.empty();
 
 	@Override
 	protected boolean wantsComposeButton() {
@@ -191,14 +201,14 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 
 	@Override
 	public boolean onFabLongClick(View v) {
-		return UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtag+' ');
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtagName+' ');
 	}
 
 	@Override
 	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		args.putString("prefilledText", '#'+hashtag+' ');
+		args.putString("prefilledText", '#'+hashtagName+' ');
 		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 
