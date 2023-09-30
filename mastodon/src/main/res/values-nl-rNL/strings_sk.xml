@@ -314,4 +314,15 @@
         <item quantity="one">bericht</item>
         <item quantity="other">berichten</item>
     </plurals>
+    <string name="sk_load_missing_posts_below">Laad oudere berichten</string>
+    <string name="sk_load_missing_posts_above">Laad nieuwere berichten</string>
+    <string name="sk_suicide_helplines_url">https://www.113.nl/</string>
+    <string name="sk_suicide_search_terms">Zelfmoord</string>
+    <string name="sk_notification_mention">Je werd genoemd door %s</string>
+    <string name="sk_time_hours">%d uren</string>
+    <string name="sk_time_minutes">%d minuten</string>
+    <string name="sk_do_not_show_again">Niet meer laten zien</string>
+    <string name="sk_time_days">%d dagen</string>
+    <string name="sk_time_seconds">%d seconden</string>
+    <string name="sk_search_suicide_hotlines">Vind een hulplijn</string>
 </resources>

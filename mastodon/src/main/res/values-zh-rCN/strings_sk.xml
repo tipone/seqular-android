@@ -319,12 +319,12 @@
     <string name="sk_disable_pill_shaped_active_indicator">禁用药丸状的活跃选项卡指示器</string>
     <string name="sk_settings_true_black">全黑模式</string>
     <string name="sk_settings_display_pronouns_in_timelines">在时间线上显示性别代词</string>
-    <string name="sk_settings_emoji_reactions_explanation">显示对嘟文的表情回应，并让你与之互动。某些修改版的 Mastodon 支持此功能，但 Mastodon 不支持。</string>
+    <string name="sk_settings_emoji_reactions_explanation">显示对嘟文的表情回应，并允许你添加自己的表情回应。许多 Fediverse 服务器支持此功能，但 Mastodon 不支持。</string>
     <string name="sk_settings_emoji_reactions_in_lists">在时间线中显示表情回应</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">是否在时间线中显示表情回应。如果此选项为关闭，则只有在查看对话时才会显示表情回应。</string>
     <string name="sk_button_react">用表情回应</string>
     <string name="sk_again_for_system_keyboard">再次点击以打开系统键盘</string>
-    <string name="sk_enter_emoji_toast">你需要输入一个表情</string>
+    <string name="sk_enter_emoji_toast">请输入一个表情</string>
     <string name="sk_enter_emoji_hint">输入一个表情以回应</string>
     <string name="sk_mute_label">持续时间</string>
     <string name="sk_duration_indefinite">无限期</string>
@@ -372,4 +372,25 @@
     <string name="sk_reacted_with">%1$s 回应了 %2$s</string>
     <string name="sk_bubble_timeline_info_banner">这些都是实例管理员从网络中最新精选出来的嘟文。</string>
     <string name="sk_search_fediverse">搜索联邦宇宙</string>
+    <string name="sk_time_seconds">%d 秒</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">仅当嘟文被打开时</string>
+    <string name="sk_time_hours">%d 时</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">隐藏空的表情回应</string>
+    <string name="sk_settings_show_emoji_reactions">在时间线中显示表情回应</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="other">嘟文</item>
+    </plurals>
+    <string name="sk_suicide_search_terms">自杀</string>
+    <string name="sk_load_missing_posts_above">加载较新的嘟文</string>
+    <string name="sk_time_days">%d 天</string>
+    <string name="sk_settings_show_emoji_reactions_always">始终显示添加按钮</string>
+    <string name="sk_search_suicide_hotlines">查找求助热线</string>
+    <string name="sk_do_not_show_again">下次不再显示</string>
+    <string name="sk_trending_posts_info_banner">这些是在你的服务器上引起关注的嘟文。</string>
+    <string name="sk_load_missing_posts_below">加载较旧的嘟文</string>
+    <string name="sk_search_suicide_title">以防你遇到困难…</string>
+    <string name="sk_time_minutes">%d 分</string>
+    <string name="sk_search_suicide_message">如果你正在寻找一个不自杀的迹象，这就是。如果你遇到困难，请考虑拨打当地的自杀热线。</string>
+    <string name="sk_trending_links_info_banner">这些是你的服务器上正在谈论的新闻故事。</string>
+    <string name="sk_post_contains_media">嘟文包含媒体</string>
 </resources>

@@ -368,7 +368,7 @@
     <string name="sk_icon_clapper_board">Klaffitaulu</string>
     <string name="sk_icon_pizza">Pitsa</string>
     <string name="sk_icon_recycle_bin">Roskakori</string>
-    <string name="sk_edit_timelines">Muokkaa aikananoja</string>
+    <string name="sk_edit_timelines">Muokkaa aikajanoja</string>
     <string name="sk_edit_timeline_tags_explanation">Ota huomioon, että palvelin tekee nämä operaatiot. Niiden yhdistelyä ei välttämättä tueta.</string>
     <string name="sk_notify_update">Tämä muokkaa tehostettua viestiä</string>
     <string name="sk_save_draft_message">Haluatko tallentaa muutokset tähän luonnokseen vai julkaista sen nyt\?</string>
