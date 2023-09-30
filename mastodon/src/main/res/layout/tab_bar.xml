@@ -130,18 +130,18 @@
 					android:id="@+id/notifications_badge"
 					android:layout_width="wrap_content"
 					android:layout_height="16dp"
-					android:layout_gravity="center"
 					android:layout_alignTop="@id/notifications_icon"
-					android:layout_toEndOf="@id/notifications_icon"
-					android:layout_marginTop="-4dp"
+					android:layout_gravity="center"
 					android:layout_marginStart="-12dp"
+					android:layout_marginTop="-4dp"
+					android:layout_toEndOf="@id/notifications_icon"
 					android:background="@drawable/bg_tabbar_badge"
-					android:textColor="?colorM3OnPrimary"
 					android:gravity="center"
 					android:includeFontPadding="false"
-					android:textAppearance="@style/m3_label_small"
 					android:minWidth="16dp"
-					tools:text="222"/>
+					android:textAppearance="@style/m3_label_small"
+					android:textColor="@color/white"
+					tools:text="222" />
 
 			</RelativeLayout>
 
