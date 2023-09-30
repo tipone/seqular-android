@@ -50,6 +50,8 @@ import org.joinmastodon.android.utils.ObjectIdComparator;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.parceler.Parcels;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Consumer;
 
 import me.grishka.appkit.Nav;
@@ -105,7 +107,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.notifications, menu);
 		menu.findItem(R.id.clear_notifications).setVisible(GlobalUserPreferences.enableDeleteNotifications);
-//		menu.findItem(R.id.filter_notifications).setVisible(true);
+		menu.findItem(R.id.filter_notifications).setVisible(true);
 		markAllReadItem=menu.findItem(R.id.mark_all_read);
 		updateMarkAllReadButton();
 		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.follow_requests, R.id.mark_all_read, R.id.filter_notifications);
@@ -134,18 +136,42 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 		} else if (item.getItemId() == R.id.filter_notifications) {
 			Context ctx = getToolbarContext();
 			LinearLayout linearLayout = new LinearLayout(getToolbarContext());
-			Dialog dialog = new M3AlertDialogBuilder(ctx).setView(linearLayout).create();
-			AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+			String[] listItems = {
+					ctx.getString(R.string.notification_type_mentions_and_replies),
+					ctx.getString(R.string.notification_type_reblog),
+					ctx.getString(R.string.notification_type_favorite),
+					ctx.getString(R.string.notification_type_favorite),
+					ctx.getString(R.string.notification_type_follow),
+					ctx.getString(R.string.notification_type_poll),
+					ctx.getString(R.string.sk_notification_type_update),
+					ctx.getString(R.string.sk_notification_type_posts)
+			};
 
-			linearLayout.setOrientation(LinearLayout.VERTICAL);
-//			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-//			linearLayout.setLayoutParams(params);
-			TextView textView = new TextView(ctx);
-			textView.setText("wtf");
-			linearLayout.addView(textView);
+			final boolean[] checkedItems = new boolean[listItems.length];
 
+			final List<String> selectedItems = Arrays.asList(listItems);
 
-			dialog.show();
+			M3AlertDialogBuilder dialogBuilder = new M3AlertDialogBuilder(ctx);
+			dialogBuilder.setTitle(R.string.sk_settings_filters);
+			dialogBuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
+				checkedItems[which] = isChecked;
+				String currentItem = selectedItems.get(which);
+			});
+
+			dialogBuilder.setPositiveButton(R.string.save, (d, which) -> {
+//				lp.publishButtonText=input.getEditText().getText().toString().trim();
+//				lp.save();
+//				publishTextItem.subtitle=getPublishButtonText();
+//				rebindItem(publishTextItem);
+			}).setNeutralButton(R.string.clear, (d, which) -> {
+//						lp.publishButtonText=null;
+//						lp.save();
+//						publishTextItem.subtitle=getPublishButtonText();
+//						rebindItem(publishTextItem);
+			}).setNegativeButton(R.string.cancel, (d, which) -> {});
+
+			dialogBuilder.create().show();
+
 			return true;
 		}
 		return false;
