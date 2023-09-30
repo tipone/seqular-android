@@ -1,9 +1,12 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
+import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,6 +17,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,17 +31,26 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetFollowRequests;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.notifications.PleromaMarkNotificationsRead;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.FollowRequestHandledEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
+import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.StatusPrivacy;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.ui.views.CheckIconSelectableTextView;
+import org.joinmastodon.android.ui.views.CheckableLinearLayout;
 import org.joinmastodon.android.utils.ElevationOnScrollListener;
 import org.joinmastodon.android.utils.ObjectIdComparator;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
+import org.parceler.Parcels;
+
+import java.util.function.Consumer;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -92,9 +105,10 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.notifications, menu);
 		menu.findItem(R.id.clear_notifications).setVisible(GlobalUserPreferences.enableDeleteNotifications);
+//		menu.findItem(R.id.filter_notifications).setVisible(true);
 		markAllReadItem=menu.findItem(R.id.mark_all_read);
 		updateMarkAllReadButton();
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.follow_requests, R.id.mark_all_read);
+		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.follow_requests, R.id.mark_all_read, R.id.filter_notifications);
 	}
 
 	@Override
@@ -116,6 +130,22 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			if (getCurrentFragment() instanceof NotificationsListFragment nlf) {
 				nlf.resetUnreadBackground();
 			}
+			return true;
+		} else if (item.getItemId() == R.id.filter_notifications) {
+			Context ctx = getToolbarContext();
+			LinearLayout linearLayout = new LinearLayout(getToolbarContext());
+			Dialog dialog = new M3AlertDialogBuilder(ctx).setView(linearLayout).create();
+			AccountSession session = AccountSessionManager.getInstance().getAccount(accountID);
+
+			linearLayout.setOrientation(LinearLayout.VERTICAL);
+//			LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//			linearLayout.setLayoutParams(params);
+			TextView textView = new TextView(ctx);
+			textView.setText("wtf");
+			linearLayout.addView(textView);
+
+
+			dialog.show();
 			return true;
 		}
 		return false;

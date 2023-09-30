@@ -77,6 +77,7 @@
     <string name="mo_instance_info_moderated_servers">Moderated servers</string>
     <string name="mo_severity_silence">Silenced</string>
     <string name="mo_severity_suspend">Blocked</string>
+	<string name="mo_filter_notifications">Filter notifications</string>
 
 	<string name="mo_repo_url" translatable="false">https://github.com/LucasGGamerM/moshidon</string>
 	<string name="mo_donate_url" translatable="false">https://github.com/sponsors/LucasGGamerM</string>
