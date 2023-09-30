@@ -69,7 +69,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private View tabsDivider;
 	private TabLayoutMediator tabLayoutMediator;
 	String unreadMarker, realUnreadMarker;
-	private MenuItem markAllReadItem;
+	private MenuItem markAllReadItem, filterItem;
 	private NotificationsListFragment allNotificationsFragment, mentionsFragment;
 	private ElevationOnScrollListener elevationOnScrollListener;
 
@@ -107,7 +107,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.notifications, menu);
 		menu.findItem(R.id.clear_notifications).setVisible(GlobalUserPreferences.enableDeleteNotifications);
-		menu.findItem(R.id.filter_notifications).setVisible(true);
+		filterItem=menu.findItem(R.id.filter_notifications).setVisible(true);
 		markAllReadItem=menu.findItem(R.id.mark_all_read);
 		updateMarkAllReadButton();
 		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.follow_requests, R.id.mark_all_read, R.id.filter_notifications);
@@ -240,6 +240,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			public void onPageSelected(int position){
 				if (elevationOnScrollListener != null && getCurrentFragment() instanceof IsOnTop f)
 					elevationOnScrollListener.handleScroll(getContext(), f.isOnTop());
+				filterItem.setVisible(position==0);
 				if(position==0)
 					return;
 				Fragment _page=getFragmentForPage(position);
