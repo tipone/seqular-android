@@ -95,4 +95,5 @@
     <string name="mo_blocked_accounts">Cuentas bloqueadas</string>
     <string name="mo_mute_hashtag">Silenciar etiqueta</string>
     <string name="mo_confirm_to_mute_hashtag">¿Seguro que quieres silenciar esta etiqueta\?</string>
+    <string name="mo_filter_notifications">Filtrar las notificaciones</string>
 </resources>
