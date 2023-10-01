@@ -135,7 +135,6 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			return true;
 		} else if (item.getItemId() == R.id.filter_notifications) {
 			Context ctx = getToolbarContext();
-			LinearLayout linearLayout = new LinearLayout(getToolbarContext());
 			String[] listItems = {
 					ctx.getString(R.string.notification_type_mentions_and_replies),
 					ctx.getString(R.string.notification_type_reblog),
@@ -175,6 +174,14 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 				this.allNotificationsFragment.reload();
 			}).setNeutralButton(R.string.clear, (d, which) -> {
 				Arrays.fill(checkedItems, true);
+				getLocalPrefs().notificationFilters.mention=checkedItems[0];
+				getLocalPrefs().notificationFilters.reblog=checkedItems[1];
+				getLocalPrefs().notificationFilters.favourite=checkedItems[2];
+				getLocalPrefs().notificationFilters.follow=checkedItems[3];
+				getLocalPrefs().notificationFilters.poll=checkedItems[4];
+				getLocalPrefs().notificationFilters.update=checkedItems[5];
+				getLocalPrefs().notificationFilters.status=checkedItems[6];
+				getLocalPrefs().save();
 
 				this.allNotificationsFragment.reload();
 			}).setNegativeButton(R.string.cancel, (d, which) -> {});

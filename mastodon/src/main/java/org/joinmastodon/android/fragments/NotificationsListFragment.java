@@ -88,6 +88,40 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Notification n){
+		if(!onlyMentions && !onlyPosts){
+			switch(n.type){
+				case MENTION -> {
+					if(!getLocalPrefs().notificationFilters.mention)
+						return new ArrayList<>();
+				}
+				case REBLOG -> {
+					if(!getLocalPrefs().notificationFilters.reblog)
+						return new ArrayList<>();
+				}
+				case FAVORITE -> {
+					if(!getLocalPrefs().notificationFilters.favourite)
+						return new ArrayList<>();
+				}
+				case FOLLOW, FOLLOW_REQUEST -> {
+					if(!getLocalPrefs().notificationFilters.follow)
+						return new ArrayList<>();
+				}
+				case POLL -> {
+					if(!getLocalPrefs().notificationFilters.poll)
+						return new ArrayList<>();
+				}
+				case UPDATE -> {
+					if(!getLocalPrefs().notificationFilters.update)
+						return new ArrayList<>();
+				}
+				case STATUS -> {
+					if(!getLocalPrefs().notificationFilters.status)
+						return new ArrayList<>();
+				}
+				default -> {}
+			}
+		}
+
 		NotificationHeaderStatusDisplayItem titleItem;
 		if(n.type==Notification.Type.MENTION || n.type==Notification.Type.STATUS){
 			titleItem=null;
