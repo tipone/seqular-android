@@ -300,4 +300,20 @@
     <string name="sk_enter_emoji_toast">يُرجى إدخال إيموجي</string>
     <string name="sk_in_reply">ردّا على</string>
     <string name="sk_open_in_app_failed">لا يمكن فتحه في التطبيق</string>
+    <string name="sk_settings_enable_delete_notifications">تمكين حذف الإشعارات</string>
+    <string name="sk_clear_all_notifications_confirm">أتريد حقا حذف كافة الإشعارات؟</string>
+    <string name="sk_already_bookmarked">موجود بالفعل في الفواصل المرجعية</string>
+    <string name="sk_resource_not_found">المَورِد غير موجود</string>
+    <string name="sk_delete_notification_confirm">أتريد حقا حذف هذا الإشعار؟</string>
+    <string name="sk_draft_or_schedule">تحرير مسودة أو برمجتها</string>
+    <string name="sk_trending_links_info_banner">هذه هي القصص الإخبارية التي يُتَحدّث عنها في خادمكم.</string>
+    <string name="sk_notification_type_posts">إشعارات المنشورات</string>
+    <string name="sk_confirm_delete_draft">هل أنت متأكد من أنك تريد حذف مُسودّة هذا المنشور؟</string>
+    <string name="sk_compose_no_schedule">لا تُبرمِجه</string>
+    <string name="sk_confirm_clear_recent_languages">أتريد حقا مسح لغاتك المُستخدَمة حديثا؟</string>
+    <string name="sk_confirm_delete_scheduled_post">هل أنت متأكد من أنك تريد حذف هذا المنشور المُبرمَج؟</string>
+    <string name="sk_trending_posts_info_banner">هذه هي المنشورات المثيرة للإهتمام على خادمكم.</string>
+    <string name="sk_federated_timeline_info_banner">هذه هي أحدث المنشورات للأعضاء في فديراليتك.</string>
+    <string name="sk_bubble_timeline_info_banner">هذه هي أحدث المنشورات على الشبكة والتي انتقاها مُدراء خادمكم.</string>
+    <string name="sk_schedule_or_draft">برمجة أو تحرير مُسودّة</string>
 </resources>

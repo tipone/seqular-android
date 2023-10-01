@@ -51,50 +51,7 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		super.onCreate(savedInstanceState);
 
 		if(savedInstanceState==null){
-			if(AccountSessionManager.getInstance().getLoggedInAccounts().isEmpty()){
-				showFragmentClearingBackStack(new CustomWelcomeFragment());
-			}else{
-				AccountSession session;
-				Bundle args=new Bundle();
-				Intent intent=getIntent();
-				if(intent.hasExtra("fromExternalShare")) {
-					AccountSessionManager.getInstance()
-							.setLastActiveAccountID(intent.getStringExtra("account"));
-					AccountSessionManager.getInstance().maybeUpdateLocalInfo(
-							AccountSessionManager.getInstance().getLastActiveAccount());
-					showFragmentForExternalShare(intent.getExtras());
-					return;
-				}
-
-				boolean fromNotification = intent.getBooleanExtra("fromNotification", false);
-				boolean hasNotification = intent.hasExtra("notification");
-				if(fromNotification){
-					String accountID=intent.getStringExtra("accountID");
-					try{
-						session=AccountSessionManager.getInstance().getAccount(accountID);
-						if(!hasNotification) args.putString("tab", "notifications");
-					}catch(IllegalStateException x){
-						session=AccountSessionManager.getInstance().getLastActiveAccount();
-					}
-				}else{
-					session=AccountSessionManager.getInstance().getLastActiveAccount();
-				}
-				AccountSessionManager.getInstance().maybeUpdateLocalInfo(session);
-				args.putString("account", session.getID());
-				Fragment fragment=session.activated ? new HomeFragment() : new AccountActivationFragment();
-				fragment.setArguments(args);
-				if(fromNotification && hasNotification){
-					Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
-					showFragmentForNotification(notification, session.getID());
-				} else if (intent.getBooleanExtra("compose", false)){
-					showCompose();
-				} else if (Intent.ACTION_VIEW.equals(intent.getAction())){
-					handleURL(intent.getData(), null);
-				} else {
-					showFragmentClearingBackStack(fragment);
-					maybeRequestNotificationsPermission();
-				}
-			}
+			restartHomeFragment();
 		}
 
 		if(GithubSelfUpdater.needSelfUpdating()){
@@ -284,5 +241,52 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		super.onProvideAssistContent(assistContent);
 		Fragment fragment = getCurrentFragment();
 		if (fragment != null) callFragmentToProvideAssistContent(fragment, assistContent);
+	}
+
+	public void restartHomeFragment(){
+		if(AccountSessionManager.getInstance().getLoggedInAccounts().isEmpty()){
+			showFragmentClearingBackStack(new CustomWelcomeFragment());
+		}else{
+			AccountSession session;
+			Bundle args=new Bundle();
+			Intent intent=getIntent();
+			if(intent.hasExtra("fromExternalShare")) {
+				AccountSessionManager.getInstance()
+						.setLastActiveAccountID(intent.getStringExtra("account"));
+				AccountSessionManager.getInstance().maybeUpdateLocalInfo(
+						AccountSessionManager.getInstance().getLastActiveAccount());
+				showFragmentForExternalShare(intent.getExtras());
+				return;
+			}
+
+			boolean fromNotification = intent.getBooleanExtra("fromNotification", false);
+			boolean hasNotification = intent.hasExtra("notification");
+			if(fromNotification){
+				String accountID=intent.getStringExtra("accountID");
+				try{
+					session=AccountSessionManager.getInstance().getAccount(accountID);
+					if(!hasNotification) args.putString("tab", "notifications");
+				}catch(IllegalStateException x){
+					session=AccountSessionManager.getInstance().getLastActiveAccount();
+				}
+			}else{
+				session=AccountSessionManager.getInstance().getLastActiveAccount();
+			}
+			AccountSessionManager.getInstance().maybeUpdateLocalInfo(session);
+			args.putString("account", session.getID());
+			Fragment fragment=session.activated ? new HomeFragment() : new AccountActivationFragment();
+			fragment.setArguments(args);
+			if(fromNotification && hasNotification){
+				Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
+				showFragmentForNotification(notification, session.getID());
+			} else if (intent.getBooleanExtra("compose", false)){
+				showCompose();
+			} else if (Intent.ACTION_VIEW.equals(intent.getAction())){
+				handleURL(intent.getData(), null);
+			} else {
+				showFragmentClearingBackStack(fragment);
+				maybeRequestNotificationsPermission();
+			}
+		}
 	}
 }

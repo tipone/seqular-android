@@ -363,23 +363,38 @@
     <string name="sk_settings_continues_playback">Suprapunere audio</string>
     <string name="sk_settings_continues_playback_summary">Permiteți continuarea redării media curente, suprapunând noua redare</string>
     <string name="sk_notification_mention">Ați fost menționați de către %s</string>
-    <string name="sk_settings_show_new_posts_button">Buton \"Arătați postări noi\"</string>
-    <string name="sk_settings_emoji_reactions_in_lists">Afișați reacții emoji în cronologii</string>
-    <plurals name="sk_users_reacted_with">
-        <item quantity="one">Un utilizator a reacționat cu %2$s</item>
-        <item quantity="few">%1$,d utilizatori au reacționat cu %2$s</item>
-        <item quantity="other">%1$,d utilizatori au reacționat cu %2$s</item>
-    </plurals>
-    <string name="sk_button_react">Reacționați cu emoji</string>
-    <string name="sk_enter_emoji_toast">Trebuie să tastați un emoji</string>
-    <string name="sk_enter_emoji_hint">Scrieți pentru a reacționa cu un emoji</string>
-    <string name="sk_settings_emoji_reactions">Activați reacții emoji</string>
-    <string name="sk_settings_emoji_reactions_explanation">Afișează reacțiile emoji la postări și vă permite să interacționați cu ele. Unele versiuni modificate de Mastodon acceptă acest lucru, dar Mastodon nu.</string>
-    <string name="sk_again_for_system_keyboard">Apăsați din nou pentru tastatura de sistem</string>
+    <string name="sk_time_seconds">%d secunde</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Doar când postarea este deschisă</string>
+    <string name="sk_time_hours">%d ore</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Ascundeți reacțiile emoji goale</string>
+    <string name="sk_settings_show_emoji_reactions">Afișați reacțiile emoji în cronologii</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">postare</item>
         <item quantity="few">postări</item>
         <item quantity="other">postări</item>
     </plurals>
-    <string name="sk_settings_emoji_reactions_in_lists_explanation">Dacă reacțiile emoji ar trebui să fie afișate pe cronologii. Dacă această opțiune este dezactivată, reacțiile emoji vor fi afișate doar atunci când vizualizați o discuție.</string>
+    <string name="sk_settings_emoji_reactions">Activați reacții emoji</string>
+    <string name="sk_suicide_search_terms">Sinucidere</string>
+    <string name="sk_load_missing_posts_above">Încărcați postări mai noi</string>
+    <string name="sk_time_days">%d zile</string>
+    <string name="sk_settings_show_emoji_reactions_always">Afișați mereu butonul adăugare</string>
+    <string name="sk_search_suicide_hotlines">Găsiți o linie de asistență telefonică</string>
+    <string name="sk_enter_emoji_hint">Scrieți pentru a reacționa cu un emoji</string>
+    <string name="sk_do_not_show_again">Nu mai afișați din nou</string>
+    <string name="sk_suicide_helplines_url">http://www.antisuicid.com/</string>
+    <string name="sk_enter_emoji_toast">Vă rugăm scrieți un emoji</string>
+    <string name="sk_trending_posts_info_banner">Acestea sunt postările care prind tracțiune pe serverul tău.</string>
+    <string name="sk_button_react">Reacționați cu un emoji</string>
+    <string name="sk_load_missing_posts_below">Încărcați postări mai vechi</string>
+    <string name="sk_settings_emoji_reactions_explanation">Afișează reacțiile emoji la postări și vă permite să le adăugați pe ale dumneavoastră. Diferite servere Fedivers acceptă acest lucru, dar Mastodon nu.</string>
+    <string name="sk_search_suicide_title">Dacă sunteți în pericol…</string>
+    <string name="sk_time_minutes">%d minute</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Un utilizator a reacționat cu %2$s</item>
+        <item quantity="few">%1$,d utilizatori au reacționat cu %2$s</item>
+        <item quantity="other">%1$,d de utilizatori au reacționat cu %2$s</item>
+    </plurals>
+    <string name="sk_search_suicide_message">Dacă sunteți în căutarea unui semn pentru a nu vă sinucide, acesta este. Vă rugăm să luați în considerare posibilitatea de a apela la o linie telefonică locală de urgență pentru suicid dacă vă aflați în dificultate.</string>
+    <string name="sk_trending_links_info_banner">Acestea sunt știrile despre care se vorbește pe serverul tău.</string>
+    <string name="sk_post_contains_media">Postare conține media</string>
 </resources>
