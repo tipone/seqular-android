@@ -10,6 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.lang.reflect.Type;
@@ -50,6 +51,8 @@ public class AccountLocalPreferences{
 	// MOSHIDON
 	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
 	public Map<String, Integer> recentEmojis;
+	private final static Type notificationFiltersType = new TypeToken<PushSubscription.Alerts>() {}.getType();
+	public PushSubscription.Alerts notificationFilters;
 
 	public AccountLocalPreferences(SharedPreferences prefs, AccountSession session){
 		this.prefs=prefs;
@@ -77,6 +80,7 @@ public class AccountLocalPreferences{
 
 		// MOSHIDON
 		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
+		notificationFilters=fromJson(prefs.getString("notificationFilters", gson.toJson(PushSubscription.Alerts.ofAll())), notificationFiltersType, PushSubscription.Alerts.ofAll());
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -113,6 +117,7 @@ public class AccountLocalPreferences{
 
 				// MOSHIDON
 				.putString("recentEmojis", gson.toJson(recentEmojis))
+				.putString("notificationFilters", gson.toJson(notificationFilters))
 				.apply();
 	}
 

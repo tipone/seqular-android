@@ -61,7 +61,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, ProvidesAssistContent, HasElevationOnScrollListener {
+public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, ProvidesAssistContent, HasElevationOnScrollListener, HasAccountID {
 
 	TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -140,34 +140,43 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 					ctx.getString(R.string.notification_type_mentions_and_replies),
 					ctx.getString(R.string.notification_type_reblog),
 					ctx.getString(R.string.notification_type_favorite),
-					ctx.getString(R.string.notification_type_favorite),
 					ctx.getString(R.string.notification_type_follow),
 					ctx.getString(R.string.notification_type_poll),
 					ctx.getString(R.string.sk_notification_type_update),
 					ctx.getString(R.string.sk_notification_type_posts)
 			};
 
-			final boolean[] checkedItems = new boolean[listItems.length];
-
-			final List<String> selectedItems = Arrays.asList(listItems);
+			boolean[] checkedItems = {
+					getLocalPrefs().notificationFilters.mention,
+					getLocalPrefs().notificationFilters.reblog,
+					getLocalPrefs().notificationFilters.favourite,
+					getLocalPrefs().notificationFilters.follow,
+					getLocalPrefs().notificationFilters.poll,
+					getLocalPrefs().notificationFilters.update,
+					getLocalPrefs().notificationFilters.status,
+			};
 
 			M3AlertDialogBuilder dialogBuilder = new M3AlertDialogBuilder(ctx);
 			dialogBuilder.setTitle(R.string.sk_settings_filters);
 			dialogBuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
 				checkedItems[which] = isChecked;
-				String currentItem = selectedItems.get(which);
 			});
 
 			dialogBuilder.setPositiveButton(R.string.save, (d, which) -> {
-//				lp.publishButtonText=input.getEditText().getText().toString().trim();
-//				lp.save();
-//				publishTextItem.subtitle=getPublishButtonText();
-//				rebindItem(publishTextItem);
+				getLocalPrefs().notificationFilters.mention=checkedItems[0];
+				getLocalPrefs().notificationFilters.reblog=checkedItems[1];
+				getLocalPrefs().notificationFilters.favourite=checkedItems[2];
+				getLocalPrefs().notificationFilters.follow=checkedItems[3];
+				getLocalPrefs().notificationFilters.poll=checkedItems[4];
+				getLocalPrefs().notificationFilters.update=checkedItems[5];
+				getLocalPrefs().notificationFilters.status=checkedItems[6];
+				getLocalPrefs().save();
+
+				this.allNotificationsFragment.reload();
 			}).setNeutralButton(R.string.clear, (d, which) -> {
-//						lp.publishButtonText=null;
-//						lp.save();
-//						publishTextItem.subtitle=getPublishButtonText();
-//						rebindItem(publishTextItem);
+				Arrays.fill(checkedItems, true);
+
+				this.allNotificationsFragment.reload();
 			}).setNegativeButton(R.string.cancel, (d, which) -> {});
 
 			dialogBuilder.create().show();
@@ -364,6 +373,11 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	@Override
 	public void onProvideAssistContent(AssistContent assistContent) {
 		callFragmentToProvideAssistContent(getFragmentForPage(pager.getCurrentItem()), assistContent);
+	}
+
+	@Override
+	public String getAccountID(){
+		return accountID;
 	}
 
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{
