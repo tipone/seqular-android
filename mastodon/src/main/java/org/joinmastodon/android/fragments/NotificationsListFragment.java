@@ -98,7 +98,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 					if(!getLocalPrefs().notificationFilters.reblog)
 						return new ArrayList<>();
 				}
-				case FAVORITE -> {
+				case FAVORITE, REACTION -> {
 					if(!getLocalPrefs().notificationFilters.favourite)
 						return new ArrayList<>();
 				}
