@@ -378,7 +378,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard implements HasAccoun
 			ImageView img=(ImageView) itemView;
 			img.setLayoutParams(new RecyclerView.LayoutParams(V.dp(48), V.dp(48)));
 			img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			int pad=V.dp(12);
+			int pad=V.dp(6);
 			img.setPadding(pad, pad, pad, pad);
 			img.setBackgroundResource(R.drawable.bg_custom_emoji);
 		}
