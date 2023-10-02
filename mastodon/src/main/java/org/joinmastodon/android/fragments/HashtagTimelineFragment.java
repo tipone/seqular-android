@@ -129,8 +129,8 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	private void muteHashtag() {
 		FilterKeyword hashtagFilter=new FilterKeyword();
 		hashtagFilter.wholeWord=true;
-		hashtagFilter.keyword="#"+hashtag;
-		new CreateFilter("#"+hashtag, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<>(){
+		hashtagFilter.keyword="#"+hashtagName;
+		new CreateFilter("#"+hashtagName, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<>(){
 			@Override
 			public void onSuccess(Filter result){
 				filter=Optional.of(result);
@@ -293,7 +293,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 			@Override
 			public void onSuccess(List<Filter> filters) {
 				if (getActivity() == null) return;
-				filter=filters.stream().filter(filter->filter.title.equals("#"+hashtag)).findAny();
+				filter=filters.stream().filter(filter->filter.title.equals("#"+hashtagName)).findAny();
 				updateMuteState(filter.isPresent());
 			}
 
