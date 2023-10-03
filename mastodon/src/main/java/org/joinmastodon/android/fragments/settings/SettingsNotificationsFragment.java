@@ -166,12 +166,6 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		bannerAdapter.setVisible(false);
 		banner.findViewById(R.id.button2).setVisibility(View.GONE);
 		banner.findViewById(R.id.title).setVisibility(View.GONE);
-		((RelativeLayout.LayoutParams) bannerText.getLayoutParams())
-				.setMargins(0, V.dp(4), 0, 0);
-		((RelativeLayout.LayoutParams) bannerIcon.getLayoutParams())
-				.addRule(RelativeLayout.CENTER_VERTICAL);
-		RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) bannerButton.getLayoutParams();
-		buttonParams.setMargins(buttonParams.leftMargin, V.dp(-8), buttonParams.rightMargin, V.dp(-12));
 
 		mergeAdapter=new MergeRecyclerAdapter();
 		mergeAdapter.addAdapter(bannerAdapter);
