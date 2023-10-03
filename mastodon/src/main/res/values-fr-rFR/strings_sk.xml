@@ -372,7 +372,7 @@
     </plurals>
     <string name="sk_button_react">Réagissez avec des emojis</string>
     <string name="sk_again_for_system_keyboard">Appuyez à nouveau pour le clavier système</string>
-    <string name="sk_enter_emoji_hint">Tapez pour réagir avec un emoji</string>
+    <string name="sk_enter_emoji_hint">Tapez un emoji ou recherchez un emoji personnalisé</string>
     <string name="sk_enter_emoji_toast">Veuillez saisir un emoji</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">message</item>
