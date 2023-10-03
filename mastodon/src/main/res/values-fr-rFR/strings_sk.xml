@@ -401,4 +401,6 @@
     <string name="sk_time_hours">%d heures</string>
     <string name="sk_time_days">%d jours</string>
     <string name="sk_trending_posts_info_banner">Ce sont les publications qui gagnent du terrain sur votre serveur.</string>
+    <string name="sk_blocked_accounts">Comptes bloqués</string>
+    <string name="sk_muted_accounts">Comptes silenciés</string>
 </resources>
