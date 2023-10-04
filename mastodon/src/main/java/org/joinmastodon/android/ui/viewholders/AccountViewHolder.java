@@ -253,7 +253,7 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 	private void setActionProgressVisible(boolean visible){
 		if(visible)
 			actionProgress.setIndeterminateTintList(button.getTextColors());
-//		TODO button.setTextVisible(!visible);
+		button.setTextVisible(!visible);
 		actionProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
 		button.setClickable(!visible);
 	}
