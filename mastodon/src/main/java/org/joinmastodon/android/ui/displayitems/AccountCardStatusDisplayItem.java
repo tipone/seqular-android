@@ -203,6 +203,8 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 		private void setActionProgressVisible(boolean visible){
 			actionButton.setTextVisible(!visible);
 			actionProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+			if(visible)
+				actionProgress.setIndeterminateTintList(actionButton.getTextColors());
 			actionButton.setClickable(!visible);
 		}
 
