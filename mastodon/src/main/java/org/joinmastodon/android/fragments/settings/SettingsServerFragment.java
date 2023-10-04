@@ -153,18 +153,14 @@ public class SettingsServerFragment extends AppKitFragment{
 		if(id==R.id.share){
 			Intent intent = new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");
-			intent.putExtra(Intent.EXTRA_TEXT, Uri.parse(instance.uri).getHost());
+			intent.putExtra(Intent.EXTRA_TEXT, instance.normalizedUri);
 			startActivity(Intent.createChooser(intent, item.getTitle()));
 		} else if (id==R.id.open_timeline) {
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-			args.putString("domain", Uri.parse(instance.uri).getHost());
+			args.putString("domain", instance.normalizedUri);
 			Nav.go(getActivity(), CustomLocalTimelineFragment.class, args);
-		} /* else if (id==R.id.moderated_servers) {
-			Bundle args=new Bundle();
-			args.putParcelable("instance", Parcels.wrap(instance));
-			Nav.go(getActivity(), InstanceBlockListFragment.class, args);
-		} */
+		}
 		return true;
 	}
 
