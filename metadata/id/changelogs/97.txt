@@ -1,0 +1,3 @@
+Rilis 97 menambahkan:
+- Fitur Garis Waktu Lokal Kustom Baru. Dapat diakses pada menu tambah garis waktu
+- Perbaikan dan peningkatan kecil

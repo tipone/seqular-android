@@ -1,0 +1,6 @@
+Hal baru untuk rilis nomor 88:
+- Perilaku Fab ditingkatkan
+- Penanganan yang lebih baik pada teks alternatif
+- Aktifkan pengeposan khusus lokal untuk instans yang mendukungnya
+- Perbaiki beberapa kerusakan
+- Perbaikan kecil

@@ -1,0 +1,7 @@
+Hal-hal baru yang hadir dengan Rilis 85:
+Menambahkan tombol pencarian klik panjang untuk memunculkan keyboard
+Mengklik tombol pencarian ketika sudah berada di tab pencarian juga menampilkan keyboard
+Memunculkan ikon bot ke akun bot, Terima kasih @FineFindus!
+Meningkatkan visibilitas ikon bot di dalam profil akun, Terima kasih @FineFindus!
+Memperbarui terjemahan bahasa Jerman, Terima kasih @Dontobi!
+Memperbaiki masalah UI kecil

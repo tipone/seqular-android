@@ -1,0 +1,10 @@
+- Draf dan posting terjadwal
+- Tampilkan postingan asli saat membalas
+- Filter yang kompatibel dengan Mastodon 4.0 (belum ada fungsi "sembunyikan dengan peringatan")
+- Klik panjang untuk berinteraksi dengan postingan (balas, tingkatkan, sukai, bookmark) dari akun lain yang masuk
+- Ikon di semua menu
+- Beralih untuk meneruskan laporan
+- Tambahkan penyebutan saat menggunakan fungsi "Posting tentang ini".
+- Pilihan untuk menggunakan ikon notifikasi seragam alih-alih ikon berbeda
+- Pilihan untuk mengakses daftar aturan dalam aplikasi dari pengaturan
+- Perbaikan kerusakan

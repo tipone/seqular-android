@@ -1,0 +1,6 @@
+- Tambahkan pemilih bahasa
+- Tambahkan fungsi terjemahan
+- Meningkatkan semantik untuk memberikan suara pada jajak pendapat (tombol radio dan kotak centang)
+- Tambahkan opsi untuk memungkinkan pemungutan suara untuk beberapa opsi pada jajak pendapat
+- Layar masuk baru
+- Perbaikan kerusakan
