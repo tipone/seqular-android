@@ -147,7 +147,6 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 	private void logOut(String accountID){
 		AccountSessionManager.get(accountID).logOut(activity, ()->{
-			dismiss();
 			((MainActivity)activity).restartActivity();
 		});
 	}
@@ -317,8 +316,8 @@ public class AccountSwitcherSheet extends BottomSheet{
 		@Override
 		public void onClick(){
 			setOnDismissListener(null);
-			dismiss();
 			if (onClick != null) {
+				dismiss();
 				onClick.accept(item.getID(), false);
 				return;
 			}
