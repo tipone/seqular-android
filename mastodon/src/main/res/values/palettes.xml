@@ -244,7 +244,7 @@
 		<item name="colorNeutral25">@color/m3_neutral2_10</item>
 	</style>
 
-	<style name="ColorPalette.Material3.Dark">
+	<style name="ColorPalette.Material3.Dark" parent="">
 		<item name="colorM3Primary">@color/m3_sys_dark_primary</item>
 		<item name="colorM3OnPrimary">@color/m3_sys_dark_on_primary</item>
 		<item name="colorM3PrimaryContainer">@color/m3_sys_dark_primary_container</item>

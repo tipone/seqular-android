@@ -132,7 +132,7 @@
 					android:layout_marginTop="-4dp"
 					android:layout_marginStart="-12dp"
 					android:background="@drawable/bg_tabbar_badge"
-					android:textColor="?colorM3OnPrimary"
+					android:textColor="?colorM3OnError"
 					android:gravity="center"
 					android:includeFontPadding="false"
 					android:textAppearance="@style/m3_label_small"
