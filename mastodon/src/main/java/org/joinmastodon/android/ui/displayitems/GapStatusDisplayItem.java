@@ -72,7 +72,7 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 		private void onViewClick(View v){
 			if(item.loading) return;
 			boolean isTop=v==top;
-			(isTop ? textTop : textBottom).startAnimation(UiUtils.opacityOut);
+			UiUtils.opacityOut(isTop ? textTop : textBottom);
 			V.setVisibilityAnimated((isTop ? progressTop : progressBottom), View.VISIBLE);
 			item.parentFragment.onGapClick(this, isTop);
 		}

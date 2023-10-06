@@ -54,9 +54,8 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.view.WindowInsets;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -178,17 +177,6 @@ public class UiUtils {
 	public static int MAX_WIDTH, SCROLL_TO_TOP_DELTA;
 
 	public static final float ALPHA_PRESSED=0.55f;
-	public static final Animation opacityOut, opacityIn;
-
-	static {
-		opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
-		opacityOut.setDuration(300);
-		opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
-		opacityOut.setFillAfter(true);
-		opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
-		opacityIn.setDuration(400);
-		opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
-	}
 
 	private UiUtils() {
 	}
@@ -1747,5 +1735,17 @@ public class UiUtils {
 				.map(f->UiUtils.extractPronounsFromField(localizedPronouns, f))
 				.filter(Objects::nonNull)
 				.findFirst();
+	}
+
+	public static void opacityIn(View v){
+		v.animate().alpha(1).setDuration(400).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
+	}
+
+	public static void opacityOut(View v){
+		opacityOut(v, ALPHA_PRESSED).start();
+	}
+
+	public static ViewPropertyAnimator opacityOut(View v, float alpha){
+		return v.animate().alpha(alpha).setDuration(300).setInterpolator(CubicBezierInterpolator.DEFAULT);
 	}
 }

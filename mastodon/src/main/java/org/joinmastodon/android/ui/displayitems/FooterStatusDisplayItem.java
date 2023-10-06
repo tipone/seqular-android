@@ -63,7 +63,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private final Runnable longClickRunnable = () -> {
 			longClickPerformed = touchingView != null && touchingView.performLongClick();
 			if (longClickPerformed && touchingView != null) {
-				touchingView.startAnimation(opacityIn);
+				UiUtils.opacityIn(touchingView);
 				touchingView.animate().scaleX(1).scaleY(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
 			}
 		};
@@ -160,7 +160,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				if (!longClickPerformed) v.animate().scaleX(1).scaleY(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
 				if (disabled) return true;
 				if (action == MotionEvent.ACTION_UP && !longClickPerformed) v.performClick();
-				else if (!longClickPerformed) v.startAnimation(opacityIn);
+				else if (!longClickPerformed) UiUtils.opacityIn(v);
 			} else if (action == MotionEvent.ACTION_DOWN) {
 				longClickPerformed = false;
 				touchingView = v;
@@ -168,13 +168,13 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
 				if (disabled) return true;
 				v.postDelayed(longClickRunnable, ViewConfiguration.getLongPressTimeout());
-				v.startAnimation(opacityOut);
+				UiUtils.opacityOut(v);
 			}
 			return true;
 		}
 
 		private void onReplyClick(View v){
-			v.startAnimation(opacityIn);
+			UiUtils.opacityIn(v);
 			Bundle args=new Bundle();
 			args.putString("account", item.accountID);
 			args.putParcelable("replyTo", Parcels.wrap(item.status));
@@ -198,7 +198,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		private void onBoostClick(View v){
 			if (GlobalUserPreferences.confirmBoost) {
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 				onBoostLongClick(v);
 				return;
 			}
@@ -207,7 +207,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void boostConsumer(View v, Status r) {
-			v.startAnimation(opacityIn);
+			UiUtils.opacityIn(v);
 			bindText(boosts, r.reblogsCount);
 		}
 
@@ -218,7 +218,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			AccountSession session = AccountSessionManager.getInstance().getAccount(item.accountID);
 
 			Consumer<StatusPrivacy> doReblog = (visibility) -> {
-				v.startAnimation(opacityOut);
+				UiUtils.opacityOut(v);
 				session.getStatusInteractionController()
 						.setReblogged(item.status, !item.status.reblogged, visibility, r->boostConsumer(v, r));
 				dialog.dismiss();
@@ -271,7 +271,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			menu.findViewById(R.id.quote).setOnClickListener(c->{
 				dialog.dismiss();
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 				Bundle args=new Bundle();
 				args.putString("account", item.accountID);
 				AccountSession accountSession=AccountSessionManager.getInstance().getAccount(item.accountID);
@@ -296,7 +296,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private void onFavoriteClick(View v){
 			favorite.setSelected(!item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 				bindText(favorites, r.favouritesCount);
 			});
 		}
@@ -318,7 +318,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private void onBookmarkClick(View v){
 			bookmark.setSelected(!item.status.bookmarked);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked, r->{
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 			});
 		}
 
@@ -337,7 +337,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onShareClick(View v){
-			v.startAnimation(opacityIn);
+			UiUtils.opacityIn(v);
 			Intent intent=new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");
 			intent.putExtra(Intent.EXTRA_TEXT, item.status.url);
