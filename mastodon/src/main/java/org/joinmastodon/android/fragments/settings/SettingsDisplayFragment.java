@@ -202,7 +202,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		int[] newSelected={selected};
 		String[] names=Arrays.stream(ColorPreference.values()).map(ColorPreference::getName).map(this::getString).toArray(String[]::new);
 		new M3AlertDialogBuilder(getActivity())
-				.setTitle(R.string.settings_theme)
+				.setTitle(R.string.sk_settings_color_palette)
 				.setSingleChoiceItems(names,
 						selected, (dlg, item)->newSelected[0]=item)
 				.setPositiveButton(R.string.ok, (dlg, item)->{
