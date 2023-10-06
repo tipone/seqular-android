@@ -133,6 +133,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ImageView avatar;
 	private CoverImageView cover;
 	private View avatarBorder;
+	private View usernameWrap;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel;
 	private ImageView lockIcon, botIcon;
 	private ProgressBarButton actionButton, notifyButton;
@@ -233,6 +234,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
 		name=content.findViewById(R.id.name);
+		usernameWrap=content.findViewById(R.id.username_wrap);
 		username=content.findViewById(R.id.username);
 		lockIcon=content.findViewById(R.id.lock_icon);
 		botIcon=content.findViewById(R.id.bot_icon);
@@ -1114,7 +1116,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		name.setVisibility(View.GONE);
 		rolesView.setVisibility(View.GONE);
-		username.setVisibility(View.GONE);
+		usernameWrap.setVisibility(View.GONE);
 		bio.setVisibility(View.GONE);
 		countersLayout.setVisibility(View.GONE);
 
@@ -1163,7 +1165,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bioEditWrap.setVisibility(View.GONE);
 		name.setVisibility(View.VISIBLE);
 		rolesView.setVisibility(View.VISIBLE);
-		username.setVisibility(View.VISIBLE);
+		usernameWrap.setVisibility(View.VISIBLE);
 		bio.setVisibility(View.VISIBLE);
 		countersLayout.setVisibility(View.VISIBLE);
 		refreshLayout.setEnabled(true);
