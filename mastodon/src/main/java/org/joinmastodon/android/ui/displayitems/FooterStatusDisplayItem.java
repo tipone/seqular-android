@@ -1,12 +1,10 @@
 package org.joinmastodon.android.ui.displayitems;
 
-import static org.joinmastodon.android.ui.utils.UiUtils.opacityIn;
-import static org.joinmastodon.android.ui.utils.UiUtils.opacityOut;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,6 +15,7 @@ import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -57,6 +56,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
 		private final TextView replies, boosts, favorites;
 		private final View reply, boost, favorite, share, bookmark;
+		private final ImageView favIcon;
 
 		private View touchingView = null;
 		private boolean longClickPerformed = false;
@@ -89,6 +89,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite=findViewById(R.id.favorite_btn);
 			share=findViewById(R.id.share_btn);
 			bookmark=findViewById(R.id.bookmark_btn);
+			favIcon=findViewById(R.id.favorite_icon);
 
 			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
@@ -131,6 +132,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 					item.parentFragment.getDisplayItems().get(nextPos) instanceof WarningFilteredStatusDisplayItem;
 			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor &&
 					!nextIsWarning;
+
+
+			AccountSession session=AccountSessionManager.get(item.accountID);
+			boolean like=session!=null && session.getLocalPreferences().likeIcon;
+			ColorStateList color=item.parentFragment.getResources().getColorStateList(
+					like ? R.color.like_icon : R.color.favorite_icon, item.parentFragment.getContext().getTheme()
+			);
+			favIcon.setImageResource(like ? R.drawable.ic_fluent_heart_24_selector : R.drawable.ic_fluent_star_24_selector);
+			favIcon.setImageTintList(color);
+			favorites.setTextColor(color);
 
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
 			params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,

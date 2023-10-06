@@ -101,6 +101,7 @@
 					android:layout_height="match_parent"
 					android:paddingVertical="12dp">
 					<ImageView
+						android:id="@+id/favorite_icon"
 						android:layout_width="24sp"
 						android:layout_height="24sp"
 						android:layout_gravity="center_vertical"

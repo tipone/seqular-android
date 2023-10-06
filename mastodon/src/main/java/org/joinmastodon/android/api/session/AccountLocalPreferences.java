@@ -43,6 +43,7 @@ public class AccountLocalPreferences{
 	public boolean emojiReactionsEnabled;
 	public ShowEmojiReactions showEmojiReactions;
 	public ColorPreference color;
+	public boolean likeIcon;
 
 	private final static Type recentLanguagesType = new TypeToken<ArrayList<String>>() {}.getType();
 	private final static Type timelinesType = new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
@@ -71,6 +72,7 @@ public class AccountLocalPreferences{
 		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
 		color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
+		likeIcon=prefs.getBoolean("likeIcon", false);
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -105,6 +107,7 @@ public class AccountLocalPreferences{
 				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
 				.putString("showEmojiReactions", showEmojiReactions.name())
 				.putString("color", color.name())
+				.putBoolean("likeIcon", likeIcon)
 				.apply();
 	}
 
