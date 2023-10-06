@@ -134,6 +134,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 							return;
 						maxID=result.maxID;
 						onDataLoaded(result.items.stream().filter(n->n.type!=null).collect(Collectors.toList()), !result.items.isEmpty());
+						bannerHelper.onBannerBecameVisible();
 						reloadingFromCache=false;
 						if (getParentFragment() instanceof NotificationsFragment nf) {
 							nf.updateMarkAllReadButton();

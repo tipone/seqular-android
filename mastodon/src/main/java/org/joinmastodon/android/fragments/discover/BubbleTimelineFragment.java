@@ -45,6 +45,7 @@ public class BubbleTimelineFragment extends StatusListFragment {
                         if (getActivity() == null) return;
                         result=result.stream().filter(new StatusFilterPredicate(accountID, getFilterContext())).collect(Collectors.toList());
                         onDataLoaded(result, !result.isEmpty());
+						bannerHelper.onBannerBecameVisible();
                     }
                 })
                 .exec(accountID);
