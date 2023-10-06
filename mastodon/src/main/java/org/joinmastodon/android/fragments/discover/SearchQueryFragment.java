@@ -127,7 +127,11 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 					.setCallback(new SimpleCallback<>(this){
 						@Override
 						public void onSuccess(SearchResults result){
-							onDataLoaded(Stream.of(result.hashtags.stream().map(SearchResult::new), result.accounts.stream().map(SearchResult::new))
+							onDataLoaded(Stream
+									.of(
+											result.hashtags.stream().filter(hashtag -> !hashtag.name.isEmpty()).map(SearchResult::new),
+											result.accounts.stream().map(SearchResult::new)
+									)
 									.flatMap(Function.identity())
 									.map(sr->{
 										SearchResultViewModel vm=new SearchResultViewModel(sr, accountID, false);
