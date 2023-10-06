@@ -32,7 +32,6 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		UiUtils.setUserPreferredTheme(this);
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
-
 			Optional<String> text = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT));
 			Optional<Pair<String, Optional<String>>> fediHandle = text.flatMap(UiUtils::parseFediverseHandle);
 			boolean isFediUrl = text.map(UiUtils::looksLikeFediverseUrl).orElse(false);

@@ -17,6 +17,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
+import org.joinmastodon.android.api.session.AccountLocalPreferences.ColorPreference;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
@@ -131,7 +132,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private @StringRes int getColorPaletteValue(){
-		return switch(GlobalUserPreferences.color){
+		return switch(AccountSessionManager.get(accountID).getLocalPreferences().color){
 			case MATERIAL3 -> R.string.sk_color_palette_material3;
 			case PINK -> R.string.sk_color_palette_pink;
 			case PURPLE -> R.string.sk_color_palette_purple;
@@ -196,18 +197,19 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onColorClick(){
-		int selected=GlobalUserPreferences.color.ordinal();
+		AccountLocalPreferences prefs=AccountSessionManager.get(accountID).getLocalPreferences();
+		int selected=prefs.color.ordinal();
 		int[] newSelected={selected};
-		String[] names=Arrays.stream(GlobalUserPreferences.ColorPreference.values()).map(GlobalUserPreferences.ColorPreference::getName).map(this::getString).toArray(String[]::new);
+		String[] names=Arrays.stream(ColorPreference.values()).map(ColorPreference::getName).map(this::getString).toArray(String[]::new);
 		new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.settings_theme)
 				.setSingleChoiceItems(names,
 						selected, (dlg, item)->newSelected[0]=item)
 				.setPositiveButton(R.string.ok, (dlg, item)->{
-					GlobalUserPreferences.ColorPreference pref=GlobalUserPreferences.ColorPreference.values()[newSelected[0]];
-					if(pref!=GlobalUserPreferences.color){
-						GlobalUserPreferences.ColorPreference prev=GlobalUserPreferences.color;
-						GlobalUserPreferences.color=pref;
+					ColorPreference pref=ColorPreference.values()[newSelected[0]];
+					if(pref!=prefs.color){
+						ColorPreference prev=prefs.color;
+						prefs.color=pref;
 						GlobalUserPreferences.save();
 						colorItem.subtitleRes=getColorPaletteValue();
 						rebindItem(colorItem);
@@ -257,17 +259,18 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				.show();
 	}
 
-	private void maybeApplyNewThemeRightNow(GlobalUserPreferences.ThemePreference prevTheme, GlobalUserPreferences.ColorPreference prevColor, Boolean prevTrueBlack){
+	private void maybeApplyNewThemeRightNow(GlobalUserPreferences.ThemePreference prevTheme, ColorPreference prevColor, Boolean prevTrueBlack){
+		AccountLocalPreferences prefs=AccountSessionManager.get(accountID).getLocalPreferences();
 		if(prevTheme==null) prevTheme=GlobalUserPreferences.theme;
 		if(prevTrueBlack==null) prevTrueBlack=GlobalUserPreferences.trueBlackTheme;
-		if(prevColor==null) prevColor=GlobalUserPreferences.color;
+		if(prevColor==null) prevColor=prefs.color;
 
 		boolean isCurrentDark=prevTheme==GlobalUserPreferences.ThemePreference.DARK ||
 				(prevTheme==GlobalUserPreferences.ThemePreference.AUTO && Build.VERSION.SDK_INT>=30 && getResources().getConfiguration().isNightModeActive());
 		boolean isNewDark=GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.DARK ||
 				(GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.AUTO && Build.VERSION.SDK_INT>=30 && getResources().getConfiguration().isNightModeActive());
 		boolean isNewBlack=GlobalUserPreferences.trueBlackTheme;
-		if(isCurrentDark!=isNewDark || prevColor!=GlobalUserPreferences.color || (isNewDark && prevTrueBlack!=isNewBlack)){
+		if(isCurrentDark!=isNewDark || prevColor!=prefs.color || (isNewDark && prevTrueBlack!=isNewBlack)){
 			restartActivityToApplyNewTheme();
 		}
 	}

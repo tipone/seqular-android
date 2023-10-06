@@ -163,7 +163,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 				.setMessage(getString(R.string.confirm_log_out, session.getFullUsername()))
 				.setPositiveButton(R.string.log_out, (dialog, which)->account.logOut(getActivity(), ()->{
 					loggedOut=true;
-					((MainActivity)getActivity()).restartHomeFragment();
+					((MainActivity)getActivity()).restartActivity();
 				}))
 				.setNegativeButton(R.string.cancel, null)
 				.show();

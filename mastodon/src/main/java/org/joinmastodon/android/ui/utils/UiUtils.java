@@ -1,6 +1,7 @@
 package org.joinmastodon.android.ui.utils;
 
 import static android.view.Menu.NONE;
+import static org.joinmastodon.android.GlobalUserPreferences.ThemePreference.*;
 import static org.joinmastodon.android.GlobalUserPreferences.theme;
 import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 
@@ -85,6 +86,7 @@ import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.SetStatusPinned;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
@@ -973,14 +975,20 @@ public class UiUtils {
 	}
 
 	public static void setUserPreferredTheme(Context context) {
-		context.setTheme(switch (theme) {
+		setUserPreferredTheme(context, null);
+	}
+
+	public static void setUserPreferredTheme(Context context, @Nullable AccountSession session) {
+		context.setTheme(switch(theme) {
 			case LIGHT -> R.style.Theme_Mastodon_Light;
 			case DARK -> R.style.Theme_Mastodon_Dark;
 			default -> R.style.Theme_Mastodon_AutoLightDark;
 		});
 
-		ColorPalette palette = ColorPalette.palettes.get(GlobalUserPreferences.color);
-		if (palette != null) palette.apply(context);
+		AccountLocalPreferences prefs=session.getLocalPreferences();
+		AccountLocalPreferences.ColorPreference color=prefs != null ? prefs.color : AccountLocalPreferences.ColorPreference.MATERIAL3;
+		ColorPalette palette = ColorPalette.palettes.get(color);
+		if (palette != null) palette.apply(context, theme);
 
 		Resources res = context.getResources();
 		MAX_WIDTH = (int) res.getDimension(R.dimen.layout_max_width);
@@ -997,9 +1005,9 @@ public class UiUtils {
 	}
 
 	public static boolean isDarkTheme() {
-		if (theme == GlobalUserPreferences.ThemePreference.AUTO)
+		if (theme == AUTO)
 			return (MastodonApp.context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-		return theme == GlobalUserPreferences.ThemePreference.DARK;
+		return theme == DARK;
 	}
 
 	public static Optional<Pair<String, Optional<String>>> parseFediverseHandle(String maybeFediHandle) {

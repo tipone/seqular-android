@@ -148,7 +148,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 	private void logOut(String accountID){
 		AccountSessionManager.get(accountID).logOut(activity, ()->{
 			dismiss();
-			((MainActivity)activity).restartHomeFragment();
+			((MainActivity)activity).restartActivity();
 		});
 	}
 
@@ -324,7 +324,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 			}
 			if(AccountSessionManager.getInstance().tryGetAccount(item.getID())!=null){
 				AccountSessionManager.getInstance().setLastActiveAccountID(item.getID());
-				((MainActivity)activity).restartHomeFragment();
+				((MainActivity)activity).restartActivity();
 			}
 		}
 

@@ -57,7 +57,6 @@ public class GlobalUserPreferences{
 	public static boolean allowRemoteLoading;
 	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
-	public static ColorPreference color;
 	public static boolean disableM3PillActiveIndicator;
 	public static boolean showNavigationLabels;
 	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
@@ -133,14 +132,8 @@ public class GlobalUserPreferences{
 					.apply();
 		}
 
-		try {
-			color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PINK.name()));
-		} catch (IllegalArgumentException|ClassCastException ignored) {
-			// invalid color name or color was previously saved as integer
-			color=ColorPreference.PINK;
-		}
-
 		if(prefs.getInt("migrationLevel", 0) < 61) migrateToUpstreamVersion61();
+		if(prefs.getInt("migrationLevel", 0) < 101) migrateToVersion101();
 	}
 
 	public static void save(){
@@ -171,7 +164,6 @@ public class GlobalUserPreferences{
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
-				.putString("color", color.name())
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.putBoolean("forwardReportDefault", forwardReportDefault)
@@ -183,6 +175,16 @@ public class GlobalUserPreferences{
 				.putBoolean("overlayMedia", overlayMedia)
 				.putBoolean("showSuicideHelp", showSuicideHelp)
 				.apply();
+	}
+
+	private static void migrateToVersion101(){
+		Log.d(TAG, "Migrating preferences to version 101!! (copy current theme to local preferences)");
+
+		AccountSessionManager asm=AccountSessionManager.getInstance();
+		for(AccountSession session : asm.getLoggedInAccounts()){
+			String accountID=session.getID();
+			AccountLocalPreferences localPrefs=session.getLocalPreferences();
+		}
 	}
 
 	private static void migrateToUpstreamVersion61(){
@@ -233,30 +235,6 @@ public class GlobalUserPreferences{
 		}
 
 		prefs.edit().putInt("migrationLevel", 61).apply();
-	}
-
-	public enum ColorPreference{
-		MATERIAL3,
-		PINK,
-		PURPLE,
-		GREEN,
-		BLUE,
-		BROWN,
-		RED,
-		YELLOW;
-
-		public @StringRes int getName() {
-			return switch(this){
-				case MATERIAL3 -> R.string.sk_color_palette_material3;
-				case PINK -> R.string.sk_color_palette_pink;
-				case PURPLE -> R.string.sk_color_palette_purple;
-				case GREEN -> R.string.sk_color_palette_green;
-				case BLUE -> R.string.sk_color_palette_blue;
-				case BROWN -> R.string.sk_color_palette_brown;
-				case RED -> R.string.sk_color_palette_red;
-				case YELLOW -> R.string.sk_color_palette_yellow;
-			};
-		}
 	}
 
 	public enum ThemePreference{
