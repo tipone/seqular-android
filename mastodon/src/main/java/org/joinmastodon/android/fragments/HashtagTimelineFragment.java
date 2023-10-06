@@ -258,7 +258,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	}
 
 	private void updateHeader(){
-		if(hashtag==null)
+		if(hashtag==null || getActivity()==null)
 			return;
 
 		if(hashtag.history!=null && !hashtag.history.isEmpty()){
