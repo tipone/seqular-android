@@ -845,7 +845,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(getContext()==null) return;
 		super.onDataLoaded(d, more);
 		// more available, but the page isn't even full yet? seems wrong, let's load some more
-		if(more && d.size() < itemsPerPage){
+		if(more && data.size() < itemsPerPage){
 			preloader.onScrolledToLastItem();
 		}
 	}
