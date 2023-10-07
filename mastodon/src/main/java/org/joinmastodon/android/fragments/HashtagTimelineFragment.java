@@ -91,14 +91,14 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetHashtagTimeline(hashtagName, offset==0 ? null : getMaxID(), null, count, any, all, none, localOnly, getLocalPrefs().timelineReplyVisibility)
+		currentRequest=new GetHashtagTimeline(hashtagName, getMaxID(), null, count, any, all, none, localOnly, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						boolean empty=result.isEmpty();
+						boolean more=applyMaxID(result);
 						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
-						onDataLoaded(result, !empty);
+						onDataLoaded(result, more);
 					}
 				})
 				.exec(accountID);

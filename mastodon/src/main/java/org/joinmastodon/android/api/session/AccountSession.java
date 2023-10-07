@@ -295,7 +295,7 @@ public class AccountSession{
 		// don't hide own posts in own profile
 		if(statusIsOnOwnProfile(s, profile))
 			return false;
-		if(isFilteredType(s))
+		if(isFilteredType(s) && (context == FilterContext.HOME || context == FilterContext.PUBLIC))
 			return true;
 		// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
 		if(localPreferences.serverSideFiltersSupported){

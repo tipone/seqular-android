@@ -52,14 +52,14 @@ public class AccountTimelineFragment extends StatusListFragment{
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetAccountStatuses(user.id, offset>0 ? getMaxID() : null, null, count, filter)
+		currentRequest=new GetAccountStatuses(user.id, getMaxID(), null, count, filter)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						boolean empty=result.isEmpty();
+						boolean more=applyMaxID(result);
 						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext(), user);
-						onDataLoaded(result, !empty);
+						onDataLoaded(result, more);
 					}
 				})
 				.exec(accountID);

@@ -19,7 +19,6 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 
 public class BubbleTimelineFragment extends StatusListFragment {
     private DiscoverInfoBannerHelper bannerHelper;
-    private String maxID;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -35,15 +34,14 @@ public class BubbleTimelineFragment extends StatusListFragment {
 
 	@Override
     protected void doLoadData(int offset, int count){
-        currentRequest=new GetBubbleTimeline(refreshing ? null : maxID, count, getLocalPrefs().timelineReplyVisibility)
+        currentRequest=new GetBubbleTimeline(getMaxID(), count, getLocalPrefs().timelineReplyVisibility)
                 .setCallback(new SimpleCallback<>(this){
                     @Override
                     public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						boolean empty=result.isEmpty();
-						if(!empty) maxID=result.get(result.size()-1).id;
+						boolean more=applyMaxID(result);
 						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
-						onDataLoaded(result, !empty);
+						onDataLoaded(result, more);
 						bannerHelper.onBannerBecameVisible();
                     }
                 })

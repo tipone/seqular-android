@@ -482,7 +482,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(Account result){
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						onAccountLoaded(result);
 					}
 				})
@@ -894,7 +894,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void updateRelationship(){
-		if (getActivity() == null) return;
+		if(getActivity()==null) return;
 		invalidateOptionsMenu();
 		actionButton.setVisibility(View.VISIBLE);
 		notifyButton.setVisibility(relationship.following ? View.VISIBLE : View.GONE);
@@ -1191,7 +1191,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 						savingEdits=false;
 						account=result;
 						AccountSessionManager.getInstance().updateAccountInfo(accountID, account);
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						exitEditMode();
 						setActionProgressVisible(false);
 					}

@@ -140,7 +140,7 @@ public class ListsFragment extends MastodonRecyclerFragment<ListTimeline> implem
 				.setCallback(new SimpleCallback<>(this) {
 					@Override
 					public void onSuccess(List<ListTimeline> lists) {
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						for (ListTimeline l : lists) userInListBefore.put(l.id, true);
 						userInList.putAll(userInListBefore);
 						if (profileAccountId == null || !lists.isEmpty()) onDataLoaded(lists, false);
@@ -149,7 +149,7 @@ public class ListsFragment extends MastodonRecyclerFragment<ListTimeline> implem
 						currentRequest=new GetLists().setCallback(new SimpleCallback<>(ListsFragment.this) {
 							@Override
 							public void onSuccess(List<ListTimeline> allLists) {
-								if (getActivity() == null) return;
+								if(getActivity()==null) return;
 								List<ListTimeline> newLists = new ArrayList<>();
 								for (ListTimeline l : allLists) {
 									if (lists.stream().noneMatch(e -> e.id.equals(l.id))) newLists.add(l);

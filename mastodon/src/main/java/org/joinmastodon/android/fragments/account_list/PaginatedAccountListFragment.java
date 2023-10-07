@@ -133,7 +133,7 @@ public abstract class PaginatedAccountListFragment<T> extends BaseAccountListFra
 							nextMaxID=result.nextPageUri.getQueryParameter("max_id");
 						else
 							nextMaxID=null;
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						List<AccountViewModel> items = result.stream()
 								.filter(a -> d.size() > 1000 || d.stream()
 										.noneMatch(i -> i.account.url.equals(a.url)))

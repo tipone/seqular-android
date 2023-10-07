@@ -13,7 +13,7 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class PleromaMarkNotificationsRead extends MastodonAPIRequest<List<Notification>> {
-    private String maxID;
+    private final String maxID;
     public PleromaMarkNotificationsRead(String maxID) {
         super(HttpMethod.POST, "/pleroma/notifications/read", new TypeToken<>(){});
         this.maxID = maxID;

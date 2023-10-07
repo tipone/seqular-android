@@ -62,7 +62,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
         new GetList(listID).setCallback(new Callback<>() {
             @Override
             public void onSuccess(ListTimeline listTimeline) {
-                if (getActivity() == null) return;
+                if(getActivity()==null) return;
                 // TODO: save updated info
                 if (!listTimeline.title.equals(listTitle)) setTitle(listTimeline.title);
                 if (listTimeline.repliesPolicy != null && !listTimeline.repliesPolicy.equals(repliesPolicy)) {
@@ -100,7 +100,7 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
                         new UpdateList(listID, newTitle, editor.isExclusive(), editor.getRepliesPolicy()).setCallback(new Callback<>() {
                             @Override
                             public void onSuccess(ListTimeline list) {
-                                if (getActivity() == null) return;
+                                if(getActivity()==null) return;
                                 setTitle(list.title);
                                 listTitle = list.title;
                                 repliesPolicy = list.repliesPolicy;
@@ -133,14 +133,14 @@ public class ListTimelineFragment extends PinnableStatusListFragment {
 
     @Override
     protected void doLoadData(int offset, int count) {
-        currentRequest=new GetListTimeline(listID, offset==0 ? null : getMaxID(), null, count, null, getLocalPrefs().timelineReplyVisibility)
+        currentRequest=new GetListTimeline(listID, getMaxID(), null, count, null, getLocalPrefs().timelineReplyVisibility)
                 .setCallback(new SimpleCallback<>(this) {
                     @Override
                     public void onSuccess(List<Status> result) {
 						if(getActivity()==null) return;
-						boolean empty=result.isEmpty();
+						boolean more=applyMaxID(result);
 						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
-						onDataLoaded(result, !empty);
+						onDataLoaded(result, more);
                     }
                 })
                .exec(accountID);

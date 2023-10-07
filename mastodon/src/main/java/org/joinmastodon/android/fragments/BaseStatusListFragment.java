@@ -89,6 +89,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
 	protected boolean currentlyScrolling;
+	protected String maxID;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -155,12 +156,20 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	protected String getMaxID(){
+		if(refreshing) return null;
+		if(maxID!=null) return maxID;
 		if(!preloadedData.isEmpty())
 			return preloadedData.get(preloadedData.size()-1).getID();
 		else if(!data.isEmpty())
 			return data.get(data.size()-1).getID();
 		else
 			return null;
+	}
+
+	protected boolean applyMaxID(List<Status> result){
+		boolean empty=result.isEmpty();
+		if(!empty) maxID=result.get(result.size()-1).id;
+		return !empty;
 	}
 
 	protected abstract List<StatusDisplayItem> buildDisplayItems(T s);
