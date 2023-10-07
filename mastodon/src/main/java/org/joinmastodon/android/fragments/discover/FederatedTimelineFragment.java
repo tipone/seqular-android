@@ -29,15 +29,14 @@ public class FederatedTimelineFragment extends StatusListFragment{
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetPublicTimeline(false, false, refreshing ? null : maxID, count, getLocalPrefs().timelineReplyVisibility)
+		currentRequest=new GetPublicTimeline(false, false, getMaxID(), count, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						boolean empty=result.isEmpty();
-						if(!empty) maxID=result.get(result.size()-1).id;
+						boolean more=applyMaxID(result);
 						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
-						onDataLoaded(result, !empty);
+						onDataLoaded(result, more);
 						bannerHelper.onBannerBecameVisible();
 					}
 				})
