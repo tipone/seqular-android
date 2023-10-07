@@ -372,7 +372,7 @@
     </plurals>
     <string name="sk_button_react">Réagissez avec des emojis</string>
     <string name="sk_again_for_system_keyboard">Appuyez à nouveau pour le clavier système</string>
-    <string name="sk_enter_emoji_hint">Tapez un emoji ou recherchez un emoji personnalisé</string>
+    <string name="sk_enter_emoji_hint">Tapez un emoji ou effectuez une recherche</string>
     <string name="sk_enter_emoji_toast">Veuillez saisir un emoji</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">message</item>
@@ -393,14 +393,15 @@
     <string name="sk_suicide_search_terms">Suicide</string>
     <string name="sk_search_suicide_title">Dans le cas où vous seriez en détresse…</string>
     <string name="sk_search_suicide_message">Si vous cherchez un signe pour ne pas vous suicider, le voici. Si vous êtes en détresse et/ou avez des pensées suicidaires, si vous voulez aider une personne en souffrance, vous pouvez contacter une ligne d\'assistance de prévention du suicide.</string>
-    <string name="sk_trending_links_info_banner">Ce sont les actualités dont on parle sur votre serveur.</string>
+    <string name="sk_trending_links_info_banner">Ces actualités font parler d’elles dans tout le Fediverse.</string>
     <string name="sk_load_missing_posts_above">Charger les messages les plus récents</string>
     <string name="sk_load_missing_posts_below">Charger les anciens messages</string>
     <string name="sk_time_seconds">%d secondes</string>
     <string name="sk_time_minutes">%d minutes</string>
     <string name="sk_time_hours">%d heures</string>
     <string name="sk_time_days">%d jours</string>
-    <string name="sk_trending_posts_info_banner">Ce sont les publications qui gagnent du terrain sur votre serveur.</string>
+    <string name="sk_trending_posts_info_banner">Ces publications gagnent actuellement du terrain sur le Fediverse.</string>
     <string name="sk_blocked_accounts">Comptes bloqués</string>
     <string name="sk_muted_accounts">Comptes silenciés</string>
+    <string name="sk_settings_like_icon">Utiliser le cœur comme icône pour les favoris</string>
 </resources>
