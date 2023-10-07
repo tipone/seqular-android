@@ -31,13 +31,11 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<WarningFilteredStatusDisplayItem>{
-		public final View warningWrap;
 		public final TextView text;
 		public List<StatusDisplayItem> filteredItems;
 
 		public Holder(Context context, ViewGroup parent) {
 			super(context, R.layout.display_item_filter_warning, parent);
-			warningWrap=findViewById(R.id.warning_wrap);
 			text=findViewById(R.id.text);
 		}
 
@@ -45,11 +43,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 		public void onBind(WarningFilteredStatusDisplayItem item) {
 			filteredItems = item.filteredItems;
 			text.setText(item.parentFragment.getString(R.string.sk_filtered, item.applyingFilter.title));
-		}
-
-		@Override
-		public void onClick() {
-			item.parentFragment.onWarningClick(this);
+			itemView.setOnClickListener(v->item.parentFragment.onWarningClick(this));
 		}
 	}
 }
