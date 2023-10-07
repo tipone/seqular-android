@@ -204,11 +204,12 @@ public abstract class StatusDisplayItem{
 				items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, null, scheduledStatus));
 		}
 
-		boolean filtered=false;
+		LegacyFilter applyingFilter=null;
 		if(status.filtered!=null){
 			for(FilterResult filter:status.filtered){
-				if(filter.filter.isActive()){
-					filtered=true;
+				LegacyFilter f=filter.filter;
+				if(f.isActive() && filterContext != null && f.context.contains(filterContext)){
+					applyingFilter=f;
 					break;
 				}
 			}
@@ -315,14 +316,7 @@ public abstract class StatusDisplayItem{
 			}
 		}
 
-		LegacyFilter applyingFilter = null;
-		if (!statusForContent.filterRevealed) {
-			StatusFilterPredicate predicate = new StatusFilterPredicate(accountID, filterContext, FilterAction.WARN);
-			statusForContent.filterRevealed = predicate.test(status);
-			applyingFilter = predicate.getApplyingFilter();
-		}
-
-		return statusForContent.filterRevealed ? items :
+		return applyingFilter==null ? items :
 				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
 	}
 
