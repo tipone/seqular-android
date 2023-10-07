@@ -45,6 +45,7 @@
 		<item name="android:textColor">?colorM3OnSurface</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="android:actionOverflowButtonStyle">@style/Widget.Mastodon.ActionButton.Overflow</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark" parent="Theme.AppKit">
@@ -88,6 +89,7 @@
 		<item name="android:textColor">?colorM3OnSurface</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="android:actionOverflowButtonStyle">@style/Widget.Mastodon.ActionButton.Overflow</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark.SplashFragment">
