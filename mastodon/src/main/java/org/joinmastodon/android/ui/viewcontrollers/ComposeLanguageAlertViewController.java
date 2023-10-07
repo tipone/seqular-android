@@ -18,6 +18,7 @@ import android.widget.TextView;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.ui.DividerItemDecoration;
@@ -66,7 +67,7 @@ public class ComposeLanguageAlertViewController{
 				.collect(Collectors.toList());
 
 		if(!TextUtils.isEmpty(preferred)){
-			MastodonLanguage lang = resolver.fromOrFallback(preferred);
+			MastodonLanguage lang=resolver.fromOrFallback(preferred);
 			specialLocales.add(new SpecialLocaleInfo(
 					lang,
 					lang.getDisplayName(context),
@@ -75,7 +76,7 @@ public class ComposeLanguageAlertViewController{
 		}
 
 		if(!Locale.getDefault().getLanguage().equals(preferred)){
-			MastodonLanguage lang = resolver.getDefault();
+			MastodonLanguage lang=resolver.getDefault();
 			specialLocales.add(new SpecialLocaleInfo(
 					lang,
 					lang.getDisplayName(context),
@@ -91,8 +92,18 @@ public class ComposeLanguageAlertViewController{
 			detectLanguage(detected, postText);
 		}
 
-		if (session!=null && session.getLocalPreferences().bottomEncoding) {
-			specialLocales.add(new SpecialLocaleInfo(null, "\uD83E\uDD7A\uD83D\uDC49\uD83D\uDC48", "bottom"));
+		AccountLocalPreferences lp=session==null ? null : session.getLocalPreferences();
+		if(lp!=null){
+			for(String tag : lp.recentLanguages){
+				if(specialLocales.stream().anyMatch(l->l.language!=null && l.language.languageTag!=null
+						&& l.language.languageTag.equals(tag))) continue;
+				resolver.from(tag).ifPresent(lang->specialLocales.add(new SpecialLocaleInfo(
+						lang, lang.getDisplayName(context), null
+				)));
+			}
+			if(lp.bottomEncoding) {
+				specialLocales.add(new SpecialLocaleInfo(null, "\uD83E\uDD7A\uD83D\uDC49\uD83D\uDC48", "bottom"));
+			}
 		}
 
 		if(previouslySelected!=null){
@@ -323,7 +334,7 @@ public class ComposeLanguageAlertViewController{
 		public void onClick(){
 			selectItem(getAbsoluteAdapterPosition());
 			selectedLocale=item.language;
-			selectedEncoding = item.title.equals("bottom") ? "bottom" : null;
+			selectedEncoding=item.title != null && item.title.equals("bottom") ? "bottom" : null;
 		}
 
 		@Override
