@@ -46,11 +46,13 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	private final String accountID;
 	private final CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private final CharSequence text;
+	private final CharSequence timestamp;
 
 	public NotificationHeaderStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Notification notification, String accountID){
 		super(parentID, parentFragment);
 		this.notification=notification;
 		this.accountID=accountID;
+		this.timestamp=notification.createdAt==null ? null : UiUtils.formatRelativeTimestamp(context, notification.createdAt);
 
 		if(notification.type==Notification.Type.POLL){
 			text=parentFragment.getString(R.string.poll_ended);
@@ -112,7 +114,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final ImageView icon, avatar;
-		private final TextView text;
+		private final TextView text, timestamp;
 		private final int selectableItemBackground;
 
 		public Holder(Activity activity, ViewGroup parent){
@@ -120,6 +122,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 			icon=findViewById(R.id.icon);
 			avatar=findViewById(R.id.avatar);
 			text=findViewById(R.id.text);
+			timestamp=findViewById(R.id.timestamp);
 
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
 			avatar.setClipToOutline(true);
@@ -152,6 +155,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(NotificationHeaderStatusDisplayItem item){
 			text.setText(item.text);
+			timestamp.setText(item.timestamp);
 			avatar.setVisibility(item.notification.type==Notification.Type.POLL ? View.GONE : View.VISIBLE);
 			icon.setImageResource(switch(item.notification.type){
 				case FAVORITE -> R.drawable.ic_fluent_star_24_filled;
