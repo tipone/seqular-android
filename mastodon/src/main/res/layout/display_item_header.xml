@@ -43,6 +43,8 @@
 			android:layout_height="48dp"
 			android:background="?android:actionBarItemBackground"
 			android:scaleType="center"
+			android:contentDescription="@string/spoiler_hide"
+			android:tooltipText="@string/spoiler_hide"
 			android:src="@drawable/ic_fluent_eye_24_regular"
 			android:tint="?colorM3OnSurfaceVariant"
 			android:visibility="gone" />

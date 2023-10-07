@@ -66,6 +66,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
+import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
 public class HeaderStatusDisplayItem extends StatusDisplayItem{
@@ -76,7 +77,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private SpannableStringBuilder parsedName;
 	public final Status status;
-	private boolean hasVisibilityToggle;
+	public boolean hasVisibilityToggle;
 	boolean needBottomPadding;
 	private CharSequence extraText;
 	private Notification notification;
@@ -331,23 +332,13 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			botIcon.setColorFilter(username.getCurrentTextColor());
 
 			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification!=null && !item.inset ? View.VISIBLE : View.GONE);
+			visibility.setVisibility(item.hasVisibilityToggle ? View.VISIBLE : View.GONE);
 			if (item.hasVisibilityToggle){
-				boolean hidden = !item.status.sensitiveRevealed || (item.status.hasSpoiler() && !item.status.spoilerRevealed);
-
-				// doing this because V.setVisibilityAnimated ignores changes between INVISIBLE and GONE
-				int newVis=hidden ? View.INVISIBLE : View.VISIBLE;
-				if(newVis==View.INVISIBLE && visibility.getVisibility()==View.GONE)
-					visibility.setVisibility(newVis);
-				else
-					V.setVisibilityAnimated(visibility, newVis);
-
-				visibility.setEnabled(!hidden);
-				visibility.setContentDescription(item.parentFragment.getString(item.status.sensitiveRevealed ? R.string.spoiler_hide : R.string.spoiler_show));
-				if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-					visibility.setTooltipText(visibility.getContentDescription());
-				}
-			} else {
-				visibility.setVisibility(View.GONE);
+				boolean visible = item.status.sensitiveRevealed && (!item.status.hasSpoiler() || item.status.spoilerRevealed);
+				visibility.setAlpha(visible ? 1 : 0f);
+				visibility.setScaleY(visible ? 1 : 0.8f);
+				visibility.setScaleX(visible ? 1 : 0.8f);
+				visibility.setEnabled(visible);
 			}
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
 			if(TextUtils.isEmpty(item.extraText)){
@@ -410,6 +401,16 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 
 			itemView.setPaddingRelative(itemView.getPaddingStart(), itemView.getPaddingTop(),
 					item.inset ? V.dp(10) : V.dp(4), itemView.getPaddingBottom());
+		}
+
+		public void animateVisibilityToggle(boolean visible){
+			visibility.animate()
+					.alpha(visible ? 1 : 0)
+					.scaleX(visible ? 1 : 0.8f)
+					.scaleY(visible ? 1 : 0.8f)
+					.setInterpolator(CubicBezierInterpolator.DEFAULT)
+					.start();
+			visibility.setEnabled(visible);
 		}
 
 		@Override
