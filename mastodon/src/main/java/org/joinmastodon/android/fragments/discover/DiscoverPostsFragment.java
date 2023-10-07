@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 
 import org.joinmastodon.android.api.requests.trends.GetTrendingStatuses;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
@@ -30,7 +31,10 @@ public class DiscoverPostsFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
-						onDataLoaded(result, !result.isEmpty());
+						if(getActivity()==null) return;
+						boolean empty=result.isEmpty();
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
+						onDataLoaded(result, !empty);
 						bannerHelper.onBannerBecameVisible();
 					}
 				}).exec(accountID);

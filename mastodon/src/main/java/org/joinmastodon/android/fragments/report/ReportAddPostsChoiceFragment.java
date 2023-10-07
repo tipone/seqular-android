@@ -87,6 +87,7 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if(getActivity()==null) return;
 						for(Status s:result){
 							s.sensitive=true;
 						}

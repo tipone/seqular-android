@@ -9,19 +9,16 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
-import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUnpinnedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
-import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
 
@@ -60,7 +57,6 @@ public class AccountTimelineFragment extends StatusListFragment{
 					@Override
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
-						AccountSessionManager asm = AccountSessionManager.getInstance();
 						boolean empty=result.isEmpty();
 						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext(), user);
 						onDataLoaded(result, !empty);

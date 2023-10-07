@@ -74,7 +74,6 @@ public class CacheController{
 								result.add(status);
 							}while(cursor.moveToNext());
 							String _newMaxID=newMaxID;
-							AccountSessionManager.get(accountID).filterStatuses(result, FilterContext.HOME);
 							uiHandler.post(()->callback.onSuccess(new CacheablePaginatedResponse<>(result, _newMaxID, true)));
 							return;
 						}
@@ -86,9 +85,7 @@ public class CacheController{
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Status> result){
-								ArrayList<Status> filtered=new ArrayList<>(result);
-								AccountSessionManager.get(accountID).filterStatuses(filtered, FilterContext.HOME);
-								callback.onSuccess(new CacheablePaginatedResponse<>(filtered, result.isEmpty() ? null : result.get(result.size()-1).id, false));
+								callback.onSuccess(new CacheablePaginatedResponse<>(result, result.isEmpty() ? null : result.get(result.size()-1).id, false));
 								putHomeTimeline(result, maxID==null);
 							}
 

@@ -21,6 +21,7 @@ import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.tags.GetTag;
 import org.joinmastodon.android.api.requests.tags.SetTagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
@@ -94,7 +95,10 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
-						onDataLoaded(result, !result.isEmpty());
+						if(getActivity()==null) return;
+						boolean empty=result.isEmpty();
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
+						onDataLoaded(result, !empty);
 					}
 				})
 				.exec(accountID);

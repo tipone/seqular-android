@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
@@ -35,6 +36,8 @@ public class PinnedPostsListFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if(getActivity()==null) return;
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
 						onDataLoaded(result, false);
 					}
 				}).exec(accountID);

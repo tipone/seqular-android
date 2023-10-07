@@ -256,10 +256,13 @@ public class AccountSession{
 	}
 
 	public <T> void filterStatusContainingObjects(List<T> objects, Function<T, Status> extractor, FilterContext context, Account profile){
-		Predicate<Status> statusIsOnOwnProfile = (s) -> self != null && profile != null && s.account != null
+		AccountLocalPreferences lp=getLocalPreferences();
+		Predicate<Status> statusIsOnOwnProfile=(s)->self != null && profile != null && s.account != null
 				&& Objects.equals(self.id, profile.id) && Objects.equals(self.id, s.account.id);
+		Predicate<Status> isFilteredType=(s)->(!lp.showReplies && s.inReplyToId != null)
+				|| (!lp.showBoosts && s.reblog != null);
 
-		if(getLocalPreferences().serverSideFiltersSupported){
+		if(lp.serverSideFiltersSupported){
 			// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
 			objects.removeIf(o->{
 				Status s=extractor.apply(o);
@@ -268,8 +271,10 @@ public class AccountSession{
 				if(s.filtered==null)
 					return false;
 				// don't hide own posts in own profile
-				if (statusIsOnOwnProfile.test(s))
+				if(statusIsOnOwnProfile.test(s))
 					return false;
+				if(isFilteredType.test(s))
+					return true;
 				for(FilterResult filter:s.filtered){
 					if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
 						return true;
@@ -278,13 +283,11 @@ public class AccountSession{
 			});
 			return;
 		}
-		if(wordFilters==null)
-			return;
 		for(T obj:objects){
 			Status s=extractor.apply(obj);
 			if(s!=null && s.filtered!=null){
-				getLocalPreferences().serverSideFiltersSupported=true;
-				getLocalPreferences().save();
+				lp.serverSideFiltersSupported=true;
+				lp.save();
 				return;
 			}
 		}
@@ -293,9 +296,11 @@ public class AccountSession{
 			if(s==null)
 				return false;
 			// don't hide own posts in own profile
-			if (statusIsOnOwnProfile.test(s))
+			if(statusIsOnOwnProfile.test(s))
 				return false;
-			for(LegacyFilter filter:wordFilters){
+			if(isFilteredType.test(s))
+				return true;
+			if(wordFilters!=null) for(LegacyFilter filter:wordFilters){
 				if(filter.context.contains(context) && filter.matches(s) && filter.isActive())
 					return true;
 			}
