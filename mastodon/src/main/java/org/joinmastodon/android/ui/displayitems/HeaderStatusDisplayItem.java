@@ -295,17 +295,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			UiUtils.enablePopupMenuIcons(activity, optionsMenu);
 		}
 
-		private void populateAccountsMenu(Menu menu) {
-			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
-			sessions.stream().filter(s -> !s.getID().equals(item.accountID)).forEach(s -> {
-				String username = "@"+s.self.username+"@"+s.domain;
-				menu.add(username).setOnMenuItemClickListener(c->{
-					UiUtils.openURL(item.parentFragment.getActivity(), s.getID(), item.status.url, false);
-					return true;
-				});
-			});
-		}
-
 		@SuppressLint("SetTextI18n")
 		@Override
 		public void onBind(HeaderStatusDisplayItem item){
