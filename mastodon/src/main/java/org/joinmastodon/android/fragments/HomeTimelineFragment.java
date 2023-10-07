@@ -26,6 +26,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -137,11 +138,13 @@ public class HomeTimelineFragment extends StatusListFragment {
 						Status last=result.get(result.size()-1);
 						List<Status> toAdd;
 						if(!data.isEmpty() && last.id.equals(data.get(0).id)){ // This part intersects with the existing one
-							toAdd=result.subList(0, result.size()-1); // Remove the already known last post
+							toAdd=new ArrayList<>(result.subList(0, result.size()-1)); // Remove the already known last post
 						}else{
 							result.get(result.size()-1).hasGapAfter=true;
 							toAdd=result;
 						}
+						List<String> existingIds=data.stream().map(Status::getID).collect(Collectors.toList());
+						toAdd.removeIf(s->existingIds.contains(s.getID()));
 						List<Status> toAddUnfiltered=new ArrayList<>(toAdd);
 						AccountSessionManager.get(accountID).filterStatuses(toAdd, getFilterContext());
 						if(!toAdd.isEmpty()){
