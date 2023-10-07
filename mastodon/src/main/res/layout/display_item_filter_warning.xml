@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/warning_wrap"
-    android:background="?colorM3SurfaceVariant">
+    android:background="@drawable/bg_filter_warning">
 
     <TextView
         android:id="@+id/text"
