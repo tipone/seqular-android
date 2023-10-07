@@ -177,6 +177,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					: null);
 			emojiKeyboard=new CustomEmojiPopupKeyboard(
 					(Activity) item.parentFragment.getContext(),
+					item.accountID,
 					AccountSessionManager.getInstance().getCustomEmojis(session.domain),
 					session.domain, true);
 			emojiKeyboard.setListener(this);

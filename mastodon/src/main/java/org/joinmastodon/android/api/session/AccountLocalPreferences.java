@@ -12,6 +12,7 @@ import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.ContentType;
+import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.lang.reflect.Type;
@@ -39,14 +40,15 @@ public class AccountLocalPreferences{
 	public String publishButtonText;
 	public String timelineReplyVisibility; // akkoma-only
 	public boolean keepOnlyLatestNotification;
-
 	public boolean emojiReactionsEnabled;
 	public ShowEmojiReactions showEmojiReactions;
 	public ColorPreference color;
 	public boolean likeIcon;
+	public ArrayList<Emoji> recentCustomEmoji;
 
-	private final static Type recentLanguagesType = new TypeToken<ArrayList<String>>() {}.getType();
-	private final static Type timelinesType = new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
+	private final static Type recentLanguagesType=new TypeToken<ArrayList<String>>() {}.getType();
+	private final static Type timelinesType=new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
+	private final static Type recentCustomEmojiType=new TypeToken<ArrayList<Emoji>>() {}.getType();
 
 	public AccountLocalPreferences(SharedPreferences prefs, AccountSession session){
 		this.prefs=prefs;
@@ -73,6 +75,7 @@ public class AccountLocalPreferences{
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
 		color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
 		likeIcon=prefs.getBoolean("likeIcon", false);
+		recentCustomEmoji=fromJson(prefs.getString("recentCustomEmoji", null), recentCustomEmojiType, new ArrayList<>());
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -108,6 +111,7 @@ public class AccountLocalPreferences{
 				.putString("showEmojiReactions", showEmojiReactions.name())
 				.putString("color", color.name())
 				.putBoolean("likeIcon", likeIcon)
+				.putString("recentCustomEmoji", gson.toJson(recentCustomEmoji))
 				.apply();
 	}
 
