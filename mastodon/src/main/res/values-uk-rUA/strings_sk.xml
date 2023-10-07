@@ -71,9 +71,9 @@
     <string name="sk_delete_notification_confirm_action">Видалити сповіщення</string>
     <string name="sk_delete_notification_confirm">Ви впевнені, що хочете видалити це сповіщення\?</string>
     <string name="sk_settings_enable_delete_notifications">Увімкнути видалення сповіщень</string>
-    <string name="sk_settings_publish_button_text">Текст кнопки \"опублікувати\"</string>
-    <string name="sk_settings_publish_button_text_title">Змінити текст кнопки \"опублікувати\"</string>
-    <string name="sk_settings_translate_only_opened">Сховати кнопку \"перекласти\" у стрічці</string>
+    <string name="sk_settings_publish_button_text">Текст кнопки «Опублікувати»</string>
+    <string name="sk_settings_publish_button_text_title">Змінити текст кнопки «Опублікувати»</string>
+    <string name="sk_settings_translate_only_opened">Сховати кнопку «Перекласти» у стрічці</string>
     <string name="sk_settings_translation_availability_note_available">%s підтримує переклад!</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s не підтримує переклад.</string>
     <string name="sk_clear_all_notifications">Очистити всі сповіщення</string>
@@ -304,7 +304,7 @@
     <string name="sk_settings_prefix_replies_always">Відповіді будь-кому</string>
     <string name="sk_settings_prefix_replies_never">Ніколи</string>
     <string name="sk_settings_prefix_replies_to_others">Лише у відповідь іншим</string>
-    <string name="sk_settings_forward_report_default">Усталений перемикач “Пересилати звіт”</string>
+    <string name="sk_settings_forward_report_default">Усталений перемикач «Пересилати звіт»</string>
     <string name="sk_icon_feed">Стрічка</string>
     <string name="sk_exclusive_list">Список виключення</string>
     <string name="sk_list_exclusive_switch">Створити список виключень</string>
@@ -328,7 +328,7 @@
     <string name="sk_icon_diamond">Діамант</string>
     <string name="sk_icon_umbrella">Парасолька</string>
     <string name="sk_add_timeline">Додати стрічку</string>
-    <string name="sk_pronouns_label">Вимова</string>
+    <string name="sk_pronouns_label">Займенники</string>
     <string name="sk_switch_timeline">Перемкнути стрічку</string>
     <string name="sk_settings_instance">Сервер</string>
     <string name="sk_settings_true_black">Абсолютно чорний режим</string>
@@ -389,7 +389,7 @@
     <string name="sk_load_missing_posts_oldest_first">Спочатку найдавніші (за зростанням)</string>
     <string name="sk_settings_show_emoji_reactions">Показувати реакції емоджі у стрічках</string>
     <string name="sk_settings_show_emoji_reactions_hide_empty">Сховати реакції без емоджі</string>
-    <string name="sk_settings_show_emoji_reactions_always">Завжди показувати кнопку Додати</string>
+    <string name="sk_settings_show_emoji_reactions_always">Завжди показувати кнопку «Додати»</string>
     <string name="sk_suicide_search_terms">Самогубство</string>
     <string name="sk_search_suicide_title">Якщо ви потрапили в біду…</string>
     <string name="sk_search_suicide_message">Якщо ви шукаєте знак, щоб не накладати на себе руки, то це він. Якщо ви перебуваєте у скрутному становищі, зверніться на місцеву гарячу лінію з питань самогубств.</string>
