@@ -359,7 +359,7 @@
     <string name="sk_search_suicide_message">Wenn du auf ein Zeichen wartest, keinen Suizid zu begehen – das hier ist es. Bitte ziehe in Erwägung, eine Suizid-Hotline zu kontaktieren, wenn du Hilfe brauchst.</string>
     <string name="sk_settings_show_emoji_reactions_hide_empty">Leere Emoji-Reaktionen verbergen</string>
     <string name="sk_settings_show_emoji_reactions_always">Hinzufügen-Button immer anzeigen</string>
-    <string name="sk_enter_emoji_hint">Emoji zum Reagieren eintippen</string>
+    <string name="sk_enter_emoji_hint">Emoji eintippen oder suchen</string>
     <string name="sk_duration_indefinite">Unbestimmt</string>
     <string name="sk_duration_minutes_5">5 Minuten</string>
     <string name="sk_duration_minutes_30">30 Minuten</string>
@@ -385,4 +385,25 @@
     <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
     <string name="sk_load_missing_posts_below">Ältere Beiträge laden</string>
     <string name="sk_load_missing_posts_above">Neuere Beiträge laden</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="one">%d Sekunde</item>
+        <item quantity="other">%d Sekunden</item>
+    </plurals>
+    <plurals name="sk_time_hours">
+        <item quantity="one">%d Stunde</item>
+        <item quantity="other">%d Stunden</item>
+    </plurals>
+    <string name="sk_settings_like_icon">Herz als Favorisieren-Symbol verwenden</string>
+    <string name="sk_blocked_accounts">Blockierte Konten</string>
+    <plurals name="sk_time_days">
+        <item quantity="one">%d Tag</item>
+        <item quantity="other">%d Tage</item>
+    </plurals>
+    <string name="sk_muted_accounts">Stummgeschaltete Konten</string>
+    <string name="sk_trending_posts_info_banner">Diese Beiträge sind im Fediverse gerade beliebt.</string>
+    <plurals name="sk_time_minutes">
+        <item quantity="one">%d Minute</item>
+        <item quantity="other">%d Minuten</item>
+    </plurals>
+    <string name="sk_trending_links_info_banner">Über diese Nachrichten wird im Fediverse gerade gesprochen.</string>
 </resources>
