@@ -97,7 +97,7 @@ public class PushSubscriptionManager{
 		deviceToken=getPrefs().getString("deviceToken", null);
 		int tokenVersion=getPrefs().getInt("version", 0);
 		if(!TextUtils.isEmpty(deviceToken) && tokenVersion==BuildConfig.VERSION_CODE){
-			registerAllAccountsForPush(true); // TODO: revert this before release
+			registerAllAccountsForPush(false);
 			return;
 		}
 		Log.i(TAG, "tryRegisterFCM: no token found or app was updated. Trying to get push token...");
