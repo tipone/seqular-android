@@ -8,8 +8,8 @@
     <string name="sk_settings_emoji_reactions_in_lists_explanation">Näytetäänkö emojireaktiot aikajanoissa. Jos tämä on pois käytöstä, emojireaktiot näkyvät vain lankaa katsottaessa.</string>
     <string name="sk_button_react">Reagoi emojilla</string>
     <string name="sk_again_for_system_keyboard">Järjestelmän näppäimistö seuraavalla painalluksella</string>
-    <string name="sk_enter_emoji_toast">Tähän tarvitaan emoji</string>
-    <string name="sk_enter_emoji_hint">Kirjoita vastataksesi emojilla</string>
+    <string name="sk_enter_emoji_toast">Lisää emoji</string>
+    <string name="sk_enter_emoji_hint">Lisää emoji tai etsi mukautettu emoji</string>
     <string name="sk_mute_label">Kesto</string>
     <string name="sk_duration_indefinite">Loputon</string>
     <string name="sk_duration_minutes_5">5 minuuttia</string>
@@ -42,7 +42,7 @@
     <string name="sk_settings_auto_reveal_equal_spoilers">Avaa automaattisesti samat sisältövaroitukset vastauksissa</string>
     <string name="sk_settings_auto_reveal_nobody">Ei koskaan</string>
     <string name="sk_settings_auto_reveal_author">Saman tilin vastauksissa</string>
-    <string name="sk_settings_auto_reveal_anyone">Kaikkien vastauksissa</string>
+    <string name="sk_settings_auto_reveal_anyone">Kaikkien vastaukset</string>
     <string name="sk_settings_translate_only_opened">Käännä vain avatut viestit</string>
     <string name="sk_translate_show_original">Näytä alkuperäinen</string>
     <string name="sk_available_languages">Käytettävissä olevat kielet</string>
@@ -69,7 +69,7 @@
     <string name="sk_settings_allow_remote_loading">Hae tietoa etäinstansseista</string>
     <string name="sk_forward_report_to">Lähetä edelleen kohteeseen %s</string>
     <string name="sk_unsent_posts">Julkaisemattomat viestit</string>
-    <string name="sk_settings_prefix_replies_always">Vastauksissa kaikille</string>
+    <string name="sk_settings_prefix_replies_always">Vastaus kenelle tahansa</string>
     <string name="sk_settings_prefix_replies_never">Ei koskaan</string>
     <string name="sk_confirm_save_draft">Tallenna luonnos\?</string>
     <string name="sk_confirm_save_changes">Tallenna muutokset\?</string>
@@ -97,7 +97,7 @@
     <string name="sk_settings_about_instance">Tietoja instanssista</string>
     <string name="sk_settings_single_notification">Näytä vain yksi ilmoitus</string>
     <string name="sk_create">Luo</string>
-    <string name="sk_in_reply">Vastauksena</string>
+    <string name="sk_in_reply">Vastaus</string>
     <string name="sk_delete_list_confirm">Oletko varma että haluat poistaa listan \"%s\"\?</string>
     <string name="sk_remove_follower">Poista seuraajista</string>
     <string name="sk_icon_cat">Kissa</string>
@@ -132,7 +132,7 @@
     <string name="sk_settings_reply_visibility">Vastauksen näkyvyys</string>
     <string name="sk_settings_reply_visibility_all">Kaikki vastaukset</string>
     <string name="sk_show_thread">Näytä lanka</string>
-    <string name="sk_reply_line_above_avatar">\"Vastauksena\" -rivi käyttäjäkuvakkeen yläpuolella</string>
+    <string name="sk_reply_line_above_avatar">\"Vastaus\" -rivi käyttäjäkuvakkeen yläpuolella</string>
     <string name="sk_compact_reblog_reply_line">Tiivistetty tehostus/vastaus-rivi</string>
     <plurals name="sk_users_reacted_with">
         <item quantity="one">Yksi käyttäjä reagoi näin: %2$s</item>
@@ -282,7 +282,7 @@
     <string name="sk_unfinished_attachments">Korjataanko liitteet\?</string>
     <string name="sk_content_type_bbcode">BBCode</string>
     <string name="sk_content_type_mfm">MFM</string>
-    <string name="sk_settings_prefix_replies_to_others">Vain vastauksissa muille</string>
+    <string name="sk_settings_prefix_replies_to_others">Vastaukset muille</string>
     <string name="sk_exclusive_list">Erillinen lista</string>
     <string name="sk_list_exclusive_switch">Tee listasta erillinen</string>
     <string name="sk_list_exclusive_switch_explanation">Erillisen listan jäsenet eivät näy kotiaikajanallasi – jos instanssisi tukee tätä.</string>
@@ -359,7 +359,7 @@
     <string name="sk_scheduled_too_soon">Julkaisu on ajastettava vähintään 10 minuuttia tulevaisuuteen.</string>
     <string name="sk_confirm_unpin_post">Oletko varma että haluat irrottaa tämän viestin\?</string>
     <string name="sk_settings_unifiedpush_no_distributor_body">On asennettava jakelijaohjelma jotta UnifiedPush-ilmoitukset toimivat. Lisätietoja: https://unifiedpush.org/</string>
-    <string name="sk_settings_emoji_reactions_explanation">Näyttää viestien emojireaktiot ja mahdollistaa vuorovaikutuksen niiden kanssa. Jotkin Mastodonin muokatut versiot tukevat tätä, mutta Mastodon ei.</string>
+    <string name="sk_settings_emoji_reactions_explanation">Näyttää viestien emojireaktiot ja mahdollistaa omien lisäämisen. Jotkin Mastodonin muokatut versiot tukevat tätä, mutta Mastodon ei.</string>
     <string name="sk_recent_searches_placeholder">Hae kirjoittamalla tähän</string>
     <string name="sk_alt_text_missing">Selitys puuttuu vähintään yhdestä liitteestä.</string>
     <string name="sk_pinned_timeline">Kiinnitetty kotinäyttöön</string>
@@ -375,4 +375,37 @@
     <string name="sk_settings_support_local_only">Palvelin tukee paikallista julkaisemista</string>
     <string name="sk_settings_continues_playback_summary">Anna mediatoiston jatkua lisäten uusi raita</string>
     <string name="sk_quoting_user">Lainaus %s</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="one">%d sekunti</item>
+        <item quantity="other">%d sekuntia</item>
+    </plurals>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Vain kun julkaisu on avattu</string>
+    <plurals name="sk_time_hours">
+        <item quantity="one">%d tunti</item>
+        <item quantity="other">%d tuntia</item>
+    </plurals>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Piilota tyhjät emojireaktiot</string>
+    <string name="sk_settings_show_emoji_reactions">Näytä emojireaktiot aikajanoissa</string>
+    <string name="sk_blocked_accounts">Estetyt tilit</string>
+    <string name="sk_suicide_search_terms">Itsemurha</string>
+    <string name="sk_load_missing_posts_above">Lataa uudempia julkaisuja</string>
+    <plurals name="sk_time_days">
+        <item quantity="one">%d päivä</item>
+        <item quantity="other">%d päivää</item>
+    </plurals>
+    <string name="sk_settings_show_emoji_reactions_always">Näytä lisäyspainike aina</string>
+    <string name="sk_search_suicide_hotlines">Löydä kriisipuhelin</string>
+    <string name="sk_muted_accounts">Hiljennetyt tilit</string>
+    <string name="sk_do_not_show_again">Älä näytä toista kertaa</string>
+    <string name="sk_suicide_helplines_url">https://mieli.fi/tukea-ja-apua/kriisipuhelin/</string>
+    <string name="sk_trending_posts_info_banner">Nämä julkaisut ovat saamassa vetoa tällä palvelimella.</string>
+    <string name="sk_load_missing_posts_below">Lataa vanhempia julkaisuja</string>
+    <string name="sk_search_suicide_title">Jos tarvitset apua…</string>
+    <plurals name="sk_time_minutes">
+        <item quantity="one">%d minuutti</item>
+        <item quantity="other">%d minuuttia</item>
+    </plurals>
+    <string name="sk_search_suicide_message">Jos haluat merkin siitä, että elämää kannattaa jatkaa, tämä on se. Jos olet hädässä, voit ottaa yhteyttä paikalliseen kriisipuhelimeen.</string>
+    <string name="sk_trending_links_info_banner">Näistä uutisjutuista keskustellaan palvelimellasi.</string>
+    <string name="sk_post_contains_media">Julkaisussa on mediaa</string>
 </resources>
