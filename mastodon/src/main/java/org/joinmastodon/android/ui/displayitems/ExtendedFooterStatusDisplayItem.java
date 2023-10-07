@@ -79,6 +79,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			AccountSession session=AccountSessionManager.get(item.accountID);
 			boolean like=session!=null && session.getLocalPreferences().likeIcon;
 			favorites.setCompoundDrawablesRelativeWithIntrinsicBounds(like ? R.drawable.ic_fluent_heart_20_regular : R.drawable.ic_fluent_star_20_regular, 0, 0, 0);
+			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
 			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
 			reblogs.setVisibility(s.visibility != StatusPrivacy.DIRECT ? View.VISIBLE : View.GONE);
 
