@@ -13,8 +13,8 @@ import org.joinmastodon.android.GlobalUserPreferences.AutoRevealMode;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.GetStatusContext;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
-import org.joinmastodon.android.events.StatusCreatedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.FilterContext;
@@ -31,7 +31,6 @@ import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
-import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayDeque;
@@ -195,8 +194,8 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		// TODO: figure out how this code works
 		if (isInstanceAkkoma()) sortStatusContext(mainStatus, result);
 
-		result.descendants=filterStatuses(result.descendants);
-		result.ancestors=filterStatuses(result.ancestors);
+		filterStatuses(result.descendants);
+		filterStatuses(result.ancestors);
 		restoreStatusStates(result.descendants, oldData);
 		restoreStatusStates(result.ancestors, oldData);
 
@@ -332,11 +331,8 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 				.collect(Collectors.toList());
 	}
 
-	private List<Status> filterStatuses(List<Status> statuses){
-		StatusFilterPredicate statusFilterPredicate=new StatusFilterPredicate(accountID,getFilterContext());
-		return statuses.stream()
-				.filter(statusFilterPredicate)
-				.collect(Collectors.toList());
+	private void filterStatuses(List<Status> statuses){
+		AccountSessionManager.get(accountID).filterStatuses(statuses, getFilterContext());
 	}
 
 	@Override
