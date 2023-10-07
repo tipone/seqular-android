@@ -366,7 +366,7 @@
         <item quantity="other">%1$,d pengguna bereaksi dengan %2$s</item>
     </plurals>
     <string name="sk_enter_emoji_toast">Silakan ketik emoji</string>
-    <string name="sk_enter_emoji_hint">Ketik untuk bereaksi dengan sebuah emoji</string>
+    <string name="sk_enter_emoji_hint">Ketik emoji atau cari emoji kustom</string>
     <string name="sk_settings_emoji_reactions">Aktifkan reaksi emoji</string>
     <string name="sk_settings_emoji_reactions_explanation">Menampilkan reaksi emoji di kiriman dan memungkinkan Anda untuk menambahkan sendiri. Banyak server Fediverse yang mendukung ini, tetapi Mastodon tidak mendukungnya.</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">"Menentukan apakah reaksi emoji ditampilkan  di lini masa. Jika opsi ini mati, reaksi emoji hanya akan ditampilkan ketika melihat sebuah utas."</string>
@@ -394,4 +394,6 @@
     <string name="sk_search_suicide_message">Jika Anda mencari tanda untuk tidak melakukan bunuh diri, ini adalah tanda itu. Tolong pertimbangkan untuk menghubungi hotline bunuh diri lokal jika Anda dalam kesulitan.</string>
     <string name="sk_trending_links_info_banner">Di bawah adalah berita yang dibicarakan di server Anda.</string>
     <string name="sk_post_contains_media">Kiriman berisi media</string>
+    <string name="sk_blocked_accounts">Akun yang diblokir</string>
+    <string name="sk_muted_accounts">Akun yang dibisukan</string>
 </resources>

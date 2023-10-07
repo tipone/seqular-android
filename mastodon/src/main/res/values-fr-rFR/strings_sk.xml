@@ -372,7 +372,7 @@
     </plurals>
     <string name="sk_button_react">Réagissez avec des emojis</string>
     <string name="sk_again_for_system_keyboard">Appuyez à nouveau pour le clavier système</string>
-    <string name="sk_enter_emoji_hint">Tapez pour réagir avec un emoji</string>
+    <string name="sk_enter_emoji_hint">Tapez un emoji ou recherchez un emoji personnalisé</string>
     <string name="sk_enter_emoji_toast">Veuillez saisir un emoji</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">message</item>
@@ -401,4 +401,6 @@
     <string name="sk_time_hours">%d heures</string>
     <string name="sk_time_days">%d jours</string>
     <string name="sk_trending_posts_info_banner">Ce sont les publications qui gagnent du terrain sur votre serveur.</string>
+    <string name="sk_blocked_accounts">Comptes bloqués</string>
+    <string name="sk_muted_accounts">Comptes silenciés</string>
 </resources>

@@ -316,4 +316,10 @@
     <string name="sk_federated_timeline_info_banner">هذه هي أحدث المنشورات للأعضاء في فديراليتك.</string>
     <string name="sk_bubble_timeline_info_banner">هذه هي أحدث المنشورات على الشبكة والتي انتقاها مُدراء خادمكم.</string>
     <string name="sk_schedule_or_draft">برمجة أو تحرير مُسودّة</string>
+    <string name="sk_settings_color_palette">لوحة الألوان</string>
+    <string name="sk_blocked_accounts">الحسابات المحظورة</string>
+    <string name="sk_instance_info_unavailable">معلومات مثيل الخادم غير متوفرة في الحين</string>
+    <string name="sk_muted_accounts">الحسابات المكتومة</string>
+    <string name="sk_settings_continues_playback_summary">السماح للوسائط المشغَّلَة بالفعل بالاستمرار في التشغيل، مع تراكب التشغيل الجديد</string>
+    <string name="sk_settings_continues_playback">تراكُب صوتي</string>
 </resources>
