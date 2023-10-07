@@ -112,7 +112,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			}else{
 				text.setText(item.text);
 			}
-			text.setTextIsSelectable(item.textSelectable);
+			text.setTextIsSelectable(false);
+			if(item.textSelectable) itemView.post(() -> text.setTextIsSelectable(true));
 			text.setInvalidateOnEveryFrame(false);
 			itemView.setClickable(false);
 			itemView.setPadding(itemView.getPaddingLeft(), item.reduceTopPadding ? V.dp(6) : V.dp(12), itemView.getPaddingRight(), itemView.getPaddingBottom());
