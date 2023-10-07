@@ -9,7 +9,7 @@
     <string name="sk_button_react">Reagoi emojilla</string>
     <string name="sk_again_for_system_keyboard">Järjestelmän näppäimistö seuraavalla painalluksella</string>
     <string name="sk_enter_emoji_toast">Lisää emoji</string>
-    <string name="sk_enter_emoji_hint">Lisää emoji tai etsi mukautettu emoji</string>
+    <string name="sk_enter_emoji_hint">Lisää emoji tai etsi</string>
     <string name="sk_mute_label">Kesto</string>
     <string name="sk_duration_indefinite">Loputon</string>
     <string name="sk_duration_minutes_5">5 minuuttia</string>
@@ -398,7 +398,7 @@
     <string name="sk_muted_accounts">Hiljennetyt tilit</string>
     <string name="sk_do_not_show_again">Älä näytä toista kertaa</string>
     <string name="sk_suicide_helplines_url">https://mieli.fi/tukea-ja-apua/kriisipuhelin/</string>
-    <string name="sk_trending_posts_info_banner">Nämä julkaisut ovat saamassa vetoa tällä palvelimella.</string>
+    <string name="sk_trending_posts_info_banner">Nämä julkaisut ovat saamassa vetoa Fediversumissa.</string>
     <string name="sk_load_missing_posts_below">Lataa vanhempia julkaisuja</string>
     <string name="sk_search_suicide_title">Jos tarvitset apua…</string>
     <plurals name="sk_time_minutes">
@@ -406,6 +406,7 @@
         <item quantity="other">%d minuuttia</item>
     </plurals>
     <string name="sk_search_suicide_message">Jos haluat merkin siitä, että elämää kannattaa jatkaa, tämä on se. Jos olet hädässä, voit ottaa yhteyttä paikalliseen kriisipuhelimeen.</string>
-    <string name="sk_trending_links_info_banner">Näistä uutisjutuista keskustellaan palvelimellasi.</string>
+    <string name="sk_trending_links_info_banner">Näistä uutisjutuista keskustellaan Fediversumissa.</string>
     <string name="sk_post_contains_media">Julkaisussa on mediaa</string>
+    <string name="sk_settings_like_icon">Käytä sydäntä suosikkikuvakkeena</string>
 </resources>
