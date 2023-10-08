@@ -367,7 +367,7 @@
         <item quantity="other">%1$,d usuarios reaccionaron con %2$s</item>
     </plurals>
     <string name="sk_enter_emoji_toast">Por favor, introduce un emoticono</string>
-    <string name="sk_enter_emoji_hint">Escribe un emoticono o busca un emoticono personalizado</string>
+    <string name="sk_enter_emoji_hint">Escribe un emoticono o busca uno</string>
     <string name="sk_settings_emoji_reactions">Activar reacciones con emoticonos</string>
     <string name="sk_settings_emoji_reactions_explanation">Muestra las reacciones con emoticonos a las publicaciones y te permite añadir las tuyas. Varias instancias del Fediverso lo soportan, pero Mastodon no.</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">Las reacciones con los emoticonos deben mostrarse en las líneas de tiempo. Si esta opción está desactivada, las reacciones con los emoticonos solo se mostrarán al ver un hilo.</string>
@@ -398,8 +398,10 @@
     <string name="sk_load_missing_posts_below">Cargar publicaciones más antiguas</string>
     <string name="sk_time_seconds">%d segundos</string>
     <string name="sk_load_missing_posts_above">Cargar publicaciones más recientes</string>
-    <string name="sk_trending_posts_info_banner">Estos son los posts que ganan popularidad en tu servidor.</string>
-    <string name="sk_trending_links_info_banner">Estas son las noticias de las que se habla en tu servidor.</string>
+    <string name="sk_trending_posts_info_banner">Estas publicaciones están ganando adeptos en Fediverse.</string>
+    <string name="sk_trending_links_info_banner">Estas noticias están dando que hablar en todo el Fediverso.</string>
     <string name="sk_blocked_accounts">Cuentas bloqueadas</string>
     <string name="sk_muted_accounts">Cuentas silenciadas</string>
+    <string name="sk_settings_like_icon">Utilizar el corazón como icono favorito</string>
+    <string name="sk_recently_used">Utilizado recientemente</string>
 </resources>
