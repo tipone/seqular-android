@@ -404,4 +404,5 @@
     <string name="sk_blocked_accounts">Comptes bloqués</string>
     <string name="sk_muted_accounts">Comptes silenciés</string>
     <string name="sk_settings_like_icon">Utiliser le cœur comme icône pour les favoris</string>
+    <string name="sk_recently_used">Utilisé récemment</string>
 </resources>
