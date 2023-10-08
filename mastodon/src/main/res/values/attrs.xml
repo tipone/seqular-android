@@ -30,6 +30,7 @@
 	<attr name="colorSensitiveOverlay" format="color"/>
 	<attr name="colorWhite" format="color"/>
 	<attr name="colorFavorite" format="color" />
+	<attr name="colorLike" format="color" />
 	<attr name="colorBoost" format="color" />
 	<attr name="colorPoll" format="color" />
 	<attr name="colorProfileHeaderBackground" format="color"/>

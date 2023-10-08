@@ -24,6 +24,7 @@ import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.SetStatusBookmarked;
 import org.joinmastodon.android.api.requests.statuses.SetStatusFavorited;
 import org.joinmastodon.android.api.requests.statuses.SetStatusReblogged;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
@@ -158,6 +159,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 	private void notify(Context context, PushNotification pn, String accountID, org.joinmastodon.android.model.Notification notification){
 		NotificationManager nm=context.getSystemService(NotificationManager.class);
 		AccountSession session=AccountSessionManager.get(accountID);
+		AccountLocalPreferences lp=session.getLocalPreferences();
 		Account self=session.self;
 		String accountName="@"+self.username+"@"+AccountSessionManager.getInstance().getAccount(accountID).domain;
 		Notification.Builder builder;
@@ -212,7 +214,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 		if (!GlobalUserPreferences.uniformNotificationIcon) {
 			builder.setSmallIcon(switch (pn.notificationType) {
-				case FAVORITE -> R.drawable.ic_fluent_star_24_filled;
+				case FAVORITE -> lp.likeIcon ? R.drawable.ic_fluent_heart_24_filled : R.drawable.ic_fluent_star_24_filled;
 				case REBLOG -> R.drawable.ic_fluent_arrow_repeat_all_24_filled;
 				case FOLLOW -> R.drawable.ic_fluent_person_add_24_filled;
 				case MENTION -> R.drawable.ic_fluent_mention_24_filled;
