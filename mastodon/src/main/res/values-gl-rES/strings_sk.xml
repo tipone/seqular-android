@@ -390,6 +390,10 @@
         <item quantity="one">Un usuario reaccionou con %2$s</item>
         <item quantity="other">%1$,d usuarios reaccionaron con %2$s</item>
     </plurals>
-    <string name="sk_search_suicide_message">Se estás a buscar para non suicidarte, é este. Por favor considera poñerte en contacto coa túa liña de suicidios local se estás en apuros</string>
+    <string name="sk_search_suicide_message">Se estás a buscar para non suicidarte, é este. Por favor considera poñerte en contacto coa túa liña de suicidios local se estás en apuros.</string>
     <string name="sk_post_contains_media">A publicación contén contido multimedia</string>
+    <string name="sk_settings_like_icon">Empregar o corazón como icona favorita</string>
+    <string name="sk_blocked_accounts">Contas bloqueadas</string>
+    <string name="sk_muted_accounts">Contas silenciadas</string>
+    <string name="sk_recently_used">Empregados recentemente</string>
 </resources>
