@@ -1,9 +1,11 @@
 package org.joinmastodon.android.ui.views;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import java.util.function.IntConsumer;
 import java.util.function.IntPredicate;
@@ -45,9 +47,7 @@ public class TabBar extends LinearLayout{
 		listener.accept(v.getId());
 		if(v.getId()==selectedTabID)
 			return;
-		findViewById(selectedTabID).setSelected(false);
-		v.setSelected(true);
-		selectedTabID=v.getId();
+		selectTab(v.getId());
 	}
 
 	private boolean onChildLongClick(View v){
@@ -60,8 +60,17 @@ public class TabBar extends LinearLayout{
 	}
 
 	public void selectTab(int id){
-		findViewById(selectedTabID).setSelected(false);
+		toggleSelected(selectedTabID, false);
 		selectedTabID=id;
-		findViewById(selectedTabID).setSelected(true);
+		toggleSelected(id, true);
+	}
+
+	private void toggleSelected(int selectedTabID, boolean selected){
+		LinearLayout tab=findViewById(selectedTabID);
+		tab.setSelected(selected);
+		View v=tab.findViewWithTag("label");
+		if(v instanceof TextView text){
+			text.setTypeface(Typeface.create(text.getTypeface(), selected ? Typeface.BOLD : Typeface.NORMAL));
+		}
 	}
 }

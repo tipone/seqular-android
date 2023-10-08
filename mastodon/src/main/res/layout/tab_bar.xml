@@ -51,6 +51,7 @@
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
+				android:tag="label"
 				android:text="@string/sk_tab_home" />
 
 		</LinearLayout>
@@ -91,6 +92,7 @@
 				android:textColor="@color/m3_on_surface_selector"
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="4dp"
+				android:tag="label"
 				android:text="@string/sk_tab_search" />
 
 		</LinearLayout>
@@ -149,6 +151,7 @@
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
+				android:tag="label"
 				android:text="@string/sk_tab_notifications" />
 
 		</LinearLayout>
@@ -195,6 +198,7 @@
 				android:layout_gravity="center_horizontal"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
+				android:tag="label"
 				android:text="@string/sk_tab_profile" />
 
 		</LinearLayout>
