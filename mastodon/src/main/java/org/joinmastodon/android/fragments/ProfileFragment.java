@@ -1177,6 +1177,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
 		V.setVisibilityAnimated(fab, View.VISIBLE);
 		bindHeaderView();
+		V.setVisibilityAnimated(fab, View.VISIBLE);
 	}
 
 	private void saveAndExitEditMode(){
