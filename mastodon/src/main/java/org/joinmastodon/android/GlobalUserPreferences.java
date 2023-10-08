@@ -116,7 +116,7 @@ public class GlobalUserPreferences{
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
-		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
+		showNavigationLabels=prefs.getBoolean("showNavigationLabels", false);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
 		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
