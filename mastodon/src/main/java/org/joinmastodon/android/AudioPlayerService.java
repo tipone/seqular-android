@@ -281,7 +281,7 @@ public class AudioPlayerService extends Service{
 
 		if(playerReady){
 			boolean isPlaying=player.isPlaying();
-			bldr.addAction(new Notification.Action.Builder(Icon.createWithResource(this, isPlaying ? R.drawable.ic_pause_24 : R.drawable.ic_play_24),
+			bldr.addAction(new Notification.Action.Builder(Icon.createWithResource(this, isPlaying ? R.drawable.ic_fluent_pause_24_filled : R.drawable.ic_fluent_play_24_filled),
 						getString(isPlaying ? R.string.pause : R.string.play),
 						PendingIntent.getBroadcast(this, 2, new Intent(ACTION_PLAY_PAUSE), PendingIntent.FLAG_IMMUTABLE))
 					.build());

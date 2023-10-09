@@ -49,7 +49,7 @@
 					android:layout_marginStart="16dp"
 					android:layout_marginTop="12dp"
 					android:backgroundTint="?colorM3OnSurfaceVariant"
-					android:background="@drawable/ic_outline_person_24"/>
+					android:background="@drawable/ic_fluent_person_24_regular"/>
 
 			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 
@@ -124,7 +124,7 @@
 					android:layout_marginStart="16dp"
 					android:layout_marginTop="12dp"
 					android:backgroundTint="?colorM3OnSurfaceVariant"
-					android:background="@drawable/ic_outline_email_24"/>
+					android:background="@drawable/ic_fluent_mail_24_regular"/>
 
 			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 
@@ -160,7 +160,7 @@
 					android:layout_marginStart="16dp"
 					android:layout_marginTop="12dp"
 					android:backgroundTint="?colorM3OnSurfaceVariant"
-					android:background="@drawable/ic_outline_password_24"/>
+					android:background="@drawable/ic_fluent_password_24_regular"/>
 
 			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 

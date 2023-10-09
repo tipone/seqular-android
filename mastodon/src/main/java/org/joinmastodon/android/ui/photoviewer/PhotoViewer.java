@@ -564,7 +564,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		if(player==null || !player.isPlaying())
 			return;
 		player.pause();
-		videoPlayPauseButton.setImageResource(R.drawable.ic_play_24);
+		videoPlayPauseButton.setImageResource(R.drawable.ic_fluent_play_24_filled);
 		videoPlayPauseButton.setContentDescription(activity.getString(R.string.play));
 		stopUpdatingVideoPosition();
 		windowView.removeCallbacks(uiAutoHider);
@@ -575,7 +575,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		if(player==null || player.isPlaying())
 			return;
 		player.start();
-		videoPlayPauseButton.setImageResource(R.drawable.ic_pause_24);
+		videoPlayPauseButton.setImageResource(R.drawable.ic_fluent_pause_24_filled);
 		videoPlayPauseButton.setContentDescription(activity.getString(R.string.pause));
 		startUpdatingVideoPosition(player);
 	}
@@ -940,7 +940,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 
 		@Override
 		public void onCompletion(MediaPlayer mp){
-			videoPlayPauseButton.setImageResource(R.drawable.ic_play_24);
+			videoPlayPauseButton.setImageResource(R.drawable.ic_fluent_play_24_filled);
 			videoPlayPauseButton.setContentDescription(activity.getString(R.string.play));
 			stopUpdatingVideoPosition();
 			if(!uiVisible)
