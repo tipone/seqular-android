@@ -58,6 +58,7 @@ public class GlobalUserPreferences{
 	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
 	public static boolean overlayMedia;
 	public static boolean showSuicideHelp;
+	public static boolean underlinedLinks;
 
 	private static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -118,6 +119,7 @@ public class GlobalUserPreferences{
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
 		overlayMedia=prefs.getBoolean("overlayMedia", false);
 		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
+		underlinedLinks=prefs.getBoolean("underlinedLinks", true);
 
 		if (prefs.contains("prefixRepliesWithRe")) {
 			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
@@ -175,8 +177,30 @@ public class GlobalUserPreferences{
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
 				.putBoolean("overlayMedia", overlayMedia)
 				.putBoolean("showSuicideHelp", showSuicideHelp)
+				.putBoolean("underlinedLinks", underlinedLinks)
 				.apply();
 	}
+
+	public enum ThemePreference{
+		AUTO,
+		LIGHT,
+		DARK
+	}
+
+	public enum AutoRevealMode {
+		NEVER,
+		THREADS,
+		DISCUSSIONS
+	}
+
+	public enum PrefixRepliesMode {
+		NEVER,
+		ALWAYS,
+		TO_OTHERS
+	}
+
+
+	//region preferences migrations
 
 	private static void migrateToVersion102(){
 		Log.d(TAG, "Migrating preferences to version 102!! (copy current theme to local preferences)");
@@ -245,21 +269,6 @@ public class GlobalUserPreferences{
 		}
 	}
 
-	public enum ThemePreference{
-		AUTO,
-		LIGHT,
-		DARK
-	}
+	//endregion
 
-	public enum AutoRevealMode {
-		NEVER,
-		THREADS,
-		DISCUSSIONS
-	}
-
-	public enum PrefixRepliesMode {
-		NEVER,
-		ALWAYS,
-		TO_OTHERS
-	}
 }

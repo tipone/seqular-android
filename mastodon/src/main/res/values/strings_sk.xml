@@ -408,4 +408,5 @@
     <string name="sk_blocked_accounts">Blocked accounts</string>
     <string name="sk_settings_like_icon">Use heart as favorite icon</string>
     <string name="sk_recently_used">Recently used</string>
+	<string name="sk_settings_underlined_links">Underlined links</string>
 </resources>
