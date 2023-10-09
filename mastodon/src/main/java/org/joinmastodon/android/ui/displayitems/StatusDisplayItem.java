@@ -30,6 +30,7 @@ import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
@@ -145,7 +146,7 @@ public abstract class StatusDisplayItem{
 		Status statusForContent=status.getContentStatus();
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
+		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus s ? s : null;
 
 		HeaderStatusDisplayItem header=null;
 		boolean hideCounts=!AccountSessionManager.get(accountID).getLocalPreferences().showInteractionCounts;
@@ -201,7 +202,7 @@ public abstract class StatusDisplayItem{
 			if((flags & FLAG_CHECKABLE)!=0)
 				items.add(header=new CheckableHeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null));
 			else
-				items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, null, scheduledStatus));
+				items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, parentObject instanceof Notification n ? n : null, scheduledStatus));
 		}
 
 		LegacyFilter applyingFilter=null;

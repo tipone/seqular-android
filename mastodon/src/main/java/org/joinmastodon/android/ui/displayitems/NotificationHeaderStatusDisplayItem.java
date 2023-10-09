@@ -1,7 +1,6 @@
 package org.joinmastodon.android.ui.displayitems;
 
 import static org.joinmastodon.android.MastodonApp.context;
-import static org.joinmastodon.android.model.Notification.Type.PLEROMA_EMOJI_REACTION;
 import static org.joinmastodon.android.ui.utils.UiUtils.generateFormattedString;
 
 import android.annotation.SuppressLint;
@@ -9,7 +8,6 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -24,6 +22,7 @@ import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Notification;
@@ -116,7 +115,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final ImageView icon, avatar;
+		private final ImageView icon, avatar, deleteNotification;
 		private final TextView text, timestamp;
 		private final int selectableItemBackground;
 
@@ -126,9 +125,15 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 			avatar=findViewById(R.id.avatar);
 			text=findViewById(R.id.text);
 			timestamp=findViewById(R.id.timestamp);
+			deleteNotification=findViewById(R.id.delete_notification);
 
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
 			avatar.setClipToOutline(true);
+			deleteNotification.setOnClickListener(v->UiUtils.confirmDeleteNotification(activity, item.parentFragment.getAccountID(), item.notification, ()->{
+				if (item.parentFragment instanceof NotificationsListFragment fragment) {
+					fragment.removeNotification(item.notification);
+				}
+			}));
 
 			itemView.setOnClickListener(this::onItemClick);
 			TypedValue outValue = new TypedValue();
@@ -177,10 +182,13 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				case POLL -> R.attr.colorPoll;
 				default -> android.R.attr.colorAccent;
 			})));
+			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification != null ? View.VISIBLE : View.GONE);
 			itemView.setBackgroundResource(item.notification.type != Notification.Type.POLL
 					&& item.notification.type != Notification.Type.REPORT ?
 					selectableItemBackground : 0);
 			itemView.setClickable(item.notification.type != Notification.Type.POLL);
+			itemView.setPaddingRelative(itemView.getPaddingStart(), itemView.getPaddingTop(),
+					GlobalUserPreferences.enableDeleteNotifications ? V.dp(4) : V.dp(16), itemView.getPaddingBottom());
 		}
 
 		public void onItemClick(View v) {
