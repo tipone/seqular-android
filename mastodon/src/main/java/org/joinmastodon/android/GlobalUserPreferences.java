@@ -6,8 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
-import androidx.annotation.StringRes;
-
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,8 +22,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
-import androidx.annotation.StringRes;
 
 public class GlobalUserPreferences{
 	private static final String TAG="GlobalUserPreferences";
@@ -132,8 +128,13 @@ public class GlobalUserPreferences{
 					.apply();
 		}
 
-		if(prefs.getInt("migrationLevel", 0) < 61) migrateToUpstreamVersion61();
-		if(prefs.getInt("migrationLevel", 0) < 101) migrateToVersion101();
+		int migrationLevel=prefs.getInt("migrationLevel", BuildConfig.VERSION_CODE);
+		if(migrationLevel < 61)
+			migrateToUpstreamVersion61();
+		if(migrationLevel < 102)
+			migrateToVersion102();
+		if(migrationLevel < BuildConfig.VERSION_CODE)
+			prefs.edit().putInt("migrationLevel", BuildConfig.VERSION_CODE).apply();
 	}
 
 	public static void save(){
@@ -177,13 +178,22 @@ public class GlobalUserPreferences{
 				.apply();
 	}
 
-	private static void migrateToVersion101(){
-		Log.d(TAG, "Migrating preferences to version 101!! (copy current theme to local preferences)");
+	private static void migrateToVersion102(){
+		Log.d(TAG, "Migrating preferences to version 102!! (copy current theme to local preferences)");
 
-		AccountSessionManager asm=AccountSessionManager.getInstance();
-		for(AccountSession session : asm.getLoggedInAccounts()){
-			String accountID=session.getID();
-			AccountLocalPreferences localPrefs=session.getLocalPreferences();
+		SharedPreferences prefs=getPrefs();
+		// only migrate if global prefs even contains a color (but like.. it should)
+		if(prefs.contains("color")){
+			AccountSessionManager asm=AccountSessionManager.getInstance();
+			for(AccountSession session : asm.getLoggedInAccounts()){
+				if(session.getRawLocalPreferences().contains("color")) continue;
+				AccountLocalPreferences localPrefs=session.getLocalPreferences();
+				localPrefs.color=AccountLocalPreferences.ColorPreference.valueOf(prefs.getString(
+						"color", AccountLocalPreferences.ColorPreference.MATERIAL3.name()
+				));
+				localPrefs.save();
+			}
+			prefs.edit().remove("color").apply();
 		}
 	}
 
@@ -233,8 +243,6 @@ public class GlobalUserPreferences{
 
 			localPrefs.save();
 		}
-
-		prefs.edit().putInt("migrationLevel", 61).apply();
 	}
 
 	public enum ThemePreference{
