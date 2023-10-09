@@ -88,4 +88,9 @@
     <string name="mo_filter_notifications">تصفية الإشعارات</string>
     <string name="mo_mention_reblogger_automatically">الإشارة آليا في الردود إلى الحساب الذي قام بإعادة نشر منشور ما</string>
     <string name="mo_swap_bookmark_with_reblog_summary">حفظ المنشورات أو إعادة نشرها عبر شريط الإشعارات</string>
+    <string name="mo_haptic_feedback">استجابة حِسّية</string>
+    <string name="mo_setting_default_reply_privacy_summary">استبعاد الردود من ميزات الاكتشاف</string>
+    <string name="mo_settings_show_posts_without_alt_summary">سيتم إخفاء المنشورات في جميع الخيوط الزمنية، ولكن يمكن كشفها في خيوط المحادثات وفي الإشعارات</string>
+    <string name="mo_swap_bookmark_with_reblog">استبدال إجراء الإضافة إلى الفواصل المرجعية بإعادة النشر</string>
+    <string name="mo_setting_haptic_feedback_summary">اهتز عند التفاعل مع المنشورات</string>
 </resources>
