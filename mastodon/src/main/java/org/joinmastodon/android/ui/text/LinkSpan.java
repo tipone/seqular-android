@@ -45,7 +45,7 @@ public class LinkSpan extends CharacterStyle {
 				if(linkObject instanceof Hashtag ht)
 					UiUtils.openHashtagTimeline(context, accountID, ht);
 				else
-					UiUtils.openHashtagTimeline(context, accountID, text);
+					UiUtils.openHashtagTimeline(context, accountID, link);
 			}
 			case CUSTOM -> listener.onLinkClick(this);
 		}
