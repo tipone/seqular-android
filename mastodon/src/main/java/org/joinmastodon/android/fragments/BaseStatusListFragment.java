@@ -620,15 +620,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if (header != null) header.rebind();
 	}
 
-	public void updateEmojiReactions(Status status, String itemID){
-		EmojiReactionsStatusDisplayItem.Holder reactions=findHolderOfType(itemID, EmojiReactionsStatusDisplayItem.Holder.class);
-		if(reactions != null){
-			reactions.getItem().status.reactions.clear();
-			reactions.getItem().status.reactions.addAll(status.reactions);
-			reactions.rebind();
-		}
-	}
-
 	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
