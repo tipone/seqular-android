@@ -377,19 +377,30 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				markAsRead.setVisibility(View.GONE);
 			}
 
-			if (item.status == null || !item.status.textExpandable) {
-				collapseBtn.setVisibility(View.GONE);
-			} else {
-				String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
-				collapseBtn.setVisibility(item.status.textExpandable ? View.VISIBLE : View.GONE);
-				collapseBtn.setContentDescription(collapseText);
-				if (GlobalUserPreferences.reduceMotion) collapseBtnIcon.setScaleY(item.status.textExpanded ? -1 : 1);
-				else collapseBtnIcon.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
-				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
-			}
+			bindCollapseButton();
 
 			itemView.setPaddingRelative(itemView.getPaddingStart(), itemView.getPaddingTop(),
 					item.inset ? V.dp(10) : V.dp(4), itemView.getPaddingBottom());
+		}
+
+		public void bindCollapseButton(){
+			boolean expandable=item.status!=null && item.status.textExpandable;
+			collapseBtn.setVisibility(expandable ? View.VISIBLE : View.GONE);
+			if(expandable) {
+				bindCollapseButtonText();
+				collapseBtnIcon.setScaleY(item.status.textExpanded ? -1 : 1);
+			}
+		}
+
+		private void bindCollapseButtonText(){
+			String collapseText = item.parentFragment.getString(item.status.textExpanded ? R.string.sk_collapse : R.string.sk_expand);
+			collapseBtn.setContentDescription(collapseText);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) collapseBtn.setTooltipText(collapseText);
+		}
+
+		public void animateExpandToggle(){
+			bindCollapseButtonText();
+			collapseBtnIcon.animate().scaleY(item.status.textExpanded ? -1 : 1).start();
 		}
 
 		public void animateVisibilityToggle(boolean visible){

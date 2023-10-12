@@ -33,7 +33,6 @@ import org.joinmastodon.android.model.Translation;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
-import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
@@ -558,21 +557,21 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder) {
 		Status status = holder.getItem().status;
-		MediaGridStatusDisplayItem.Holder mediaGrid = findHolderOfType(holder.getItemID(), MediaGridStatusDisplayItem.Holder.class);
-		if (mediaGrid != null) {
-			if (!status.sensitiveRevealed) mediaGrid.revealSensitive();
-			else mediaGrid.hideSensitive();
-		} else {
-			// media grid's methods normally change the status' state - we still want to be able
-			// to do this if the media grid is not bound, tho - so, doing it ourselves here
-			status.sensitiveRevealed = !status.sensitiveRevealed;
-		}
 		if(holder.getItem().hasVisibilityToggle) holder.animateVisibilityToggle(false);
+		MediaGridStatusDisplayItem.Holder mediaGrid=findHolderOfType(holder.getItemID(), MediaGridStatusDisplayItem.Holder.class);
+		if(mediaGrid!=null){
+			if(!status.sensitiveRevealed) mediaGrid.revealSensitive();
+			else mediaGrid.hideSensitive();
+		}else{
+			status.sensitiveRevealed=false;
+			notifyItemChangedAfter(holder.getItem(), MediaGridStatusDisplayItem.class);
+		}
 	}
 
 	public void onSensitiveRevealed(MediaGridStatusDisplayItem.Holder holder) {
-		HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
-		if(header != null && header.getItem().hasVisibilityToggle) header.animateVisibilityToggle(true);
+		HeaderStatusDisplayItem.Holder header=findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
+		if(header!=null && header.getItem().hasVisibilityToggle) header.animateVisibilityToggle(true);
+		else notifyItemChangedBefore(holder.getItem(), HeaderStatusDisplayItem.class);
 	}
 
 	protected void toggleSpoiler(Status status, String itemID){
@@ -581,8 +580,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			status.sensitiveRevealed = false;
 
 		SpoilerStatusDisplayItem.Holder spoiler=findHolderOfType(itemID, SpoilerStatusDisplayItem.Holder.class);
-		if(spoiler!=null)
-			spoiler.rebind();
+		if(spoiler!=null) spoiler.rebind();
+		else notifyItemChanged(itemID, SpoilerStatusDisplayItem.class);
 		SpoilerStatusDisplayItem spoilerItem=Objects.requireNonNull(findItemOfType(itemID, SpoilerStatusDisplayItem.class));
 
 		int index=displayItems.indexOf(spoilerItem);
@@ -594,30 +593,29 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			adapter.notifyItemRangeRemoved(index+1, spoilerItem.contentItems.size());
 		}
 
-		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
-		if(text!=null)
-			adapter.notifyItemChanged(text.getAbsoluteAdapterPosition()-getMainAdapterOffset());
+		notifyItemChanged(itemID, TextStatusDisplayItem.class);
 		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
-		if(header!=null)
-			header.rebind();
+		if(header!=null) header.rebind();
+		else notifyItemChanged(itemID, HeaderStatusDisplayItem.class);
 
 		list.invalidateItemDecorations();
 	}
 
 	public void onEnableExpandable(TextStatusDisplayItem.Holder holder, boolean expandable) {
-		if (holder.getItem().status.textExpandable != expandable && list != null) {
-			holder.getItem().status.textExpandable = expandable;
-			HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
-			if (header != null) header.rebind();
+		Status s=holder.getItem().status;
+		if(s.textExpandable!=expandable && list!=null) {
+			s.textExpandable=expandable;
+			HeaderStatusDisplayItem.Holder header=findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
+			if(header!=null) header.bindCollapseButton();
 		}
 	}
 
 	public void onToggleExpanded(Status status, String itemID) {
 		status.textExpanded = !status.textExpanded;
-		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
+		notifyItemChanged(itemID, TextStatusDisplayItem.class);
 		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
-		if (text != null) text.rebind();
-		if (header != null) header.rebind();
+		if(header!=null) header.animateExpandToggle();
+		else notifyItemChanged(itemID, HeaderStatusDisplayItem.class);
 	}
 
 	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){}
@@ -676,9 +674,61 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		return null;
 	}
 
+	/**
+	 * Use this as a fallback if findHolderOfType fails to find the ViewHolder.
+	 * It might still be bound but off-screen and therefore not a child of the RecyclerView -
+	 * resulting in the ViewHolder displaying an outdated state once scrolled back into view.
+	 */
+	protected <I extends StatusDisplayItem> int notifyItemChanged(String id, Class<I> type){
+		boolean encounteredParent=false;
+		for(int i=0; i<displayItems.size(); i++){
+			StatusDisplayItem item=displayItems.get(i);
+			boolean idEquals=id.equals(item.parentID);
+			if(!encounteredParent && idEquals) encounteredParent=true; // reached top of the parent
+			else if(encounteredParent && !idEquals) break; // passed by bottom of the parent. man muss ja wissen wann schluss is
+			if(idEquals && type.isInstance(item)){
+				adapter.notifyItemChanged(i);
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	protected <I extends StatusDisplayItem> int notifyItemChangedAfter(StatusDisplayItem afterThis, Class<I> type){
+		int startIndex=displayItems.indexOf(afterThis);
+		if(startIndex == -1) throw new IllegalStateException("notifyItemChangedAfter didn't find the passed StatusDisplayItem");
+		String parentID=afterThis.parentID;
+		for(int i=startIndex; i<displayItems.size(); i++){
+			StatusDisplayItem item=displayItems.get(i);
+			if(!parentID.equals(item.parentID)) break; // didn't find anything
+			if(type.isInstance(item)){
+				// found it
+				adapter.notifyItemChanged(i);
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	protected <I extends StatusDisplayItem> int notifyItemChangedBefore(StatusDisplayItem beforeThis, Class<I> type){
+		int startIndex=displayItems.indexOf(beforeThis);
+		if(startIndex == -1) throw new IllegalStateException("notifyItemChangedBefore didn't find the passed StatusDisplayItem");
+		String parentID=beforeThis.parentID;
+		for(int i=startIndex; i>=0; i--){
+			StatusDisplayItem item=displayItems.get(i);
+			if(!parentID.equals(item.parentID)) break; // didn't find anything
+			if(type.isInstance(item)){
+				// found it
+				adapter.notifyItemChanged(i);
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	@Nullable
 	protected <I extends StatusDisplayItem, H extends StatusDisplayItem.Holder<I>> H findHolderOfType(String id, Class<H> type){
-		for(int i=0;i<list.getChildCount();i++){
+		for(int i=0; i<list.getChildCount(); i++){
 			RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
 			if(holder instanceof StatusDisplayItem.Holder<?> itemHolder && itemHolder.getItemID().equals(id) && type.isInstance(holder))
 				return type.cast(holder);
@@ -800,6 +850,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 									if(text!=null){
 										text.updateTranslation(true);
 										imgLoader.bindViewHolder((ImageLoaderRecyclerAdapter) list.getAdapter(), text, text.getAbsoluteAdapterPosition());
+									}else{
+										notifyItemChanged(itemID, TextStatusDisplayItem.class);
 									}
 								}
 
@@ -811,6 +863,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 									TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
 									if(text!=null){
 										text.updateTranslation(true);
+									}else{
+										notifyItemChanged(itemID, TextStatusDisplayItem.class);
 									}
 									new M3AlertDialogBuilder(getActivity())
 											.setTitle(R.string.error)
@@ -827,6 +881,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(text!=null){
 			text.updateTranslation(true);
 			imgLoader.bindViewHolder((ImageLoaderRecyclerAdapter) list.getAdapter(), text, text.getAbsoluteAdapterPosition());
+		}else{
+			notifyItemChanged(itemID, TextStatusDisplayItem.class);
 		}
 	}
 
