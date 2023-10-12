@@ -10,6 +10,7 @@ import androidx.annotation.StringRes;
 
 import com.google.gson.reflect.TypeToken;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Emoji;
@@ -73,7 +74,7 @@ public class AccountLocalPreferences{
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
-		color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
+		color=prefs.contains("color") ? ColorPreference.valueOf(prefs.getString("color", null)) : null;
 		likeIcon=prefs.getBoolean("likeIcon", false);
 		recentCustomEmoji=fromJson(prefs.getString("recentCustomEmoji", null), recentCustomEmojiType, new ArrayList<>());
 	}
@@ -84,6 +85,10 @@ public class AccountLocalPreferences{
 
 	public void setNotificationsPauseEndTime(long time){
 		prefs.edit().putLong("notificationsPauseTime", time).apply();
+	}
+
+	public ColorPreference getCurrentColor(){
+		return color!=null ? color : GlobalUserPreferences.color!=null ? GlobalUserPreferences.color : ColorPreference.MATERIAL3;
 	}
 
 	public void save(){
@@ -109,7 +114,7 @@ public class AccountLocalPreferences{
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
 				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
 				.putString("showEmojiReactions", showEmojiReactions.name())
-				.putString("color", color.name())
+				.putString("color", color!=null ? color.name() : null)
 				.putBoolean("likeIcon", likeIcon)
 				.putString("recentCustomEmoji", gson.toJson(recentCustomEmoji))
 				.apply();

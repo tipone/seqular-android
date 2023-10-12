@@ -63,7 +63,8 @@ public class ComposeImageDescriptionFragment extends MastodonToolbarFragment imp
 		accountID=getArguments().getString("account");
 		attachmentID=getArguments().getString("attachment");
 		themeWrapper=new ContextThemeWrapper(activity, R.style.Theme_Mastodon_Dark);
-		ColorPalette.palettes.get(AccountSessionManager.get(accountID).getLocalPreferences().color).apply(themeWrapper, GlobalUserPreferences.ThemePreference.DARK);
+		ColorPalette.palettes.get(AccountSessionManager.get(accountID).getLocalPreferences().getCurrentColor())
+				.apply(themeWrapper, GlobalUserPreferences.ThemePreference.DARK);
 		setTitle(R.string.add_alt_text);
 	}
 

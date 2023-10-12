@@ -51,6 +51,7 @@
     <string name="sk_notification_type_status">Posts</string>
     <string name="sk_notification_type_posts">Post notifications</string>
     <string name="sk_settings_color_palette">Color palette</string>
+	<string name="sk_settings_color_palette_default">Default (%s)</string>
     <string name="sk_color_palette_material3">System</string>
     <string name="sk_color_palette_pink">Pink</string>
     <string name="sk_color_palette_purple">Purple</string>
@@ -409,4 +410,5 @@
     <string name="sk_settings_like_icon">Use heart as favorite icon</string>
     <string name="sk_recently_used">Recently used</string>
 	<string name="sk_settings_underlined_links">Underlined links</string>
+	<string name="sk_set_as_default">Set as default</string>
 </resources>

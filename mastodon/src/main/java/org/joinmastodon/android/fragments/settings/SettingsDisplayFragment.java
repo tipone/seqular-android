@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.settings;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.os.Build;
@@ -28,6 +29,8 @@ import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import me.grishka.appkit.FragmentStackActivity;
@@ -52,7 +55,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		lp=s.getLocalPreferences();
 		onDataLoaded(List.of(
 				themeItem=new ListItem<>(R.string.settings_theme, getAppearanceValue(), R.drawable.ic_fluent_weather_moon_24_regular, this::onAppearanceClick),
-				colorItem=new ListItem<>(R.string.sk_settings_color_palette, getColorPaletteValue(), R.drawable.ic_fluent_color_24_regular, this::onColorClick),
+				colorItem=new ListItem<>(getString(R.string.sk_settings_color_palette), getColorPaletteValue(), R.drawable.ic_fluent_color_24_regular, this::onColorClick),
 				trueBlackModeItem=new CheckableListItem<>(R.string.sk_settings_true_black, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.trueBlackTheme, R.drawable.ic_fluent_dark_theme_24_regular, this::onTrueBlackModeClick, true),
 				publishTextItem=new ListItem<>(getString(R.string.sk_settings_publish_button_text), getPublishButtonText(), R.drawable.ic_fluent_send_24_regular, this::onPublishTextClick),
 				autoRevealCWsItem=new ListItem<>(R.string.sk_settings_auto_reveal_equal_spoilers, getAutoRevealSpoilersText(), R.drawable.ic_fluent_eye_24_regular, this::onAutoRevealSpoilersClick),
@@ -136,17 +139,11 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		};
 	}
 
-	private @StringRes int getColorPaletteValue(){
-		return switch(AccountSessionManager.get(accountID).getLocalPreferences().color){
-			case MATERIAL3 -> R.string.sk_color_palette_material3;
-			case PINK -> R.string.sk_color_palette_pink;
-			case PURPLE -> R.string.sk_color_palette_purple;
-			case GREEN -> R.string.sk_color_palette_green;
-			case BLUE -> R.string.sk_color_palette_blue;
-			case BROWN -> R.string.sk_color_palette_brown;
-			case RED -> R.string.sk_color_palette_red;
-			case YELLOW -> R.string.sk_color_palette_yellow;
-		};
+	private String getColorPaletteValue(){
+		ColorPreference color=AccountSessionManager.get(accountID).getLocalPreferences().color;
+		return color==null
+				? getString(R.string.sk_settings_color_palette_default, getString(GlobalUserPreferences.color.getName()))
+				: getString(color.getName());
 	}
 
 	private String getPublishButtonText() {
@@ -202,26 +199,40 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onColorClick(){
-		int selected=lp.color.ordinal();
+		boolean multiple=AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
+		int indexOffset=multiple ? 1 : 0;
+		int selected=lp.color==null ? 0 : lp.color.ordinal() + indexOffset;
 		int[] newSelected={selected};
-		String[] names=Arrays.stream(ColorPreference.values()).map(ColorPreference::getName).map(this::getString).toArray(String[]::new);
-		new M3AlertDialogBuilder(getActivity())
+		List<String> items=Arrays.stream(ColorPreference.values()).map(ColorPreference::getName).map(this::getString).collect(Collectors.toList());
+		if(multiple)
+			items.add(0, getString(R.string.sk_settings_color_palette_default, items.get(GlobalUserPreferences.color.ordinal())));
+
+		Consumer<Boolean> save=(asDefault)->{
+			boolean defaultSelected=multiple && newSelected[0]==0;
+			ColorPreference pref=defaultSelected ? null : ColorPreference.values()[newSelected[0]-indexOffset];
+			if(pref!=lp.color){
+				ColorPreference prev=lp.color;
+				lp.color=asDefault ? null : pref;
+				lp.save();
+				if((asDefault || !multiple) && pref!=null){
+					GlobalUserPreferences.color=pref;
+					GlobalUserPreferences.save();
+				}
+				colorItem.subtitle=getColorPaletteValue();
+				rebindItem(colorItem);
+				if(prev==null && pref!=null) restartActivityToApplyNewTheme();
+				else maybeApplyNewThemeRightNow(null, prev, null);
+			}
+		};
+
+		AlertDialog.Builder alert=new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_settings_color_palette)
-				.setSingleChoiceItems(names,
+				.setSingleChoiceItems(items.toArray(String[]::new),
 						selected, (dlg, item)->newSelected[0]=item)
-				.setPositiveButton(R.string.ok, (dlg, item)->{
-					ColorPreference pref=ColorPreference.values()[newSelected[0]];
-					if(pref!=lp.color){
-						ColorPreference prev=lp.color;
-						lp.color=pref;
-						GlobalUserPreferences.save();
-						colorItem.subtitleRes=getColorPaletteValue();
-						rebindItem(colorItem);
-						maybeApplyNewThemeRightNow(null, prev, null);
-					}
-				})
-				.setNegativeButton(R.string.cancel, null)
-				.show();
+				.setPositiveButton(R.string.ok, (dlg, item)->save.accept(false))
+				.setNegativeButton(R.string.cancel, null);
+		if(multiple) alert.setNeutralButton(R.string.sk_set_as_default, (dlg, item)->save.accept(true));
+		alert.show();
 	}
 
 	private void onPublishTextClick(){
@@ -266,14 +277,14 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private void maybeApplyNewThemeRightNow(GlobalUserPreferences.ThemePreference prevTheme, ColorPreference prevColor, Boolean prevTrueBlack){
 		if(prevTheme==null) prevTheme=GlobalUserPreferences.theme;
 		if(prevTrueBlack==null) prevTrueBlack=GlobalUserPreferences.trueBlackTheme;
-		if(prevColor==null) prevColor=lp.color;
+		if(prevColor==null) prevColor=lp.getCurrentColor();
 
 		boolean isCurrentDark=prevTheme==GlobalUserPreferences.ThemePreference.DARK ||
 				(prevTheme==GlobalUserPreferences.ThemePreference.AUTO && Build.VERSION.SDK_INT>=30 && getResources().getConfiguration().isNightModeActive());
 		boolean isNewDark=GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.DARK ||
 				(GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.AUTO && Build.VERSION.SDK_INT>=30 && getResources().getConfiguration().isNightModeActive());
 		boolean isNewBlack=GlobalUserPreferences.trueBlackTheme;
-		if(isCurrentDark!=isNewDark || prevColor!=lp.color || (isNewDark && prevTrueBlack!=isNewBlack)){
+		if(isCurrentDark!=isNewDark || prevColor!=lp.getCurrentColor() || (isNewDark && prevTrueBlack!=isNewBlack)){
 			restartActivityToApplyNewTheme();
 		}
 	}
