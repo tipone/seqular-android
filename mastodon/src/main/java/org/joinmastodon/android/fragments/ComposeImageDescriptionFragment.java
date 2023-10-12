@@ -26,12 +26,12 @@ import android.widget.ImageView;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.utils.ColorPalette;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.FixedAspectRatioImageView;
 
 import java.util.Collections;
 
@@ -54,16 +54,16 @@ public class ComposeImageDescriptionFragment extends MastodonToolbarFragment imp
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		accountID=getArguments().getString("account");
-		attachmentID=getArguments().getString("attachment");
 		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
+		accountID=getArguments().getString("account");
+		attachmentID=getArguments().getString("attachment");
 		themeWrapper=new ContextThemeWrapper(activity, R.style.Theme_Mastodon_Dark);
-		ColorPalette.palettes.get(GlobalUserPreferences.color).apply(themeWrapper, GlobalUserPreferences.ThemePreference.DARK);
+		ColorPalette.palettes.get(AccountSessionManager.get(accountID).getLocalPreferences().color).apply(themeWrapper, GlobalUserPreferences.ThemePreference.DARK);
 		setTitle(R.string.add_alt_text);
 	}
 

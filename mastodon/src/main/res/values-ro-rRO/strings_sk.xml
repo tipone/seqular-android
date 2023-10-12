@@ -379,7 +379,7 @@
     <string name="sk_time_days">%d zile</string>
     <string name="sk_settings_show_emoji_reactions_always">Afișați mereu butonul adăugare</string>
     <string name="sk_search_suicide_hotlines">Găsiți o linie de asistență telefonică</string>
-    <string name="sk_enter_emoji_hint">Scrieți pentru a reacționa cu un emoji</string>
+    <string name="sk_enter_emoji_hint">Scrieți un emoji sau căutați emoji personalizat</string>
     <string name="sk_do_not_show_again">Nu mai afișați din nou</string>
     <string name="sk_suicide_helplines_url">http://www.antisuicid.com/</string>
     <string name="sk_enter_emoji_toast">Vă rugăm scrieți un emoji</string>
@@ -397,4 +397,6 @@
     <string name="sk_search_suicide_message">Dacă sunteți în căutarea unui semn pentru a nu vă sinucide, acesta este. Vă rugăm să luați în considerare posibilitatea de a apela la o linie telefonică locală de urgență pentru suicid dacă vă aflați în dificultate.</string>
     <string name="sk_trending_links_info_banner">Acestea sunt știrile despre care se vorbește pe serverul tău.</string>
     <string name="sk_post_contains_media">Postare conține media</string>
+    <string name="sk_blocked_accounts">Conturi blocate</string>
+    <string name="sk_muted_accounts">Conturi amuțite</string>
 </resources>

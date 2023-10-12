@@ -64,7 +64,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 
 		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(account.domain);
 		if (!instance.isAkkoma())
-			data.add(2, new ListItem<>(R.string.settings_filters, 0, R.drawable.ic_fluent_filter_24_regular, this::onFiltersClick));
+			data.add(3, new ListItem<>(R.string.settings_filters, 0, R.drawable.ic_fluent_filter_24_regular, this::onFiltersClick));
 
 		if(BuildConfig.DEBUG || BuildConfig.BUILD_TYPE.equals("appcenterPrivateBeta")){
 			data.add(0, new ListItem<>("Debug settings", null, R.drawable.ic_fluent_wrench_screwdriver_24_regular, ()->Nav.go(getActivity(), SettingsDebugFragment.class, makeFragmentArgs()), null, 0, true));
@@ -163,7 +163,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 				.setMessage(getString(R.string.confirm_log_out, session.getFullUsername()))
 				.setPositiveButton(R.string.log_out, (dialog, which)->account.logOut(getActivity(), ()->{
 					loggedOut=true;
-					((MainActivity)getActivity()).restartHomeFragment();
+					((MainActivity)getActivity()).restartActivity();
 				}))
 				.setNegativeButton(R.string.cancel, null)
 				.show();

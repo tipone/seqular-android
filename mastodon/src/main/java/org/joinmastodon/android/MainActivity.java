@@ -47,7 +47,8 @@ import me.grishka.appkit.api.ErrorResponse;
 public class MainActivity extends FragmentStackActivity implements ProvidesAssistContent {
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState){
-		UiUtils.setUserPreferredTheme(this);
+		AccountSession session=getCurrentSession();
+		UiUtils.setUserPreferredTheme(this, session);
 		super.onCreate(savedInstanceState);
 
 		if(savedInstanceState==null){
@@ -241,6 +242,36 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		super.onProvideAssistContent(assistContent);
 		Fragment fragment = getCurrentFragment();
 		if (fragment != null) callFragmentToProvideAssistContent(fragment, assistContent);
+	}
+
+	public AccountSession getCurrentSession(){
+		AccountSession session;
+		Bundle args=new Bundle();
+		Intent intent=getIntent();
+		if(intent.hasExtra("fromExternalShare")) {
+			return AccountSessionManager.getInstance()
+					.getAccount(intent.getStringExtra("account"));
+		}
+
+		boolean fromNotification = intent.getBooleanExtra("fromNotification", false);
+		boolean hasNotification = intent.hasExtra("notification");
+		if(fromNotification){
+			String accountID=intent.getStringExtra("accountID");
+			try{
+				session=AccountSessionManager.getInstance().getAccount(accountID);
+				if(!hasNotification) args.putString("tab", "notifications");
+			}catch(IllegalStateException x){
+				session=AccountSessionManager.getInstance().getLastActiveAccount();
+			}
+		}else{
+			session=AccountSessionManager.getInstance().getLastActiveAccount();
+		}
+		return session;
+	}
+
+	public void restartActivity(){
+		finish();
+		startActivity(new Intent(this, MainActivity.class));
 	}
 
 	public void restartHomeFragment(){

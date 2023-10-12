@@ -29,6 +29,7 @@ import org.joinmastodon.android.api.requests.tags.SetTagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
 import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.FilterAction;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterKeyword;
 import org.joinmastodon.android.model.Hashtag;
@@ -153,11 +154,14 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetHashtagTimeline(hashtagName, offset==0 ? null : getMaxID(), null, count, any, all, none, localOnly, getLocalPrefs().timelineReplyVisibility)
+		currentRequest=new GetHashtagTimeline(hashtagName, getMaxID(), null, count, any, all, none, localOnly, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
-						onDataLoaded(result, !result.isEmpty());
+						if(getActivity()==null) return;
+						boolean more=applyMaxID(result);
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
+						onDataLoaded(result, more);
 					}
 				})
 				.exec(accountID);
@@ -285,6 +289,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		followMenuItem=optionsMenu.findItem(R.id.follow_hashtag);
 		pinMenuItem=optionsMenu.findItem(R.id.pin);
 		followMenuItem.setVisible(toolbarContentVisible);
+		pinMenuItem.setShowAsAction(toolbarContentVisible ? MenuItem.SHOW_AS_ACTION_NEVER : MenuItem.SHOW_AS_ACTION_ALWAYS);
 		super.updatePinButton(pinMenuItem);
 
 		muteMenuItem = optionsMenu.findItem(R.id.mute_hashtag);
@@ -339,7 +344,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	}
 
 	private void updateHeader(){
-		if(hashtag==null)
+		if(hashtag==null || getActivity()==null)
 			return;
 
 		if(hashtag.history!=null && !hashtag.history.isEmpty()){

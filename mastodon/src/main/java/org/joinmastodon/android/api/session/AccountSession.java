@@ -40,7 +40,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.function.Predicate;
 
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -255,52 +254,62 @@ public class AccountSession{
 		filterStatusContainingObjects(objects, extractor, context, null);
 	}
 
-	public <T> void filterStatusContainingObjects(List<T> objects, Function<T, Status> extractor, FilterContext context, Account profile){
-		Predicate<Status> statusIsOnOwnProfile = (s) -> self != null && profile != null && s.account != null
+	private boolean statusIsOnOwnProfile(Status s, Account profile){
+		return self != null && profile != null && s.account != null
 				&& Objects.equals(self.id, profile.id) && Objects.equals(self.id, s.account.id);
+	}
 
-		if(getLocalPreferences().serverSideFiltersSupported){
-			// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
-			objects.removeIf(o->{
-				Status s=extractor.apply(o);
-				if(s==null)
-					return false;
-				if(s.filtered==null)
-					return false;
-				// don't hide own posts in own profile
-				if (statusIsOnOwnProfile.test(s))
-					return false;
-				for(FilterResult filter:s.filtered){
-					if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
-						return true;
-				}
-				return false;
-			});
-			return;
-		}
-		if(wordFilters==null)
-			return;
-		for(T obj:objects){
+	private boolean isFilteredType(Status s){
+		return (!localPreferences.showReplies && s.inReplyToId != null)
+				|| (!localPreferences.showBoosts && s.reblog != null);
+	}
+
+	public <T> void filterStatusContainingObjects(List<T> objects, Function<T, Status> extractor, FilterContext context, Account profile){
+		if(!localPreferences.serverSideFiltersSupported) for(T obj:objects){
 			Status s=extractor.apply(obj);
 			if(s!=null && s.filtered!=null){
-				getLocalPreferences().serverSideFiltersSupported=true;
-				getLocalPreferences().save();
-				return;
+				localPreferences.serverSideFiltersSupported=true;
+				localPreferences.save();
 			}
 		}
-		objects.removeIf(o->{
-			Status s=extractor.apply(o);
-			if(s==null)
-				return false;
-			// don't hide own posts in own profile
-			if (statusIsOnOwnProfile.test(s))
-				return false;
-			for(LegacyFilter filter:wordFilters){
+
+		List<T> removeUs=new ArrayList<>();
+		for(int i=0; i<objects.size(); i++){
+			T o=objects.get(i);
+			if(filterStatusContainingObject(o, extractor, context, profile)){
+				Status s=extractor.apply(o);
+				removeUs.add(o);
+				if(s!=null && s.hasGapAfter && i > 0){
+					Status prev=extractor.apply(objects.get(i - 1));
+					if(prev!=null) prev.hasGapAfter=true;
+				}
+			}
+		}
+		objects.removeAll(removeUs);
+	}
+
+	public <T> boolean filterStatusContainingObject(T object, Function<T, Status> extractor, FilterContext context, Account profile){
+		Status s=extractor.apply(object);
+		if(s==null)
+			return false;
+		// don't hide own posts in own profile
+		if(statusIsOnOwnProfile(s, profile))
+			return false;
+		if(isFilteredType(s) && (context == FilterContext.HOME || context == FilterContext.PUBLIC))
+			return true;
+		// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
+		if(localPreferences.serverSideFiltersSupported){
+			for(FilterResult filter : s.filtered){
+				if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
+					return true;
+			}
+		}else if(wordFilters!=null){
+			for(LegacyFilter filter : wordFilters){
 				if(filter.context.contains(context) && filter.matches(s) && filter.isActive())
 					return true;
 			}
-			return false;
-		});
+		}
+		return false;
 	}
 
 	public void updateAccountInfo(){

@@ -83,7 +83,7 @@ public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<A
 						for(Relationship rel:result){
 							relationships.put(rel.id, rel);
 						}
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						if(list==null)
 							return;
 						for(int i=0;i<list.getChildCount();i++){

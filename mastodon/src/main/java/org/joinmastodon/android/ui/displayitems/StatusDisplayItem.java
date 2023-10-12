@@ -30,6 +30,7 @@ import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
@@ -147,7 +148,7 @@ public abstract class StatusDisplayItem{
 		Status statusForContent=status.getContentStatus();
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus ? (ScheduledStatus) parentObject : null;
+		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus s ? s : null;
 
 		HeaderStatusDisplayItem header=null;
 		boolean hideCounts=!AccountSessionManager.get(accountID).getLocalPreferences().showInteractionCounts;
@@ -206,14 +207,15 @@ public abstract class StatusDisplayItem{
 			if((flags & FLAG_CHECKABLE)!=0)
 				items.add(header=new CheckableHeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null));
 			else
-				items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, null, scheduledStatus));
+				items.add(header=new HeaderStatusDisplayItem(parentID, statusForContent.account, statusForContent.createdAt, fragment, accountID, statusForContent, null, parentObject instanceof Notification n ? n : null, scheduledStatus));
 		}
 
-		boolean filtered=false;
+		LegacyFilter applyingFilter=null;
 		if(status.filtered!=null){
 			for(FilterResult filter:status.filtered){
-				if(filter.filter.isActive()){
-					filtered=true;
+				LegacyFilter f=filter.filter;
+				if(f.isActive() && filterContext != null && f.context.contains(filterContext)){
+					applyingFilter=f;
 					break;
 				}
 			}
@@ -276,14 +278,14 @@ public abstract class StatusDisplayItem{
 				contentItems.add(new AudioStatusDisplayItem(parentID, fragment, statusForContent, att));
 			}
 			if(att.type==Attachment.Type.UNKNOWN){
-				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att, statusForContent));
+				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att));
 			}
 		}
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, contentItems, statusForContent);
+			buildPollItems(parentID, fragment, statusForContent.poll, contentItems);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty()){
-			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent, (flags & FLAG_NO_MEDIA_PREVIEW)==0));
+			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent));
 		}
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);
@@ -324,18 +326,11 @@ public abstract class StatusDisplayItem{
 			}
 		}
 
-		LegacyFilter applyingFilter = null;
-		if (!statusForContent.filterRevealed) {
-			StatusFilterPredicate predicate = new StatusFilterPredicate(accountID, filterContext, FilterAction.WARN);
-			statusForContent.filterRevealed = predicate.test(status);
-			applyingFilter = predicate.getApplyingFilter();
-		}
-
 		// Hide statuses that have a filter action of hide
 		if(!new StatusFilterPredicate(accountID, filterContext, FilterAction.HIDE).test(status))
 			return new ArrayList<StatusDisplayItem>() ;
 
-		return statusForContent.filterRevealed ? items :
+		return applyingFilter==null ? items :
 				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
 	}
 

@@ -20,7 +20,6 @@
 		<item name="colorGray700">@color/gray_700</item>
 		<item name="colorGray600">@color/gray_600</item>
 		<item name="colorGray500">@color/gray_500</item>
-<!--		<item name="colorGray400t">@color/gray_400t</item>-->
 		<item name="colorGray400">@color/gray_400</item>
 		<item name="colorGray300">@color/gray_300</item>
 		<item name="colorGray200">@color/gray_200</item>
@@ -34,7 +33,6 @@
 		<item name="colorNeutral700">@color/gray_700</item>
 		<item name="colorNeutral600">@color/gray_600</item>
 		<item name="colorNeutral500">@color/gray_500</item>
-		<!--		<item name="colorNeutral400t">@color/gray_400t</item>-->
 		<item name="colorNeutral400">@color/gray_400</item>
 		<item name="colorNeutral300">@color/gray_300</item>
 		<item name="colorNeutral200">@color/gray_200</item>
@@ -70,6 +68,8 @@
 		<item name="colorM3DarkOnSurface">?colorGray100</item>
 		<item name="colorM3PrimaryInverse">?colorPrimary200</item>
 
+		<item name="colorFavorite">@color/favorite_selected</item>
+		<item name="colorLike">@color/like_selected</item>
 		<item name="colorBoost">?colorM3Primary</item>
 		<item name="colorPoll">@color/bookmark_selected</item>
 		<item name="colorTabBarAlpha">#14000000</item>
@@ -261,7 +261,7 @@
 		<item name="colorNeutral25">@color/m3_neutral2_10</item>
 	</style>
 
-	<style name="ColorPalette.Material3.Dark">
+	<style name="ColorPalette.Material3.Dark" parent="">
 		<item name="colorM3Primary">@color/m3_sys_dark_primary</item>
 		<item name="colorM3OnPrimary">@color/m3_sys_dark_on_primary</item>
 		<item name="colorM3PrimaryContainer">@color/m3_sys_dark_primary_container</item>
@@ -345,7 +345,6 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
-<!--		<item name="colorGray400t">@color/green_gray_400t</item>-->
 		<item name="colorGray400">@color/green_gray_400</item>
 		<item name="colorGray300">@color/green_gray_300</item>
 		<item name="colorGray200">@color/green_gray_200</item>
@@ -380,7 +379,6 @@
 		<item name="colorPrimary800">@color/blue_primary_800</item>
 		<item name="colorPrimary900">@color/blue_primary_900</item>
 
-<!--		<item name="colorGray400t">@color/green_gray_400t</item>-->
 		<item name="colorGray400">@color/blue_gray_400</item>
 		<item name="colorGray300">@color/blue_gray_300</item>
 		<item name="colorGray200">@color/blue_gray_200</item>
@@ -423,7 +421,6 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
-<!--		<item name="colorGray400t">@color/brown_gray_400t</item>-->
 		<item name="colorGray400">@color/brown_gray_400</item>
 		<item name="colorGray300">@color/brown_gray_300</item>
 		<item name="colorGray200">@color/brown_gray_200</item>
@@ -464,7 +461,6 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
-<!--		<item name="colorGray400t">@color/yellow_gray_400t</item>-->
 		<item name="colorGray400">@color/yellow_gray_400</item>
 		<item name="colorGray300">@color/yellow_gray_300</item>
 		<item name="colorGray200">@color/yellow_gray_200</item>
@@ -506,7 +502,6 @@
 		<item name="colorGray600">@color/brownish_gray_600</item>
 		<item name="colorGray500">@color/brownish_gray_500</item>
 
-<!--		<item name="colorGray400t">@color/red_gray_400t</item>-->
 		<item name="colorGray400">@color/red_gray_400</item>
 		<item name="colorGray300">@color/red_gray_300</item>
 		<item name="colorGray200">@color/red_gray_200</item>

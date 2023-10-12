@@ -36,7 +36,7 @@
 						android:layout_marginStart="16dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_fluent_chat_multiple_24_selector_text"
-						android:tint="?android:textColorSecondary"
+						android:tint="?colorM3OnSurfaceVariant"
 						android:gravity="center_vertical" />
 					<TextView
 						android:id="@+id/reply"
@@ -47,7 +47,7 @@
 						android:minWidth="16dp"
 						android:gravity="center_vertical"
 						android:textAppearance="@style/m3_label_large"
-						android:textColor="?android:textColorSecondary"
+						android:textColor="?colorM3OnSurfaceVariant"
 						android:maxLines="1"
 						android:ellipsize="end"
 						tools:text="123"
@@ -102,6 +102,7 @@
 					android:layout_height="match_parent"
 					android:paddingVertical="12dp">
 					<ImageView
+						android:id="@+id/favorite_icon"
 						android:layout_width="24sp"
 						android:layout_height="24sp"
 						android:layout_gravity="center_vertical"
@@ -161,7 +162,7 @@
 					android:layout_gravity="center_vertical"
 					android:layout_marginHorizontal="16dp"
 					android:src="@drawable/ic_fluent_share_24_regular"
-					android:tint="?android:textColorSecondary"
+					android:tint="?colorM3OnSurfaceVariant"
 					android:gravity="center_vertical"/>
 			</FrameLayout>
 

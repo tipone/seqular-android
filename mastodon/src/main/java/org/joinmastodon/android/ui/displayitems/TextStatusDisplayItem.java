@@ -1,7 +1,5 @@
 package org.joinmastodon.android.ui.displayitems;
 
-import static org.joinmastodon.android.ui.utils.UiUtils.opacityIn;
-
 import android.app.Activity;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
@@ -33,6 +31,7 @@ import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.MovieDrawable;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
+import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
 public class TextStatusDisplayItem extends StatusDisplayItem{
@@ -116,7 +115,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			}else{
 				text.setText(item.text);
 			}
-			text.setTextIsSelectable(item.textSelectable);
+			text.setTextIsSelectable(false);
+			if(item.textSelectable) itemView.post(() -> text.setTextIsSelectable(true));
 			text.setInvalidateOnEveryFrame(false);
 			itemView.setClickable(false);
 			itemView.setPadding(itemView.getPaddingLeft(), item.reduceTopPadding ? V.dp(6) : V.dp(12), itemView.getPaddingRight(), itemView.getPaddingBottom());
@@ -204,17 +204,20 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				translationProgress=findViewById(R.id.translation_progress);
 				translationButton.setOnClickListener(v->item.parentFragment.togglePostTranslation(item.status, item.parentID));
 			}
+			if(translationButton!=null) translationButton.animate().cancel();
 			if(item.status.translationState==Status.TranslationState.HIDDEN){
 				if(updateText) text.setText(item.text);
 				if(translationFooter==null) return;
 				translationFooter.setVisibility(translateEnabled ? View.VISIBLE : View.GONE);
 				translationProgress.setVisibility(View.GONE);
 				Translation existingTrans=item.status.getContentStatus().translation;
-				String lang=existingTrans!=null ? existingTrans.detectedSourceLanguage : null;
-				String displayLang=Locale.forLanguageTag(lang!=null ? lang : (item.status.getContentStatus().language != null ? item.status.getContentStatus().language : AccountSessionManager.get(item.parentFragment.getAccountID()).preferences.postingDefaultLanguage)).getDisplayLanguage();
+				String existingTransLang=existingTrans!=null ? existingTrans.detectedSourceLanguage : null;
+				String lang=existingTransLang!=null ? existingTransLang : item.status.getContentStatus().language;
+				String displayLang=Locale.forLanguageTag(lang != null ? lang
+						: AccountSessionManager.get(item.parentFragment.getAccountID()).preferences.postingDefaultLanguage).getDisplayLanguage();
 				translationButton.setText(item.parentFragment.getString(R.string.translate_post, !displayLang.isBlank() ? displayLang : lang));
-				translationButton.setEnabled(true);
-				translationButton.setAlpha(1);
+				translationButton.setClickable(true);
+				translationButton.animate().alpha(1).setDuration(100).start();
 				translationInfo.setVisibility(View.GONE);
 				UiUtils.beginLayoutTransition((ViewGroup) translationButtonWrap);
 			}else{
@@ -222,8 +225,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				if(item.status.translationState==Status.TranslationState.SHOWN){
 					translationProgress.setVisibility(View.GONE);
 					translationButton.setText(R.string.translation_show_original);
-					translationButton.setEnabled(true);
-					translationButton.setAlpha(1);
+					translationButton.setClickable(true);
+					translationButton.animate().alpha(1).setDuration(200).start();
 					translationInfo.setVisibility(View.VISIBLE);
 					translationButton.setVisibility(View.VISIBLE);
 					String displayLang=Locale.forLanguageTag(item.status.translation.detectedSourceLanguage).getDisplayLanguage();
@@ -237,8 +240,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 					}
 				}else{ // LOADING
 					translationProgress.setVisibility(View.VISIBLE);
-					translationButton.setEnabled(false);
-					translationButton.setAlpha(0.5f);
+					translationButton.setClickable(false);
+					translationButton.animate().alpha(UiUtils.ALPHA_PRESSED).setStartDelay(50).setDuration(300).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
 					translationInfo.setVisibility(View.INVISIBLE);
 					UiUtils.beginLayoutTransition((ViewGroup) translationButton.getParent());
 				}

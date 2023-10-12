@@ -48,8 +48,8 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if(getActivity()==null) return;
 						Collections.sort(result, Comparator.comparing((Status s)->s.createdAt).reversed());
-						if (getActivity() == null) return;
 						onDataLoaded(result, false);
 					}
 				})

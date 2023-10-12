@@ -23,6 +23,7 @@
 			android:layout_marginEnd="8dp"
 			android:paddingTop="12dp"
 			android:paddingBottom="16dp"
+			android:tooltipText="@string/sk_tab_home"
 			android:orientation="vertical">
 
 			<FrameLayout
@@ -30,7 +31,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="32dp"
 				android:background="@drawable/bg_tabbar_tab"
-				android:contentDescription="@string/home_timeline">
+				android:contentDescription="@string/sk_tab_home">
 
 				<ImageView
 					android:layout_width="24dp"
@@ -53,6 +54,7 @@
 				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
+				android:tag="label"
 				android:text="@string/sk_tab_home" />
 
 		</LinearLayout>
@@ -65,6 +67,7 @@
 			android:layout_marginEnd="8dp"
 			android:paddingTop="12dp"
 			android:paddingBottom="16dp"
+			android:tooltipText="@string/sk_tab_search"
 			android:orientation="vertical">
 
 			<FrameLayout
@@ -72,7 +75,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="32dp"
 				android:background="@drawable/bg_tabbar_tab"
-				android:contentDescription="@string/search_hint">
+				android:contentDescription="@string/sk_tab_search">
 
 				<ImageView
 					android:layout_width="24dp"
@@ -95,6 +98,7 @@
 				android:ellipsize="end"
 				android:maxLines="1"
 				android:layout_marginTop="4dp"
+				android:tag="label"
 				android:text="@string/sk_tab_search" />
 
 		</LinearLayout>
@@ -107,6 +111,7 @@
 			android:layout_marginEnd="8dp"
 			android:paddingTop="12dp"
 			android:paddingBottom="16dp"
+			android:tooltipText="@string/sk_tab_notifications"
 			android:orientation="vertical">
 
 			<RelativeLayout
@@ -114,7 +119,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="32dp"
 				android:background="@drawable/bg_tabbar_tab"
-				android:contentDescription="@string/notifications">
+				android:contentDescription="@string/sk_tab_notifications">
 
 				<ImageView
 					android:id="@+id/notifications_icon"
@@ -130,18 +135,18 @@
 					android:id="@+id/notifications_badge"
 					android:layout_width="wrap_content"
 					android:layout_height="16dp"
-					android:layout_alignTop="@id/notifications_icon"
 					android:layout_gravity="center"
-					android:layout_marginStart="-12dp"
-					android:layout_marginTop="-4dp"
+					android:layout_alignTop="@id/notifications_icon"
 					android:layout_toEndOf="@id/notifications_icon"
+					android:layout_marginTop="-4dp"
+					android:layout_marginStart="-12dp"
 					android:background="@drawable/bg_tabbar_badge"
+					android:textColor="?colorM3OnError"
 					android:gravity="center"
 					android:includeFontPadding="false"
-					android:minWidth="16dp"
 					android:textAppearance="@style/m3_label_small"
-					android:textColor="?colorM3Surface"
-					tools:text="222" />
+					android:minWidth="16dp"
+					tools:text="222"/>
 
 			</RelativeLayout>
 
@@ -155,6 +160,7 @@
 				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
+				android:tag="label"
 				android:text="@string/sk_tab_notifications" />
 
 		</LinearLayout>
@@ -167,6 +173,7 @@
 			android:layout_marginEnd="8dp"
 			android:paddingTop="12dp"
 			android:paddingBottom="16dp"
+			android:tooltipText="@string/sk_tab_profile"
 			android:orientation="vertical">
 
 			<FrameLayout
@@ -174,7 +181,7 @@
 				android:layout_width="match_parent"
 				android:layout_height="32dp"
 				android:background="@drawable/bg_tabbar_tab"
-				android:contentDescription="@string/my_profile">
+				android:contentDescription="@string/sk_tab_profile">
 				<ImageView
 					android:id="@+id/tab_profile_ava"
 					android:layout_width="24dp"
@@ -203,6 +210,7 @@
 				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
+				android:tag="label"
 				android:text="@string/sk_tab_profile" />
 
 		</LinearLayout>

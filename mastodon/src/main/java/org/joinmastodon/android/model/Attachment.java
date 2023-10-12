@@ -68,6 +68,14 @@ public class Attachment extends BaseModel{
 		return 1080;
 	}
 
+	public boolean hasKnownDimensions(){
+		return meta!=null && (
+				(meta.height>0 && meta.width>0)
+				|| (meta.original!=null && meta.original.height>0 && meta.original.width>0)
+				|| (meta.small!=null && meta.small.height>0 && meta.small.width>0)
+				);
+	}
+
 	public double getDuration(){
 		if(meta==null)
 			return 0;

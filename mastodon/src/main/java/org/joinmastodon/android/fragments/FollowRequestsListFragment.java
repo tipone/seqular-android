@@ -83,7 +83,7 @@ public class FollowRequestsListFragment extends MastodonRecyclerFragment<FollowR
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(HeaderPaginationList<Account> result){
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						if(result.nextPageUri!=null)
 							nextMaxID=result.nextPageUri.getQueryParameter("max_id");
 						else

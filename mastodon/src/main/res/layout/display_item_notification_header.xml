@@ -1,35 +1,85 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	android:orientation="horizontal"
 	android:layout_width="match_parent"
-	android:layout_height="64dp"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
 	android:gravity="center_vertical"
-	android:background="?android:selectableItemBackground"
 	android:paddingHorizontal="16dp">
+	<!-- paddingEnd is set programmatically (depending on enableDeleteNotifications) -->
+
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="0dp"
+		android:layout_weight="1"
+		android:layout_height="64dp"
+		android:gravity="center_vertical"
+		android:background="?android:selectableItemBackground">
+
+		<ImageView
+			android:id="@+id/icon"
+			android:layout_width="28dp"
+			android:layout_height="28dp"
+			android:importantForAccessibility="no"
+			tools:tint="#0f0"
+			tools:src="@drawable/ic_fluent_arrow_repeat_all_24_filled"/>
+
+		<ImageView
+			android:id="@+id/avatar"
+			android:layout_width="32dp"
+			android:layout_height="32dp"
+			android:layout_marginStart="12dp"/>
+
+		<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:id="@+id/text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="8dp"
+				android:textAppearance="@style/m3_body_large"
+				android:textColor="?colorM3OnSurface"
+				android:singleLine="true"
+				android:ellipsize="end"
+				tools:text="Notification text"/>
+
+			<TextView
+				android:id="@+id/separator"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="4sp"
+				android:importantForAccessibility="no"
+				android:singleLine="true"
+				android:textAppearance="@style/m3_body_medium"
+				android:textColor="?colorM3OnSurfaceVariant"
+				android:text="@string/sk_separator"/>
+
+			<TextView
+				android:id="@+id/timestamp"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minWidth="56sp"
+				android:textAppearance="@style/m3_body_medium"
+				android:textColor="?colorM3OnSurfaceVariant"
+				android:maxLines="1"
+				tools:text="42m ago"/>
+
+		</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+
+	</LinearLayout>
 
 	<ImageView
-		android:id="@+id/icon"
-		android:layout_width="28dp"
-		android:layout_height="28dp"
-		android:importantForAccessibility="no"
-		tools:tint="#0f0"
-		tools:src="@drawable/ic_fluent_arrow_repeat_all_24_filled"/>
-
-	<ImageView
-		android:id="@+id/avatar"
-		android:layout_width="32dp"
-		android:layout_height="32dp"
-		android:layout_marginStart="12dp"/>
-
-	<TextView
-		android:id="@+id/text"
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:layout_marginStart="8dp"
-		android:textAppearance="@style/m3_body_large"
-		android:textColor="?colorM3OnSurface"
-		android:singleLine="true"
-		tools:text="Notification text"/>
+		android:id="@+id/delete_notification"
+		android:layout_width="36dp"
+		android:layout_height="48dp"
+		android:visibility="gone"
+		android:background="?android:actionBarItemBackground"
+		android:contentDescription="@string/sk_delete_notification"
+		android:tooltipText="@string/sk_delete_notification"
+		android:scaleType="center"
+		android:src="@drawable/ic_fluent_dismiss_20_filled"
+		android:tint="?colorM3OnSurfaceVariant" />
 
 </LinearLayout>

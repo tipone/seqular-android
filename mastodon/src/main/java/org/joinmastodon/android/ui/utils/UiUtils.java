@@ -1,6 +1,7 @@
 package org.joinmastodon.android.ui.utils;
 
 import static android.view.Menu.NONE;
+import static org.joinmastodon.android.GlobalUserPreferences.ThemePreference.*;
 import static org.joinmastodon.android.GlobalUserPreferences.theme;
 import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
 
@@ -53,9 +54,8 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewPropertyAnimator;
 import android.view.WindowInsets;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -86,6 +86,7 @@ import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.statuses.SetStatusMuted;
 import org.joinmastodon.android.api.requests.statuses.SetStatusPinned;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusMuteChangedEvent;
@@ -178,17 +179,6 @@ public class UiUtils {
 	public static int MAX_WIDTH, SCROLL_TO_TOP_DELTA;
 
 	public static final float ALPHA_PRESSED=0.55f;
-	public static final Animation opacityOut, opacityIn;
-
-	static {
-		opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
-		opacityOut.setDuration(300);
-		opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
-		opacityOut.setFillAfter(true);
-		opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
-		opacityIn.setDuration(400);
-		opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
-	}
 
 	private UiUtils() {
 	}
@@ -1032,14 +1022,20 @@ public class UiUtils {
 	}
 
 	public static void setUserPreferredTheme(Context context) {
-		context.setTheme(switch (theme) {
+		setUserPreferredTheme(context, null);
+	}
+
+	public static void setUserPreferredTheme(Context context, @Nullable AccountSession session) {
+		context.setTheme(switch(theme) {
 			case LIGHT -> R.style.Theme_Mastodon_Light;
 			case DARK -> R.style.Theme_Mastodon_Dark;
 			default -> R.style.Theme_Mastodon_AutoLightDark;
 		});
 
-		ColorPalette palette = ColorPalette.palettes.get(GlobalUserPreferences.color);
-		if (palette != null) palette.apply(context);
+		AccountLocalPreferences prefs=session != null ? session.getLocalPreferences() : null;
+		AccountLocalPreferences.ColorPreference color=prefs != null ? prefs.color : AccountLocalPreferences.ColorPreference.MATERIAL3;
+		ColorPalette palette = ColorPalette.palettes.get(color);
+		if (palette != null) palette.apply(context, theme);
 
 		Resources res = context.getResources();
 		MAX_WIDTH = (int) res.getDimension(R.dimen.layout_max_width);
@@ -1056,9 +1052,9 @@ public class UiUtils {
 	}
 
 	public static boolean isDarkTheme() {
-		if (theme == GlobalUserPreferences.ThemePreference.AUTO)
+		if (theme == AUTO)
 			return (MastodonApp.context.getResources().getConfiguration().uiMode & Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES;
-		return theme == GlobalUserPreferences.ThemePreference.DARK;
+		return theme == DARK;
 	}
 
 	public static Optional<Pair<String, Optional<String>>> parseFediverseHandle(String maybeFediHandle) {
@@ -1800,5 +1796,17 @@ public class UiUtils {
 				.map(f->UiUtils.extractPronounsFromField(localizedPronouns, f))
 				.filter(Objects::nonNull)
 				.findFirst();
+	}
+
+	public static void opacityIn(View v){
+		v.animate().alpha(1).setDuration(400).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
+	}
+
+	public static void opacityOut(View v){
+		opacityOut(v, ALPHA_PRESSED).start();
+	}
+
+	public static ViewPropertyAnimator opacityOut(View v, float alpha){
+		return v.animate().alpha(alpha).setDuration(300).setInterpolator(CubicBezierInterpolator.DEFAULT);
 	}
 }

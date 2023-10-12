@@ -250,7 +250,7 @@
     <string name="sk_settings_server_version">Версия сервера: %s</string>
     <string name="sk_notify_poll_results">Итоги голосования</string>
     <string name="sk_settings_local_only_explanation">Для работы этой функции ваш инстанс должен поддерживать локальные публикации. Большинство модифицированных версий Mastodon это поддерживают, но сам Mastodon нет.</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">Префикс ответа CW с “re:”</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">Префикс CW с \"re:\" при ответе</string>
     <string name="sk_filtered">Отфильтровано: %s</string>
     <string name="sk_expand">Развернуть</string>
     <string name="sk_collapse">Свернуть</string>
@@ -331,4 +331,84 @@
     <string name="sk_settings_prefix_replies_to_others">Только в ответ другим</string>
     <string name="sk_settings_unifiedpush_no_distributor">Распределители не найдены</string>
     <string name="sk_settings_content_types_explanation">Позволяет устанавливать тип содержимого вроде Markdown при создании поста. Имейте в виду, что это поддерживается не на всех серверах.</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Пробовать получить более точные данные о подписчиках, избранных и продвижениях, загрузив информацию из экземпляра происхождения.</string>
+    <string name="sk_settings_default_content_type_explanation">Это позволяет предварительно выбирать тип содержимого при создании новых публикаций, переопределяя значение, установленное в “Параметры публикации”.</string>
+    <string name="sk_trending_posts_info_banner">Эти посты набирают обороты на вашем сервере.</string>
+    <string name="sk_settings_continues_playback_summary">Позволять продолжить воспроизведение уже проигрываемого медиа, накладывая его на новое воспроизведение</string>
+    <string name="sk_settings_continues_playback">Наложение аудио</string>
+    <string name="sk_trending_links_info_banner">Это новости, которые обсуждаются на вашем сервере.</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Отключить индикатор активной вкладки в виде таблетки</string>
+    <string name="sk_tab_profile">Профиль</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="one">%d секунда</item>
+        <item quantity="few">%d секунды</item>
+        <item quantity="many">%d секунд</item>
+        <item quantity="other">%d секунд</item>
+    </plurals>
+    <string name="sk_mute_label">Длительность</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Только когда пост открыт</string>
+    <plurals name="sk_time_hours">
+        <item quantity="one">%d час</item>
+        <item quantity="few">%d часа</item>
+        <item quantity="many">%d часов</item>
+        <item quantity="other">%d часов</item>
+    </plurals>
+    <string name="sk_tab_home">Главная</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Скрывать пустые реакции эмодзи</string>
+    <string name="sk_settings_show_emoji_reactions">Отображать реакции эмодзи в лентах</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="one">пост</item>
+        <item quantity="few">поста</item>
+        <item quantity="many">постов</item>
+        <item quantity="other">постов</item>
+    </plurals>
+    <string name="sk_notification_mention">Вы были упомянуты %s</string>
+    <string name="sk_settings_emoji_reactions">Включить реакции эмодзи</string>
+    <string name="sk_suicide_search_terms">Суицид, Самоубийство</string>
+    <string name="sk_duration_minutes_5">5 минут</string>
+    <string name="sk_load_missing_posts_above">Загрузить более новые посты</string>
+    <string name="sk_settings_display_pronouns_in_timelines">Отображать местоимения в лентах</string>
+    <plurals name="sk_time_days">
+        <item quantity="one">%d день</item>
+        <item quantity="few">%d дня</item>
+        <item quantity="many">%d дней</item>
+        <item quantity="other">%d дней</item>
+    </plurals>
+    <string name="sk_settings_show_labels_in_navigation_bar">Отображать ярлыки вкладок на панели навигации</string>
+    <string name="sk_tab_search">Поиск</string>
+    <string name="sk_settings_show_emoji_reactions_always">Всегда показывать кнопку добавить</string>
+    <string name="sk_duration_indefinite">Бессрочно</string>
+    <string name="sk_search_suicide_hotlines">Найти службу помощи</string>
+    <string name="sk_duration_hours_1">1 час</string>
+    <string name="sk_duration_hours_6">6 часов</string>
+    <string name="sk_enter_emoji_hint">Введите эмодзи или найдете</string>
+    <string name="sk_duration_days_7">7 дней</string>
+    <string name="sk_settings_true_black">Абсолютно черный режим</string>
+    <string name="sk_do_not_show_again">Не показывать снова</string>
+    <string name="sk_settings_display_pronouns_in_threads">Отображать местоимения в ответах</string>
+    <string name="sk_enter_emoji_toast">Пожалуйста введите эмодзи</string>
+    <string name="sk_duration_minutes_30">30 минут</string>
+    <string name="sk_settings_display_pronouns_in_user_listings">Отображать местоимения в списках пользователей</string>
+    <string name="sk_button_react">Отреагировать с эмодзи</string>
+    <string name="sk_duration_days_1">1 день</string>
+    <string name="sk_load_missing_posts_below">Загрузить более старые посты</string>
+    <string name="sk_settings_emoji_reactions_explanation">Отображает реакции эмодзи на посты и позволяет добавлять свои. Различные серверы Fediverse поддерживают эту функцию, но Mastodon нет.</string>
+    <string name="sk_duration_days_3">3 дня</string>
+    <string name="sk_search_suicide_title">В случае, если вы попали в беду…</string>
+    <plurals name="sk_time_minutes">
+        <item quantity="one">%d минута</item>
+        <item quantity="few">%d минуты</item>
+        <item quantity="many">%d минут</item>
+        <item quantity="other">%d минут</item>
+    </plurals>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Один пользователь отреагировал с %2$s</item>
+        <item quantity="few">%1$,d пользователей отреагировали с %2$s</item>
+        <item quantity="many">%1$,d пользователей отреагировали с %2$s</item>
+        <item quantity="other">%1$,d пользователей отреагировали с %2$s</item>
+    </plurals>
+    <string name="sk_search_suicide_message">Если вы ищете знак, чтобы не совершить самоубийство, то это он. Если вы попали в беду, обратитесь в местную службу помощи самоубийцам.</string>
+    <string name="sk_post_contains_media">Пост содержит медиа</string>
+    <string name="sk_tab_notifications">Уведомления</string>
+    <string name="sk_list_exclusive_switch_explanation">Участники эксклюзивного списка не будут отображаться в вашей домашней ленте - если ваш экземпляр поддерживает такую возможность.</string>
 </resources>

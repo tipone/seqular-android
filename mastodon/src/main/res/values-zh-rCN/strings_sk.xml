@@ -325,7 +325,7 @@
     <string name="sk_button_react">用表情回应</string>
     <string name="sk_again_for_system_keyboard">再次点击以打开系统键盘</string>
     <string name="sk_enter_emoji_toast">请输入一个表情</string>
-    <string name="sk_enter_emoji_hint">输入一个表情以回应</string>
+    <string name="sk_enter_emoji_hint">输入表情符号或搜索自定义表情</string>
     <string name="sk_mute_label">持续时间</string>
     <string name="sk_duration_indefinite">无限期</string>
     <string name="sk_duration_minutes_5">5分钟</string>
@@ -393,4 +393,6 @@
     <string name="sk_search_suicide_message">如果你正在寻找一个不自杀的迹象，这就是。如果你遇到困难，请考虑拨打当地的自杀热线。</string>
     <string name="sk_trending_links_info_banner">这些是你的服务器上正在谈论的新闻故事。</string>
     <string name="sk_post_contains_media">嘟文包含媒体</string>
+    <string name="sk_blocked_accounts">已屏蔽账号</string>
+    <string name="sk_muted_accounts">已静音账号</string>
 </resources>

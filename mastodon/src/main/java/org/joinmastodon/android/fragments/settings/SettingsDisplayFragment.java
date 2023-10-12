@@ -18,6 +18,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
+import org.joinmastodon.android.api.session.AccountLocalPreferences.ColorPreference;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
@@ -38,7 +39,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> revealCWsItem, hideSensitiveMediaItem, interactionCountsItem, emojiInNamesItem;
 
 	// MEGALODON
-	private CheckableListItem<Void> trueBlackModeItem, marqueeItem, disableSwipeItem, reduceMotionItem, altIndicatorItem, noAltIndicatorItem, collapsePostsItem, spectatorModeItem, hideFabItem, translateOpenedItem, disablePillItem, showNavigationLabelsItem;
+	private CheckableListItem<Void> trueBlackModeItem, marqueeItem, disableSwipeItem, reduceMotionItem, altIndicatorItem, noAltIndicatorItem, collapsePostsItem, spectatorModeItem, hideFabItem, translateOpenedItem, disablePillItem, showNavigationLabelsItem, likeIconItem, underlinedLinksItem;
 	private ListItem<Void> colorItem, publishTextItem, autoRevealCWsItem;
 	private CheckableListItem<Void> pronounsInUserListingsItem, pronounsInTimelinesItem, pronounsInThreadsItem;
 
@@ -76,6 +77,8 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, ()->toggleCheckableItem(spectatorModeItem)),
 				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, ()->toggleCheckableItem(hideFabItem)),
 				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, ()->toggleCheckableItem(translateOpenedItem)),
+				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, lp.likeIcon, R.drawable.ic_fluent_heart_24_regular, ()->toggleCheckableItem(likeIconItem)),
+				underlinedLinksItem=new CheckableListItem<>(R.string.sk_settings_underlined_links, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.underlinedLinks, R.drawable.ic_fluent_text_underline_24_regular, ()->toggleCheckableItem(underlinedLinksItem)),
 				showPostDividersItem=new CheckableListItem<>(R.string.mo_enable_dividers, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showDividers, R.drawable.ic_fluent_timeline_24_regular, ()->toggleCheckableItem(showPostDividersItem)),
 				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem)),
 				showNavigationLabelsItem=new CheckableListItem<>(R.string.sk_settings_show_labels_in_navigation_bar, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNavigationLabels, R.drawable.ic_fluent_tag_24_regular, ()->toggleCheckableItem(showNavigationLabelsItem), true),
@@ -106,6 +109,8 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		boolean restartPlease=
 				GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked ||
 				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
+				lp.likeIcon!=likeIconItem.checked;
+				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
 				GlobalUserPreferences.showMediaPreview !=showMediaPreviewItem.checked ||
 				GlobalUserPreferences.showDividers!=showPostDividersItem.checked;
 
@@ -113,6 +118,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		lp.hideSensitiveMedia=hideSensitiveMediaItem.checked;
 		lp.showInteractionCounts=interactionCountsItem.checked;
 		lp.customEmojiInNames=emojiInNamesItem.checked;
+		lp.likeIcon=likeIconItem.checked;
 		lp.save();
 		GlobalUserPreferences.toolbarMarquee=marqueeItem.checked;
 		GlobalUserPreferences.relocatePublishButton=relocatePublishButtonItem.checked;
@@ -126,6 +132,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.spectatorMode=spectatorModeItem.checked;
 		GlobalUserPreferences.autoHideFab=hideFabItem.checked;
 		GlobalUserPreferences.translateButtonOpenedOnly=translateOpenedItem.checked;
+		GlobalUserPreferences.underlinedLinks=underlinedLinksItem.checked;
 		GlobalUserPreferences.showDividers=showPostDividersItem.checked;
 		GlobalUserPreferences.disableM3PillActiveIndicator=disablePillItem.checked;
 		GlobalUserPreferences.showNavigationLabels=showNavigationLabelsItem.checked;
@@ -147,7 +154,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private @StringRes int getColorPaletteValue(){
-		return switch(GlobalUserPreferences.color){
+		return switch(AccountSessionManager.get(accountID).getLocalPreferences().color){
 			case MATERIAL3 -> R.string.sk_color_palette_material3;
 			case PINK -> R.string.sk_color_palette_pink;
 			case PURPLE -> R.string.sk_color_palette_purple;
@@ -214,18 +221,18 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onColorClick(){
-		int selected=GlobalUserPreferences.color.ordinal();
+		int selected=lp.color.ordinal();
 		int[] newSelected={selected};
-		String[] names=Arrays.stream(GlobalUserPreferences.ColorPreference.values()).map(GlobalUserPreferences.ColorPreference::getName).map(this::getString).toArray(String[]::new);
+		String[] names=Arrays.stream(ColorPreference.values()).map(ColorPreference::getName).map(this::getString).toArray(String[]::new);
 		new M3AlertDialogBuilder(getActivity())
-				.setTitle(R.string.settings_theme)
+				.setTitle(R.string.sk_settings_color_palette)
 				.setSingleChoiceItems(names,
 						selected, (dlg, item)->newSelected[0]=item)
 				.setPositiveButton(R.string.ok, (dlg, item)->{
-					GlobalUserPreferences.ColorPreference pref=GlobalUserPreferences.ColorPreference.values()[newSelected[0]];
-					if(pref!=GlobalUserPreferences.color){
-						GlobalUserPreferences.ColorPreference prev=GlobalUserPreferences.color;
-						GlobalUserPreferences.color=pref;
+					ColorPreference pref=ColorPreference.values()[newSelected[0]];
+					if(pref!=lp.color){
+						ColorPreference prev=lp.color;
+						lp.color=pref;
 						GlobalUserPreferences.save();
 						colorItem.subtitleRes=getColorPaletteValue();
 						rebindItem(colorItem);
@@ -275,17 +282,17 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				.show();
 	}
 
-	private void maybeApplyNewThemeRightNow(GlobalUserPreferences.ThemePreference prevTheme, GlobalUserPreferences.ColorPreference prevColor, Boolean prevTrueBlack){
+	private void maybeApplyNewThemeRightNow(GlobalUserPreferences.ThemePreference prevTheme, ColorPreference prevColor, Boolean prevTrueBlack){
 		if(prevTheme==null) prevTheme=GlobalUserPreferences.theme;
 		if(prevTrueBlack==null) prevTrueBlack=GlobalUserPreferences.trueBlackTheme;
-		if(prevColor==null) prevColor=GlobalUserPreferences.color;
+		if(prevColor==null) prevColor=lp.color;
 
 		boolean isCurrentDark=prevTheme==GlobalUserPreferences.ThemePreference.DARK ||
 				(prevTheme==GlobalUserPreferences.ThemePreference.AUTO && Build.VERSION.SDK_INT>=30 && getResources().getConfiguration().isNightModeActive());
 		boolean isNewDark=GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.DARK ||
 				(GlobalUserPreferences.theme==GlobalUserPreferences.ThemePreference.AUTO && Build.VERSION.SDK_INT>=30 && getResources().getConfiguration().isNightModeActive());
 		boolean isNewBlack=GlobalUserPreferences.trueBlackTheme;
-		if(isCurrentDark!=isNewDark || prevColor!=GlobalUserPreferences.color || (isNewDark && prevTrueBlack!=isNewBlack)){
+		if(isCurrentDark!=isNewDark || prevColor!=lp.color || (isNewDark && prevTrueBlack!=isNewBlack)){
 			restartActivityToApplyNewTheme();
 		}
 	}

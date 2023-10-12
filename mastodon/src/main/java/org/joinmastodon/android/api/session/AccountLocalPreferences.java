@@ -6,9 +6,13 @@ import static org.joinmastodon.android.api.MastodonAPIController.gson;
 
 import android.content.SharedPreferences;
 
+import androidx.annotation.StringRes;
+
 import com.google.gson.reflect.TypeToken;
 
+import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.ContentType;
+import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.model.TimelineDefinition;
@@ -41,16 +45,19 @@ public class AccountLocalPreferences{
 	public String publishButtonText;
 	public String timelineReplyVisibility; // akkoma-only
 	public boolean keepOnlyLatestNotification;
-
 	public boolean emojiReactionsEnabled;
 	public ShowEmojiReactions showEmojiReactions;
+	public ColorPreference color;
+	public boolean likeIcon;
+	public ArrayList<Emoji> recentCustomEmoji;
 
-	private final static Type recentLanguagesType = new TypeToken<ArrayList<String>>() {}.getType();
-	private final static Type timelinesType = new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
+	private final static Type recentLanguagesType=new TypeToken<ArrayList<String>>() {}.getType();
+	private final static Type timelinesType=new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
+	private final static Type recentCustomEmojiType=new TypeToken<ArrayList<Emoji>>() {}.getType();
 
 	// MOSHIDON
-	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
-	public Map<String, Integer> recentEmojis;
+//	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
+//	public Map<String, Integer> recentEmojis;
 	private final static Type notificationFiltersType = new TypeToken<PushSubscription.Alerts>() {}.getType();
 	public PushSubscription.Alerts notificationFilters;
 
@@ -77,9 +84,12 @@ public class AccountLocalPreferences{
 		keepOnlyLatestNotification=prefs.getBoolean("keepOnlyLatestNotification", false);
 		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
+		color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
+		likeIcon=prefs.getBoolean("likeIcon", false);
+		recentCustomEmoji=fromJson(prefs.getString("recentCustomEmoji", null), recentCustomEmojiType, new ArrayList<>());
 
 		// MOSHIDON
-		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
+//		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
 		notificationFilters=fromJson(prefs.getString("notificationFilters", gson.toJson(PushSubscription.Alerts.ofAll())), notificationFiltersType, PushSubscription.Alerts.ofAll());
 	}
 
@@ -114,11 +124,38 @@ public class AccountLocalPreferences{
 				.putBoolean("keepOnlyLatestNotification", keepOnlyLatestNotification)
 				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
 				.putString("showEmojiReactions", showEmojiReactions.name())
+				.putString("color", color.name())
+				.putBoolean("likeIcon", likeIcon)
+				.putString("recentCustomEmoji", gson.toJson(recentCustomEmoji))
 
 				// MOSHIDON
-				.putString("recentEmojis", gson.toJson(recentEmojis))
+//				.putString("recentEmojis", gson.toJson(recentEmojis))
 				.putString("notificationFilters", gson.toJson(notificationFilters))
 				.apply();
+	}
+
+	public enum ColorPreference{
+		MATERIAL3,
+		PINK,
+		PURPLE,
+		GREEN,
+		BLUE,
+		BROWN,
+		RED,
+		YELLOW;
+
+		public @StringRes int getName() {
+			return switch(this){
+				case MATERIAL3 -> R.string.sk_color_palette_material3;
+				case PINK -> R.string.sk_color_palette_pink;
+				case PURPLE -> R.string.sk_color_palette_purple;
+				case GREEN -> R.string.sk_color_palette_green;
+				case BLUE -> R.string.sk_color_palette_blue;
+				case BROWN -> R.string.sk_color_palette_brown;
+				case RED -> R.string.sk_color_palette_red;
+				case YELLOW -> R.string.sk_color_palette_yellow;
+			};
+		}
 	}
 
 	public enum ShowEmojiReactions{

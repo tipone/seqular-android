@@ -97,8 +97,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback(){
 			@Override
 			public void onPageSelected(int position){
-				if(position==0)
-					return;
 				Fragment _page=getFragmentForPage(position);
 				if(_page instanceof BaseRecyclerFragment<?> page){
 					if(!page.loaded && !page.isDataLoading())

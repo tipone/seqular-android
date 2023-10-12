@@ -2,7 +2,6 @@ package org.joinmastodon.android.fragments.discover;
 
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 
 import org.joinmastodon.android.api.requests.timelines.GetPublicTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -30,15 +29,14 @@ public class LocalTimelineFragment extends StatusListFragment{
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetPublicTimeline(true, false, refreshing ? null : maxID, count, getLocalPrefs().timelineReplyVisibility)
+		currentRequest=new GetPublicTimeline(true, false, getMaxID(), count, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
-						if(!result.isEmpty())
-							maxID=result.get(result.size()-1).id;
-						boolean empty=result.isEmpty();
-						AccountSessionManager.get(accountID).filterStatuses(result, FilterContext.PUBLIC);
-						onDataLoaded(result, !empty);
+						if(getActivity()==null) return;
+						boolean more=applyMaxID(result);
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
+						onDataLoaded(result, more);
 						bannerHelper.onBannerBecameVisible();
 					}
 				})

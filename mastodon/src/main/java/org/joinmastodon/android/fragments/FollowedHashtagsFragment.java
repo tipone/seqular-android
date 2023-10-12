@@ -56,7 +56,7 @@ public class FollowedHashtagsFragment extends MastodonRecyclerFragment<Hashtag> 
                 .setCallback(new SimpleCallback<>(this){
                     @Override
                     public void onSuccess(HeaderPaginationList<Hashtag> result){
-                        if (getActivity() == null) return;
+                        if(getActivity()==null) return;
                         if(result.nextPageUri!=null)
                             nextMaxID=result.nextPageUri.getQueryParameter("max_id");
                         else

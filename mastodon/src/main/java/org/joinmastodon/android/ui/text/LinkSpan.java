@@ -5,6 +5,7 @@ import android.text.TextPaint;
 import android.text.style.CharacterStyle;
 import android.view.View;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -34,7 +35,7 @@ public class LinkSpan extends CharacterStyle {
 	@Override
 	public void updateDrawState(TextPaint tp) {
 		tp.setColor(color=tp.linkColor);
-		tp.setUnderlineText(true);
+		tp.setUnderlineText(GlobalUserPreferences.underlinedLinks);
 	}
 	
 	public void onClick(Context context){
@@ -45,7 +46,7 @@ public class LinkSpan extends CharacterStyle {
 				if(linkObject instanceof Hashtag ht)
 					UiUtils.openHashtagTimeline(context, accountID, ht);
 				else
-					UiUtils.openHashtagTimeline(context, accountID, text);
+					UiUtils.openHashtagTimeline(context, accountID, link);
 			}
 			case CUSTOM -> listener.onLinkClick(this);
 		}

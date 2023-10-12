@@ -77,7 +77,7 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<FollowSuggestion> result){
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						onDataLoaded(result.stream().map(fs->new AccountWrapper(fs.account)).collect(Collectors.toList()), false);
 						loadRelationships();
 					}
@@ -112,7 +112,7 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 			public void onSuccess(List<Relationship> result){
 				relationshipsRequest=null;
 				relationships=result.stream().collect(Collectors.toMap(rel->rel.id, Function.identity()));
-				if (getActivity() == null) return;
+				if(getActivity()==null) return;
 				if(list==null)
 					return;
 				for(int i=0;i<list.getChildCount();i++){

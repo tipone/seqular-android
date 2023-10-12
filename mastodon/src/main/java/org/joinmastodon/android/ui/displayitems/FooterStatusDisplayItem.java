@@ -1,12 +1,10 @@
 package org.joinmastodon.android.ui.displayitems;
 
-import static org.joinmastodon.android.ui.utils.UiUtils.opacityIn;
-import static org.joinmastodon.android.ui.utils.UiUtils.opacityOut;
-
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,6 +23,7 @@ import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
@@ -65,6 +64,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<FooterStatusDisplayItem>{
 		private final TextView replies, boosts, favorites;
 		private final View reply, boost, favorite, share, bookmark;
+		private final ImageView favIcon;
 		private static final Animation opacityOut, opacityIn;
 		private static AnimationSet animSet;
 
@@ -74,7 +74,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private final Runnable longClickRunnable = () -> {
 			longClickPerformed = touchingView != null && touchingView.performLongClick();
 			if (longClickPerformed && touchingView != null) {
-				touchingView.startAnimation(opacityIn);
+				UiUtils.opacityIn(touchingView);
 				touchingView.animate().scaleX(1).scaleY(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
 			}
 		};
@@ -88,27 +88,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			}
 		};
 
-		private static final float ALPHA_PRESSED=0.55f;
-
-		static {
-			opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
-			opacityOut.setDuration(300);
-			opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			opacityOut.setFillAfter(true);
-			opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
-			opacityIn.setDuration(400);
-			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			Animation spin = new RotateAnimation(0, 360,
-					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-					0.5f);
-
-			animSet = new AnimationSet(true);
-			animSet.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			animSet.addAnimation(spin);
-			animSet.addAnimation(opacityIn);
-			animSet.setDuration(400);
-		}
-
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
 
@@ -121,6 +100,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite=findViewById(R.id.favorite_btn);
 			share=findViewById(R.id.share_btn);
 			bookmark=findViewById(R.id.bookmark_btn);
+			favIcon=findViewById(R.id.favorite_icon);
 
 			reply.setOnTouchListener(this::onButtonTouch);
 			reply.setOnClickListener(this::onReplyClick);
@@ -164,6 +144,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor &&
 					!nextIsWarning;
 
+
+			AccountSession session=AccountSessionManager.get(item.accountID);
+			boolean like=session!=null && session.getLocalPreferences().likeIcon;
+			ColorStateList color=item.parentFragment.getResources().getColorStateList(
+					like ? R.color.like_icon : R.color.favorite_icon, item.parentFragment.getContext().getTheme()
+			);
+			favIcon.setImageResource(like ? R.drawable.ic_fluent_heart_24_selector : R.drawable.ic_fluent_star_24_selector);
+			favIcon.setImageTintList(color);
+			favorites.setTextColor(color);
+
 			ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) itemView.getLayoutParams();
 			params.setMargins(params.leftMargin, params.topMargin, params.rightMargin,
 					condenseBottom ? V.dp(-5) : 0);
@@ -192,7 +182,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				if (!longClickPerformed) v.animate().scaleX(1).scaleY(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
 				if (disabled) return true;
 				if (action == MotionEvent.ACTION_UP && !longClickPerformed) v.performClick();
-				else if (!longClickPerformed) v.startAnimation(opacityIn);
+				else if (!longClickPerformed) UiUtils.opacityIn(v);
 			} else if (action == MotionEvent.ACTION_DOWN) {
 				longClickPerformed = false;
 				touchingView = v;
@@ -200,7 +190,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
 				if (disabled) return true;
 				v.postDelayed(longClickRunnable, ViewConfiguration.getLongPressTimeout());
-				v.startAnimation(opacityOut);
+				UiUtils.opacityOut(v);
 			}
 			return true;
 		}
@@ -219,7 +209,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				);
 				return;
 			}
-			v.startAnimation(opacityIn);
+			UiUtils.opacityIn(v);
 			Bundle args=new Bundle();
 			args.putString("account", item.accountID);
 			args.putParcelable("replyTo", Parcels.wrap(item.status));
@@ -243,7 +233,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		private void onBoostClick(View v){
 			if (GlobalUserPreferences.confirmBoost) {
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 				onBoostLongClick(v);
 				return;
 			}
@@ -266,7 +256,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void boostConsumer(View v, Status r) {
-			v.startAnimation(opacityIn);
+			UiUtils.opacityIn(v);
 			bindText(boosts, r.reblogsCount);
 		}
 
@@ -277,7 +267,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			AccountSession session = AccountSessionManager.getInstance().getAccount(item.accountID);
 
 			Consumer<StatusPrivacy> doReblog = (visibility) -> {
-				v.startAnimation(opacityOut);
+				UiUtils.opacityOut(v);
 				if(item.status.isRemote){
 					UiUtils.lookupStatus(v.getContext(),
 							item.status, item.accountID, null,
@@ -343,7 +333,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			menu.findViewById(R.id.quote).setOnClickListener(c->{
 				dialog.dismiss();
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 				Bundle args=new Bundle();
 				args.putString("account", item.accountID);
 				AccountSession accountSession=AccountSessionManager.getInstance().getAccount(item.accountID);
@@ -407,7 +397,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 					R.string.sk_favorite_as,
 					R.string.sk_favorited_as,
 					R.string.sk_already_favorited,
-					R.drawable.ic_fluent_star_28_regular
+					AccountSessionManager.get(item.accountID).getLocalPreferences().likeIcon ?
+							R.drawable.ic_fluent_heart_28_regular : R.drawable.ic_fluent_star_28_regular
 			);
 			return true;
 		}
@@ -431,7 +422,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			bookmark.setSelected(!item.status.bookmarked);
 			vibrateForAction(bookmark, !item.status.bookmarked);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked, r->{
-				v.startAnimation(opacityIn);
+				UiUtils.opacityIn(v);
 			});
 		}
 
@@ -439,7 +430,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			if (AccountSessionManager.getInstance().getLoggedInAccounts().size() < 2) return false;
 			UiUtils.pickInteractAs(v.getContext(),
 					item.accountID, item.status,
-					s -> s.bookmarked,
+					s -> s.bookmarked,w
 					(ic, status, consumer) -> ic.setBookmarked(status, true, consumer),
 					R.string.sk_bookmark_as,
 					R.string.sk_bookmarked_as,
@@ -450,7 +441,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onShareClick(View v){
-			v.startAnimation(opacityIn);
+			UiUtils.opacityIn(v);
 			Intent intent=new Intent(Intent.ACTION_SEND);
 			intent.setType("text/plain");
 			intent.putExtra(Intent.EXTRA_TEXT, item.status.url);

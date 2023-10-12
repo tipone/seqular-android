@@ -1,7 +1,6 @@
 package org.joinmastodon.android.ui.displayitems;
 
 import static org.joinmastodon.android.MastodonApp.context;
-import static org.joinmastodon.android.model.Notification.Type.PLEROMA_EMOJI_REACTION;
 import static org.joinmastodon.android.ui.utils.UiUtils.generateFormattedString;
 
 import android.annotation.SuppressLint;
@@ -9,7 +8,6 @@ import android.app.Activity;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.Html;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -20,9 +18,11 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Notification;
@@ -46,11 +46,15 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	private final String accountID;
 	private final CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private final CharSequence text;
+	private final CharSequence timestamp;
+	private final AccountLocalPreferences lp;
 
 	public NotificationHeaderStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Notification notification, String accountID){
 		super(parentID, parentFragment);
 		this.notification=notification;
 		this.accountID=accountID;
+		this.timestamp=notification.createdAt==null ? null : UiUtils.formatRelativeTimestamp(context, notification.createdAt);
+		this.lp=AccountSessionManager.get(accountID).getLocalPreferences();
 
 		if(notification.type==Notification.Type.POLL){
 			text=parentFragment.getString(R.string.poll_ended);
@@ -111,17 +115,25 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final ImageView icon, avatar;
-		private final TextView text;
+		private final ImageView icon, avatar, deleteNotification;
+		private final TextView text, timestamp;
+		private final int selectableItemBackground;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_notification_header, parent);
 			icon=findViewById(R.id.icon);
 			avatar=findViewById(R.id.avatar);
 			text=findViewById(R.id.text);
+			timestamp=findViewById(R.id.timestamp);
+			deleteNotification=findViewById(R.id.delete_notification);
 
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
 			avatar.setClipToOutline(true);
+			deleteNotification.setOnClickListener(v->UiUtils.confirmDeleteNotification(activity, item.parentFragment.getAccountID(), item.notification, ()->{
+				if (item.parentFragment instanceof NotificationsListFragment fragment) {
+					fragment.removeNotification(item.notification);
+				}
+			}));
 
 			icon.setOnClickListener(this::onItemClick);
 			avatar.setOnClickListener(this::onItemClick);
@@ -149,9 +161,10 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(NotificationHeaderStatusDisplayItem item){
 			text.setText(item.text);
+			timestamp.setText(item.timestamp);
 			avatar.setVisibility(item.notification.type==Notification.Type.POLL ? View.GONE : View.VISIBLE);
 			icon.setImageResource(switch(item.notification.type){
-				case FAVORITE -> R.drawable.ic_fluent_star_24_filled;
+				case FAVORITE -> item.lp.likeIcon ? R.drawable.ic_fluent_heart_24_filled : R.drawable.ic_fluent_star_24_filled;
 				case REBLOG -> R.drawable.ic_fluent_arrow_repeat_all_24_filled;
 				case FOLLOW, FOLLOW_REQUEST -> R.drawable.ic_fluent_person_add_24_filled;
 				case POLL -> R.drawable.ic_fluent_poll_24_filled;
@@ -162,11 +175,12 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				default -> throw new IllegalStateException("Unexpected value: "+item.notification.type);
 			});
 			icon.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(item.parentFragment.getActivity(), switch(item.notification.type){
-				case FAVORITE -> R.attr.colorFavorite;
+				case FAVORITE -> item.lp.likeIcon ? R.attr.colorLike : R.attr.colorFavorite;
 				case REBLOG -> R.attr.colorBoost;
 				case POLL -> R.attr.colorPoll;
 				default -> android.R.attr.colorAccent;
 			})));
+			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification != null ? View.VISIBLE : View.GONE);
 			itemView.setBackgroundResource(0);
 		}
 

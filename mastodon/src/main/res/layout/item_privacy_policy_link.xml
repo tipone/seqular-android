@@ -13,7 +13,7 @@
 		android:layout_width="24dp"
 		android:layout_height="24dp"
 		android:backgroundTint="?colorM3Primary"
-		android:background="@drawable/ic_outline_link_24"/>
+		android:background="@drawable/ic_fluent_link_24_regular"/>
 	
 	<TextView
 		android:id="@+id/title"

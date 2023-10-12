@@ -170,12 +170,14 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
         @Override
         public void onBind(EmojiReactionsStatusDisplayItem item) {
 			if(emojiKeyboard != null) root.removeView(emojiKeyboard.getView());
+			addButton.setSelected(false);
 			AccountSession session=item.parentFragment.getSession();
 			item.status.reactions.forEach(r->r.request=r.getUrl(item.playGifs)!=null
 					? new UrlImageLoaderRequest(r.getUrl(item.playGifs), V.sp(24), V.sp(24))
 					: null);
 			emojiKeyboard=new CustomEmojiPopupKeyboard(
 					(Activity) item.parentFragment.getContext(),
+					item.accountID,
 					AccountSessionManager.getInstance().getCustomEmojis(session.domain),
 					session.domain, true, item.accountID);
 			emojiKeyboard.setListener(this);

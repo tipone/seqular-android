@@ -97,7 +97,7 @@ public class AnnouncementsFragment extends BaseStatusListFragment<Announcement> 
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Announcement> result){
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 
 						// get unread items first
 						List<Announcement> data = result.stream().filter(a -> !a.read).collect(toList());

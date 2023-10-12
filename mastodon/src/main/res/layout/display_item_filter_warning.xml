@@ -3,8 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:id="@+id/warning_wrap"
-    android:background="@drawable/bg_timeline_gap">
+    android:background="@drawable/bg_filter_warning">
 
     <TextView
         android:id="@+id/text"

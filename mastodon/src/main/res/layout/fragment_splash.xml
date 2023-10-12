@@ -91,13 +91,13 @@
 		android:clipToPadding="false"
 		android:orientation="vertical">
 		
-		<ImageView
-			android:layout_width="300dp"
-			android:layout_height="78dp"
-			android:layout_gravity="center_horizontal"
-			android:layout_marginTop="32dp"
-			android:importantForAccessibility="no"
-			android:src="@drawable/splash_logo"/>
+<!--		<ImageView-->
+<!--			android:layout_width="300dp"-->
+<!--			android:layout_height="78dp"-->
+<!--			android:layout_gravity="center_horizontal"-->
+<!--			android:layout_marginTop="32dp"-->
+<!--			android:importantForAccessibility="no"-->
+<!--			android:src="@drawable/splash_logo"/>-->
 
 		<Space
 			android:layout_width="1px"

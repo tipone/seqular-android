@@ -9,7 +9,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -100,6 +99,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, PreviewlessMediaAttachmentViewController> previewlessAttachmentViewsPool=new TypedObjectPool<>(this::makeNewPreviewlessMediaAttachmentView);
 
 	protected boolean currentlyScrolling;
+	protected String maxID;
 
 	public BaseStatusListFragment(){
 		super(20);
@@ -166,12 +166,20 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	protected String getMaxID(){
+		if(refreshing) return null;
+		if(maxID!=null) return maxID;
 		if(!preloadedData.isEmpty())
 			return preloadedData.get(preloadedData.size()-1).getID();
 		else if(!data.isEmpty())
 			return data.get(data.size()-1).getID();
 		else
 			return null;
+	}
+
+	protected boolean applyMaxID(List<Status> result){
+		boolean empty=result.isEmpty();
+		if(!empty) maxID=result.get(result.size()-1).id;
+		return !empty;
 	}
 
 	protected abstract List<StatusDisplayItem> buildDisplayItems(T s);
@@ -642,12 +650,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			// to do this if the media grid is not bound, tho - so, doing it ourselves here
 			status.sensitiveRevealed = !status.sensitiveRevealed;
 		}
-		holder.rebind();
+		if(holder.getItem().hasVisibilityToggle) holder.animateVisibilityToggle(false);
 	}
 
 	public void onSensitiveRevealed(MediaGridStatusDisplayItem.Holder holder) {
 		HeaderStatusDisplayItem.Holder header = findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
-		if(header != null) header.rebind();
+		if(header != null && header.getItem().hasVisibilityToggle) header.animateVisibilityToggle(true);
 	}
 
 	protected void toggleSpoiler(Status status, String itemID){
@@ -693,15 +701,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
 		if (text != null) text.rebind();
 		if (header != null) header.rebind();
-	}
-
-	public void updateEmojiReactions(Status status, String itemID){
-		EmojiReactionsStatusDisplayItem.Holder reactions=findHolderOfType(itemID, EmojiReactionsStatusDisplayItem.Holder.class);
-		if(reactions != null){
-			reactions.getItem().status.reactions.clear();
-			reactions.getItem().status.reactions.addAll(status.reactions);
-			reactions.rebind();
-		}
 	}
 
 	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){}
@@ -937,7 +936,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(getContext()==null) return;
 		super.onDataLoaded(d, more);
 		// more available, but the page isn't even full yet? seems wrong, let's load some more
-		if(more && d.size() < itemsPerPage){
+		if(more && data.size() < itemsPerPage){
 			preloader.onScrolledToLastItem();
 		}
 	}

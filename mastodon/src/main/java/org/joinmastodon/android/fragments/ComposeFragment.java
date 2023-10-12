@@ -177,7 +177,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private int charCount, charLimit, trimmedCharCount;
 
 	private Button publishButton, languageButton, scheduleTimeBtn;
-	private PopupMenu languagePopup, contentTypePopup, visibilityPopup, draftOptionsPopup;
+	private PopupMenu contentTypePopup, visibilityPopup, draftOptionsPopup;
 	private ImageButton publishButtonRelocated, mediaBtn, pollBtn, emojiBtn, spoilerBtn, draftsBtn, scheduleDraftDismiss, contentTypeBtn;
 	private View sensitiveBtn;
 	private TextView replyText;
@@ -313,7 +313,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	@Override
 	public View onCreateContentView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState){
 		creatingView=true;
-		emojiKeyboard=new CustomEmojiPopupKeyboard(getActivity(), customEmojis, instanceDomain, getAccountID());
+		emojiKeyboard=new CustomEmojiPopupKeyboard(getActivity(), accountID, customEmojis, instanceDomain);
 		emojiKeyboard.setListener(new CustomEmojiPopupKeyboard.Listener(){
 			@Override
 			public void onEmojiSelected(Emoji emoji){

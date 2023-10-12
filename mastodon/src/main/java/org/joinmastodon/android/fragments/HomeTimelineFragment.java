@@ -11,7 +11,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
-import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.FilterContext;
@@ -20,6 +19,7 @@ import org.joinmastodon.android.model.TimelineMarkers;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -49,16 +49,6 @@ public class HomeTimelineFragment extends StatusListFragment {
 		loadData();
 	}
 
-	private boolean typeFilterPredicate(Status s) {
-		AccountLocalPreferences lp=getLocalPrefs();
-		return (lp.showReplies || s.inReplyToId == null) &&
-				(lp.showBoosts || s.reblog == null);
-	}
-
-	private List<Status> filterPosts(List<Status> items) {
-		return items.stream().filter(this::typeFilterPredicate).collect(Collectors.toList());
-	}
-
 	@Override
 	protected void doLoadData(int offset, int count){
 		AccountSessionManager.getInstance()
@@ -66,10 +56,11 @@ public class HomeTimelineFragment extends StatusListFragment {
 				.getHomeTimeline(offset>0 ? maxID : null, count, refreshing, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(CacheablePaginatedResponse<List<Status>> result){
-						if (getActivity() == null) return;
-						List<Status> filteredItems = filterPosts(result.items);
+						if(getActivity()==null) return;
+						boolean empty=result.items.isEmpty();
 						maxID=result.maxID;
-						onDataLoaded(filteredItems, !result.items.isEmpty());
+						AccountSessionManager.get(accountID).filterStatuses(result.items, getFilterContext());
+						onDataLoaded(result.items, !empty);
 						if(result.isFromCache())
 							loadNewPosts();
 					}
@@ -142,23 +133,26 @@ public class HomeTimelineFragment extends StatusListFragment {
 					public void onSuccess(List<Status> result){
 						currentRequest=null;
 						dataLoading=false;
-						result = filterPosts(result);
 						if(result.isEmpty() || getActivity()==null)
 							return;
 						Status last=result.get(result.size()-1);
 						List<Status> toAdd;
 						if(!data.isEmpty() && last.id.equals(data.get(0).id)){ // This part intersects with the existing one
-							toAdd=result.subList(0, result.size()-1); // Remove the already known last post
+							toAdd=new ArrayList<>(result.subList(0, result.size()-1)); // Remove the already known last post
 						}else{
 							result.get(result.size()-1).hasGapAfter=true;
 							toAdd=result;
 						}
+						List<String> existingIds=data.stream().map(Status::getID).collect(Collectors.toList());
+						toAdd.removeIf(s->existingIds.contains(s.getID()));
+						List<Status> toAddUnfiltered=new ArrayList<>(toAdd);
 						AccountSessionManager.get(accountID).filterStatuses(toAdd, getFilterContext());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
-							if (parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
-							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAdd, false);
+							if(parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 						}
+						if(toAddUnfiltered.isEmpty())
+							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAddUnfiltered, false);
 					}
 
 					@Override

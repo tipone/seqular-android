@@ -33,9 +33,9 @@
     <string name="sk_federated_timeline">Federation</string>
     <string name="sk_federated_timeline_info_banner">These are the most recent posts by the people in your federation.</string>
     <string name="sk_bubble_timeline_info_banner">These are the most recent posts from the network curated by your instance admins.</string>
-	<string name="sk_trending_posts_info_banner">These are the posts gaining traction on your server.</string>
-	<string name="sk_trending_links_info_banner">These are the news stories getting talked about on your server.</string>
-	<string name="sk_update_available">Megalodon %s is ready to download.</string>
+    <string name="sk_trending_posts_info_banner">These posts are currently gaining traction on the Fediverse.</string>
+    <string name="sk_trending_links_info_banner">These news stories are getting talked about across the Fediverse.</string>
+    <string name="sk_update_available">Megalodon %s is ready to download.</string>
     <string name="sk_update_ready">Megalodon %s is downloaded and ready to install.</string>
     <string name="sk_check_for_update">Check for update</string>
     <string name="sk_no_update_available">No update available</string>
@@ -363,8 +363,8 @@
         <item quantity="other">%1$,d users reacted with %2$s</item>
     </plurals>
     <string name="sk_button_react">React with emoji</string>
-	<string name="sk_enter_emoji_toast">Please type an emoji</string>
-    <string name="sk_enter_emoji_hint">Type an emoji or search custom emoji</string>
+    <string name="sk_enter_emoji_toast">Please type an emoji</string>
+    <string name="sk_enter_emoji_hint">Type an emoji or search</string>
     <string name="sk_mute_label">Duration</string>
     <string name="sk_duration_indefinite">Indefinite</string>
     <string name="sk_duration_minutes_5">5 minutes</string>
@@ -388,22 +388,25 @@
     <string name="sk_post_contains_media">Post contains media</string>
     <string name="sk_load_missing_posts_above">Load newer posts</string>
     <string name="sk_load_missing_posts_below">Load older posts</string>
-	<plurals name="sk_time_seconds">
-		<item quantity="one">%d second</item>
-		<item quantity="other">%d seconds</item>
-	</plurals>
-	<plurals name="sk_time_minutes">
-		<item quantity="one">%d minute</item>
-		<item quantity="other">%d minutes</item>
-	</plurals>
-	<plurals name="sk_time_hours">
-		<item quantity="one">%d hour</item>
-		<item quantity="other">%d hours</item>
-	</plurals>
-	<plurals name="sk_time_days">
-		<item quantity="one">%d day</item>
-		<item quantity="other">%d days</item>
-	</plurals>
-	<string name="sk_muted_accounts">Muted accounts</string>
-	<string name="sk_blocked_accounts">Blocked accounts</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="one">%d second</item>
+        <item quantity="other">%d seconds</item>
+    </plurals>
+    <plurals name="sk_time_minutes">
+        <item quantity="one">%d minute</item>
+        <item quantity="other">%d minutes</item>
+    </plurals>
+    <plurals name="sk_time_hours">
+        <item quantity="one">%d hour</item>
+        <item quantity="other">%d hours</item>
+    </plurals>
+    <plurals name="sk_time_days">
+        <item quantity="one">%d day</item>
+        <item quantity="other">%d days</item>
+    </plurals>
+    <string name="sk_muted_accounts">Muted accounts</string>
+    <string name="sk_blocked_accounts">Blocked accounts</string>
+    <string name="sk_settings_like_icon">Use heart as favorite icon</string>
+    <string name="sk_recently_used">Recently used</string>
+	<string name="sk_settings_underlined_links">Underlined links</string>
 </resources>

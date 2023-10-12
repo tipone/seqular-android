@@ -26,8 +26,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import androidx.annotation.StringRes;
-
 public class GlobalUserPreferences{
 	private static final String TAG="GlobalUserPreferences";
 
@@ -58,12 +56,12 @@ public class GlobalUserPreferences{
 	public static boolean allowRemoteLoading;
 	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
-	public static ColorPreference color;
 	public static boolean disableM3PillActiveIndicator;
 	public static boolean showNavigationLabels;
 	public static boolean displayPronounsInTimelines, displayPronounsInThreads, displayPronounsInUserListings;
 	public static boolean overlayMedia;
 	public static boolean showSuicideHelp;
+	public static boolean underlinedLinks;
 
 	// MOSHIDON
 	public static boolean showDividers;
@@ -133,12 +131,13 @@ public class GlobalUserPreferences{
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
-		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
+		showNavigationLabels=prefs.getBoolean("showNavigationLabels", false);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
 		displayPronounsInThreads=prefs.getBoolean("displayPronounsInThreads", true);
 		displayPronounsInUserListings=prefs.getBoolean("displayPronounsInUserListings", true);
 		overlayMedia=prefs.getBoolean("overlayMedia", false);
 		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
+		underlinedLinks=prefs.getBoolean("underlinedLinks", true);
 
 		// MOSHIDON
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
@@ -169,18 +168,13 @@ public class GlobalUserPreferences{
 					.apply();
 		}
 
-		try {
-			if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
-				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.MATERIAL3.name()));
-			}else{
-				color=ColorPreference.valueOf(prefs.getString("color", ColorPreference.PURPLE.name()));
-			}
-		} catch (IllegalArgumentException|ClassCastException ignored) {
-			// invalid color name or color was previously saved as integer
-			color=ColorPreference.PURPLE;
-		}
-
-		if(prefs.getInt("migrationLevel", 0) < 61) migrateToUpstreamVersion61();
+		int migrationLevel=prefs.getInt("migrationLevel", BuildConfig.VERSION_CODE);
+		if(migrationLevel < 61)
+			migrateToUpstreamVersion61();
+		if(migrationLevel < 102)
+			migrateToVersion102();
+		if(migrationLevel < BuildConfig.VERSION_CODE)
+			prefs.edit().putInt("migrationLevel", BuildConfig.VERSION_CODE).apply();
 	}
 
 	public static void save(){
@@ -211,7 +205,6 @@ public class GlobalUserPreferences{
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
 				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
-				.putString("color", color.name())
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.putBoolean("forwardReportDefault", forwardReportDefault)
@@ -222,6 +215,7 @@ public class GlobalUserPreferences{
 				.putBoolean("displayPronounsInUserListings", displayPronounsInUserListings)
 				.putBoolean("overlayMedia", overlayMedia)
 				.putBoolean("showSuicideHelp", showSuicideHelp)
+				.putBoolean("underlinedLinks", underlinedLinks)
 
 				// MOSHIDON
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
@@ -240,9 +234,47 @@ public class GlobalUserPreferences{
 				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
 				.putBoolean("showMediaPreview", showMediaPreview)
 
-				.putInt("theme", theme.ordinal())
-
 				.apply();
+	}
+
+	public enum ThemePreference{
+		AUTO,
+		LIGHT,
+		DARK
+	}
+
+	public enum AutoRevealMode {
+		NEVER,
+		THREADS,
+		DISCUSSIONS
+	}
+
+	public enum PrefixRepliesMode {
+		NEVER,
+		ALWAYS,
+		TO_OTHERS
+	}
+
+
+	//region preferences migrations
+
+	private static void migrateToVersion102(){
+		Log.d(TAG, "Migrating preferences to version 102!! (copy current theme to local preferences)");
+
+		SharedPreferences prefs=getPrefs();
+		// only migrate if global prefs even contains a color (but like.. it should)
+		if(prefs.contains("color")){
+			AccountSessionManager asm=AccountSessionManager.getInstance();
+			for(AccountSession session : asm.getLoggedInAccounts()){
+				if(session.getRawLocalPreferences().contains("color")) continue;
+				AccountLocalPreferences localPrefs=session.getLocalPreferences();
+				localPrefs.color=AccountLocalPreferences.ColorPreference.valueOf(prefs.getString(
+						"color", AccountLocalPreferences.ColorPreference.MATERIAL3.name()
+				));
+				localPrefs.save();
+			}
+			prefs.edit().remove("color").apply();
+		}
 	}
 
 	private static void migrateToUpstreamVersion61(){
@@ -291,53 +323,8 @@ public class GlobalUserPreferences{
 
 			localPrefs.save();
 		}
-
-		prefs.edit().putInt("migrationLevel", 61).apply();
 	}
 
-	public enum ColorPreference{
-		MATERIAL3,
-		PURPLE,
-		PINK,
-		GREEN,
-		BLUE,
-		BROWN,
-		RED,
-		YELLOW,
-		NORD,
-		WHITE;
+	//endregion
 
-		public @StringRes int getName() {
-			return switch(this){
-				case MATERIAL3 -> R.string.sk_color_palette_material3;
-				case PINK -> R.string.sk_color_palette_pink;
-				case PURPLE -> R.string.sk_color_palette_purple;
-				case GREEN -> R.string.sk_color_palette_green;
-				case BLUE -> R.string.sk_color_palette_blue;
-				case BROWN -> R.string.sk_color_palette_brown;
-				case RED -> R.string.sk_color_palette_red;
-				case YELLOW -> R.string.sk_color_palette_yellow;
-				case NORD -> R.string.mo_color_palette_nord;
-				case WHITE -> R.string.mo_color_palette_black_and_white;
-			};
-		}
-	}
-
-	public enum ThemePreference{
-		AUTO,
-		LIGHT,
-		DARK
-	}
-
-	public enum AutoRevealMode {
-		NEVER,
-		THREADS,
-		DISCUSSIONS
-	}
-
-	public enum PrefixRepliesMode {
-		NEVER,
-		ALWAYS,
-		TO_OTHERS
-	}
 }

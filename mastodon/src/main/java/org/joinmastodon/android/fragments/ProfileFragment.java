@@ -138,6 +138,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ImageView avatar;
 	private CoverImageView cover;
 	private View avatarBorder;
+	private View usernameWrap;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel;
 	private ImageView lockIcon, botIcon;
 	private ProgressBarButton actionButton, notifyButton;
@@ -241,6 +242,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		cover=content.findViewById(R.id.cover);
 		avatarBorder=content.findViewById(R.id.avatar_border);
 		name=content.findViewById(R.id.name);
+		usernameWrap=content.findViewById(R.id.username_wrap);
 		username=content.findViewById(R.id.username);
 		lockIcon=content.findViewById(R.id.lock_icon);
 		botIcon=content.findViewById(R.id.bot_icon);
@@ -563,7 +565,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(Account result){
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						onAccountLoaded(result);
 					}
 				})
@@ -984,7 +986,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void updateRelationship(){
-		if (getActivity() == null) return;
+		if(getActivity()==null) return;
 		invalidateOptionsMenu();
 		actionButton.setVisibility(View.VISIBLE);
 		notifyButton.setVisibility(relationship.following ? View.VISIBLE : View.GONE);
@@ -1272,6 +1274,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		imm.hideSoftInputFromWindow(content.getWindowToken(), 0);
 		V.setVisibilityAnimated(fab, View.VISIBLE);
 		bindHeaderView();
+		V.setVisibilityAnimated(fab, View.VISIBLE);
 	}
 
 	private void saveAndExitEditMode(){
@@ -1286,7 +1289,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 						savingEdits=false;
 						account=result;
 						AccountSessionManager.getInstance().updateAccountInfo(accountID, account);
-						if (getActivity() == null) return;
+						if(getActivity()==null) return;
 						exitEditMode();
 						setActionProgressVisible(false);
 					}

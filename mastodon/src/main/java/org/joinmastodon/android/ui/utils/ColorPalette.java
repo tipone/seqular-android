@@ -1,8 +1,8 @@
 package org.joinmastodon.android.ui.utils;
 
-import static org.joinmastodon.android.GlobalUserPreferences.ColorPreference;
 import static org.joinmastodon.android.GlobalUserPreferences.ThemePreference;
 import static org.joinmastodon.android.GlobalUserPreferences.trueBlackTheme;
+import static org.joinmastodon.android.api.session.AccountLocalPreferences.ColorPreference.*;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -11,23 +11,25 @@ import androidx.annotation.StyleRes;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 
 import java.util.Map;
 
 public class ColorPalette {
-    public static final Map<GlobalUserPreferences.ColorPreference, ColorPalette> palettes = Map.of(
-            ColorPreference.MATERIAL3, new ColorPalette(R.style.ColorPalette_Material3)
+    public static final Map<AccountLocalPreferences.ColorPreference, ColorPalette> palettes = Map.of(
+            MATERIAL3, new ColorPalette(R.style.ColorPalette_Material3)
                     .dark(R.style.ColorPalette_Material3_Dark, R.style.ColorPalette_Material3_AutoLightDark),
-            ColorPreference.PINK, new ColorPalette(R.style.ColorPalette_Pink),
-            ColorPreference.PURPLE, new ColorPalette(R.style.ColorPalette_Purple),
-            ColorPreference.GREEN, new ColorPalette(R.style.ColorPalette_Green),
-            ColorPreference.BLUE, new ColorPalette(R.style.ColorPalette_Blue),
-            ColorPreference.BROWN, new ColorPalette(R.style.ColorPalette_Brown),
-            ColorPreference.RED, new ColorPalette(R.style.ColorPalette_Red),
-            ColorPreference.YELLOW, new ColorPalette(R.style.ColorPalette_Yellow),
-            ColorPreference.NORD, new ColorPalette(R.style.ColorPalette_Nord),
-            ColorPreference.WHITE, new ColorPalette(R.style.ColorPalette_White)
-    );
+            PINK, new ColorPalette(R.style.ColorPalette_Pink),
+            PURPLE, new ColorPalette(R.style.ColorPalette_Purple),
+            GREEN, new ColorPalette(R.style.ColorPalette_Green),
+            BLUE, new ColorPalette(R.style.ColorPalette_Blue),
+            BROWN, new ColorPalette(R.style.ColorPalette_Brown),
+            RED, new ColorPalette(R.style.ColorPalette_Red),
+            YELLOW, new ColorPalette(R.style.ColorPalette_Yellow)
+			NORD, new ColorPalette(R.style.ColorPalette_Nord),
+			WHITE, new ColorPalette(R.style.ColorPalette_White)
+
+	);
 
     private @StyleRes int base;
     private @StyleRes int autoDark;

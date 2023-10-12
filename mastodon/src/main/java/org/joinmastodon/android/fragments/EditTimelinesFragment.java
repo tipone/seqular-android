@@ -201,7 +201,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
     }
 
     private void updateOptionsMenu() {
-        if (getActivity() == null) return;
+        if(getActivity()==null) return;
         optionsMenu.clear();
         timelineByMenuItem.clear();
 
