@@ -404,6 +404,6 @@
     <string name="sk_time_days">%d днів</string>
     <string name="sk_blocked_accounts">Заблоковані облікові записи</string>
     <string name="sk_muted_accounts">Ігноровані облікові записи</string>
-    <string name="sk_settings_like_icon">Використовуйте серце улюбленою піктограмою</string>
+    <string name="sk_settings_like_icon">Використовуйте серце як піктограму «Вподобане»</string>
     <string name="sk_recently_used">Недавно використані</string>
 </resources>
