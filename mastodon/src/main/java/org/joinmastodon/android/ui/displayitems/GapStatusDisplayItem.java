@@ -54,6 +54,8 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 			if(!item.loading){
 				progressBottom.setVisibility(View.GONE);
 				progressTop.setVisibility(View.GONE);
+				textTop.setAlpha(1);
+				textBottom.setAlpha(1);
 			}
 			top.setClickable(!item.loading);
 			bottom.setClickable(!item.loading);
