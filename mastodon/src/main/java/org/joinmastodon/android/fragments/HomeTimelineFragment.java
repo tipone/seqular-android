@@ -196,6 +196,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 						int gapPos=displayItems.indexOf(gap);
 						if(gapPos==-1)
 							return;
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
 						if(result.isEmpty()){
 							displayItems.remove(gapPos);
 							adapter.notifyItemRemoved(getMainAdapterOffset()+gapPos);
