@@ -60,6 +60,7 @@
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
 				android:minWidth="56sp"
+				android:ellipsize="end"
 				android:textAppearance="@style/m3_body_medium"
 				android:textColor="?colorM3OnSurfaceVariant"
 				android:maxLines="1"
