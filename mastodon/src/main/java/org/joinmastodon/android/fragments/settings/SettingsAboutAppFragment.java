@@ -16,6 +16,7 @@ import org.joinmastodon.android.fragments.HasAccountID;
 import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
@@ -79,7 +80,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 	}
 
 	private void onClearRecentEmojisClick(){
-		getLocalPrefs().recentEmojis=new HashMap<>();
+		getLocalPrefs().recentCustomEmoji=new ArrayList<>();
 		getLocalPrefs().save();
 		Toast.makeText(getContext(), R.string.mo_recent_emoji_cleared, Toast.LENGTH_SHORT).show();
 	}

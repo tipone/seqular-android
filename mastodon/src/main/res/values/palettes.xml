@@ -68,7 +68,7 @@
 		<item name="colorM3DarkOnSurface">?colorGray100</item>
 		<item name="colorM3PrimaryInverse">?colorPrimary200</item>
 
-		<item name="colorFavorite">@color/favorite_selected</item>
+		<item name="colorFavorite">@color/warning_500</item>
 		<item name="colorLike">@color/like_selected</item>
 		<item name="colorBoost">?colorM3Primary</item>
 		<item name="colorPoll">@color/bookmark_selected</item>

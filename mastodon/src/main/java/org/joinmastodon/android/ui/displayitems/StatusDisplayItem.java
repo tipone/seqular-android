@@ -278,14 +278,14 @@ public abstract class StatusDisplayItem{
 				contentItems.add(new AudioStatusDisplayItem(parentID, fragment, statusForContent, att));
 			}
 			if(att.type==Attachment.Type.UNKNOWN){
-				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att));
+				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att, statusForContent));
 			}
 		}
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, contentItems);
+			buildPollItems(parentID, fragment, statusForContent.poll, contentItems, statusForContent);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty()){
-			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent));
+			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent, (flags & FLAG_NO_MEDIA_PREVIEW)==0));
 		}
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);

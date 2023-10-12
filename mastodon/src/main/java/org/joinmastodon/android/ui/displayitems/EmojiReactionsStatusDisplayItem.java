@@ -179,7 +179,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					(Activity) item.parentFragment.getContext(),
 					item.accountID,
 					AccountSessionManager.getInstance().getCustomEmojis(session.domain),
-					session.domain, true, item.accountID);
+					session.domain, true);
 			emojiKeyboard.setListener(this);
 			space.setVisibility(View.GONE);
 			root.addView(emojiKeyboard.getView());

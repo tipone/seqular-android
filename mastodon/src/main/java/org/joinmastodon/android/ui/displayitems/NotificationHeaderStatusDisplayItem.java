@@ -117,7 +117,6 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final ImageView icon, avatar, deleteNotification;
 		private final TextView text, timestamp;
-		private final int selectableItemBackground;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_notification_header, parent);

@@ -142,7 +142,9 @@ public class AccountLocalPreferences{
 		BLUE,
 		BROWN,
 		RED,
-		YELLOW;
+		YELLOW,
+		NORD,
+		WHITE;
 
 		public @StringRes int getName() {
 			return switch(this){
@@ -154,6 +156,8 @@ public class AccountLocalPreferences{
 				case BROWN -> R.string.sk_color_palette_brown;
 				case RED -> R.string.sk_color_palette_red;
 				case YELLOW -> R.string.sk_color_palette_yellow;
+				case NORD -> R.string.mo_color_palette_nord;
+				case WHITE -> R.string.mo_color_palette_black_and_white;
 			};
 		}
 	}

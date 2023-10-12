@@ -109,10 +109,9 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		boolean restartPlease=
 				GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked ||
 				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
-				lp.likeIcon!=likeIconItem.checked;
-				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
 				GlobalUserPreferences.showMediaPreview !=showMediaPreviewItem.checked ||
-				GlobalUserPreferences.showDividers!=showPostDividersItem.checked;
+				GlobalUserPreferences.showDividers!=showPostDividersItem.checked ||
+				lp.likeIcon!=likeIconItem.checked;
 
 		lp.revealCWs=revealCWsItem.checked;
 		lp.hideSensitiveMedia=hideSensitiveMediaItem.checked;

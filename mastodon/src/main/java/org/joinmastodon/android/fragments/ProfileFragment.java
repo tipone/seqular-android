@@ -138,7 +138,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ImageView avatar;
 	private CoverImageView cover;
 	private View avatarBorder;
-	private View usernameWrap;
 	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel;
 	private ImageView lockIcon, botIcon;
 	private ProgressBarButton actionButton, notifyButton;

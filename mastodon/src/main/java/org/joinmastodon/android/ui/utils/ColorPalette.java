@@ -25,7 +25,7 @@ public class ColorPalette {
             BLUE, new ColorPalette(R.style.ColorPalette_Blue),
             BROWN, new ColorPalette(R.style.ColorPalette_Brown),
             RED, new ColorPalette(R.style.ColorPalette_Red),
-            YELLOW, new ColorPalette(R.style.ColorPalette_Yellow)
+            YELLOW, new ColorPalette(R.style.ColorPalette_Yellow),
 			NORD, new ColorPalette(R.style.ColorPalette_Nord),
 			WHITE, new ColorPalette(R.style.ColorPalette_White)
 

@@ -65,7 +65,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private final TextView replies, boosts, favorites;
 		private final View reply, boost, favorite, share, bookmark;
 		private final ImageView favIcon;
-		private static final Animation opacityOut, opacityIn;
 		private static AnimationSet animSet;
 
 
@@ -122,6 +121,27 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			share.setOnClickListener(this::onShareClick);
 			share.setOnLongClickListener(this::onShareLongClick);
 			share.setAccessibilityDelegate(buttonAccessibilityDelegate);
+		}
+
+		private static final float ALPHA_PRESSED=0.55f;
+
+		static {
+			AlphaAnimation opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
+			opacityOut.setDuration(300);
+			opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
+			opacityOut.setFillAfter(true);
+			AlphaAnimation opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
+			opacityIn.setDuration(400);
+			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
+			Animation spin = new RotateAnimation(0, 360,
+					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+					0.5f);
+
+			animSet = new AnimationSet(true);
+			animSet.setInterpolator(CubicBezierInterpolator.DEFAULT);
+			animSet.addAnimation(spin);
+			animSet.addAnimation(opacityIn);
+			animSet.setDuration(400);
 		}
 
 		@Override
@@ -200,7 +220,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				UiUtils.lookupStatus(v.getContext(),
 						item.status, item.accountID, null,
 						status -> {
-							v.startAnimation(opacityIn);
+							UiUtils.opacityIn(v);
 							Bundle args=new Bundle();
 							args.putString("account", item.accountID);
 							args.putParcelable("replyTo", Parcels.wrap(status));
@@ -365,10 +385,10 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							favorite.setSelected(!status.favourited);
 							vibrateForAction(favorite, !status.favourited);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
-								if (status.favourited) {
-									v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
+								if (status.favourited && !GlobalUserPreferences.reduceMotion) {
+									v.startAnimation(animSet);
 								} else {
-									v.startAnimation(opacityIn);
+									UiUtils.opacityIn(v);
 								}
 								bindText(favorites, r.favouritesCount);
 							});
@@ -379,10 +399,10 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite.setSelected(!item.status.favourited);
 			vibrateForAction(favorite, !item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
-				if (item.status.favourited) {
-					v.startAnimation(GlobalUserPreferences.reduceMotion ? opacityIn : animSet);
+				if (item.status.favourited && !GlobalUserPreferences.reduceMotion) {
+					v.startAnimation(animSet);
 				} else {
-					v.startAnimation(opacityIn);
+					UiUtils.opacityIn(v);
 				}
 				bindText(favorites, r.favouritesCount);
 			});
@@ -413,7 +433,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							bookmark.setSelected(!status.bookmarked);
 							vibrateForAction(bookmark, !status.bookmarked);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
-								v.startAnimation(opacityIn);
+								UiUtils.opacityIn(v);
 							});
 						}
 				);
@@ -430,7 +450,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			if (AccountSessionManager.getInstance().getLoggedInAccounts().size() < 2) return false;
 			UiUtils.pickInteractAs(v.getContext(),
 					item.accountID, item.status,
-					s -> s.bookmarked,w
+					s -> s.bookmarked,
 					(ic, status, consumer) -> ic.setBookmarked(status, true, consumer),
 					R.string.sk_bookmark_as,
 					R.string.sk_bookmarked_as,
