@@ -104,8 +104,8 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 		else
 			selectedIDs.add(id);
 		CheckableHeaderStatusDisplayItem.Holder holder=findHolderOfType(id, CheckableHeaderStatusDisplayItem.Holder.class);
-		if(holder!=null)
-			holder.rebind();
+		if(holder!=null) holder.rebind();
+		else notifyItemChanged(id, CheckableHeaderStatusDisplayItem.class);
 	}
 
 	@Override

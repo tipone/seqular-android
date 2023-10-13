@@ -140,7 +140,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 						if(!data.isEmpty() && last.id.equals(data.get(0).id)){ // This part intersects with the existing one
 							toAdd=new ArrayList<>(result.subList(0, result.size()-1)); // Remove the already known last post
 						}else{
-							result.get(result.size()-1).hasGapAfter=true;
+							last.hasGapAfter=last.id;
 							toAdd=result;
 						}
 						List<String> existingIds=data.stream().map(Status::getID).collect(Collectors.toList());
@@ -176,10 +176,10 @@ public class HomeTimelineFragment extends StatusListFragment {
 		gap.loading=true;
 		dataLoading=true;
 
-		String maxID = null;
-		String minID = null;
+		String maxID=null;
+		String minID=null;
 		if (downwards) {
-			maxID = item.getItemID();
+			maxID=item.getItem().getMaxID();
 		} else {
 			int gapPos=displayItems.indexOf(gap);
 			StatusDisplayItem nextItem=displayItems.get(gapPos + 1);
@@ -196,12 +196,13 @@ public class HomeTimelineFragment extends StatusListFragment {
 						int gapPos=displayItems.indexOf(gap);
 						if(gapPos==-1)
 							return;
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
 						if(result.isEmpty()){
 							displayItems.remove(gapPos);
 							adapter.notifyItemRemoved(getMainAdapterOffset()+gapPos);
 							Status gapStatus=getStatusByID(gap.parentID);
 							if(gapStatus!=null){
-								gapStatus.hasGapAfter=false;
+								gapStatus.hasGapAfter=null;
 								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(gapStatus), false);
 							}
 						}else{
@@ -214,7 +215,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 										idsBelowGap.add(s.id);
 									}else if(s.id.equals(gap.parentID)){
 										belowGap=true;
-										s.hasGapAfter=false;
+										s.hasGapAfter=null;
 										AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(s), false);
 									}else{
 										gapPostIndex++;
@@ -227,7 +228,8 @@ public class HomeTimelineFragment extends StatusListFragment {
 										break;
 								}
 								if(endIndex==result.size()){
-									result.get(result.size()-1).hasGapAfter=true;
+									Status last=result.get(result.size()-1);
+									last.hasGapAfter=last.id;
 								}else{
 									result=result.subList(0, endIndex);
 								}
@@ -272,7 +274,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 											.filter(s->Objects.equals(s.id, gap.parentID))
 											.findFirst();
 									if (gapStatus.isPresent()) {
-										gapStatus.get().hasGapAfter=false;
+										gapStatus.get().hasGapAfter=null;
 										AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(gapStatus.get()), false);
 									}
 									targetList.clear();

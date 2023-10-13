@@ -1032,8 +1032,8 @@ public class UiUtils {
 			default -> R.style.Theme_Mastodon_AutoLightDark;
 		});
 
-		AccountLocalPreferences prefs=session != null ? session.getLocalPreferences() : null;
-		AccountLocalPreferences.ColorPreference color=prefs != null ? prefs.color : AccountLocalPreferences.ColorPreference.MATERIAL3;
+		AccountLocalPreferences prefs=session!=null ? session.getLocalPreferences() : null;
+		AccountLocalPreferences.ColorPreference color=prefs!=null ? prefs.getCurrentColor() : AccountLocalPreferences.ColorPreference.MATERIAL3;
 		ColorPalette palette = ColorPalette.palettes.get(color);
 		if (palette != null) palette.apply(context, theme);
 

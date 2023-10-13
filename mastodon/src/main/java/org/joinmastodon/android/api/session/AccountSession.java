@@ -270,6 +270,7 @@ public class AccountSession{
 			if(s!=null && s.filtered!=null){
 				localPreferences.serverSideFiltersSupported=true;
 				localPreferences.save();
+				break;
 			}
 		}
 
@@ -279,9 +280,17 @@ public class AccountSession{
 			if(filterStatusContainingObject(o, extractor, context, profile)){
 				Status s=extractor.apply(o);
 				removeUs.add(o);
-				if(s!=null && s.hasGapAfter && i > 0){
-					Status prev=extractor.apply(objects.get(i - 1));
-					if(prev!=null) prev.hasGapAfter=true;
+				if(s!=null && s.hasGapAfter!=null && i>0){
+					// oops, we're about to remove an item that has a gap after...
+					// gotta find the previous status that's not also about to be removed
+					for(int j=i-1; j>=0; j--){
+						T p=objects.get(j);
+						Status prev=extractor.apply(objects.get(j));
+						if(prev!=null && !removeUs.contains(p)){
+							prev.hasGapAfter=s.hasGapAfter;
+							break;
+						}
+					}
 				}
 			}
 		}

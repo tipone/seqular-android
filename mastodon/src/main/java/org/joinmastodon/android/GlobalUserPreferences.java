@@ -1,6 +1,7 @@
 package org.joinmastodon.android;
 
 import static org.joinmastodon.android.api.MastodonAPIController.gson;
+import static org.joinmastodon.android.api.session.AccountLocalPreferences.ColorPreference.MATERIAL3;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
+import org.joinmastodon.android.api.session.AccountLocalPreferences.ColorPreference;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.ContentType;
@@ -62,6 +64,7 @@ public class GlobalUserPreferences{
 	public static boolean overlayMedia;
 	public static boolean showSuicideHelp;
 	public static boolean underlinedLinks;
+	public static ColorPreference color;
 
 	// MOSHIDON
 	public static boolean showDividers;
@@ -138,6 +141,7 @@ public class GlobalUserPreferences{
 		overlayMedia=prefs.getBoolean("overlayMedia", false);
 		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
 		underlinedLinks=prefs.getBoolean("underlinedLinks", true);
+		color=ColorPreference.valueOf(prefs.getString("color", MATERIAL3.name()));
 
 		// MOSHIDON
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
@@ -171,8 +175,6 @@ public class GlobalUserPreferences{
 		int migrationLevel=prefs.getInt("migrationLevel", BuildConfig.VERSION_CODE);
 		if(migrationLevel < 61)
 			migrateToUpstreamVersion61();
-		if(migrationLevel < 102)
-			migrateToVersion102();
 		if(migrationLevel < BuildConfig.VERSION_CODE)
 			prefs.edit().putInt("migrationLevel", BuildConfig.VERSION_CODE).apply();
 	}
@@ -216,6 +218,7 @@ public class GlobalUserPreferences{
 				.putBoolean("overlayMedia", overlayMedia)
 				.putBoolean("showSuicideHelp", showSuicideHelp)
 				.putBoolean("underlinedLinks", underlinedLinks)
+				.putString("color", color.name())
 
 				// MOSHIDON
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
@@ -257,25 +260,6 @@ public class GlobalUserPreferences{
 
 
 	//region preferences migrations
-
-	private static void migrateToVersion102(){
-		Log.d(TAG, "Migrating preferences to version 102!! (copy current theme to local preferences)");
-
-		SharedPreferences prefs=getPrefs();
-		// only migrate if global prefs even contains a color (but like.. it should)
-		if(prefs.contains("color")){
-			AccountSessionManager asm=AccountSessionManager.getInstance();
-			for(AccountSession session : asm.getLoggedInAccounts()){
-				if(session.getRawLocalPreferences().contains("color")) continue;
-				AccountLocalPreferences localPrefs=session.getLocalPreferences();
-				localPrefs.color=AccountLocalPreferences.ColorPreference.valueOf(prefs.getString(
-						"color", AccountLocalPreferences.ColorPreference.MATERIAL3.name()
-				));
-				localPrefs.save();
-			}
-			prefs.edit().remove("color").apply();
-		}
-	}
 
 	private static void migrateToUpstreamVersion61(){
 		Log.d(TAG, "Migrating preferences to upstream version 61!!");

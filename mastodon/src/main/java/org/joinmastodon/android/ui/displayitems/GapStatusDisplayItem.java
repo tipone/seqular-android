@@ -25,6 +25,10 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 		this.status=status;
 	}
 
+	public String getMaxID(){
+		return status.hasGapAfter;
+	}
+
 	@Override
 	public Type getType(){
 		return Type.GAP;
@@ -54,6 +58,8 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 			if(!item.loading){
 				progressBottom.setVisibility(View.GONE);
 				progressTop.setVisibility(View.GONE);
+				textTop.setAlpha(1);
+				textBottom.setAlpha(1);
 			}
 			top.setClickable(!item.loading);
 			bottom.setClickable(!item.loading);

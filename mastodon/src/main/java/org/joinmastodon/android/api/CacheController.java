@@ -26,6 +26,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import me.grishka.appkit.api.Callback;
@@ -69,7 +70,7 @@ public class CacheController{
 								Status status=MastodonAPIController.gson.fromJson(cursor.getString(0), Status.class);
 								status.postprocess();
 								int flags=cursor.getInt(1);
-								status.hasGapAfter=((flags & POST_FLAG_GAP_AFTER)!=0);
+								status.hasGapAfter=((flags & POST_FLAG_GAP_AFTER)!=0) ? status.id : null;
 								newMaxID=status.id;
 								result.add(status);
 							}while(cursor.moveToNext());
@@ -113,7 +114,7 @@ public class CacheController{
 				values.put("id", s.id);
 				values.put("json", MastodonAPIController.gson.toJson(s));
 				int flags=0;
-				if(s.hasGapAfter)
+				if(Objects.equals(s.hasGapAfter, s.id))
 					flags|=POST_FLAG_GAP_AFTER;
 				values.put("flags", flags);
 				values.put("time", s.createdAt.getEpochSecond());
