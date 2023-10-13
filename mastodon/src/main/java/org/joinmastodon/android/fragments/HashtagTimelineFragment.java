@@ -289,7 +289,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		followMenuItem=optionsMenu.findItem(R.id.follow_hashtag);
 		pinMenuItem=optionsMenu.findItem(R.id.pin);
 		followMenuItem.setVisible(toolbarContentVisible);
-		pinMenuItem.setShowAsAction(toolbarContentVisible ? MenuItem.SHOW_AS_ACTION_NEVER : MenuItem.SHOW_AS_ACTION_ALWAYS);
+//		pinMenuItem.setShowAsAction(toolbarContentVisible ? MenuItem.SHOW_AS_ACTION_NEVER : MenuItem.SHOW_AS_ACTION_ALWAYS);
 		super.updatePinButton(pinMenuItem);
 
 		muteMenuItem = optionsMenu.findItem(R.id.mute_hashtag);
