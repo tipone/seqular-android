@@ -72,7 +72,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, ()->toggleCheckableItem(spectatorModeItem)),
 				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, ()->toggleCheckableItem(hideFabItem)),
 				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, ()->toggleCheckableItem(translateOpenedItem)),
-				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, lp.likeIcon, R.drawable.ic_fluent_heart_24_regular, ()->toggleCheckableItem(likeIconItem)),
+				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.likeIcon, R.drawable.ic_fluent_heart_24_regular, ()->toggleCheckableItem(likeIconItem)),
 				underlinedLinksItem=new CheckableListItem<>(R.string.sk_settings_underlined_links, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.underlinedLinks, R.drawable.ic_fluent_text_underline_24_regular, ()->toggleCheckableItem(underlinedLinksItem)),
 				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem)),
 				showNavigationLabelsItem=new CheckableListItem<>(R.string.sk_settings_show_labels_in_navigation_bar, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNavigationLabels, R.drawable.ic_fluent_tag_24_regular, ()->toggleCheckableItem(showNavigationLabelsItem), true),
@@ -100,16 +100,14 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	protected void onHidden(){
 		super.onHidden();
 
-		boolean restartPlease=
-				GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked ||
-				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
-				lp.likeIcon!=likeIconItem.checked;
+		boolean restartPlease=GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked
+				|| GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked
+				|| GlobalUserPreferences.likeIcon!=likeIconItem.checked;
 
 		lp.revealCWs=revealCWsItem.checked;
 		lp.hideSensitiveMedia=hideSensitiveMediaItem.checked;
 		lp.showInteractionCounts=interactionCountsItem.checked;
 		lp.customEmojiInNames=emojiInNamesItem.checked;
-		lp.likeIcon=likeIconItem.checked;
 		lp.save();
 		GlobalUserPreferences.toolbarMarquee=marqueeItem.checked;
 		GlobalUserPreferences.reduceMotion=reduceMotionItem.checked;
@@ -120,6 +118,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.spectatorMode=spectatorModeItem.checked;
 		GlobalUserPreferences.autoHideFab=hideFabItem.checked;
 		GlobalUserPreferences.translateButtonOpenedOnly=translateOpenedItem.checked;
+		GlobalUserPreferences.likeIcon=likeIconItem.checked;
 		GlobalUserPreferences.underlinedLinks=underlinedLinksItem.checked;
 		GlobalUserPreferences.disableM3PillActiveIndicator=disablePillItem.checked;
 		GlobalUserPreferences.showNavigationLabels=showNavigationLabelsItem.checked;

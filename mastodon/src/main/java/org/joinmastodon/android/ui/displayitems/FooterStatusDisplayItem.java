@@ -133,13 +133,10 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			boolean condenseBottom = !item.isMainStatus && item.hasDescendantNeighbor &&
 					!nextIsWarning;
 
-
-			AccountSession session=AccountSessionManager.get(item.accountID);
-			boolean like=session!=null && session.getLocalPreferences().likeIcon;
 			ColorStateList color=item.parentFragment.getResources().getColorStateList(
-					like ? R.color.like_icon : R.color.favorite_icon, item.parentFragment.getContext().getTheme()
+					GlobalUserPreferences.likeIcon ? R.color.like_icon : R.color.favorite_icon, item.parentFragment.getContext().getTheme()
 			);
-			favIcon.setImageResource(like ? R.drawable.ic_fluent_heart_24_selector : R.drawable.ic_fluent_star_24_selector);
+			favIcon.setImageResource(GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_24_selector : R.drawable.ic_fluent_star_24_selector);
 			favIcon.setImageTintList(color);
 			favorites.setTextColor(color);
 
@@ -321,8 +318,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 					R.string.sk_favorite_as,
 					R.string.sk_favorited_as,
 					R.string.sk_already_favorited,
-					AccountSessionManager.get(item.accountID).getLocalPreferences().likeIcon ?
-							R.drawable.ic_fluent_heart_28_regular : R.drawable.ic_fluent_star_28_regular
+					GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_28_regular : R.drawable.ic_fluent_star_28_regular
 			);
 			return true;
 		}

@@ -47,14 +47,12 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	private final CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private final CharSequence text;
 	private final CharSequence timestamp;
-	private final AccountLocalPreferences lp;
 
 	public NotificationHeaderStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Notification notification, String accountID){
 		super(parentID, parentFragment);
 		this.notification=notification;
 		this.accountID=accountID;
 		this.timestamp=notification.createdAt==null ? null : UiUtils.formatRelativeTimestamp(context, notification.createdAt);
-		this.lp=AccountSessionManager.get(accountID).getLocalPreferences();
 
 		if(notification.type==Notification.Type.POLL){
 			text=parentFragment.getString(R.string.poll_ended);
@@ -166,7 +164,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 			timestamp.setText(item.timestamp);
 			avatar.setVisibility(item.notification.type==Notification.Type.POLL ? View.GONE : View.VISIBLE);
 			icon.setImageResource(switch(item.notification.type){
-				case FAVORITE -> item.lp.likeIcon ? R.drawable.ic_fluent_heart_24_filled : R.drawable.ic_fluent_star_24_filled;
+				case FAVORITE -> GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_24_filled : R.drawable.ic_fluent_star_24_filled;
 				case REBLOG -> R.drawable.ic_fluent_arrow_repeat_all_24_filled;
 				case FOLLOW, FOLLOW_REQUEST -> R.drawable.ic_fluent_person_add_24_filled;
 				case POLL -> R.drawable.ic_fluent_poll_24_filled;
@@ -177,7 +175,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				default -> throw new IllegalStateException("Unexpected value: "+item.notification.type);
 			});
 			icon.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(item.parentFragment.getActivity(), switch(item.notification.type){
-				case FAVORITE -> item.lp.likeIcon ? R.attr.colorLike : R.attr.colorFavorite;
+				case FAVORITE -> GlobalUserPreferences.likeIcon ? R.attr.colorLike : R.attr.colorFavorite;
 				case REBLOG -> R.attr.colorBoost;
 				case POLL -> R.attr.colorPoll;
 				default -> android.R.attr.colorAccent;
