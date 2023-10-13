@@ -17,7 +17,7 @@
 			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingHorizontal="11dp">
+			android:paddingHorizontal="4dp">
 			<!-- avatar width (46sp) / 2 - button width (24dp) / 2 -->
 
 			<FrameLayout
@@ -28,14 +28,14 @@
 					android:id="@+id/reply_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:transformPivotX="28dp"
+					android:transformPivotX="24dp"
 					android:transformPivotY="24dp">
 					<ImageView
 						android:layout_width="24dp"
 						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
 						android:layout_marginVertical="12dp"
-						android:layout_marginStart="16dp"
+						android:layout_marginStart="12dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_fluent_chat_multiple_24_selector_text"
 						android:tint="?colorM3OnSurfaceVariant"
@@ -46,7 +46,7 @@
 						android:layout_height="match_parent"
 						android:layout_gravity="center_vertical"
 						android:paddingStart="8dp"
-						android:minWidth="16dp"
+						android:minWidth="12dp"
 						android:gravity="center_vertical"
 						android:textAppearance="@style/m3_label_large"
 						android:textColor="?colorM3OnSurfaceVariant"
@@ -65,14 +65,14 @@
 					android:id="@+id/boost_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:transformPivotX="28dp"
+					android:transformPivotX="24dp"
 					android:transformPivotY="24dp">
 					<ImageView
 						android:layout_width="24dp"
 						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
 						android:layout_marginVertical="12dp"
-						android:layout_marginStart="16dp"
+						android:layout_marginStart="12dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_boost"
 						android:tint="@color/boost_icon"
@@ -83,7 +83,7 @@
 						android:layout_height="match_parent"
 						android:layout_gravity="center_vertical"
 						android:paddingStart="8dp"
-						android:minWidth="16dp"
+						android:minWidth="12dp"
 						android:duplicateParentState="true"
 						android:textColor="@color/boost_icon"
 						android:gravity="center_vertical"
@@ -103,7 +103,7 @@
 					android:id="@+id/favorite_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:transformPivotX="28dp"
+					android:transformPivotX="24dp"
 					android:transformPivotY="24dp">
 					<ImageView
 						android:id="@+id/favorite_icon"
@@ -111,7 +111,7 @@
 						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
 						android:layout_marginVertical="12dp"
-						android:layout_marginStart="16dp"
+						android:layout_marginStart="12dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_fluent_star_24_selector"
 						android:tint="@color/favorite_icon"
@@ -122,7 +122,7 @@
 						android:layout_height="match_parent"
 						android:layout_gravity="center_vertical"
 						android:paddingStart="8dp"
-						android:minWidth="16dp"
+						android:minWidth="12dp"
 						android:textColor="@color/favorite_icon"
 						android:gravity="center_vertical"
 						android:textAppearance="@style/m3_label_large"
@@ -141,15 +141,14 @@
 					android:id="@+id/bookmark_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:transformPivotX="28dp"
+					android:transformPivotX="24dp"
 					android:transformPivotY="24dp">
 					<ImageView
 						android:id="@+id/bookmark"
 						android:layout_width="24dp"
 						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
-						android:layout_marginVertical="12dp"
-						android:layout_marginHorizontal="16dp"
+						android:layout_margin="12dp"
 						android:src="@drawable/ic_fluent_bookmark_24_selector"
 						android:tint="@color/bookmark_icon"
 						android:gravity="center_vertical"
@@ -161,7 +160,7 @@
 				android:id="@+id/share_btn"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
-				android:transformPivotX="28dp"
+				android:transformPivotX="24dp"
 				android:transformPivotY="24dp">
 				<ImageView
 					android:id="@+id/share"
@@ -169,7 +168,7 @@
 					android:layout_height="24dp"
 					android:layout_gravity="center_vertical"
 					android:layout_marginVertical="12dp"
-					android:layout_marginHorizontal="16dp"
+					android:layout_marginHorizontal="12dp"
 					android:src="@drawable/ic_fluent_share_24_regular"
 					android:tint="?colorM3OnSurfaceVariant"
 					android:gravity="center_vertical"/>
