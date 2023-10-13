@@ -405,4 +405,7 @@
     <string name="sk_muted_accounts">Comptes silenciés</string>
     <string name="sk_settings_like_icon">Utiliser le cœur comme icône pour les favoris</string>
     <string name="sk_recently_used">Utilisé récemment</string>
+    <string name="sk_set_as_default">Définir par défaut</string>
+    <string name="sk_settings_color_palette_default">Par défaut (%s)</string>
+    <string name="sk_settings_underlined_links">Liens soulignés</string>
 </resources>
