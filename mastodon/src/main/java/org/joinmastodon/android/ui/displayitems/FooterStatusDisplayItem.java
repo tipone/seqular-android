@@ -368,7 +368,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							favorite.setSelected(!status.favourited);
 							vibrateForAction(favorite, !status.favourited);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
-								if (status.favourited && !GlobalUserPreferences.reduceMotion) {
+								if (status.favourited && !GlobalUserPreferences.reduceMotion && !GlobalUserPreferences.likeIcon) {
 									v.startAnimation(spin);
 								}
 								UiUtils.opacityIn(v);
@@ -381,7 +381,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			favorite.setSelected(!item.status.favourited);
 			vibrateForAction(favorite, !item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
-				if (item.status.favourited && !GlobalUserPreferences.reduceMotion) {
+				if (item.status.favourited && !GlobalUserPreferences.reduceMotion && !GlobalUserPreferences.likeIcon) {
 					v.startAnimation(spin);
 				}
 				UiUtils.opacityIn(v);
