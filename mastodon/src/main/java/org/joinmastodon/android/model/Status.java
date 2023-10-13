@@ -100,7 +100,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public transient boolean spoilerRevealed;
 	public transient boolean sensitiveRevealed;
 	public transient boolean textExpanded, textExpandable;
-	public transient boolean hasGapAfter;
+	public transient String hasGapAfter;
 	private transient String strippedText;
 	public transient TranslationState translationState=TranslationState.HIDDEN;
 	public transient Translation translation;

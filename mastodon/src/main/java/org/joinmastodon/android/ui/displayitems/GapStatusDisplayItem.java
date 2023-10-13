@@ -25,6 +25,10 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 		this.status=status;
 	}
 
+	public String getMaxID(){
+		return status.hasGapAfter;
+	}
+
 	@Override
 	public Type getType(){
 		return Type.GAP;

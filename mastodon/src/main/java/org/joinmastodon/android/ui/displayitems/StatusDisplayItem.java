@@ -293,7 +293,7 @@ public abstract class StatusDisplayItem{
 			footer=new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID);
 			footer.hideCounts=hideCounts;
 			items.add(footer);
-			if(status.hasGapAfter && !(fragment instanceof ThreadFragment))
+			if(status.hasGapAfter!=null && !(fragment instanceof ThreadFragment))
 				items.add(new GapStatusDisplayItem(parentID, fragment, status));
 		}
 		int i=1;
