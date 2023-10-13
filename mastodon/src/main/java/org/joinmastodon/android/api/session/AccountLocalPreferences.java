@@ -49,7 +49,6 @@ public class AccountLocalPreferences{
 	public boolean emojiReactionsEnabled;
 	public ShowEmojiReactions showEmojiReactions;
 	public ColorPreference color;
-	public boolean likeIcon;
 	public ArrayList<Emoji> recentCustomEmoji;
 
 	private final static Type recentLanguagesType=new TypeToken<ArrayList<String>>() {}.getType();
@@ -86,7 +85,6 @@ public class AccountLocalPreferences{
 		emojiReactionsEnabled=prefs.getBoolean("emojiReactionsEnabled", session.getInstance().isPresent() && session.getInstance().get().isAkkoma());
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
 		color=prefs.contains("color") ? ColorPreference.valueOf(prefs.getString("color", null)) : null;
-		likeIcon=prefs.getBoolean("likeIcon", false);
 		recentCustomEmoji=fromJson(prefs.getString("recentCustomEmoji", null), recentCustomEmojiType, new ArrayList<>());
 
 		// MOSHIDON
@@ -130,7 +128,6 @@ public class AccountLocalPreferences{
 				.putBoolean("emojiReactionsEnabled", emojiReactionsEnabled)
 				.putString("showEmojiReactions", showEmojiReactions.name())
 				.putString("color", color!=null ? color.name() : null)
-				.putBoolean("likeIcon", likeIcon)
 				.putString("recentCustomEmoji", gson.toJson(recentCustomEmoji))
 
 				// MOSHIDON

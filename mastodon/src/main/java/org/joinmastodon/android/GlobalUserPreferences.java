@@ -65,6 +65,7 @@ public class GlobalUserPreferences{
 	public static boolean showSuicideHelp;
 	public static boolean underlinedLinks;
 	public static ColorPreference color;
+	public static boolean likeIcon;
 
 	// MOSHIDON
 	public static boolean showDividers;
@@ -142,6 +143,7 @@ public class GlobalUserPreferences{
 		showSuicideHelp=prefs.getBoolean("showSuicideHelp", true);
 		underlinedLinks=prefs.getBoolean("underlinedLinks", true);
 		color=ColorPreference.valueOf(prefs.getString("color", MATERIAL3.name()));
+		likeIcon=prefs.getBoolean("likeIcon", false);
 
 		// MOSHIDON
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
@@ -219,6 +221,7 @@ public class GlobalUserPreferences{
 				.putBoolean("showSuicideHelp", showSuicideHelp)
 				.putBoolean("underlinedLinks", underlinedLinks)
 				.putString("color", color.name())
+				.putBoolean("likeIcon", likeIcon)
 
 				// MOSHIDON
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)

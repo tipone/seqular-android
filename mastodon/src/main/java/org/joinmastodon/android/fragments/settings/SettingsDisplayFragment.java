@@ -80,7 +80,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, ()->toggleCheckableItem(spectatorModeItem)),
 				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, ()->toggleCheckableItem(hideFabItem)),
 				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, ()->toggleCheckableItem(translateOpenedItem)),
-				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, lp.likeIcon, R.drawable.ic_fluent_heart_24_regular, ()->toggleCheckableItem(likeIconItem)),
+				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.likeIcon, R.drawable.ic_fluent_heart_24_regular, ()->toggleCheckableItem(likeIconItem)),
 				underlinedLinksItem=new CheckableListItem<>(R.string.sk_settings_underlined_links, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.underlinedLinks, R.drawable.ic_fluent_text_underline_24_regular, ()->toggleCheckableItem(underlinedLinksItem)),
 				showPostDividersItem=new CheckableListItem<>(R.string.mo_enable_dividers, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showDividers, R.drawable.ic_fluent_timeline_24_regular, ()->toggleCheckableItem(showPostDividersItem)),
 				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem)),
@@ -109,18 +109,17 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	protected void onHidden(){
 		super.onHidden();
 
-		boolean restartPlease=
-				GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked ||
-				GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked ||
-				GlobalUserPreferences.showMediaPreview !=showMediaPreviewItem.checked ||
-				GlobalUserPreferences.showDividers!=showPostDividersItem.checked ||
-				lp.likeIcon!=likeIconItem.checked;
+		boolean restartPlease=GlobalUserPreferences.disableM3PillActiveIndicator!=disablePillItem.checked
+				|| GlobalUserPreferences.showNavigationLabels!=showNavigationLabelsItem.checked
+				|| GlobalUserPreferences.showMediaPreview!=showMediaPreviewItem.checked
+				|| GlobalUserPreferences.showDividers!=showPostDividersItem.checked
+				|| GlobalUserPreferences.likeIcon!=likeIconItem.checked;
+		;
 
 		lp.revealCWs=revealCWsItem.checked;
 		lp.hideSensitiveMedia=hideSensitiveMediaItem.checked;
 		lp.showInteractionCounts=interactionCountsItem.checked;
 		lp.customEmojiInNames=emojiInNamesItem.checked;
-		lp.likeIcon=likeIconItem.checked;
 		lp.save();
 		GlobalUserPreferences.toolbarMarquee=marqueeItem.checked;
 		GlobalUserPreferences.relocatePublishButton=relocatePublishButtonItem.checked;
@@ -134,6 +133,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.spectatorMode=spectatorModeItem.checked;
 		GlobalUserPreferences.autoHideFab=hideFabItem.checked;
 		GlobalUserPreferences.translateButtonOpenedOnly=translateOpenedItem.checked;
+		GlobalUserPreferences.likeIcon=likeIconItem.checked;
 		GlobalUserPreferences.underlinedLinks=underlinedLinksItem.checked;
 		GlobalUserPreferences.showDividers=showPostDividersItem.checked;
 		GlobalUserPreferences.disableM3PillActiveIndicator=disablePillItem.checked;
