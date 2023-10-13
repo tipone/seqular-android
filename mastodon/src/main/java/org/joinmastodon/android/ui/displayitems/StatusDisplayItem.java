@@ -53,15 +53,15 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public abstract class StatusDisplayItem{
-	public final String parentID;
+	public final String parentID, contentStatusID;
 	public final BaseStatusListFragment<?> parentFragment;
 	public boolean inset;
 	public int index;
 	public boolean
-			hasDescendantNeighbor = false,
-			hasAncestoringNeighbor = false,
-			isMainStatus = true,
-			isDirectDescendant = false;
+			hasDescendantNeighbor=false,
+			hasAncestoringNeighbor=false,
+			isMainStatus=true,
+			isDirectDescendant=false;
 
 	public static final int FLAG_INSET=1;
 	public static final int FLAG_NO_FOOTER=1 << 1;
@@ -83,8 +83,9 @@ public abstract class StatusDisplayItem{
 		this.isDirectDescendant = isDirectDescendant;
 	}
 
-	public StatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment){
+	public StatusDisplayItem(String parentID, String contentStatusID, BaseStatusListFragment<?> parentFragment){
 		this.parentID=parentID;
+		this.contentStatusID=contentStatusID;
 		this.parentFragment=parentFragment;
 	}
 
@@ -245,7 +246,7 @@ public abstract class StatusDisplayItem{
 		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
 		}else if(hasSpoiler){
-			contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
+			contentItems.add(new DummyStatusDisplayItem(parentID, statusForContent.id, fragment));
 		}
 
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
@@ -269,11 +270,11 @@ public abstract class StatusDisplayItem{
 				contentItems.add(new AudioStatusDisplayItem(parentID, fragment, statusForContent, att));
 			}
 			if(att.type==Attachment.Type.UNKNOWN){
-				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att));
+				contentItems.add(new FileStatusDisplayItem(parentID, statusForContent.id, fragment, att));
 			}
 		}
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, contentItems);
+			buildPollItems(parentID, statusForContent.id, fragment, statusForContent.poll, contentItems);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty()){
 			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent));
@@ -300,7 +301,7 @@ public abstract class StatusDisplayItem{
 		boolean inset=(flags & FLAG_INSET)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
 		if((inset || footer==null) && (flags & FLAG_CHECKABLE)==0){
-			items.add(new DummyStatusDisplayItem(parentID, fragment));
+			items.add(new DummyStatusDisplayItem(parentID, statusForContent.id, fragment));
 			// in case we ever need the dummy to display a margin for the media grid again:
 			// (i forgot why we apparently don't need this anymore)
 			// !contentItems.isEmpty() && contentItems
@@ -321,13 +322,13 @@ public abstract class StatusDisplayItem{
 				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
 	}
 
-	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
+	public static void buildPollItems(String parentID, String contentStatusID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
 		int i=0;
 		for(Poll.Option opt:poll.options){
-			items.add(new PollOptionStatusDisplayItem(parentID, poll, i, fragment));
+			items.add(new PollOptionStatusDisplayItem(parentID, contentStatusID, poll, i, fragment));
 			i++;
 		}
-		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll));
+		items.add(new PollFooterStatusDisplayItem(parentID, contentStatusID, fragment, poll));
 	}
 
 	public enum Type{

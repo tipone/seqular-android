@@ -52,7 +52,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText, Status status) {
-		super(parentID, parentFragment);
+		super(parentID, status.getContentStatus().id, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		if(AccountSessionManager.get(parentFragment.getAccountID()).getLocalPreferences().customEmojiInNames)
 			HtmlParser.parseCustomEmoji(ssb, emojis);

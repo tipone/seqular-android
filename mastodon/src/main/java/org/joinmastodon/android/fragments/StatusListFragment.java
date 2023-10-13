@@ -28,7 +28,9 @@ import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -174,41 +176,57 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		}
 	}
 
-	protected void removeStatus(Status status){
-		data.remove(status);
-		preloadedData.remove(status);
-		int index=-1, ancestorFirstIndex = -1, ancestorLastIndex = -1;
-		for(int i=0;i<displayItems.size();i++){
-			StatusDisplayItem item = displayItems.get(i);
-			if(status.id.equals(item.parentID)){
-				index=i;
-				break;
-			}
-			if (item.parentID.equals(status.inReplyToId)) {
-				if (ancestorFirstIndex == -1) ancestorFirstIndex = i;
-				ancestorLastIndex = i;
+	private void iterateRemoveStatus(List<Status> l, String id){
+		Iterator<Status> it=l.iterator();
+		while(it.hasNext()){
+			if(Objects.equals(it.next().getContentStatus().id, id)){
+				it.remove();
 			}
 		}
+	}
 
+	private int removeStatusDisplayItems(Status status, int index, int ancestorFirstIndex, int ancestorLastIndex, int indexOffset){
 		// did we find an ancestor that is also the status' neighbor?
-		if (ancestorFirstIndex >= 0 && ancestorLastIndex == index - 1) {
-			for (int i = ancestorFirstIndex; i <= ancestorLastIndex; i++) {
-				StatusDisplayItem item = displayItems.get(i);
+		if(ancestorFirstIndex>=0 && ancestorLastIndex==index-1){
+			for(int i=ancestorFirstIndex; i<=ancestorLastIndex; i++){
+				StatusDisplayItem item=displayItems.get(i);
 				// update ancestor to have no descendant anymore
-				if (item.parentID.equals(status.inReplyToId)) item.hasDescendantNeighbor = false;
+				if(item.contentStatusID.equals(status.inReplyToId)) item.hasDescendantNeighbor=false;
 			}
-			adapter.notifyItemRangeChanged(ancestorFirstIndex, ancestorLastIndex - ancestorFirstIndex + 1);
+			adapter.notifyItemRangeChanged(ancestorFirstIndex-indexOffset, ancestorLastIndex-ancestorFirstIndex+1);
 		}
 
-		if(index==-1)
-			return;
+		if(index==-1) return 0;
 		int lastIndex;
 		for(lastIndex=index;lastIndex<displayItems.size();lastIndex++){
-			if(!displayItems.get(lastIndex).parentID.equals(status.id))
+			if(!displayItems.get(lastIndex).contentStatusID.equals(status.id))
 				break;
 		}
-		displayItems.subList(index, lastIndex).clear();
-		adapter.notifyItemRangeRemoved(index, lastIndex-index);
+		int count=lastIndex-index;
+		displayItems.subList(index-indexOffset, lastIndex-indexOffset).clear();
+		adapter.notifyItemRangeRemoved(index-indexOffset, lastIndex-index);
+		return count;
+	}
+
+	protected void removeStatus(Status status){
+		Status contentStatus=status.getContentStatus();
+		String id=contentStatus.id;
+		iterateRemoveStatus(data, id);
+		iterateRemoveStatus(preloadedData, id);
+		int ancestorFirstIndex=-1, ancestorLastIndex=-1;
+		int offset=0;
+		for(int i=0;i<displayItems.size();i++){
+			StatusDisplayItem item = displayItems.get(i);
+			if(id.equals(item.contentStatusID)){
+				offset+=removeStatusDisplayItems(contentStatus, i, ancestorFirstIndex, ancestorLastIndex, offset);
+				ancestorFirstIndex=ancestorLastIndex=-1;
+				continue;
+			}
+			if(item.parentID.equals(status.inReplyToId)){
+				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
+				ancestorLastIndex=i;
+			}
+		}
 	}
 
 	@Override

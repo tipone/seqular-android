@@ -32,7 +32,7 @@ public class SpoilerStatusDisplayItem extends StatusDisplayItem{
 	private final int attachmentCount;
 
 	public SpoilerStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, String title, Status statusForContent, Type type){
-		super(parentID, parentFragment);
+		super(parentID, statusForContent.id, parentFragment);
 		this.status=statusForContent;
 		this.type=type;
 		this.attachmentCount=statusForContent.mediaAttachments.size();

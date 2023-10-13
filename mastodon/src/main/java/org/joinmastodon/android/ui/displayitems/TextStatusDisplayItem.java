@@ -42,7 +42,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public final Status status;
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status, boolean disableTranslate){
-		super(parentID, parentFragment);
+		super(parentID, status.id, parentFragment);
 		this.text=text;
 		this.status=status;
 		this.disableTranslate=disableTranslate;

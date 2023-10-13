@@ -19,7 +19,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 	public LegacyFilter applyingFilter;
 
 	public WarningFilteredStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, List<StatusDisplayItem> filteredItems, LegacyFilter applyingFilter){
-		super(parentID, parentFragment);
+		super(parentID, status.id, parentFragment);
 		this.status=status;
 		this.filteredItems = filteredItems;
 		this.applyingFilter = applyingFilter;

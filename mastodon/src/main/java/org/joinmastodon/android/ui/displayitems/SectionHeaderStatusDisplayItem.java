@@ -14,7 +14,7 @@ public class SectionHeaderStatusDisplayItem extends StatusDisplayItem{
 	public final Runnable onButtonClick;
 
 	public SectionHeaderStatusDisplayItem(BaseStatusListFragment parentFragment, String title, String buttonText, Runnable onButtonClick){
-		super("", parentFragment);
+		super("", null, parentFragment);
 		this.title=title;
 		this.buttonText=buttonText;
 		this.onButtonClick=onButtonClick;

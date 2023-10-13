@@ -49,7 +49,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	private final CharSequence timestamp;
 
 	public NotificationHeaderStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Notification notification, String accountID){
-		super(parentID, parentFragment);
+		super(parentID, notification.status!=null ? notification.status.getContentStatus().id : null, parentFragment);
 		this.notification=notification;
 		this.accountID=accountID;
 		this.timestamp=notification.createdAt==null ? null : UiUtils.formatRelativeTimestamp(context, notification.createdAt);

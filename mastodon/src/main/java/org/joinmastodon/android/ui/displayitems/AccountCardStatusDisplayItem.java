@@ -43,7 +43,7 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 	public CharSequence parsedName, parsedBio;
 
 	public AccountCardStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, String accountID, Account account, Notification notification){
-		super(parentID, parentFragment);
+		super(parentID, null, parentFragment);
 		this.account=account;
 		this.notification=notification;
 		avaRequest=new UrlImageLoaderRequest(

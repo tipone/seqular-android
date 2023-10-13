@@ -42,7 +42,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 	private static final DateTimeFormatter TIME_FORMATTER=DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
 
 	public ExtendedFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, String accountID, Status status){
-		super(parentID, parentFragment);
+		super(parentID, status.id, parentFragment);
 		this.status=status;
 		this.accountID=accountID;
 	}

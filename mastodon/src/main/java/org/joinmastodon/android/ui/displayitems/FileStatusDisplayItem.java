@@ -1,29 +1,22 @@
 package org.joinmastodon.android.ui.displayitems;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Attachment;
-import org.joinmastodon.android.model.Card;
-import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
-
-import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 
 public class FileStatusDisplayItem extends StatusDisplayItem{
     private final Attachment attachment;
 
-    public FileStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Attachment attachment) {
-        super(parentID, parentFragment);
+    public FileStatusDisplayItem(String parentID, String contentStatusID, BaseStatusListFragment<?> parentFragment, Attachment attachment) {
+        super(parentID, contentStatusID, parentFragment);
         this.attachment=attachment;
     }
 

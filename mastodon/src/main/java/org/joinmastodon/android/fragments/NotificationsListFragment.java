@@ -238,7 +238,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 				continue;
 			Status contentStatus=ntf.status.getContentStatus();
 			if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
-				updatePoll(ntf.id, ntf.status, ev.poll);
+				updatePoll(ntf.id, contentStatus, ev.poll);
 			}
 		}
 	}

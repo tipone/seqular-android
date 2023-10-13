@@ -86,7 +86,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	private Consumer<String> consumeReadAnnouncement;
 
 	public HeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, CharSequence extraText, Notification notification, ScheduledStatus scheduledStatus){
-		super(parentID, parentFragment);
+		super(parentID, status.id, parentFragment);
 		AccountSession session = AccountSessionManager.get(accountID);
 		user=scheduledStatus != null ? session.self : user;
 		this.user=user;

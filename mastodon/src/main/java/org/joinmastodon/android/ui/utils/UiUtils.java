@@ -68,6 +68,7 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
@@ -630,18 +631,24 @@ public class UiUtils {
 	}
 
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback, boolean forRedraft) {
+		Status s=status.getContentStatus();
 		showConfirmationAlert(activity,
 				forRedraft ? R.string.sk_confirm_delete_and_redraft_title : R.string.confirm_delete_title,
 				forRedraft ? R.string.sk_confirm_delete_and_redraft : R.string.confirm_delete,
 				forRedraft ? R.string.sk_delete_and_redraft : R.string.delete,
 				forRedraft ? R.drawable.ic_fluent_arrow_clockwise_28_regular : R.drawable.ic_fluent_delete_28_regular,
-				() -> new DeleteStatus(status.id)
+				() -> new DeleteStatus(s.id)
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(Status result) {
 								resultCallback.accept(result);
-								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().deleteStatus(status.id);
-								E.post(new StatusDeletedEvent(status.id, accountID));
+								CacheController cache=AccountSessionManager.get(accountID).getCacheController();
+								cache.deleteStatus(s.id);
+								E.post(new StatusDeletedEvent(s.id, accountID));
+								if(status!=s){
+									cache.deleteStatus(status.id);
+									E.post(new StatusDeletedEvent(status.id, accountID));
+								}
 							}
 
 							@Override
@@ -1711,7 +1718,7 @@ public class UiUtils {
 	}
 
 	public static Optional<String> extractPronouns(Context context, @Nullable Account account) {
-		if (account == null) return Optional.empty();
+		if (account==null || account.fields==null) return Optional.empty();
 		String localizedPronouns=context.getString(R.string.sk_pronouns_label).toLowerCase();
 
 		// higher = worse. the lowest number wins. also i'm sorry for writing this

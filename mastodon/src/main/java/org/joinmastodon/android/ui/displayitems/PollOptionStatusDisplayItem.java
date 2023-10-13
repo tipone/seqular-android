@@ -31,8 +31,8 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 	private final int optionIndex;
 	public final Poll poll;
 
-	public PollOptionStatusDisplayItem(String parentID, Poll poll, int optionIndex, BaseStatusListFragment parentFragment){
-		super(parentID, parentFragment);
+	public PollOptionStatusDisplayItem(String parentID, String contentStatusID, Poll poll, int optionIndex, BaseStatusListFragment parentFragment){
+		super(parentID, contentStatusID, parentFragment);
 		this.optionIndex=optionIndex;
 		option=poll.options.get(optionIndex);
 		this.poll=poll;

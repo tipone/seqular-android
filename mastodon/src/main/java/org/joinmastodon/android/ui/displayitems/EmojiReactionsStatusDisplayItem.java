@@ -65,7 +65,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	private static final float ALPHA_DISABLED=0.55f;
 
     public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideEmpty, boolean forAnnouncement) {
-		super(parentID, parentFragment);
+		super(parentID, status.id, parentFragment);
 		this.status=status;
 		this.hideEmpty=hideEmpty;
 		this.forAnnouncement=forAnnouncement;

@@ -1,7 +1,5 @@
 package org.joinmastodon.android.events;
 
-import org.joinmastodon.android.model.ScheduledStatus;
-
 public class ScheduledStatusDeletedEvent{
 	public final String id;
 	public final String accountID;

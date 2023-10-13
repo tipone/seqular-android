@@ -37,7 +37,7 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 	private final ImageLoaderRequest imageRequest;
 
 	public AudioStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status, Attachment attachment){
-		super(parentID, parentFragment);
+		super(parentID, status.id, parentFragment);
 		this.status=status;
 		this.attachment=attachment;
 		imageRequest=new UrlImageLoaderRequest(TextUtils.isEmpty(attachment.previewUrl) ? status.account.avatarStatic : attachment.previewUrl, V.dp(100), V.dp(100));
