@@ -406,4 +406,8 @@
         <item quantity="other">%d Minuten</item>
     </plurals>
     <string name="sk_trending_links_info_banner">Über diese Nachrichten wird im Fediverse gerade gesprochen.</string>
+    <string name="sk_set_as_default">Als Standard setzen</string>
+    <string name="sk_settings_color_palette_default">Standardwert (%s)</string>
+    <string name="sk_settings_underlined_links">Unterstrichene Links</string>
+    <string name="sk_recently_used">Zuletzt verwendet</string>
 </resources>
