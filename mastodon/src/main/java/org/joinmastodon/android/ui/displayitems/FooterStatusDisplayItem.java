@@ -65,7 +65,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		private final TextView replies, boosts, favorites;
 		private final View reply, boost, favorite, share, bookmark;
 		private final ImageView favIcon;
-		private static AnimationSet animSet;
+		private static Animation spin;
 
 
 		private View touchingView = null;
@@ -86,6 +86,13 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				info.setText(item.parentFragment.getString(descriptionForId(host.getId())));
 			}
 		};
+
+		static {
+			spin = new RotateAnimation(0, 360,
+					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+					0.5f);
+			spin.setDuration(400);
+		}
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_footer, parent);
@@ -121,27 +128,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			share.setOnClickListener(this::onShareClick);
 			share.setOnLongClickListener(this::onShareLongClick);
 			share.setAccessibilityDelegate(buttonAccessibilityDelegate);
-		}
-
-		private static final float ALPHA_PRESSED=0.55f;
-
-		static {
-			AlphaAnimation opacityOut = new AlphaAnimation(1, ALPHA_PRESSED);
-			opacityOut.setDuration(300);
-			opacityOut.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			opacityOut.setFillAfter(true);
-			AlphaAnimation opacityIn = new AlphaAnimation(ALPHA_PRESSED, 1);
-			opacityIn.setDuration(400);
-			opacityIn.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			Animation spin = new RotateAnimation(0, 360,
-					Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-					0.5f);
-
-			animSet = new AnimationSet(true);
-			animSet.setInterpolator(CubicBezierInterpolator.DEFAULT);
-			animSet.addAnimation(spin);
-			animSet.addAnimation(opacityIn);
-			animSet.setDuration(400);
 		}
 
 		@Override
@@ -386,10 +372,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 							vibrateForAction(favorite, !status.favourited);
 							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
 								if (status.favourited && !GlobalUserPreferences.reduceMotion) {
-									v.startAnimation(animSet);
-								} else {
-									UiUtils.opacityIn(v);
+									v.startAnimation(spin);
 								}
+								UiUtils.opacityIn(v);
 								bindText(favorites, r.favouritesCount);
 							});
 						}
@@ -400,10 +385,9 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			vibrateForAction(favorite, !item.status.favourited);
 			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
 				if (item.status.favourited && !GlobalUserPreferences.reduceMotion) {
-					v.startAnimation(animSet);
-				} else {
-					UiUtils.opacityIn(v);
+					v.startAnimation(spin);
 				}
+				UiUtils.opacityIn(v);
 				bindText(favorites, r.favouritesCount);
 			});
 		}
