@@ -379,11 +379,11 @@
     <string name="sk_time_days">%d zile</string>
     <string name="sk_settings_show_emoji_reactions_always">Afișați mereu butonul adăugare</string>
     <string name="sk_search_suicide_hotlines">Găsiți o linie de asistență telefonică</string>
-    <string name="sk_enter_emoji_hint">Scrieți un emoji sau căutați emoji personalizat</string>
+    <string name="sk_enter_emoji_hint">Scrieți un emoji sau căutați</string>
     <string name="sk_do_not_show_again">Nu mai afișați din nou</string>
     <string name="sk_suicide_helplines_url">http://www.antisuicid.com/</string>
     <string name="sk_enter_emoji_toast">Vă rugăm scrieți un emoji</string>
-    <string name="sk_trending_posts_info_banner">Acestea sunt postările care prind tracțiune pe serverul tău.</string>
+    <string name="sk_trending_posts_info_banner">Acest postări prind acum tracțiune pe Fedivers.</string>
     <string name="sk_button_react">Reacționați cu un emoji</string>
     <string name="sk_load_missing_posts_below">Încărcați postări mai vechi</string>
     <string name="sk_settings_emoji_reactions_explanation">Afișează reacțiile emoji la postări și vă permite să le adăugați pe ale dumneavoastră. Diferite servere Fedivers acceptă acest lucru, dar Mastodon nu.</string>
@@ -395,8 +395,10 @@
         <item quantity="other">%1$,d de utilizatori au reacționat cu %2$s</item>
     </plurals>
     <string name="sk_search_suicide_message">Dacă sunteți în căutarea unui semn pentru a nu vă sinucide, acesta este. Vă rugăm să luați în considerare posibilitatea de a apela la o linie telefonică locală de urgență pentru suicid dacă vă aflați în dificultate.</string>
-    <string name="sk_trending_links_info_banner">Acestea sunt știrile despre care se vorbește pe serverul tău.</string>
+    <string name="sk_trending_links_info_banner">Acestea sunt știrile despre care se vorbește pe Fedivers.</string>
     <string name="sk_post_contains_media">Postare conține media</string>
     <string name="sk_blocked_accounts">Conturi blocate</string>
     <string name="sk_muted_accounts">Conturi amuțite</string>
+    <string name="sk_settings_like_icon">Folosiți inimă ca iconița favorite</string>
+    <string name="sk_recently_used">Recent folosit</string>
 </resources>

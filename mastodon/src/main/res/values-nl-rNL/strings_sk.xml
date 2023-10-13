@@ -325,4 +325,5 @@
     <string name="sk_time_days">%d dagen</string>
     <string name="sk_time_seconds">%d seconden</string>
     <string name="sk_search_suicide_hotlines">Vind een hulplijn</string>
+    <string name="sk_recently_used">Recent gebruikt</string>
 </resources>

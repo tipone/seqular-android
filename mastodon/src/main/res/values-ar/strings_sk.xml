@@ -306,13 +306,13 @@
     <string name="sk_resource_not_found">المَورِد غير موجود</string>
     <string name="sk_delete_notification_confirm">أتريد حقا حذف هذا الإشعار؟</string>
     <string name="sk_draft_or_schedule">تحرير مسودة أو برمجتها</string>
-    <string name="sk_trending_links_info_banner">هذه هي القصص الإخبارية التي يُتَحدّث عنها في خادمكم.</string>
+    <string name="sk_trending_links_info_banner">هذه هي القصص الإخبارية تثير حاليًا الحديث عبر الفديفرس.</string>
     <string name="sk_notification_type_posts">إشعارات المنشورات</string>
     <string name="sk_confirm_delete_draft">هل أنت متأكد من أنك تريد حذف مُسودّة هذا المنشور؟</string>
     <string name="sk_compose_no_schedule">لا تُبرمِجه</string>
     <string name="sk_confirm_clear_recent_languages">أتريد حقا مسح لغاتك المُستخدَمة حديثا؟</string>
     <string name="sk_confirm_delete_scheduled_post">هل أنت متأكد من أنك تريد حذف هذا المنشور المُبرمَج؟</string>
-    <string name="sk_trending_posts_info_banner">هذه هي المنشورات المثيرة للإهتمام على خادمكم.</string>
+    <string name="sk_trending_posts_info_banner">هذه هي المنشورات التي تحظى حاليًا بشعبية على الفديفرس.</string>
     <string name="sk_federated_timeline_info_banner">هذه هي أحدث المنشورات للأعضاء في فديراليتك.</string>
     <string name="sk_bubble_timeline_info_banner">هذه هي أحدث المنشورات على الشبكة والتي انتقاها مُدراء خادمكم.</string>
     <string name="sk_schedule_or_draft">برمجة أو تحرير مُسودّة</string>
@@ -322,4 +322,6 @@
     <string name="sk_muted_accounts">الحسابات المكتومة</string>
     <string name="sk_settings_continues_playback_summary">السماح للوسائط المشغَّلَة بالفعل بالاستمرار في التشغيل، مع تراكب التشغيل الجديد</string>
     <string name="sk_settings_continues_playback">تراكُب صوتي</string>
+    <string name="sk_settings_enable_marquee">تمكين تمرير النص في عناوين الأشرطة</string>
+    <string name="sk_settings_tabs_disable_swipe">تعطيل التمرير بين الألسِنة</string>
 </resources>

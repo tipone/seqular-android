@@ -46,7 +46,7 @@
 					android:background="?colorM3OutlineVariant"/>
 
 			</LinearLayout>
-
+			
 			<LinearLayout
 				android:id="@+id/reply_wrap"
 				android:orientation="vertical"
@@ -265,7 +265,7 @@
 							android:paddingHorizontal="8dp"
 							android:gravity="center_vertical"
 							android:background="@drawable/bg_rect_4dp_ripple">
-
+							
 							<TextView
 								android:layout_width="wrap_content"
 								android:layout_height="16dp"
@@ -275,7 +275,7 @@
 								android:singleLine="true"
 								android:ellipsize="end"
 								android:text="@string/poll_length"/>
-
+							
 							<TextView
 								android:id="@+id/poll_duration_value"
 								android:layout_width="wrap_content"
@@ -287,7 +287,7 @@
 								android:singleLine="true"
 								android:ellipsize="end"
 								tools:text="1 day"/>
-
+							
 						</LinearLayout>
 
 						<LinearLayout
@@ -390,37 +390,41 @@
 		android:gravity="center_vertical"
 		android:visibility="gone"
 		android:minHeight="48dp"
-		android:paddingVertical="4dp">
+		android:paddingVertical="6dp">
 
-		<TextView
-			android:id="@+id/schedule_draft_text"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="6dp"
-			android:ellipsize="end"
-			android:drawableStart="@drawable/ic_fluent_drafts_20_regular"
-			android:drawableTint="?android:textColorSecondary"
-			android:drawablePadding="16dp"
-			android:text="@string/sk_compose_draft" />
-
-		<Button
-			android:id="@+id/scheduled_time_btn"
-			style="@style/Widget.Mastodon.M3.Button.Outlined.Icon"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:layout_marginStart="12dp"
-			android:gravity="center"
-			android:textSize="14sp"
-			android:textColor="?android:textColorSecondary"
-			android:fontFamily="sans-serif"
-			android:drawableStart="@drawable/ic_fluent_clock_20_regular"
-			android:drawableTint="?android:textColorSecondary"
-			tools:text="Dec 12, 2021, 12:42 PM"/>
-
-		<Space
+		<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
 			android:layout_width="0dp"
-			android:layout_height="match_parent"
-			android:layout_weight="1" />
+			android:layout_weight="1"
+			android:layout_height="wrap_content">
+
+			<TextView
+				android:id="@+id/schedule_draft_text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginHorizontal="6dp"
+				android:layout_marginVertical="2dp"
+				android:ellipsize="end"
+				android:drawableStart="@drawable/ic_fluent_drafts_20_regular"
+				android:drawableTint="?android:textColorSecondary"
+				android:drawablePadding="16dp"
+				android:text="@string/sk_compose_draft" />
+
+			<Button
+				android:id="@+id/scheduled_time_btn"
+				style="@style/Widget.Mastodon.M3.Button.Outlined.Icon"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginStart="6dp"
+				android:layout_marginVertical="2dp"
+				android:gravity="center"
+				android:textSize="14sp"
+				android:textColor="?android:textColorSecondary"
+				android:fontFamily="sans-serif"
+				android:drawableStart="@drawable/ic_fluent_clock_20_regular"
+				android:drawableTint="?android:textColorSecondary"
+				tools:text="Dec 12, 2021, 12:42 PM"/>
+
+		</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
 
 		<ImageButton
 			android:id="@+id/schedule_draft_dismiss"

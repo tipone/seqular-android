@@ -55,6 +55,8 @@
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
 				android:tag="label"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:text="@string/sk_tab_home" />
 
 		</LinearLayout>
@@ -99,6 +101,8 @@
 				android:maxLines="1"
 				android:layout_marginTop="4dp"
 				android:tag="label"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:text="@string/sk_tab_search" />
 
 		</LinearLayout>
@@ -161,6 +165,8 @@
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
 				android:tag="label"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:text="@string/sk_tab_notifications" />
 
 		</LinearLayout>
@@ -211,6 +217,8 @@
 				android:layout_marginTop="4dp"
 				android:textColor="@color/m3_on_surface_selector"
 				android:tag="label"
+				android:ellipsize="end"
+				android:maxLines="1"
 				android:text="@string/sk_tab_profile" />
 
 		</LinearLayout>

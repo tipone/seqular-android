@@ -397,4 +397,5 @@
     <string name="sk_blocked_accounts">Akun yang diblokir</string>
     <string name="sk_muted_accounts">Akun yang dibisukan</string>
     <string name="sk_settings_like_icon">Gunakam hati sebagai ikon favorit</string>
+    <string name="sk_recently_used">Baru-baru ini digunakan</string>
 </resources>

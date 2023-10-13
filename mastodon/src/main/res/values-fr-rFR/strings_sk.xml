@@ -22,9 +22,9 @@
     <string name="sk_check_for_update">Vérifier les mises à jour</string>
     <string name="sk_no_update_available">Pas de mise a jour disponible</string>
     <string name="sk_list_timelines">Listes</string>
-    <string name="sk_follow_requests">Suivre les demandes</string>
-    <string name="sk_accept_follow_request">Accepter la demande de suivi</string>
-    <string name="sk_reject_follow_request">Refuser la demande de suivi</string>
+    <string name="sk_follow_requests">Demandes d’abonnement</string>
+    <string name="sk_accept_follow_request">Accepter la demande d’abonnement</string>
+    <string name="sk_reject_follow_request">Refuser la demande d’abonnement</string>
     <string name="sk_lists_with_user">Listes avec %s</string>
     <string name="sk_settings_always_reveal_content_warnings">Toujours afficher les avertissements de contenu</string>
     <string name="sk_settings_enable_marquee">Désactiver le défilement du texte dans les barres de titre</string>
@@ -148,7 +148,7 @@
     <string name="sk_remove_follower_success">Abonné supprimé avec succès</string>
     <string name="sk_changelog">Journal des modifications</string>
     <string name="sk_remove_follower_confirm">Supprimer %s en tant qu\'abonné en le bloquant et en le débloquant immédiatement \?</string>
-    <string name="sk_remove_follower">Supprimer comme abonné</string>
+    <string name="sk_remove_follower">Retirer des abonné·e·s</string>
     <string name="sk_unpin_timeline">Détacher le fil</string>
     <string name="sk_alt_text_missing_title">Texte alternatif manquant</string>
     <string name="sk_alt_text_missing">Au moins une pièce jointe ne contient pas de description.</string>
@@ -404,4 +404,5 @@
     <string name="sk_blocked_accounts">Comptes bloqués</string>
     <string name="sk_muted_accounts">Comptes silenciés</string>
     <string name="sk_settings_like_icon">Utiliser le cœur comme icône pour les favoris</string>
+    <string name="sk_recently_used">Utilisé récemment</string>
 </resources>

@@ -372,7 +372,7 @@
     <string name="sk_settings_emoji_reactions">Увімкнути реакції з емоджі</string>
     <string name="sk_settings_emoji_reactions_explanation">Показує реакції емоджі на дописи та дає змогу додавати свої. Різні сервери Fediverse підтримують цю функцію, але Mastodon не підтримує.</string>
     <string name="sk_enter_emoji_toast">Введіть емоджі</string>
-    <string name="sk_enter_emoji_hint">Введіть або знайдіть власний емоджі</string>
+    <string name="sk_enter_emoji_hint">Введіть емоджі або скористайтеся пошуком</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">Чи відображати реакції емоджі у стрічках. Якщо цю опцію вимкнено, реакції емоджі показуватимуться лише під час перегляду гілки.</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">допис</item>
@@ -396,12 +396,14 @@
     <string name="sk_load_missing_posts_newest_first">Спочатку найновіші (за спаданням)</string>
     <string name="sk_load_missing_posts_below">Завантажити давніші дописи</string>
     <string name="sk_load_missing_posts_above">Завантажити новіші дописи</string>
-    <string name="sk_trending_links_info_banner">Це новини, які обговорюються на вашому сервері.</string>
+    <string name="sk_trending_links_info_banner">Ці новини обговорюють у всьому Fediverse.</string>
     <string name="sk_time_minutes">%d хвилин</string>
     <string name="sk_time_hours">%d годин</string>
     <string name="sk_time_seconds">%d секунд</string>
-    <string name="sk_trending_posts_info_banner">Це дописи, які набирають популярність на вашому сервері.</string>
+    <string name="sk_trending_posts_info_banner">Ці дописи зараз набирають популярність популярності у Fediverse.</string>
     <string name="sk_time_days">%d днів</string>
     <string name="sk_blocked_accounts">Заблоковані облікові записи</string>
     <string name="sk_muted_accounts">Ігноровані облікові записи</string>
+    <string name="sk_settings_like_icon">Використовувати серце як піктограму «Вподобане»</string>
+    <string name="sk_recently_used">Недавно використані</string>
 </resources>

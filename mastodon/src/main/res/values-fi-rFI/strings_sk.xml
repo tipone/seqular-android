@@ -409,4 +409,5 @@
     <string name="sk_trending_links_info_banner">Näistä uutisjutuista keskustellaan Fediversumissa.</string>
     <string name="sk_post_contains_media">Julkaisussa on mediaa</string>
     <string name="sk_settings_like_icon">Käytä sydäntä suosikkikuvakkeena</string>
+    <string name="sk_recently_used">Äskettäin käytetty</string>
 </resources>

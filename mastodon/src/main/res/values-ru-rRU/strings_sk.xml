@@ -274,7 +274,7 @@
     <string name="sk_reacted">%s отреагировал</string>
     <string name="sk_notification_action_replied">Отправлен ответ на %s</string>
     <string name="sk_show_thread">Показать тему</string>
-    <string name="sk_icon_feed">Новости</string>
+    <string name="sk_icon_feed">Лента</string>
     <string name="sk_settings_auto_reveal_nobody">Никогда</string>
     <string name="sk_settings_auto_reveal_author">Ответы от этого автора</string>
     <string name="sk_settings_auto_reveal_anyone">Ответы ото всех</string>
@@ -333,10 +333,10 @@
     <string name="sk_settings_content_types_explanation">Позволяет устанавливать тип содержимого вроде Markdown при создании поста. Имейте в виду, что это поддерживается не на всех серверах.</string>
     <string name="sk_settings_allow_remote_loading_explanation">Пробовать получить более точные данные о подписчиках, избранных и продвижениях, загрузив информацию из экземпляра происхождения.</string>
     <string name="sk_settings_default_content_type_explanation">Это позволяет предварительно выбирать тип содержимого при создании новых публикаций, переопределяя значение, установленное в “Параметры публикации”.</string>
-    <string name="sk_trending_posts_info_banner">Эти посты набирают обороты на вашем сервере.</string>
+    <string name="sk_trending_posts_info_banner">Эти посты сейчас набирают обороты в Fediverse.</string>
     <string name="sk_settings_continues_playback_summary">Позволять продолжить воспроизведение уже проигрываемого медиа, накладывая его на новое воспроизведение</string>
     <string name="sk_settings_continues_playback">Наложение аудио</string>
-    <string name="sk_trending_links_info_banner">Это новости, которые обсуждаются на вашем сервере.</string>
+    <string name="sk_trending_links_info_banner">Эти новости обсуждаются во всем Fediverse.</string>
     <string name="sk_disable_pill_shaped_active_indicator">Отключить индикатор активной вкладки в виде таблетки</string>
     <string name="sk_tab_profile">Профиль</string>
     <plurals name="sk_time_seconds">
@@ -411,4 +411,11 @@
     <string name="sk_post_contains_media">Пост содержит медиа</string>
     <string name="sk_tab_notifications">Уведомления</string>
     <string name="sk_list_exclusive_switch_explanation">Участники эксклюзивного списка не будут отображаться в вашей домашней ленте - если ваш экземпляр поддерживает такую возможность.</string>
+    <string name="sk_settings_like_icon">Использовать сердечно как значок избранного</string>
+    <string name="sk_blocked_accounts">Заблокированые аккаунты</string>
+    <string name="sk_settings_forward_report_default">По умолчанию переключатель \"Отчет о пересылке\"</string>
+    <string name="sk_muted_accounts">Заглушенные аккаунты</string>
+    <string name="sk_list_exclusive_switch">Сделать список исключительным</string>
+    <string name="sk_recently_used">Недавно использованные</string>
+    <string name="sk_exclusive_list">Исключительный список</string>
 </resources>
