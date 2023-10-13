@@ -470,6 +470,8 @@
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:contentDescription="@string/add_media"
 				android:tooltipText="@string/add_media"
 				android:src="@drawable/ic_fluent_image_add_24_regular"/>
@@ -480,6 +482,8 @@
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:contentDescription="@string/add_poll"
 				android:tooltipText="@string/add_poll"
 				android:src="@drawable/ic_fluent_poll_24_selector"/>
@@ -490,6 +494,8 @@
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:contentDescription="@string/emoji"
 				android:tooltipText="@string/emoji"
 				android:src="@drawable/ic_fluent_emoji_24_selector"/>
@@ -500,6 +506,8 @@
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:contentDescription="@string/content_warning"
 				android:tooltipText="@string/content_warning"
 				android:src="@drawable/ic_fluent_chat_warning_24_selector"/>
@@ -510,6 +518,8 @@
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:contentDescription="@string/sk_content_type"
 				android:tooltipText="@string/sk_content_type"
 				android:src="@drawable/ic_fluent_text_edit_style_24_selector"/>
