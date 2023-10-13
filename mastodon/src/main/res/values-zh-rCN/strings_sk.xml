@@ -397,4 +397,7 @@
     <string name="sk_muted_accounts">已静音账号</string>
     <string name="sk_settings_like_icon">使用心形作为收藏图标</string>
     <string name="sk_recently_used">最近使用</string>
+    <string name="sk_set_as_default">设为默认</string>
+    <string name="sk_settings_color_palette_default">默认（%s）</string>
+    <string name="sk_settings_underlined_links">链接加下划线</string>
 </resources>
