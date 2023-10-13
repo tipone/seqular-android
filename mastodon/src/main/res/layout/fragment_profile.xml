@@ -291,20 +291,18 @@
 					android:id="@+id/profile_counters"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
-					android:layout_marginLeft="8dp"
-					android:layout_marginRight="8dp">
+					android:layout_marginHorizontal="4dp">
 
 					<LinearLayout
+						style="@style/Widget.Mastodon.M3.Button.Text"
 						android:id="@+id/followers_btn"
 						android:layout_width="wrap_content"
-						android:layout_height="48dp"
-						android:background="@drawable/bg_button_borderless_rounded"
+						android:layout_height="wrap_content"
+						android:minHeight="48dp"
 						android:gravity="center_horizontal"
 						android:orientation="horizontal"
-						android:paddingLeft="8dp"
-						android:paddingTop="4dp"
-						android:paddingRight="8dp"
-						android:paddingBottom="4dp">
+						android:paddingStart="12dp"
+						android:paddingEnd="12dp">
 
 						<TextView
 							android:id="@+id/followers_count"
@@ -335,6 +333,7 @@
 						android:id="@+id/profile_counters_separator"
 						android:layout_width="wrap_content"
 						android:layout_height="48dp"
+						android:layout_marginHorizontal="-4dp"
 						android:gravity="center"
 						android:text="@string/sk_separator"
 						android:textAppearance="@style/m3_label_large"
@@ -342,16 +341,15 @@
 						android:textColor="?colorM3OnSurfaceVariant" />
 
 					<LinearLayout
+						style="@style/Widget.Mastodon.M3.Button.Text"
 						android:id="@+id/following_btn"
 						android:layout_width="wrap_content"
-						android:layout_height="48dp"
-						android:background="@drawable/bg_button_borderless_rounded"
+						android:layout_height="wrap_content"
+						android:minHeight="48dp"
 						android:gravity="center_horizontal"
 						android:orientation="horizontal"
-						android:paddingLeft="8dp"
-						android:paddingTop="4dp"
-						android:paddingRight="8dp"
-						android:paddingBottom="4dp">
+						android:paddingStart="12dp"
+						android:paddingEnd="12dp">
 
 						<TextView
 							android:id="@+id/following_count"
@@ -359,11 +357,11 @@
 							android:layout_height="match_parent"
 							android:layout_marginEnd="4dp"
 							android:ellipsize="end"
+							android:textAppearance="@style/m3_label_large"
 							android:fontFamily="sans-serif-black"
 							android:gravity="center_vertical"
 							android:singleLine="true"
 							android:textColor="?colorM3OnSurfaceVariant"
-							android:textSize="14dp"
 							tools:text="123" />
 
 						<TextView
