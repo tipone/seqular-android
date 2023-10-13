@@ -435,6 +435,7 @@
 
 	<color name="nord_favorite">#ebcb8b</color>
 	<color name="nord_bookmark_selected">#a3be8c</color>
+	<color name="nord_like">#BF616A</color>
 
 <!--	<color name="nord_gray_400t">#4d8C96B4</color>-->
 	<color name="nord_gray_400">#8C96B4</color>
