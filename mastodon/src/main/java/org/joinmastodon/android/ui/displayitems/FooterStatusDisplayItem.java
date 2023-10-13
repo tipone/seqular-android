@@ -172,7 +172,6 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			} else if (action == MotionEvent.ACTION_DOWN) {
 				longClickPerformed = false;
 				touchingView = v;
-				v.setPivotX(V.sp(28));
 				v.animate().scaleX(0.85f).scaleY(0.85f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
 				if (disabled) return true;
 				v.postDelayed(longClickRunnable, ViewConfiguration.getLongPressTimeout());

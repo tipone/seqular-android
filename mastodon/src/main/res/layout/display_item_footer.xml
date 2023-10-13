@@ -17,8 +17,8 @@
 			android:orientation="horizontal"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:paddingHorizontal="11sp">
-			<!-- avatar width (46sp) / 2 - button width (24sp) / 2 -->
+			android:paddingHorizontal="11dp">
+			<!-- avatar width (46sp) / 2 - button width (24dp) / 2 -->
 
 			<FrameLayout
 				android:layout_weight="1"
@@ -28,11 +28,13 @@
 					android:id="@+id/reply_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:paddingVertical="12dp">
+					android:transformPivotX="28dp"
+					android:transformPivotY="24dp">
 					<ImageView
-						android:layout_width="24sp"
-						android:layout_height="24sp"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
+						android:layout_marginVertical="12dp"
 						android:layout_marginStart="16dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_fluent_chat_multiple_24_selector_text"
@@ -63,11 +65,13 @@
 					android:id="@+id/boost_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:paddingVertical="12dp">
+					android:transformPivotX="28dp"
+					android:transformPivotY="24dp">
 					<ImageView
-						android:layout_width="24sp"
-						android:layout_height="24sp"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
+						android:layout_marginVertical="12dp"
 						android:layout_marginStart="16dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_boost"
@@ -99,12 +103,14 @@
 					android:id="@+id/favorite_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:paddingVertical="12dp">
+					android:transformPivotX="28dp"
+					android:transformPivotY="24dp">
 					<ImageView
 						android:id="@+id/favorite_icon"
-						android:layout_width="24sp"
-						android:layout_height="24sp"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
+						android:layout_marginVertical="12dp"
 						android:layout_marginStart="16dp"
 						android:duplicateParentState="true"
 						android:src="@drawable/ic_fluent_star_24_selector"
@@ -135,12 +141,14 @@
 					android:id="@+id/bookmark_btn"
 					android:layout_width="wrap_content"
 					android:layout_height="match_parent"
-					android:paddingVertical="12dp">
+					android:transformPivotX="28dp"
+					android:transformPivotY="24dp">
 					<ImageView
 						android:id="@+id/bookmark"
-						android:layout_width="24sp"
-						android:layout_height="24sp"
+						android:layout_width="24dp"
+						android:layout_height="24dp"
 						android:layout_gravity="center_vertical"
+						android:layout_marginVertical="12dp"
 						android:layout_marginHorizontal="16dp"
 						android:src="@drawable/ic_fluent_bookmark_24_selector"
 						android:tint="@color/bookmark_icon"
@@ -153,12 +161,14 @@
 				android:id="@+id/share_btn"
 				android:layout_width="wrap_content"
 				android:layout_height="match_parent"
-				android:paddingVertical="12dp">
+				android:transformPivotX="28dp"
+				android:transformPivotY="24dp">
 				<ImageView
 					android:id="@+id/share"
-					android:layout_width="24sp"
-					android:layout_height="24sp"
+					android:layout_width="24dp"
+					android:layout_height="24dp"
 					android:layout_gravity="center_vertical"
+					android:layout_marginVertical="12dp"
 					android:layout_marginHorizontal="16dp"
 					android:src="@drawable/ic_fluent_share_24_regular"
 					android:tint="?colorM3OnSurfaceVariant"
