@@ -1537,7 +1537,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	public void updateSensitive() {
 		sensitiveBtn.setVisibility(View.GONE);
-		if (!mediaViewController.isEmpty() && !hasSpoiler) sensitiveBtn.setVisibility(View.VISIBLE);
+		if (!mediaViewController.isEmpty()) sensitiveBtn.setVisibility(View.VISIBLE);
 		if (mediaViewController.isEmpty()) sensitive = false;
 	}
 
