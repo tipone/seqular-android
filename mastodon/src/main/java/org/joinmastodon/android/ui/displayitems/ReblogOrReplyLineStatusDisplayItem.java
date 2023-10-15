@@ -64,15 +64,6 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
-
-		if (fullText != null) {
-			fullTextEmojiHelper = new CustomEmojiHelper();
-			SpannableStringBuilder fullTextSsb = new SpannableStringBuilder(fullText);
-			HtmlParser.parseCustomEmoji(fullTextSsb, emojis);
-			this.fullText=fullTextSsb;
-			fullTextEmojiHelper.setText(fullTextSsb);
-		}
-
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -114,7 +105,6 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
-			if (item.fullText != null) text.setContentDescription(item.fullText);
 			text.setText(item.text);
 			text.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon, 0, item.iconEnd, 0);
 			text.setOnClickListener(item.handleClick);
@@ -128,7 +118,10 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 				case LOCAL -> R.string.sk_local_only;
 				default -> 0;
 			} : 0;
-			if (visibilityText != 0) text.setContentDescription(item.text + " (" + ctx.getString(visibilityText) + ")");
+			String visibilityDescription=visibilityText!=0 ? " (" + ctx.getString(visibilityText) + ")" : null;
+			text.setContentDescription(item.fullText==null && visibilityDescription==null ? null :
+					(item.fullText!=null ? item.fullText : item.text)
+							+ (visibilityDescription!=null ? visibilityDescription : ""));
 			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N)
 				UiUtils.fixCompoundDrawableTintOnAndroid6(text);
 			text.setCompoundDrawableTintList(text.getTextColors());
