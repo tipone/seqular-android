@@ -209,20 +209,20 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	}
 
 	protected void removeStatus(Status status){
-		Status contentStatus=status.getContentStatus();
-		String id=contentStatus.id;
-		iterateRemoveStatus(data, id);
-		iterateRemoveStatus(preloadedData, id);
+		Status removeStatus=status.getContentStatus();
+		String removeId=removeStatus.id;
+		iterateRemoveStatus(data, removeId);
+		iterateRemoveStatus(preloadedData, removeId);
 		int ancestorFirstIndex=-1, ancestorLastIndex=-1;
 		int offset=0;
 		for(int i=0;i<displayItems.size();i++){
-			StatusDisplayItem item = displayItems.get(i);
-			if(id.equals(item.contentStatusID)){
-				offset+=removeStatusDisplayItems(contentStatus, i, ancestorFirstIndex, ancestorLastIndex, offset);
+			StatusDisplayItem item=displayItems.get(i);
+			if(Objects.equals(item.contentStatusID, removeId)){
+				offset+=removeStatusDisplayItems(removeStatus, i, ancestorFirstIndex, ancestorLastIndex, offset);
 				ancestorFirstIndex=ancestorLastIndex=-1;
 				continue;
 			}
-			if(item.parentID.equals(status.inReplyToId)){
+			if(Objects.equals(item.contentStatusID, removeStatus.inReplyToId)){
 				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
 				ancestorLastIndex=i;
 			}
