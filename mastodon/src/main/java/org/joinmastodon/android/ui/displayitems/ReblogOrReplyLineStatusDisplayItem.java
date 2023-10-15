@@ -148,8 +148,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void layoutLine() {
-			// layout line only if above header, compact and has extra
-			if (item.extra == null) return;
+			if(item.extra==null) return;
 			itemView.measure(
 					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
 					View.MeasureSpec.UNSPECIFIED);
