@@ -29,7 +29,6 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -111,7 +110,6 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
@@ -1036,6 +1034,24 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void publish(){
+		// ask whether to publish now when editing an existing draft
+		if(editingStatus!=null && scheduledAt!=null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)) {
+			new M3AlertDialogBuilder(getActivity())
+					.setTitle(R.string.sk_save_draft)
+					.setMessage(R.string.sk_save_draft_message)
+					.setPositiveButton(R.string.save, (d, w) -> saveOrPublishAsIs())
+					.setNegativeButton(R.string.publish, (d, w) -> {
+						updateScheduledAt(null);
+						saveOrPublishAsIs();
+					})
+					.show();
+		}else{
+			saveOrPublishAsIs();
+		}
+	}
+
+	// don't ask about maybe publishing the existing draft
+	private void saveOrPublishAsIs(){
 		sendingOverlay=new View(getActivity());
 		WindowManager.LayoutParams overlayParams=new WindowManager.LayoutParams();
 		overlayParams.type=WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
@@ -1053,9 +1069,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void actuallyPublish(){
-		actuallyPublish(false);
-	}
-	private void actuallyPublish(boolean force){
 		String text=mainEditText.getText().toString();
 		CreateStatus.Request req=new CreateStatus.Request();
 		if ("bottom".equals(postLang.encoding)) {
@@ -1078,19 +1091,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			if(editingStatus != null){
 				req.mediaAttributes=mediaViewController.getAttachmentAttributes();
 			}
-		}
-		// ask whether to publish now when editing an existing draft
-		if (!force && editingStatus != null && scheduledAt != null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)) {
-			new M3AlertDialogBuilder(getActivity())
-					.setTitle(R.string.sk_save_draft)
-					.setMessage(R.string.sk_save_draft_message)
-					.setPositiveButton(R.string.save, (d, w) -> actuallyPublish(true))
-					.setNegativeButton(R.string.publish, (d, w) -> {
-						updateScheduledAt(null);
-						actuallyPublish();
-					})
-					.show();
-			return;
 		}
 		if(replyTo!=null || (editingStatus != null && editingStatus.inReplyToId!=null)){
 			req.inReplyToId=editingStatus!=null ? editingStatus.inReplyToId : replyTo.id;
