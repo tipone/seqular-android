@@ -828,13 +828,13 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		languageButton = wrap.findViewById(R.id.language_btn);
 		languageButton.setOnClickListener(v->showLanguageAlert());
 		languageButton.setOnLongClickListener(v->{
-			languageButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 			if(!getLocalPrefs().bottomEncoding){
 				getLocalPrefs().bottomEncoding=true;
 				getLocalPrefs().save();
 			}
 			return false;
 		});
+		publishButton.post(()->publishButton.setMinimumWidth(publishButton.getWidth()));
 
 		publishButton.setOnClickListener(v -> {
 			if(GlobalUserPreferences.altTextReminders && editingStatus==null)
