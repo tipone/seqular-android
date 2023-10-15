@@ -114,6 +114,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -796,6 +797,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(editingStatus==null ? R.menu.compose : R.menu.compose_edit, menu);
@@ -834,11 +836,26 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		});
 		publishButton.post(()->publishButton.setMinimumWidth(publishButton.getWidth()));
 
-		publishButton.setOnClickListener(v -> {
-			if(GlobalUserPreferences.altTextReminders && editingStatus==null)
-				checkAltTextsAndPublish();
-			else
-				publish();
+		publishButton.setOnClickListener(v->{
+			Consumer<Boolean> draftCheckComplete=(isDraft)->{
+				if(GlobalUserPreferences.altTextReminders && !isDraft) checkAltTextsAndPublish();
+				else publish();
+			};
+
+			boolean isAlreadyDraft=scheduledAt!=null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT);
+			if(editingStatus!=null && scheduledAt!=null && isAlreadyDraft) {
+				new M3AlertDialogBuilder(getActivity())
+						.setTitle(R.string.sk_save_draft)
+						.setMessage(R.string.sk_save_draft_message)
+						.setPositiveButton(R.string.save, (d, w)->draftCheckComplete.accept(isAlreadyDraft))
+						.setNegativeButton(R.string.publish, (d, w)->{
+							updateScheduledAt(null);
+							draftCheckComplete.accept(false);
+						})
+						.show();
+			}else{
+				draftCheckComplete.accept(isAlreadyDraft);
+			}
 		});
 		draftsBtn.setOnClickListener(v-> draftOptionsPopup.show());
 		draftsBtn.setOnTouchListener(draftOptionsPopup.getDragToOpenListener());
@@ -1034,24 +1051,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void publish(){
-		// ask whether to publish now when editing an existing draft
-		if(editingStatus!=null && scheduledAt!=null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)) {
-			new M3AlertDialogBuilder(getActivity())
-					.setTitle(R.string.sk_save_draft)
-					.setMessage(R.string.sk_save_draft_message)
-					.setPositiveButton(R.string.save, (d, w) -> saveOrPublishAsIs())
-					.setNegativeButton(R.string.publish, (d, w) -> {
-						updateScheduledAt(null);
-						saveOrPublishAsIs();
-					})
-					.show();
-		}else{
-			saveOrPublishAsIs();
-		}
-	}
-
-	// don't ask about maybe publishing the existing draft
-	private void saveOrPublishAsIs(){
 		sendingOverlay=new View(getActivity());
 		WindowManager.LayoutParams overlayParams=new WindowManager.LayoutParams();
 		overlayParams.type=WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
@@ -1071,14 +1070,14 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private void actuallyPublish(){
 		String text=mainEditText.getText().toString();
 		CreateStatus.Request req=new CreateStatus.Request();
-		if ("bottom".equals(postLang.encoding)) {
-			text = new StatusTextEncoder(Bottom::encode).encode(text);
-			req.spoilerText = "bottom-encoded emoji spam";
+		if("bottom".equals(postLang.encoding)){
+			text=new StatusTextEncoder(Bottom::encode).encode(text);
+			req.spoilerText="bottom-encoded emoji spam";
 		}
-		if (localOnly &&
+		if(localOnly &&
 				AccountSessionManager.get(accountID).getLocalPreferences().glitchInstance &&
-				!GLITCH_LOCAL_ONLY_PATTERN.matcher(text).matches()) {
-			text += " " + GLITCH_LOCAL_ONLY_SUFFIX;
+				!GLITCH_LOCAL_ONLY_PATTERN.matcher(text).matches()){
+			text+=" "+GLITCH_LOCAL_ONLY_SUFFIX;
 		}
 		req.status=text;
 		req.localOnly=localOnly;
@@ -1286,20 +1285,20 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void confirmDiscardDraftAndFinish(){
-		boolean attachmentsPending = mediaViewController.areAnyAttachmentsNotDone();
-		if (attachmentsPending) new M3AlertDialogBuilder(getActivity())
+		boolean attachmentsPending=mediaViewController.areAnyAttachmentsNotDone();
+		if(attachmentsPending) new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_unfinished_attachments)
 				.setMessage(R.string.sk_unfinished_attachments_message)
 				.setPositiveButton(R.string.ok, (d, w)->{})
 				.setNegativeButton(R.string.discard, (d, w)->Nav.finish(this))
 				.show();
 		else new M3AlertDialogBuilder(getActivity())
-				.setTitle(editingStatus != null ? R.string.sk_confirm_save_changes : R.string.sk_confirm_save_draft)
-				.setPositiveButton(R.string.save, (d, w) -> {
-					updateScheduledAt(scheduledAt == null ? getDraftInstant() : scheduledAt);
+				.setTitle(editingStatus!=null ? R.string.sk_confirm_save_changes : R.string.sk_confirm_save_draft)
+				.setPositiveButton(R.string.save, (d, w)->{
+					updateScheduledAt(scheduledAt==null ? getDraftInstant() : scheduledAt);
 					publish();
 				})
-				.setNegativeButton(R.string.discard, (d, w) -> Nav.finish(this))
+				.setNegativeButton(R.string.discard, (d, w)->Nav.finish(this))
 				.show();
 	}
 
