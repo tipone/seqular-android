@@ -93,10 +93,10 @@ abstract class InstanceCatalogFragment extends MastodonRecyclerFragment<CatalogI
 		currentSearchQuery=searchEdit.getText().toString().toLowerCase().trim();
 		updateFilteredList();
 		searchEdit.removeCallbacks(searchDebouncer);
-		Instance instance=instancesCache.get(normalizeInstanceDomain(currentSearchQuery));
+		Instance instance=instancesCache.get(normalizeInstanceDomain(getCurrentSearchQuery()));
 		if(instance==null){
 			showProgressDialog();
-			loadInstanceInfo(currentSearchQuery, false);
+			loadInstanceInfo(getCurrentSearchQuery(), false);
 		}else{
 			proceedWithAuthOrSignup(instance);
 		}
@@ -106,7 +106,7 @@ abstract class InstanceCatalogFragment extends MastodonRecyclerFragment<CatalogI
 	protected void onSearchChangedDebounced(){
 		currentSearchQuery=searchEdit.getText().toString().toLowerCase().trim();
 		updateFilteredList();
-		loadInstanceInfo(currentSearchQuery, false);
+		loadInstanceInfo(getCurrentSearchQuery(), false);
 	}
 
 	protected List<CatalogInstance> sortInstances(List<CatalogInstance> result){
@@ -126,9 +126,16 @@ abstract class InstanceCatalogFragment extends MastodonRecyclerFragment<CatalogI
 		instanceProgressDialog.show();
 	}
 
+	protected String getCurrentSearchQuery(){
+		String[] parts=currentSearchQuery.split("@");
+		return parts.length>0 ? parts[parts.length-1] : "";
+	}
+
 	protected String normalizeInstanceDomain(String _domain){
 		if(TextUtils.isEmpty(_domain))
 			return null;
+		String[] parts=_domain.split("@");
+		_domain=parts[parts.length - 1];
 		if(_domain.contains(":")){
 			try{
 				_domain=Uri.parse(_domain).getAuthority();
@@ -198,7 +205,7 @@ abstract class InstanceCatalogFragment extends MastodonRecyclerFragment<CatalogI
 					instanceProgressDialog=null;
 					proceedWithAuthOrSignup(result);
 				}
-				if(Objects.equals(domain, currentSearchQuery) || Objects.equals(currentSearchQuery, redirects.get(domain)) || Objects.equals(currentSearchQuery, redirectsInverse.get(domain))){
+				if(Objects.equals(domain, getCurrentSearchQuery()) || Objects.equals(getCurrentSearchQuery(), redirects.get(domain)) || Objects.equals(getCurrentSearchQuery(), redirectsInverse.get(domain))){
 					boolean found=false;
 					for(CatalogInstance ci:filteredData){
 						if(ci.domain.equals(domain) && ci!=fakeInstance){
