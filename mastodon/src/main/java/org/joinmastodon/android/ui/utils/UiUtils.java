@@ -804,25 +804,32 @@ public class UiUtils {
 		} else if (relationship.muting) {
 			confirmToggleMuteUser(activity, accountID, account, true, resultCallback);
 		} else {
-			progressCallback.accept(true);
-			new SetAccountFollowed(account.id, !relationship.following && !relationship.requested, true, false)
-					.setCallback(new Callback<>() {
-						@Override
-						public void onSuccess(Relationship result) {
-							resultCallback.accept(result);
-							progressCallback.accept(false);
-							if(!result.following && !result.requested){
-								E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
+			Runnable action=()->{
+				progressCallback.accept(true);
+				new SetAccountFollowed(account.id, !relationship.following && !relationship.requested, true)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(Relationship result){
+								resultCallback.accept(result);
+								progressCallback.accept(false);
+								if(!result.following && !result.requested){
+									E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
+								}
 							}
-						}
 
-						@Override
-						public void onError(ErrorResponse error) {
-							error.showToast(activity);
-							progressCallback.accept(false);
-						}
-					})
-					.exec(accountID);
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(activity);
+								progressCallback.accept(false);
+							}
+						})
+						.exec(accountID);
+			};
+			if(relationship.following && GlobalUserPreferences.confirmUnfollow){
+				showConfirmationAlert(activity, null, activity.getString(R.string.unfollow_confirmation, account.getDisplayUsername()), activity.getString(R.string.unfollow), R.drawable.ic_fluent_person_delete_24_regular, action);
+			}else{
+				action.run();
+			}
 		}
 	}
 
