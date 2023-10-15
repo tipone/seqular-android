@@ -128,9 +128,9 @@
 			android:layout_weight="1"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="16dp"
+			android:layout_marginTop="6dp"
 			android:layout_marginStart="16dp"
-			android:layout_gravity="bottom"
-			android:paddingTop="6dp"
+			android:paddingTop="3dp"
 			android:gravity="center_vertical"
 			android:minHeight="44dp">
 
@@ -249,7 +249,7 @@
 			android:paddingStart="8dp"
 			android:paddingEnd="4dp"
 			android:clipToPadding="false"
-			android:paddingBottom="8dp"
+			android:paddingBottom="10dp"
 			android:visibility="gone">
 
 			<org.joinmastodon.android.ui.views.ProgressBarButton
@@ -286,7 +286,7 @@
 			android:paddingStart="4dp"
 			android:paddingEnd="16dp"
 			android:clipToPadding="false"
-			android:paddingBottom="8dp"
+			android:paddingBottom="10dp"
 			android:visibility="gone">
 
 			<org.joinmastodon.android.ui.views.ProgressBarButton
@@ -322,7 +322,7 @@
 			android:layout_gravity="bottom"
 			android:paddingStart="8dp"
 			android:paddingEnd="16dp"
-			android:paddingBottom="8dp"
+			android:paddingBottom="10dp"
 			android:clipToPadding="false">
 
 			<org.joinmastodon.android.ui.views.ProgressBarButton
