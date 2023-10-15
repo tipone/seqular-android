@@ -977,7 +977,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	@Override
 	protected int getNavigationIconDrawableResource(){
-		return R.drawable.ic_baseline_close_24;
+		return R.drawable.ic_fluent_dismiss_24_regular;
 	}
 
 	@Override

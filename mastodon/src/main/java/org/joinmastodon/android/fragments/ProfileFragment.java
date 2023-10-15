@@ -1101,7 +1101,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		updateMetadataHeight();
 
 		Toolbar toolbar=getToolbar();
-		Drawable close=getToolbarContext().getDrawable(R.drawable.ic_baseline_close_24).mutate();
+		Drawable close=getToolbarContext().getDrawable(R.drawable.ic_fluent_dismiss_24_regular).mutate();
 		close.setTint(UiUtils.getThemeColor(getToolbarContext(), R.attr.colorM3OnSurfaceVariant));
 		toolbar.setNavigationIcon(close);
 		toolbar.setNavigationContentDescription(R.string.discard);

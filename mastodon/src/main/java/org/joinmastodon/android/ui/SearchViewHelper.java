@@ -71,7 +71,7 @@ public class SearchViewHelper{
 		searchLayout.addView(searchEdit, new LinearLayout.LayoutParams(0, ViewGroup.LayoutParams.MATCH_PARENT, 1f));
 
 		clearSearchButton=new ImageButton(context);
-		clearSearchButton.setImageResource(R.drawable.ic_baseline_close_24);
+		clearSearchButton.setImageResource(R.drawable.ic_fluent_dismiss_24_regular);
 		clearSearchButton.setContentDescription(context.getString(R.string.clear));
 		clearSearchButton.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(context, R.attr.colorM3OnSurfaceVariant)));
 		clearSearchButton.setBackground(UiUtils.getThemeDrawable(toolbarContext, android.R.attr.actionBarItemBackground));
