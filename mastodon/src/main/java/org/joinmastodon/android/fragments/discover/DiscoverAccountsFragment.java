@@ -4,6 +4,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -65,6 +66,8 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
+			setRetainInstance(true);
 	}
 
 	@Override
