@@ -209,7 +209,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					}else if(item.scheduledStatus!=null){
 						args.putString("sourceText", item.status.text);
 						args.putString("sourceSpoiler", item.status.spoilerText);
-						args.putBoolean("redraftStatus", true);
 						args.putParcelable("scheduledStatus", Parcels.wrap(item.scheduledStatus));
 						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 					}else{

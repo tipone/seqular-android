@@ -850,8 +850,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				? languageResolver.fromOrFallback(prefs.postingDefaultLanguage)
 				: languageResolver.getDefault());
 
-		if (isInstancePixelfed()) spoilerBtn.setVisibility(View.GONE);
-		if (isInstancePixelfed() || (editingStatus != null && scheduledStatus == null)) {
+		if(isInstancePixelfed()) spoilerBtn.setVisibility(View.GONE);
+		if(isInstancePixelfed() || (editingStatus!=null && !redraftStatus)) {
 			// editing an already published post
 			draftsBtn.setVisibility(View.GONE);
 		}
