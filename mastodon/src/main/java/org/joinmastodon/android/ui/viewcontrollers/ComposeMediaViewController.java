@@ -27,8 +27,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -204,6 +204,15 @@ public class ComposeMediaViewController{
 		}
 	}
 
+	private void updateButton(ImageButton btn, @DrawableRes int drawableId, @StringRes int labelId){
+		btn.setImageResource(drawableId);
+		String label=fragment.getContext().getString(labelId);
+		btn.setContentDescription(label);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+			btn.setTooltipText(label);
+		}
+	}
+
 	private View createMediaAttachmentView(DraftMediaAttachment draft){
 		View thumb=fragment.getActivity().getLayoutInflater().inflate(R.layout.compose_media_thumb, attachmentsView, false);
 		ImageView img=thumb.findViewById(R.id.thumb);
@@ -266,11 +275,11 @@ public class ComposeMediaViewController{
 			draft.subtitleView.setText(subtitleRes);
 		}
 		draft.titleView.setText(fragment.getString(R.string.attachment_x_percent_uploaded, 0));
-		draft.removeButton.setImageResource(R.drawable.ic_baseline_close_24);
+		updateButton(draft.removeButton, R.drawable.ic_fluent_dismiss_24_regular, R.string.delete);
 
 		if(draft.state==AttachmentUploadState.ERROR){
 			draft.titleView.setText(R.string.upload_failed);
-			draft.editButton.setImageResource(R.drawable.ic_fluent_arrow_counterclockwise_24_regular);
+			updateButton(draft.removeButton, R.drawable.ic_fluent_arrow_counterclockwise_24_regular, R.string.retry);
 			draft.editButton.setOnClickListener(this::onRetryOrCancelMediaUploadClick);
 			draft.progressBar.setVisibility(View.GONE);
 			draft.setUseErrorColors(true);
@@ -280,7 +289,7 @@ public class ComposeMediaViewController{
 			draft.editButton.setOnClickListener(this::onEditMediaDescriptionClick);
 		}else{
 			draft.editButton.setVisibility(View.GONE);
-			draft.removeButton.setImageResource(R.drawable.ic_baseline_close_24);
+			updateButton(draft.removeButton, R.drawable.ic_fluent_dismiss_24_regular, R.string.delete);
 			if(draft.state==AttachmentUploadState.PROCESSING){
 				draft.titleView.setText(R.string.upload_processing);
 			}else{
@@ -374,7 +383,7 @@ public class ComposeMediaViewController{
 //						attachment.retryButton.setContentDescription(fragment.getString(R.string.retry_upload));
 
 						V.setVisibilityAnimated(attachment.editButton, View.VISIBLE);
-						attachment.editButton.setImageResource(R.drawable.ic_fluent_arrow_counterclockwise_24_regular);
+						updateButton(attachment.editButton, R.drawable.ic_fluent_arrow_counterclockwise_24_regular, R.string.retry);
 						attachment.editButton.setOnClickListener(ComposeMediaViewController.this::onRetryOrCancelMediaUploadClick);
 						attachment.setUseErrorColors(true);
 						V.setVisibilityAnimated(attachment.progressBar, View.GONE);
@@ -478,8 +487,8 @@ public class ComposeMediaViewController{
 			throw new IllegalStateException("Unexpected state "+attachment.state);
 		attachment.uploadRequest=null;
 		attachment.state=AttachmentUploadState.DONE;
-		attachment.editButton.setImageResource(R.drawable.ic_fluent_edit_24_regular);
-		attachment.removeButton.setImageResource(R.drawable.ic_fluent_delete_24_regular);
+		updateButton(attachment.editButton, R.drawable.ic_fluent_edit_24_regular, R.string.sk_edit_alt_text);
+		updateButton(attachment.removeButton, R.drawable.ic_fluent_dismiss_24_regular, R.string.delete);
 		attachment.editButton.setOnClickListener(this::onEditMediaDescriptionClick);
 		V.setVisibilityAnimated(attachment.progressBar, View.GONE);
 		V.setVisibilityAnimated(attachment.editButton, View.VISIBLE);

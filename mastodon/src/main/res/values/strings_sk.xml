@@ -411,4 +411,5 @@
     <string name="sk_recently_used">Recently used</string>
 	<string name="sk_settings_underlined_links">Underlined links</string>
 	<string name="sk_set_as_default">Set as default</string>
+	<string name="sk_edit_alt_text">Edit alt text</string>
 </resources>
