@@ -401,4 +401,7 @@
     <string name="sk_muted_accounts">Conturi amuțite</string>
     <string name="sk_settings_like_icon">Folosiți inimă ca iconița favorite</string>
     <string name="sk_recently_used">Recent folosit</string>
+    <string name="sk_set_as_default">Setați ca implicit</string>
+    <string name="sk_settings_color_palette_default">Implicit (%s)</string>
+    <string name="sk_settings_underlined_links">Link-uri subliniate</string>
 </resources>
