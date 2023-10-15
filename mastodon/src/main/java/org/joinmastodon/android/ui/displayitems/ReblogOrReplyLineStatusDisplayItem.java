@@ -111,9 +111,6 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			text=findViewById(R.id.text);
 			extraText=findViewById(R.id.extra_text);
 			separator=findViewById(R.id.separator);
-			parent.addOnLayoutChangeListener((v, l, t, right, b, ol, ot, oldRight, ob) -> {
-				if (right != oldRight) layoutLine();
-			});
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
@@ -144,24 +141,6 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			extraText.setVisibility(item.extra == null ? View.GONE : View.VISIBLE);
 			separator.setVisibility(item.extra == null ? View.GONE : View.VISIBLE);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
-			layoutLine();
-		}
-
-		private void layoutLine() {
-			if(item.extra==null) return;
-			itemView.measure(
-					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
-					View.MeasureSpec.UNSPECIFIED);
-			boolean isVertical = ((LinearLayout) itemView).getOrientation() == LinearLayout.VERTICAL;
-			extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && isVertical ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
-			separator.setVisibility(item.extra != null && !isVertical ? View.VISIBLE : View.GONE);
-			((LinearLayout) itemView).removeView(extraText);
-			if (isVertical) ((LinearLayout) itemView).addView(extraText);
-			else ((LinearLayout) itemView).addView(extraText, 0);
-			text.setText(isVertical ? item.fullText : item.text);
-			if (item.extra != null) {
-				extraText.setText(isVertical ? item.extra.fullText : item.extra.text);
-			}
 		}
 
 		@Override
