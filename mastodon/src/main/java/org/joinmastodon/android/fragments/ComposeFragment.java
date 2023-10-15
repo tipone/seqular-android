@@ -1290,8 +1290,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		if (attachmentsPending) new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_unfinished_attachments)
 				.setMessage(R.string.sk_unfinished_attachments_message)
-				.setPositiveButton(R.string.edit, (d, w) -> {})
-				.setNegativeButton(R.string.discard, (d, w) -> Nav.finish(this))
+				.setPositiveButton(R.string.ok, (d, w)->{})
+				.setNegativeButton(R.string.discard, (d, w)->Nav.finish(this))
 				.show();
 		else new M3AlertDialogBuilder(getActivity())
 				.setTitle(editingStatus != null ? R.string.sk_confirm_save_changes : R.string.sk_confirm_save_draft)
