@@ -167,7 +167,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.overlayMedia=overlayMediaItem.checked;
 		GlobalUserPreferences.useCustomTabs=customTabsItem.checked;
 		GlobalUserPreferences.altTextReminders=altTextItem.checked;
-		GlobalUserPreferences.confirmUnfollow=customTabsItem.checked;
+		GlobalUserPreferences.confirmUnfollow=confirmUnfollowItem.checked;
 		GlobalUserPreferences.confirmBoost=confirmBoostItem.checked;
 		GlobalUserPreferences.confirmDeletePost=confirmDeleteItem.checked;
 		GlobalUserPreferences.forwardReportDefault=forwardReportsItem.checked;
