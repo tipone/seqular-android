@@ -10,10 +10,8 @@ import android.text.SpannableStringBuilder;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
@@ -40,7 +38,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private StatusPrivacy visibility;
 	@DrawableRes
 	private int iconEnd;
-	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper(), fullTextEmojiHelper;
+	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
 	public boolean needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
@@ -58,6 +56,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			HtmlParser.parseCustomEmoji(ssb, emojis);
 		this.text=ssb;
 		emojiHelper.setText(ssb);
+		this.fullText=fullText;
 		this.icon=icon;
 		this.status=status;
 		this.handleClick=handleClick;
@@ -83,22 +82,21 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 	@Override
 	public int getImageCount(){
-		return emojiHelper.getImageCount();
+		return emojiHelper.getImageCount() + (extra!=null ? extra.emojiHelper.getImageCount() : 0);
 	}
 
 	@Override
 	public ImageLoaderRequest getImageRequest(int index){
-		return emojiHelper.getImageRequest(index);
+		CustomEmojiHelper helper=index<emojiHelper.getImageCount() ? emojiHelper : extra.emojiHelper;
+		return helper.getImageRequest(index%emojiHelper.getImageCount());
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text, extraText;
 		private final View separator;
-		private final ViewGroup parent;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
-			this.parent = parent;
 			text=findViewById(R.id.text);
 			extraText=findViewById(R.id.extra_text);
 			separator=findViewById(R.id.separator);
@@ -138,8 +136,10 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void setImage(int index, Drawable image){
-			item.emojiHelper.setImageDrawable(index, image);
+			CustomEmojiHelper helper=index<item.emojiHelper.getImageCount() ? item.emojiHelper : item.extra.emojiHelper;
+			helper.setImageDrawable(index%item.emojiHelper.getImageCount(), image);
 			text.invalidate();
+			extraText.invalidate();
 		}
 
 		@Override
