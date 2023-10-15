@@ -1,5 +1,4 @@
-- Favorit/Salvează/Răspunde direct de la panoul de notificări
-- Header mai frumos și mai consistent pentru rebloguri și răspunsuri în cronologie
-- Cerc de notificare (care nu încarcă notificări încă)
-- Pentru utilizatorii Akkoma: vizibilitatea răspunsului, răspunsurile sortate, citând, ...
-- Remedieri crash-uri și modificări minore
+Versiunea 83 aduce câteva îmbunătățiri minore, cum ar fi:
+- Rezolvarea unor crash-uri când mențiunile sunt apăsate
+- Reproiectarea iconiței robot
+- Adăugarea unui memento pentru adăugarea descrierii imaginii dacă postezi un atașament pentru a permite oamenilor cu deficiențe de vedere să participe mai bine. Mulțumim @FineFindus!
