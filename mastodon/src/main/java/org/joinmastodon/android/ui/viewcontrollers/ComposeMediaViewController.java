@@ -4,11 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -51,11 +53,8 @@ import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -240,12 +239,11 @@ public class ComposeMediaViewController{
 		draft.removeButton.setOnClickListener(this::onRemoveMediaAttachmentClick);
 		draft.editButton.setTag(draft);
 
-		thumb.setOutlineProvider(OutlineProviders.roundedRect(12));
+		thumb.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
 		thumb.setClipToOutline(true);
 		img.setOutlineProvider(OutlineProviders.roundedRect(12));
 		img.setClipToOutline(true);
 
-		thumb.setBackgroundColor(UiUtils.getThemeColor(fragment.getActivity(), R.attr.colorM3Surface));
 		thumb.setOnLongClickListener(v->{
 			if(!v.hasTransientState() && attachments.size()>1){
 				attachmentsView.startDragging(v);
@@ -717,18 +715,21 @@ public class ComposeMediaViewController{
 			if(errorTransitionAnimator!=null)
 				errorTransitionAnimator.cancel();
 			AnimatorSet set=new AnimatorSet();
-			int color1, color2, color3;
+			int defaultBg=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3Surface);
+			int errorBg=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3ErrorContainer);
+			int color2, color3;
 			if(use){
-				color1=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3ErrorContainer);
 				color2=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3Error);
 				color3=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3OnErrorContainer);
 			}else{
-				color1=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3Surface);
 				color2=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3OnSurface);
 				color3=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3OnSurfaceVariant);
 			}
+			GradientDrawable bg=(GradientDrawable) view.getBackground().mutate();
+			ValueAnimator bgAnim=ValueAnimator.ofArgb(use ? defaultBg : errorBg, use ? errorBg : defaultBg);
+			bgAnim.addUpdateListener(anim->bg.setColor((Integer) anim.getAnimatedValue()));
 			set.playTogether(
-					ObjectAnimator.ofArgb(view, "backgroundColor", ((ColorDrawable)view.getBackground()).getColor(), color1),
+					bgAnim,
 					ObjectAnimator.ofArgb(titleView, "textColor", titleView.getCurrentTextColor(), color2),
 					ObjectAnimator.ofArgb(subtitleView, "textColor", subtitleView.getCurrentTextColor(), color3),
 					ObjectAnimator.ofArgb(removeButton.getDrawable(), "tint", subtitleView.getCurrentTextColor(), color3)
