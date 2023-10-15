@@ -120,6 +120,15 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 	}
 
 	@Override
+	protected void onShown(){
+		super.onShown();
+		// because, for some reason, when navigating back from compose fragment,
+		// match_parent would otherwise be incorrect (leaving a gap for the keyboard
+		// where there is none)
+		list.post(list::requestLayout);
+	}
+
+	@Override
 	protected void doLoadData(int offset, int count){
 		currentRequest=new GetScheduledStatuses(offset==0 ? null : nextMaxID, count)
 				.setCallback(new SimpleCallback<>(this){
