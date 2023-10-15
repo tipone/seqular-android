@@ -755,20 +755,21 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		boolean hasMultipleAccounts = AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
 		MenuItem openWithAccounts = menu.findItem(R.id.open_with_account);
 		openWithAccounts.setVisible(hasMultipleAccounts);
-		SubMenu accountsMenu = openWithAccounts.getSubMenu();
-		if (hasMultipleAccounts) {
+		SubMenu accountsMenu=openWithAccounts.getSubMenu();
+		if(hasMultipleAccounts){
 			accountsMenu.clear();
 			UiUtils.populateAccountsMenu(accountID, accountsMenu, s-> UiUtils.openURL(
 					getActivity(), s.getID(), account.url, false
 			));
 		}
-		menu.findItem(R.id.share).setTitle(R.string.share_user);
+
 		if(isOwnProfile) {
 			if (isInstancePixelfed()) menu.findItem(R.id.scheduled).setVisible(false);
 			return;
 		}
 
-		MenuItem mute = menu.findItem(R.id.mute);
+		menu.findItem(R.id.manage_user_lists).setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername()));
+		MenuItem mute=menu.findItem(R.id.mute);
 		mute.setTitle(getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
 		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 		UiUtils.insetPopupMenuIcon(getContext(), mute);
@@ -776,19 +777,22 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		menu.findItem(R.id.report).setTitle(getString(R.string.report_user, account.getShortUsername()));
 		menu.findItem(R.id.manage_user_lists).setVisible(relationship.following);
 		menu.findItem(R.id.soft_block).setVisible(relationship.followedBy && !relationship.following);
+		MenuItem hideBoosts=menu.findItem(R.id.hide_boosts);
 		if (relationship.following) {
-			MenuItem hideBoosts = menu.findItem(R.id.hide_boosts);
 			hideBoosts.setTitle(getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getShortUsername()));
 			hideBoosts.setIcon(relationship.showingReblogs ? R.drawable.ic_fluent_arrow_repeat_all_off_24_regular : R.drawable.ic_fluent_arrow_repeat_all_24_regular);
 			UiUtils.insetPopupMenuIcon(getContext(), hideBoosts);
-			menu.findItem(R.id.manage_user_lists).setTitle(getString(R.string.sk_lists_with_user, account.getShortUsername()));
+			hideBoosts.setVisible(true);
 		} else {
-			menu.findItem(R.id.hide_boosts).setVisible(false);
+			hideBoosts.setVisible(false);
 		}
-		if(!account.isLocal())
-			menu.findItem(R.id.block_domain).setTitle(getString(relationship.domainBlocking ? R.string.unblock_domain : R.string.block_domain, account.getDomain()));
-		else
-			menu.findItem(R.id.block_domain).setVisible(false);
+		MenuItem blockDomain=menu.findItem(R.id.block_domain);
+		if(!account.isLocal()){
+			blockDomain.setTitle(getString(relationship.domainBlocking ? R.string.unblock_domain : R.string.block_domain, account.getDomain()));
+			blockDomain.setVisible(true);
+		}else{
+			blockDomain.setVisible(false);
+		}
 	}
 
 	@Override
@@ -800,11 +804,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			intent.putExtra(Intent.EXTRA_TEXT, account.url);
 			startActivity(Intent.createChooser(intent, item.getTitle()));
 		}else if(id==R.id.mute){
-			confirmToggleMuted();
+			UiUtils.confirmToggleMuteUser(getActivity(), accountID, account, relationship.muting, this::updateRelationship);
 		}else if(id==R.id.block){
-			confirmToggleBlocked();
+			UiUtils.confirmToggleBlockUser(getActivity(), accountID, account, relationship.blocking, this::updateRelationship);
 		}else if(id==R.id.soft_block){
-			confirmSoftBlockUser();
+			UiUtils.confirmSoftBlockUser(getActivity(), accountID, account, this::updateRelationship);
 		}else if(id==R.id.report){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -1205,18 +1209,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 					}
 				})
 				.exec(accountID);
-	}
-
-	private void confirmToggleMuted(){
-		UiUtils.confirmToggleMuteUser(getActivity(), accountID, account, relationship.muting, this::updateRelationship);
-	}
-
-	private void confirmToggleBlocked(){
-		UiUtils.confirmToggleBlockUser(getActivity(), accountID, account, relationship.blocking, this::updateRelationship);
-	}
-
-	private void confirmSoftBlockUser(){
-		UiUtils.confirmSoftBlockUser(getActivity(), accountID, account, this::updateRelationship);
 	}
 
 	private void updateRelationship(Relationship r){
