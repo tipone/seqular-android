@@ -111,11 +111,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			text=findViewById(R.id.text);
 			extraText=findViewById(R.id.extra_text);
 			separator=findViewById(R.id.separator);
-			if (GlobalUserPreferences.compactReblogReplyLine) {
-				parent.addOnLayoutChangeListener((v, l, t, right, b, ol, ot, oldRight, ob) -> {
-					if (right != oldRight) layoutLine();
-				});
-			}
+			parent.addOnLayoutChangeListener((v, l, t, right, b, ol, ot, oldRight, ob) -> {
+				if (right != oldRight) layoutLine();
+			});
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
@@ -151,7 +149,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 		private void layoutLine() {
 			// layout line only if above header, compact and has extra
-			if (!GlobalUserPreferences.compactReblogReplyLine || item.extra == null) return;
+			if (item.extra == null) return;
 			itemView.measure(
 					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
 					View.MeasureSpec.UNSPECIFIED);

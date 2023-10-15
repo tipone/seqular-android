@@ -130,7 +130,7 @@ public abstract class StatusDisplayItem{
 		String parentID = parent.getID();
 		String text = threadReply ? fragment.getString(R.string.sk_show_thread)
 				: account == null ? fragment.getString(R.string.sk_in_reply)
-				: GlobalUserPreferences.compactReblogReplyLine && status.reblog != null ? account.displayName
+				: status.reblog != null ? account.displayName
 				: fragment.getString(R.string.in_reply_to, account.displayName);
 		String fullText = threadReply ? fragment.getString(R.string.sk_show_thread)
 				: account == null ? fragment.getString(R.string.sk_in_reply)
@@ -165,7 +165,7 @@ public abstract class StatusDisplayItem{
 			if(status.reblog!=null){
 				boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
 				String fullText = fragment.getString(R.string.user_boosted, status.account.displayName);
-				String text = GlobalUserPreferences.compactReblogReplyLine && replyLine != null ? status.account.displayName : fullText;
+				String text = replyLine != null ? status.account.displayName : fullText;
 				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20sp_filled, isOwnPost ? status.visibility : null, i->{
 					args.putParcelable("profileAccount", Parcels.wrap(status.account));
 					Nav.go(fragment.getActivity(), ProfileFragment.class, args);
@@ -193,7 +193,7 @@ public abstract class StatusDisplayItem{
 						.map(ReblogOrReplyLineStatusDisplayItem.class::cast)
 						.findFirst();
 
-				if (primaryLine.isPresent() && GlobalUserPreferences.compactReblogReplyLine) {
+				if (primaryLine.isPresent()) {
 					primaryLine.get().extra = replyLine;
 				} else {
 					items.add(replyLine);
