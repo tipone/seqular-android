@@ -1700,14 +1700,17 @@ public class UiUtils {
 
 		Matcher matcher=trimPronouns.matcher(text);
 		if(!matcher.find()) return null;
-		String matched=matcher.group(1);
+		String pronouns=matcher.group(1);
 		// crude fix to allow for pronouns like "it(/she)"
 		int missingClosingParens=0;
-		for(char c : matched.toCharArray()){
+		for(char c : pronouns.toCharArray()){
 			if(c=='(') missingClosingParens++;
 			if(c==')') missingClosingParens--;
 		}
-		return matched+")".repeat(Math.max(0, missingClosingParens));
+		pronouns+=")".repeat(Math.max(0, missingClosingParens));
+		// if ends with an un-closed custom emoji
+		if(pronouns.matches("^.*\\s+:[a-zA-Z_]+$")) pronouns+=':';
+		return pronouns;
 	}
 
 	// https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android
