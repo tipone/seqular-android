@@ -253,7 +253,7 @@
     <string name="sk_filtered">Відфільтровано: %s</string>
     <string name="sk_expand">Розгорнути</string>
     <string name="sk_collapse">Згорнути</string>
-    <string name="sk_unfinished_attachments">Виправити вкладення\?</string>
+    <string name="sk_unfinished_attachments">Завантаження вкладень</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Префікс CW з «re:» під час відповіді</string>
     <string name="sk_settings_collapse_long_posts">Згортати надто довгі дописи</string>
     <string name="sk_unfinished_attachments_message">Деякі вкладення не повністю завантажилися.</string>
@@ -409,4 +409,5 @@
     <string name="sk_settings_underlined_links">Підкреслені посилання</string>
     <string name="sk_set_as_default">Установити типово</string>
     <string name="sk_settings_color_palette_default">Усталена (%s)</string>
+    <string name="sk_edit_alt_text">Редагувати альтернативний текст</string>
 </resources>
