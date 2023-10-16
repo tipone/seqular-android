@@ -13,6 +13,7 @@ import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
+import org.joinmastodon.android.events.ReblogDeletedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.StatusCreatedEvent;
@@ -184,13 +185,14 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		}
 	}
 
-	private void removeStatusDisplayItems(Status status, int index, int ancestorFirstIndex, int ancestorLastIndex){
+	private void removeStatusDisplayItems(Status status, int index, int ancestorFirstIndex, int ancestorLastIndex, boolean deleteContent){
 		// did we find an ancestor that is also the status' neighbor?
 		if(ancestorFirstIndex>=0 && ancestorLastIndex==index-1){
 			for(int i=ancestorFirstIndex; i<=ancestorLastIndex; i++){
 				StatusDisplayItem item=displayItems.get(i);
+				String id=deleteContent ? item.getContentID() : item.parentID;
 				// update ancestor to have no descendant anymore
-				if(item.getContentID().equals(status.inReplyToId)) item.hasDescendantNeighbor=false;
+				if(id.equals(status.inReplyToId)) item.hasDescendantNeighbor=false;
 			}
 			adapter.notifyItemRangeChanged(ancestorFirstIndex, ancestorLastIndex-ancestorFirstIndex+1);
 		}
@@ -198,31 +200,32 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		if(index==-1) return;
 		int lastIndex;
 		for(lastIndex=index;lastIndex<displayItems.size();lastIndex++){
-			if(!displayItems.get(lastIndex).getContentID().equals(status.id))
-				break;
+			StatusDisplayItem item=displayItems.get(lastIndex);
+			String id=deleteContent ? item.getContentID() : item.parentID;
+			if(!id.equals(status.id)) break;
 		}
 		displayItems.subList(index, lastIndex).clear();
 		adapter.notifyItemRangeRemoved(index, lastIndex-index);
 	}
 
 	protected void removeStatus(Status status){
-		Status removeStatus=status.getContentStatus();
-		String removeId=removeStatus.id;
+		boolean deleteContent=status==status.getContentStatus();
 		int ancestorFirstIndex=-1, ancestorLastIndex=-1;
 		for(int i=0;i<displayItems.size();i++){
 			StatusDisplayItem item=displayItems.get(i);
-			if(item.getContentID().equals(removeId)){
-				removeStatusDisplayItems(removeStatus, i, ancestorFirstIndex, ancestorLastIndex);
+			String id=deleteContent ? item.getContentID() : item.parentID;
+			if(id.equals(status.id)){
+				removeStatusDisplayItems(status, i, ancestorFirstIndex, ancestorLastIndex, deleteContent);
 				ancestorFirstIndex=ancestorLastIndex=-1;
 				continue;
 			}
-			if(item.getContentID().equals(removeStatus.inReplyToId)){
+			if(id.equals(status.inReplyToId)){
 				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
 				ancestorLastIndex=i;
 			}
 		}
-		iterateRemoveStatus(data, removeId);
-		iterateRemoveStatus(preloadedData, removeId);
+		iterateRemoveStatus(data, status.id);
+		iterateRemoveStatus(preloadedData, status.id);
 	}
 
 	@Override
@@ -289,6 +292,18 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			if(status==null)
 				return;
 			removeStatus(status);
+		}
+
+		@Subscribe
+		public void onReblogDeleted(ReblogDeletedEvent ev){
+			if(!ev.accountID.equals(accountID))
+				return;
+			for(Status item : data){
+				if(item.getContentStatus().id.equals(ev.statusID) && item.reblog!=null){
+					removeStatus(item);
+					break;
+				}
+			}
 		}
 
 		@Subscribe

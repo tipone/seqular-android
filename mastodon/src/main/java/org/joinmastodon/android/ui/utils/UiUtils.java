@@ -626,10 +626,6 @@ public class UiUtils {
 				.show();
 	}
 
-	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback) {
-		confirmDeletePost(activity, accountID, status, resultCallback, false);
-	}
-
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback, boolean forRedraft) {
 		Status s=status.getContentStatus();
 		showConfirmationAlert(activity,

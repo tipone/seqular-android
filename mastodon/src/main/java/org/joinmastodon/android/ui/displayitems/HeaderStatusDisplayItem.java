@@ -218,14 +218,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 									public void onSuccess(GetStatusSourceText.Response result){
 										args.putString("sourceText", result.text);
 										args.putString("sourceSpoiler", result.spoilerText);
-										if (result.contentType != null) {
+										if(result.contentType!=null){
 											args.putString("sourceContentType", result.contentType.name());
 										}
-										if (redraft) {
+										if(redraft){
 											UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{
 												Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 											}, true);
-										} else {
+										}else{
 											Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 										}
 									}
@@ -242,7 +242,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					if (item.scheduledStatus != null) {
 						UiUtils.confirmDeleteScheduledPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.scheduledStatus, ()->{});
 					} else {
-						UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{});
+						UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{}, false);
 					}
 				}else if(id==R.id.pin || id==R.id.unpin) {
 					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
