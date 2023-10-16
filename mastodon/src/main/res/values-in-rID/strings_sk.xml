@@ -260,7 +260,7 @@
     <string name="sk_followed_as">Diikuti dari %s</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Awali peringatan konten dengan “re:” saat membalas</string>
     <string name="sk_settings_collapse_long_posts">Tutup kiriman yang sangat panjang</string>
-    <string name="sk_unfinished_attachments">Perbaiki lampiran\?</string>
+    <string name="sk_unfinished_attachments">Mengunggah lampiran</string>
     <string name="sk_unfinished_attachments_message">Beberapa lampiran belum selesai diunggah.</string>
     <string name="sk_settings_hide_fab">Sembunyikan tombol Komposer</string>
     <string name="sk_in_reply">Dalam balasan</string>
@@ -401,4 +401,5 @@
     <string name="sk_set_as_default">Tetapkan sebagai bawaan</string>
     <string name="sk_settings_color_palette_default">Bawaan (%s)</string>
     <string name="sk_settings_underlined_links">Tautan yang digarisbawahi</string>
+    <string name="sk_edit_alt_text">Sunting teks alternatif</string>
 </resources>
