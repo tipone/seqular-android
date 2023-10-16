@@ -15,8 +15,8 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 	public final Poll poll;
 
-	public PollFooterStatusDisplayItem(String parentID, String contentStatusID, BaseStatusListFragment parentFragment, Poll poll){
-		super(parentID, contentStatusID, parentFragment);
+	public PollFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Poll poll){
+		super(parentID, parentFragment);
 		this.poll=poll;
 	}
 

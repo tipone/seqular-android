@@ -14,7 +14,7 @@ public class HashtagStatusDisplayItem extends StatusDisplayItem{
 	public final Hashtag tag;
 
 	public HashtagStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Hashtag tag){
-		super(parentID, null, parentFragment);
+		super(parentID, parentFragment);
 		this.tag=tag;
 	}
 

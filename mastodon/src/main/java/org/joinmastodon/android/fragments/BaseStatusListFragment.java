@@ -470,7 +470,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		int firstOptionIndex=-1, footerIndex=-1;
 		int i=0;
 		for(StatusDisplayItem item:displayItems){
-			if(item.contentStatusID.equals(statusForContent.id)){
+			if(item.getContentID().equals(statusForContent.id)){
 				if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
 					firstOptionIndex=i;
 				}else if(item instanceof PollFooterStatusDisplayItem){
@@ -485,7 +485,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		List<StatusDisplayItem> pollItems=displayItems.subList(firstOptionIndex, footerIndex+1);
 		int prevSize=pollItems.size();
 		pollItems.clear();
-		StatusDisplayItem.buildPollItems(parentID, statusForContent.id, this, poll, pollItems);
+		StatusDisplayItem.buildPollItems(parentID, this, poll, pollItems);
 		if(prevSize!=pollItems.size()){
 			adapter.notifyItemRangeRemoved(firstOptionIndex, prevSize);
 			adapter.notifyItemRangeInserted(firstOptionIndex, pollItems.size());

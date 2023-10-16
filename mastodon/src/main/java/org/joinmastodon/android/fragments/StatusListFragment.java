@@ -30,7 +30,6 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -144,12 +143,12 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		}
 	}
 
-	protected Status getContentStatusByID(String id){
+	public Status getContentStatusByID(String id){
 		Status s=getStatusByID(id);
 		return s==null ? null : s.getContentStatus();
 	}
 
-	protected Status getStatusByID(String id){
+	public Status getStatusByID(String id){
 		for(Status s:data){
 			if(s.id.equals(id)){
 				return s;
@@ -179,54 +178,51 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	private void iterateRemoveStatus(List<Status> l, String id){
 		Iterator<Status> it=l.iterator();
 		while(it.hasNext()){
-			if(Objects.equals(it.next().getContentStatus().id, id)){
+			if(it.next().getContentStatus().id.equals(id)){
 				it.remove();
 			}
 		}
 	}
 
-	private int removeStatusDisplayItems(Status status, int index, int ancestorFirstIndex, int ancestorLastIndex, int indexOffset){
+	private void removeStatusDisplayItems(Status status, int index, int ancestorFirstIndex, int ancestorLastIndex){
 		// did we find an ancestor that is also the status' neighbor?
 		if(ancestorFirstIndex>=0 && ancestorLastIndex==index-1){
 			for(int i=ancestorFirstIndex; i<=ancestorLastIndex; i++){
 				StatusDisplayItem item=displayItems.get(i);
 				// update ancestor to have no descendant anymore
-				if(item.contentStatusID.equals(status.inReplyToId)) item.hasDescendantNeighbor=false;
+				if(item.getContentID().equals(status.inReplyToId)) item.hasDescendantNeighbor=false;
 			}
-			adapter.notifyItemRangeChanged(ancestorFirstIndex-indexOffset, ancestorLastIndex-ancestorFirstIndex+1);
+			adapter.notifyItemRangeChanged(ancestorFirstIndex, ancestorLastIndex-ancestorFirstIndex+1);
 		}
 
-		if(index==-1) return 0;
+		if(index==-1) return;
 		int lastIndex;
 		for(lastIndex=index;lastIndex<displayItems.size();lastIndex++){
-			if(!displayItems.get(lastIndex).contentStatusID.equals(status.id))
+			if(!displayItems.get(lastIndex).getContentID().equals(status.id))
 				break;
 		}
-		int count=lastIndex-index;
-		displayItems.subList(index-indexOffset, lastIndex-indexOffset).clear();
-		adapter.notifyItemRangeRemoved(index-indexOffset, lastIndex-index);
-		return count;
+		displayItems.subList(index, lastIndex).clear();
+		adapter.notifyItemRangeRemoved(index, lastIndex-index);
 	}
 
 	protected void removeStatus(Status status){
 		Status removeStatus=status.getContentStatus();
 		String removeId=removeStatus.id;
-		iterateRemoveStatus(data, removeId);
-		iterateRemoveStatus(preloadedData, removeId);
 		int ancestorFirstIndex=-1, ancestorLastIndex=-1;
-		int offset=0;
 		for(int i=0;i<displayItems.size();i++){
 			StatusDisplayItem item=displayItems.get(i);
-			if(Objects.equals(item.contentStatusID, removeId)){
-				offset+=removeStatusDisplayItems(removeStatus, i, ancestorFirstIndex, ancestorLastIndex, offset);
+			if(item.getContentID().equals(removeId)){
+				removeStatusDisplayItems(removeStatus, i, ancestorFirstIndex, ancestorLastIndex);
 				ancestorFirstIndex=ancestorLastIndex=-1;
 				continue;
 			}
-			if(Objects.equals(item.contentStatusID, removeStatus.inReplyToId)){
+			if(item.getContentID().equals(removeStatus.inReplyToId)){
 				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
 				ancestorLastIndex=i;
 			}
 		}
+		iterateRemoveStatus(data, removeId);
+		iterateRemoveStatus(preloadedData, removeId);
 	}
 
 	@Override

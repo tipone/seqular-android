@@ -14,7 +14,7 @@ public class AccountStatusDisplayItem extends StatusDisplayItem{
 	public final AccountViewModel account;
 
 	public AccountStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Account account){
-		super(parentID, null, parentFragment);
+		super(parentID, parentFragment);
 		this.account=new AccountViewModel(account, parentFragment.getAccountID());
 	}
 

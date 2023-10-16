@@ -28,7 +28,7 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 	private final UrlImageLoaderRequest imgRequest;
 
 	public LinkCardStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status){
-		super(parentID, status.id, parentFragment);
+		super(parentID, parentFragment);
 		this.status=status;
 		if(status.card.image!=null)
 			imgRequest=new UrlImageLoaderRequest(status.card.image, 1000, 1000);

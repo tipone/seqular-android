@@ -13,6 +13,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
@@ -22,6 +24,7 @@ import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTabFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
+import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
@@ -53,7 +56,7 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public abstract class StatusDisplayItem{
-	public final String parentID, contentStatusID;
+	public final String parentID;
 	public final BaseStatusListFragment<?> parentFragment;
 	public boolean inset;
 	public int index;
@@ -83,10 +86,19 @@ public abstract class StatusDisplayItem{
 		this.isDirectDescendant = isDirectDescendant;
 	}
 
-	public StatusDisplayItem(String parentID, String contentStatusID, BaseStatusListFragment<?> parentFragment){
+	public StatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment){
 		this.parentID=parentID;
-		this.contentStatusID=contentStatusID;
 		this.parentFragment=parentFragment;
+	}
+
+	@NonNull
+	public String getContentID(){
+		if(parentFragment instanceof StatusListFragment slf){
+			Status s=slf.getContentStatusByID(parentID);
+			return s!=null ? s.id : parentID;
+		}else{
+			return parentID;
+		}
 	}
 
 	public abstract Type getType();
@@ -246,7 +258,7 @@ public abstract class StatusDisplayItem{
 		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
 		}else if(hasSpoiler){
-			contentItems.add(new DummyStatusDisplayItem(parentID, statusForContent.id, fragment));
+			contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
 		}
 
 		List<Attachment> imageAttachments=statusForContent.mediaAttachments.stream().filter(att->att.type.isImage()).collect(Collectors.toList());
@@ -270,11 +282,11 @@ public abstract class StatusDisplayItem{
 				contentItems.add(new AudioStatusDisplayItem(parentID, fragment, statusForContent, att));
 			}
 			if(att.type==Attachment.Type.UNKNOWN){
-				contentItems.add(new FileStatusDisplayItem(parentID, statusForContent.id, fragment, att));
+				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att));
 			}
 		}
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, statusForContent.id, fragment, statusForContent.poll, contentItems);
+			buildPollItems(parentID, fragment, statusForContent.poll, contentItems);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty()){
 			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent));
@@ -301,7 +313,7 @@ public abstract class StatusDisplayItem{
 		boolean inset=(flags & FLAG_INSET)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
 		if((inset || footer==null) && (flags & FLAG_CHECKABLE)==0){
-			items.add(new DummyStatusDisplayItem(parentID, statusForContent.id, fragment));
+			items.add(new DummyStatusDisplayItem(parentID, fragment));
 			// in case we ever need the dummy to display a margin for the media grid again:
 			// (i forgot why we apparently don't need this anymore)
 			// !contentItems.isEmpty() && contentItems
@@ -322,13 +334,13 @@ public abstract class StatusDisplayItem{
 				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
 	}
 
-	public static void buildPollItems(String parentID, String contentStatusID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
+	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
 		int i=0;
 		for(Poll.Option opt:poll.options){
-			items.add(new PollOptionStatusDisplayItem(parentID, contentStatusID, poll, i, fragment));
+			items.add(new PollOptionStatusDisplayItem(parentID, poll, i, fragment));
 			i++;
 		}
-		items.add(new PollFooterStatusDisplayItem(parentID, contentStatusID, fragment, poll));
+		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll));
 	}
 
 	public enum Type{

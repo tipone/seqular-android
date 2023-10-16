@@ -15,8 +15,8 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 public class FileStatusDisplayItem extends StatusDisplayItem{
     private final Attachment attachment;
 
-    public FileStatusDisplayItem(String parentID, String contentStatusID, BaseStatusListFragment<?> parentFragment, Attachment attachment) {
-        super(parentID, contentStatusID, parentFragment);
+    public FileStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Attachment attachment) {
+        super(parentID, parentFragment);
         this.attachment=attachment;
     }
 

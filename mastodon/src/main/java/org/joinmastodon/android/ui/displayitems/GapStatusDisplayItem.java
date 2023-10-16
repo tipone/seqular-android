@@ -21,7 +21,7 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 	private final Status status;
 
 	public GapStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status){
-		super(parentID, null, parentFragment);
+		super(parentID, parentFragment);
 		this.status=status;
 	}
 

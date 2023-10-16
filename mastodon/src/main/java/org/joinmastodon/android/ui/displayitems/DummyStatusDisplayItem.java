@@ -12,8 +12,8 @@ import me.grishka.appkit.utils.V;
 
 public class DummyStatusDisplayItem extends StatusDisplayItem {
 
-	public DummyStatusDisplayItem(String parentID, String contentStatusID, BaseStatusListFragment<?> parentFragment) {
-		super(parentID, contentStatusID, parentFragment);
+	public DummyStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment) {
+		super(parentID, parentFragment);
 	}
 
 	@Override

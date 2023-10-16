@@ -57,7 +57,7 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 	public String sensitiveTitle;
 
 	public MediaGridStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, PhotoLayoutHelper.TiledLayoutResult tiledLayout, List<Attachment> attachments, Status status){
-		super(parentID, status.id, parentFragment);
+		super(parentID, parentFragment);
 		this.tiledLayout=tiledLayout;
 		this.viewPool=parentFragment.getAttachmentViewsPool();
 		this.attachments=attachments;

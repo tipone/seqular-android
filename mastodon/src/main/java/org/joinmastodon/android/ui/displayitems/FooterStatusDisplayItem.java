@@ -43,7 +43,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 	public boolean hideCounts;
 
 	public FooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status, String accountID){
-		super(parentID, status.id, parentFragment);
+		super(parentID, parentFragment);
 		this.status=status;
 		this.accountID=accountID;
 	}
