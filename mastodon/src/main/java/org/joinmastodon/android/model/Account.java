@@ -6,17 +6,12 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import org.joinmastodon.android.api.ObjectValidationException;
-import org.joinmastodon.android.api.RequiredField;
-import org.joinmastodon.android.api.requests.instance.GetInstance;
 import org.parceler.Parcel;
 
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
-
-import me.grishka.appkit.api.Callback;
-import me.grishka.appkit.api.ErrorResponse;
 
 /**
  * Represents a user of Mastodon and their associated profile.
@@ -163,26 +158,27 @@ public class Account extends BaseModel implements Searchable{
 		if(fields!=null){
 			for(AccountField f:fields)
 				f.postprocess();
-		} else {
-			fields = Collections.emptyList();
+		}else{
+			fields=Collections.emptyList();
 		}
 		if(emojis!=null){
 			for(Emoji e:emojis)
 				e.postprocess();
-		} else {
-			emojis = Collections.emptyList();
+		}else{
+			emojis=Collections.emptyList();
 		}
 		if(moved!=null)
 			moved.postprocess();
-		if(fqn == null) fqn = getFullyQualifiedName();
-		if(id == null) id = "";
-		if(username == null) username = "";
+		if(fqn==null) fqn=getFullyQualifiedName();
+		if(id==null) id="";
+		if(username==null) username="";
 		if(TextUtils.isEmpty(displayName))
-			displayName = !TextUtils.isEmpty(username) ? username : "";
-		if(acct == null) acct = "";
-		if(url == null) url = "";
-		if(note == null) note = "";
-		if(avatar == null) avatar = "";
+			displayName=!TextUtils.isEmpty(username) ? username : "";
+		if(acct==null) acct="";
+		if(url==null) url="";
+		if(note==null) note="";
+		if(avatar==null) avatar="";
+		if(displayName!=null) displayName='\u2068'+displayName+'\u2069';
 	}
 
 	public boolean isLocal(){
