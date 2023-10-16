@@ -150,7 +150,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	public LinearLayout mainLayout;
 	private SizeListenerLinearLayout contentView;
-	private TextView selfName, selfUsername, selfExtraText, extraText, pronouns;
+	private TextView selfName, selfUsername, selfExtraText, extraText;
 	private ImageView selfAvatar;
 	private Account self;
 	private String instanceDomain;
@@ -626,7 +626,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			});
 			View originalPost=view.findViewById(R.id.original_post);
 			extraText=view.findViewById(R.id.extra_text);
-			pronouns=view.findViewById(R.id.pronouns);
 			originalPost.setVisibility(View.VISIBLE);
 			originalPost.setOnClickListener(v->{
 				Bundle args=new Bundle();
@@ -1455,8 +1454,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void updateHeaders() {
-		UiUtils.setExtraTextInfo(getContext(), selfExtraText, null, false, false, localOnly || statusVisibility==StatusPrivacy.LOCAL, null);
-		if (replyTo != null) UiUtils.setExtraTextInfo(getContext(), extraText, pronouns, true, false, replyTo.localOnly || replyTo.visibility==StatusPrivacy.LOCAL, replyTo.account);
+		UiUtils.setExtraTextInfo(getContext(), selfExtraText, false, false, localOnly || statusVisibility==StatusPrivacy.LOCAL, null);
+		if (replyTo != null) UiUtils.setExtraTextInfo(getContext(), extraText, true, false, replyTo.localOnly || replyTo.visibility==StatusPrivacy.LOCAL, replyTo.account);
 	}
 
 	private void buildVisibilityPopup(View v){

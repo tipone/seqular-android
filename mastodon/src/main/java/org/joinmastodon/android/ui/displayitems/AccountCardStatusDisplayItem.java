@@ -149,7 +149,7 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 			followingCount.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			followingLabel.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			relationship=item.parentFragment.getRelationship(item.account.id);
-			UiUtils.setExtraTextInfo(item.parentFragment.getContext(), null, findViewById(R.id.pronouns), true, false, false, item.account);
+			UiUtils.setExtraTextInfo(item.parentFragment.getContext(), null,true, false, false, item.account);
 
 			if(item.notification.type==Notification.Type.FOLLOW_REQUEST && (relationship==null || !relationship.followedBy)){
 				actionWrap.setVisibility(View.GONE);

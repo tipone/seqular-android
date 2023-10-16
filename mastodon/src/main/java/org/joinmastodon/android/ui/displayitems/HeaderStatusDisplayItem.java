@@ -137,7 +137,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final TextView name, time, username, extraText, pronouns;
+		private final TextView name, time, username, extraText;
 		private final View collapseBtn, timeUsernameSeparator;
 		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, markAsRead, collapseBtnIcon, botIcon;
 		private final PopupMenu optionsMenu;
@@ -164,7 +164,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			collapseBtn=findViewById(R.id.collapse_btn);
 			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
 			extraText=findViewById(R.id.extra_text);
-			pronouns=findViewById(R.id.pronouns);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
 			avatar.setClipToOutline(true);
@@ -332,7 +331,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			if(TextUtils.isEmpty(item.extraText)){
 				if (item.status != null) {
 					boolean displayPronouns=item.parentFragment instanceof ThreadFragment ? GlobalUserPreferences.displayPronounsInThreads : GlobalUserPreferences.displayPronounsInTimelines;
-					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, pronouns, displayPronouns, item.status.visibility==StatusPrivacy.DIRECT, item.status.localOnly || item.status.visibility==StatusPrivacy.LOCAL, item.status.account);
+					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, displayPronouns, item.status.visibility==StatusPrivacy.DIRECT, item.status.localOnly || item.status.visibility==StatusPrivacy.LOCAL, item.status.account);
 				}
 			}else{
 				extraText.setVisibility(View.VISIBLE);
