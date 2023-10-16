@@ -396,6 +396,9 @@
     <string name="sk_post_contains_media">Kiriman berisi media</string>
     <string name="sk_blocked_accounts">Akun yang diblokir</string>
     <string name="sk_muted_accounts">Akun yang dibisukan</string>
-    <string name="sk_settings_like_icon">Gunakam hati sebagai ikon favorit</string>
+    <string name="sk_settings_like_icon">Gunakan hati sebagai ikon favorit</string>
     <string name="sk_recently_used">Baru-baru ini digunakan</string>
+    <string name="sk_set_as_default">Tetapkan sebagai bawaan</string>
+    <string name="sk_settings_color_palette_default">Bawaan (%s)</string>
+    <string name="sk_settings_underlined_links">Tautan yang digarisbawahi</string>
 </resources>

@@ -402,7 +402,10 @@
     <string name="sk_time_days">%d jours</string>
     <string name="sk_trending_posts_info_banner">Ces publications gagnent actuellement du terrain sur le Fediverse.</string>
     <string name="sk_blocked_accounts">Comptes bloqués</string>
-    <string name="sk_muted_accounts">Comptes silenciés</string>
+    <string name="sk_muted_accounts">Comptes masqués</string>
     <string name="sk_settings_like_icon">Utiliser le cœur comme icône pour les favoris</string>
     <string name="sk_recently_used">Utilisé récemment</string>
+    <string name="sk_set_as_default">Définir par défaut</string>
+    <string name="sk_settings_color_palette_default">Par défaut (%s)</string>
+    <string name="sk_settings_underlined_links">Liens soulignés</string>
 </resources>
