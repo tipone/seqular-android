@@ -96,7 +96,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 						GlobalUserPreferences.playGifs ? user.avatar : user.avatarStatic,
 				V.dp(50), V.dp(50));
 		this.accountID=accountID;
-		parsedName=new SpannableStringBuilder(user.displayName);
+		parsedName=new SpannableStringBuilder(user.getDisplayName());
 		this.status=status;
 		this.notification=notification;
 		this.scheduledStatus=scheduledStatus;

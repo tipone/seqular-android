@@ -326,7 +326,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		selfUsername=view.findViewById(R.id.self_username);
 		selfAvatar=view.findViewById(R.id.self_avatar);
 		selfExtraText=view.findViewById(R.id.self_extra_text);
-		HtmlParser.setTextWithCustomEmoji(selfName, self.displayName, self.emojis);
+		HtmlParser.setTextWithCustomEmoji(selfName, self.getDisplayName(), self.emojis);
 		selfUsername.setText('@'+self.username+'@'+instanceDomain);
 		if(self.avatar!=null)
 			ViewImageLoader.load(selfAvatar, null, new UrlImageLoaderRequest(self.avatar));
@@ -665,7 +665,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			moreBtn.setBackground(null);
 
 			TextView name = view.findViewById(R.id.name);
-			name.setText(HtmlParser.parseCustomEmoji(status.account.displayName, status.account.emojis));
+			name.setText(HtmlParser.parseCustomEmoji(status.account.getDisplayName(), status.account.emojis));
 			UiUtils.loadCustomEmojiInTextView(name);
 
 			String time = status==null || status.editedAt==null
@@ -699,7 +699,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 						.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(16)));
 			}
 
-			replyText.setText(getString(quote!=null? R.string.sk_quoting_user : R.string.in_reply_to, status.account.displayName));
+			replyText.setText(getString(quote!=null? R.string.sk_quoting_user : R.string.in_reply_to, status.account.getDisplayName()));
 			int visibilityNameRes = switch (status.visibility) {
 				case PUBLIC -> R.string.visibility_public;
 				case UNLISTED -> R.string.sk_visibility_unlisted;
@@ -707,7 +707,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				case DIRECT -> R.string.visibility_private;
 				case LOCAL -> R.string.sk_local_only;
 			};
-			replyText.setContentDescription(getString(R.string.in_reply_to, status.account.displayName) + ", " + getString(visibilityNameRes));
+			replyText.setContentDescription(getString(R.string.in_reply_to, status.account.getDisplayName()) + ", " + getString(visibilityNameRes));
 			replyText.setOnClickListener(v->{
 				scrollView.smoothScrollTo(0, 0);
 			});

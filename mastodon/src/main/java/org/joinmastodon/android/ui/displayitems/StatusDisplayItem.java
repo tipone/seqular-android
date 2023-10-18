@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -30,7 +29,6 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
 import org.joinmastodon.android.model.LegacyFilter;
-import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
 import org.joinmastodon.android.model.Notification;
@@ -41,7 +39,6 @@ import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.viewholders.AccountViewHolder;
-import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -142,11 +139,11 @@ public abstract class StatusDisplayItem{
 		String parentID = parent.getID();
 		String text = threadReply ? fragment.getString(R.string.sk_show_thread)
 				: account == null ? fragment.getString(R.string.sk_in_reply)
-				: status.reblog != null ? account.displayName
-				: fragment.getString(R.string.in_reply_to, account.displayName);
+				: status.reblog != null ? account.getDisplayName()
+				: fragment.getString(R.string.in_reply_to, account.getDisplayName());
 		String fullText = threadReply ? fragment.getString(R.string.sk_show_thread)
 				: account == null ? fragment.getString(R.string.sk_in_reply)
-				: fragment.getString(R.string.in_reply_to, account.displayName);
+				: fragment.getString(R.string.in_reply_to, account.getDisplayName());
 		return new ReblogOrReplyLineStatusDisplayItem(
 				parentID, fragment, text, account == null ? List.of() : account.emojis,
 				R.drawable.ic_fluent_arrow_reply_20sp_filled, null, null, fullText, status
@@ -176,7 +173,7 @@ public abstract class StatusDisplayItem{
 
 			if(status.reblog!=null){
 				boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
-				String text=fragment.getString(R.string.user_boosted, status.account.displayName);
+				String text=fragment.getString(R.string.user_boosted, status.account.getDisplayName());
 				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20sp_filled, isOwnPost ? status.visibility : null, i->{
 					args.putParcelable("profileAccount", Parcels.wrap(status.account));
 					Nav.go(fragment.getActivity(), ProfileFragment.class, args);

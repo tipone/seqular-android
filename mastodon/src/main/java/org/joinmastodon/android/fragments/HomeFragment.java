@@ -296,7 +296,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if(tab==R.id.tab_profile){
 			ArrayList<String> options=new ArrayList<>();
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
-				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
+				options.add(session.self.getDisplayName()+"\n("+session.self.username+"@"+session.domain+")");
 			}
 			new AccountSwitcherSheet(getActivity(), this).show();
 			return true;

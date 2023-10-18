@@ -330,9 +330,9 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 				coverRequest=new UrlImageLoaderRequest(account.header, 1000, 1000);
 			parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
 			if(account.emojis.isEmpty()){
-				parsedName=account.displayName;
+				parsedName= account.getDisplayName();
 			}else{
-				parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis);
+				parsedName=HtmlParser.parseCustomEmoji(account.getDisplayName(), account.emojis);
 				emojiHelper.setText(new SpannableStringBuilder(parsedName).append(parsedBio));
 			}
 		}

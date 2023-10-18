@@ -26,9 +26,7 @@ import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -53,9 +51,9 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 			coverRequest=new UrlImageLoaderRequest(account.header, 1000, 1000);
 		parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), parentFragment.getAccountID());
 		if(account.emojis.isEmpty()){
-			parsedName=account.displayName;
+			parsedName=account.getDisplayName();
 		}else{
-			parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis);
+			parsedName=HtmlParser.parseCustomEmoji(account.getDisplayName(), account.emojis);
 			emojiHelper.setText(new SpannableStringBuilder(parsedName).append(parsedBio));
 		}
 	}

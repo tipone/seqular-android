@@ -8,7 +8,7 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Bundle;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -27,6 +27,8 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.SplashFragment;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
+import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 
@@ -40,7 +42,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import me.grishka.appkit.FragmentStackActivity;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -282,7 +283,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 		@SuppressLint("SetTextI18n")
 		@Override
 		public void onBind(AccountSession item){
-			name.setText(item.self.displayName);
+			HtmlParser.setTextWithCustomEmoji(name, item.self.getDisplayName(), item.self.emojis);
 			username.setText(item.getFullUsername());
 			radioButton.setVisibility(externalShare ? View.GONE : View.VISIBLE);
 			extraBtnWrap.setVisibility(externalShare && openInApp ? View.VISIBLE : View.GONE);

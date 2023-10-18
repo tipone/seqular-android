@@ -266,7 +266,7 @@ public class AudioPlayerService extends Service{
 	private void updateNotification(boolean dismissable, boolean removeNotification){
 		Notification.Builder bldr=new Notification.Builder(this)
 				.setSmallIcon(R.drawable.ic_ntf_logo)
-				.setContentTitle(status.account.displayName)
+				.setContentTitle(status.account.getDisplayName())
 				.setContentText(HtmlParser.strip(status.content))
 				.setOngoing(!dismissable)
 				.setShowWhen(false)

@@ -64,7 +64,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 			knownAccounts.put(inReplyToAccount.id, inReplyToAccount);
 		data.add(mainStatus);
 		onAppendItems(Collections.singletonList(mainStatus));
-		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.displayName), mainStatus.account.emojis));
+		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.getDisplayName()), mainStatus.account.emojis));
 		transitionFinished = getArguments().getBoolean("noTransition", false);
 	}
 
