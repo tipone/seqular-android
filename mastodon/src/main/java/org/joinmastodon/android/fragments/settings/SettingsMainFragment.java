@@ -18,6 +18,7 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.viewmodel.ListItem;
+import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.HideableSingleViewRecyclerAdapter;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -59,6 +60,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 				new ListItem<>(R.string.settings_notifications, 0, R.drawable.ic_fluent_alert_24_regular, this::onNotificationsClick),
 				new ListItem<>(R.string.sk_settings_instance, 0, R.drawable.ic_fluent_server_24_regular, this::onInstanceClick),
 				new ListItem<>(getString(R.string.about_app, getString(R.string.sk_app_name)), null, R.drawable.ic_fluent_info_24_regular, this::onAboutClick, null, 0, true),
+				new ListItem<>(R.string.manage_accounts, 0, R.drawable.ic_fluent_person_swap_24_regular, this::onManageAccountsClick),
 				new ListItem<>(R.string.log_out, 0, R.drawable.ic_fluent_sign_out_24_regular, this::onLogOutClick, R.attr.colorM3Error, false)
 		));
 
@@ -67,7 +69,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 			data.add(3, new ListItem<>(R.string.settings_filters, 0, R.drawable.ic_fluent_filter_24_regular, this::onFiltersClick));
 
 		if(BuildConfig.DEBUG || BuildConfig.BUILD_TYPE.equals("appcenterPrivateBeta")){
-			data.add(0, new ListItem<>("Debug settings", null, R.drawable.ic_fluent_wrench_screwdriver_24_regular, ()->Nav.go(getActivity(), SettingsDebugFragment.class, makeFragmentArgs()), null, 0, true));
+			data.add(0, new ListItem<>("Debug settings", null, R.drawable.ic_fluent_wrench_screwdriver_24_regular, i->Nav.go(getActivity(), SettingsDebugFragment.class, makeFragmentArgs()), null, 0, true));
 		}
 
 		AccountSession session=AccountSessionManager.get(accountID);
@@ -128,35 +130,39 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 		return args;
 	}
 
-	private void onBehaviorClick(){
+	private void onBehaviorClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsBehaviorFragment.class, makeFragmentArgs());
 	}
 
-	private void onDisplayClick(){
+	private void onDisplayClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsDisplayFragment.class, makeFragmentArgs());
 	}
 
-	private void onPrivacyClick(){
+	private void onPrivacyClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsPrivacyFragment.class, makeFragmentArgs());
 	}
 
-	private void onFiltersClick(){
+	private void onFiltersClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsFiltersFragment.class, makeFragmentArgs());
 	}
 
-	private void onNotificationsClick(){
+	private void onNotificationsClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsNotificationsFragment.class, makeFragmentArgs());
 	}
 
-	private void onInstanceClick(){
+	private void onInstanceClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsInstanceFragment.class, makeFragmentArgs());
 	}
 
-	private void onAboutClick(){
+	private void onAboutClick(ListItem<?> item_){
 		Nav.go(getActivity(), SettingsAboutAppFragment.class, makeFragmentArgs());
 	}
 
-	private void onLogOutClick(){
+	private void onManageAccountsClick(ListItem<?> item){
+		new AccountSwitcherSheet(getActivity(), null).show();
+	}
+
+	private void onLogOutClick(ListItem<?> item_){
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		new M3AlertDialogBuilder(getActivity())
 				.setMessage(getString(R.string.confirm_log_out, session.getFullUsername()))

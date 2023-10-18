@@ -27,7 +27,6 @@ import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.HideableSingleViewRecyclerAdapter;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.unifiedpush.android.connector.RegistrationDialogContent;
 import org.unifiedpush.android.connector.UnifiedPush;
 
 import java.time.Instant;
@@ -73,21 +72,21 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		useUnifiedPush=!getDistributor(getContext()).isEmpty();
 
 		onDataLoaded(List.of(
-				pauseItem=new CheckableListItem<>(getString(R.string.pause_all_notifications), getPauseItemSubtitle(), CheckableListItem.Style.SWITCH, false, R.drawable.ic_fluent_alert_snooze_24_regular, ()->onPauseNotificationsClick(false)),
+				pauseItem=new CheckableListItem<>(getString(R.string.pause_all_notifications), getPauseItemSubtitle(), CheckableListItem.Style.SWITCH, false, R.drawable.ic_fluent_alert_snooze_24_regular, i->onPauseNotificationsClick(false)),
 				policyItem=new ListItem<>(R.string.settings_notifications_policy, 0, R.drawable.ic_fluent_people_24_regular, this::onNotificationsPolicyClick, 0, true),
 
-				mentionsItem=new CheckableListItem<>(R.string.notification_type_mentions_and_replies, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.mention, R.drawable.ic_fluent_mention_24_regular, ()->toggleCheckableItem(mentionsItem)),
-				boostsItem=new CheckableListItem<>(R.string.notification_type_reblog, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, ()->toggleCheckableItem(boostsItem)),
-				favoritesItem=new CheckableListItem<>(R.string.notification_type_favorite, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.favourite, R.drawable.ic_fluent_star_24_regular, ()->toggleCheckableItem(favoritesItem)),
-				followersItem=new CheckableListItem<>(R.string.notification_type_follow, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.follow, R.drawable.ic_fluent_person_add_24_regular, ()->toggleCheckableItem(followersItem)),
-				pollsItem=new CheckableListItem<>(R.string.notification_type_poll, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.poll, R.drawable.ic_fluent_poll_24_regular, ()->toggleCheckableItem(pollsItem)),
-				updateItem=new CheckableListItem<>(R.string.sk_notification_type_update, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.update, R.drawable.ic_fluent_history_24_regular, ()->toggleCheckableItem(updateItem)),
-				postsItem=new CheckableListItem<>(R.string.sk_notification_type_posts, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.status, R.drawable.ic_fluent_chat_24_regular, ()->toggleCheckableItem(postsItem), true),
+				mentionsItem=new CheckableListItem<>(R.string.notification_type_mentions_and_replies, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.mention, R.drawable.ic_fluent_mention_24_regular, i->toggleCheckableItem(mentionsItem)),
+				boostsItem=new CheckableListItem<>(R.string.notification_type_reblog, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, i->toggleCheckableItem(boostsItem)),
+				favoritesItem=new CheckableListItem<>(R.string.notification_type_favorite, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.favourite, R.drawable.ic_fluent_star_24_regular, i->toggleCheckableItem(favoritesItem)),
+				followersItem=new CheckableListItem<>(R.string.notification_type_follow, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.follow, R.drawable.ic_fluent_person_add_24_regular, i->toggleCheckableItem(followersItem)),
+				pollsItem=new CheckableListItem<>(R.string.notification_type_poll, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.poll, R.drawable.ic_fluent_poll_24_regular, i->toggleCheckableItem(pollsItem)),
+				updateItem=new CheckableListItem<>(R.string.sk_notification_type_update, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.update, R.drawable.ic_fluent_history_24_regular, i->toggleCheckableItem(updateItem)),
+				postsItem=new CheckableListItem<>(R.string.sk_notification_type_posts, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.status, R.drawable.ic_fluent_chat_24_regular, i->toggleCheckableItem(postsItem), true),
 
-				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, ()->toggleCheckableItem(uniformIconItem)),
-				deleteItem=new CheckableListItem<>(R.string.sk_settings_enable_delete_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enableDeleteNotifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, ()->toggleCheckableItem(deleteItem)),
-				onlyLatestItem=new CheckableListItem<>(R.string.sk_settings_single_notification, 0, CheckableListItem.Style.SWITCH, lp.keepOnlyLatestNotification, R.drawable.ic_fluent_convert_range_24_regular, ()->toggleCheckableItem(onlyLatestItem), true),
-				unifiedPushItem=new CheckableListItem<>(R.string.sk_settings_unifiedpush, 0, CheckableListItem.Style.SWITCH, useUnifiedPush, R.drawable.ic_fluent_alert_arrow_up_24_regular, this::onUnifiedPush, true)
+				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, i->toggleCheckableItem(uniformIconItem)),
+				deleteItem=new CheckableListItem<>(R.string.sk_settings_enable_delete_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enableDeleteNotifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, i->toggleCheckableItem(deleteItem)),
+				onlyLatestItem=new CheckableListItem<>(R.string.sk_settings_single_notification, 0, CheckableListItem.Style.SWITCH, lp.keepOnlyLatestNotification, R.drawable.ic_fluent_convert_range_24_regular, i->toggleCheckableItem(onlyLatestItem), true),
+				unifiedPushItem=new CheckableListItem<>(R.string.sk_settings_unifiedpush, 0, CheckableListItem.Style.SWITCH, useUnifiedPush, R.drawable.ic_fluent_alert_arrow_up_24_regular, i->onUnifiedPushClick(), true)
 		));
 
 		//only enable when distributors, who can receive notifications, are available
@@ -98,7 +97,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 
 		typeItems=List.of(mentionsItem, boostsItem, favoritesItem, followersItem, pollsItem, updateItem, postsItem);
 		pauseItem.checkedChangeListener=checked->onPauseNotificationsClick(true);
-		unifiedPushItem.checkedChangeListener=checked->onUnifiedPush();
+		unifiedPushItem.checkedChangeListener=checked->onUnifiedPushClick();
 		updatePolicyItem(null);
 		updatePauseItem();
 	}
@@ -254,7 +253,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		alert.getButton(AlertDialog.BUTTON_POSITIVE).setEnabled(false);
 	}
 
-	private void onNotificationsPolicyClick(){
+	private void onNotificationsPolicyClick(ListItem<?> item_){
 		String[] items=Stream.of(
 				R.string.notifications_policy_anyone,
 				R.string.notifications_policy_followed,
@@ -328,7 +327,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		}
 	}
 
-	private void onUnifiedPush(){
+	private void onUnifiedPushClick(){
 		if(getDistributor(getContext()).isEmpty()){
 			List<String> distributors = UnifiedPush.getDistributors(getContext(), new ArrayList<>());
 			showUnifiedPushRegisterDialog(distributors);
