@@ -27,7 +27,6 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 		super(context, attrs, defStyleAttr);
 		TypedArray ta=context.obtainStyledAttributes(attrs, R.styleable.HeaderSubtitleLinearLayout);
 		firstFraction=ta.getFraction(R.styleable.HeaderSubtitleLinearLayout_firstFraction, 1, 1, 0.5f);
-		System.out.println("FRACTION " + firstFraction);
 		ta.recycle();
 	}
 
