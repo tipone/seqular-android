@@ -1,27 +1,34 @@
 package org.joinmastodon.android.ui.views;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import me.grishka.appkit.utils.V;
+import org.joinmastodon.android.R;
 
 /**
  * A LinearLayout for TextViews. First child TextView will get truncated if it doesn't fit, remaining will always wrap content.
  */
 public class HeaderSubtitleLinearLayout extends LinearLayout{
+	private float firstFraction;
+
 	public HeaderSubtitleLinearLayout(Context context){
-		super(context);
+		this(context, null);
 	}
 
 	public HeaderSubtitleLinearLayout(Context context, AttributeSet attrs){
-		super(context, attrs);
+		this(context, attrs, 0);
 	}
 
 	public HeaderSubtitleLinearLayout(Context context, AttributeSet attrs, int defStyleAttr){
 		super(context, attrs, defStyleAttr);
+		TypedArray ta=context.obtainStyledAttributes(attrs, R.styleable.HeaderSubtitleLinearLayout);
+		firstFraction=ta.getFraction(R.styleable.HeaderSubtitleLinearLayout_firstFraction, 1, 1, 0.5f);
+		System.out.println("FRACTION " + firstFraction);
+		ta.recycle();
 	}
 
 	@Override
@@ -39,7 +46,7 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 			}
 			View first=getChildAt(0);
 			if(first instanceof TextView){
-				((TextView) first).setMaxWidth(Math.max(remainingWidth, fullWidth/3*2));
+				((TextView) first).setMaxWidth(Math.max(remainingWidth, (int)(firstFraction*fullWidth)));
 			}
 		}else{
 			View first=getChildAt(0);
@@ -57,5 +64,13 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 				count++;
 		}
 		return count;
+	}
+
+	public void setFirstFraction(float firstFraction){
+		this.firstFraction=firstFraction;
+	}
+
+	public float getFirstFraction(){
+		return firstFraction;
 	}
 }

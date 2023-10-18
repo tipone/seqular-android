@@ -114,4 +114,8 @@
 	<declare-styleable name="NestedRecyclerScrollView">
 		<attr name="takePriorityOverChildViews" format="boolean"/>
 	</declare-styleable>
+
+	<declare-styleable name="HeaderSubtitleLinearLayout">
+		<attr name="firstFraction" format="fraction"/>
+	</declare-styleable>
 </resources>
