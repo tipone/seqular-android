@@ -120,6 +120,8 @@ public class CacheController{
 				values.put("time", s.createdAt.getEpochSecond());
 				db.insertWithOnConflict("home_timeline", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			}
+			if(!clear)
+				db.delete("home_timeline", "`id` NOT IN (SELECT `id` FROM `home_timeline` ORDER BY `time` DESC LIMIT ?)", new String[]{"1000"});
 		});
 	}
 

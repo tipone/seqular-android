@@ -16,7 +16,6 @@ import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.List;
-import java.util.Objects;
 
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.imageloader.ImageCache;
@@ -26,21 +25,30 @@ import me.grishka.appkit.utils.V;
 
 public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 	private ListItem<Void> mediaCacheItem;
+	private AccountSession session;
+	private boolean timelineCacheCleared=false;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.about_app, getString(R.string.sk_app_name)));
-		AccountSession s=AccountSessionManager.get(accountID);
+		session=AccountSessionManager.get(accountID);
 		onDataLoaded(List.of(
 				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, i->UiUtils.openHashtagTimeline(getActivity(), accountID, getString(R.string.donate_hashtag))),
 				new ListItem<>(R.string.sk_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.repo_url))),
-				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+s.domain+"/terms")),
+				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")),
 				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
-				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick)
+				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick),
+				new ListItem<>(getString(R.string.sk_settings_clear_timeline_cache), session.domain, this::onClearTimelineCacheClick)
 		));
 
 		updateMediaCacheItem();
+	}
+
+	@Override
+	protected void onHidden(){
+		super.onHidden();
+		if(timelineCacheCleared) getActivity().recreate();
 	}
 
 	@Override
@@ -72,6 +80,12 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 				updateMediaCacheItem();
 			});
 		});
+	}
+
+	private void onClearTimelineCacheClick(ListItem<?> item){
+		session.getCacheController().putHomeTimeline(List.of(), true);
+		Toast.makeText(getContext(), R.string.sk_message_cache_cleared, Toast.LENGTH_SHORT).show();
+		timelineCacheCleared=true;
 	}
 
 	private void updateMediaCacheItem(){

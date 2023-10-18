@@ -412,4 +412,6 @@
 	<string name="sk_settings_underlined_links">Underlined links</string>
 	<string name="sk_set_as_default">Set as default</string>
 	<string name="sk_edit_alt_text">Edit alt text</string>
+    <string name="sk_settings_clear_timeline_cache">Clear home timeline cache</string>
+	<string name="sk_message_cache_cleared">Cleared message cache</string>
 </resources>

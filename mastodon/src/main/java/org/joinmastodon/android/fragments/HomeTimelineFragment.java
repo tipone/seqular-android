@@ -61,7 +61,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 						maxID=result.maxID;
 						AccountSessionManager.get(accountID).filterStatuses(result.items, getFilterContext());
 						onDataLoaded(result.items, !empty);
-						if(result.isFromCache())
+						if(result.isFromCache() && GlobalUserPreferences.loadNewPosts)
 							loadNewPosts();
 					}
 				});
@@ -74,8 +74,9 @@ public class HomeTimelineFragment extends StatusListFragment {
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
-				if(parent != null && parent.isNewPostsBtnShown() && list.getChildAdapterPosition(list.getChildAt(0))<=getMainAdapterOffset()){
-					parent.hideNewPostsButton();
+				if(parent!=null && list.getChildAdapterPosition(list.getChildAt(0))<=getMainAdapterOffset()){
+					if(parent.isNewPostsBtnShown()) parent.hideNewPostsButton();
+					else if(!dataLoading && GlobalUserPreferences.loadNewPosts) loadNewPosts();
 				}
 			}
 		});
@@ -87,7 +88,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 		if(!getArguments().getBoolean("noAutoLoad")){
 			if(!loaded && !dataLoading){
 				loadData();
-			}else if(!dataLoading){
+			}else if(!dataLoading && GlobalUserPreferences.loadNewPosts){
 				loadNewPosts();
 			}
 		}
@@ -121,7 +122,6 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	private void loadNewPosts(){
-		if (!GlobalUserPreferences.loadNewPosts) return;
 		dataLoading=true;
 		// we only care about the data that was actually retrieved from the timeline api since
 		// user-created statuses are probably in the wrong position
@@ -156,12 +156,14 @@ public class HomeTimelineFragment extends StatusListFragment {
 						}
 						if(!toAddUnfiltered.isEmpty())
 							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAddUnfiltered, false);
+						refreshDone();
 					}
 
 					@Override
 					public void onError(ErrorResponse error){
 						currentRequest=null;
 						dataLoading=false;
+						refreshDone();
 					}
 				})
 				.exec(accountID);
@@ -328,8 +330,8 @@ public class HomeTimelineFragment extends StatusListFragment {
 			currentRequest=null;
 			dataLoading=false;
 		}
-		if (parent != null) parent.hideNewPostsButton();
-		super.onRefresh();
+		if(parent!=null) parent.hideNewPostsButton();
+		loadNewPosts();
 	}
 
 	@Override
