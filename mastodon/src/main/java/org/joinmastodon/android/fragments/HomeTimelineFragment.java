@@ -123,10 +123,13 @@ public class HomeTimelineFragment extends StatusListFragment {
 	private void loadNewPosts(){
 		if (!GlobalUserPreferences.loadNewPosts) return;
 		dataLoading=true;
+		// we only care about the data that was actually retrieved from the timeline api since
+		// user-created statuses are probably in the wrong position
+		List<Status> dataFromTimeline=data.stream().filter(s->!s.fromStatusCreated).collect(Collectors.toList());
 		// The idea here is that we request the timeline such that if there are fewer than `limit` posts,
 		// we'll get the currently topmost post as last in the response. This way we know there's no gap
 		// between the existing and newly loaded parts of the timeline.
-		String sinceID=data.size()>1 ? data.get(1).id : "1";
+		String sinceID=dataFromTimeline.size()>1 ? dataFromTimeline.get(1).id : "1";
 		currentRequest=new GetHomeTimeline(null, null, 20, sinceID, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new Callback<>(){
 					@Override
@@ -137,7 +140,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 							return;
 						Status last=result.get(result.size()-1);
 						List<Status> toAdd;
-						if(!data.isEmpty() && last.id.equals(data.get(0).id)){ // This part intersects with the existing one
+						if(!dataFromTimeline.isEmpty() && last.id.equals(dataFromTimeline.get(0).id)){ // This part intersects with the existing one
 							toAdd=new ArrayList<>(result.subList(0, result.size()-1)); // Remove the already known last post
 						}else{
 							last.hasGapAfter=last.id;

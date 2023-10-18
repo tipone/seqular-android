@@ -26,22 +26,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
-import org.joinmastodon.android.api.ObjectValidationException;
-import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
-import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
-import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.utils.StatusTextEncoder;
-import org.parceler.Parcel;
 
 import java.lang.reflect.Type;
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Objects;
 import java.util.regex.Pattern;
 
 @Parcel
@@ -104,6 +95,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	private transient String strippedText;
 	public transient TranslationState translationState=TranslationState.HIDDEN;
 	public transient Translation translation;
+	public transient boolean fromStatusCreated;
 
 	public Status(){}
 
