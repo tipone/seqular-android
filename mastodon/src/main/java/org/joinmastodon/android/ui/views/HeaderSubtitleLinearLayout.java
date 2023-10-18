@@ -27,7 +27,8 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 	@Override
 	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec){
 		if(getLayoutChildCount()>1){
-			int remainingWidth=MeasureSpec.getSize(widthMeasureSpec);
+			int fullWidth=MeasureSpec.getSize(widthMeasureSpec);
+			int remainingWidth=fullWidth;
 			for(int i=1;i<getChildCount();i++){
 				View v=getChildAt(i);
 				if(v.getVisibility()==GONE)
@@ -36,12 +37,9 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 				LayoutParams lp=(LayoutParams) v.getLayoutParams();
 				remainingWidth-=v.getMeasuredWidth()+lp.leftMargin+lp.rightMargin;
 			}
-			if(getChildAt(0) instanceof TextView first){
-				// guaranteeing at least 64sp of width for the display name
-				first.setMaxWidth(Math.max(remainingWidth, V.sp(64)));
-			}
-			if(getChildAt(1) instanceof TextView second){
-				second.setMaxWidth(Math.max(remainingWidth, V.sp(120)));
+			View first=getChildAt(0);
+			if(first instanceof TextView){
+				((TextView) first).setMaxWidth(Math.max(remainingWidth, fullWidth/2));
 			}
 		}else{
 			View first=getChildAt(0);
