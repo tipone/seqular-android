@@ -39,7 +39,7 @@ public class HeaderSubtitleLinearLayout extends LinearLayout{
 			}
 			View first=getChildAt(0);
 			if(first instanceof TextView){
-				((TextView) first).setMaxWidth(Math.max(remainingWidth, fullWidth/2));
+				((TextView) first).setMaxWidth(Math.max(remainingWidth, fullWidth/3*2));
 			}
 		}else{
 			View first=getChildAt(0);
