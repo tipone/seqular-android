@@ -32,7 +32,6 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.text.style.BackgroundColorSpan;
 import android.text.style.ForegroundColorSpan;
-import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -124,11 +123,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.UUID;
+import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -166,7 +165,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	public LinearLayout mainLayout;
 	private SizeListenerLinearLayout contentView;
-	private TextView selfName, selfUsername, selfExtraText, extraText, pronouns;
+	private TextView selfName, selfUsername, selfExtraText, extraText;
 	private ImageView selfAvatar;
 	private Account self;
 	private String instanceDomain;
@@ -686,7 +685,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			});
 			View originalPost=view.findViewById(R.id.original_post);
 			extraText=view.findViewById(R.id.extra_text);
-			pronouns=view.findViewById(R.id.pronouns);
 			originalPost.setVisibility(View.VISIBLE);
 			originalPost.setOnClickListener(v->{
 				Bundle args=new Bundle();
@@ -863,6 +861,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 	}
 
+	@SuppressLint("ClickableViewAccessibility")
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(editingStatus==null ? R.menu.compose : R.menu.compose_edit, menu);
@@ -911,7 +910,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		languageButton = wrap.findViewById(R.id.language_btn);
 		languageButton.setOnClickListener(v->showLanguageAlert());
 		languageButton.setOnLongClickListener(v->{
-			languageButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 			if(!getLocalPrefs().bottomEncoding){
 				getLocalPrefs().bottomEncoding=true;
 				getLocalPrefs().save();
@@ -919,22 +917,27 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			return false;
 		});
 
-		if(GlobalUserPreferences.relocatePublishButton){
-			publishButtonRelocated.setOnClickListener(v -> {
-				if(GlobalUserPreferences.altTextReminders && editingStatus==null)
-					checkAltTextsAndPublish();
-				else
-					publish();
-			});
-		} else {
-			publishButton.setOnClickListener(v -> {
-				if(GlobalUserPreferences.altTextReminders && editingStatus==null)
-					checkAltTextsAndPublish();
-				else
-					publish();
-			});
-		}
+		publishButton.setOnClickListener(v->{
+			Consumer<Boolean> draftCheckComplete=(isDraft)->{
+				if(GlobalUserPreferences.altTextReminders && !isDraft) checkAltTextsAndPublish();
+				else publish();
+			};
 
+			boolean isAlreadyDraft=scheduledAt!=null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT);
+			if(editingStatus!=null && scheduledAt!=null && isAlreadyDraft) {
+				new M3AlertDialogBuilder(getActivity())
+						.setTitle(R.string.sk_save_draft)
+						.setMessage(R.string.sk_save_draft_message)
+						.setPositiveButton(R.string.save, (d, w)->draftCheckComplete.accept(isAlreadyDraft))
+						.setNegativeButton(R.string.publish, (d, w)->{
+							updateScheduledAt(null);
+							draftCheckComplete.accept(false);
+						})
+						.show();
+			}else{
+				draftCheckComplete.accept(isAlreadyDraft);
+			}
+		});
 		draftsBtn.setOnClickListener(v-> draftOptionsPopup.show());
 		draftsBtn.setOnTouchListener(draftOptionsPopup.getDragToOpenListener());
 		updateScheduledAt(scheduledAt != null ? scheduledAt : scheduledStatus != null ? scheduledStatus.scheduledAt : null);
@@ -945,8 +948,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				? languageResolver.fromOrFallback(prefs.postingDefaultLanguage)
 				: languageResolver.getDefault());
 
-		if (isInstancePixelfed()) spoilerBtn.setVisibility(View.GONE);
-		if (isInstancePixelfed() || (editingStatus != null && scheduledStatus == null)) {
+		if(isInstancePixelfed()) spoilerBtn.setVisibility(View.GONE);
+		if(isInstancePixelfed() || (editingStatus!=null && !redraftStatus)) {
 			// editing an already published post
 			draftsBtn.setVisibility(View.GONE);
 		}
@@ -1077,7 +1080,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	@Override
 	protected int getNavigationIconDrawableResource(){
-		return R.drawable.ic_baseline_close_24;
+		return R.drawable.ic_fluent_dismiss_24_regular;
 	}
 
 	@Override
@@ -1146,31 +1149,23 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		overlayParams.token=mainEditText.getWindowToken();
 		wm.addView(sendingOverlay, overlayParams);
 
-		if(GlobalUserPreferences.relocatePublishButton){
-			publishButtonRelocated.setEnabled(false);
-		} else {
-			publishButton.setEnabled(false);
-		}
-
+		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setEnabled(false);
 		V.setVisibilityAnimated(sendProgress, View.VISIBLE);
 
 		mediaViewController.saveAltTextsBeforePublishing(this::actuallyPublish, this::handlePublishError);
 	}
 
 	private void actuallyPublish(){
-		actuallyPublish(false);
-	}
-	private void actuallyPublish(boolean force){
 		String text=mainEditText.getText().toString();
 		CreateStatus.Request req=new CreateStatus.Request();
-		if ("bottom".equals(postLang.encoding)) {
-			text = new StatusTextEncoder(Bottom::encode).encode(text);
-			req.spoilerText = "bottom-encoded emoji spam";
+		if("bottom".equals(postLang.encoding)){
+			text=new StatusTextEncoder(Bottom::encode).encode(text);
+			req.spoilerText="bottom-encoded emoji spam";
 		}
-		if (localOnly &&
+		if(localOnly &&
 				AccountSessionManager.get(accountID).getLocalPreferences().glitchInstance &&
-				!GLITCH_LOCAL_ONLY_PATTERN.matcher(text).matches()) {
-			text += " " + GLITCH_LOCAL_ONLY_SUFFIX;
+				!GLITCH_LOCAL_ONLY_PATTERN.matcher(text).matches()){
+			text+=" "+GLITCH_LOCAL_ONLY_SUFFIX;
 		}
 		req.status=text;
 		req.localOnly=localOnly;
@@ -1183,19 +1178,6 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			if(editingStatus != null){
 				req.mediaAttributes=mediaViewController.getAttachmentAttributes();
 			}
-		}
-		// ask whether to publish now when editing an existing draft
-		if (!force && editingStatus != null && scheduledAt != null && scheduledAt.isAfter(DRAFTS_AFTER_INSTANT)) {
-			new M3AlertDialogBuilder(getActivity())
-					.setTitle(R.string.sk_save_draft)
-					.setMessage(R.string.sk_save_draft_message)
-					.setPositiveButton(R.string.save, (d, w) -> actuallyPublish(true))
-					.setNegativeButton(R.string.publish, (d, w) -> {
-						updateScheduledAt(null);
-						actuallyPublish();
-					})
-					.show();
-			return;
 		}
 		if(replyTo!=null || (editingStatus != null && editingStatus.inReplyToId!=null)){
 			req.inReplyToId=editingStatus!=null ? editingStatus.inReplyToId : replyTo.id;
@@ -1303,13 +1285,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		wm.removeView(sendingOverlay);
 		sendingOverlay=null;
 		V.setVisibilityAnimated(sendProgress, View.GONE);
-
-		if(GlobalUserPreferences.relocatePublishButton) {
-			publishButtonRelocated.setEnabled(true);
-		} else {
-			publishButton.setEnabled(true);
-		}
-
+		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setEnabled(true);
 		if(error instanceof MastodonErrorResponse me){
 			new M3AlertDialogBuilder(getActivity())
 					.setTitle(R.string.post_failed)
@@ -1397,20 +1373,20 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void confirmDiscardDraftAndFinish(){
-		boolean attachmentsPending = mediaViewController.areAnyAttachmentsNotDone();
-		if (attachmentsPending) new M3AlertDialogBuilder(getActivity())
+		boolean attachmentsPending=mediaViewController.areAnyAttachmentsNotDone();
+		if(attachmentsPending) new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_unfinished_attachments)
 				.setMessage(R.string.sk_unfinished_attachments_message)
-				.setPositiveButton(R.string.edit, (d, w) -> {})
-				.setNegativeButton(R.string.discard, (d, w) -> Nav.finish(this))
+				.setPositiveButton(R.string.ok, (d, w)->{})
+				.setNegativeButton(R.string.discard, (d, w)->Nav.finish(this))
 				.show();
 		else new M3AlertDialogBuilder(getActivity())
-				.setTitle(editingStatus != null ? R.string.sk_confirm_save_changes : R.string.sk_confirm_save_draft)
-				.setPositiveButton(R.string.save, (d, w) -> {
-					updateScheduledAt(scheduledAt == null ? getDraftInstant() : scheduledAt);
+				.setTitle(editingStatus!=null ? R.string.sk_confirm_save_changes : R.string.sk_confirm_save_draft)
+				.setPositiveButton(R.string.save, (d, w)->{
+					updateScheduledAt(scheduledAt==null ? getDraftInstant() : scheduledAt);
 					publish();
 				})
-				.setNegativeButton(R.string.discard, (d, w) -> Nav.finish(this))
+				.setNegativeButton(R.string.discard, (d, w)->Nav.finish(this))
 				.show();
 	}
 
@@ -1615,8 +1591,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void updateHeaders() {
-		UiUtils.setExtraTextInfo(getContext(), selfExtraText, null, false, false, localOnly || statusVisibility==StatusPrivacy.LOCAL, null);
-		if (replyTo != null) UiUtils.setExtraTextInfo(getContext(), extraText, pronouns, true, false, replyTo.localOnly || replyTo.visibility==StatusPrivacy.LOCAL, replyTo.account);
+		UiUtils.setExtraTextInfo(getContext(), selfExtraText, false, false, localOnly || statusVisibility==StatusPrivacy.LOCAL, null);
+		if (replyTo != null) UiUtils.setExtraTextInfo(getContext(), extraText, true, false, replyTo.localOnly || replyTo.visibility==StatusPrivacy.LOCAL, replyTo.account);
 	}
 
 	private void buildVisibilityPopup(View v){

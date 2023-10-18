@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.TypefaceSpan;
@@ -25,6 +26,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.ListsFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
@@ -98,6 +100,9 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		contextMenu=new PopupMenu(fragment.getActivity(), menuAnchor);
 		contextMenu.inflate(R.menu.profile);
 		contextMenu.setOnMenuItemClickListener(this::onContextMenuItemSelected);
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI())
+			contextMenu.getMenu().setGroupDividerEnabled(true);
+		UiUtils.enablePopupMenuIcons(fragment.getContext(), contextMenu);
 
 		setStyle(AccessoryType.BUTTON, false);
 	}
@@ -212,14 +217,20 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		Menu menu=contextMenu.getMenu();
 		Account account=item.account;
 
-		menu.findItem(R.id.share).setTitle(fragment.getString(R.string.share_user, account.getDisplayUsername()));
 		menu.findItem(R.id.manage_user_lists).setTitle(fragment.getString(R.string.sk_lists_with_user, account.getShortUsername()));
-		menu.findItem(R.id.mute).setTitle(fragment.getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getDisplayUsername()));
-		menu.findItem(R.id.block).setTitle(fragment.getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getDisplayUsername()));
-		menu.findItem(R.id.report).setTitle(fragment.getString(R.string.report_user, account.getDisplayUsername()));
+		MenuItem mute=menu.findItem(R.id.mute);
+		mute.setTitle(fragment.getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
+		UiUtils.insetPopupMenuIcon(fragment.getContext(), mute);
+		menu.findItem(R.id.block).setTitle(fragment.getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
+		menu.findItem(R.id.report).setTitle(fragment.getString(R.string.report_user, account.getShortUsername()));
+		menu.findItem(R.id.manage_user_lists).setVisible(relationship.following);
+		menu.findItem(R.id.soft_block).setVisible(relationship.followedBy && !relationship.following);
 		MenuItem hideBoosts=menu.findItem(R.id.hide_boosts);
 		if(relationship.following){
-			hideBoosts.setTitle(fragment.getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getDisplayUsername()));
+			hideBoosts.setTitle(fragment.getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getShortUsername()));
+			hideBoosts.setIcon(relationship.showingReblogs ? R.drawable.ic_fluent_arrow_repeat_all_off_24_regular : R.drawable.ic_fluent_arrow_repeat_all_24_regular);
+			UiUtils.insetPopupMenuIcon(fragment.getContext(), hideBoosts);
 			hideBoosts.setVisible(true);
 		}else{
 			hideBoosts.setVisible(false);
@@ -274,6 +285,8 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 			UiUtils.confirmToggleMuteUser(fragment.getActivity(), accountID, account, relationship.muting, this::updateRelationship);
 		}else if(id==R.id.block){
 			UiUtils.confirmToggleBlockUser(fragment.getActivity(), accountID, account, relationship.blocking, this::updateRelationship);
+		}else if(id==R.id.soft_block){
+			UiUtils.confirmSoftBlockUser(fragment.getActivity(), accountID, account, this::updateRelationship);
 		}else if(id==R.id.report){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -303,6 +316,12 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 					})
 					.wrapProgress(fragment.getActivity(), R.string.loading, false)
 					.exec(accountID);
+		}else if(id==R.id.manage_user_lists){
+			final Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putString("profileAccount", account.id);
+			args.putString("profileDisplayUsername", account.getDisplayUsername());
+			Nav.go(fragment.getActivity(), ListsFragment.class, args);
 		}
 		return true;
 	}

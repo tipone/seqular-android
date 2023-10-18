@@ -18,7 +18,7 @@ import me.grishka.appkit.utils.V;
 
 public class GapStatusDisplayItem extends StatusDisplayItem{
 	public boolean loading;
-	private Status status;
+	private final Status status;
 
 	public GapStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status){
 		super(parentID, parentFragment);

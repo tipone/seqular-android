@@ -139,7 +139,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<HeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final TextView name, time, username, extraText, pronouns;
+		private final TextView name, time, username, extraText;
 		private final View collapseBtn, timeUsernameSeparator;
 		private final ImageView avatar, more, visibility, deleteNotification, unreadIndicator, markAsRead, collapseBtnIcon, botIcon;
 		private final PopupMenu optionsMenu;
@@ -166,7 +166,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			collapseBtn=findViewById(R.id.collapse_btn);
 			collapseBtnIcon=findViewById(R.id.collapse_btn_icon);
 			extraText=findViewById(R.id.extra_text);
-			pronouns=findViewById(R.id.pronouns);
 			avatar.setOnClickListener(this::onAvaClick);
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(12));
 			avatar.setClipToOutline(true);
@@ -211,7 +210,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					}else if(item.scheduledStatus!=null){
 						args.putString("sourceText", item.status.text);
 						args.putString("sourceSpoiler", item.status.spoilerText);
-						args.putBoolean("redraftStatus", true);
 						args.putParcelable("scheduledStatus", Parcels.wrap(item.scheduledStatus));
 						Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 					}else{
@@ -221,14 +219,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 									public void onSuccess(GetStatusSourceText.Response result){
 										args.putString("sourceText", result.text);
 										args.putString("sourceSpoiler", result.spoilerText);
-										if (result.contentType != null) {
+										if(result.contentType!=null){
 											args.putString("sourceContentType", result.contentType.name());
 										}
-										if (redraft) {
+										if(redraft){
 											UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{
 												Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 											}, true);
-										} else {
+										}else{
 											Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
 										}
 									}
@@ -245,7 +243,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					if (item.scheduledStatus != null) {
 						UiUtils.confirmDeleteScheduledPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.scheduledStatus, ()->{});
 					} else {
-						UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{});
+						UiUtils.confirmDeletePost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, s->{}, false);
 					}
 				}else if(id==R.id.pin || id==R.id.unpin) {
 					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
@@ -337,7 +335,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			if(TextUtils.isEmpty(item.extraText)){
 				if (item.status != null) {
 					boolean displayPronouns=item.parentFragment instanceof ThreadFragment ? GlobalUserPreferences.displayPronounsInThreads : GlobalUserPreferences.displayPronounsInTimelines;
-					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, pronouns, displayPronouns, item.status.visibility==StatusPrivacy.DIRECT, item.status.localOnly || item.status.visibility==StatusPrivacy.LOCAL, item.status.account);
+					UiUtils.setExtraTextInfo(item.parentFragment.getContext(), extraText, displayPronouns, item.status.visibility==StatusPrivacy.DIRECT, item.status.localOnly || item.status.visibility==StatusPrivacy.LOCAL, item.status.account);
 				}
 			}else{
 				extraText.setVisibility(View.VISIBLE);

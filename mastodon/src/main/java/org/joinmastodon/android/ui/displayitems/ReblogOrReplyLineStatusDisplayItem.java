@@ -10,10 +10,8 @@ import android.text.SpannableStringBuilder;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
@@ -40,7 +38,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	private StatusPrivacy visibility;
 	@DrawableRes
 	private int iconEnd;
-	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper(), fullTextEmojiHelper;
+	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private View.OnClickListener handleClick;
 	public boolean needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
@@ -58,21 +56,13 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			HtmlParser.parseCustomEmoji(ssb, emojis);
 		this.text=ssb;
 		emojiHelper.setText(ssb);
+		this.fullText=fullText;
 		this.icon=icon;
 		this.status=status;
 		this.handleClick=handleClick;
 		TypedValue outValue = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
 		updateVisibility(visibility);
-
-		if (fullText != null) {
-			fullTextEmojiHelper = new CustomEmojiHelper();
-			SpannableStringBuilder fullTextSsb = new SpannableStringBuilder(fullText);
-			HtmlParser.parseCustomEmoji(fullTextSsb, emojis);
-			this.fullText=fullTextSsb;
-			fullTextEmojiHelper.setText(fullTextSsb);
-		}
-
 	}
 
 	public void updateVisibility(StatusPrivacy visibility) {
@@ -92,34 +82,27 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 	@Override
 	public int getImageCount(){
-		return emojiHelper.getImageCount();
+		return emojiHelper.getImageCount() + (extra!=null ? extra.emojiHelper.getImageCount() : 0);
 	}
 
 	@Override
 	public ImageLoaderRequest getImageRequest(int index){
-		return emojiHelper.getImageRequest(index);
+		CustomEmojiHelper helper=index<emojiHelper.getImageCount() ? emojiHelper : extra.emojiHelper;
+		return helper.getImageRequest(index%emojiHelper.getImageCount());
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text, extraText;
 		private final View separator;
-		private final ViewGroup parent;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_reblog_or_reply_line, parent);
-			this.parent = parent;
 			text=findViewById(R.id.text);
 			extraText=findViewById(R.id.extra_text);
 			separator=findViewById(R.id.separator);
-			if (GlobalUserPreferences.compactReblogReplyLine) {
-				parent.addOnLayoutChangeListener((v, l, t, right, b, ol, ot, oldRight, ob) -> {
-					if (right != oldRight) layoutLine();
-				});
-			}
 		}
 
 		private void bindLine(ReblogOrReplyLineStatusDisplayItem item, TextView text) {
-			if (item.fullText != null) text.setContentDescription(item.fullText);
 			text.setText(item.text);
 			text.setCompoundDrawablesRelativeWithIntrinsicBounds(item.icon, 0, item.iconEnd, 0);
 			text.setOnClickListener(item.handleClick);
@@ -133,7 +116,10 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 				case LOCAL -> R.string.sk_local_only;
 				default -> 0;
 			} : 0;
-			if (visibilityText != 0) text.setContentDescription(item.text + " (" + ctx.getString(visibilityText) + ")");
+			String visibilityDescription=visibilityText!=0 ? " (" + ctx.getString(visibilityText) + ")" : null;
+			text.setContentDescription(item.fullText==null && visibilityDescription==null ? null :
+					(item.fullText!=null ? item.fullText : item.text)
+							+ (visibilityDescription!=null ? visibilityDescription : ""));
 			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.N)
 				UiUtils.fixCompoundDrawableTintOnAndroid6(text);
 			text.setCompoundDrawableTintList(text.getTextColors());
@@ -146,31 +132,14 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			extraText.setVisibility(item.extra == null ? View.GONE : View.VISIBLE);
 			separator.setVisibility(item.extra == null ? View.GONE : View.VISIBLE);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), item.needBottomPadding ? V.dp(16) : 0);
-			layoutLine();
-		}
-
-		private void layoutLine() {
-			// layout line only if above header, compact and has extra
-			if (!GlobalUserPreferences.compactReblogReplyLine || item.extra == null) return;
-			itemView.measure(
-					View.MeasureSpec.makeMeasureSpec(parent.getWidth(), View.MeasureSpec.EXACTLY),
-					View.MeasureSpec.UNSPECIFIED);
-			boolean isVertical = ((LinearLayout) itemView).getOrientation() == LinearLayout.VERTICAL;
-			extraText.setPaddingRelative(extraText.getPaddingStart(), item.extra != null && isVertical ? 0 : V.dp(16), extraText.getPaddingEnd(), extraText.getPaddingBottom());
-			separator.setVisibility(item.extra != null && !isVertical ? View.VISIBLE : View.GONE);
-			((LinearLayout) itemView).removeView(extraText);
-			if (isVertical) ((LinearLayout) itemView).addView(extraText);
-			else ((LinearLayout) itemView).addView(extraText, 0);
-			text.setText(isVertical ? item.fullText : item.text);
-			if (item.extra != null) {
-				extraText.setText(isVertical ? item.extra.fullText : item.extra.text);
-			}
 		}
 
 		@Override
 		public void setImage(int index, Drawable image){
-			item.emojiHelper.setImageDrawable(index, image);
+			CustomEmojiHelper helper=index<item.emojiHelper.getImageCount() ? item.emojiHelper : item.extra.emojiHelper;
+			helper.setImageDrawable(index%item.emojiHelper.getImageCount(), image);
 			text.invalidate();
+			extraText.invalidate();
 		}
 
 		@Override

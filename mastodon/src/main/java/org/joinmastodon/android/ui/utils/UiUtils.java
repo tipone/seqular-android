@@ -68,6 +68,7 @@ import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
@@ -634,23 +635,25 @@ public class UiUtils {
 				.show();
 	}
 
-	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback) {
-		confirmDeletePost(activity, accountID, status, resultCallback, false);
-	}
-
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback, boolean forRedraft) {
+		Status s=status.getContentStatus();
 		showConfirmationAlert(activity,
 				forRedraft ? R.string.sk_confirm_delete_and_redraft_title : R.string.confirm_delete_title,
 				forRedraft ? R.string.sk_confirm_delete_and_redraft : R.string.confirm_delete,
 				forRedraft ? R.string.sk_delete_and_redraft : R.string.delete,
 				forRedraft ? R.drawable.ic_fluent_arrow_clockwise_28_regular : R.drawable.ic_fluent_delete_28_regular,
-				() -> new DeleteStatus(status.id)
+				() -> new DeleteStatus(s.id)
 						.setCallback(new Callback<>() {
 							@Override
 							public void onSuccess(Status result) {
 								resultCallback.accept(result);
-								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().deleteStatus(status.id);
-								E.post(new StatusDeletedEvent(status.id, accountID));
+								CacheController cache=AccountSessionManager.get(accountID).getCacheController();
+								cache.deleteStatus(s.id);
+								E.post(new StatusDeletedEvent(s.id, accountID));
+								if(status!=s){
+									cache.deleteStatus(status.id);
+									E.post(new StatusDeletedEvent(status.id, accountID));
+								}
 							}
 
 							@Override
@@ -852,30 +855,33 @@ public class UiUtils {
 					() -> follow(activity, accountID, account, false, progressCallback, resultCallback),
 					() -> progressCallback.accept(false));
 		} else {
-			follow(activity, accountID, account, false, progressCallback, resultCallback);
+			Runnable action=()->{
+				progressCallback.accept(true);
+				new SetAccountFollowed(account.id, !relationship.following && !relationship.requested, true)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(Relationship result){
+								resultCallback.accept(result);
+								progressCallback.accept(false);
+								if(!result.following && !result.requested){
+									E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
+								}
+							}
+
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(activity);
+								progressCallback.accept(false);
+							}
+						})
+						.exec(accountID);
+			};
+			if(relationship.following && GlobalUserPreferences.confirmUnfollow){
+				showConfirmationAlert(activity, null, activity.getString(R.string.unfollow_confirmation, account.getDisplayUsername()), activity.getString(R.string.unfollow), R.drawable.ic_fluent_person_delete_24_regular, action);
+			}else{
+				action.run();
+			}
 		}
-	}
-
-	private static void follow(Activity activity, String accountID, Account account, boolean followed, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
-		progressCallback.accept(true);
-		new SetAccountFollowed(account.id, followed, true, false)
-				.setCallback(new Callback<>(){
-					@Override
-					public void onSuccess(Relationship result){
-						resultCallback.accept(result);
-						progressCallback.accept(false);
-						if(!result.following && !result.requested){
-							E.post(new RemoveAccountPostsEvent(accountID, account.id, true));
-						}
-					}
-
-						@Override
-						public void onError(ErrorResponse error) {
-							error.showToast(activity);
-							progressCallback.accept(false);
-						}
-					})
-					.exec(accountID);
 	}
 
 
@@ -1161,23 +1167,21 @@ public class UiUtils {
 		return back;
 	}
 
-	public static boolean setExtraTextInfo(Context ctx, @Nullable TextView extraText, @Nullable TextView pronouns, boolean displayPronouns, boolean mentionedOnly, boolean localOnly, @Nullable Account account) {
-		List<String> extraParts = extraText!=null && (localOnly || mentionedOnly) ? new ArrayList<>() : null;
-		Optional<String> p=pronouns==null || !displayPronouns ? Optional.empty() : extractPronouns(ctx, account);
-		if(p.isPresent()) {
-			HtmlParser.setTextWithCustomEmoji(pronouns, p.get(), account.emojis);
-			pronouns.setVisibility(View.VISIBLE);
-		}else if(pronouns!=null){
-			pronouns.setVisibility(View.GONE);
-		}
+	public static boolean setExtraTextInfo(Context ctx, @Nullable TextView extraText, boolean displayPronouns, boolean mentionedOnly, boolean localOnly, @Nullable Account account) {
+		List<String> extraParts=new ArrayList<>();
+		Optional<String> p=!displayPronouns ? Optional.empty() : extractPronouns(ctx, account);
+
 		if(localOnly)
 			extraParts.add(ctx.getString(R.string.sk_inline_local_only));
 		if(mentionedOnly)
 			extraParts.add(ctx.getString(R.string.sk_inline_direct));
-		if(extraText!=null && extraParts!=null && !extraParts.isEmpty()) {
-			String sepp = ctx.getString(R.string.sk_separator);
-			String text = String.join(" " + sepp + " ", extraParts);
-			if(account == null) extraText.setText(text);
+		if(p.isPresent() && extraParts.isEmpty())
+			extraParts.add(p.get());
+
+		if(extraText!=null && !extraParts.isEmpty()) {
+			String sepp=ctx.getString(R.string.sk_separator);
+			String text=String.join(" " + sepp + " ", extraParts);
+			if(account==null) extraText.setText(text);
 			else HtmlParser.setTextWithCustomEmoji(extraText, text, account.emojis);
 			extraText.setVisibility(View.VISIBLE);
 			return true;
@@ -1753,14 +1757,17 @@ public class UiUtils {
 
 		Matcher matcher=trimPronouns.matcher(text);
 		if(!matcher.find()) return null;
-		String matched=matcher.group(1);
+		String pronouns=matcher.group(1);
 		// crude fix to allow for pronouns like "it(/she)"
 		int missingClosingParens=0;
-		for(char c : matched.toCharArray()){
+		for(char c : pronouns.toCharArray()){
 			if(c=='(') missingClosingParens++;
 			if(c==')') missingClosingParens--;
 		}
-		return matched+")".repeat(Math.max(0, missingClosingParens));
+		pronouns+=")".repeat(Math.max(0, missingClosingParens));
+		// if ends with an un-closed custom emoji
+		if(pronouns.matches("^.*\\s+:[a-zA-Z_]+$")) pronouns+=':';
+		return pronouns;
 	}
 
 	// https://stackoverflow.com/questions/9475589/how-to-get-string-from-different-locales-in-android
@@ -1772,7 +1779,7 @@ public class UiUtils {
 	}
 
 	public static Optional<String> extractPronouns(Context context, @Nullable Account account) {
-		if (account == null) return Optional.empty();
+		if (account==null || account.fields==null) return Optional.empty();
 		String localizedPronouns=context.getString(R.string.sk_pronouns_label).toLowerCase();
 
 		// higher = worse. the lowest number wins. also i'm sorry for writing this

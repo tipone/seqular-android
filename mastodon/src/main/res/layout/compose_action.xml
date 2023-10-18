@@ -5,8 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
     android:clipToPadding="false"
-    android:paddingHorizontal="16dp"
-    android:paddingBottom="4dp">
+    android:paddingHorizontal="16dp">
 
     <Button
         android:id="@+id/language_btn"
@@ -18,14 +17,17 @@
         android:drawableStart="@drawable/ic_fluent_local_language_16_regular"
         android:drawablePadding="8dp"
         android:drawableTint="?colorM3OnSurfaceVariant"
+		android:contentDescription="@string/language"
+		android:tooltipText="@string/language"
         android:textColor="?colorM3OnSurfaceVariant" />
 
     <ImageButton
         android:id="@+id/drafts_btn"
         style="@style/Widget.Mastodon.M3.Button.Text"
         android:background="@drawable/bg_button_m3_text_circle"
-        android:layout_width="40dp"
+        android:layout_width="48dp"
         android:layout_height="match_parent"
+		android:layout_marginStart="-6dp"
         android:src="@drawable/ic_fluent_clock_20_regular"
         android:tint="?colorM3OnSurfaceVariant"
         android:contentDescription="@string/sk_schedule_or_draft"
@@ -48,7 +50,7 @@
         android:id="@+id/publish_btn"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginStart="8dp"
+        android:layout_marginStart="6dp"
         android:singleLine="true"
         android:ellipsize="end"
         android:visibility="gone"

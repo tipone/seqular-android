@@ -21,8 +21,7 @@
 				android:orientation="horizontal"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:paddingHorizontal="4dp">
-				<!-- avatar width (46sp) / 2 - button width (24dp) / 2 -->
+				android:paddingHorizontal="15dp">
 
 				<FrameLayout
 					android:layout_weight="1"

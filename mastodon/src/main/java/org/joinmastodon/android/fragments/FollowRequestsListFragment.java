@@ -271,7 +271,7 @@ public class FollowRequestsListFragment extends MastodonRecyclerFragment<FollowR
 			followingCount.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			followingLabel.setVisibility(item.account.followingCount < 0 ? View.GONE : View.VISIBLE);
 			relationship=relationships.get(item.account.id);
-			UiUtils.setExtraTextInfo(getContext(), null, findViewById(R.id.pronouns), true, false, false, item.account);
+			UiUtils.setExtraTextInfo(getContext(), null, true, false, false, item.account);
 
 			if(relationship==null || !relationship.followedBy){
 				actionWrap.setVisibility(View.GONE);

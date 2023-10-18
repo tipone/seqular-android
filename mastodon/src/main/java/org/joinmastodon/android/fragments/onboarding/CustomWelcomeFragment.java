@@ -83,9 +83,10 @@ public class CustomWelcomeFragment extends InstanceCatalogFragment {
 
 	@Override
 	protected void updateFilteredList(){
-		boolean addFakeInstance = currentSearchQuery.length()>0 && currentSearchQuery.matches("^\\S+\\.[^\\.]+$");
+		String query=getCurrentSearchQuery();
+		boolean addFakeInstance=query.length()>0 && query.matches("^\\S+\\.[^\\.]+$");
 		if(addFakeInstance){
-			fakeInstance.domain=fakeInstance.normalizedDomain=currentSearchQuery;
+			fakeInstance.domain=fakeInstance.normalizedDomain=query;
 			fakeInstance.description=getString(R.string.loading_instance);
 			if(filteredData.size()>0 && filteredData.get(0)==fakeInstance){
 				if(list.findViewHolderForAdapterPosition(1) instanceof InstanceViewHolder ivh){
@@ -99,12 +100,12 @@ public class CustomWelcomeFragment extends InstanceCatalogFragment {
 		}
 		ArrayList<CatalogInstance> prevData=new ArrayList<>(filteredData);
 		filteredData.clear();
-		if(currentSearchQuery.length()>0){
+		if(query.length()>0){
 			boolean foundExactMatch=false;
 			for(CatalogInstance inst:data){
-				if(inst.normalizedDomain.contains(currentSearchQuery)){
+				if(inst.normalizedDomain.contains(query)){
 					filteredData.add(inst);
-					if(inst.normalizedDomain.equals(currentSearchQuery))
+					if(inst.normalizedDomain.equals(query))
 						foundExactMatch=true;
 				}
 			}

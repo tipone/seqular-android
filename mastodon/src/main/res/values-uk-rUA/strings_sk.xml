@@ -406,4 +406,7 @@
     <string name="sk_muted_accounts">Ігноровані облікові записи</string>
     <string name="sk_settings_like_icon">Використовувати серце як піктограму «Вподобане»</string>
     <string name="sk_recently_used">Недавно використані</string>
+    <string name="sk_settings_underlined_links">Підкреслені посилання</string>
+    <string name="sk_set_as_default">Установити типово</string>
+    <string name="sk_settings_color_palette_default">Усталена (%s)</string>
 </resources>

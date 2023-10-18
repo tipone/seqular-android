@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,8 +11,6 @@ import org.joinmastodon.android.api.requests.trends.GetTrendingHashtags;
 import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.model.Hashtag;
-import org.joinmastodon.android.ui.DividerItemDecoration;
-import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.HashtagChartView;
 
@@ -35,6 +34,8 @@ public class TrendingHashtagsFragment extends BaseRecyclerFragment<Hashtag> impl
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
+			setRetainInstance(true);
 	}
 
 	@Override

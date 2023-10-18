@@ -38,7 +38,7 @@
     <string name="sk_settings_enable_marquee">Laufschrift in Titelleisten deaktivieren</string>
     <string name="sk_settings_contribute">Zu Megalodon beitragen</string>
     <string name="sk_settings_show_federated_timeline">Föderierte Timeline anzeigen</string>
-    <string name="sk_notification_type_posts">Beitrags-​Benachrichtigungen</string>
+    <string name="sk_notification_type_posts">Beitrags-Benachrichtigungen</string>
     <string name="sk_settings_color_palette">Farbschema</string>
     <string name="sk_color_palette_pink">Pink</string>
     <string name="sk_color_palette_purple">Violett</string>

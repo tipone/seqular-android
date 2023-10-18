@@ -54,7 +54,6 @@ public class GlobalUserPreferences{
 	public static boolean collapseLongPosts;
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
-	public static boolean compactReblogReplyLine;
 	public static boolean allowRemoteLoading;
 	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
@@ -130,7 +129,6 @@ public class GlobalUserPreferences{
 		collapseLongPosts=prefs.getBoolean("collapseLongPosts", true);
 		spectatorMode=prefs.getBoolean("spectatorMode", false);
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
-		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
 		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
@@ -208,7 +206,6 @@ public class GlobalUserPreferences{
 				.putBoolean("collapseLongPosts", collapseLongPosts)
 				.putBoolean("spectatorMode", spectatorMode)
 				.putBoolean("autoHideFab", autoHideFab)
-				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
 				.putBoolean("forwardReportDefault", forwardReportDefault)
