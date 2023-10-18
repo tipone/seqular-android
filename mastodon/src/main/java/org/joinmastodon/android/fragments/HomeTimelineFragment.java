@@ -147,7 +147,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 							toAdd=result;
 						}
 						List<String> existingIds=data.stream().map(Status::getID).collect(Collectors.toList());
-						toAdd.removeIf(s->existingIds.contains(s.getID()));
+						toAdd.stream().filter(s->existingIds.contains(s.getID())).forEach(s->removeStatus(s));
 						List<Status> toAddUnfiltered=new ArrayList<>(toAdd);
 						AccountSessionManager.get(accountID).filterStatuses(toAdd, getFilterContext());
 						if(!toAdd.isEmpty()){
