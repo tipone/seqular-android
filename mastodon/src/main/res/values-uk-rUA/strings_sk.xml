@@ -134,7 +134,7 @@
     <string name="sk_list_replies_policy_none">ніхто</string>
     <string name="sk_delete_list">Видалити список</string>
     <string name="sk_delete_list_confirm">Ви впевнені, що хочете видалити список «%s»\?</string>
-    <string name="sk_edit_list_title">Редагувати список</string>
+    <string name="sk_edit_list_title">Змінити список</string>
     <string name="sk_your_lists">Ваші списки</string>
     <string name="sk_announcements">Оголошення</string>
     <string name="sk_settings_single_notification">Показувати лише одне сповіщення</string>
@@ -169,8 +169,8 @@
     <string name="sk_unpin_timeline">Відкріпити стрічку</string>
     <string name="sk_pinned_timeline">Прикріплено на головну</string>
     <string name="sk_unpinned_timeline">Відкріплено з головної</string>
-    <string name="sk_edit_timeline">Редагувати стрічку</string>
-    <string name="sk_edit_timelines">Редагувати стрічки</string>
+    <string name="sk_edit_timeline">Змінити стрічку</string>
+    <string name="sk_edit_timelines">Змінити стрічки</string>
     <string name="sk_notification_type_update">Змінені дописи</string>
     <string name="sk_notify_update">Зміни й поширені дописи</string>
     <string name="sk_icon_city">Місто</string>
