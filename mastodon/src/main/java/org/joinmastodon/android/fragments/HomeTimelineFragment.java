@@ -154,7 +154,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 							prependItems(toAdd, true);
 							if(parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 						}
-						if(toAddUnfiltered.isEmpty())
+						if(!toAddUnfiltered.isEmpty())
 							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAddUnfiltered, false);
 					}
 
