@@ -310,7 +310,7 @@
     <string name="sk_reacted">%s واکنش نشان داد</string>
     <string name="sk_external_share_title">هم‌رسانی با حساب</string>
     <string name="sk_settings_prefix_reply_cw_with_re">وارد کردن پیشوند CW با “re:” هنگام پاسخ دادن</string>
-    <string name="sk_unfinished_attachments">رفع مشکل پیوست‌ها؟</string>
+    <string name="sk_unfinished_attachments">درحال بارگذاری پیوست‌ها</string>
     <string name="sk_settings_allow_remote_loading">بارگیری اطلاعات از نمونه های راه دور</string>
     <string name="sk_error_loading_profile">بارگیری نمایه از طریق %s شکست خورد</string>
     <string name="sk_settings_reply_visibility_following">پاسخ به پی‌گیر های من</string>
@@ -363,7 +363,7 @@
     <string name="sk_button_react">واکنش با ایموجی</string>
     <string name="sk_again_for_system_keyboard">دوباره برای کیبورد سامانه ضربه بزنید</string>
     <string name="sk_enter_emoji_toast">لطفا یک ایموجی تایپ کنید</string>
-    <string name="sk_enter_emoji_hint">برای واکنش با ایموجی تایپ کنید</string>
+    <string name="sk_enter_emoji_hint">یک ایموجی بنویسید یا جستجو کنید</string>
     <plurals name="sk_users_reacted_with">
         <item quantity="one">یک کاربر با %2$s واکنش نشان داد</item>
         <item quantity="other">%1$,d کاربر با %2$s واکنش نشان دادند</item>
@@ -388,11 +388,19 @@
     <string name="sk_search_suicide_hotlines">یک راه کمکی بیابید</string>
     <string name="sk_do_not_show_again">دوباره نمایش نده</string>
     <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
-    <string name="sk_trending_posts_info_banner">اینها فرسته‌هایی هستند که در کارساز شما مورد توجه قرار می گیرند.</string>
+    <string name="sk_trending_posts_info_banner">این فرسته‌ها در حال حاضر در فدیورس مورد توجه قرار گرفته اند.</string>
     <string name="sk_load_missing_posts_below">بارگذاری فرسته‌های قدیمی‌تر</string>
     <string name="sk_search_suicide_title">اگر نیازمند کمک هستید…</string>
     <string name="sk_time_minutes">%d دقیقه</string>
     <string name="sk_search_suicide_message">اگر به دنبال نشانه ای برای خودکشی نیستید، همین است. لطفاً اگر نیازمند کمک هستید با شماره تلفن محلی خودکشی تماس بگیرید.</string>
-    <string name="sk_trending_links_info_banner">اینها اخباری است که در کارساز شما در مورد آنها صحبت می شود.</string>
+    <string name="sk_trending_links_info_banner">این اخبار در سراسر فدیورس درباره آنها صحبت می شود.</string>
     <string name="sk_post_contains_media">فرسته حاوی رسانه‌ست</string>
+    <string name="sk_set_as_default">تنظیم به‌عنوان پیش‌گزیده</string>
+    <string name="sk_settings_like_icon">استفاده از قلب به عنوان نماد برگزیدن</string>
+    <string name="sk_settings_color_palette_default">پیش‌گزیده (%s)</string>
+    <string name="sk_blocked_accounts">حساب‌های مسدود شده</string>
+    <string name="sk_settings_underlined_links">پیوندهای خط دار</string>
+    <string name="sk_muted_accounts">حساب‌های خموش شده</string>
+    <string name="sk_recently_used">اخیرا مورد استفاده قرار گرفته</string>
+    <string name="sk_edit_alt_text">ویرایش متن جایگزین</string>
 </resources>
