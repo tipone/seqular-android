@@ -291,7 +291,7 @@ public abstract class StatusDisplayItem{
 				contentItems.add(new AudioStatusDisplayItem(parentID, fragment, statusForContent, att));
 			}
 			if(att.type==Attachment.Type.UNKNOWN){
-				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att, statusForContent));
+				contentItems.add(new FileStatusDisplayItem(parentID, fragment, att));
 			}
 		}
 		if(statusForContent.poll!=null){

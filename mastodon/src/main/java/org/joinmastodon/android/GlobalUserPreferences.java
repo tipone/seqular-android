@@ -147,7 +147,6 @@ public class GlobalUserPreferences{
 		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
 		showDividers =prefs.getBoolean("showDividers", false);
 		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
-		compactReblogReplyLine=prefs.getBoolean("compactReblogReplyLine", true);
 		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
 		doubleTapToSearch =prefs.getBoolean("doubleTapToSearch", true);
 		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
@@ -224,7 +223,6 @@ public class GlobalUserPreferences{
 				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
 				.putBoolean("doubleTapToSearch", doubleTapToSearch)
 				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
-				.putBoolean("compactReblogReplyLine", compactReblogReplyLine)
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)

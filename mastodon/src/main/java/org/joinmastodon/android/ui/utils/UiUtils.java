@@ -830,30 +830,10 @@ public class UiUtils {
 	}
 
 	public static void performAccountAction(Activity activity, Account account, String accountID, Relationship relationship, Button button, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
-		if(relationship == null){
-			UiUtils.lookupAccount(button.getContext(), account, accountID, null, lookUpAccount -> {
-				if (lookUpAccount != null) {
-					progressCallback.accept(true);
-					follow(activity, accountID, lookUpAccount, true, progressCallback, resultCallback);
-				}
-			});
-			return;
-		}
-
 		if (relationship.blocking) {
 			confirmToggleBlockUser(activity, accountID, account, true, resultCallback);
 		} else if (relationship.muting) {
 			confirmToggleMuteUser(activity, accountID, account, true, resultCallback);
-		} else if (!relationship.following && !relationship.requested) {
-			follow(activity, accountID, account,  true, progressCallback, resultCallback);
-		} else if (GlobalUserPreferences.confirmUnfollow){
-			showConfirmationAlert(activity,
-					activity.getString(R.string.mo_confirm_unfollow_title),
-					activity.getString(R.string.mo_confirm_unfollow, account.getDisplayUsername()),
-					activity.getString(R.string.unfollow),
-					0,
-					() -> follow(activity, accountID, account, false, progressCallback, resultCallback),
-					() -> progressCallback.accept(false));
 		} else {
 			Runnable action=()->{
 				progressCallback.accept(true);

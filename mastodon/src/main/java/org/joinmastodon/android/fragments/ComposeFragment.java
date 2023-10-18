@@ -917,7 +917,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			return false;
 		});
 
-		publishButton.setOnClickListener(v->{
+		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setOnClickListener(v->{
 			Consumer<Boolean> draftCheckComplete=(isDraft)->{
 				if(GlobalUserPreferences.altTextReminders && !isDraft) checkAltTextsAndPublish();
 				else publish();
