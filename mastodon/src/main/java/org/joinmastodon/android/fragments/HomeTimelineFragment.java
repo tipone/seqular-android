@@ -147,16 +147,17 @@ public class HomeTimelineFragment extends StatusListFragment {
 							last.hasGapAfter=last.id;
 							toAdd=result;
 						}
+						if(!toAdd.isEmpty())
+							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(new ArrayList<>(toAdd), false);
+						// removing statuses that come up as duplicates (hopefully only posts and boosts that were locally created
+						// and thus were already prepended to the timeline earlier)
 						List<String> existingIds=data.stream().map(Status::getID).collect(Collectors.toList());
-						toAdd.stream().filter(s->existingIds.contains(s.getID())).forEach(s->removeStatus(s));
-						List<Status> toAddUnfiltered=new ArrayList<>(toAdd);
+						toAdd.removeIf(s->existingIds.contains(s.getID()));
 						AccountSessionManager.get(accountID).filterStatuses(toAdd, getFilterContext());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
 							if(parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 						}
-						if(!toAddUnfiltered.isEmpty())
-							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAddUnfiltered, false);
 						refreshDone();
 					}
 
