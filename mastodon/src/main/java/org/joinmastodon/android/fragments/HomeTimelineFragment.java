@@ -118,6 +118,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	public void onStatusCreated(Status status){
+		if(status.reblog!=null) return;
 		prependItems(Collections.singletonList(status), true);
 	}
 
