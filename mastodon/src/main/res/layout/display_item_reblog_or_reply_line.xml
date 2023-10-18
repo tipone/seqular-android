@@ -47,6 +47,6 @@
 		android:drawableTint="?colorM3OnSurface"
 		android:drawablePadding="6dp"
 		android:singleLine="true"
-		android:ellipsize="end"/>
+		android:ellipsize="middle"/>
 
 </org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>

@@ -176,12 +176,11 @@ public abstract class StatusDisplayItem{
 
 			if(status.reblog!=null){
 				boolean isOwnPost = AccountSessionManager.getInstance().isSelf(fragment.getAccountID(), status.account);
-				String fullText = fragment.getString(R.string.user_boosted, status.account.displayName);
-				String text = replyLine != null ? status.account.displayName : fullText;
+				String text=fragment.getString(R.string.user_boosted, status.account.displayName);
 				items.add(new ReblogOrReplyLineStatusDisplayItem(parentID, fragment, text, status.account.emojis, R.drawable.ic_fluent_arrow_repeat_all_20sp_filled, isOwnPost ? status.visibility : null, i->{
 					args.putParcelable("profileAccount", Parcels.wrap(status.account));
 					Nav.go(fragment.getActivity(), ProfileFragment.class, args);
-				}, fullText, status));
+				}, null, status));
 			} else if (!(status.tags.isEmpty() ||
 					fragment instanceof HashtagTimelineFragment ||
 					fragment instanceof ListTimelineFragment
