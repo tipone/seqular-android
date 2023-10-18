@@ -74,9 +74,8 @@ public class HomeTimelineFragment extends StatusListFragment {
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
-				if(parent!=null && list.getChildAdapterPosition(list.getChildAt(0))<=getMainAdapterOffset()){
-					if(parent.isNewPostsBtnShown()) parent.hideNewPostsButton();
-					else if(!dataLoading && GlobalUserPreferences.loadNewPosts) loadNewPosts();
+				if(parent!=null && parent.isNewPostsBtnShown() && list.getChildAdapterPosition(list.getChildAt(0))<=getMainAdapterOffset()){
+					parent.hideNewPostsButton();
 				}
 			}
 		});
