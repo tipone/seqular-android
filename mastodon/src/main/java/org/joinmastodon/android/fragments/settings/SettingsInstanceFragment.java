@@ -19,6 +19,7 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 import me.grishka.appkit.Nav;
@@ -88,22 +89,22 @@ public class SettingsInstanceFragment extends BaseSettingsFragment<Void> impleme
 	}
 
 	private void onDefaultContentTypeClick(ListItem<?> item_){
-		int selected=lp.defaultContentType.ordinal();
-		int[] newSelected={selected};
-		ContentType[] supportedContentTypes=Arrays.stream(ContentType.values())
+		List<ContentType> supportedContentTypes=Arrays.stream(ContentType.values())
 				.filter(t->t.supportedByInstance(getInstance().orElse(null)))
-				.toArray(ContentType[]::new);
-		String[] names=Arrays.stream(supportedContentTypes)
+				.collect(Collectors.toList());
+		int selected=supportedContentTypes.indexOf(lp.defaultContentType);
+		int[] newSelected={selected};
+		String[] names=supportedContentTypes.stream()
 				.map(ContentType::getName)
 				.map(this::getString)
 				.toArray(String[]::new);
 
 		new M3AlertDialogBuilder(getActivity())
-				.setTitle(R.string.settings_theme)
+				.setTitle(R.string.sk_settings_default_content_type)
 				.setSingleChoiceItems(names,
 						selected, (dlg, item)->newSelected[0]=item)
 				.setPositiveButton(R.string.ok, (dlg, item)->{
-					ContentType type=supportedContentTypes[newSelected[0]];
+					ContentType type=supportedContentTypes.get(newSelected[0]);
 					lp.defaultContentType=type;
 					defaultContentTypeItem.subtitleRes=type.getName();
 					rebindItem(defaultContentTypeItem);
