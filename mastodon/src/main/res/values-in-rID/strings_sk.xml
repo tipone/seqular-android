@@ -402,4 +402,8 @@
     <string name="sk_settings_color_palette_default">Bawaan (%s)</string>
     <string name="sk_settings_underlined_links">Tautan yang digarisbawahi</string>
     <string name="sk_edit_alt_text">Sunting teks alternatif</string>
+    <string name="sk_settings_default_visibility">Keterlihatan kiriman bawaan</string>
+    <string name="sk_settings_lock_account">Setujui pengikut baru secara manual</string>
+    <string name="sk_timeline_cache_cleared">Tembolok lini masa beranda dihapus</string>
+    <string name="sk_settings_clear_timeline_cache">Hapus tembolok lini masa beranda</string>
 </resources>
