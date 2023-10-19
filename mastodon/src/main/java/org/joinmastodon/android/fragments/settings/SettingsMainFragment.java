@@ -50,12 +50,13 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		account = AccountSessionManager.get(accountID);
+		account=AccountSessionManager.get(accountID);
 		setTitle(R.string.settings);
 		setSubtitle(account.getFullUsername());
 		onDataLoaded(List.of(
 				new ListItem<>(R.string.settings_behavior, 0, R.drawable.ic_fluent_settings_24_regular, this::onBehaviorClick),
 				new ListItem<>(R.string.settings_display, 0, R.drawable.ic_fluent_color_24_regular, this::onDisplayClick),
+				new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_fluent_shield_24_regular, this::onPrivacyClick),
 				new ListItem<>(R.string.settings_notifications, 0, R.drawable.ic_fluent_alert_24_regular, this::onNotificationsClick),
 				new ListItem<>(R.string.sk_settings_instance, 0, R.drawable.ic_fluent_server_24_regular, this::onInstanceClick),
 				new ListItem<>(getString(R.string.about_app, getString(R.string.sk_app_name)), null, R.drawable.ic_fluent_info_24_regular, this::onAboutClick, null, 0, true),
@@ -63,9 +64,8 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 				new ListItem<>(R.string.log_out, 0, R.drawable.ic_fluent_sign_out_24_regular, this::onLogOutClick, R.attr.colorM3Error, false)
 		));
 
-		Instance instance = AccountSessionManager.getInstance().getInstanceInfo(account.domain);
-		if (!instance.isAkkoma()){
-			data.add(2, new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_fluent_shield_24_regular, this::onPrivacyClick));
+		Instance instance=AccountSessionManager.getInstance().getInstanceInfo(account.domain);
+		if(!instance.isAkkoma()){
 			data.add(3, new ListItem<>(R.string.settings_filters, 0, R.drawable.ic_fluent_filter_24_regular, this::onFiltersClick));
 		}
 
