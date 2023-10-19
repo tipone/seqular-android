@@ -324,4 +324,5 @@
     <string name="sk_settings_continues_playback">تراكُب صوتي</string>
     <string name="sk_settings_enable_marquee">تمكين تمرير النص في عناوين الأشرطة</string>
     <string name="sk_settings_tabs_disable_swipe">تعطيل التمرير بين الألسِنة</string>
+    <string name="sk_settings_color_palette_default">افتراضي (%s)</string>
 </resources>
