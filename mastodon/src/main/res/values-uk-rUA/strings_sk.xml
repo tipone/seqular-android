@@ -410,4 +410,6 @@
     <string name="sk_set_as_default">Установити типово</string>
     <string name="sk_settings_color_palette_default">Усталена (%s)</string>
     <string name="sk_edit_alt_text">Змінити альтернативний текст</string>
+    <string name="sk_message_cache_cleared">Кеш повідомлень очищено</string>
+    <string name="sk_settings_clear_timeline_cache">Очистити кеш домашньої стрічки</string>
 </resources>
