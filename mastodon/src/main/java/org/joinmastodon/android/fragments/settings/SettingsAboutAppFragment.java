@@ -84,7 +84,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 
 	private void onClearTimelineCacheClick(ListItem<?> item){
 		session.getCacheController().putHomeTimeline(List.of(), true);
-		Toast.makeText(getContext(), R.string.sk_message_cache_cleared, Toast.LENGTH_SHORT).show();
+		Toast.makeText(getContext(), R.string.sk_timeline_cache_cleared, Toast.LENGTH_SHORT).show();
 		timelineCacheCleared=true;
 	}
 
