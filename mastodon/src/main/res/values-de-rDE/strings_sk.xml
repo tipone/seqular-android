@@ -255,7 +255,7 @@
     <string name="sk_expand">Erweitern</string>
     <string name="sk_collapse">Einklappen</string>
     <string name="sk_settings_collapse_long_posts">Sehr lange Beiträge einklappen</string>
-    <string name="sk_unfinished_attachments">Anhänge richtig stellen\?</string>
+    <string name="sk_unfinished_attachments">Anhänge laden hoch</string>
     <string name="sk_settings_hide_interaction">Interaktions-Buttons verstecken</string>
     <string name="sk_unfinished_attachments_message">Einige Anhänge sind nicht fertig hochgeladen.</string>
     <string name="sk_followed_as">Mit %s gefolgt</string>
@@ -410,4 +410,6 @@
     <string name="sk_settings_color_palette_default">Standardwert (%s)</string>
     <string name="sk_settings_underlined_links">Unterstrichene Links</string>
     <string name="sk_recently_used">Zuletzt verwendet</string>
+    <string name="sk_settings_clear_timeline_cache">Start-Timeline leeren</string>
+    <string name="sk_edit_alt_text">Bildbeschreibung bearbeiten</string>
 </resources>
