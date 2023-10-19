@@ -49,24 +49,24 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 
 		List<ListItem<Void>> items = new ArrayList<>(List.of(
 				languageItem=new ListItem<>(getString(R.string.default_post_language), postLanguage!=null ? postLanguage.getDisplayName(getContext()) : null, R.drawable.ic_fluent_local_language_24_regular, this::onDefaultLanguageClick),
-				altTextItem=new CheckableListItem<>(R.string.settings_alt_text_reminders, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.altTextReminders, R.drawable.ic_fluent_image_alt_text_24_regular, ()->toggleCheckableItem(altTextItem)),
+				altTextItem=new CheckableListItem<>(R.string.settings_alt_text_reminders, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.altTextReminders, R.drawable.ic_fluent_image_alt_text_24_regular, i->toggleCheckableItem(altTextItem)),
 				showPostsWithoutAltItem=new CheckableListItem<>(R.string.mo_settings_show_posts_without_alt, R.string.mo_settings_show_posts_without_alt_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showPostsWithoutAlt, R.drawable.ic_fluent_eye_tracking_on_24_regular, ()->toggleCheckableItem(showPostsWithoutAltItem)),
-				playGifsItem=new CheckableListItem<>(R.string.settings_gif, R.string.mo_setting_play_gif_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.playGifs, R.drawable.ic_fluent_gif_24_regular, ()->toggleCheckableItem(playGifsItem)),
+				playGifsItem=new CheckableListItem<>(R.string.settings_gif, R.string.mo_setting_play_gif_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.playGifs, R.drawable.ic_fluent_gif_24_regular, i->toggleCheckableItem(playGifsItem)),
 				unlistedRepliesItem=new CheckableListItem<>(R.string.mo_change_default_reply_visibility_to_unlisted, R.string.mo_setting_default_reply_privacy_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.defaultToUnlistedReplies, R.drawable.ic_fluent_lock_open_24_regular, ()->toggleCheckableItem(unlistedRepliesItem)),
-				overlayMediaItem=new CheckableListItem<>(R.string.sk_settings_continues_playback, R.string.sk_settings_continues_playback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.overlayMedia, R.drawable.ic_fluent_play_circle_hint_24_regular, ()->toggleCheckableItem(overlayMediaItem)),
-				customTabsItem=new CheckableListItem<>(R.string.settings_custom_tabs, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.useCustomTabs, R.drawable.ic_fluent_link_24_regular, ()->toggleCheckableItem(customTabsItem)),
-				confirmUnfollowItem=new CheckableListItem<>(R.string.settings_confirm_unfollow, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.confirmUnfollow, R.drawable.ic_fluent_person_delete_24_regular, ()->toggleCheckableItem(confirmUnfollowItem)),
-				confirmBoostItem=new CheckableListItem<>(R.string.settings_confirm_boost, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.confirmBoost, R.drawable.ic_fluent_arrow_repeat_all_24_regular, ()->toggleCheckableItem(confirmBoostItem)),
-				confirmDeleteItem=new CheckableListItem<>(R.string.settings_confirm_delete_post, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.confirmDeletePost, R.drawable.ic_fluent_delete_24_regular, ()->toggleCheckableItem(confirmDeleteItem)),
+				overlayMediaItem=new CheckableListItem<>(R.string.sk_settings_continues_playback, R.string.sk_settings_continues_playback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.overlayMedia, R.drawable.ic_fluent_play_circle_hint_24_regular, i->toggleCheckableItem(overlayMediaItem)),
+				customTabsItem=new CheckableListItem<>(R.string.settings_custom_tabs, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.useCustomTabs, R.drawable.ic_fluent_link_24_regular, i->toggleCheckableItem(customTabsItem)),
+				confirmUnfollowItem=new CheckableListItem<>(R.string.settings_confirm_unfollow, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.confirmUnfollow, R.drawable.ic_fluent_person_delete_24_regular, i->toggleCheckableItem(confirmUnfollowItem)),
+				confirmBoostItem=new CheckableListItem<>(R.string.settings_confirm_boost, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.confirmBoost, R.drawable.ic_fluent_arrow_repeat_all_24_regular, i->toggleCheckableItem(confirmBoostItem)),
+				confirmDeleteItem=new CheckableListItem<>(R.string.settings_confirm_delete_post, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.confirmDeletePost, R.drawable.ic_fluent_delete_24_regular, i->toggleCheckableItem(confirmDeleteItem)),
 				prefixRepliesItem=new ListItem<>(R.string.sk_settings_prefix_reply_cw_with_re, getPrefixWithRepliesString(), R.drawable.ic_fluent_arrow_reply_24_regular, this::onPrefixRepliesClick),
-				forwardReportsItem=new CheckableListItem<>(R.string.sk_settings_forward_report_default, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.forwardReportDefault, R.drawable.ic_fluent_arrow_forward_24_regular, ()->toggleCheckableItem(forwardReportsItem)),
-				loadNewPostsItem=new CheckableListItem<>(R.string.sk_settings_load_new_posts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.loadNewPosts, R.drawable.ic_fluent_arrow_sync_24_regular, this::onLoadNewPostsClick),
-				seeNewPostsBtnItem=new CheckableListItem<>(R.string.sk_settings_see_new_posts_button, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNewPostsButton, R.drawable.ic_fluent_arrow_up_24_regular, ()->toggleCheckableItem(seeNewPostsBtnItem)),
-				remoteLoadingItem=new CheckableListItem<>(R.string.sk_settings_allow_remote_loading, R.string.sk_settings_allow_remote_loading_explanation, CheckableListItem.Style.SWITCH, GlobalUserPreferences.allowRemoteLoading, R.drawable.ic_fluent_communication_24_regular, ()->toggleCheckableItem(remoteLoadingItem)),
+				forwardReportsItem=new CheckableListItem<>(R.string.sk_settings_forward_report_default, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.forwardReportDefault, R.drawable.ic_fluent_arrow_forward_24_regular, i->toggleCheckableItem(forwardReportsItem)),
+				loadNewPostsItem=new CheckableListItem<>(R.string.sk_settings_load_new_posts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.loadNewPosts, R.drawable.ic_fluent_arrow_sync_24_regular, i->onLoadNewPostsClick()),
+				seeNewPostsBtnItem=new CheckableListItem<>(R.string.sk_settings_see_new_posts_button, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNewPostsButton, R.drawable.ic_fluent_arrow_up_24_regular, i->toggleCheckableItem(seeNewPostsBtnItem)),
+				remoteLoadingItem=new CheckableListItem<>(R.string.sk_settings_allow_remote_loading, R.string.sk_settings_allow_remote_loading_explanation, CheckableListItem.Style.SWITCH, GlobalUserPreferences.allowRemoteLoading, R.drawable.ic_fluent_communication_24_regular, i->toggleCheckableItem(remoteLoadingItem)),
 				mentionRebloggerAutomaticallyItem=new CheckableListItem<>(R.string.mo_mention_reblogger_automatically, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.mentionRebloggerAutomatically, R.drawable.ic_fluent_comment_mention_24_regular, ()->toggleCheckableItem(mentionRebloggerAutomaticallyItem)),
 				hapticFeedbackItem=new CheckableListItem<>(R.string.mo_haptic_feedback, R.string.mo_setting_haptic_feedback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.hapticFeedback, R.drawable.ic_fluent_phone_vibrate_24_regular,()->toggleCheckableItem(hapticFeedbackItem), true),
-				showBoostsItem=new CheckableListItem<>(R.string.sk_settings_show_boosts, 0, CheckableListItem.Style.SWITCH, lp.showBoosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, ()->toggleCheckableItem(showBoostsItem)),
-				showRepliesItem=new CheckableListItem<>(R.string.sk_settings_show_replies, 0, CheckableListItem.Style.SWITCH, lp.showReplies, R.drawable.ic_fluent_arrow_reply_24_regular, ()->toggleCheckableItem(showRepliesItem))
+				showBoostsItem=new CheckableListItem<>(R.string.sk_settings_show_boosts, 0, CheckableListItem.Style.SWITCH, lp.showBoosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, i->toggleCheckableItem(showBoostsItem)),
+				showRepliesItem=new CheckableListItem<>(R.string.sk_settings_show_replies, 0, CheckableListItem.Style.SWITCH, lp.showReplies, R.drawable.ic_fluent_arrow_reply_24_regular, i->toggleCheckableItem(showRepliesItem))
 		));
 
 		if(isInstanceAkkoma()) items.add(
@@ -100,7 +100,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 	@Override
 	protected void doLoadData(int offset, int count){}
 
-	private void onDefaultLanguageClick(){
+	private void onDefaultLanguageClick(ListItem<?> item){
 		if (languageResolver == null) return;
 		ComposeLanguageAlertViewController vc=new ComposeLanguageAlertViewController(getActivity(), null, new ComposeLanguageAlertViewController.SelectedOption(postLanguage), null, languageResolver);
 		new M3AlertDialogBuilder(getActivity())
@@ -119,14 +119,14 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 				.show();
 	}
 
-	private void onPrefixRepliesClick(){
+	private void onPrefixRepliesClick(ListItem<?> item){
 		int selected=GlobalUserPreferences.prefixReplies.ordinal();
 		int[] newSelected={selected};
 		new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_settings_prefix_reply_cw_with_re)
 				.setSingleChoiceItems((String[]) IntStream.of(R.string.sk_settings_prefix_replies_never, R.string.sk_settings_prefix_replies_always, R.string.sk_settings_prefix_replies_to_others).mapToObj(this::getString).toArray(String[]::new),
-						selected, (dlg, item)->newSelected[0]=item)
-				.setPositiveButton(R.string.ok, (dlg, item)->{
+						selected, (dlg, which)->newSelected[0]=which)
+				.setPositiveButton(R.string.ok, (dlg, which)->{
 					GlobalUserPreferences.prefixReplies=GlobalUserPreferences.PrefixRepliesMode.values()[newSelected[0]];
 					prefixRepliesItem.subtitleRes=getPrefixWithRepliesString();
 					rebindItem(prefixRepliesItem);
@@ -135,7 +135,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 				.show();
 	}
 
-	private void onReplyVisibilityClick(){
+	private void onReplyVisibilityClick(ListItem<?> item){
 		AccountLocalPreferences lp=getLocalPrefs();
 		int selected=lp.timelineReplyVisibility==null ? 2 : switch(lp.timelineReplyVisibility){
 			case "following" -> 0;
@@ -146,8 +146,8 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_settings_prefix_reply_cw_with_re)
 				.setSingleChoiceItems((String[]) IntStream.of(R.string.sk_settings_reply_visibility_following, R.string.sk_settings_reply_visibility_self, R.string.sk_settings_reply_visibility_all).mapToObj(this::getString).toArray(String[]::new),
-						selected, (dlg, item)->newSelected[0]=item)
-				.setPositiveButton(R.string.ok, (dlg, item)->{
+						selected, (dlg, which)->newSelected[0]=which)
+				.setPositiveButton(R.string.ok, (dlg, which)->{
 					lp.timelineReplyVisibility=switch(newSelected[0]){
 						case 0 -> "following";
 						case 1 -> "self";
@@ -187,6 +187,8 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.showPostsWithoutAlt=showPostsWithoutAltItem.checked;
 		GlobalUserPreferences.save();
 		AccountLocalPreferences lp=getLocalPrefs();
+		boolean restartPlease=lp.showBoosts!=showBoostsItem.checked
+				|| lp.showReplies!=showRepliesItem.checked;
 		lp.showBoosts=showBoostsItem.checked;
 		lp.showReplies=showRepliesItem.checked;
 		lp.save();
@@ -197,6 +199,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 			s.preferences.postingDefaultLanguage=newPostLanguage.language.getLanguage();
 			s.savePreferencesLater();
 		}
+		if(restartPlease) getActivity().recreate();
 	}
 
 	@Override

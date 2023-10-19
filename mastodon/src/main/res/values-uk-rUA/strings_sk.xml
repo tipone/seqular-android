@@ -134,7 +134,7 @@
     <string name="sk_list_replies_policy_none">ніхто</string>
     <string name="sk_delete_list">Видалити список</string>
     <string name="sk_delete_list_confirm">Ви впевнені, що хочете видалити список «%s»\?</string>
-    <string name="sk_edit_list_title">Редагувати список</string>
+    <string name="sk_edit_list_title">Змінити список</string>
     <string name="sk_your_lists">Ваші списки</string>
     <string name="sk_announcements">Оголошення</string>
     <string name="sk_settings_single_notification">Показувати лише одне сповіщення</string>
@@ -169,8 +169,8 @@
     <string name="sk_unpin_timeline">Відкріпити стрічку</string>
     <string name="sk_pinned_timeline">Прикріплено на головну</string>
     <string name="sk_unpinned_timeline">Відкріплено з головної</string>
-    <string name="sk_edit_timeline">Редагувати стрічку</string>
-    <string name="sk_edit_timelines">Редагувати стрічки</string>
+    <string name="sk_edit_timeline">Змінити стрічку</string>
+    <string name="sk_edit_timelines">Змінити стрічки</string>
     <string name="sk_notification_type_update">Змінені дописи</string>
     <string name="sk_notify_update">Зміни й поширені дописи</string>
     <string name="sk_icon_city">Місто</string>
@@ -253,10 +253,10 @@
     <string name="sk_filtered">Відфільтровано: %s</string>
     <string name="sk_expand">Розгорнути</string>
     <string name="sk_collapse">Згорнути</string>
-    <string name="sk_unfinished_attachments">Виправити вкладення\?</string>
+    <string name="sk_unfinished_attachments">Вивантаження вкладень</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Префікс CW з «re:» під час відповіді</string>
     <string name="sk_settings_collapse_long_posts">Згортати надто довгі дописи</string>
-    <string name="sk_unfinished_attachments_message">Деякі вкладення не повністю завантажилися.</string>
+    <string name="sk_unfinished_attachments_message">Деякі вкладення вивантажилися не повністю.</string>
     <string name="sk_spectator_mode">Режим глядача</string>
     <string name="sk_settings_hide_interaction">Сховати кнопки взаємодії</string>
     <string name="sk_follow_as">Підписатися з іншого облікового запису</string>
@@ -409,4 +409,7 @@
     <string name="sk_settings_underlined_links">Підкреслені посилання</string>
     <string name="sk_set_as_default">Установити типово</string>
     <string name="sk_settings_color_palette_default">Усталена (%s)</string>
+    <string name="sk_edit_alt_text">Змінити альтернативний текст</string>
+    <string name="sk_message_cache_cleared">Кеш повідомлень очищено</string>
+    <string name="sk_settings_clear_timeline_cache">Очистити кеш домашньої стрічки</string>
 </resources>

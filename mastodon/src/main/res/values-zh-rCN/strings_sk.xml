@@ -253,7 +253,7 @@
     <string name="sk_notify_poll_results">投票结果</string>
     <string name="sk_expand">展开</string>
     <string name="sk_collapse">折叠</string>
-    <string name="sk_unfinished_attachments">修复附件？</string>
+    <string name="sk_unfinished_attachments">正在上传附件</string>
     <string name="sk_unfinished_attachments_message">部分附件尚未上传完毕。</string>
     <string name="sk_filtered">已过滤：%s</string>
     <string name="sk_settings_collapse_long_posts">折叠很长的嘟文</string>
@@ -400,4 +400,5 @@
     <string name="sk_set_as_default">设为默认</string>
     <string name="sk_settings_color_palette_default">默认（%s）</string>
     <string name="sk_settings_underlined_links">链接加下划线</string>
+    <string name="sk_edit_alt_text">编辑 ALT 文本</string>
 </resources>

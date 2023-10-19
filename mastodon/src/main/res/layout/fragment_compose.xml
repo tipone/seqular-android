@@ -110,7 +110,7 @@
 							android:layout_marginStart="8sp"
 							android:ellipsize="end"
 							android:singleLine="true"
-							android:textAppearance="@style/m3_title_medium"
+							android:textAppearance="@style/m3_body_medium"
 							android:textAlignment="viewStart"
 							android:textColor="?colorM3OnSurface"
 							tools:text="@string/sk_inline_local_only" />

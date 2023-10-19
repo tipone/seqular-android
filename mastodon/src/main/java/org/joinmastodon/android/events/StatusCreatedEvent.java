@@ -9,5 +9,6 @@ public class StatusCreatedEvent{
 	public StatusCreatedEvent(Status status, String accountID){
 		this.status=status;
 		this.accountID=accountID;
+		status.fromStatusCreated=true;
 	}
 }

@@ -125,7 +125,7 @@
     <string name="sk_reported">raportat</string>
     <string name="sk_sign_ups">Utilizatori înregistrați</string>
     <string name="sk_new_reports">Rapoarte noi</string>
-    <string name="sk_unfinished_attachments">Reparați atașamentele\?</string>
+    <string name="sk_unfinished_attachments">Încărcare atașamente</string>
     <string name="sk_unfinished_attachments_message">Unele atașamente nu au terminat încărcarea.</string>
     <string name="sk_content_type">Tipul de conținut</string>
     <string name="sk_content_type_unspecified">Nespecificat</string>
@@ -404,4 +404,5 @@
     <string name="sk_set_as_default">Setați ca implicit</string>
     <string name="sk_settings_color_palette_default">Implicit (%s)</string>
     <string name="sk_settings_underlined_links">Link-uri subliniate</string>
+    <string name="sk_edit_alt_text">Editați text alternativ</string>
 </resources>

@@ -254,7 +254,7 @@
     <string name="sk_expand">Ampliar</string>
     <string name="sk_collapse">Minimizar</string>
     <string name="sk_settings_collapse_long_posts">Minimizar publicaciones largas</string>
-    <string name="sk_unfinished_attachments">¿Corregir adjuntos\?</string>
+    <string name="sk_unfinished_attachments">Cargando los archivos adjuntos</string>
     <string name="sk_unfinished_attachments_message">Algunos adjuntos no han terminado de subirse.</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Añadir \"re\" a Avisos de Contenido</string>
     <string name="sk_spectator_mode">Modo espectador</string>
@@ -408,4 +408,5 @@
     <string name="sk_set_as_default">Establecer por defecto</string>
     <string name="sk_settings_color_palette_default">Por defecto (%s)</string>
     <string name="sk_settings_underlined_links">Enlaces subrayados</string>
+    <string name="sk_edit_alt_text">Editar el texto alternativo</string>
 </resources>

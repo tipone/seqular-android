@@ -60,34 +60,34 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		onDataLoaded(List.of(
 				themeItem=new ListItem<>(R.string.settings_theme, getAppearanceValue(), R.drawable.ic_fluent_weather_moon_24_regular, this::onAppearanceClick),
 				colorItem=new ListItem<>(getString(R.string.sk_settings_color_palette), getColorPaletteValue(), R.drawable.ic_fluent_color_24_regular, this::onColorClick),
-				trueBlackModeItem=new CheckableListItem<>(R.string.sk_settings_true_black, R.string.mo_setting_true_black_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.trueBlackTheme, R.drawable.ic_fluent_dark_theme_24_regular, this::onTrueBlackModeClick, true),
+				trueBlackModeItem=new CheckableListItem<>(R.string.sk_settings_true_black, R.string.mo_setting_true_black_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.trueBlackTheme, R.drawable.ic_fluent_dark_theme_24_regular, i->onTrueBlackModeClick(), true),
 				publishTextItem=new ListItem<>(getString(R.string.sk_settings_publish_button_text), getPublishButtonText(), R.drawable.ic_fluent_send_24_regular, this::onPublishTextClick),
 				autoRevealCWsItem=new ListItem<>(R.string.sk_settings_auto_reveal_equal_spoilers, getAutoRevealSpoilersText(), R.drawable.ic_fluent_eye_24_regular, this::onAutoRevealSpoilersClick),
 				relocatePublishButtonItem=new CheckableListItem<>(R.string.mo_relocate_publish_button, R.string.mo_setting_relocate_publish_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.relocatePublishButton, R.drawable.ic_fluent_arrow_autofit_down_24_regular, ()->toggleCheckableItem(relocatePublishButtonItem)),
-				revealCWsItem=new CheckableListItem<>(R.string.sk_settings_always_reveal_content_warnings, 0, CheckableListItem.Style.SWITCH, lp.revealCWs, R.drawable.ic_fluent_chat_warning_24_regular, ()->toggleCheckableItem(revealCWsItem)),
-				hideSensitiveMediaItem=new CheckableListItem<>(R.string.settings_hide_sensitive_media, 0, CheckableListItem.Style.SWITCH, lp.hideSensitiveMedia, R.drawable.ic_fluent_flag_24_regular, ()->toggleCheckableItem(hideSensitiveMediaItem)),
+				revealCWsItem=new CheckableListItem<>(R.string.sk_settings_always_reveal_content_warnings, 0, CheckableListItem.Style.SWITCH, lp.revealCWs, R.drawable.ic_fluent_chat_warning_24_regular, i->toggleCheckableItem(revealCWsItem)),
+				hideSensitiveMediaItem=new CheckableListItem<>(R.string.settings_hide_sensitive_media, 0, CheckableListItem.Style.SWITCH, lp.hideSensitiveMedia, R.drawable.ic_fluent_flag_24_regular, i->toggleCheckableItem(hideSensitiveMediaItem)),
 				showMediaPreviewItem=new CheckableListItem<>(R.string.mo_show_media_preview, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showMediaPreview, R.drawable.ic_fluent_image_24_regular, ()->toggleCheckableItem(showMediaPreviewItem)),
-				interactionCountsItem=new CheckableListItem<>(R.string.settings_show_interaction_counts, R.string.mo_setting_interaction_count_summary, CheckableListItem.Style.SWITCH, lp.showInteractionCounts, R.drawable.ic_fluent_number_row_24_regular, ()->toggleCheckableItem(interactionCountsItem)),
-				emojiInNamesItem=new CheckableListItem<>(R.string.settings_show_emoji_in_names, 0, CheckableListItem.Style.SWITCH, lp.customEmojiInNames, R.drawable.ic_fluent_emoji_24_regular, ()->toggleCheckableItem(emojiInNamesItem)),
-				marqueeItem=new CheckableListItem<>(R.string.sk_settings_enable_marquee, R.string.mo_setting_marquee_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.toolbarMarquee, R.drawable.ic_fluent_text_more_24_regular, ()->toggleCheckableItem(marqueeItem)),
-				reduceMotionItem=new CheckableListItem<>(R.string.sk_settings_reduce_motion, R.string.mo_setting_reduced_motion_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.reduceMotion, R.drawable.ic_fluent_star_emphasis_24_regular, ()->toggleCheckableItem(reduceMotionItem)),
+				interactionCountsItem=new CheckableListItem<>(R.string.settings_show_interaction_counts, R.string.mo_setting_interaction_count_summary, CheckableListItem.Style.SWITCH, lp.showInteractionCounts, R.drawable.ic_fluent_number_row_24_regular, i->toggleCheckableItem(interactionCountsItem)),
+				emojiInNamesItem=new CheckableListItem<>(R.string.settings_show_emoji_in_names, 0, CheckableListItem.Style.SWITCH, lp.customEmojiInNames, R.drawable.ic_fluent_emoji_24_regular, i->toggleCheckableItem(emojiInNamesItem)),
+				marqueeItem=new CheckableListItem<>(R.string.sk_settings_enable_marquee, R.string.mo_setting_marquee_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.toolbarMarquee, R.drawable.ic_fluent_text_more_24_regular, i->toggleCheckableItem(marqueeItem)),
+				reduceMotionItem=new CheckableListItem<>(R.string.sk_settings_reduce_motion, R.string.mo_setting_reduced_motion_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.reduceMotion, R.drawable.ic_fluent_star_emphasis_24_regular, i->toggleCheckableItem(reduceMotionItem)),
 				enableDoubleTapToSearchItem=new CheckableListItem<>(R.string.mo_double_tap_to_search, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.doubleTapToSearch, R.drawable.ic_fluent_search_24_regular, ()->toggleCheckableItem(enableDoubleTapToSearchItem)),
-				disableSwipeItem=new CheckableListItem<>(R.string.sk_settings_tabs_disable_swipe, R.string.mo_setting_disable_swipe_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableSwipe, R.drawable.ic_fluent_swipe_right_24_regular, ()->toggleCheckableItem(disableSwipeItem)),
+				disableSwipeItem=new CheckableListItem<>(R.string.sk_settings_tabs_disable_swipe, R.string.mo_setting_disable_swipe_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableSwipe, R.drawable.ic_fluent_swipe_right_24_regular, i->toggleCheckableItem(disableSwipeItem)),
 				enableDoubleTapToSwipeItem=new CheckableListItem<>(R.string.mo_double_tap_to_swipe_between_tabs, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.doubleTapToSwipe, R.drawable.ic_fluent_double_tap_swipe_right_24_regular, ()->toggleCheckableItem(enableDoubleTapToSwipeItem)),
-				altIndicatorItem=new CheckableListItem<>(R.string.sk_settings_show_alt_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showAltIndicator, R.drawable.ic_fluent_scan_text_24_regular, ()->toggleCheckableItem(altIndicatorItem)),
-				noAltIndicatorItem=new CheckableListItem<>(R.string.sk_settings_show_no_alt_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNoAltIndicator, R.drawable.ic_fluent_important_24_regular, ()->toggleCheckableItem(noAltIndicatorItem)),
-				collapsePostsItem=new CheckableListItem<>(R.string.sk_settings_collapse_long_posts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.collapseLongPosts, R.drawable.ic_fluent_chevron_down_24_regular, ()->toggleCheckableItem(collapsePostsItem)),
-				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, ()->toggleCheckableItem(spectatorModeItem)),
-				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, ()->toggleCheckableItem(hideFabItem)),
-				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, ()->toggleCheckableItem(translateOpenedItem)),
-				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.likeIcon, R.drawable.ic_fluent_heart_24_regular, ()->toggleCheckableItem(likeIconItem)),
-				underlinedLinksItem=new CheckableListItem<>(R.string.sk_settings_underlined_links, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.underlinedLinks, R.drawable.ic_fluent_text_underline_24_regular, ()->toggleCheckableItem(underlinedLinksItem)),
+				altIndicatorItem=new CheckableListItem<>(R.string.sk_settings_show_alt_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showAltIndicator, R.drawable.ic_fluent_scan_text_24_regular, i->toggleCheckableItem(altIndicatorItem)),
+				noAltIndicatorItem=new CheckableListItem<>(R.string.sk_settings_show_no_alt_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNoAltIndicator, R.drawable.ic_fluent_important_24_regular, i->toggleCheckableItem(noAltIndicatorItem)),
+				collapsePostsItem=new CheckableListItem<>(R.string.sk_settings_collapse_long_posts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.collapseLongPosts, R.drawable.ic_fluent_chevron_down_24_regular, i->toggleCheckableItem(collapsePostsItem)),
+				spectatorModeItem=new CheckableListItem<>(R.string.sk_settings_hide_interaction, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.spectatorMode, R.drawable.ic_fluent_star_off_24_regular, i->toggleCheckableItem(spectatorModeItem)),
+				hideFabItem=new CheckableListItem<>(R.string.sk_settings_hide_fab, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.autoHideFab, R.drawable.ic_fluent_edit_24_regular, i->toggleCheckableItem(hideFabItem)),
+				translateOpenedItem=new CheckableListItem<>(R.string.sk_settings_translate_only_opened, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.translateButtonOpenedOnly, R.drawable.ic_fluent_translate_24_regular, i->toggleCheckableItem(translateOpenedItem)),
+				likeIconItem=new CheckableListItem<>(R.string.sk_settings_like_icon, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.likeIcon, R.drawable.ic_fluent_heart_24_regular, i->toggleCheckableItem(likeIconItem)),
+				underlinedLinksItem=new CheckableListItem<>(R.string.sk_settings_underlined_links, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.underlinedLinks, R.drawable.ic_fluent_text_underline_24_regular, i->toggleCheckableItem(underlinedLinksItem)),
 				showPostDividersItem=new CheckableListItem<>(R.string.mo_enable_dividers, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showDividers, R.drawable.ic_fluent_timeline_24_regular, ()->toggleCheckableItem(showPostDividersItem)),
-				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, ()->toggleCheckableItem(disablePillItem)),
-				showNavigationLabelsItem=new CheckableListItem<>(R.string.sk_settings_show_labels_in_navigation_bar, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNavigationLabels, R.drawable.ic_fluent_tag_24_regular, ()->toggleCheckableItem(showNavigationLabelsItem), true),
-				pronounsInTimelinesItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_timelines, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInTimelines, 0, ()->toggleCheckableItem(pronounsInTimelinesItem)),
-				pronounsInThreadsItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_threads, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInThreads, 0, ()->toggleCheckableItem(pronounsInThreadsItem)),
-				pronounsInUserListingsItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_user_listings, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInUserListings, 0, ()->toggleCheckableItem(pronounsInUserListingsItem))
+				disablePillItem=new CheckableListItem<>(R.string.sk_disable_pill_shaped_active_indicator, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.disableM3PillActiveIndicator, R.drawable.ic_fluent_pill_24_regular, i->toggleCheckableItem(disablePillItem)),
+				showNavigationLabelsItem=new CheckableListItem<>(R.string.sk_settings_show_labels_in_navigation_bar, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNavigationLabels, R.drawable.ic_fluent_tag_24_regular, i->toggleCheckableItem(showNavigationLabelsItem), true),
+				pronounsInTimelinesItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_timelines, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInTimelines, 0, i->toggleCheckableItem(pronounsInTimelinesItem)),
+				pronounsInThreadsItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_threads, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInThreads, 0, i->toggleCheckableItem(pronounsInThreadsItem)),
+				pronounsInUserListingsItem=new CheckableListItem<>(R.string.sk_settings_display_pronouns_in_user_listings, 0, CheckableListItem.Style.CHECKBOX, GlobalUserPreferences.displayPronounsInUserListings, 0, i->toggleCheckableItem(pronounsInUserListingsItem))
 		));
 		trueBlackModeItem.checkedChangeListener=checked->onTrueBlackModeClick();
 	}
@@ -114,7 +114,6 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				|| GlobalUserPreferences.showMediaPreview!=showMediaPreviewItem.checked
 				|| GlobalUserPreferences.showDividers!=showPostDividersItem.checked
 				|| GlobalUserPreferences.likeIcon!=likeIconItem.checked;
-		;
 
 		lp.revealCWs=revealCWsItem.checked;
 		lp.hideSensitiveMedia=hideSensitiveMediaItem.checked;
@@ -183,7 +182,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		maybeApplyNewThemeRightNow(null, null, prev);
 	}
 
-	private void onAppearanceClick(){
+	private void onAppearanceClick(ListItem<?> item_){
 		int selected=switch(GlobalUserPreferences.theme){
 			case LIGHT -> 0;
 			case DARK -> 1;
@@ -214,7 +213,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				.show();
 	}
 
-	private void onColorClick(){
+	private void onColorClick(ListItem<?> item_){
 		boolean multiple=AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
 		int indexOffset=multiple ? 1 : 0;
 		int selected=lp.color==null ? 0 : lp.color.ordinal() + indexOffset;
@@ -251,7 +250,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		alert.show();
 	}
 
-	private void onPublishTextClick(){
+	private void onPublishTextClick(ListItem<?> item_){
 		TextInputFrameLayout input = new TextInputFrameLayout(
 				getContext(),
 				getString(R.string.publish),
@@ -274,7 +273,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				.show();
 	}
 
-	private void onAutoRevealSpoilersClick(){
+	private void onAutoRevealSpoilersClick(ListItem<?> item_){
 		int selected=GlobalUserPreferences.autoRevealEqualSpoilers.ordinal();
 		int[] newSelected={selected};
 		new M3AlertDialogBuilder(getActivity())

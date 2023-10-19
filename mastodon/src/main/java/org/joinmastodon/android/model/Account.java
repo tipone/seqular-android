@@ -178,7 +178,6 @@ public class Account extends BaseModel implements Searchable{
 		if(url==null) url="";
 		if(note==null) note="";
 		if(avatar==null) avatar="";
-		if(displayName!=null) displayName='\u2068'+displayName+'\u2069';
 	}
 
 	public boolean isLocal(){
@@ -206,6 +205,10 @@ public class Account extends BaseModel implements Searchable{
 		if (TextUtils.isEmpty(acct))
 			return "";
 		return fqn != null ? fqn : acct.split("@")[0] + "@" + getDomainFromURL();
+	}
+
+	public String getDisplayName(){
+		return '\u2068'+displayName+'\u2069';
 	}
 
 	@Override

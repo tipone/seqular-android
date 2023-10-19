@@ -87,8 +87,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 	@Override
 	public ImageLoaderRequest getImageRequest(int index){
-		CustomEmojiHelper helper=index<emojiHelper.getImageCount() ? emojiHelper : extra.emojiHelper;
-		return helper.getImageRequest(index%emojiHelper.getImageCount());
+		int firstHelperCount=emojiHelper.getImageCount();
+		CustomEmojiHelper helper=index<firstHelperCount ? emojiHelper : extra.emojiHelper;
+		return helper.getImageRequest(firstHelperCount>0 ? index%firstHelperCount : index);
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ReblogOrReplyLineStatusDisplayItem> implements ImageLoaderViewHolder{
@@ -136,8 +137,9 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 
 		@Override
 		public void setImage(int index, Drawable image){
-			CustomEmojiHelper helper=index<item.emojiHelper.getImageCount() ? item.emojiHelper : item.extra.emojiHelper;
-			helper.setImageDrawable(index%item.emojiHelper.getImageCount(), image);
+			int firstHelperCount=item.emojiHelper.getImageCount();
+			CustomEmojiHelper helper=index<firstHelperCount ? item.emojiHelper : item.extra.emojiHelper;
+			helper.setImageDrawable(firstHelperCount>0 ? index%firstHelperCount : index, image);
 			text.invalidate();
 			extraText.invalidate();
 		}

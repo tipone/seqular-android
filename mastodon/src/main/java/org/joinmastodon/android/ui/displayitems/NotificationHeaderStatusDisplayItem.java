@@ -18,7 +18,6 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
@@ -62,7 +61,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 					TextUtils.isEmpty(notification.account.avatar) ? session.getDefaultAvatarUrl() :
 						GlobalUserPreferences.playGifs ? notification.account.avatar : notification.account.avatarStatic,
 					V.dp(50), V.dp(50));
-			SpannableStringBuilder parsedName=new SpannableStringBuilder(notification.account.displayName);
+			SpannableStringBuilder parsedName=new SpannableStringBuilder(notification.account.getDisplayName());
 			HtmlParser.parseCustomEmoji(parsedName, notification.account.emojis);
 			String str = parentFragment.getString(switch(notification.type){
 				case FOLLOW -> R.string.user_followed_you;

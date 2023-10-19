@@ -61,7 +61,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 						maxID=result.maxID;
 						AccountSessionManager.get(accountID).filterStatuses(result.items, getFilterContext());
 						onDataLoaded(result.items, !empty);
-						if(result.isFromCache())
+						if(result.isFromCache() && GlobalUserPreferences.loadNewPosts)
 							loadNewPosts();
 					}
 				});
@@ -74,7 +74,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
-				if(parent != null && parent.isNewPostsBtnShown() && list.getChildAdapterPosition(list.getChildAt(0))<=getMainAdapterOffset()){
+				if(parent!=null && parent.isNewPostsBtnShown() && list.getChildAdapterPosition(list.getChildAt(0))<=getMainAdapterOffset()){
 					parent.hideNewPostsButton();
 				}
 			}
@@ -87,7 +87,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 		if(!getArguments().getBoolean("noAutoLoad")){
 			if(!loaded && !dataLoading){
 				loadData();
-			}else if(!dataLoading){
+			}else if(!dataLoading && GlobalUserPreferences.loadNewPosts){
 				loadNewPosts();
 			}
 		}
@@ -117,16 +117,19 @@ public class HomeTimelineFragment extends StatusListFragment {
 	}
 
 	public void onStatusCreated(Status status){
+		if(status.reblog!=null) return;
 		prependItems(Collections.singletonList(status), true);
 	}
 
 	private void loadNewPosts(){
-		if (!GlobalUserPreferences.loadNewPosts) return;
 		dataLoading=true;
+		// we only care about the data that was actually retrieved from the timeline api since
+		// user-created statuses are probably in the wrong position
+		List<Status> dataFromTimeline=data.stream().filter(s->!s.fromStatusCreated).collect(Collectors.toList());
 		// The idea here is that we request the timeline such that if there are fewer than `limit` posts,
 		// we'll get the currently topmost post as last in the response. This way we know there's no gap
 		// between the existing and newly loaded parts of the timeline.
-		String sinceID=data.size()>1 ? data.get(1).id : "1";
+		String sinceID=dataFromTimeline.size()>1 ? dataFromTimeline.get(1).id : "1";
 		currentRequest=new GetHomeTimeline(null, null, 20, sinceID, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new Callback<>(){
 					@Override
@@ -137,28 +140,31 @@ public class HomeTimelineFragment extends StatusListFragment {
 							return;
 						Status last=result.get(result.size()-1);
 						List<Status> toAdd;
-						if(!data.isEmpty() && last.id.equals(data.get(0).id)){ // This part intersects with the existing one
+						if(!dataFromTimeline.isEmpty() && last.id.equals(dataFromTimeline.get(0).id)){ // This part intersects with the existing one
 							toAdd=new ArrayList<>(result.subList(0, result.size()-1)); // Remove the already known last post
 						}else{
 							last.hasGapAfter=last.id;
 							toAdd=result;
 						}
+						if(!toAdd.isEmpty())
+							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(new ArrayList<>(toAdd), false);
+						// removing statuses that come up as duplicates (hopefully only posts and boosts that were locally created
+						// and thus were already prepended to the timeline earlier)
 						List<String> existingIds=data.stream().map(Status::getID).collect(Collectors.toList());
 						toAdd.removeIf(s->existingIds.contains(s.getID()));
-						List<Status> toAddUnfiltered=new ArrayList<>(toAdd);
 						AccountSessionManager.get(accountID).filterStatuses(toAdd, getFilterContext());
 						if(!toAdd.isEmpty()){
 							prependItems(toAdd, true);
 							if(parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 						}
-						if(toAddUnfiltered.isEmpty())
-							AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(toAddUnfiltered, false);
+						refreshDone();
 					}
 
 					@Override
 					public void onError(ErrorResponse error){
 						currentRequest=null;
 						dataLoading=false;
+						refreshDone();
 					}
 				})
 				.exec(accountID);
@@ -325,8 +331,8 @@ public class HomeTimelineFragment extends StatusListFragment {
 			currentRequest=null;
 			dataLoading=false;
 		}
-		if (parent != null) parent.hideNewPostsButton();
-		super.onRefresh();
+		if(parent!=null) parent.hideNewPostsButton();
+		loadNewPosts();
 	}
 
 	@Override

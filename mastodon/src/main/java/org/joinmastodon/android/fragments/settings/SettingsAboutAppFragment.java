@@ -19,7 +19,6 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
 
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.imageloader.ImageCache;
@@ -29,6 +28,8 @@ import me.grishka.appkit.utils.V;
 
 public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> implements HasAccountID{
 	private ListItem<Void> mediaCacheItem;
+	private AccountSession session;
+	private boolean timelineCacheCleared=false;
 
 	// MOSHIDON
 	private ListItem<Void> clearRecentEmojisItem;
@@ -36,17 +37,24 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.about_app, getString(R.string.mo_app_name)));
-		AccountSession s=AccountSessionManager.get(accountID);
+		session=AccountSessionManager.get(accountID);
 		onDataLoaded(List.of(
-				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_donate_url))),
-				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_repo_url))),
-				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), "https://"+s.domain+"/terms")),
-				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, ()->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
+				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_donate_url))),
+				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_repo_url))),
+				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")),
+				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
 				clearRecentEmojisItem=new ListItem<>(R.string.mo_clear_recent_emoji, 0, this::onClearRecentEmojisClick),
-				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick)
+				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick),
+				new ListItem<>(getString(R.string.sk_settings_clear_timeline_cache), session.domain, this::onClearTimelineCacheClick)
 		));
 
 		updateMediaCacheItem();
+	}
+
+	@Override
+	protected void onHidden(){
+		super.onHidden();
+		if(timelineCacheCleared) getActivity().recreate();
 	}
 
 	@Override
@@ -68,7 +76,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 		return adapter;
 	}
 
-	private void onClearMediaCacheClick(){
+	private void onClearMediaCacheClick(ListItem<?> item){
 		MastodonAPIController.runInBackground(()->{
 			Activity activity=getActivity();
 			ImageCache.getInstance(getActivity()).clear();
@@ -77,6 +85,12 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 				updateMediaCacheItem();
 			});
 		});
+	}
+
+	private void onClearTimelineCacheClick(ListItem<?> item){
+		session.getCacheController().putHomeTimeline(List.of(), true);
+		Toast.makeText(getContext(), R.string.sk_timeline_cache_cleared, Toast.LENGTH_SHORT).show();
+		timelineCacheCleared=true;
 	}
 
 	private void onClearRecentEmojisClick(){

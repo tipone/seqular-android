@@ -255,7 +255,7 @@
     <string name="sk_expand">Erweitern</string>
     <string name="sk_collapse">Einklappen</string>
     <string name="sk_settings_collapse_long_posts">Sehr lange Beiträge einklappen</string>
-    <string name="sk_unfinished_attachments">Anhänge richtig stellen\?</string>
+    <string name="sk_unfinished_attachments">Anhänge laden hoch</string>
     <string name="sk_settings_hide_interaction">Interaktions-Buttons verstecken</string>
     <string name="sk_unfinished_attachments_message">Einige Anhänge sind nicht fertig hochgeladen.</string>
     <string name="sk_followed_as">Mit %s gefolgt</string>
@@ -295,7 +295,7 @@
     <string name="sk_settings_allow_remote_loading">Infos von Remote-Instanzen laden</string>
     <string name="sk_no_remote_info_hint">keine Remote-Infos abrufbar</string>
     <string name="sk_error_loading_profile">Konnte das Profil via %s nicht laden</string>
-    <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower*innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower_innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">Automatisches Aufdecken von gleichen CWs in Antworten von</string>
     <string name="sk_settings_auto_reveal_nobody">Nie</string>
     <string name="sk_settings_auto_reveal_author">Antworten, die von der gleichen Person verfasst wurden</string>
@@ -410,4 +410,9 @@
     <string name="sk_settings_color_palette_default">Standardwert (%s)</string>
     <string name="sk_settings_underlined_links">Unterstrichene Links</string>
     <string name="sk_recently_used">Zuletzt verwendet</string>
+    <string name="sk_settings_clear_timeline_cache">Start-Timeline leeren</string>
+    <string name="sk_edit_alt_text">Bildbeschreibung bearbeiten</string>
+    <string name="sk_settings_default_visibility">Standard-Sichtbarkeit für Posts</string>
+    <string name="sk_settings_lock_account">Neue Follower_innen manuell genehmigen</string>
+    <string name="sk_timeline_cache_cleared">Start-Timeline geleert</string>
 </resources>

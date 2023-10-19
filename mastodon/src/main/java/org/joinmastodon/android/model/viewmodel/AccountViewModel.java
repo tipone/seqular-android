@@ -33,9 +33,9 @@ public class AccountViewModel{
 				V.dp(50), V.dp(50));
 		emojiHelper=new CustomEmojiHelper();
 		if(session.getLocalPreferences().customEmojiInNames)
-			parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis);
+			parsedName=HtmlParser.parseCustomEmoji(account.getDisplayName(), account.emojis);
 		else
-			parsedName=account.displayName;
+			parsedName=account.getDisplayName();
 		parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(parsedName);
 		ssb.append(parsedBio);

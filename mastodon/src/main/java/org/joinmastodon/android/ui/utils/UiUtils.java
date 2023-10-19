@@ -489,7 +489,7 @@ public class UiUtils {
 
 	public static void confirmToggleBlockUser(Activity activity, String accountID, Account account, boolean currentlyBlocked, Consumer<Relationship> resultCallback) {
 		showConfirmationAlert(activity, activity.getString(currentlyBlocked ? R.string.confirm_unblock_title : R.string.confirm_block_title),
-				activity.getString(currentlyBlocked ? R.string.confirm_unblock : R.string.confirm_block, account.displayName),
+				activity.getString(currentlyBlocked ? R.string.confirm_unblock : R.string.confirm_block, account.getDisplayName()),
 				activity.getString(currentlyBlocked ? R.string.do_unblock : R.string.do_block),
 				R.drawable.ic_fluent_person_prohibited_28_regular,
 				() -> {
@@ -517,7 +517,7 @@ public class UiUtils {
 	public static void confirmSoftBlockUser(Activity activity, String accountID, Account account, Consumer<Relationship> resultCallback) {
 		showConfirmationAlert(activity,
 				activity.getString(R.string.sk_remove_follower),
-				activity.getString(R.string.sk_remove_follower_confirm, account.displayName),
+				activity.getString(R.string.sk_remove_follower_confirm, account.getDisplayName()),
 				activity.getString(R.string.sk_do_remove_follower),
 				R.drawable.ic_fluent_person_delete_24_regular,
 				() -> new SetAccountBlocked(account.id, true).setCallback(new Callback<>() {
@@ -575,7 +575,7 @@ public class UiUtils {
 		params.setMargins(0, V.dp(-12), 0, 0);
 		durationView.setLayoutParams(params);
 		Button button=durationView.findViewById(R.id.button);
-		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.displayName));
+		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.getDisplayName()));
 
 		AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
 
@@ -609,7 +609,7 @@ public class UiUtils {
 
 		new M3AlertDialogBuilder(context)
 				.setTitle(context.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
-				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.displayName) : null)
+				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.getDisplayName()) : null)
 				.setView(currentlyMuted ? null : durationView)
 				.setPositiveButton(context.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)->{
 					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())

@@ -20,7 +20,6 @@ import org.joinmastodon.android.api.requests.accounts.GetFollowRequests;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
-import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.text.HtmlParser;
@@ -366,9 +365,9 @@ public class FollowRequestsListFragment extends MastodonRecyclerFragment<FollowR
 				coverRequest=new UrlImageLoaderRequest(account.header, 1000, 1000);
 			parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
 			if(account.emojis.isEmpty()){
-				parsedName=account.displayName;
+				parsedName= account.getDisplayName();
 			}else{
-				parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis);
+				parsedName=HtmlParser.parseCustomEmoji(account.getDisplayName(), account.emojis);
 				emojiHelper.setText(new SpannableStringBuilder(parsedName).append(parsedBio));
 			}
 		}

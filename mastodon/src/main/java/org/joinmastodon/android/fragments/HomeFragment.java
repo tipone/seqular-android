@@ -35,7 +35,6 @@ import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
 import org.joinmastodon.android.fragments.onboarding.OnboardingFollowSuggestionsFragment;
 import org.joinmastodon.android.model.Account;
-import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.ui.AccountSwitcherSheet;
@@ -75,15 +74,12 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	private TextView notificationsBadge;
 
 	private String accountID;
-	private boolean isAkkoma;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
 		setTitle(R.string.mo_app_name);
-
-		isAkkoma = getInstance().map(Instance::isAkkoma).orElse(false);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
@@ -94,7 +90,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			homeTabFragment=new HomeTabFragment();
 			homeTabFragment.setArguments(args);
 			args=new Bundle(args);
-			args.putBoolean("disableDiscover", isAkkoma);
 			args.putBoolean("noAutoLoad", true);
 			discoverFragment=new DiscoverFragment();
 			discoverFragment.setArguments(args);
@@ -304,7 +299,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		if(tab==R.id.tab_profile){
 			ArrayList<String> options=new ArrayList<>();
 			for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
-				options.add(session.self.displayName+"\n("+session.self.username+"@"+session.domain+")");
+				options.add(session.self.getDisplayName()+"\n("+session.self.username+"@"+session.domain+")");
 			}
 			new AccountSwitcherSheet(getActivity(), this).show();
 			return true;
