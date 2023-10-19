@@ -195,6 +195,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return reblog!=null ? reblog : this;
 	}
 
+	public String getContentStatusID(){
+		return getContentStatus().id;
+	}
+
 	public String getStrippedText(){
 		if(strippedText==null)
 			strippedText=HtmlParser.strip(content);
