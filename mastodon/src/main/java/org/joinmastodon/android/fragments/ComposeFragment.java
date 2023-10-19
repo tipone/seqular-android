@@ -1454,7 +1454,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void updateHeaders() {
-		UiUtils.setExtraTextInfo(getContext(), selfExtraText, false, false, localOnly || statusVisibility==StatusPrivacy.LOCAL, null);
+		UiUtils.setExtraTextInfo(getContext(), selfExtraText, false, false, localOnly, null);
 		if (replyTo != null) UiUtils.setExtraTextInfo(getContext(), extraText, true, false, replyTo.localOnly || replyTo.visibility==StatusPrivacy.LOCAL, replyTo.account);
 	}
 
