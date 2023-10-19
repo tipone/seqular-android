@@ -249,7 +249,7 @@
 	<!-- %s is the server domain -->
 	<string name="local_timeline_info_banner">นี่คือโพสต์ทั้งหมดจากผู้ใช้ทั้งหมดในเซิร์ฟเวอร์ของคุณ (%s)</string>
 	<string name="recommended_accounts_info_banner">คุณอาจชอบบัญชีเหล่านี้โดยอิงตามผู้อื่นที่คุณติดตาม</string>
-	<string name="see_new_posts">ดูโพสต์ใหม่</string>
+	<string name="see_new_posts">โพสต์ใหม่</string>
 	<string name="load_missing_posts">โหลดโพสต์ที่ขาดหายไป</string>
 	<string name="follow_back">ติดตามกลับ</string>
 	<string name="button_follow_pending">รอดำเนินการ</string>
@@ -600,6 +600,11 @@
 	<string name="manage_user_lists">จัดการรายการที่ %s ปรากฏอยู่ใน</string>
 	<string name="remove_from_list">เอาออกจากรายการ</string>
 	<string name="confirm_remove_list_member">เอาสมาชิกออก?</string>
+	<string name="no_followed_hashtags_title">ตามให้ทันความสนใจโดยการติดตามแฮชแท็ก</string>
+	<string name="no_followed_hashtags_subtitle">การติดตามจะปรากฏที่นี่</string>
+	<string name="no_lists_title">จัดระเบียบฟีดหน้าแรกของคุณด้วยรายการ</string>
+	<string name="no_lists_subtitle">ของคุณจะปรากฏที่นี่</string>
+	<string name="manage_accounts">เพิ่มหรือสลับบัญชี</string>
 	<plurals name="x_posts_recently">
 		<item quantity="other">%,d โพสต์ล่าสุด</item>
 	</plurals>
