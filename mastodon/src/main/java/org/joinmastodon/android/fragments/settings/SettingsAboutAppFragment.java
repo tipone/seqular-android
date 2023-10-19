@@ -93,7 +93,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 		timelineCacheCleared=true;
 	}
 
-	private void onClearRecentEmojisClick(){
+	private void onClearRecentEmojisClick(ListItem<?> item){
 		getLocalPrefs().recentCustomEmoji=new ArrayList<>();
 		getLocalPrefs().save();
 		Toast.makeText(getContext(), R.string.mo_recent_emoji_cleared, Toast.LENGTH_SHORT).show();

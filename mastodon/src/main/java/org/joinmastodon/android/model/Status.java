@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
+import org.joinmastodon.android.events.StatusMuteChangedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
 

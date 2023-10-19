@@ -944,12 +944,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				args.putString("profileDisplayUsername", account.getDisplayUsername());
 			}
 			Nav.go(getActivity(), ListsFragment.class, args);
-		}else if(id==R.id.mutes){
+		}else if(id==R.id.muted_accounts){
 			final Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putParcelable("targetAccount", Parcels.wrap(account));
 			Nav.go(getActivity(), MutesListFragment.class, args);
-		}else if(id==R.id.blocks){
+		}else if(id==R.id.blocked_accounts){
 			final Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putParcelable("targetAccount", Parcels.wrap(account));
