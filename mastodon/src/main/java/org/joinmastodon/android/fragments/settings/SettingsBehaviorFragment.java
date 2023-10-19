@@ -176,6 +176,8 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.allowRemoteLoading=remoteLoadingItem.checked;
 		GlobalUserPreferences.save();
 		AccountLocalPreferences lp=getLocalPrefs();
+		boolean restartPlease=lp.showBoosts!=showBoostsItem.checked
+				|| lp.showReplies!=showRepliesItem.checked;
 		lp.showBoosts=showBoostsItem.checked;
 		lp.showReplies=showRepliesItem.checked;
 		lp.save();
@@ -186,6 +188,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 			s.preferences.postingDefaultLanguage=newPostLanguage.language.getLanguage();
 			s.savePreferencesLater();
 		}
+		if(restartPlease) getActivity().recreate();
 	}
 
 	@Override
