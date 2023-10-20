@@ -572,4 +572,5 @@
 	<!-- %s is a username -->
 	<string name="remove_from_list">Ta bort från lista</string>
 	<string name="confirm_remove_list_member">Ta bort medlem?</string>
+	<string name="see_new_posts">Se nya inlägg</string>
 </resources>

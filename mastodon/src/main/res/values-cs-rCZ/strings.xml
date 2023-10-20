@@ -643,4 +643,5 @@
 	<!-- Screen reader description for the menu on the home timeline screen -->
 	<!-- %s is the name of the list -->
 	<!-- %s is a username -->
+	<string name="see_new_posts">Zobrazit nové příspěvky</string>
 </resources>
