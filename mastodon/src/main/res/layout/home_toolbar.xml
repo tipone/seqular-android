@@ -50,7 +50,6 @@
 			style="@style/Widget.Mastodon.M3.Button.Tonal.Icon"
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
-			android:background="@drawable/bg_button_m3_tonal_selector"
             android:maxLines="1"
             android:ellipsize="end"
 			android:textAppearance="@style/m3_title_medium"
@@ -58,10 +57,5 @@
 			android:text="@string/see_new_posts"
             android:drawableStart="@drawable/ic_fluent_arrow_up_16_filled"
             android:layout_gravity="center" />
-		<!--
-		using the selector background because..
-		the selected=false state's border looks better than the one from the outline style
-		(as per m3 spec) :( i should probably fix this at some point
-		-->
     </FrameLayout>
 </FrameLayout>
