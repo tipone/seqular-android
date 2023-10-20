@@ -67,6 +67,7 @@
 		<item name="colorM3OnErrorContainer">#410E0B</item>
 		<item name="colorWhite">#FFF</item>
 		<item name="colorSensitiveOverlay">#a6ffffff</item>
+		<item name="toolbarActionButtonStyle">@style/Widget.Mastodon.M3.Button.ToolbarAction</item>
 
 		<!--
 		custom themes generally don't have secondary/tertiary accent colors -
@@ -155,6 +156,7 @@
 		<item name="colorM3SecondaryContainer">?colorNeutral800</item>
 		<item name="colorTabBarAlpha">#00000000</item>
 		<item name="colorFilledCardAlpha">#00000000</item>
+		<item name="toolbarActionButtonStyle">@style/Widget.Mastodon.M3.Button.ToolbarAction.Black</item>
 	</style>
 
 	<style name="ColorPalette.Material3">
