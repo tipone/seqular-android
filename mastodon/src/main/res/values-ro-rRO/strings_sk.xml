@@ -405,4 +405,8 @@
     <string name="sk_settings_color_palette_default">Implicit (%s)</string>
     <string name="sk_settings_underlined_links">Link-uri subliniate</string>
     <string name="sk_edit_alt_text">Editați text alternativ</string>
+    <string name="sk_settings_default_visibility">Vizibilitatea implicită a postărilor</string>
+    <string name="sk_settings_lock_account">Aprobați manual urmăritori noi</string>
+    <string name="sk_timeline_cache_cleared">Memoria cache a cronologiei acasă a fost ștearsă</string>
+    <string name="sk_settings_clear_timeline_cache">Ștergeți memoria cache a cronologiei acasă</string>
 </resources>
