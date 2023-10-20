@@ -34,7 +34,7 @@
                 android:visibility="gone" />
             <TextView
                 android:id="@+id/timeline_title"
-                style="?android:attr/titleTextAppearance"
+                style="@style/action_bar_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
@@ -47,22 +47,21 @@
         android:layout_height="match_parent">
         <Button
             android:id="@+id/show_new_posts_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingVertical="2dp"
-            android:paddingStart="16dp"
-            android:paddingEnd="20dp"
-            android:minHeight="32sp"
+			style="@style/Widget.Mastodon.M3.Button.Tonal.Icon"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			android:background="@drawable/bg_button_m3_tonal_selector"
             android:maxLines="2"
             android:ellipsize="end"
             android:lineSpacingMultiplier="0.8"
-            android:textAppearance="@style/m3_title_medium"
-            android:textSize="16sp"
-            android:text="@string/see_new_posts"
-            android:textColor="@color/gray_25"
-            android:background="@drawable/bg_button_new_posts"
+			android:textAppearance="@style/m3_title_medium"
+			android:text="@string/see_new_posts"
             android:drawableStart="@drawable/ic_fluent_arrow_up_16_filled"
-            android:drawablePadding="8dp"
             android:layout_gravity="center" />
+		<!--
+		using the selector background because..
+		the selected=false state's border looks better than the one from the outline style
+		(as per m3 spec) :( i should probably fix this at some point
+		-->
     </FrameLayout>
 </FrameLayout>
