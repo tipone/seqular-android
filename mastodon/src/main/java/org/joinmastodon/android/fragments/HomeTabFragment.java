@@ -233,21 +233,25 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 		ViewTreeObserver vto = getToolbar().getViewTreeObserver();
 		if (vto.isAlive()) {
-			vto.addOnGlobalLayoutListener(() -> {
-				Toolbar t = getToolbar();
-				if (t == null) return;
-				int toolbarWidth = t.getWidth();
-				if (toolbarWidth == 0) return;
+			vto.addOnGlobalLayoutListener(()->{
+				Toolbar t=getToolbar();
+				if(t==null) return;
+				int toolbarWidth=t.getWidth();
+				if(toolbarWidth==0) return;
 
-				int toolbarFrameWidth = toolbarFrame.getWidth();
-				int padding = toolbarWidth - toolbarFrameWidth;
-				FrameLayout parent = ((FrameLayout) toolbarShowNewPostsBtn.getParent());
-				if (padding == parent.getPaddingStart()) return;
+				int toolbarFrameWidth=toolbarFrame.getWidth();
+				int actionsWidth=toolbarWidth-toolbarFrameWidth;
+				// margin (4) + padding (12) + icon (24) + margin (8) + chevron (16) + padding (12)
+				int switcherWidth=V.dp(76);
+				FrameLayout parent=((FrameLayout) toolbarShowNewPostsBtn.getParent());
+				if(actionsWidth==parent.getPaddingStart()) return;
+				int paddingMax=Math.max(actionsWidth, switcherWidth);
+				int paddingEnd=(Math.max(0, switcherWidth-actionsWidth));
 
 				// toolbar frame goes from screen edge to beginning of right-aligned option buttons.
 				// centering button by applying the same space on the left
-				parent.setPaddingRelative(padding, 0, 0, 0);
-				toolbarShowNewPostsBtn.setMaxWidth(toolbarWidth - padding * 2);
+				parent.setPaddingRelative(paddingMax, 0, paddingEnd, 0);
+				toolbarShowNewPostsBtn.setMaxWidth(toolbarWidth-paddingMax*2);
 
 				switcher.setPivotX(V.dp(28)); // padding + half of icon
 				switcher.setPivotY(switcher.getHeight() / 2f);
