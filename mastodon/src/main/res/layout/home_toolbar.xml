@@ -54,6 +54,7 @@
             android:maxLines="1"
             android:ellipsize="end"
 			android:textAppearance="@style/m3_title_medium"
+			android:textSize="16sp"
 			android:text="@string/see_new_posts"
             android:drawableStart="@drawable/ic_fluent_arrow_up_16_filled"
             android:layout_gravity="center" />
