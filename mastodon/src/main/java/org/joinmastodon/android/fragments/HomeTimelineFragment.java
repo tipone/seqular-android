@@ -136,6 +136,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 					public void onSuccess(List<Status> result){
 						currentRequest=null;
 						dataLoading=false;
+						refreshDone();
 						if(result.isEmpty() || getActivity()==null)
 							return;
 						Status last=result.get(result.size()-1);
@@ -157,7 +158,6 @@ public class HomeTimelineFragment extends StatusListFragment {
 							prependItems(toAdd, true);
 							if(parent != null && GlobalUserPreferences.showNewPostsButton) parent.showNewPostsButton();
 						}
-						refreshDone();
 					}
 
 					@Override
