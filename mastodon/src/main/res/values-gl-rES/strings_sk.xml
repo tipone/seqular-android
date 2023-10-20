@@ -256,7 +256,7 @@
     <string name="sk_filtered">Filtrados: %s</string>
     <string name="sk_expand">Expandir</string>
     <string name="sk_settings_collapse_long_posts">Contraer publicacións moi longas</string>
-    <string name="sk_unfinished_attachments">Arranxar arquivos adxuntos\?</string>
+    <string name="sk_unfinished_attachments">Subindo arquivos adxuntos</string>
     <string name="sk_spectator_mode">Modo espectador</string>
     <string name="sk_settings_hide_interaction">Ocultar botóns de interacción</string>
     <string name="sk_follow_as">Seguir dende outra conta</string>
@@ -330,10 +330,10 @@
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_settings_unifiedpush_no_distributor_body">Debe instalar un distribuidor para que as notificacións UnifiedPush funcionen. Para máis información, visita https://unifiedpush.org/</string>
     <string name="sk_settings_unifiedpush_no_distributor">Non se atopou ningún distribuidor</string>
-    <string name="sk_trending_posts_info_banner">Estas son publicacións que están a gañar tracción no teu servidor.</string>
+    <string name="sk_trending_posts_info_banner">Estas publicacións están a gañar tracción no Fediverso.</string>
     <string name="sk_settings_unifiedpush_choose">Escoller un distribuidor</string>
     <string name="sk_settings_continues_playback">Superposición de audio</string>
-    <string name="sk_trending_links_info_banner">Estas son as novas historias das que se está a falar no teu servidor.</string>
+    <string name="sk_trending_links_info_banner">Destas novas historias se está a falar en todo o Fediverso.</string>
     <string name="sk_settings_unifiedpush">Empregar UnifiedPush</string>
     <string name="sk_disable_pill_shaped_active_indicator">Desactivar o indicador de lapela activa en forma de pílula</string>
     <string name="sk_tab_profile">Perfil</string>
@@ -373,7 +373,7 @@
     <string name="sk_search_suicide_hotlines">Buscar unha liña de axuda</string>
     <string name="sk_duration_hours_1">1 hora</string>
     <string name="sk_duration_hours_6">6 horas</string>
-    <string name="sk_enter_emoji_hint">Escribe para reaccionar cunha emoticona</string>
+    <string name="sk_enter_emoji_hint">Escribe unha emoticona ou busca</string>
     <string name="sk_duration_days_7">7 días</string>
     <string name="sk_do_not_show_again">Non amosar outra vez</string>
     <string name="sk_suicide_helplines_url">https://findahelpline.com/es</string>
@@ -396,4 +396,12 @@
     <string name="sk_blocked_accounts">Contas bloqueadas</string>
     <string name="sk_muted_accounts">Contas silenciadas</string>
     <string name="sk_recently_used">Empregados recentemente</string>
+    <string name="sk_set_as_default">Establecer como predefinido</string>
+    <string name="sk_settings_color_palette_default">Defecto (%s)</string>
+    <string name="sk_settings_default_visibility">Visibilidade de publicación por defecto</string>
+    <string name="sk_settings_underlined_links">Ligazóns subliñadas</string>
+    <string name="sk_settings_lock_account">Aprobar manualmente novos seguidores</string>
+    <string name="sk_timeline_cache_cleared">Caché da cronoloxía de inicio borrada</string>
+    <string name="sk_settings_clear_timeline_cache">Borrar a caché da cronoloxía de inicio</string>
+    <string name="sk_edit_alt_text">Editar texto alternativo</string>
 </resources>
