@@ -153,8 +153,9 @@ public abstract class MastodonAPIRequest<T> extends APIRequest<T>{
 		headers.put(key, value);
 	}
 
-	protected void setTimeout(long timeout){
+	public MastodonAPIRequest<T> setTimeout(long timeout){
 		this.timeout=timeout;
+		return this;
 	}
 
 	protected String getPathPrefix(){
