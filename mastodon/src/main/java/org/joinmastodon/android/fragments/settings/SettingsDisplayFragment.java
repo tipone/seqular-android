@@ -226,7 +226,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 
 		AlertDialog.Builder alert=new M3AlertDialogBuilder(getActivity())
 				.setTitle(R.string.sk_settings_color_palette)
-				.setSingleChoiceItems(items.toArray(String[]::new),
+				.setSingleChoiceItems(items.stream().toArray(String[]::new),
 						selected, (dlg, item)->newSelected[0]=item)
 				.setPositiveButton(R.string.ok, (dlg, item)->save.accept(false))
 				.setNegativeButton(R.string.cancel, null);
