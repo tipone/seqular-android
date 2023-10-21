@@ -30,7 +30,7 @@
 				android:layout_height="wrap_content"
 				android:minHeight="48dp"
 				android:minWidth="48dp"
-				android:background="@drawable/bg_button_m3_tonal_circle"
+				android:background="@drawable/bg_button_m3_tonal_circle_selector"
 				android:tooltipText="@string/sk_button_react"
 				android:contentDescription="@string/sk_button_react"
 				android:src="@drawable/ic_fluent_add_24_filled" />

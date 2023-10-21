@@ -647,11 +647,8 @@ public class UiUtils {
 							@Override
 							public void onSuccess(Status result) {
 								resultCallback.accept(result);
-								CacheController cache=AccountSessionManager.get(accountID).getCacheController();
-								cache.deleteStatus(s.id);
 								E.post(new StatusDeletedEvent(s.id, accountID));
 								if(status!=s){
-									cache.deleteStatus(status.id);
 									E.post(new StatusDeletedEvent(status.id, accountID));
 								}
 							}

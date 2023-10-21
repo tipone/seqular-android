@@ -3,7 +3,7 @@
 	android:color="@color/m3_pressed_overlay">
 	<item android:gravity="center_vertical" android:height="36dp">
 		<shape>
-			<solid android:color="?colorM3Primary"/>
+			<stroke android:color="@color/m3_on_surface_overlay" android:width="1dp"/>
 			<corners android:radius="18dp"/>
 		</shape>
 	</item>

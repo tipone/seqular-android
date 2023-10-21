@@ -411,4 +411,7 @@
     <string name="sk_edit_alt_text">Modifier le texte alternatif</string>
     <string name="sk_message_cache_cleared">Cache des messages vidé</string>
     <string name="sk_settings_clear_timeline_cache">Effacer le cache du fil d\'accueil</string>
+    <string name="sk_settings_default_visibility">Visibilité de publication par défaut</string>
+    <string name="sk_settings_lock_account">Approuver manuellement les nouveaux abonnés</string>
+    <string name="sk_timeline_cache_cleared">Cache du fil d\'accueil vidé</string>
 </resources>

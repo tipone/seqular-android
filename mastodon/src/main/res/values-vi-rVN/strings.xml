@@ -602,4 +602,5 @@
 	<plurals name="x_posts_recently">
 		<item quantity="other">%,d tút mới</item>
 	</plurals>
+	<string name="see_new_posts">Đọc những tút mới</string>
 </resources>

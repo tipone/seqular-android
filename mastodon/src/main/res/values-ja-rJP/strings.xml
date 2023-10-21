@@ -602,4 +602,5 @@
 	<plurals name="x_posts_recently">
 		<item quantity="other">最近の投稿 %,d 件</item>
 	</plurals>
+	<string name="see_new_posts">新しい投稿を見る</string>
 </resources>

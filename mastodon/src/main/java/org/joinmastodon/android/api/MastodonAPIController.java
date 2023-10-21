@@ -53,9 +53,7 @@ public class MastodonAPIController{
 			.registerTypeAdapter(Status.class, new Status.StatusDeserializer())
 			.create();
 	private static WorkerThread thread=new WorkerThread("MastodonAPIController");
-	private static OkHttpClient httpClient=new OkHttpClient.Builder()
-			.readTimeout(5, TimeUnit.MINUTES)
-			.build();
+	private static OkHttpClient httpClient=new OkHttpClient.Builder().build();
 
 	private AccountSession session;
 	private static List<String> badDomains = new ArrayList<>();
@@ -113,12 +111,12 @@ public class MastodonAPIController{
 				}
 
 				Request hreq=builder.build();
-				Call call=httpClient.newCall(hreq);
+				OkHttpClient client=req.timeout>0
+						? httpClient.newBuilder().readTimeout(req.timeout, TimeUnit.MILLISECONDS).build()
+						: httpClient;
+				Call call=client.newCall(hreq);
 				synchronized(req){
 					req.okhttpCall=call;
-				}
-				if(req.timeout>0){
-					call.timeout().timeout(req.timeout, TimeUnit.MILLISECONDS);
 				}
 
 				if(BuildConfig.DEBUG)

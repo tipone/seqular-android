@@ -36,6 +36,7 @@ import java.util.stream.Collectors;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
+import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.V;
 
 public class SearchFragment extends BaseStatusListFragment<SearchResult>{
@@ -142,7 +143,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 		}*/
 		int offset=_offset;
 		currentRequest=new GetSearchResults(currentQuery, type, type==null, maxID, offset, type==null ? 0 : count)
-				.setCallback(new Callback<>(){
+				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(SearchResults result){
 						ArrayList<SearchResult> results=new ArrayList<>();
@@ -165,16 +166,8 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 						unfilteredResults=results;
 						onDataLoaded(filterSearchResults(results), type!=null && !results.isEmpty());
 					}
-
-					@Override
-					public void onError(ErrorResponse error){
-						currentRequest=null;
-						Activity a=getActivity();
-						if(a==null)
-							return;
-						error.showToast(a);
-					}
 				})
+				.setTimeout(180000) // 3 minutes (searches can take a long time)
 				.exec(accountID);
 	}
 

@@ -9,6 +9,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusMuteChangedEvent;
@@ -34,6 +35,10 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.function.BiPredicate;
+import java.util.function.Consumer;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -193,56 +198,71 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		}
 	}
 
-	private void iterateRemoveStatus(List<Status> l, String id){
-		Iterator<Status> it=l.iterator();
-		while(it.hasNext()){
-			if(it.next().getContentStatus().id.equals(id)){
-				it.remove();
-			}
-		}
-	}
-
-	private void removeStatusDisplayItems(Status status, int index, int ancestorFirstIndex, int ancestorLastIndex, boolean deleteContent){
+	private boolean removeStatusDisplayItems(String parentID, int firstIndex, int ancestorFirstIndex, int ancestorLastIndex){
 		// did we find an ancestor that is also the status' neighbor?
-		if(ancestorFirstIndex>=0 && ancestorLastIndex==index-1){
-			for(int i=ancestorFirstIndex; i<=ancestorLastIndex; i++){
-				StatusDisplayItem item=displayItems.get(i);
-				String id=deleteContent ? item.getContentID() : item.parentID;
-				// update ancestor to have no descendant anymore
-				if(id.equals(status.inReplyToId)) item.hasDescendantNeighbor=false;
-			}
+		if(ancestorFirstIndex>=0 && ancestorLastIndex==firstIndex-1){
+			// update ancestor to have no descendant anymore
+			displayItems.subList(ancestorFirstIndex, ancestorLastIndex+1).forEach(i->i.hasDescendantNeighbor=false);
 			adapter.notifyItemRangeChanged(ancestorFirstIndex, ancestorLastIndex-ancestorFirstIndex+1);
 		}
 
-		if(index==-1) return;
-		int lastIndex;
-		for(lastIndex=index;lastIndex<displayItems.size();lastIndex++){
-			StatusDisplayItem item=displayItems.get(lastIndex);
-			String id=deleteContent ? item.getContentID() : item.parentID;
-			if(!id.equals(status.id)) break;
+		if(firstIndex==-1) return false;
+		int lastIndex=firstIndex;
+		while(lastIndex<displayItems.size()){
+			if(!displayItems.get(lastIndex).parentID.equals(parentID)) break;
+			lastIndex++;
 		}
-		displayItems.subList(index, lastIndex).clear();
-		adapter.notifyItemRangeRemoved(index, lastIndex-index);
+		int count=lastIndex-firstIndex;
+		displayItems.subList(firstIndex, lastIndex).clear();
+		adapter.notifyItemRangeRemoved(firstIndex, count);
+		return true;
 	}
 
 	protected void removeStatus(Status status){
-		boolean deleteContent=status==status.getContentStatus();
+		final AccountSessionManager asm=AccountSessionManager.getInstance();
+		final CacheController cache=AccountSessionManager.get(accountID).getCacheController();
+		final boolean unReblogging=status.reblog!=null && asm.isSelf(accountID, status.account);
+		final Predicate<Status> isToBeRemovedReblog=item->item!=null && item.reblog!=null
+				&& item.reblog.id.equals(status.reblog.id)
+				&& asm.isSelf(accountID, item.account);
+		final BiPredicate<String, Supplier<String>> isToBeRemovedContent=(parentId, contentIdSupplier)->
+				parentId.equals(status.id) || contentIdSupplier.get().equals(status.id);
+
 		int ancestorFirstIndex=-1, ancestorLastIndex=-1;
 		for(int i=0;i<displayItems.size();i++){
 			StatusDisplayItem item=displayItems.get(i);
-			String id=deleteContent ? item.getContentID() : item.parentID;
-			if(id.equals(status.id)){
-				removeStatusDisplayItems(status, i, ancestorFirstIndex, ancestorLastIndex, deleteContent);
-				ancestorFirstIndex=ancestorLastIndex=-1;
-				continue;
-			}
-			if(id.equals(status.inReplyToId)){
+			// we found a status that the to-be-removed status replies to!
+			// storing indices to maybe update its display items
+			if(item.parentID.equals(status.inReplyToId)){
 				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
 				ancestorLastIndex=i;
 			}
+			// if we're un-reblogging, we compare the reblogged status's id with the current status's
+			if(unReblogging
+					? isToBeRemovedReblog.test(getStatusByID(item.parentID))
+					: isToBeRemovedContent.test(item.parentID, item::getContentStatusID)){
+				// if statuses are removed from index i, the next iteration should be on the same index again
+				if(removeStatusDisplayItems(item.parentID, i, ancestorFirstIndex, ancestorLastIndex)) i--;
+				// resetting in case we find another occurrence of the same status that also has ancestors
+				// (we won't - unless the timeline is being especially weird)
+				ancestorFirstIndex=-1; ancestorLastIndex=-1;
+			}
 		}
-		iterateRemoveStatus(data, status.id);
-		iterateRemoveStatus(preloadedData, status.id);
+
+		Consumer<List<Status>> removeStatusFromData=(list)->{
+			Iterator<Status> it=list.iterator();
+			while(it.hasNext()){
+				Status s=it.next();
+				if(unReblogging
+						? isToBeRemovedReblog.test(s)
+						: isToBeRemovedContent.test(s.id, s::getContentStatusID)){
+					it.remove();
+					cache.deleteStatus(s.id);
+				}
+			}
+		};
+		removeStatusFromData.accept(data);
+		removeStatusFromData.accept(preloadedData);
 	}
 
 	@Override
@@ -335,10 +355,14 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 
 		@Subscribe
 		public void onReblogDeleted(ReblogDeletedEvent ev){
+			AccountSessionManager asm=AccountSessionManager.getInstance();
 			if(!ev.accountID.equals(accountID))
 				return;
 			for(Status item : data){
-				if(item.getContentStatus().id.equals(ev.statusID) && item.reblog!=null){
+				boolean itemIsOwnReblog=item.reblog!=null
+						&& item.getContentStatusID().equals(ev.statusID)
+						&& asm.isSelf(accountID, item.account);
+				if(itemIsOwnReblog){
 					removeStatus(item);
 					break;
 				}

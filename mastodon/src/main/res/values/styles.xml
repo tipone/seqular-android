@@ -36,6 +36,7 @@
 		<item name="android:windowActionModeOverlay">true</item>
 		<item name="android:actionModeBackground">?colorM3PrimaryContainer</item>
 		<item name="android:actionModeCloseDrawable">@drawable/ic_fluent_dismiss_24_regular</item>
+		<item name="appkitBackDrawable">@drawable/ic_fluent_arrow_left_24_regular</item>
 <!--		<item name="appkitEmptyTextAppearance">@style/empty_text</item>-->
 
 		<item name="android:statusBarColor">?colorM3Background</item>
@@ -75,6 +76,7 @@
 		<item name="android:windowActionModeOverlay">true</item>
 		<item name="android:actionModeBackground">?colorM3PrimaryContainer</item>
 		<item name="android:actionModeCloseDrawable">@drawable/ic_fluent_dismiss_24_regular</item>
+		<item name="appkitBackDrawable">@drawable/ic_fluent_arrow_left_24_regular</item>
 <!--		<item name="appkitEmptyTextAppearance">@style/empty_text</item>-->
 
 		<item name="colorM3DisabledBackground">#1FE3E3E3</item>
@@ -243,6 +245,25 @@
 	</style>
 	<style name="Widget.Mastodon.M3.Button.Outlined.Icon">
 		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.ToolbarAction">
+		<item name="android:paddingStart">14dp</item>
+		<item name="android:paddingEnd">20dp</item>
+		<item name="android:textAppearance">@style/m3_title_medium</item>
+		<item name="android:ellipsize">end</item>
+		<item name="android:maxLines">1</item>
+		<item name="android:textSize">16sp</item>
+		<item name="android:stateListAnimator">@animator/m3_button_elevation</item>
+
+		<item name="android:background">@drawable/bg_button_new_posts</item>
+		<item name="android:textColor">@color/button_text_m3_filled</item>
+		<item name="android:drawableTint">@color/button_text_m3_filled</item>
+	</style>
+	<style name="Widget.Mastodon.M3.Button.ToolbarAction.Black">
+		<item name="android:background">@drawable/bg_button_new_posts_outlined</item>
+		<item name="android:textColor">@color/button_text_m3_tonal</item>
+		<item name="android:drawableTint">@color/button_text_m3_tonal</item>
 	</style>
 
 	<style name="Widget.Mastodon.M3.EditText" parent="android:Widget.Material.EditText">

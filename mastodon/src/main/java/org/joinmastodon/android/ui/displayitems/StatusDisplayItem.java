@@ -92,7 +92,7 @@ public abstract class StatusDisplayItem{
 	}
 
 	@NonNull
-	public String getContentID(){
+	public String getContentStatusID(){
 		if(parentFragment instanceof StatusListFragment slf){
 			Status s=slf.getContentStatusByID(parentID);
 			return s!=null ? s.id : parentID;

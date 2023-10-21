@@ -366,6 +366,7 @@
 
 				<Button
 					style="@style/Widget.Mastodon.M3.Button.Tonal.Icon"
+					android:background="@drawable/bg_button_m3_tonal_selector"
 					android:id="@+id/sensitive_item"
 					android:orientation="horizontal"
 					android:layout_width="wrap_content"

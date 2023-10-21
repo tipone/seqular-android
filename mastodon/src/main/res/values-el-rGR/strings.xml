@@ -615,4 +615,5 @@
 	<string name="delete_list_confirm">Διαγραφή “%s”;</string>
 	<string name="list_exclusive">Απόκρυψη μελών στο Ακολουθείς</string>
 	<!-- %s is a username -->
+	<string name="see_new_posts">Δες νέες αναρτήσεις</string>
 </resources>
