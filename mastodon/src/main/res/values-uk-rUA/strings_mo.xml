@@ -75,4 +75,6 @@
     <string name="mo_haptic_feedback">Тактильний зворотний зв\'язок</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Додайте дописи зі сповіщення в закладки або створіть репост</string>
     <string name="mo_recent_emoji_cleared">Нещодавні емоджі очищено</string>
+    <string name="mo_muted_accounts">Ігноровані облікові записи</string>
+    <string name="mo_blocked_accounts">Заблоковані облікові записи</string>
 </resources>
