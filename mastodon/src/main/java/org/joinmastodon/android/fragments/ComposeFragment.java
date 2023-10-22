@@ -699,7 +699,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 						.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(16)));
 			}
 
-			replyText.setText(getString(quote!=null? R.string.sk_quoting_user : R.string.in_reply_to, status.account.getDisplayName()));
+			replyText.setText(HtmlParser.parseCustomEmoji(getString(quote!=null? R.string.sk_quoting_user : R.string.in_reply_to, status.account.getDisplayName()), status.account.emojis));
+			UiUtils.loadCustomEmojiInTextView(replyText);
 			int visibilityNameRes = switch (status.visibility) {
 				case PUBLIC -> R.string.visibility_public;
 				case UNLISTED -> R.string.sk_visibility_unlisted;
