@@ -779,8 +779,8 @@ public class UiUtils {
 			button.setText(relationship.followedBy ? R.string.follow_back : R.string.button_follow);
 			styleRes=R.style.Widget_Mastodon_M3_Button_Filled;
 		}else{
-			button.setText(R.string.button_following);
-			styleRes=R.style.Widget_Mastodon_M3_Button_Tonal;
+			button.setText(relationship.followedBy ? R.string.sk_button_mutuals : R.string.button_following);
+			styleRes=relationship.followedBy ? R.style.Widget_Mastodon_M3_Button_Tonal_Outlined : R.style.Widget_Mastodon_M3_Button_Tonal;
 		}
 
 		TypedArray ta=button.getContext().obtainStyledAttributes(styleRes, new int[]{android.R.attr.background});

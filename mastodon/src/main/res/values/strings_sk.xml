@@ -416,4 +416,5 @@
 	<string name="sk_timeline_cache_cleared">Cleared home timeline cache</string>
     <string name="sk_settings_lock_account">Manually approve new followers</string>
 	<string name="sk_settings_default_visibility">Default posting visibility</string>
+	<string name="sk_button_mutuals">Mutuals</string>
 </resources>

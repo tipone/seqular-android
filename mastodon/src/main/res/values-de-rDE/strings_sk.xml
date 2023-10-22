@@ -415,4 +415,5 @@
     <string name="sk_settings_default_visibility">Standard-Sichtbarkeit für Posts</string>
     <string name="sk_settings_lock_account">Neue Follower_innen manuell genehmigen</string>
     <string name="sk_timeline_cache_cleared">Start-Timeline geleert</string>
+	<string name="sk_button_mutuals">Befreundet</string>
 </resources>
