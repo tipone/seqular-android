@@ -414,4 +414,5 @@
     <string name="sk_settings_default_visibility">Visibilité de publication par défaut</string>
     <string name="sk_settings_lock_account">Approuver manuellement les nouveaux abonnés</string>
     <string name="sk_timeline_cache_cleared">Cache du fil d\'accueil vidé</string>
+    <string name="sk_button_mutuals">Amis</string>
 </resources>
