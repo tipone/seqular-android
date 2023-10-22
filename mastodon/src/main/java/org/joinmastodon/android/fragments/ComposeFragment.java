@@ -200,7 +200,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	public Instance instance;
 
 	public Status editingStatus;
-	private ScheduledStatus scheduledStatus;
+	public ScheduledStatus scheduledStatus;
 	private boolean redraftStatus;
 
 	private ContentType contentType;
