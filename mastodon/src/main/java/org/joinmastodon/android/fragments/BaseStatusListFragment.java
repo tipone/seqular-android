@@ -468,10 +468,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected void updatePoll(String itemID, Status status, Poll poll){
 		status.poll=poll;
 		int firstOptionIndex=-1, footerIndex=-1;
+		int spoilerFirstOptionIndex=-1, spoilerFooterIndex=-1;
+		SpoilerStatusDisplayItem spoilerItem=null;
 		int i=0;
 		for(StatusDisplayItem item:displayItems){
 			if(item.parentID.equals(itemID)){
-				if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
+				if(item instanceof SpoilerStatusDisplayItem){
+					spoilerItem=(SpoilerStatusDisplayItem) item;
+				}else if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
 					firstOptionIndex=i;
 				}else if(item instanceof PollFooterStatusDisplayItem){
 					footerIndex=i;
@@ -484,8 +488,16 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			throw new IllegalStateException("Can't find all poll items in displayItems");
 		List<StatusDisplayItem> pollItems=displayItems.subList(firstOptionIndex, footerIndex+1);
 		int prevSize=pollItems.size();
+		if(spoilerItem!=null){
+			spoilerFirstOptionIndex=spoilerItem.contentItems.indexOf(pollItems.get(0));
+			spoilerFooterIndex=spoilerItem.contentItems.indexOf(pollItems.get(pollItems.size()-1));
+		}
 		pollItems.clear();
 		StatusDisplayItem.buildPollItems(itemID, this, poll, pollItems);
+		if(spoilerItem!=null){
+			spoilerItem.contentItems.subList(spoilerFirstOptionIndex, spoilerFooterIndex+1).clear();
+			spoilerItem.contentItems.addAll(spoilerFirstOptionIndex, pollItems);
+		}
 		if(prevSize!=pollItems.size()){
 			adapter.notifyItemRangeRemoved(firstOptionIndex, prevSize);
 			adapter.notifyItemRangeInserted(firstOptionIndex, pollItems.size());
