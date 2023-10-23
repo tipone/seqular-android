@@ -87,7 +87,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 						else
 							E.post(new StatusCountersUpdatedEvent(updated));
 					}else{
-						E.post(new StatusDeletedEvent(cached.id, accountID));
+						removeStatus(cached);
 					}
 				}
 			}
