@@ -412,4 +412,5 @@
     <string name="sk_settings_lock_account">Aprobar nuevos seguidores manualmente</string>
     <string name="sk_timeline_cache_cleared">Caché de la línea de tiempo de inicio borrada</string>
     <string name="sk_settings_clear_timeline_cache">Borrar la caché de la línea de tiempo de inicio</string>
+    <string name="sk_button_mutuals">Amigos</string>
 </resources>
