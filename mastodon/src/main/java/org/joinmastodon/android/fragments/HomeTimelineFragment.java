@@ -11,10 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
+import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
 import org.joinmastodon.android.api.requests.timelines.GetHomeTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
-import org.joinmastodon.android.events.StatusDeletedEvent;
 import org.joinmastodon.android.events.StatusUpdatedEvent;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.FilterContext;
@@ -57,6 +57,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 
 	@Override
 	protected void doLoadData(int offset, int count){
+		String maxID=this.maxID;
 		AccountSessionManager.getInstance()
 				.getAccount(accountID).getCacheController()
 				.getHomeTimeline(offset>0 ? maxID : null, count, refreshing, new SimpleCallback<>(this){
@@ -64,8 +65,8 @@ public class HomeTimelineFragment extends StatusListFragment {
 					public void onSuccess(CacheablePaginatedResponse<List<Status>> result){
 						if(getActivity()==null) return;
 						boolean empty=result.items.isEmpty();
-						if(result.isFromCache()) refreshData(result.items);
-						maxID=result.maxID;
+						if(result.isFromCache()) refreshCachedData(result, maxID);
+						HomeTimelineFragment.this.maxID=result.maxID;
 						AccountSessionManager.get(accountID).filterStatuses(result.items, getFilterContext());
 						onDataLoaded(result.items, !empty);
 						if(result.isFromCache() && GlobalUserPreferences.loadNewPosts)
@@ -74,22 +75,46 @@ public class HomeTimelineFragment extends StatusListFragment {
 				});
 	}
 
-	private void refreshData(List<Status> cachedList){
+	private void handleRefreshedData(List<Status> result, List<Status> cachedList){
+		Map<String, Status> refreshed=result.stream().collect(Collectors.toMap(Status::getID, Function.identity()));
+		for(Status cached : cachedList){
+			if(refreshed.containsKey(cached.id)){
+				Status updated=refreshed.get(cached.id);
+				if(updated.editedAt!=null && cached.editedAt!=null && updated.editedAt.isAfter(cached.editedAt))
+					E.post(new StatusUpdatedEvent(updated));
+				else
+					E.post(new StatusCountersUpdatedEvent(updated.getContentStatus()));
+			}else{
+				removeStatus(cached);
+			}
+		}
+	}
+
+	private void refreshCachedData(CacheablePaginatedResponse<List<Status>> result, String maxID){
+		List<Status> cachedList=new ArrayList<>(result.items);
+		if(cachedList.isEmpty()) return;
+		if(maxID==null){
+			// fetch top status manually so we can use its id as the max_id to fetch the rest
+			Status firstFromCache=cachedList.get(0);
+			maxID=firstFromCache.id;
+			cachedList.remove(0);
+			new GetStatusByID(maxID).setCallback(new Callback<>(){
+				@Override
+				public void onSuccess(Status result){
+					handleRefreshedData(
+							Collections.singletonList(result),
+							Collections.singletonList(firstFromCache)
+					);
+				}
+
+				@Override
+				public void onError(ErrorResponse ignored){}
+			}).exec(accountID);
+		}
 		new GetHomeTimeline(maxID, null, cachedList.size(), null, getSession().getLocalPreferences().timelineReplyVisibility).setCallback(new Callback<>(){
 			@Override
 			public void onSuccess(List<Status> result){
-				Map<String, Status> refreshed=result.stream().collect(Collectors.toMap(Status::getID, Function.identity()));
-				for(Status cached : cachedList){
-					if(refreshed.containsKey(cached.id)){
-						Status updated=refreshed.get(cached.id);
-						if(updated.editedAt!=null && cached.editedAt!=null && updated.editedAt.isAfter(cached.editedAt))
-							E.post(new StatusUpdatedEvent(updated));
-						else
-							E.post(new StatusCountersUpdatedEvent(updated));
-					}else{
-						removeStatus(cached);
-					}
-				}
+				handleRefreshedData(result, cachedList);
 			}
 
 			@Override
