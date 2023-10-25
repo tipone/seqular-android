@@ -814,8 +814,8 @@ public class UiUtils {
 			button.setText(relationship.followedBy ? R.string.follow_back : R.string.button_follow);
 			styleRes=R.style.Widget_Mastodon_M3_Button_Filled;
 		}else{
-			button.setText(R.string.button_following);
-			styleRes=R.style.Widget_Mastodon_M3_Button_Tonal;
+			button.setText(relationship.followedBy ? R.string.sk_button_mutuals : R.string.button_following);
+			styleRes=relationship.followedBy ? R.style.Widget_Mastodon_M3_Button_Tonal_Outlined : R.style.Widget_Mastodon_M3_Button_Tonal;
 		}
 
 		TypedArray ta=button.getContext().obtainStyledAttributes(styleRes, new int[]{android.R.attr.background});
@@ -941,17 +941,26 @@ public class UiUtils {
 	}
 
 	public static void insetPopupMenuIcon(Context context, MenuItem item) {
-		ColorStateList iconTint = ColorStateList.valueOf(UiUtils.getThemeColor(context, android.R.attr.textColorSecondary));
-		insetPopupMenuIcon(item, iconTint);
+		insetPopupMenuIcon(context, item, 0);
 	}
 
-	public static void insetPopupMenuIcon(MenuItem item, ColorStateList iconTint) {
-		Drawable icon = item.getIcon().mutate();
-		if (Build.VERSION.SDK_INT >= 26) item.setIconTintList(iconTint);
+	public static void insetPopupMenuIcon(Context context, MenuItem item, int addWidth) {
+		ColorStateList iconTint = ColorStateList.valueOf(UiUtils.getThemeColor(context, android.R.attr.textColorSecondary));
+		insetPopupMenuIcon(item, iconTint, addWidth);
+	}
+
+	/**
+	 * @param addWidth set if icon is too wide/narrow. if icon is 25dp in width, set to -1dp
+	 */
+	public static void insetPopupMenuIcon(MenuItem item, ColorStateList iconTint, int addWidth) {
+		Drawable icon=item.getIcon().mutate();
+		if(Build.VERSION.SDK_INT>=26) item.setIconTintList(iconTint);
 		else icon.setTintList(iconTint);
-		icon = new InsetDrawable(icon, V.dp(8), 0, V.dp(8), 0);
+		int pad=V.dp(8);
+		boolean rtl=icon.getLayoutDirection()==View.LAYOUT_DIRECTION_RTL;
+		icon=new InsetDrawable(icon, rtl ? pad+addWidth : pad, 0, rtl ? pad : addWidth+pad, 0);
 		item.setIcon(icon);
-		SpannableStringBuilder ssb = new SpannableStringBuilder(item.getTitle());
+ 		SpannableStringBuilder ssb = new SpannableStringBuilder(item.getTitle());
 		item.setTitle(ssb);
 	}
 
@@ -985,7 +994,7 @@ public class UiUtils {
 			if (subMenu != null) enableMenuIcons(context, subMenu, exclude);
 			if (item.getIcon() == null || Arrays.stream(exclude).anyMatch(id -> id == item.getItemId()))
 				continue;
-			insetPopupMenuIcon(item, iconTint);
+			insetPopupMenuIcon(item, iconTint, 0);
 		}
 	}
 

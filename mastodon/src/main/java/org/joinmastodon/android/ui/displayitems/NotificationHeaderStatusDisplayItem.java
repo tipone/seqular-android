@@ -6,6 +6,7 @@ import static org.joinmastodon.android.ui.utils.UiUtils.generateFormattedString;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -143,6 +144,8 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				item.emojiHelper.setImageDrawable(index-1, image);
 				text.invalidate();
 			}
+			if(image instanceof Animatable)
+				((Animatable) image).start();
 		}
 
 		@Override

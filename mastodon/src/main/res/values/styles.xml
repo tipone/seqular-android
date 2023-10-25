@@ -228,6 +228,9 @@
 	<style name="Widget.Mastodon.M3.Button.Tonal.Icon">
 		<item name="android:paddingStart">16dp</item>
 	</style>
+	<style name="Widget.Mastodon.M3.Button.Tonal.Outlined">
+		<item name="android:background">@drawable/bg_button_m3_tonal_outlined</item>
+	</style>
 
 	<style name="Widget.Mastodon.M3.Button.Tonal.Error">
 		<item name="android:background">@drawable/bg_button_m3_tonal_error</item>

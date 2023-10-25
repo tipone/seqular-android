@@ -566,7 +566,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				follow.setIcon(following ? R.drawable.ic_fluent_person_delete_24_regular : R.drawable.ic_fluent_person_add_24_regular);
 				manageUserLists.setVisible(relationship != null && relationship.following);
 				manageUserLists.setTitle(item.parentFragment.getString(R.string.sk_lists_with_user, username));
-				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), follow);
+				// ic_fluent_person_add_24_regular actually has a width of 25dp -.-
+				UiUtils.insetPopupMenuIcon(item.parentFragment.getContext(), follow, following ? 0 : V.dp(-1));
 			}
 
 			workaroundChangingMenuItemWidths(menu, username);
