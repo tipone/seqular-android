@@ -291,4 +291,67 @@
     <string name="sk_settings_support_local_only">サーバーはローカルのみの投稿をサポートしています</string>
     <string name="sk_spoiler_show">コンテンツを表示</string>
     <string name="sk_advanced_options_hide">高度な設定を非表示にする</string>
+    <string name="sk_signed_up">登録済み</string>
+    <string name="sk_sign_ups">ユーザー登録</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="other">%d 秒</item>
+    </plurals>
+    <string name="sk_followed_as">%s からフォロー</string>
+    <plurals name="sk_time_hours">
+        <item quantity="other">%d 時間</item>
+    </plurals>
+    <string name="sk_reported">報告済み</string>
+    <string name="sk_set_as_default">デフォルトに設定</string>
+    <string name="sk_settings_like_icon">お気に入りアイコンにハートを使用する</string>
+    <string name="sk_content_type_html">HTML</string>
+    <string name="sk_settings_color_palette_default">デフォルト (%s)</string>
+    <string name="sk_open_in_app">アプリで開く</string>
+    <string name="sk_blocked_accounts">ブロック済みのアカウント</string>
+    <string name="sk_suicide_search_terms">自殺</string>
+    <string name="sk_icon_feed">フィード</string>
+    <string name="sk_instance_info_unavailable">インスタンスの情報が一時的に利用できません</string>
+    <string name="sk_list_replies_policy">返信を表示</string>
+    <string name="sk_filtered">フィルター: %s</string>
+    <string name="sk_load_missing_posts_above">新しい投稿を読み込む</string>
+    <plurals name="sk_time_days">
+        <item quantity="other">%d 日</item>
+    </plurals>
+    <string name="sk_instance_features">インスタンスの特徴</string>
+    <string name="sk_notification_action_replied">%s に返信を送信</string>
+    <string name="sk_settings_show_emoji_reactions_always">常に追加ボタンを表示</string>
+    <string name="sk_content_type_plain">プレーンテキスト</string>
+    <string name="sk_search_suicide_hotlines">相談先を探す</string>
+    <string name="sk_content_type_mfm">MFM</string>
+    <string name="sk_unfinished_attachments">添付ファイルをアップロード中</string>
+    <string name="sk_timeline_cache_cleared">ホームタイムラインキャッシュをクリアしました</string>
+    <string name="sk_muted_accounts">ミュート済みのアカウント</string>
+    <string name="sk_settings_hide_fab">折り畳むボタンを自動で隠す</string>
+    <string name="sk_enter_emoji_hint">絵文字を入力または検索</string>
+    <string name="sk_publish_anyway">とにかく公開する</string>
+    <string name="sk_do_not_show_again">再び表示しない</string>
+    <string name="sk_follow_as">他のアカウントからフォローする</string>
+    <string name="sk_suicide_helplines_url">https://www.mhlw.go.jp/mamorouyokokoro/soudan/</string>
+    <string name="sk_content_type_markdown">マークダウン</string>
+    <string name="sk_content_type_bbcode">BBCode</string>
+    <string name="sk_enter_emoji_toast">絵文字を入力してください</string>
+    <string name="sk_collapse">折り畳む</string>
+    <string name="sk_settings_server_version">サーバーバージョン: %s</string>
+    <string name="sk_content_type">コンテンツタイプ</string>
+    <string name="sk_compact_reblog_reply_line">コンパクトなブーストと返信ライン</string>
+    <string name="sk_settings_hide_interaction">インタラクションボタンを隠す</string>
+    <string name="sk_expand">展開</string>
+    <string name="sk_load_missing_posts_below">古い投稿を読み込む</string>
+    <string name="sk_external_share_title">アカウントで共有</string>
+    <string name="sk_unfinished_attachments_message">一部の添付ファイルのアップロードが完了していません。</string>
+    <string name="sk_settings_content_types">投稿のフォーマットを有効化</string>
+    <string name="sk_settings_collapse_long_posts">長文の投稿を折り畳む</string>
+    <string name="sk_settings_default_content_type">デフォルトのコンテンツタイプ</string>
+    <string name="sk_search_suicide_title">もしも、あなたが悩んでいるのなら…</string>
+    <plurals name="sk_time_minutes">
+        <item quantity="other">%d 分</item>
+    </plurals>
+    <string name="sk_new_reports">新しい報告</string>
+    <string name="sk_show_thread">スレッドを表示</string>
+    <string name="sk_settings_clear_timeline_cache">ホームタイムラインキャッシュをクリア</string>
+    <string name="sk_add_timeline_tag_error_empty">ハッシュタグは空欄にできません</string>
 </resources>
