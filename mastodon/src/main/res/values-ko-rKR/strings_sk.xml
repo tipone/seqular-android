@@ -280,8 +280,6 @@
     <string name="sk_external_share_or_open_title">계정으로 공유 및 열기</string>
     <string name="sk_settings_auto_reveal_nobody">안 함</string>
     <string name="sk_settings_prefix_replies_never">안 함</string>
-    <string name="sk_settings_prefix_replies_to_others"></string>
-    <string name="sk_settings_prefix_replies_always"></string>
     <string name="sk_content_type">콘텐츠 유형</string>
     <string name="sk_content_type_unspecified">지정되지 않음</string>
     <string name="sk_icon_beaker">비커</string>
