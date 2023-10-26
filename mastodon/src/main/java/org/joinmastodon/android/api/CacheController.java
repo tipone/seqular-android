@@ -273,6 +273,7 @@ public class CacheController{
 
 	public void deleteStatus(String id){
 		runOnDbThread((db)->{
+			// TODO: set previous status's hasGapAfter flag if the deleted status hasGapAfter
 			db.delete("home_timeline", "`id`=?", new String[]{id});
 		});
 	}

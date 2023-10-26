@@ -25,6 +25,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.parceler.Parcels;
@@ -216,7 +217,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			StatusDisplayItem item=displayItems.get(i);
 			// we found a status that the to-be-removed status replies to!
 			// storing indices to maybe update its display items
-			if(item.parentID.equals(status.inReplyToId)){
+			if(item.parentID.equals(status.inReplyToId) && !(item instanceof GapStatusDisplayItem)){
 				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
 				ancestorLastIndex=i;
 			}
