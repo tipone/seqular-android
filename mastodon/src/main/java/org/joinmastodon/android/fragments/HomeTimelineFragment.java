@@ -332,7 +332,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 			dataLoading=false;
 		}
 		if(parent!=null) parent.hideNewPostsButton();
-		loadNewPosts();
+		super.onRefresh();
 	}
 
 	@Override
