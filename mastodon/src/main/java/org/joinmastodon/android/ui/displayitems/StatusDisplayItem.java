@@ -28,6 +28,7 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
+import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
@@ -42,6 +43,7 @@ import org.joinmastodon.android.ui.viewholders.AccountViewHolder;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -303,10 +305,7 @@ public abstract class StatusDisplayItem{
 			footer=new FooterStatusDisplayItem(parentID, fragment, statusForContent, accountID);
 			footer.hideCounts=hideCounts;
 			items.add(footer);
-			if(status.hasGapAfter!=null && !(fragment instanceof ThreadFragment))
-				items.add(new GapStatusDisplayItem(parentID, fragment, status));
 		}
-		int i=1;
 		boolean inset=(flags & FLAG_INSET)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
 		if((inset || footer==null) && (flags & FLAG_CHECKABLE)==0){
@@ -316,6 +315,10 @@ public abstract class StatusDisplayItem{
 			// !contentItems.isEmpty() && contentItems
 			// 	.get(contentItems.size() - 1) instanceof MediaGridStatusDisplayItem));
 		}
+		GapStatusDisplayItem gap=null;
+		if((flags & FLAG_NO_FOOTER)==0 && status.hasGapAfter!=null && !(fragment instanceof ThreadFragment))
+			items.add(gap=new GapStatusDisplayItem(parentID, fragment, status));
+		int i=1;
 		for(StatusDisplayItem item:items){
 			item.inset=inset;
 			item.index=i++;
@@ -327,8 +330,13 @@ public abstract class StatusDisplayItem{
 			}
 		}
 
-		return applyingFilter==null ? items :
-				new ArrayList<>(List.of(new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, items, applyingFilter)));
+		List<StatusDisplayItem> nonGapItems=gap!=null ? items.subList(0, items.size()-1) : items;
+		WarningFilteredStatusDisplayItem warning=applyingFilter==null ? null :
+				new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, nonGapItems, applyingFilter);
+		return applyingFilter==null ? items : new ArrayList<>(gap!=null
+				? List.of(warning, gap)
+				: Collections.singletonList(warning)
+		);
 	}
 
 	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items){
