@@ -382,7 +382,7 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		public MediaAttachmentViewController getViewController(int index){
-			return controllers.get(index);
+			return index<controllers.size() ? controllers.get(index) : null;
 		}
 
 		public void setClipChildren(boolean clip){
