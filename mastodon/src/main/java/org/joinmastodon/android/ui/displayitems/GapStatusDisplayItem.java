@@ -8,6 +8,7 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.drawables.SawtoothTearDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -63,7 +64,12 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 			}
 			top.setClickable(!item.loading);
 			bottom.setClickable(!item.loading);
-			StatusDisplayItem next=getNextVisibleDisplayItem().orElse(null);
+			StatusDisplayItem next=getNextVisibleDisplayItem(i->{
+				if(!(item.parentFragment instanceof StatusListFragment)) return false;
+				Status s=((StatusListFragment) item.parentFragment).getStatusByID(i.parentID);
+				return s!=null && !s.fromStatusCreated;
+			}).orElse(null);
+			bottom.setVisibility(next==null ? View.GONE : View.VISIBLE);
 			Instant dateBelow=next instanceof HeaderStatusDisplayItem h ? h.status.createdAt
 					: next instanceof ReblogOrReplyLineStatusDisplayItem l ? l.status.createdAt
 					: null;

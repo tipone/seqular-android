@@ -45,6 +45,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
@@ -384,12 +385,14 @@ public abstract class StatusDisplayItem{
 		}
 
 		public Optional<StatusDisplayItem> getNextVisibleDisplayItem(){
+			return getNextVisibleDisplayItem(null);
+		}
+		public Optional<StatusDisplayItem> getNextVisibleDisplayItem(Predicate<StatusDisplayItem> predicate){
 			Optional<StatusDisplayItem> next=getNextDisplayItem();
 			for(int offset=1; next.isPresent(); next=getDisplayItemOffset(++offset)){
-				if(!next.map(n->
-						(n instanceof EmojiReactionsStatusDisplayItem e && e.isHidden()) ||
-						(n instanceof DummyStatusDisplayItem)
-				).orElse(false)) return next;
+				boolean isHidden=next.map(n->(n instanceof EmojiReactionsStatusDisplayItem e && e.isHidden())
+						|| (n instanceof DummyStatusDisplayItem)).orElse(false);
+				if(!isHidden && (predicate==null || predicate.test(next.get()))) return next;
 			}
 			return Optional.empty();
 		}
