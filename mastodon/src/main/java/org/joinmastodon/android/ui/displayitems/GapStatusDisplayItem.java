@@ -64,16 +64,14 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 			}
 			top.setClickable(!item.loading);
 			bottom.setClickable(!item.loading);
-			StatusDisplayItem next=item.parentFragment instanceof StatusListFragment
-					? getNextVisibleDisplayItem(i->{
-						Status s=((StatusListFragment) item.parentFragment).getStatusByID(i.parentID);
-						return s!=null && !s.fromStatusCreated;
-					}).orElse(null)
-					: null;
+			Status next=!(item.parentFragment instanceof StatusListFragment) ? null : getNextVisibleDisplayItem(i->{
+				Status s=((StatusListFragment) item.parentFragment).getStatusByID(i.parentID);
+				return s!=null && !s.fromStatusCreated;
+			})
+					.map(i->((StatusListFragment) item.parentFragment).getStatusByID(i.parentID))
+					.orElse(null);
 			bottom.setVisibility(next==null ? View.GONE : View.VISIBLE);
-			Instant dateBelow=next instanceof HeaderStatusDisplayItem h ? h.status.createdAt
-					: next instanceof ReblogOrReplyLineStatusDisplayItem l ? l.status.createdAt
-					: null;
+			Instant dateBelow=next!=null ? next.createdAt : null;
 			String text=dateBelow!=null && item.status.createdAt!=null && dateBelow.isBefore(item.status.createdAt)
 					? UiUtils.formatPeriodBetween(item.parentFragment.getContext(), dateBelow, item.status.createdAt)
 					: null;
