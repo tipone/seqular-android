@@ -193,10 +193,12 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		if(firstIndex==-1) return false;
 		int lastIndex=firstIndex;
 		while(lastIndex<displayItems.size()){
-			if(!displayItems.get(lastIndex).parentID.equals(parentID)) break;
+			StatusDisplayItem item=displayItems.get(lastIndex);
+			if(!item.parentID.equals(parentID) || item instanceof GapStatusDisplayItem) break;
 			lastIndex++;
 		}
 		int count=lastIndex-firstIndex;
+		if(count<1) return false;
 		displayItems.subList(firstIndex, lastIndex).clear();
 		adapter.notifyItemRangeRemoved(firstIndex, count);
 		return true;
@@ -217,7 +219,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			StatusDisplayItem item=displayItems.get(i);
 			// we found a status that the to-be-removed status replies to!
 			// storing indices to maybe update its display items
-			if(item.parentID.equals(status.inReplyToId) && !(item instanceof GapStatusDisplayItem)){
+			if(item.parentID.equals(status.inReplyToId)){
 				if(ancestorFirstIndex==-1) ancestorFirstIndex=i;
 				ancestorLastIndex=i;
 			}
