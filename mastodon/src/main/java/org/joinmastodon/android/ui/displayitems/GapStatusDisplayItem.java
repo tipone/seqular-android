@@ -64,11 +64,12 @@ public class GapStatusDisplayItem extends StatusDisplayItem{
 			}
 			top.setClickable(!item.loading);
 			bottom.setClickable(!item.loading);
-			StatusDisplayItem next=getNextVisibleDisplayItem(i->{
-				if(!(item.parentFragment instanceof StatusListFragment)) return false;
-				Status s=((StatusListFragment) item.parentFragment).getStatusByID(i.parentID);
-				return s!=null && !s.fromStatusCreated;
-			}).orElse(null);
+			StatusDisplayItem next=item.parentFragment instanceof StatusListFragment
+					? getNextVisibleDisplayItem(i->{
+						Status s=((StatusListFragment) item.parentFragment).getStatusByID(i.parentID);
+						return s!=null && !s.fromStatusCreated;
+					}).orElse(null)
+					: null;
 			bottom.setVisibility(next==null ? View.GONE : View.VISIBLE);
 			Instant dateBelow=next instanceof HeaderStatusDisplayItem h ? h.status.createdAt
 					: next instanceof ReblogOrReplyLineStatusDisplayItem l ? l.status.createdAt
