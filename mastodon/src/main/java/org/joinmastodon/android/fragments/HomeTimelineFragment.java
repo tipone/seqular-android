@@ -212,6 +212,7 @@ public class HomeTimelineFragment extends StatusListFragment {
 								AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putHomeTimeline(Collections.singletonList(gapStatus), false);
 							}
 						}else{
+							// TODO: refactor this code. it's too long. incomprehensible, even
 							if(downwards) {
 								Set<String> idsBelowGap=new HashSet<>();
 								boolean belowGap=false;
