@@ -1,6 +1,0 @@
-- Finally: The long-awaited Material 3 UI redesign!
-- Gaps in home timeline now allow choosing whether to load newer or older data
-- For server announcements and Akkoma users: Emoji reactions!
-- Recently used emoji in emoji picker
-- Pronouns are now displayed next to display names
-- Lots of bugfixes and new bugs for you to discover ✨
