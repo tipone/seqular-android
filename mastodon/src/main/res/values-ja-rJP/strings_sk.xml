@@ -4,7 +4,7 @@
     <string name="sk_delete_and_redraft">削除して再編集</string>
     <string name="sk_confirm_delete_and_redraft_title">投稿を削除して再編集</string>
     <string name="sk_confirm_delete_and_redraft">本当にこの投稿を削除して再編集しますか？</string>
-    <string name="sk_pin_post">プロファイルに固定</string>
+    <string name="sk_pin_post">プロフィールに固定</string>
     <string name="sk_confirm_pin_post_title">投稿をプロフィールに固定</string>
     <string name="sk_confirm_pin_post">この投稿をあなたのプロフィールに固定しますか？</string>
     <string name="sk_pinning">投稿を固定しています…</string>
@@ -154,7 +154,7 @@
     <string name="sk_scheduled_too_soon">投稿は10分以上後の予約である必要があります。</string>
     <string name="sk_settings_unifiedpush">UnifiedPush を使用</string>
     <string name="sk_settings_unifiedpush_choose">ディストリビューターを選択</string>
-    <string name="sk_list_replies_policy_followed">フォローされたユーザー</string>
+    <string name="sk_list_replies_policy_followed">フォロー中のユーザー</string>
     <string name="sk_delete_list">リストを削除</string>
     <string name="sk_delete_list_confirm">本当にリスト “%s” を削除しますか？</string>
     <string name="sk_edit_list_title">リストを編集</string>
@@ -288,7 +288,7 @@
     <string name="sk_settings_display_pronouns_in_user_listings">ユーザーリストに代名詞を表示</string>
     <string name="sk_settings_unifiedpush_no_distributor_body">UnifiedPush による通知を動作させるにはディストリビューターをインストールする必要があります。詳しくは https://unifiedpush.org/ をご覧ください</string>
     <string name="sk_list_replies_policy_list">リストのメンバー</string>
-    <string name="sk_settings_support_local_only">サーバーはローカルのみの投稿をサポートしています</string>
+    <string name="sk_settings_support_local_only">ローカルのみの投稿をサポートするサーバー</string>
     <string name="sk_spoiler_show">コンテンツを表示</string>
     <string name="sk_advanced_options_hide">高度な設定を非表示にする</string>
     <string name="sk_signed_up">登録済み</string>
@@ -302,7 +302,7 @@
     </plurals>
     <string name="sk_reported">報告済み</string>
     <string name="sk_set_as_default">デフォルトに設定</string>
-    <string name="sk_settings_like_icon">お気に入りアイコンにハートを使用する</string>
+    <string name="sk_settings_like_icon">お気に入りアイコンにハートを使用</string>
     <string name="sk_content_type_html">HTML</string>
     <string name="sk_settings_color_palette_default">デフォルト (%s)</string>
     <string name="sk_open_in_app">アプリで開く</string>
@@ -354,4 +354,34 @@
     <string name="sk_show_thread">スレッドを表示</string>
     <string name="sk_settings_clear_timeline_cache">ホームタイムラインキャッシュをクリア</string>
     <string name="sk_add_timeline_tag_error_empty">ハッシュタグは空欄にできません</string>
+    <string name="sk_settings_allow_remote_loading_explanation">発信元のインスタンスから情報を読み込んで、フォロワー、いいね、ブーストのより正確なリストを取得しましょう。</string>
+    <string name="sk_disable_pill_shaped_active_indicator">錠剤型のアクティブタブインジケーターを無効にする</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">投稿を開いた時のみ</string>
+    <string name="sk_settings_glitch_instance">Glitchのローカル限定モード</string>
+    <string name="sk_settings_allow_remote_loading">リモートインスタンスから情報を読み込む</string>
+    <string name="sk_notify_posts_info_banner">投稿通知を有効にすると、その人の新しい投稿がここに表示されます。</string>
+    <string name="sk_settings_auto_reveal_anyone">全員の返信</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">空の絵文字リアクションを隠す</string>
+    <string name="sk_settings_show_emoji_reactions">絵文字リアクションをタイムラインに表示</string>
+    <string name="sk_settings_default_visibility">投稿のデフォルト公開範囲</string>
+    <string name="sk_settings_underlined_links">下線付きリンク</string>
+    <string name="sk_list_replies_policy_none">なし</string>
+    <string name="sk_settings_show_alt_indicator">代替テキストがあることを示す表示</string>
+    <string name="sk_settings_auto_reveal_nobody">なし</string>
+    <string name="sk_settings_lock_account">新しいフォロワーを手動で承認</string>
+    <string name="sk_settings_glitch_mode_explanation">ホームインスタンスがGlitchで動作している場合、これを有効にしてください。HometownやAkkomaでは不要です。</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">返信内にある同一のCWを自動で展開</string>
+    <string name="sk_settings_show_no_alt_indicator">代替テキストがないことを示す表示</string>
+    <string name="sk_no_remote_info_hint">リモートの情報が利用できません</string>
+    <string name="sk_settings_auto_reveal_author">同じ作成者の返信</string>
+    <string name="sk_error_loading_profile">%s からのプロフィールの読み込みに失敗しました</string>
+    <string name="sk_trending_posts_info_banner">これらの投稿は現在Fediverseで人気を集めています。</string>
+    <string name="sk_in_reply">返信</string>
+    <string name="sk_settings_confirm_before_reblog">ブーストする前に確認</string>
+    <string name="sk_settings_emoji_reactions_explanation">投稿に対する絵文字リアクションを表示、追加することができます。様々なFediverseサーバーがこれに対応していますが、Mastodonは対応していません。</string>
+    <string name="sk_recently_used">最近使用</string>
+    <string name="sk_button_mutuals">相互フォロー中</string>
+    <string name="sk_notify_poll_results">投票結果</string>
+    <string name="sk_post_contains_media">メディアを含む投稿</string>
+    <string name="sk_edit_alt_text">代替テキストを編集</string>
 </resources>
