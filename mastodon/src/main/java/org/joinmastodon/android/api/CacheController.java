@@ -121,7 +121,7 @@ public class CacheController{
 				db.insertWithOnConflict("home_timeline", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			}
 			if(!clear)
-				db.delete("home_timeline", "`id` NOT IN (SELECT `id` FROM `home_timeline` ORDER BY `time` DESC LIMIT ?)", new String[]{"100"});
+				db.delete("home_timeline", "`id` NOT IN (SELECT `id` FROM `home_timeline` ORDER BY `time` DESC LIMIT ?)", new String[]{"1000"});
 		});
 	}
 
@@ -273,6 +273,28 @@ public class CacheController{
 
 	public void deleteStatus(String id){
 		runOnDbThread((db)->{
+			String gapId=null;
+			int gapFlags=0;
+			// select to-be-removed and newer row
+			try(Cursor cursor=db.query("home_timeline", new String[]{"id", "flags"}, "`time`>=(SELECT `time` FROM `home_timeline` WHERE `id`=?)", new String[]{id}, null, null, "`time` ASC", "2")){
+				boolean hadGapAfter=false;
+				// always either one or two iterations (only one if there's no newer post)
+				while(cursor.moveToNext()){
+					String currentId=cursor.getString(0);
+					int currentFlags=cursor.getInt(1);
+					if(currentId.equals(id)){
+						hadGapAfter=((currentFlags & POST_FLAG_GAP_AFTER)!=0);
+					}else if(hadGapAfter){
+						gapFlags=currentFlags|POST_FLAG_GAP_AFTER;
+						gapId=currentId;
+					}
+				}
+			}
+			if(gapId!=null){
+				ContentValues values=new ContentValues();
+				values.put("flags", gapFlags);
+				db.update("home_timeline", values, "`id`=?", new String[]{gapId});
+			}
 			db.delete("home_timeline", "`id`=?", new String[]{id});
 		});
 	}

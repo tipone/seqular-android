@@ -405,4 +405,5 @@
     <string name="sk_settings_lock_account">手动批准新关注者</string>
     <string name="sk_timeline_cache_cleared">已清除主页时间线缓存</string>
     <string name="sk_settings_clear_timeline_cache">清除主页时间线缓存</string>
+    <string name="sk_button_mutuals">互关</string>
 </resources>

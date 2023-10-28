@@ -43,8 +43,8 @@
 	<string name="block_user">%s sperren</string>
 	<string name="unblock_user">%s entsperren</string>
 	<string name="report_user">%s melden</string>
-	<string name="block_domain">%s sperren</string>
-	<string name="unblock_domain">%s nicht mehr sperren</string>
+	<string name="block_domain">%s blockieren</string>
+	<string name="unblock_domain">%s nicht mehr blockieren</string>
 	<plurals name="x_posts">
 		<item quantity="one">%,d Beitrag</item>
 		<item quantity="other">%,d Beiträge</item>
@@ -98,12 +98,12 @@
 	<string name="do_unmute">Nicht mehr stummschalten</string>
 	<string name="confirm_block_title">Konto sperren</string>
 	<string name="confirm_block_domain_title">Domain sperren</string>
-	<string name="confirm_block">Bestätigen, um %s zu sperren</string>
+	<string name="confirm_block">Bestätigen, um %s zu blockieren</string>
 	<string name="do_block">Sperren</string>
 	<string name="confirm_unblock_title">Konto nicht mehr sperren</string>
 	<string name="confirm_unblock_domain_title">Domain nicht mehr blockieren</string>
-	<string name="confirm_unblock">Bestätigen, um Sperre von %s aufzuheben</string>
-	<string name="do_unblock">Sperre aufheben</string>
+	<string name="confirm_unblock">Bestätigen, um %s nicht mehr zu blockieren</string>
+	<string name="do_unblock">Nicht mehr blockieren</string>
 	<string name="button_blocked">Blockiert</string>
 	<string name="action_vote">Abstimmen</string>
 	<string name="delete">Löschen</string>
@@ -592,7 +592,6 @@
 	<string name="settings_discoverable">Profil und Beiträge in Suchalgorithmen berücksichtigen</string>
 	<string name="settings_indexable">Öffentliche Beiträge in die Suchergebnisse einbeziehen</string>
 	<string name="error_playing_video">Fehler bei Videowiedergabe</string>
-	<string name="timeline_following">Folge ich</string>
 	<string name="lists">Listen</string>
 	<string name="followed_hashtags">Gefolgte Hashtags</string>
 	<string name="no_lists">Du hast noch keine Listen.</string>

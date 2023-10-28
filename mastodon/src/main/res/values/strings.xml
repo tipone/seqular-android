@@ -610,7 +610,7 @@
 	</plurals>
 
 	<string name="error_playing_video">Error playing video</string>
-	<string name="timeline_following">Following</string>
+	<string name="timeline_following">Home</string>
 	<string name="lists">Lists</string>
 	<string name="followed_hashtags">Followed hashtags</string>
 	<string name="no_lists">You don\'t have any lists yet.</string>
@@ -645,9 +645,15 @@
 	<string name="no_followed_hashtags_subtitle">Follows will appear here</string>
 	<string name="no_lists_title">Organize your home feed with Lists</string>
 	<string name="no_lists_subtitle">Yours will appear here</string>
-	<string name="manage_accounts">Manage accounts</string>
+	<string name="manage_accounts">Add or switch accounts</string>
 	<plurals name="x_posts_recently">
 		<item quantity="one">%,d post recently</item>
 		<item quantity="other">%,d posts recently</item>
 	</plurals>
+	<string name="create_list">Create list</string>
+	<string name="step_x_of_y">Step %1$d of %2$d</string>
+	<string name="create">Create</string>
+	<string name="manage_list_members">Manage list members</string>
+	<string name="list_no_members">No members yet</string>
+	<string name="list_find_users">Find users to add</string>
 </resources>

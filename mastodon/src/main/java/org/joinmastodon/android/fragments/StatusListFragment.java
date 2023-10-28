@@ -27,6 +27,7 @@ import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -209,10 +210,12 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 		if(firstIndex==-1) return false;
 		int lastIndex=firstIndex;
 		while(lastIndex<displayItems.size()){
-			if(!displayItems.get(lastIndex).parentID.equals(parentID)) break;
+			StatusDisplayItem item=displayItems.get(lastIndex);
+			if(!item.parentID.equals(parentID) || item instanceof GapStatusDisplayItem) break;
 			lastIndex++;
 		}
 		int count=lastIndex-firstIndex;
+		if(count<1) return false;
 		displayItems.subList(firstIndex, lastIndex).clear();
 		adapter.notifyItemRangeRemoved(firstIndex, count);
 		return true;

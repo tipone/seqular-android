@@ -406,4 +406,5 @@
     <string name="sk_settings_lock_account">Setujui pengikut baru secara manual</string>
     <string name="sk_timeline_cache_cleared">Tembolok lini masa beranda dihapus</string>
     <string name="sk_settings_clear_timeline_cache">Hapus tembolok lini masa beranda</string>
+    <string name="sk_button_mutuals">Mutual</string>
 </resources>
