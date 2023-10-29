@@ -257,7 +257,7 @@
     <string name="sk_unfinished_attachments_message">部分附件尚未上传完毕。</string>
     <string name="sk_filtered">已过滤：%s</string>
     <string name="sk_settings_collapse_long_posts">折叠很长的嘟文</string>
-    <string name="sk_settings_prefix_reply_cw_with_re">回复时在 CW 前加上 “re:”</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">回复时在内容警告信息前加上 “re:”</string>
     <string name="sk_spectator_mode">旁观模式</string>
     <string name="sk_settings_hide_interaction">隐藏互动按钮</string>
     <string name="sk_settings_reply_visibility_self">对我的回复</string>
@@ -307,7 +307,7 @@
     <string name="sk_edit_timeline_tag_all">…并包含其中全部</string>
     <string name="sk_edit_timeline_tags_explanation">请注意，服务器会处理这些操作。可能不支持合并这些操作。</string>
     <string name="sk_settings_allow_remote_loading_explanation">尝试从原实例加载信息，以获取更准确的关注者、点赞和转发列表。</string>
-    <string name="sk_settings_auto_reveal_equal_spoilers">在回复中自动显示相同的 CWs</string>
+    <string name="sk_settings_auto_reveal_equal_spoilers">在回复中自动显示相同的内容警告</string>
     <string name="sk_settings_forward_report_default">\"转发报告 \"开关默认值</string>
     <string name="sk_list_exclusive_switch_explanation">排除列表的成员不会显示在你的主页时间线上--如果你的实例支持的话。</string>
     <string name="sk_advanced_options_show">显示高级选项</string>
