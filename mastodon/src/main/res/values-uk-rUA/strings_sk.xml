@@ -415,4 +415,5 @@
     <string name="sk_settings_default_visibility">Усталена видимість дописів</string>
     <string name="sk_settings_lock_account">Затверджувати нових підписників уручну</string>
     <string name="sk_timeline_cache_cleared">Кеш домашньої стрічки очищено</string>
+    <string name="sk_button_mutuals">Друзі</string>
 </resources>
