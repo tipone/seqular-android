@@ -403,4 +403,9 @@
     <string name="sk_muted_accounts">حساب‌های خموش شده</string>
     <string name="sk_recently_used">اخیرا مورد استفاده قرار گرفته</string>
     <string name="sk_edit_alt_text">ویرایش متن جایگزین</string>
+    <string name="sk_settings_default_visibility">نمایانی فرسته پیش‌گزیده</string>
+    <string name="sk_settings_lock_account">تایید دستی پیگیران جدید</string>
+    <string name="sk_timeline_cache_cleared">کش خط زمانی خانه پاک شد</string>
+    <string name="sk_button_mutuals">متقابل</string>
+    <string name="sk_settings_clear_timeline_cache">پاک کردن کش خط زمانی خانه</string>
 </resources>
