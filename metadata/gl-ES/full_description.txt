@@ -2,6 +2,10 @@ Moshidon é unha versión modificada da <a href="https://github.com/mastodon/mas
 
 <b>Características principais</b>
 
+- <b>Colorida</b>: usa a decoración Material You e ten moitas opcións de cores para os decorados!
+- <b>Filtros para as publicacións!</b> Pódense filtrar as publicacións mostrando un aviso!
+- <b>Botón de tradución</b>: Contén un botón para traducir! (se o teu servidor proporciona o servizo)
+- <b>Elixe o idioma de publicación</b>: Podes elexir indicar o idioma en que publicas!
 - <b>Publicación non listada</b>: Publicar de xeito público pero sen que apareza nas tendencias, cancelos ou cronoloxías públicas.
 - <b>Cronoloxía federada</b>: Ver as publicacións públicas das persoas que forman a túa veciñanza no Fediverso ao estar federadas coa túa instancia.
 - <b>Borradores e programación</b>: Permite preparar unha publicación e programala para enviala automáticamente na hora indicada.
@@ -10,7 +14,4 @@ Moshidon é unha versión modificada da <a href="https://github.com/mastodon/mas
 - <b>Seguir cancelos</b>: Ver novas publicacións dun cancelo específico directamente na cronoloxía de Inicio ao seguilo.
 - <b>Responder aos seguimentos</b>: Aceptar ou rexeitar as solicitudes de seguimento desde as notificacións ou a lista dedicada Solicitudes de Seguimento.
 - <b>Eliminar e rescribir</b>; A función tan desexada que permite a edición sen realmente usar a función editar.
-- <b>Elexir idioma</b>: Cambiar de xeito doado o idioma da publicación que estás a escribir para que os filtros e a tradución funcionen correctamente.
-- <b>Tradución</b>: Traducir fácilmente as publicacións dentro de Megalodon! Só funciona se a ferramenta tamén está dispoñible no teu Mastodon Web.
-- <b>Indicador de visibilidade</b>: Ao abrir ou responder a unha publicación verás unha icona que indica a visibilidade da publicación.
-- <b>Decorados</b>: Se non che gusta a cor Rosa por defecto (a quenlla mírate de esguello), os decorados de cores de Moshidon permítenche cambialo.
+- <b>Extras</b>: Características propias para a interface, como iconas para interactuar desde as Notificacións e quitar elementos molestos da interface orixinal!
