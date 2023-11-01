@@ -493,7 +493,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			spoilerFooterIndex=spoilerItem.contentItems.indexOf(pollItems.get(pollItems.size()-1));
 		}
 		pollItems.clear();
-		StatusDisplayItem.buildPollItems(itemID, this, poll, pollItems);
+		StatusDisplayItem.buildPollItems(itemID, this, poll, status, pollItems);
 		if(spoilerItem!=null){
 			spoilerItem.contentItems.subList(spoilerFirstOptionIndex, spoilerFooterIndex+1).clear();
 			spoilerItem.contentItems.addAll(spoilerFirstOptionIndex, pollItems);
@@ -858,17 +858,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 										return;
 									status.translation=result;
 									status.translationState=Status.TranslationState.SHOWN;
-									MediaGridStatusDisplayItem.Holder media=findHolderOfType(itemID, MediaGridStatusDisplayItem.Holder.class);
-									if (media!=null) {
-										media.rebind();
-									}
-									TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
-									if(text!=null){
-										text.updateTranslation(true);
-										imgLoader.bindViewHolder((ImageLoaderRecyclerAdapter) list.getAdapter(), text, text.getAbsoluteAdapterPosition());
-									}else{
-										notifyItemChanged(itemID, TextStatusDisplayItem.class);
-									}
+									updateTranslation(itemID);
 								}
 
 								@Override
@@ -876,12 +866,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 									if(getActivity()==null)
 										return;
 									status.translationState=Status.TranslationState.HIDDEN;
-									TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
-									if(text!=null){
-										text.updateTranslation(true);
-									}else{
-										notifyItemChanged(itemID, TextStatusDisplayItem.class);
-									}
+									updateTranslation(itemID);
 									new M3AlertDialogBuilder(getActivity())
 											.setTitle(R.string.error)
 											.setMessage(R.string.translation_failed)
@@ -893,6 +878,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				}
 			}
 		}
+		updateTranslation(itemID);
+	}
+
+	private void updateTranslation(String itemID) {
 		TextStatusDisplayItem.Holder text=findHolderOfType(itemID, TextStatusDisplayItem.Holder.class);
 		if(text!=null){
 			text.updateTranslation(true);
@@ -905,9 +894,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if (media!=null) {
 			media.rebind();
 		}
-	}
 
-	private void updateTranslation() {}
+		for(int i=0;i<list.getChildCount();i++){
+			if(list.getChildViewHolder(list.getChildAt(i)) instanceof PollOptionStatusDisplayItem.Holder item){
+				item.rebind();
+			}
+		}
+	}
 
 	public void rebuildAllDisplayItems(){
 		displayItems.clear();
