@@ -890,6 +890,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			notifyItemChanged(itemID, TextStatusDisplayItem.class);
 		}
 
+		SpoilerStatusDisplayItem.Holder spoiler=findHolderOfType(itemID, SpoilerStatusDisplayItem.Holder.class);
+		if(spoiler!=null){
+			spoiler.rebind();
+		}
+
 		MediaGridStatusDisplayItem.Holder media=findHolderOfType(itemID, MediaGridStatusDisplayItem.Holder.class);
 		if (media!=null) {
 			media.rebind();
