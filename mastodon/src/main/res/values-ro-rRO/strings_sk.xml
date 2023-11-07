@@ -409,4 +409,5 @@
     <string name="sk_settings_lock_account">Aprobați manual urmăritori noi</string>
     <string name="sk_timeline_cache_cleared">Memoria cache a cronologiei acasă a fost ștearsă</string>
     <string name="sk_settings_clear_timeline_cache">Ștergeți memoria cache a cronologiei acasă</string>
+    <string name="sk_button_mutuals">Prieteni</string>
 </resources>
