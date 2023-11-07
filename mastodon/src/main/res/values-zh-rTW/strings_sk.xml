@@ -60,4 +60,16 @@
     <string name="sk_color_palette_yellow">黃色</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s 似乎不支援翻譯.</string>
     <string name="sk_lists_with_user">%s 所在的列表</string>
+    <string name="sk_settings_color_palette_default">預設 (%s)</string>
+    <plurals name="sk_posts_count_label">
+        <item quantity="other">嘟文</item>
+    </plurals>
+    <string name="sk_quoting_user">引用自 %s</string>
+    <string name="sk_example_domain">example.social</string>
+    <string name="sk_settings_reply_visibility_all">所有回覆</string>
+    <string name="sk_settings_reply_visibility">回覆能見度</string>
+    <string name="sk_list">列表</string>
+    <string name="sk_post_contains_media">包含媒體的嘟文</string>
+    <string name="sk_clear_all_notifications_confirm_action">全部刪除</string>
+    <string name="sk_copy_link_to_post">複製嘟文連結</string>
 </resources>
