@@ -16,14 +16,17 @@ import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.api.SimpleCallback;
+import name.fraser.neil.plaintext.diff_match_patch;
 
 public class StatusEditHistoryFragment extends StatusListFragment{
 	private String id, url;
@@ -58,7 +61,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, null, StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS);
+		List<StatusDisplayItem> items=new ArrayList<>();
 		int idx=data.indexOf(s);
 		if(idx>=0){
 			String date=UiUtils.DATE_TIME_FORMATTER.format(s.createdAt.atZone(ZoneId.systemDefault()));
@@ -85,6 +88,8 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 				if(!Objects.equals(s.content, prev.content)){
 					changes.add(StatusEditChangeType.TEXT_CHANGED);
+					//update status content to display a diffs
+					s.content=createDiffText(prev.content, s.content);
 				}
 				if(!Objects.equals(s.spoilerText, prev.spoilerText)){
 					if(s.spoilerText==null){
@@ -147,6 +152,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 			items.add(0, new ReblogOrReplyLineStatusDisplayItem(s.id, this, action+" "+sep+" "+date, Collections.emptyList(), 0, null, null, s));
 			items.add(1, new DummyStatusDisplayItem(s.id, this));
 		}
+		items.addAll(StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, null, StatusDisplayItem.FLAG_NO_FOOTER|StatusDisplayItem.FLAG_INSET|StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS));
 		return items;
 	}
 
@@ -169,5 +175,29 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 	@Override
 	public Uri getWebUri(Uri.Builder base) {
 		return Uri.parse(url);
+	}
+
+	private String createDiffText(String original, String modified) {
+		diff_match_patch dmp = new diff_match_patch();
+		LinkedList<diff_match_patch.Diff> diffs = dmp.diff_main(original, modified);
+		dmp.diff_cleanupSemantic(diffs);
+
+		StringBuilder stringBuilder = new StringBuilder();
+		for(diff_match_patch.Diff diff: diffs){
+			switch(diff.operation){
+				case DELETE -> {
+					stringBuilder.append("<edit_diff_removed>");
+					stringBuilder.append(diff.text);
+					stringBuilder.append("</edit_diff_removed>");
+				}
+				case INSERT -> {
+					stringBuilder.append("<edit_diff_added>");
+					stringBuilder.append(diff.text);
+					stringBuilder.append("</edit_diff_added>");
+				}
+				default -> stringBuilder.append(diff.text);
+			}
+		}
+		return stringBuilder.toString();
 	}
 }
