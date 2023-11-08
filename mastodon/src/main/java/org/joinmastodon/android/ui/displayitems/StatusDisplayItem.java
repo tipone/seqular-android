@@ -356,7 +356,7 @@ public abstract class StatusDisplayItem{
 	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items, Status status){
 		int i=0;
 		for(Poll.Option opt:poll.options){
-			items.add(new PollOptionStatusDisplayItem(parentID, poll, i, fragment));
+			items.add(new PollOptionStatusDisplayItem(parentID, poll, i, fragment, status));
 			i++;
 		}
 		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll, status));
