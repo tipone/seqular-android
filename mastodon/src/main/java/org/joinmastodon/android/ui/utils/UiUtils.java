@@ -1707,13 +1707,14 @@ public class UiUtils {
 		Matcher matcher=trimPronouns.matcher(text);
 		if(!matcher.find()) return null;
 		String pronouns=matcher.group(1);
-		// crude fix to allow for pronouns like "it(/she)"
-		int missingClosingParens=0;
+		// crude fix to allow for pronouns like "it(/she)" or "(de) sie/ihr"
+		int missingParens=0;
 		for(char c : pronouns.toCharArray()){
-			if(c=='(') missingClosingParens++;
-			if(c==')') missingClosingParens--;
+			if(c=='(') missingParens++;
+			if(c==')') missingParens--;
 		}
-		pronouns+=")".repeat(Math.max(0, missingClosingParens));
+		if(missingParens > 0) pronouns+=")".repeat(missingParens);
+		else if(missingParens < 0) pronouns="(".repeat(missingParens*-1)+pronouns;
 		// if ends with an un-closed custom emoji
 		if(pronouns.matches("^.*\\s+:[a-zA-Z_]+$")) pronouns+=':';
 		return pronouns;
