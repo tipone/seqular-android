@@ -132,8 +132,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				}
 			}));
 
-			icon.setOnClickListener(this::onItemClick);
-			avatar.setOnClickListener(this::onItemClick);
+			itemView.setOnClickListener(this::onItemClick);
 		}
 
 		@Override
