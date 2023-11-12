@@ -1601,7 +1601,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			title.setText(item.parsedName);
 			value.setText(item.parsedValue);
 			if(item.verifiedAt!=null){
-				int textColor=UiUtils.isDarkTheme() ? 0xFF89bb9c : 0xFF5b8e63;
+				int textColor=UiUtils.getThemeColor(getContext(), R.attr.colorM3Success);
 				value.setTextColor(textColor);
 				value.setLinkTextColor(textColor);
 				Drawable check=getResources().getDrawable(R.drawable.ic_fluent_checkmark_starburst_20_regular, getActivity().getTheme()).mutate();
