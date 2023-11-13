@@ -39,7 +39,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public boolean textSelectable;
 	public boolean reduceTopPadding;
 	public boolean disableTranslate;
-	public final Status status;
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status, boolean disableTranslate){
 		super(parentID, parentFragment);
@@ -113,7 +112,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				text.setText(item.text);
 			}
 			text.setTextIsSelectable(false);
-			if(item.textSelectable) itemView.post(() -> text.setTextIsSelectable(true));
+			if(item.textSelectable && !item.isForQuote) itemView.post(() -> text.setTextIsSelectable(true));
 			text.setInvalidateOnEveryFrame(false);
 			itemView.setClickable(false);
 			itemView.setPadding(itemView.getPaddingLeft(), item.reduceTopPadding ? V.dp(6) : V.dp(12), itemView.getPaddingRight(), itemView.getPaddingBottom());
@@ -124,8 +123,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 			StatusDisplayItem next=getNextVisibleDisplayItem().orElse(null);
 			if(next!=null && !next.parentID.equals(item.parentID)) next=null;
-			int bottomPadding=next instanceof FooterStatusDisplayItem ? V.dp(6)
-					: item.inset ? V.dp(12)
+			int bottomPadding=item.inset ? V.dp(12)
+					: next instanceof FooterStatusDisplayItem ? V.dp(6)
 					: (next instanceof EmojiReactionsStatusDisplayItem || next==null) ? 0
 					: V.dp(12);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
