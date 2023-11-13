@@ -244,6 +244,13 @@
     <string name="sk_icon_doctor">Doctor</string>
     <string name="sk_icon_diamond">Diamond</string>
     <string name="sk_icon_umbrella">Umbrella</string>
+	<string name="sk_icon_water">Water</string>
+	<string name="sk_icon_sun">Sun</string>
+	<string name="sk_icon_sunset">Sunset</string>
+	<string name="sk_icon_cloud">Cloud</string>
+	<string name="sk_icon_thunderstorm">Thunderstorm</string>
+	<string name="sk_icon_rain">Rain</string>
+	<string name="sk_icon_snowflake">Snowflake</string>
     <string name="sk_edit_timeline">Edit timeline</string>
     <string name="sk_add_timeline">Add timeline</string>
     <string name="sk_edit_timelines">Edit timelines</string>

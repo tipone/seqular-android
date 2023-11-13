@@ -313,6 +313,13 @@ public class TimelineDefinition {
         DOCTOR(R.drawable.ic_fluent_doctor_24_regular, R.string.sk_icon_doctor),
         DIAMOND(R.drawable.ic_fluent_premium_24_regular, R.string.sk_icon_diamond),
         UMBRELLA(R.drawable.ic_fluent_umbrella_24_regular, R.string.sk_icon_umbrella),
+		WATER(R.drawable.ic_fluent_water_24_regular, R.string.sk_icon_water),
+		SUN(R.drawable.ic_fluent_weather_sunny_24_regular, R.string.sk_icon_sun),
+		SUNSET(R.drawable.ic_fluent_weather_sunny_low_24_regular, R.string.sk_icon_sunset),
+		CLOUD(R.drawable.ic_fluent_cloud_24_regular, R.string.sk_icon_cloud),
+		THUNDERSTORM(R.drawable.ic_fluent_weather_thunderstorm_24_regular, R.string.sk_icon_thunderstorm),
+		RAIN(R.drawable.ic_fluent_weather_rain_24_regular, R.string.sk_icon_rain),
+		SNOWFLAKE(R.drawable.ic_fluent_weather_snowflake_24_regular, R.string.sk_icon_snowflake),
 
         HOME(R.drawable.ic_fluent_home_24_regular, R.string.sk_timeline_home, true),
         LOCAL(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
