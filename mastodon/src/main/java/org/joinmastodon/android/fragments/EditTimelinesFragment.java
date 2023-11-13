@@ -340,36 +340,40 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 				.setTitle(item==null ? R.string.sk_add_timeline : R.string.sk_edit_timeline)
 				.setView(view)
 				.setPositiveButton(R.string.save, (d, which)->{
-					tagsAny.chipifyAllUnterminatedTokens();
-					tagsAll.chipifyAllUnterminatedTokens();
-					tagsNone.chipifyAllUnterminatedTokens();
 					String name=editText.getText().toString().trim();
+
 					String mainHashtag=tagMain.getText().toString().trim();
-					if(TextUtils.isEmpty(mainHashtag)){
-						mainHashtag=name;
-						name=null;
-					}
-					if(TextUtils.isEmpty(mainHashtag) && (item!=null && item.getType()==TimelineDefinition.TimelineType.HASHTAG)){
-						Toast.makeText(ctx, R.string.sk_add_timeline_tag_error_empty, Toast.LENGTH_SHORT).show();
-						onSave.accept(null);
-						return;
+					if(item.getType()==TimelineDefinition.TimelineType.HASHTAG){
+						tagsAny.chipifyAllUnterminatedTokens();
+						tagsAll.chipifyAllUnterminatedTokens();
+						tagsNone.chipifyAllUnterminatedTokens();
+						if(TextUtils.isEmpty(mainHashtag)){
+							mainHashtag=name;
+							name=null;
+						}
+						if(TextUtils.isEmpty(mainHashtag) && (item!=null && item.getType()==TimelineDefinition.TimelineType.HASHTAG)){
+							Toast.makeText(ctx, R.string.sk_add_timeline_tag_error_empty, Toast.LENGTH_SHORT).show();
+							onSave.accept(null);
+							return;
+						}
 					}
 
 					TimelineDefinition tl=item!=null ? item : TimelineDefinition.ofHashtag(name);
 					TimelineDefinition.Icon icon=TimelineDefinition.Icon.values()[(int) btn.getTag()];
 					tl.setIcon(icon);
 					tl.setTitle(name);
-					tl.setTagOptions(
-							mainHashtag,
-							tagsAny.getChipValues(),
-							tagsAll.getChipValues(),
-							tagsNone.getChipValues(),
-							localOnlySwitch.isChecked()
-					);
+					if(item.getType()==TimelineDefinition.TimelineType.HASHTAG){
+						tl.setTagOptions(
+								mainHashtag,
+								tagsAny.getChipValues(),
+								tagsAll.getChipValues(),
+								tagsNone.getChipValues(),
+								localOnlySwitch.isChecked()
+						);
+					}
 					onSave.accept(tl);
 				})
-				.setNegativeButton(R.string.cancel, (d, which)->{
-				});
+				.setNegativeButton(R.string.cancel, (d, which)->{});
 
 		if(onRemove!=null) builder.setNeutralButton(R.string.sk_remove, (d, which)->onRemove.run());
 
