@@ -204,14 +204,6 @@ public class ReportReasonChoiceFragment extends StatusListFragment{
 					float off=paint.getStrokeWidth()/2f;
 					c.drawRoundRect(V.dp(16)-off, top-off, parent.getWidth()-V.dp(16)+off, bottom+off, V.dp(12), V.dp(12), paint);
 				}
-
-				@Override
-				public void getItemOffsets(@NonNull Rect outRect, @NonNull View view, @NonNull RecyclerView parent, @NonNull RecyclerView.State state){
-					RecyclerView.ViewHolder holder=parent.getChildViewHolder(view);
-					if(holder instanceof StatusDisplayItem.Holder<?>){
-						outRect.left=outRect.right=V.dp(16);
-					}
-				}
 			});
 		}
 	}
