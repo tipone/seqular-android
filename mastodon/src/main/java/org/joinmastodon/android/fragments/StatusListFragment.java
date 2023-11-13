@@ -353,6 +353,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 				Status contentStatus=status.getContentStatus();
 				if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
 					updatePoll(status.id, contentStatus, ev.poll);
+					AccountSessionManager.get(accountID).getCacheController().updateStatus(contentStatus);
 				}
 			}
 		}
