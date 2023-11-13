@@ -217,6 +217,7 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		Menu menu=contextMenu.getMenu();
 		Account account=item.account;
 
+		menu.findItem(R.id.edit_note).setVisible(false);
 		menu.findItem(R.id.manage_user_lists).setTitle(fragment.getString(R.string.sk_lists_with_user, account.getShortUsername()));
 		MenuItem mute=menu.findItem(R.id.mute);
 		mute.setTitle(fragment.getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
