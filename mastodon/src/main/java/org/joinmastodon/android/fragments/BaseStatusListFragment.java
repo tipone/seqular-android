@@ -879,6 +879,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 											.show();
 								}
 							})
+							.setTimeout(60000) // 1 minute
 							.exec(accountID);
 				}
 			}
