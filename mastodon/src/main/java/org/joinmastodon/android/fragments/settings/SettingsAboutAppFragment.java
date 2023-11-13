@@ -8,13 +8,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joinmastodon.android.BuildConfig;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.viewmodel.CheckableListItem;
 import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.updater.GithubSelfUpdater;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +29,7 @@ import me.grishka.appkit.utils.V;
 
 public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 	private ListItem<Void> mediaCacheItem;
+	private CheckableListItem<Void> enablePreReleasesItem;
 	private AccountSession session;
 	private boolean timelineCacheCleared=false;
 
@@ -33,7 +38,8 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 		super.onCreate(savedInstanceState);
 		setTitle(getString(R.string.about_app, getString(R.string.sk_app_name)));
 		session=AccountSessionManager.get(accountID);
-		onDataLoaded(List.of(
+
+		List<ListItem<Void>> items=new ArrayList<>(List.of(
 				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, i->UiUtils.openHashtagTimeline(getActivity(), accountID, getString(R.string.donate_hashtag))),
 				new ListItem<>(R.string.sk_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.repo_url))),
 				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")),
@@ -42,12 +48,19 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 				new ListItem<>(getString(R.string.sk_settings_clear_timeline_cache), session.domain, this::onClearTimelineCacheClick)
 		));
 
+		if(GithubSelfUpdater.needSelfUpdating()){
+			items.add(enablePreReleasesItem=new CheckableListItem<>(R.string.sk_updater_enable_pre_releases, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enablePreReleases, i->toggleCheckableItem(enablePreReleasesItem)));
+		}
+
+		onDataLoaded(items);
 		updateMediaCacheItem();
 	}
 
 	@Override
 	protected void onHidden(){
 		super.onHidden();
+		GlobalUserPreferences.enablePreReleases=enablePreReleasesItem.checked;
+		GlobalUserPreferences.save();
 		if(timelineCacheCleared) getActivity().recreate();
 	}
 
