@@ -13,7 +13,7 @@
 		<org.joinmastodon.android.ui.views.NestedRecyclerScrollView
 			android:id="@+id/scroller"
 			android:layout_width="match_parent"
-			android:layout_height="match_parent"
+			android:layout_height="wrap_content"
 			android:nestedScrollingEnabled="true">
 
 			<org.joinmastodon.android.ui.views.CustomDrawingOrderLinearLayout
@@ -342,7 +342,8 @@
 				<me.grishka.appkit.views.UsableRecyclerView
 					android:id="@+id/metadata"
 					android:layout_width="match_parent"
-					android:layout_height="wrap_content"
+					android:layout_height="0dp"
+					android:layout_weight="1"
 					android:paddingTop="4dp" />
 
 				<LinearLayout
