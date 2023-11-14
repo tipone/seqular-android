@@ -172,7 +172,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 				getLocalPrefs().save();
 
 				this.allNotificationsFragment.reload();
-			}).setNeutralButton(R.string.clear, (d, which) -> {
+			}).setNeutralButton(R.string.mo_notification_filter_reset, (d, which) -> {
 				Arrays.fill(checkedItems, true);
 				getLocalPrefs().notificationFilters.mention=checkedItems[0];
 				getLocalPrefs().notificationFilters.reblog=checkedItems[1];
