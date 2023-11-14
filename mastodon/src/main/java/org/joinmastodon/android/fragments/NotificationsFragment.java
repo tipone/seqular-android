@@ -1,12 +1,10 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
 import android.content.Context;
 import android.content.res.Configuration;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,11 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.squareup.otto.Subscribe;
 
@@ -31,29 +24,25 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetFollowRequests;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.notifications.PleromaMarkNotificationsRead;
-import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.FollowRequestHandledEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
-import org.joinmastodon.android.model.Instance;
-import org.joinmastodon.android.model.StatusPrivacy;
+import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.CheckIconSelectableTextView;
-import org.joinmastodon.android.ui.views.CheckableLinearLayout;
 import org.joinmastodon.android.utils.ElevationOnScrollListener;
 import org.joinmastodon.android.utils.ObjectIdComparator;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
-import org.parceler.Parcels;
 
 import java.util.Arrays;
-import java.util.List;
-import java.util.function.Consumer;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -157,32 +146,14 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 			M3AlertDialogBuilder dialogBuilder = new M3AlertDialogBuilder(ctx);
 			dialogBuilder.setTitle(R.string.sk_settings_filters);
-			dialogBuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) -> {
-				checkedItems[which] = isChecked;
-			});
+			dialogBuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) ->checkedItems[which] = isChecked);
 
 			dialogBuilder.setPositiveButton(R.string.save, (d, which) -> {
-				getLocalPrefs().notificationFilters.mention=checkedItems[0];
-				getLocalPrefs().notificationFilters.reblog=checkedItems[1];
-				getLocalPrefs().notificationFilters.favourite=checkedItems[2];
-				getLocalPrefs().notificationFilters.follow=checkedItems[3];
-				getLocalPrefs().notificationFilters.poll=checkedItems[4];
-				getLocalPrefs().notificationFilters.update=checkedItems[5];
-				getLocalPrefs().notificationFilters.status=checkedItems[6];
-				getLocalPrefs().save();
-
+				saveFilters(checkedItems);
 				this.allNotificationsFragment.reload();
-			}).setNeutralButton(R.string.clear, (d, which) -> {
+			}).setNeutralButton(R.string.mo_notification_filter_reset, (d, which) -> {
 				Arrays.fill(checkedItems, true);
-				getLocalPrefs().notificationFilters.mention=checkedItems[0];
-				getLocalPrefs().notificationFilters.reblog=checkedItems[1];
-				getLocalPrefs().notificationFilters.favourite=checkedItems[2];
-				getLocalPrefs().notificationFilters.follow=checkedItems[3];
-				getLocalPrefs().notificationFilters.poll=checkedItems[4];
-				getLocalPrefs().notificationFilters.update=checkedItems[5];
-				getLocalPrefs().notificationFilters.status=checkedItems[6];
-				getLocalPrefs().save();
-
+				saveFilters(checkedItems);
 				this.allNotificationsFragment.reload();
 			}).setNegativeButton(R.string.cancel, (d, which) -> {});
 
@@ -191,6 +162,18 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			return true;
 		}
 		return false;
+	}
+
+	private void saveFilters(boolean[] checkedItems) {
+		PushSubscription.Alerts filter = getLocalPrefs().notificationFilters;
+		filter.mention = checkedItems[0];
+		filter.reblog = checkedItems[1];
+		filter.favourite = checkedItems[2];
+		filter.follow = checkedItems[3];
+		filter.poll = checkedItems[4];
+		filter.update = checkedItems[5];
+		filter.status = checkedItems[6];
+		getLocalPrefs().save();
 	}
 
 	void markAsRead(){
