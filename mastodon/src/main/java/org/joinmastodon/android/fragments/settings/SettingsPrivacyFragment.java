@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import androidx.annotation.StringRes;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -23,6 +24,10 @@ public class SettingsPrivacyFragment extends BaseSettingsFragment<Void>{
 	private StatusPrivacy privacy=null;
 	private Instance instance;
 
+	//MOSHIDON
+	private CheckableListItem<Void> unlistedRepliesItem;
+
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -32,7 +37,8 @@ public class SettingsPrivacyFragment extends BaseSettingsFragment<Void>{
 		instance=AccountSessionManager.getInstance().getInstanceInfo(session.domain);
 		privacy=self.source.privacy;
 		onDataLoaded(List.of(
-				privacyItem=new ListItem<>(R.string.sk_settings_default_visibility, getPrivacyString(privacy), R.drawable.ic_fluent_eye_24_regular, this::onPrivacyClick, 0, true),
+				privacyItem=new ListItem<>(R.string.sk_settings_default_visibility, getPrivacyString(privacy), R.drawable.ic_fluent_eye_24_regular, this::onPrivacyClick, 0, false),
+				unlistedRepliesItem=new CheckableListItem<>(R.string.mo_change_default_reply_visibility_to_unlisted, R.string.mo_setting_default_reply_privacy_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.defaultToUnlistedReplies, R.drawable.ic_fluent_lock_open_24_regular, i->toggleCheckableItem(unlistedRepliesItem), true),
 				lockedItem=new CheckableListItem<>(R.string.sk_settings_lock_account, 0, CheckableListItem.Style.SWITCH, self.locked, R.drawable.ic_fluent_person_available_24_regular, i->toggleCheckableItem(lockedItem))
 		));
 
@@ -82,6 +88,8 @@ public class SettingsPrivacyFragment extends BaseSettingsFragment<Void>{
 	@Override
 	public void onPause(){
 		super.onPause();
+		GlobalUserPreferences.defaultToUnlistedReplies=unlistedRepliesItem.checked;
+		GlobalUserPreferences.save();
 		AccountSession s=AccountSessionManager.get(accountID);
 		Account self=s.self;
 		boolean savePlease=self.locked!=lockedItem.checked
