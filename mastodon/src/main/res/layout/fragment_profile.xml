@@ -254,8 +254,8 @@
 							android:layout_height="52dp"
 							android:visibility="invisible"
 							android:background="@drawable/bg_button_m3_text_circle"
-							android:tooltipText="@string/sk_private_note_confirm"
-							android:contentDescription="@string/sk_private_note_confirm"
+							android:tooltipText="@string/sk_confirm_changes"
+							android:contentDescription="@string/sk_confirm_changes"
 							android:src="@drawable/ic_fluent_checkmark_24_regular"/>
 
 						<ProgressBar
