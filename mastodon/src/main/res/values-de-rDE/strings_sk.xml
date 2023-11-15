@@ -415,5 +415,13 @@
     <string name="sk_settings_default_visibility">Standard-Sichtbarkeit für Posts</string>
     <string name="sk_settings_lock_account">Neue Follower_innen manuell genehmigen</string>
     <string name="sk_timeline_cache_cleared">Start-Timeline geleert</string>
-	<string name="sk_button_mutuals">Befreundet</string>
+    <string name="sk_button_mutuals">Befreundet</string>
+    <string name="sk_icon_snowflake">Schneeflocke</string>
+    <string name="sk_icon_cloud">Wolke</string>
+    <string name="sk_icon_sunset">Sonnenuntergang</string>
+    <string name="sk_private_note_hint">Private Notiz über dieses Profil hinzufügen</string>
+    <string name="sk_icon_water">Wasser</string>
+    <string name="sk_icon_sun">Sonne</string>
+    <string name="sk_icon_rain">Regen</string>
+    <string name="sk_icon_thunderstorm">Gewitter</string>
 </resources>
