@@ -413,4 +413,17 @@
     <string name="sk_timeline_cache_cleared">Caché de la cronología de inicio borrada</string>
     <string name="sk_settings_clear_timeline_cache">Borrar la caché de la cronología de inicio</string>
     <string name="sk_button_mutuals">Amigos</string>
+    <string name="sk_icon_snowflake">Copos de nieve</string>
+    <string name="sk_private_note_confirm">Confirmar los cambios en la nota</string>
+    <string name="sk_private_note_update_failed">No se pudo guardar la nota</string>
+    <string name="sk_icon_cloud">Nube</string>
+    <string name="sk_delete_note">Borrar la nota personal</string>
+    <string name="sk_icon_sunset">Puesta de sol</string>
+    <string name="sk_private_note_hint">Añadir una nota personal sobre este perfil</string>
+    <string name="sk_icon_water">Agua</string>
+    <string name="sk_icon_sun">Sol</string>
+    <string name="sk_add_note">Añadir una nota personal</string>
+    <string name="sk_icon_rain">Lluvia</string>
+    <string name="sk_icon_thunderstorm">Tormenta eléctrica</string>
+    <string name="sk_private_note_confirm_delete">¿Borrar la nota personal sobre %s\?</string>
 </resources>
