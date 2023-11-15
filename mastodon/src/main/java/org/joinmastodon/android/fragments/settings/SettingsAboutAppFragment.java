@@ -81,7 +81,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 	@Override
 	protected void onHidden(){
 		super.onHidden();
-		GlobalUserPreferences.enablePreReleases=enablePreReleasesItem.checked;
+		GlobalUserPreferences.enablePreReleases=enablePreReleasesItem!=null && enablePreReleasesItem.checked;
 		GlobalUserPreferences.save();
 		if(timelineCacheCleared) getActivity().recreate();
 	}
