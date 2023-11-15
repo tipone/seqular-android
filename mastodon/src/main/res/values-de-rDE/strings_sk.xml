@@ -424,4 +424,14 @@
     <string name="sk_icon_sun">Sonne</string>
     <string name="sk_icon_rain">Regen</string>
     <string name="sk_icon_thunderstorm">Gewitter</string>
+    <string name="sk_private_note_update_failed">Notiz speichern fehlgeschlagen</string>
+    <string name="sk_delete_note">Private Notiz löschen</string>
+    <string name="sk_confirm_changes">Änderungen bestätigen</string>
+    <string name="sk_settings_crash_log_unavailable">Keines verfügbar… noch</string>
+    <string name="sk_crash_log_copied">Absturzprotokoll kopiert</string>
+    <string name="sk_add_note">Private Notiz hinzufügen</string>
+    <string name="sk_settings_copy_crash_log">Neuestes Absturzprotokoll kopieren</string>
+    <string name="sk_open_post_preview">Vorschau öffnen</string>
+    <string name="sk_post_preview">Vorschau</string>
+    <string name="sk_private_note_confirm_delete">Private Notiz über %s löschen\?</string>
 </resources>
