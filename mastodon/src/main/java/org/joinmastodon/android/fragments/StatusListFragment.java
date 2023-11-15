@@ -84,8 +84,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	@Override
 	public void onItemClick(String id){
 		Status status=getContentStatusByID(id);
-		if(status==null)
-			return;
+		if(status==null || status.preview) return;
 		status.filterRevealed=true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);

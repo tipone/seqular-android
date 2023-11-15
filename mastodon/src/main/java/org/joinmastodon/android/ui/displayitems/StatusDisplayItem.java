@@ -76,7 +76,7 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_NO_TRANSLATE=1 << 5;
 	public static final int FLAG_NO_EMOJI_REACTIONS=1 << 6;
 	public static final int FLAG_IS_FOR_QUOTE=1 << 7;
-
+	
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
 			boolean hasAncestoringNeighbor,
@@ -166,7 +166,7 @@ public abstract class StatusDisplayItem{
 
 		HeaderStatusDisplayItem header=null;
 		boolean hideCounts=!AccountSessionManager.get(accountID).getLocalPreferences().showInteractionCounts;
-
+		
 		if((flags & FLAG_NO_HEADER)==0){
 			ReblogOrReplyLineStatusDisplayItem replyLine = null;
 			boolean threadReply = statusForContent.inReplyToAccountId != null &&
@@ -305,7 +305,7 @@ public abstract class StatusDisplayItem{
 			items.addAll(contentItems);
 		}
 		AccountLocalPreferences lp=fragment.getLocalPrefs();
-		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && lp.emojiReactionsEnabled &&
+		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && !status.preview && lp.emojiReactionsEnabled &&
 				(lp.showEmojiReactions!=ONLY_OPENED || fragment instanceof ThreadFragment) &&
 				statusForContent.reactions!=null){
 			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);

@@ -129,6 +129,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void startAccountListFragment(Class<? extends StatusRelatedAccountListFragment> cls){
+			if(item.status.preview) return;
 			Bundle args=new Bundle();
 			args.putString("account", item.parentFragment.getAccountID());
 			args.putParcelable("status", Parcels.wrap(item.status));
@@ -136,6 +137,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void startEditHistoryFragment(){
+			if(item.status.preview) return;
 			Bundle args=new Bundle();
 			args.putString("account", item.parentFragment.getAccountID());
 			args.putString("id", item.status.id);

@@ -445,6 +445,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onMoreClick(View v){
+			if(item.status.preview) return;
 			updateOptionsMenu();
 			optionsMenu.show();
 			if(relationship==null && currentRelationshipRequest==null){
