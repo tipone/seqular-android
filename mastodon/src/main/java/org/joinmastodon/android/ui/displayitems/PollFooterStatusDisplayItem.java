@@ -14,7 +14,7 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 
 public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 	public final Poll poll;
-	public boolean resultsVisible = false;
+	public boolean resultsVisible=false;
 
 	public PollFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Poll poll){
 		super(parentID, parentFragment);
@@ -39,8 +39,7 @@ public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 			resultsButton.setOnClickListener(v-> {
 				item.resultsVisible = !item.resultsVisible;
 				item.parentFragment.onPollViewResultsButtonClick(this, item.resultsVisible);
-				resultsButton.setText(item.resultsVisible ? R.string.sk_poll_view : R.string.sk_poll_results);
-				setVoteButtonEnabled();
+				rebind();
 			});
 		}
 
@@ -56,10 +55,7 @@ public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 				text+=" "+sep+" "+item.parentFragment.getString(R.string.poll_closed);
 			}
 			this.text.setText(text);
-			setVoteButtonEnabled();
-		}
-
-		private void setVoteButtonEnabled() {
+			resultsButton.setText(item.resultsVisible ? R.string.sk_poll_view : R.string.sk_poll_results);
 			voteButton.setVisibility(item.poll.isExpired() || item.poll.voted || (!item.poll.multiple && !GlobalUserPreferences.voteButtonForSingleChoice) ? View.GONE : View.VISIBLE);
 			voteButton.setEnabled(item.poll.selectedOptions!=null && !item.poll.selectedOptions.isEmpty() && !item.resultsVisible);
 		}
