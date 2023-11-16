@@ -14,6 +14,7 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 
 public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 	public final Poll poll;
+	public boolean resultsVisible = false;
 
 	public PollFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Poll poll){
 		super(parentID, parentFragment);
@@ -27,13 +28,20 @@ public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<PollFooterStatusDisplayItem>{
 		private TextView text;
-		private Button button;
+		private Button voteButton, resultsButton;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_poll_footer, parent);
 			text=findViewById(R.id.text);
-			button=findViewById(R.id.vote_btn);
-			button.setOnClickListener(v->item.parentFragment.onPollVoteButtonClick(this));
+			voteButton=findViewById(R.id.vote_btn);
+			voteButton.setOnClickListener(v->item.parentFragment.onPollVoteButtonClick(this));
+			resultsButton=findViewById(R.id.results_btn);
+			resultsButton.setOnClickListener(v-> {
+				item.resultsVisible = !item.resultsVisible;
+				item.parentFragment.onPollViewResultsButtonClick(this, item.resultsVisible);
+				resultsButton.setText(item.resultsVisible ? R.string.sk_poll_view : R.string.sk_poll_results);
+				setVoteButtonEnabled();
+			});
 		}
 
 		@Override
@@ -48,8 +56,12 @@ public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 				text+=" "+sep+" "+item.parentFragment.getString(R.string.poll_closed);
 			}
 			this.text.setText(text);
-			button.setVisibility(item.poll.isExpired() || item.poll.voted || (!item.poll.multiple && !GlobalUserPreferences.voteButtonForSingleChoice) ? View.GONE : View.VISIBLE);
-			button.setEnabled(item.poll.selectedOptions!=null && !item.poll.selectedOptions.isEmpty());
+			setVoteButtonEnabled();
+		}
+
+		private void setVoteButtonEnabled() {
+			voteButton.setVisibility(item.poll.isExpired() || item.poll.voted || (!item.poll.multiple && !GlobalUserPreferences.voteButtonForSingleChoice) ? View.GONE : View.VISIBLE);
+			voteButton.setEnabled(item.poll.selectedOptions!=null && !item.poll.selectedOptions.isEmpty() && !item.resultsVisible);
 		}
 	}
 }

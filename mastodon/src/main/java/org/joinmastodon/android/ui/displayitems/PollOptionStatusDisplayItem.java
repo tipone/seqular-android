@@ -17,6 +17,7 @@ import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.Collections;
 import java.util.Locale;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
@@ -44,6 +45,10 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 		text=HtmlParser.parseCustomEmoji(option.title, poll.emojis);
 		emojiHelper.setText(text);
 		showResults=poll.isExpired() || poll.voted;
+		calculateResults();
+	}
+
+	private void calculateResults() {
 		int total=poll.votersCount>0 ? poll.votersCount : poll.votesCount;
 		if(showResults && option.votesCount!=null && total>0){
 			votesFraction=(float)option.votesCount/(float)total;
@@ -134,6 +139,12 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 
 		private void onButtonClick(View v){
 			item.parentFragment.onPollOptionClick(this);
+		}
+
+		public void showResults(boolean shown) {
+			item.showResults = shown;
+			item.calculateResults();
+			rebind();
 		}
 	}
 }
