@@ -45,7 +45,7 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
+public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> implements HasAccountID{
 	private static final String TAG="SettingsAboutAppFragment";
 	private ListItem<Void> mediaCacheItem, copyCrashLogItem;
 	private CheckableListItem<Void> enablePreReleasesItem;

@@ -301,7 +301,7 @@ public abstract class StatusDisplayItem{
 			}
 		}
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, status, contentItems, statusForContent);
+			buildPollItems(parentID, fragment, statusForContent.poll, status, contentItems);
 		}
 		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty() && statusForContent.quote==null){
 			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent, (flags & FLAG_NO_MEDIA_PREVIEW)==0));
@@ -376,7 +376,7 @@ public abstract class StatusDisplayItem{
 		);
 	}
 
-	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, Status status, List<StatusDisplayItem> items, Status status){
+	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, Status status, List<StatusDisplayItem> items){
 		int i=0;
 		for(Poll.Option opt:poll.options){
 			items.add(new PollOptionStatusDisplayItem(parentID, poll, i, fragment, status));

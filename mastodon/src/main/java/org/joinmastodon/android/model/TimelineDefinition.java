@@ -260,6 +260,7 @@ public class TimelineDefinition {
 		LIST,
 		HASHTAG,
 		BUBBLE,
+		CUSTOM_LOCAL_TIMELINE,
 
 		// not really timelines, but some people want it, so,,
 		BOOKMARKS,

@@ -920,7 +920,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			}
 			return false;
 		});
-		if (!GlobalUserPreferences.relocatePublishButton):
+		if (!GlobalUserPreferences.relocatePublishButton)
 			publishButton.post(()->publishButton.setMinimumWidth(publishButton.getWidth()));
 
 		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setOnClickListener(v->{
