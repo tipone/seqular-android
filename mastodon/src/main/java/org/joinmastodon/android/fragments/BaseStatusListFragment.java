@@ -633,6 +633,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		submitPollVote(holder.getItemID(), poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
 	}
 
+	public void onPollViewResultsButtonClick(PollFooterStatusDisplayItem.Holder holder, boolean shown){
+			for(int i=0;i<list.getChildCount();i++){
+				if(list.getChildViewHolder(list.getChildAt(i)) instanceof PollOptionStatusDisplayItem.Holder item && item.getItemID().equals(holder.getItemID())){
+					item.showResults(shown);
+				}
+			}
+	}
+
 	protected void submitPollVote(String parentID, String pollID, List<Integer> choices){
 		if(refreshing)
 			return;

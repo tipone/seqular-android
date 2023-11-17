@@ -20,6 +20,16 @@
 		tools:text="fdsafdsafsdafds"/>
 
 	<Button
+		android:id="@+id/results_btn"
+		style="@style/Widget.Mastodon.M3.Button.Text"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_marginHorizontal="16dp"
+		android:minHeight="48dp"
+		android:textAppearance="@style/m3_label_small"
+		android:textAllCaps="true"
+		android:text="@string/sk_poll_results"/>
+	<Button
 		android:id="@+id/vote_btn"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
