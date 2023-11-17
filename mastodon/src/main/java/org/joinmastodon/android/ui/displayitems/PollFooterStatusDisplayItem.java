@@ -55,6 +55,7 @@ public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 				text+=" "+sep+" "+item.parentFragment.getString(R.string.poll_closed);
 			}
 			this.text.setText(text);
+			resultsButton.setVisibility(item.poll.isExpired() || item.poll.voted ? View.GONE : View.VISIBLE);
 			resultsButton.setText(item.resultsVisible ? R.string.sk_poll_view : R.string.sk_poll_results);
 			voteButton.setVisibility(item.poll.isExpired() || item.poll.voted || (!item.poll.multiple && !GlobalUserPreferences.voteButtonForSingleChoice) ? View.GONE : View.VISIBLE);
 			voteButton.setEnabled(item.poll.selectedOptions!=null && !item.poll.selectedOptions.isEmpty() && !item.resultsVisible);
