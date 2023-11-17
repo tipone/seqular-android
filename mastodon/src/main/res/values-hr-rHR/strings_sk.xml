@@ -157,7 +157,7 @@
     <string name="sk_visibility_unlisted">Nenavedeno</string>
     <string name="sk_lists_with_user">Liste s %s</string>
     <string name="sk_settings_show_federated_timeline">Prikaži objedinjenu vremensku traku</string>
-    <string name="sk_translated_using">"Prevedeno uporabom  %s"</string>
+    <string name="sk_translated_using">Prevedeno uporabom %s</string>
     <string name="sk_settings_translate_only_opened">Prevodi samo otvorene objave</string>
     <string name="sk_loading_fediverse_resource_title">Pretraga na Fediversu</string>
     <string name="sk_loading_resource_on_instance_title">Pretraga na %s</string>

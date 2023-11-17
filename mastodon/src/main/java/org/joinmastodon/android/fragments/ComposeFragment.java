@@ -801,7 +801,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					String prefix = (GlobalUserPreferences.prefixReplies == ALWAYS
 							|| (GlobalUserPreferences.prefixReplies == TO_OTHERS && !ownID.equals(status.account.id)))
 							&& !status.spoilerText.startsWith("re: ") ? "re: " : "";
-					spoilerEdit.setText(prefix + replyTo.spoilerText);
+					spoilerEdit.setText(prefix + status.spoilerText);
 					spoilerBtn.setSelected(true);
 				}
 				if (status.language != null && !status.language.isEmpty()) setPostLanguage(status.language);
@@ -890,19 +890,22 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			charCounter.setText(String.valueOf(charLimit));
 		}
 
-//		draftsBtn = wrap.findViewById(R.id.drafts_btn);
-		draftOptionsPopup = new PopupMenu(getContext(), draftsBtn);
+//		draftsBtn=wrap.findViewById(R.id.drafts_btn);
+		draftOptionsPopup=new PopupMenu(getContext(), draftsBtn);
 		draftOptionsPopup.inflate(R.menu.compose_more);
-		draftMenuItem = draftOptionsPopup.getMenu().findItem(R.id.draft);
-		undraftMenuItem = draftOptionsPopup.getMenu().findItem(R.id.undraft);
-		scheduleMenuItem = draftOptionsPopup.getMenu().findItem(R.id.schedule);
-		unscheduleMenuItem = draftOptionsPopup.getMenu().findItem(R.id.unschedule);
+		Menu draftOptionsMenu=draftOptionsPopup.getMenu();
+		draftMenuItem=draftOptionsMenu.findItem(R.id.draft);
+		undraftMenuItem=draftOptionsMenu.findItem(R.id.undraft);
+		scheduleMenuItem=draftOptionsMenu.findItem(R.id.schedule);
+		unscheduleMenuItem=draftOptionsMenu.findItem(R.id.unschedule);
+		draftOptionsMenu.findItem(R.id.preview).setVisible(isInstanceAkkoma());
 		draftOptionsPopup.setOnMenuItemClickListener(i->{
-			int id = i.getItemId();
-			if (id == R.id.draft) updateScheduledAt(getDraftInstant());
-			else if (id == R.id.schedule) pickScheduledDateTime();
-			else if (id == R.id.unschedule || id == R.id.undraft) updateScheduledAt(null);
-			else navigateToUnsentPosts();
+			int id=i.getItemId();
+			if(id==R.id.draft) updateScheduledAt(getDraftInstant());
+			else if(id==R.id.schedule) pickScheduledDateTime();
+			else if(id==R.id.unschedule || id==R.id.undraft) updateScheduledAt(null);
+			else if(id==R.id.drafts) navigateToUnsentPosts();
+			else if(id==R.id.preview) publish(true);
 			return true;
 		});
 		UiUtils.enablePopupMenuIcons(getContext(), draftOptionsPopup);
@@ -917,6 +920,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			}
 			return false;
 		});
+		if (!GlobalUserPreferences.relocatePublishButton):
+			publishButton.post(()->publishButton.setMinimumWidth(publishButton.getWidth()));
 
 		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setOnClickListener(v->{
 			Consumer<Boolean> draftCheckComplete=(isDraft)->{
@@ -1140,6 +1145,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	}
 
 	private void publish(){
+		publish(false);
+	}
+
+	private void publish(boolean preview){
 		sendingOverlay=new View(getActivity());
 		WindowManager.LayoutParams overlayParams=new WindowManager.LayoutParams();
 		overlayParams.type=WindowManager.LayoutParams.TYPE_APPLICATION_PANEL;
@@ -1153,10 +1162,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setEnabled(false);
 		V.setVisibilityAnimated(sendProgress, View.VISIBLE);
 
-		mediaViewController.saveAltTextsBeforePublishing(this::actuallyPublish, this::handlePublishError);
+		mediaViewController.saveAltTextsBeforePublishing(
+				()->actuallyPublish(preview),
+				this::handlePublishError);
 	}
 
-	private void actuallyPublish(){
+	private void actuallyPublish(boolean preview){
 		String text=mainEditText.getText().toString();
 		CreateStatus.Request req=new CreateStatus.Request();
 		if("bottom".equals(postLang.encoding)){
@@ -1174,6 +1185,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		req.sensitive=sensitive;
 		req.contentType=contentType==ContentType.UNSPECIFIED ? null : contentType;
 		req.scheduledAt=scheduledAt;
+		req.preview=preview;
 		if(!mediaViewController.isEmpty()){
 			req.mediaIds=mediaViewController.getAttachmentIDs();
 			if(editingStatus != null){
@@ -1201,7 +1213,12 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		Callback<Status> resCallback=new Callback<>(){
 			@Override
 			public void onSuccess(Status result){
-				maybeDeleteScheduledPost(() -> {
+				if(preview){
+					openPreview(result);
+					return;
+				}
+
+				maybeDeleteScheduledPost(()->{
 					wm.removeView(sendingOverlay);
 					sendingOverlay=null;
 					if(editingStatus==null || redraftStatus){
@@ -1223,10 +1240,10 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 						}
 						E.post(new StatusUpdatedEvent(editedStatus));
 					}
-					if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !isStateSaved()) {
+					if(Build.VERSION.SDK_INT < Build.VERSION_CODES.O || !isStateSaved()){
 						Nav.finish(ComposeFragment.this);
 					}
-					if (getArguments().getBoolean("navigateToStatus", false)) {
+					if(getArguments().getBoolean("navigateToStatus", false)){
 						Bundle args=new Bundle();
 						args.putString("account", accountID);
 						args.putParcelable("status", Parcels.wrap(result));
@@ -1242,11 +1259,11 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			}
 		};
 
-		if(editingStatus!=null && !redraftStatus){
+		if(editingStatus!=null && !redraftStatus && !preview){
 			new EditStatus(req, editingStatus.id)
 					.setCallback(resCallback)
 					.exec(accountID);
-		}else if(req.scheduledAt == null){
+		}else if(req.scheduledAt == null || preview){
 			new CreateStatus(req, uuid)
 					.setCallback(resCallback)
 					.exec(accountID);
@@ -1297,6 +1314,25 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}else if(error!=null){
 			error.showToast(getActivity());
 		}
+	}
+
+	private void openPreview(Status result){
+		result.preview=true;
+		wm.removeView(sendingOverlay);
+		sendingOverlay=null;
+		publishButton.setEnabled(true);
+		V.setVisibilityAnimated(sendProgress, View.GONE);
+		InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
+		imm.hideSoftInputFromWindow(contentView.getWindowToken(), 0);
+
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putParcelable("status", Parcels.wrap(result));
+		if(replyTo!=null){
+			args.putParcelable("inReplyTo", Parcels.wrap(replyTo));
+			args.putParcelable("inReplyToAccount", Parcels.wrap(replyTo.account));
+		}
+		Nav.go(getActivity(), ThreadFragment.class, args);
 	}
 
 	private void updateRecentLanguages() {
@@ -1665,6 +1701,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		contentTypePopup.setOnMenuItemClickListener(i->{
+			uuid=null;
 			int index=i.getItemId();
 			contentType=ContentType.values()[index];
 			btn.setSelected(index!=ContentType.UNSPECIFIED.ordinal() && index!=ContentType.PLAIN.ordinal());

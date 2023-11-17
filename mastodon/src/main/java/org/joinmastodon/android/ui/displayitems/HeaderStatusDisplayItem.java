@@ -78,7 +78,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 	private String accountID;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
 	private SpannableStringBuilder parsedName;
-	public final Status status;
 	public boolean hasVisibilityToggle;
 	boolean needBottomPadding;
 	private CharSequence extraText;
@@ -458,6 +457,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onMoreClick(View v){
+			if(item.status.preview) return;
 			updateOptionsMenu();
 			optionsMenu.show();
 			if(relationship==null && currentRelationshipRequest==null){

@@ -42,7 +42,6 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 	public boolean textSelectable;
 	public boolean reduceTopPadding;
 	public boolean disableTranslate;
-	public final Status status;
 
 	public TextStatusDisplayItem(String parentID, CharSequence text, BaseStatusListFragment parentFragment, Status status, boolean disableTranslate){
 		super(parentID, parentFragment);
@@ -116,7 +115,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				text.setText(item.text);
 			}
 			text.setTextIsSelectable(false);
-			if(item.textSelectable) itemView.post(() -> text.setTextIsSelectable(true));
+			if(item.textSelectable && !item.isForQuote) itemView.post(() -> text.setTextIsSelectable(true));
 			text.setInvalidateOnEveryFrame(false);
 			itemView.setClickable(false);
 			itemView.setPadding(itemView.getPaddingLeft(), item.reduceTopPadding ? V.dp(6) : V.dp(12), itemView.getPaddingRight(), itemView.getPaddingBottom());
@@ -127,8 +126,8 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 			StatusDisplayItem next=getNextVisibleDisplayItem().orElse(null);
 			if(next!=null && !next.parentID.equals(item.parentID)) next=null;
-			int bottomPadding=next instanceof FooterStatusDisplayItem ? V.dp(6)
-					: item.inset ? V.dp(12)
+			int bottomPadding=item.inset ? V.dp(12)
+					: next instanceof FooterStatusDisplayItem ? V.dp(6)
 					: (next instanceof EmojiReactionsStatusDisplayItem || next==null) ? 0
 					: V.dp(12);
 			itemView.setPadding(itemView.getPaddingLeft(), itemView.getPaddingTop(), itemView.getPaddingRight(), bottomPadding);
@@ -195,7 +194,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		public void updateTranslation(boolean updateText){
 			if(item.status==null)
 				return;
-			boolean translateEnabled=!item.disableTranslate && item.status.isEligibleForTranslation(item.parentFragment.getSession());
+			boolean translateEnabled=!item.disableTranslate && item.status.isEligibleForTranslation(item.parentFragment.getSession()) && !item.isForQuote;
 			if(translationFooter==null && translateEnabled){
 				translationFooter=translationFooterStub.inflate();
 				translationInfo=findViewById(R.id.translation_info_text);
@@ -214,8 +213,9 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 				String existingTransLang=existingTrans!=null ? existingTrans.detectedSourceLanguage : null;
 				String lang=existingTransLang!=null ? existingTransLang : item.status.getContentStatus().language;
 				Locale locale=lang!=null ? Locale.forLanguageTag(lang) : null;
-				translationButton.setText(locale!=null
-						? item.parentFragment.getString(R.string.translate_post, locale.getDisplayLanguage())
+				String displayLang=locale==null || locale.getDisplayLanguage().isBlank() ? lang : locale.getDisplayLanguage();
+				translationButton.setText(displayLang!=null
+						? item.parentFragment.getString(R.string.translate_post, displayLang)
 						: item.parentFragment.getString(R.string.sk_translate_post));
 				translationButton.setClickable(true);
 				translationButton.animate().alpha(1).setDuration(100).start();

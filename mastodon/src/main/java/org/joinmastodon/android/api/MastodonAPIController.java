@@ -53,7 +53,9 @@ public class MastodonAPIController{
 			.registerTypeAdapter(Status.class, new Status.StatusDeserializer())
 			.create();
 	private static WorkerThread thread=new WorkerThread("MastodonAPIController");
-	private static OkHttpClient httpClient=new OkHttpClient.Builder().build();
+	private static OkHttpClient httpClient=new OkHttpClient.Builder()
+			.readTimeout(30, TimeUnit.SECONDS)
+			.build();
 
 	private AccountSession session;
 	private static List<String> badDomains = new ArrayList<>();

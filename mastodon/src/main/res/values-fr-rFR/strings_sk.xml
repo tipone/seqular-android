@@ -297,7 +297,7 @@
     <string name="sk_settings_allow_remote_loading">Charger des informations à partir d\'instances distantes</string>
     <string name="sk_no_remote_info_hint">informations distantes indisponibles</string>
     <string name="sk_error_loading_profile">Échec du chargement du profil via %s</string>
-    <string name="sk_settings_allow_remote_loading_explanation">Essayez de récupérer des listes plus précises pour les abonnés, les likes et les boosts en chargeant les informations à partir de l\'instance d\'origine.</string>
+    <string name="sk_settings_allow_remote_loading_explanation">Essaye de récupérer des listes plus précises pour les abonné·e·s, les favoris et les boosts en chargeant les informations à partir de l\'instance d\'origine.</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">Révéler les CW identiques dans les réponses</string>
     <string name="sk_settings_auto_reveal_nobody">Jamais</string>
     <string name="sk_settings_auto_reveal_author">Réponses du même auteur</string>
@@ -412,7 +412,7 @@
     <string name="sk_message_cache_cleared">Cache des messages vidé</string>
     <string name="sk_settings_clear_timeline_cache">Effacer le cache du fil d\'accueil</string>
     <string name="sk_settings_default_visibility">Visibilité de publication par défaut</string>
-    <string name="sk_settings_lock_account">Approuver manuellement les nouveaux abonnés</string>
+    <string name="sk_settings_lock_account">Approuver manuellement les nouveaux·elles abonné·e·s</string>
     <string name="sk_timeline_cache_cleared">Cache du fil d\'accueil vidé</string>
-    <string name="sk_button_mutuals">Amis</string>
+    <string name="sk_button_mutuals">Suivi mutuel</string>
 </resources>

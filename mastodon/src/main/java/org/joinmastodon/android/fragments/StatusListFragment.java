@@ -89,8 +89,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	@Override
 	public void onItemClick(String id){
 		Status status=getContentStatusByID(id);
-		if(status==null)
-			return;
+		if(status==null || status.preview) return;
 		if(status.isRemote){
 			UiUtils.lookupStatus(getContext(), status, accountID, null, status1 -> {
 				status1.filterRevealed = true;
@@ -392,6 +391,7 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 				Status contentStatus=status.getContentStatus();
 				if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
 					updatePoll(status.id, contentStatus, ev.poll);
+					AccountSessionManager.get(accountID).getCacheController().updateStatus(contentStatus);
 				}
 			}
 		}

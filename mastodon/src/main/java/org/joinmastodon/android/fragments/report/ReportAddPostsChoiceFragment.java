@@ -1,8 +1,6 @@
 package org.joinmastodon.android.fragments.report;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
@@ -25,6 +23,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.displayitems.AudioStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.CheckableHeaderStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
@@ -97,8 +96,7 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 				.exec(accountID);
 	}
 
-	@Override
-	public void onItemClick(String id){
+	public void onToggleItem(String id){
 		if(selectedIDs.contains(id))
 			selectedIDs.remove(id);
 		else
@@ -121,13 +119,20 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 				RecyclerView.ViewHolder holder=parent.getChildViewHolder(view);
 				if(holder.getAbsoluteAdapterPosition()==0 || holder instanceof CheckableHeaderStatusDisplayItem.Holder)
 					return;
-				outRect.left=V.dp(40);
+				boolean isRTL=parent.getLayoutDirection()==View.LAYOUT_DIRECTION_RTL;
+				if(isRTL) outRect.right=V.dp(40);
+				else outRect.left=V.dp(40);
 				if(holder instanceof AudioStatusDisplayItem.Holder){
 					outRect.bottom=V.dp(16);
 				}else if(holder instanceof LinkCardStatusDisplayItem.Holder || holder instanceof MediaGridStatusDisplayItem.Holder){
-					outRect.bottom=V.dp(16);
-					outRect.left+=V.dp(16);
-					outRect.right=V.dp(16);
+					outRect.bottom=V.dp(8);
+					if(isRTL){
+						outRect.right+=V.dp(16);
+						outRect.left=V.dp(16);
+					}else{
+						outRect.left+=V.dp(16);
+						outRect.right=V.dp(16);
+					}
 				}
 			}
 		});
@@ -153,9 +158,6 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 		adapter.addAdapter(new SingleViewRecyclerAdapter(headerView));
 		adapter.addAdapter(super.getAdapter());
 		return adapter;
-	}
-
-	protected void drawDivider(View child, View bottomSibling, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder siblingHolder, RecyclerView parent, Canvas c, Paint paint){
 	}
 
 	private void onButtonClick(View v){
@@ -201,7 +203,9 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_CHECKABLE | StatusDisplayItem.FLAG_MEDIA_FORCE_HIDDEN);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_CHECKABLE | StatusDisplayItem.FLAG_MEDIA_FORCE_HIDDEN);
+		items.add(new DummyStatusDisplayItem(s.getID(), this));
+		return items;
 	}
 
 	@Override

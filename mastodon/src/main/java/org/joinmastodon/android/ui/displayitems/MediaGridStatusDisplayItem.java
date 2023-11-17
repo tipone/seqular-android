@@ -61,7 +61,6 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 	private final List<Attachment> attachments;
 	private final Map<String, Pair<String, String>> translatedAttachments = new HashMap<>();
 	private final ArrayList<ImageLoaderRequest> requests=new ArrayList<>();
-	public final Status status;
 	public String sensitiveTitle;
 
 	public MediaGridStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, PhotoLayoutHelper.TiledLayoutResult tiledLayout, List<Attachment> attachments, Status status){

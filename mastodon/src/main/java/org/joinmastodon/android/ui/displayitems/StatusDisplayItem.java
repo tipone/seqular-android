@@ -59,13 +59,15 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public abstract class StatusDisplayItem{
 	public final String parentID;
 	public final BaseStatusListFragment<?> parentFragment;
+	public Status status;
 	public boolean inset;
 	public int index;
 	public boolean
 			hasDescendantNeighbor=false,
 			hasAncestoringNeighbor=false,
 			isMainStatus=true,
-			isDirectDescendant=false;
+			isDirectDescendant=false,
+			isForQuote=false;
 
 	public static final int FLAG_INSET=1;
 	public static final int FLAG_NO_FOOTER=1 << 1;
@@ -74,7 +76,8 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_NO_HEADER=1 << 4;
 	public static final int FLAG_NO_TRANSLATE=1 << 5;
 	public static final int FLAG_NO_EMOJI_REACTIONS=1 << 6;
-	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 7;
+	public static final int FLAG_IS_FOR_QUOTE=1 << 7;
+	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 8;
 
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
@@ -238,27 +241,28 @@ public abstract class StatusDisplayItem{
 		if(statusForContent.hasSpoiler()){
 			if (AccountSessionManager.get(accountID).getLocalPreferences().revealCWs) statusForContent.spoilerRevealed = true;
 			SpoilerStatusDisplayItem spoilerItem=new SpoilerStatusDisplayItem(parentID, fragment, null, statusForContent, Type.SPOILER);
+			if((flags & FLAG_IS_FOR_QUOTE)!=0){
+				for(StatusDisplayItem item:spoilerItem.contentItems){
+					item.isForQuote=true;
+				}
+			}
 			items.add(spoilerItem);
 			contentItems=spoilerItem.contentItems;
 		}else{
 			contentItems=items;
 		}
 
-		if (statusForContent.quote != null) {
-			boolean hasQuoteInlineTag = statusForContent.content.contains("<span class=\"quote-inline\">");
-			if (!hasQuoteInlineTag) {
-				String quoteUrl = statusForContent.quote.url;
-				String quoteInline = String.format("<span class=\"quote-inline\">%sRE: <a href=\"%s\">%s</a></span>",
-						statusForContent.content.endsWith("</p>") ? "" : "<br/><br/>", quoteUrl, quoteUrl);
-				statusForContent.content += quoteInline;
-			}
+		if(statusForContent.quote!=null) {
+			int quoteInlineIndex=statusForContent.content.lastIndexOf("<span class=\"quote-inline\"><br/><br/>RE:");
+			if (quoteInlineIndex!=-1)
+				statusForContent.content=statusForContent.content.substring(0, quoteInlineIndex);
 		}
 
 		boolean hasSpoiler=!TextUtils.isEmpty(statusForContent.spoilerText);
 		if(!TextUtils.isEmpty(statusForContent.content)){
-			SpannableStringBuilder parsedText=HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID);
+			SpannableStringBuilder parsedText=HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID, fragment.getContext());
 			HtmlParser.applyFilterHighlights(fragment.getActivity(), parsedText, status.filtered);
-			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID), fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
+			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID, fragment.getContext()), fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
 			contentItems.add(text);
 		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
@@ -276,9 +280,11 @@ public abstract class StatusDisplayItem{
 			}
 			PhotoLayoutHelper.TiledLayoutResult layout=PhotoLayoutHelper.processThumbs(imageAttachments);
 			MediaGridStatusDisplayItem mediaGrid=new MediaGridStatusDisplayItem(parentID, fragment, layout, imageAttachments, statusForContent);
-			if((flags & FLAG_MEDIA_FORCE_HIDDEN)!=0)
+			if((flags & FLAG_MEDIA_FORCE_HIDDEN)!=0){
 				mediaGrid.sensitiveTitle=fragment.getString(R.string.media_hidden);
-			else if(statusForContent.sensitive && AccountSessionManager.get(accountID).getLocalPreferences().revealCWs && !AccountSessionManager.get(accountID).getLocalPreferences().hideSensitiveMedia)
+				statusForContent.sensitiveRevealed=false;
+				statusForContent.sensitive=true;
+			} else if(statusForContent.sensitive && AccountSessionManager.get(accountID).getLocalPreferences().revealCWs && !AccountSessionManager.get(accountID).getLocalPreferences().hideSensitiveMedia)
 				statusForContent.sensitiveRevealed=true;
 			contentItems.add(mediaGrid);
 		}
@@ -295,17 +301,23 @@ public abstract class StatusDisplayItem{
 			}
 		}
 		if(statusForContent.poll!=null){
-			buildPollItems(parentID, fragment, statusForContent.poll, contentItems, statusForContent);
+			buildPollItems(parentID, fragment, statusForContent.poll, status, contentItems, statusForContent);
 		}
-		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty()){
+		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty() && statusForContent.quote==null){
 			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent, (flags & FLAG_NO_MEDIA_PREVIEW)==0));
+		}
+		if(statusForContent.quote!=null && !(parentObject instanceof Notification)){
+			if(!statusForContent.mediaAttachments.isEmpty() && statusForContent.poll==null) // add spacing if immediately preceded by attachment
+				contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
+			contentItems.addAll(buildItems(fragment, statusForContent.quote, accountID, parentObject, knownAccounts, filterContext, FLAG_NO_FOOTER | FLAG_INSET | FLAG_NO_EMOJI_REACTIONS | FLAG_IS_FOR_QUOTE));
 		}
 		if(contentItems!=items && statusForContent.spoilerRevealed){
 			items.addAll(contentItems);
 		}
 		AccountLocalPreferences lp=fragment.getLocalPrefs();
-		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && lp.emojiReactionsEnabled &&
-				(lp.showEmojiReactions!=ONLY_OPENED || fragment instanceof ThreadFragment)){
+		if((flags & FLAG_NO_EMOJI_REACTIONS)==0 && !status.preview && lp.emojiReactionsEnabled &&
+				(lp.showEmojiReactions!=ONLY_OPENED || fragment instanceof ThreadFragment) &&
+				statusForContent.reactions!=null){
 			boolean isMainStatus=fragment instanceof ThreadFragment t && t.getMainStatus().id.equals(statusForContent.id);
 			boolean showAddButton=lp.showEmojiReactions==ALWAYS || isMainStatus;
 			items.add(new EmojiReactionsStatusDisplayItem(parentID, fragment, statusForContent, accountID, !showAddButton, false));
@@ -317,8 +329,9 @@ public abstract class StatusDisplayItem{
 			items.add(footer);
 		}
 		boolean inset=(flags & FLAG_INSET)!=0;
+		boolean isForQuote=(flags & FLAG_IS_FOR_QUOTE)!=0;
 		// add inset dummy so last content item doesn't clip out of inset bounds
-		if((inset || footer==null) && (flags & FLAG_CHECKABLE)==0){
+		if((inset || footer==null) && (flags & FLAG_CHECKABLE)==0 && !isForQuote){
 			items.add(new DummyStatusDisplayItem(parentID, fragment));
 			// in case we ever need the dummy to display a margin for the media grid again:
 			// (i forgot why we apparently don't need this anymore)
@@ -330,12 +343,22 @@ public abstract class StatusDisplayItem{
 			items.add(gap=new GapStatusDisplayItem(parentID, fragment, status));
 		int i=1;
 		for(StatusDisplayItem item:items){
-			item.inset=inset;
+			if(inset)
+				item.inset=true;
+			if(isForQuote){
+				item.status=statusForContent;
+				item.isForQuote=true;
+			}
 			item.index=i++;
 		}
 		if(items!=contentItems && !statusForContent.spoilerRevealed){
 			for(StatusDisplayItem item:contentItems){
-				item.inset=inset;
+				if(inset)
+					item.inset=true;
+				if(isForQuote){
+					item.status=statusForContent;
+					item.isForQuote=true;
+				}
 				item.index=i++;
 			}
 		}
@@ -353,7 +376,7 @@ public abstract class StatusDisplayItem{
 		);
 	}
 
-	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, List<StatusDisplayItem> items, Status status){
+	public static void buildPollItems(String parentID, BaseStatusListFragment fragment, Poll poll, Status status, List<StatusDisplayItem> items, Status status){
 		int i=0;
 		for(Poll.Option opt:poll.options){
 			items.add(new PollOptionStatusDisplayItem(parentID, poll, i, fragment, status));
@@ -390,12 +413,15 @@ public abstract class StatusDisplayItem{
 	}
 
 	public static abstract class Holder<T extends StatusDisplayItem> extends BindableViewHolder<T> implements UsableRecyclerView.DisableableClickable{
+		private Context context;
+
 		public Holder(View itemView){
 			super(itemView);
 		}
 
 		public Holder(Context context, int layout, ViewGroup parent){
 			super(context, layout, parent);
+			this.context=context;
 		}
 
 		public String getItemID(){
@@ -404,6 +430,16 @@ public abstract class StatusDisplayItem{
 
 		@Override
 		public void onClick(){
+			if(item.isForQuote){
+				item.status.filterRevealed=true;
+				Bundle args=new Bundle();
+				args.putString("account", item.parentFragment.getAccountID());
+				args.putParcelable("status", Parcels.wrap(item.status.clone()));
+				args.putBoolean("refresh", true);
+				Nav.go((Activity) context, ThreadFragment.class, args);
+				return;
+			}
+
 			item.parentFragment.onItemClick(item.parentID);
 		}
 
@@ -435,13 +471,13 @@ public abstract class StatusDisplayItem{
 
 		public boolean isLastDisplayItemForStatus(){
 			return getNextVisibleDisplayItem()
-					.map(n->!n.parentID.equals(item.parentID))
+					.map(next->!next.parentID.equals(item.parentID) || item.inset && !next.inset)
 					.orElse(true);
 		}
 
 		@Override
 		public boolean isEnabled(){
-			return item.parentFragment.isItemEnabled(item.parentID);
+			return item.parentFragment.isItemEnabled(item.parentID) || item.isForQuote;
 		}
 	}
 }

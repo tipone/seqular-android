@@ -21,9 +21,12 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.text.TextWatcher;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.TransitionManager;
@@ -149,7 +152,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private SwipeRefreshLayout refreshLayout;
 	private View followersBtn, followingBtn;
 	private EditText nameEdit, bioEdit;
-	private ProgressBar actionProgress, notifyProgress;
+	private ProgressBar actionProgress, notifyProgress, noteSaveProgress;
 	private FrameLayout[] tabViews;
 	private TabLayoutMediator tabLayoutMediator;
 	private TextView followsYouView;
@@ -160,9 +163,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private View actionButtonWrap;
 	private CustomDrawingOrderLinearLayout scrollableContent;
 
-	public FrameLayout noteWrap;
-	public EditText noteEdit;
-	private String note;
 	private Account account, remoteAccount;
 	private String accountID;
 	private String domain;
@@ -192,6 +192,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private AboutAdapter adapter;
 	private ItemTouchHelper dragHelper=new ItemTouchHelper(new ReorderCallback());
 	private ListImageLoaderWrapper imgLoader;
+
+	// profile note
+	private FrameLayout noteWrap;
+	private ImageButton noteSaveBtn;
+	private EditText noteEdit;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -262,9 +267,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		bioEdit=content.findViewById(R.id.bio_edit);
 		nameEditWrap=content.findViewById(R.id.name_edit_wrap);
 		bioEditWrap=content.findViewById(R.id.bio_edit_wrap);
-		usernameWrap=content.findViewById(R.id.username_wrap);
 		actionProgress=content.findViewById(R.id.action_progress);
 		notifyProgress=content.findViewById(R.id.notify_progress);
+		noteSaveProgress=content.findViewById(R.id.note_save_progress);
 		fab=content.findViewById(R.id.fab);
 		followsYouView=content.findViewById(R.id.follows_you);
 		countersLayout=content.findViewById(R.id.profile_counters);
@@ -279,60 +284,50 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		avatar.setOutlineProvider(OutlineProviders.roundedRect(24));
 		avatar.setClipToOutline(true);
 
-		noteEdit = content.findViewById(R.id.note_edit);
-		noteWrap = content.findViewById(R.id.note_edit_wrap);
-		ImageButton noteEditConfirm = content.findViewById(R.id.note_edit_confirm);
+		noteEdit=content.findViewById(R.id.note_edit);
+		noteWrap=content.findViewById(R.id.note_edit_wrap);
+		noteSaveBtn=content.findViewById(R.id.note_save_btn);
 
-		noteEditConfirm.setOnClickListener((v -> {
-			if (!noteEdit.getText().toString().trim().equals(note)) {
-				savePrivateNote();
-			}
-			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+		noteSaveBtn.setOnClickListener((v->{
+			savePrivateNote(noteEdit.getText().toString());
+			InputMethodManager imm=(InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
 			noteEdit.clearFocus();
+			noteSaveBtn.clearFocus();
 		}));
 
 
-		noteEdit.setOnFocusChangeListener((v, hasFocus) -> {
-			if (hasFocus) {
-				fab.setVisibility(View.INVISIBLE);
-				TranslateAnimation animate = new TranslateAnimation(
-						0,
-						0,
-						0,
-						fab.getHeight() * 2);
-				animate.setDuration(300);
-				fab.startAnimation(animate);
-
-				noteEditConfirm.setVisibility(View.VISIBLE);
-				noteEditConfirm.animate()
-						.alpha(1.0f)
-						.setDuration(700);
-			} else {
-				fab.setVisibility(View.VISIBLE);
-				TranslateAnimation animate = new TranslateAnimation(
-						0,
-						0,
-						fab.getHeight() * 2,
-						0);
-				animate.setDuration(300);
-				fab.startAnimation(animate);
-
-				noteEditConfirm.animate()
-						.alpha(0.0f)
-						.setDuration(700);
-				noteEditConfirm.setVisibility(View.INVISIBLE);
+		noteEdit.setOnFocusChangeListener((v, hasFocus)->{
+			if(hasFocus){
+				hideFab();
+				V.setVisibilityAnimated(noteSaveBtn, View.VISIBLE);
+				noteEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
+			}else if(!noteSaveBtn.hasFocus()){
+				showFab();
+				hideNoteSaveBtnIfNotDirty();
 			}
 		});
 
-		noteEditConfirm.setOnClickListener((v -> {
-			if (!noteEdit.getText().toString().trim().equals(note)) {
-				savePrivateNote();
+		noteEdit.addTextChangedListener(new TextWatcher(){
+			@Override
+			public void beforeTextChanged(CharSequence s, int start, int count, int after){}
+
+			@Override
+			public void onTextChanged(CharSequence s, int start, int before, int count){
+				if(relationship!=null && noteSaveBtn.getVisibility()!=View.VISIBLE && !s.toString().equals(relationship.note))
+					V.setVisibilityAnimated(noteSaveBtn, View.VISIBLE);
 			}
-			InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-			imm.hideSoftInputFromWindow(this.getView().getRootView().getWindowToken(), 0);
-			noteEdit.clearFocus();
-		}));
+
+			@Override
+			public void afterTextChanged(Editable s){}
+		});
+
+		noteSaveBtn.setOnFocusChangeListener((v, hasFocus)->{
+			if(!hasFocus && !noteEdit.hasFocus()){
+				showFab();
+				hideNoteSaveBtnIfNotDirty();
+			}
+		});
 
 		FrameLayout sizeWrapper=new FrameLayout(getActivity()){
 			@Override
@@ -498,6 +493,46 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		return sizeWrapper;
 	}
 
+	private void hideNoteSaveBtnIfNotDirty(){
+		if(noteEdit.getText().toString().equals(relationship.note)){
+			V.setVisibilityAnimated(noteSaveBtn, View.INVISIBLE);
+		}
+	}
+
+	private void showPrivateNote(){
+		noteWrap.setVisibility(View.VISIBLE);
+		noteEdit.setText(relationship.note);
+	}
+
+	private void hidePrivateNote(){
+		noteWrap.setVisibility(View.GONE);
+		noteEdit.setText(null);
+	}
+
+	private void savePrivateNote(String note){
+		if(note!=null && note.equals(relationship.note)){
+			updateRelationship();
+			invalidateOptionsMenu();
+			return;
+		}
+		V.setVisibilityAnimated(noteSaveProgress, View.VISIBLE);
+		V.setVisibilityAnimated(noteSaveBtn, View.INVISIBLE);
+		new SetPrivateNote(profileAccountID, note).setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(Relationship result) {
+				updateRelationship(result);
+				invalidateOptionsMenu();
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getContext());
+				V.setVisibilityAnimated(noteSaveProgress, View.GONE);
+				V.setVisibilityAnimated(noteSaveBtn, View.VISIBLE);
+			}
+		}).exec(accountID);
+	}
+
 	private void onAccountLoaded(Account result) {
 		account=result;
 		isOwnProfile=AccountSessionManager.getInstance().isSelf(accountID, account);
@@ -522,25 +557,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				mediaFragment.onRefresh();
 		}
 		V.setVisibilityAnimated(fab, View.VISIBLE);
-	}
-
-	public void setNote(String note){
-		this.note=note;
-		noteWrap.setVisibility(View.VISIBLE);
-		noteEdit.setVisibility(View.VISIBLE);
-		noteEdit.setText(note);
-	}
-
-	private void savePrivateNote(){
-		new SetPrivateNote(profileAccountID, noteEdit.getText().toString()).setCallback(new Callback<>() {
-			@Override
-			public void onSuccess(Relationship result) {}
-
-			@Override
-			public void onError(ErrorResponse error) {
-				error.showToast(getActivity());
-			}
-		}).exec(accountID);
 	}
 
 	@Override
@@ -884,6 +900,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}else{
 			blockDomain.setVisible(false);
 		}
+		menu.findItem(R.id.edit_note).setTitle(noteWrap.getVisibility()==View.GONE && (relationship.note==null || relationship.note.isEmpty())
+				? R.string.sk_add_note : R.string.sk_delete_note);
 	}
 
 	@Override
@@ -948,12 +966,12 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			final Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putParcelable("targetAccount", Parcels.wrap(account));
-			Nav.go(getActivity(), MutesListFragment.class, args);
+			Nav.go(getActivity(), MutedAccountsListFragment.class, args);
 		}else if(id==R.id.blocked_accounts){
 			final Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putParcelable("targetAccount", Parcels.wrap(account));
-			Nav.go(getActivity(), BlocksListFragment.class, args);
+			Nav.go(getActivity(), BlockedAccountsListFragment.class, args);
 		}else if(id==R.id.followed_hashtags){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -965,6 +983,26 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}else if(id==R.id.save){
 			if(isInEditMode)
 				saveAndExitEditMode();
+		}else if(id==R.id.edit_note){
+			if(noteWrap.getVisibility()==View.GONE){
+				showPrivateNote();
+				UiUtils.beginLayoutTransition(scrollableContent);
+				noteEdit.requestFocus();
+				noteEdit.postDelayed(()->{
+					InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
+					imm.showSoftInput(noteEdit, 0);
+				}, 100);
+			}else if(relationship.note.isEmpty()){
+				hidePrivateNote();
+				UiUtils.beginLayoutTransition(scrollableContent);
+			}else{
+				new M3AlertDialogBuilder(getActivity())
+						.setMessage(getContext().getString(R.string.sk_private_note_confirm_delete, account.getDisplayUsername()))
+						.setPositiveButton(R.string.delete, (dlg, btn)->savePrivateNote(null))
+						.setNegativeButton(R.string.cancel, null)
+						.show();
+			}
+			invalidateOptionsMenu();
 		}
 		return true;
 	}
@@ -990,20 +1028,22 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private void updateRelationship(){
 		if(getActivity()==null) return;
+		if(relationship.note!=null && !relationship.note.isEmpty()) showPrivateNote();
+		else hidePrivateNote();
 		invalidateOptionsMenu();
 		actionButton.setVisibility(View.VISIBLE);
 		notifyButton.setVisibility(relationship.following ? View.VISIBLE : View.GONE);
 		UiUtils.setRelationshipToActionButtonM3(relationship, actionButton);
 		actionProgress.setIndeterminateTintList(actionButton.getTextColors());
 		notifyProgress.setIndeterminateTintList(notifyButton.getTextColors());
+		noteSaveProgress.setIndeterminateTintList(noteEdit.getTextColors());
 		followsYouView.setVisibility(relationship.followedBy ? View.VISIBLE : View.GONE);
 		notifyButton.setSelected(relationship.notifying);
 		notifyButton.setContentDescription(getString(relationship.notifying ? R.string.sk_user_post_notifications_on : R.string.sk_user_post_notifications_off, '@'+account.username));
-
-		if (!isOwnProfile) {
-			setNote(relationship.note);
-//			aboutFragment.setNote(relationship.note, accountID, profileAccountID);
-		}
+		noteEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
+		V.setVisibilityAnimated(noteSaveProgress, View.GONE);
+		V.setVisibilityAnimated(noteSaveBtn, View.INVISIBLE);
+		UiUtils.beginLayoutTransition(scrollableContent);
 	}
 
 	public ImageButton getFab() {
@@ -1315,7 +1355,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	@Override
 	public boolean onBackPressed(){
 		if(noteEdit.hasFocus()) {
-			savePrivateNote();
+			savePrivateNote(noteEdit.getText().toString());
 		}
 		if(isInEditMode){
 			if(savingEdits)
@@ -1576,7 +1616,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			title.setText(item.parsedName);
 			value.setText(item.parsedValue);
 			if(item.verifiedAt!=null){
-				int textColor=UiUtils.isDarkTheme() ? 0xFF89bb9c : 0xFF5b8e63;
+				int textColor=UiUtils.getThemeColor(getContext(), R.attr.colorM3Success);
 				value.setTextColor(textColor);
 				value.setLinkTextColor(textColor);
 				Drawable check=getResources().getDrawable(R.drawable.ic_fluent_checkmark_starburst_20_regular, getActivity().getTheme()).mutate();

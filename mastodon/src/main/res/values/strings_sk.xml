@@ -244,6 +244,13 @@
     <string name="sk_icon_doctor">Doctor</string>
     <string name="sk_icon_diamond">Diamond</string>
     <string name="sk_icon_umbrella">Umbrella</string>
+	<string name="sk_icon_water">Water</string>
+	<string name="sk_icon_sun">Sun</string>
+	<string name="sk_icon_sunset">Sunset</string>
+	<string name="sk_icon_cloud">Cloud</string>
+	<string name="sk_icon_thunderstorm">Thunderstorm</string>
+	<string name="sk_icon_rain">Rain</string>
+	<string name="sk_icon_snowflake">Snowflake</string>
     <string name="sk_edit_timeline">Edit timeline</string>
     <string name="sk_add_timeline">Add timeline</string>
     <string name="sk_edit_timelines">Edit timelines</string>
@@ -417,4 +424,15 @@
     <string name="sk_settings_lock_account">Manually approve new followers</string>
 	<string name="sk_settings_default_visibility">Default posting visibility</string>
 	<string name="sk_button_mutuals">Mutuals</string>
+	<string name="sk_private_note_hint">Add a personal note about this profile</string>
+	<string name="sk_confirm_changes">Confirm changes</string>
+	<string name="sk_private_note_update_failed">Failed to save note</string>
+	<string name="sk_private_note_confirm_delete">Delete personal note about %s?</string>
+	<string name="sk_delete_note">Delete personal note</string>
+	<string name="sk_add_note">Add personal note</string>
+	<string name="sk_settings_copy_crash_log">Copy latest crash log</string>
+	<string name="sk_settings_crash_log_unavailable">None available… yet</string>
+	<string name="sk_crash_log_copied">Crash log copied</string>
+	<string name="sk_open_post_preview">Preview post</string>
+	<string name="sk_post_preview">Preview</string>
 </resources>

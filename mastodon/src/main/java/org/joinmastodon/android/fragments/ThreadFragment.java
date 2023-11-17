@@ -54,21 +54,25 @@ import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.V;
 
 public class ThreadFragment extends StatusListFragment implements ProvidesAssistContent {
-	protected Status mainStatus, updatedStatus;
+	protected Status mainStatus, updatedStatus, replyTo;
 	private final HashMap<String, NeighborAncestryInfo> ancestryMap = new HashMap<>();
 	private StatusContext result;
-	protected boolean contextInitiallyRendered, transitionFinished;
+	protected boolean contextInitiallyRendered, transitionFinished, preview;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		mainStatus=Parcels.unwrap(getArguments().getParcelable("status"));
+		replyTo=Parcels.unwrap(getArguments().getParcelable("inReplyTo"));
 		Account inReplyToAccount=Parcels.unwrap(getArguments().getParcelable("inReplyToAccount"));
+		refreshing=contextInitiallyRendered=getArguments().getBoolean("refresh", false);
 		if(inReplyToAccount!=null)
 			knownAccounts.put(inReplyToAccount.id, inReplyToAccount);
 		data.add(mainStatus);
 		onAppendItems(Collections.singletonList(mainStatus));
-		setTitle(HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.getDisplayName()), mainStatus.account.emojis));
+		preview=mainStatus.preview;
+		if(preview) setRefreshEnabled(false);
+		setTitle(preview ? getString(R.string.sk_post_preview) : HtmlParser.parseCustomEmoji(getString(R.string.post_from_user, mainStatus.account.getDisplayName()), mainStatus.account.emojis));
 		transitionFinished = getArguments().getBoolean("noTransition", false);
 
 		E.register(this);
@@ -155,11 +159,21 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		if (refreshing) loadMainStatus();
-		currentRequest=new GetStatusContext(mainStatus.id)
+		if(preview && replyTo==null){
+			result=new StatusContext();
+			result.descendants=Collections.emptyList();
+			result.ancestors=Collections.emptyList();
+			return;
+		}
+		if(refreshing && !preview) loadMainStatus();
+		currentRequest=new GetStatusContext(preview ? replyTo.id : mainStatus.id)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(StatusContext result){
+						if(preview){
+							result.descendants=Collections.emptyList();
+							result.ancestors.add(replyTo);
+						}
 						ThreadFragment.this.result = result;
 						maybeApplyContext();
 					}

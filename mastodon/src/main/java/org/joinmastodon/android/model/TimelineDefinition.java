@@ -14,6 +14,8 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.BookmarkedStatusListFragment;
+import org.joinmastodon.android.fragments.FavoritedStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
 import org.joinmastodon.android.fragments.HomeTimelineFragment;
 import org.joinmastodon.android.fragments.ListTimelineFragment;
@@ -147,6 +149,8 @@ public class TimelineDefinition {
             case LIST -> listTitle;
             case HASHTAG -> hashtagName;
             case BUBBLE -> ctx.getString(R.string.sk_timeline_bubble);
+			case BOOKMARKS -> ctx.getString(R.string.bookmarks);
+			case FAVORITES -> ctx.getString(R.string.your_favorites);
             case CUSTOM_LOCAL_TIMELINE -> domain;
         };
     }
@@ -161,6 +165,8 @@ public class TimelineDefinition {
             case HASHTAG -> Icon.HASHTAG;
             case CUSTOM_LOCAL_TIMELINE -> Icon.CUSTOM_LOCAL_TIMELINE;
             case BUBBLE -> Icon.BUBBLE;
+			case BOOKMARKS -> Icon.BOOKMARKS;
+			case FAVORITES -> Icon.FAVORITES;
         };
     }
 
@@ -174,6 +180,8 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> new NotificationsListFragment();
             case BUBBLE -> new BubbleTimelineFragment();
             case CUSTOM_LOCAL_TIMELINE -> new CustomLocalTimelineFragment();
+			case BOOKMARKS -> new BookmarkedStatusListFragment();
+			case FAVORITES -> new FavoritedStatusListFragment();
         };
     }
 
@@ -244,7 +252,19 @@ public class TimelineDefinition {
         return args;
     }
 
-    public enum TimelineType { HOME, LOCAL, FEDERATED, POST_NOTIFICATIONS, LIST, HASHTAG, CUSTOM_LOCAL_TIMELINE, BUBBLE }
+    public enum TimelineType {
+		HOME,
+		LOCAL,
+		FEDERATED,
+		POST_NOTIFICATIONS,
+		LIST,
+		HASHTAG,
+		BUBBLE,
+
+		// not really timelines, but some people want it, so,,
+		BOOKMARKS,
+		FAVORITES
+	}
 
     public enum Icon {
         HEART(R.drawable.ic_fluent_heart_24_regular, R.string.sk_icon_heart),
@@ -309,6 +329,13 @@ public class TimelineDefinition {
         DOCTOR(R.drawable.ic_fluent_doctor_24_regular, R.string.sk_icon_doctor),
         DIAMOND(R.drawable.ic_fluent_premium_24_regular, R.string.sk_icon_diamond),
         UMBRELLA(R.drawable.ic_fluent_umbrella_24_regular, R.string.sk_icon_umbrella),
+		WATER(R.drawable.ic_fluent_water_24_regular, R.string.sk_icon_water),
+		SUN(R.drawable.ic_fluent_weather_sunny_24_regular, R.string.sk_icon_sun),
+		SUNSET(R.drawable.ic_fluent_weather_sunny_low_24_regular, R.string.sk_icon_sunset),
+		CLOUD(R.drawable.ic_fluent_cloud_24_regular, R.string.sk_icon_cloud),
+		THUNDERSTORM(R.drawable.ic_fluent_weather_thunderstorm_24_regular, R.string.sk_icon_thunderstorm),
+		RAIN(R.drawable.ic_fluent_weather_rain_24_regular, R.string.sk_icon_rain),
+		SNOWFLAKE(R.drawable.ic_fluent_weather_snowflake_24_regular, R.string.sk_icon_snowflake),
 
         HOME(R.drawable.ic_fluent_home_24_regular, R.string.sk_timeline_home, true),
         LOCAL(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
@@ -318,7 +345,9 @@ public class TimelineDefinition {
         EXCLUSIVE_LIST(R.drawable.ic_fluent_rss_24_regular, R.string.sk_exclusive_list, true),
         HASHTAG(R.drawable.ic_fluent_number_symbol_24_regular, R.string.sk_hashtag, true),
         CUSTOM_LOCAL_TIMELINE(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
-        BUBBLE(R.drawable.ic_fluent_circle_24_regular, R.string.sk_timeline_bubble, true);
+        BUBBLE(R.drawable.ic_fluent_circle_24_regular, R.string.sk_timeline_bubble, true),
+		BOOKMARKS(R.drawable.ic_fluent_bookmark_multiple_24_regular, R.string.bookmarks, true),
+		FAVORITES(R.drawable.ic_fluent_star_24_regular, R.string.your_favorites, true);
 
         public final int iconRes, nameRes;
         public final boolean hidden;
@@ -338,6 +367,8 @@ public class TimelineDefinition {
     public static final TimelineDefinition LOCAL_TIMELINE = new TimelineDefinition(TimelineType.LOCAL);
     public static final TimelineDefinition FEDERATED_TIMELINE = new TimelineDefinition(TimelineType.FEDERATED);
     public static final TimelineDefinition POSTS_TIMELINE = new TimelineDefinition(TimelineType.POST_NOTIFICATIONS);
+	public static final TimelineDefinition BOOKMARKS_TIMELINE = new TimelineDefinition(TimelineType.BOOKMARKS);
+	public static final TimelineDefinition FAVORITES_TIMELINE = new TimelineDefinition(TimelineType.FAVORITES);
     public static final TimelineDefinition BUBBLE_TIMELINE = new TimelineDefinition(TimelineType.BUBBLE) {
         @Override
         public boolean isCompatible(AccountSession session) {
@@ -382,6 +413,8 @@ public class TimelineDefinition {
             LOCAL_TIMELINE,
             FEDERATED_TIMELINE,
             POSTS_TIMELINE,
-            BUBBLE_TIMELINE
+            BUBBLE_TIMELINE,
+			BOOKMARKS_TIMELINE,
+			FAVORITES_TIMELINE
     );
 }

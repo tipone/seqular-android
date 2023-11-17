@@ -415,4 +415,24 @@
     <string name="sk_settings_default_visibility">Усталена видимість дописів</string>
     <string name="sk_settings_lock_account">Затверджувати нових підписників уручну</string>
     <string name="sk_timeline_cache_cleared">Кеш домашньої стрічки очищено</string>
+    <string name="sk_button_mutuals">Друзі</string>
+    <string name="sk_icon_snowflake">Сніжинка</string>
+    <string name="sk_private_note_confirm">Підтвердити зміни</string>
+    <string name="sk_private_note_update_failed">Не вдалося зберегти нотатку</string>
+    <string name="sk_icon_cloud">Хмара</string>
+    <string name="sk_delete_note">Видалити нотатку</string>
+    <string name="sk_icon_sunset">Захід сонця</string>
+    <string name="sk_private_note_hint">Додати нотатку для себе про цей профіль</string>
+    <string name="sk_icon_water">Вода</string>
+    <string name="sk_icon_sun">Сонце</string>
+    <string name="sk_add_note">Додати нотатку</string>
+    <string name="sk_icon_rain">Дощ</string>
+    <string name="sk_icon_thunderstorm">Гроза</string>
+    <string name="sk_private_note_confirm_delete">Видалити нотатку про %s\?</string>
+    <string name="sk_confirm_changes">Підтвердити зміни</string>
+    <string name="sk_settings_crash_log_unavailable">Немає… поки що</string>
+    <string name="sk_crash_log_copied">Журнал збоїв скопійовано</string>
+    <string name="sk_settings_copy_crash_log">Копіювати останній журнал збоїв</string>
+    <string name="sk_open_post_preview">Попередній перегляд допису</string>
+    <string name="sk_post_preview">Попередній перегляд</string>
 </resources>

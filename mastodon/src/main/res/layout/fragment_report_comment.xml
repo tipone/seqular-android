@@ -54,7 +54,7 @@
 				android:id="@+id/forward_report"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
-				android:layout_marginTop="20dp"
+				android:layout_marginTop="8dp"
 				android:paddingHorizontal="16dp"
 				android:paddingVertical="12dp"
 				android:background="?android:selectableItemBackground">

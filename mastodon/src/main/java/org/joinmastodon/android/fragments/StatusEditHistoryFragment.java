@@ -12,6 +12,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
+import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -86,7 +87,8 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 				EnumSet<StatusEditChangeType> changes=EnumSet.noneOf(StatusEditChangeType.class);
 				Status prev=data.get(idx+1);
 
-				if(!Objects.equals(s.content, prev.content)){
+				// if only formatting was changed, don't even try to create a diff text
+				if(!Objects.equals(HtmlParser.text(s.content), HtmlParser.text(prev.content))){
 					changes.add(StatusEditChangeType.TEXT_CHANGED);
 					//update status content to display a diffs
 					s.content=createDiffText(prev.content, s.content);
@@ -157,12 +159,6 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState){
-		super.onViewCreated(view, savedInstanceState);
-		list.addItemDecoration(new InsetStatusItemDecoration(this));
-	}
-
-	@Override
 	public boolean isItemEnabled(String id){
 		return false;
 	}
@@ -178,24 +174,24 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 	}
 
 	private String createDiffText(String original, String modified) {
-		diff_match_patch dmp = new diff_match_patch();
-		LinkedList<diff_match_patch.Diff> diffs = dmp.diff_main(original, modified);
+		diff_match_patch dmp=new diff_match_patch();
+		LinkedList<diff_match_patch.Diff> diffs=dmp.diff_main(original, modified);
 		dmp.diff_cleanupSemantic(diffs);
 
-		StringBuilder stringBuilder = new StringBuilder();
-		for(diff_match_patch.Diff diff: diffs){
+		StringBuilder stringBuilder=new StringBuilder();
+		for(diff_match_patch.Diff diff : diffs){
 			switch(diff.operation){
-				case DELETE -> {
-					stringBuilder.append("<edit_diff_removed>");
+				case DELETE->{
+					stringBuilder.append("<edit-diff-delete>");
 					stringBuilder.append(diff.text);
-					stringBuilder.append("</edit_diff_removed>");
+					stringBuilder.append("</edit-diff-delete>");
 				}
-				case INSERT -> {
-					stringBuilder.append("<edit_diff_added>");
+				case INSERT->{
+					stringBuilder.append("<edit-diff-insert>");
 					stringBuilder.append(diff.text);
-					stringBuilder.append("</edit_diff_added>");
+					stringBuilder.append("</edit-diff-insert>");
 				}
-				default -> stringBuilder.append(diff.text);
+				default->stringBuilder.append(diff.text);
 			}
 		}
 		return stringBuilder.toString();

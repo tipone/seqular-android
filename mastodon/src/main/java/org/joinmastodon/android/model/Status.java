@@ -6,6 +6,7 @@ import static org.joinmastodon.android.api.MastodonAPIController.gsonWithoutDese
 import androidx.annotation.Nullable;
 
 import android.text.TextUtils;
+import android.util.Pair;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
@@ -101,6 +102,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public transient TranslationState translationState=TranslationState.HIDDEN;
 	public transient Translation translation;
 	public transient boolean fromStatusCreated;
+	public transient boolean preview;
 
 	public Status(){}
 
@@ -128,6 +130,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		if(filtered!=null)
 			for(FilterResult fr:filtered)
 				fr.postprocess();
+		if(quote!=null)
+			quote.postprocess();
 
 		spoilerRevealed=!hasSpoiler();
 		if(!spoilerRevealed) sensitive=true;
@@ -226,16 +230,17 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 
 	public static final Pattern BOTTOM_TEXT_PATTERN = Pattern.compile("(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️)(?:\uD83D\uDC49\uD83D\uDC48(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️))*\uD83D\uDC49\uD83D\uDC48");
 	public boolean isEligibleForTranslation(AccountSession session){
-		Instance instanceInfo = AccountSessionManager.getInstance().getInstanceInfo(session.domain);
-		boolean translateEnabled = instanceInfo != null &&
-				instanceInfo.v2 != null && instanceInfo.v2.configuration.translation != null &&
-				instanceInfo.v2.configuration.translation.enabled;
+		Instance instanceInfo=AccountSessionManager.getInstance().getInstanceInfo(session.domain);
+		boolean translateEnabled=instanceInfo!=null && (
+				(instanceInfo.v2!=null && instanceInfo.v2.configuration.translation!=null && instanceInfo.v2.configuration.translation.enabled) ||
+				(instanceInfo.isAkkoma() && instanceInfo.hasFeature(Instance.Feature.MACHINE_TRANSLATION))
+		);
 
 		try {
-			String bottomText = BOTTOM_TEXT_PATTERN.matcher(getStrippedText()).find()
+			Pair<String, List<String>> decoded=BOTTOM_TEXT_PATTERN.matcher(getStrippedText()).find()
 					? new StatusTextEncoder(Bottom::decode).decode(getStrippedText(), BOTTOM_TEXT_PATTERN)
 					: null;
-			if(bottomText==null || bottomText.length()==0 || bottomText.equals("\u0005")) bottomText=null;
+			String bottomText=decoded==null || decoded.second.stream().allMatch(s->s.trim().isEmpty()) ? null : decoded.first;
 			if(bottomText!=null){
 				translation=new Translation();
 				translation.content=bottomText;
@@ -272,7 +277,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		s.visibility=StatusPrivacy.PUBLIC;
 		s.reactions=List.of();
 		s.mentions=List.of();
-		s.tags =List.of();
+		s.tags=List.of();
 		s.emojis=List.of();
 		s.filtered=List.of();
 		return s;

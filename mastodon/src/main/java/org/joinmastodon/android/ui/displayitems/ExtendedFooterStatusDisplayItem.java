@@ -37,7 +37,6 @@ import androidx.annotation.PluralsRes;
 import me.grishka.appkit.Nav;
 
 public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
-	public final Status status;
 	public final String accountID;
 
 	private static final DateTimeFormatter TIME_FORMATTER=DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT);
@@ -131,6 +130,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void startAccountListFragment(Class<? extends StatusRelatedAccountListFragment> cls){
+			if(item.status.preview) return;
 			Bundle args=new Bundle();
 			args.putString("account", item.parentFragment.getAccountID());
 			args.putParcelable("status", Parcels.wrap(item.status));
@@ -138,6 +138,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void startEditHistoryFragment(){
+			if(item.status.preview) return;
 			Bundle args=new Bundle();
 			args.putString("account", item.parentFragment.getAccountID());
 			args.putString("id", item.status.id);

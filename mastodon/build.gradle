@@ -81,7 +81,6 @@ android {
 			versionNameSuffix '-play'
 		}
 		githubRelease { initWith release }
-		playRelease { initWith release }
 		fdroidRelease { initWith release }
 	}
 	compileOptions {
