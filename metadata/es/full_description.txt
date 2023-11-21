@@ -1,16 +1,13 @@
-Megalodon es una versión modificada de la <a href="https://github.com/mastodon/mastodon-android">aplicación oficial de Mastodon para Android</a> con muchas características que faltan en la aplicación oficial, como la federada Timeline , publicar publicaciones no listadas y la capacidad de ver descripciones de imágenes.
+Megalodon es una versión modificada del<a href="https://github.com/mastodon/mastodon-android">aplicación oficial de Mastodon para Android</a>agregando características importantes que faltan en la aplicación oficial, como la línea de tiempo federada, publicaciones no listadas y un visor de descripción de imágenes.
 
-<b>Las funciones más importantes</b>
+<b>Características clave</b>
 
-- <b>Publicación no listada</b>: publique públicamente sin mostrar la publicación en tendencias, hashtags o cronologías públicas.
-- <b>Línea de tiempo federada</b>: todas las publicaciones públicas de todos los demás vecindarios de Fediverse a los que está conectada su instancia de inicio.
-- <b>Cronologías personalizadas</b>: ¡Fija cualquier lista o hashtag a tu pestaña de Inicio de Megalodon para deslizarte entre tus temas y gente favorita!
-- <b>Borradores y publicaciones programadas</b>: permite preparar una publicación y programarla para que se envíe automáticamente a una hora específica.
-- <b>Fijar publicaciones</b>: fije sus publicaciones más importantes a su perfil y vea lo que otros usuarios han fijado en la pestaña "Fijado".
-- <b>Seguir Hashtags</b>: Trae nuevas publicaciones de hashtags específicos directamente a su línea de tiempo de inicio.
-- <b>Responder solicitudes de seguimiento</b>: las solicitudes de seguimiento ahora se pueden aceptar o rechazar directamente a través de la lista de notificaciones o mediante la lista de solicitudes de seguimiento.
-- <b>Eliminar publicaciones y crear nuevas</b>: la característica popular que hizo posible editar publicaciones sin editarlas realmente.
-- <b>Selector de idioma</b>: elija fácilmente el idioma de cada una de sus publicaciones para que puedan filtrarse y traducirse correctamente.
-- <b>Traducción</b>: las publicaciones ahora se pueden traducir directamente a Megalodon, pero solo si su instancia lo admite.
-- <b>Indicador de visibilidad</b>: al abrir o responder a una publicación, un ícono indica la visibilidad de la publicación.
-- <b>Esquemas de color</b>: si no te gusta el rosa predeterminado (el tiburón te juzga en silencio), los esquemas de color de Moshidon pueden ayudarte.
+- <b>Publicación no listada</b>: publique públicamente sin que su publicación aparezca en tendencias, hashtags o líneas de tiempo públicas.
+-<b>Línea de tiempo federada</b>: vea todas las publicaciones públicas de personas en todos los demás vecindarios de Fediverse a los que esté conectada su instancia de inicio.
+-<b>Cronogramas personalizados</b>: ¡Fija cualquier lista o hashtag en la pestaña de inicio de tu Megalodon para simplemente deslizarte entre tus temas y personas favoritos!
+-<b>Borradores y publicaciones programadas</b>: Permite preparar una publicación y programarla para enviarla automáticamente a una hora específica.
+-<b>Respondiendo a las solicitudes de seguimiento</b>: Acepte o rechace solicitudes de seguimiento de sus notificaciones o de la lista dedicada de solicitudes de seguimiento.
+-<b>Eliminar y volver a redactar</b>: La característica muy querida que hizo posible la edición sin una función de edición real.
+-<b>Indicador de visibilidad</b>: Al abrir o responder a una publicación, se mostrará un ícono útil que indica la visibilidad de la publicación.
+-<b>Temas de color</b>: Si no te gusta el color rosa predeterminado (el tiburón te juzga en silencio), los temas de color de Moshidon te ayudarán.
+-<b>Mejor compatibilidad</b>: Para aquellos usuarios que están en servidores Glitch o Akkoma, Megalodon proporciona varias características y mejoras adicionales.
