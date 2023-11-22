@@ -138,8 +138,8 @@ public class AccountLocalPreferences{
 
 	public enum ColorPreference{
 		MATERIAL3,
-		PINK,
 		PURPLE,
+		PINK,
 		GREEN,
 		BLUE,
 		BROWN,
