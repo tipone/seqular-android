@@ -405,4 +405,22 @@
     <string name="sk_timeline_cache_cleared">已清除主页时间线缓存</string>
     <string name="sk_settings_clear_timeline_cache">清除主页时间线缓存</string>
     <string name="sk_button_mutuals">互关</string>
+    <string name="sk_icon_snowflake">雪花</string>
+    <string name="sk_private_note_update_failed">无法保存备注</string>
+    <string name="sk_icon_cloud">云</string>
+    <string name="sk_delete_note">删除个人备注</string>
+    <string name="sk_icon_sunset">日落</string>
+    <string name="sk_confirm_changes">确认更改</string>
+    <string name="sk_settings_crash_log_unavailable">尚无可用…</string>
+    <string name="sk_private_note_hint">添加关于此个人资料的个人备注</string>
+    <string name="sk_icon_water">水</string>
+    <string name="sk_icon_sun">太阳</string>
+    <string name="sk_crash_log_copied">已复制崩溃日志</string>
+    <string name="sk_add_note">添加个人备注</string>
+    <string name="sk_settings_copy_crash_log">复制最新的崩溃日志</string>
+    <string name="sk_open_post_preview">预览嘟文</string>
+    <string name="sk_icon_rain">雨</string>
+    <string name="sk_icon_thunderstorm">雷暴</string>
+    <string name="sk_post_preview">预览</string>
+    <string name="sk_private_note_confirm_delete">删除关于 %s 的个人备注？</string>
 </resources>
