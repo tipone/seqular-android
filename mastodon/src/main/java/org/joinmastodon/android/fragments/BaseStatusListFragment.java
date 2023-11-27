@@ -516,7 +516,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onPollOptionClick(PollOptionStatusDisplayItem.Holder holder){
 		Poll poll=holder.getItem().poll;
 		Poll.Option option=holder.getItem().option;
-		if(poll.multiple || GlobalUserPreferences.voteButtonForSingleChoice){
+		// MEGALODON: always show vote button
+//		if(poll.multiple){
 			if(poll.selectedOptions==null)
 				poll.selectedOptions=new ArrayList<>();
 			boolean optionContained=poll.selectedOptions.contains(option);
@@ -531,7 +532,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			for(int i=0;i<list.getChildCount();i++){
 				RecyclerView.ViewHolder vh=list.getChildViewHolder(list.getChildAt(i));
 				if(!poll.multiple && vh instanceof PollOptionStatusDisplayItem.Holder item){
-					if (item != holder) item.itemView.setSelected(false);
+					if(item!=holder) item.itemView.setSelected(false);
 				}
 				if(vh instanceof PollFooterStatusDisplayItem.Holder footer){
 					if(footer.getItemID().equals(holder.getItemID())){
@@ -540,14 +541,22 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					}
 				}
 			}
-		}else{
-			submitPollVote(holder.getItemID(), poll.id, Collections.singletonList(poll.options.indexOf(option)));
-		}
+//		}else{
+//			submitPollVote(holder.getItemID(), poll.id, Collections.singletonList(poll.options.indexOf(option)));
+//		}
 	}
 
 	public void onPollVoteButtonClick(PollFooterStatusDisplayItem.Holder holder){
 		Poll poll=holder.getItem().poll;
 		submitPollVote(holder.getItemID(), poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
+	}
+
+	public void onPollViewResultsButtonClick(PollFooterStatusDisplayItem.Holder holder, boolean shown){
+			for(int i=0;i<list.getChildCount();i++){
+				if(list.getChildViewHolder(list.getChildAt(i)) instanceof PollOptionStatusDisplayItem.Holder item && item.getItemID().equals(holder.getItemID())){
+					item.showResults(shown);
+				}
+			}
 	}
 
 	protected void submitPollVote(String parentID, String pollID, List<Integer> choices){
