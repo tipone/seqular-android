@@ -1437,8 +1437,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 				.withMinute(0);
 		new DatePickerDialog(getActivity(), (datePicker, year, arrayMonth, dayOfMonth) -> {
 			new TimePickerDialog(getActivity(), (timePicker, hour, minute) -> {
-				updateScheduledAt(LocalDateTime.of(year, arrayMonth + 1, dayOfMonth, hour, minute)
-						.toInstant(OffsetDateTime.now().getOffset()));
+				LocalDateTime at=LocalDateTime.of(year, arrayMonth + 1, dayOfMonth, hour, minute);
+				updateScheduledAt(at.toInstant(ZoneId.systemDefault().getRules().getOffset(at)));
 			}, soon.getHour(), soon.getMinute(), DateFormat.is24HourFormat(getActivity())).show();
 		}, soon.getYear(), soon.getMonthValue() - 1, soon.getDayOfMonth()).show();
 	}
