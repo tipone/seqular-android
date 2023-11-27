@@ -28,7 +28,6 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
-import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
@@ -303,7 +302,7 @@ public abstract class StatusDisplayItem{
 		if(statusForContent.poll!=null){
 			buildPollItems(parentID, fragment, statusForContent.poll, status, contentItems);
 		}
-		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty() && statusForContent.quote==null){
+		if(statusForContent.card!=null && statusForContent.mediaAttachments.isEmpty() && statusForContent.quote==null && !statusForContent.card.isHashtagUrl(statusForContent.url)){
 			contentItems.add(new LinkCardStatusDisplayItem(parentID, fragment, statusForContent, (flags & FLAG_NO_MEDIA_PREVIEW)==0));
 		}
 		if(statusForContent.quote!=null && !(parentObject instanceof Notification)){
