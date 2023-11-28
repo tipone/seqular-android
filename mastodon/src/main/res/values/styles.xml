@@ -322,7 +322,7 @@
 		<item name="android:showText">false</item>
 	</style>
 
-	<style name="alert_title">
+	<style name="alert_title" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:textSize">24sp</item>
 		<item name="android:minHeight">38dp</item>
 		<item name="android:gravity">center_vertical</item>
@@ -331,45 +331,45 @@
 		<item name="android:textColor">?colorM3OnSurface</item>
 	</style>
 
-	<style name="sheet_title">
+	<style name="sheet_title" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:textSize">20sp</item>
 		<item name="android:gravity">center_vertical</item>
 	</style>
 
-	<style name="m3_body_large">
+	<style name="m3_body_large" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:textSize">16sp</item>
-		<item name="android:lineSpacingExtra">5dp</item>
+		<item name="android:lineSpacingExtra">5sp</item>
 		<item name="android:lineHeight" tools:ignore="NewApi">24dp</item>
 	</style>
 
-	<style name="m3_body_medium">
+	<style name="m3_body_medium" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:textSize">14sp</item>
-		<item name="android:lineSpacingExtra">4dp</item>
+		<item name="android:lineSpacingExtra">4sp</item>
 	</style>
 
-	<style name="m3_body_small">
+	<style name="m3_body_small" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:textSize">12sp</item>
-		<item name="android:lineSpacingExtra">2dp</item>
+		<item name="android:lineSpacingExtra">2sp</item>
 	</style>
 
-	<style name="m3_title_medium">
+	<style name="m3_title_medium" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:fontFamily">sans-serif-medium</item>
 		<item name="android:textSize">16sp</item>
-		<item name="android:lineSpacingExtra">5dp</item>
+		<item name="android:lineSpacingExtra">5sp</item>
 	</style>
 
-	<style name="m3_title_small">
+	<style name="m3_title_small" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:fontFamily">sans-serif-medium</item>
 		<item name="android:textSize">14sp</item>
 	</style>
 
-	<style name="m3_label_small">
+	<style name="m3_label_small" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:fontFamily">sans-serif-medium</item>
 		<item name="android:textSize">11sp</item>
-		<item name="android:lineSpacingExtra">3dp</item>
+		<item name="android:lineSpacingExtra">3sp</item>
 	</style>
 
-	<style name="m3_label_medium">
+	<style name="m3_label_medium" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:fontFamily">sans-serif-medium</item>
 		<item name="android:textSize">12sp</item>
 		<item name="android:lineSpacingMultiplier">1.14</item>
@@ -378,12 +378,12 @@
 		<item name="android:lineHeight" tools:ignore="NewApi">16dp</item>
 	</style>
 
-	<style name="m3_label_large">
+	<style name="m3_label_large" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:fontFamily">sans-serif-medium</item>
 		<item name="android:textSize">14sp</item>
 	</style>
 
-	<style name="m3_title_large">
+	<style name="m3_title_large" parent="android:TextAppearance.DeviceDefault">
 		<item name="android:fontFamily">sans-serif-medium</item>
 		<item name="android:textSize">22sp</item>
 	</style>
@@ -407,7 +407,7 @@
 
 	<style name="m3_headline_medium">
 		<item name="android:textSize">28sp</item>
-		<item name="android:lineSpacingExtra">3dp</item>
+		<item name="android:lineSpacingExtra">3sp</item>
 	</style>
 
 	<style name="window_fade_out">
