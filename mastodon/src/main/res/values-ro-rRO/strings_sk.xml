@@ -427,4 +427,7 @@
     <string name="sk_icon_thunderstorm">Furtună</string>
     <string name="sk_post_preview">Previzualizare</string>
     <string name="sk_private_note_confirm_delete">Ștergeți nota personală despre %s\?</string>
+    <string name="sk_poll_hide_results">Ascundeți rezultatele</string>
+    <string name="sk_poll_multiple_choice">Alegeri multiple</string>
+    <string name="sk_poll_show_results">Afișați rezultatele</string>
 </resources>
