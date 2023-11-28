@@ -434,4 +434,7 @@
     <string name="sk_settings_copy_crash_log">Копіювати останній журнал збоїв</string>
     <string name="sk_open_post_preview">Попередній перегляд допису</string>
     <string name="sk_post_preview">Попередній перегляд</string>
+    <string name="sk_poll_hide_results">Сховати результати</string>
+    <string name="sk_poll_multiple_choice">Кілька варіантів</string>
+    <string name="sk_poll_show_results">Показати результати</string>
 </resources>
