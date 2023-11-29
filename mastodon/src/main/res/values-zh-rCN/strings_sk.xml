@@ -423,4 +423,7 @@
     <string name="sk_icon_thunderstorm">雷暴</string>
     <string name="sk_post_preview">预览</string>
     <string name="sk_private_note_confirm_delete">删除关于 %s 的个人备注？</string>
+    <string name="sk_poll_hide_results">隐藏结果</string>
+    <string name="sk_poll_multiple_choice">多选</string>
+    <string name="sk_poll_show_results">显示结果</string>
 </resources>
