@@ -431,4 +431,7 @@
     <string name="sk_settings_copy_crash_log">Copiar el último registro de fallos</string>
     <string name="sk_open_post_preview">Vista previa</string>
     <string name="sk_post_preview">Previsualizar</string>
+    <string name="sk_poll_hide_results">Ocultar los resultados</string>
+    <string name="sk_poll_multiple_choice">Varias opciones</string>
+    <string name="sk_poll_show_results">Resultados</string>
 </resources>
