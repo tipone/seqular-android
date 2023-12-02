@@ -214,4 +214,6 @@
     <string name="sk_icon_clapper_board">場記板</string>
     <string name="sk_mark_as_read">標為已讀取</string>
     <string name="sk_settings_translate_only_opened">只顯示打開過的嘟文</string>
+    <string name="sk_poll_hide_results">隱藏結果</string>
+    <string name="sk_poll_show_results">顯示結果</string>
 </resources>
