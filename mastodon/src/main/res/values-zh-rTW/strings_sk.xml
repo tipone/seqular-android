@@ -216,4 +216,8 @@
     <string name="sk_settings_translate_only_opened">只顯示打開過的嘟文</string>
     <string name="sk_poll_hide_results">隱藏結果</string>
     <string name="sk_poll_show_results">顯示結果</string>
+    <string name="sk_settings_about_instance">關於站臺</string>
+    <string name="sk_spoiler_show">顯示內容</string>
+    <string name="sk_do_remove_follower">移除</string>
+    <string name="sk_changelog">版本紀錄</string>
 </resources>
