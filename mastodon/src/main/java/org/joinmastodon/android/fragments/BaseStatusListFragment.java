@@ -1027,6 +1027,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			media.rebind();
 		}
 
+		PreviewlessMediaGridStatusDisplayItem.Holder previewLessMedia=findHolderOfType(itemID, PreviewlessMediaGridStatusDisplayItem.Holder.class);
+		if (previewLessMedia!=null) {
+			previewLessMedia.rebind();
+		}
+
 		for(int i=0;i<list.getChildCount();i++){
 			if(list.getChildViewHolder(list.getChildAt(i)) instanceof PollOptionStatusDisplayItem.Holder item){
 				item.rebind();
