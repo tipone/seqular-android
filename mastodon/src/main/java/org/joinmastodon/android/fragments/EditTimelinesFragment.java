@@ -378,7 +378,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 					String name=editText.getText().toString().trim();
 
 					String mainHashtag=tagMain.getText().toString().trim();
-					if(item.getType()==TimelineDefinition.TimelineType.HASHTAG){
+					if(item != null && item.getType()==TimelineDefinition.TimelineType.HASHTAG){
 						tagsAny.chipifyAllUnterminatedTokens();
 						tagsAll.chipifyAllUnterminatedTokens();
 						tagsNone.chipifyAllUnterminatedTokens();
@@ -397,7 +397,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 					TimelineDefinition.Icon icon=TimelineDefinition.Icon.values()[(int) btn.getTag()];
 					tl.setIcon(icon);
 					tl.setTitle(name);
-					if(item.getType()==TimelineDefinition.TimelineType.HASHTAG){
+					if(item == null || item.getType()==TimelineDefinition.TimelineType.HASHTAG){
 						tl.setTagOptions(
 								mainHashtag,
 								tagsAny.getChipValues(),
