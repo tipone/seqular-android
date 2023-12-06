@@ -854,7 +854,7 @@ public class UiUtils {
 						.exec(accountID);
 			};
 			if(relationship.following && GlobalUserPreferences.confirmUnfollow){
-				showConfirmationAlert(activity, null, activity.getString(R.string.unfollow_confirmation, account.getDisplayUsername()), activity.getString(R.string.unfollow), R.drawable.ic_fluent_person_delete_24_regular, action);
+				showConfirmationAlert(activity, activity.getString(R.string.unfollow), activity.getString(R.string.unfollow_confirmation, account.getDisplayUsername()), activity.getString(R.string.unfollow), R.drawable.ic_fluent_person_delete_24_regular, action);
 			}else{
 				action.run();
 			}
