@@ -16,6 +16,8 @@
 
 <a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="50" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
 &nbsp;
+<a href="https://f-droid.org/pt_BR/packages/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a>
+&nbsp;
 <a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
 ## Help out the project by donating at: https://github.com/sponsors/LucasGGamerM!
