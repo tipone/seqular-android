@@ -320,7 +320,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 					// ancestoring neighbor
 					Optional.ofNullable(index > 0 ? ancestry.get(index - 1) : null)
 							.filter(ancestor -> Optional.ofNullable(ancestor.descendantNeighbor)
-									.map(ancestorsDescendant -> ancestorsDescendant.id.equals(current.id))
+									.map(ancestorsDescendant -> current.id.equals(ancestorsDescendant.id))
 									.orElse(false))
 							.map(a -> a.status)
 							.orElse(null)
