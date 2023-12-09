@@ -92,4 +92,5 @@
     <string name="mo_instance_registration_open">Aberto</string>
     <string name="mo_duration_days_3">3 días</string>
     <string name="mo_setting_remote_follower_summary">Mostrar seguidoras doutras instancias</string>
+    <string name="mo_notification_filter_reset">Restablecer por defecto</string>
 </resources>
