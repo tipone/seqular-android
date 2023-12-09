@@ -91,4 +91,5 @@
     <string name="mo_relocate_publish_button">Reloki aifŝi butonon</string>
     <string name="mo_duration_days_3">3 tagoj</string>
     <string name="mo_setting_remote_follower_summary">Montri sekvantojn de aliaj instancoj</string>
+    <string name="mo_notification_filter_reset">Restarigi al defaŭlta</string>
 </resources>
