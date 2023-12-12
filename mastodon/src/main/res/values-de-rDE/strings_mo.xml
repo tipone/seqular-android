@@ -99,4 +99,5 @@
     <string name="mo_unmuting">Stummschaltung aufheben…</string>
     <string name="mo_confirm_to_mute_hashtag">Sind Sie sicher, dass Sie diesen Hashtag stummschalten möchten\?</string>
     <string name="mo_filter_notifications">Benachrichtigungen filtern</string>
+    <string name="mo_notification_filter_reset">Auf Standardwerte zurücksetzen</string>
 </resources>
