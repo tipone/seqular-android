@@ -93,4 +93,5 @@
     <string name="mo_double_tap_to_search">Apăsați dublu pentru a deschide căutarea</string>
     <string name="mo_confirm_to_mute_hashtag">Sunteți sigur că doriți să amuțiți acest hashtag\?</string>
     <string name="mo_filter_notifications">Filtrați notificările</string>
+    <string name="mo_notification_filter_reset">Resetați la valorile implicite</string>
 </resources>
