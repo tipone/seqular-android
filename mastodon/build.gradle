@@ -45,27 +45,27 @@ android {
 			}
 		}
 
-		release{
-			storeFile = file("keystore/release_keystore.jks")
-			storePassword System.getenv("RELEASE_SIGNING_STORE_PASSWORD")
-			if (storePassword == null) {
-				Properties properties = new Properties()
-				properties.load(project.rootProject.file('local.properties').newDataInputStream())
-				storePassword = properties.getProperty('RELEASE_SIGNING_STORE_PASSWORD')
-			}
-			keyAlias System.getenv("RELEASE_SIGNING_KEY_ALIAS")
-			if (keyAlias == null) {
-				Properties properties = new Properties()
-				properties.load(project.rootProject.file('local.properties').newDataInputStream())
-				keyAlias = properties.getProperty('RELEASE_SIGNING_KEY_ALIAS')
-			}
-			keyPassword System.getenv("RELEASE_SIGNING_KEY_PASSWORD")
-			if (keyPassword == null) {
-				Properties properties = new Properties()
-				properties.load(project.rootProject.file('local.properties').newDataInputStream())
-				keyPassword = properties.getProperty('RELEASE_SIGNING_KEY_PASSWORD')
-			}
-		}
+//		release{
+//			storeFile = file("keystore/release_keystore.jks")
+//			storePassword System.getenv("RELEASE_SIGNING_STORE_PASSWORD")
+//			if (storePassword == null) {
+//				Properties properties = new Properties()
+//				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//				storePassword = properties.getProperty('RELEASE_SIGNING_STORE_PASSWORD')
+//			}
+//			keyAlias System.getenv("RELEASE_SIGNING_KEY_ALIAS")
+//			if (keyAlias == null) {
+//				Properties properties = new Properties()
+//				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//				keyAlias = properties.getProperty('RELEASE_SIGNING_KEY_ALIAS')
+//			}
+//			keyPassword System.getenv("RELEASE_SIGNING_KEY_PASSWORD")
+//			if (keyPassword == null) {
+//				Properties properties = new Properties()
+//				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//				keyPassword = properties.getProperty('RELEASE_SIGNING_KEY_PASSWORD')
+//			}
+//		}
 	}
 
 	buildTypes {
@@ -105,7 +105,7 @@ android {
 		githubRelease { initWith release }
 		fdroidRelease {
 			initWith release
-			signingConfig signingConfigs.release
+//			signingConfig signingConfigs.release
 		}
 	}
 	compileOptions {
