@@ -375,7 +375,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		@Override
 		public boolean onLongClick(){
-			if(!isRecentEmojiCategory) return false;
+			if(!isRecentEmojiCategory || requests.size() < getAbsoluteAdapterPosition()-1 || 0 > getAbsoluteAdapterPosition()-1) return false;
 			requests.remove(getAbsoluteAdapterPosition()-1);
 			getBindingAdapter().notifyItemRemoved(getAbsoluteAdapterPosition());
 			getBindingAdapter().notifyItemChanged(0);
