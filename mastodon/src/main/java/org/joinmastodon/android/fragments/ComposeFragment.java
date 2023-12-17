@@ -1293,7 +1293,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 					.setPositiveButton(R.string.ok, (a, b)->{})
 					.show();
 			handlePublishError(null);
-			publishButton.setEnabled(false);
+			(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setEnabled(false);
 		}
 
 		if (replyTo == null) updateRecentLanguages();
@@ -1320,7 +1320,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		result.preview=true;
 		wm.removeView(sendingOverlay);
 		sendingOverlay=null;
-		publishButton.setEnabled(true);
+		(GlobalUserPreferences.relocatePublishButton ? publishButtonRelocated : publishButton).setEnabled(true);
 		V.setVisibilityAnimated(sendProgress, View.GONE);
 		InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
 		imm.hideSoftInputFromWindow(contentView.getWindowToken(), 0);
