@@ -902,8 +902,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}else{
 			blockDomain.setVisible(false);
 		}
-		menu.findItem(R.id.edit_note).setTitle(noteWrap.getVisibility()==View.GONE && (relationship.note==null || relationship.note.isEmpty())
-				? R.string.sk_add_note : R.string.sk_delete_note);
 	}
 
 	@Override
@@ -985,26 +983,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}else if(id==R.id.save){
 			if(isInEditMode)
 				saveAndExitEditMode();
-		}else if(id==R.id.edit_note){
-			if(noteWrap.getVisibility()==View.GONE){
-				showPrivateNote();
-				UiUtils.beginLayoutTransition(scrollableContent);
-				noteEdit.requestFocus();
-				noteEdit.postDelayed(()->{
-					InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
-					imm.showSoftInput(noteEdit, 0);
-				}, 100);
-			}else if(relationship.note.isEmpty()){
-				hidePrivateNote();
-				UiUtils.beginLayoutTransition(scrollableContent);
-			}else{
-				new M3AlertDialogBuilder(getActivity())
-						.setMessage(getContext().getString(R.string.sk_private_note_confirm_delete, account.getDisplayUsername()))
-						.setPositiveButton(R.string.delete, (dlg, btn)->savePrivateNote(null))
-						.setNegativeButton(R.string.cancel, null)
-						.show();
-			}
-			invalidateOptionsMenu();
 		}
 		return true;
 	}
@@ -1030,8 +1008,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 	private void updateRelationship(){
 		if(getActivity()==null) return;
-		if(relationship.note!=null && !relationship.note.isEmpty()) showPrivateNote();
-		else hidePrivateNote();
+		showPrivateNote();
 		invalidateOptionsMenu();
 		actionButton.setVisibility(View.VISIBLE);
 		notifyButton.setVisibility(relationship.following ? View.VISIBLE : View.GONE);
