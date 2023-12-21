@@ -167,6 +167,10 @@ public abstract class StatusDisplayItem{
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus s ? s : null;
 
+		// Hide statuses that have a filter action of hide
+		if(!new StatusFilterPredicate(accountID, filterContext, FilterAction.HIDE).test(status))
+			return new ArrayList<StatusDisplayItem>() ;
+
 		HeaderStatusDisplayItem header=null;
 		boolean hideCounts=!AccountSessionManager.get(accountID).getLocalPreferences().showInteractionCounts;
 
@@ -362,10 +366,6 @@ public abstract class StatusDisplayItem{
 				item.index=i++;
 			}
 		}
-
-		// Hide statuses that have a filter action of hide
-		if(!new StatusFilterPredicate(accountID, filterContext, FilterAction.HIDE).test(status))
-			return new ArrayList<StatusDisplayItem>() ;
 
 		List<StatusDisplayItem> nonGapItems=gap!=null ? items.subList(0, items.size()-1) : items;
 		WarningFilteredStatusDisplayItem warning=applyingFilter==null ? null :
