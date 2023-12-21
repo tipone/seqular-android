@@ -239,33 +239,6 @@
 						android:maxHeight="200dp"
 						android:hint="@string/mo_personal_note"
 						tools:ignore="RtlSymmetry" />
-
-					<FrameLayout
-						android:layout_width="52dp"
-						android:layout_height="52dp"
-						android:paddingTop="8dp"
-						android:layout_gravity="end">
-
-						<ImageButton
-							android:id="@+id/note_save_btn"
-							android:layout_width="52dp"
-							android:layout_height="52dp"
-							android:visibility="invisible"
-							android:background="@drawable/bg_button_m3_text_circle"
-							android:tooltipText="@string/sk_confirm_changes"
-							android:contentDescription="@string/sk_confirm_changes"
-							android:src="@drawable/ic_fluent_checkmark_24_regular"/>
-
-						<ProgressBar
-							android:id="@+id/note_save_progress"
-							android:layout_width="wrap_content"
-							android:layout_height="wrap_content"
-							android:layout_gravity="center"
-							style="?android:progressBarStyleSmall"
-							android:indeterminate="true"
-							android:visibility="gone" />
-
-					</FrameLayout>
 				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 
 				<org.joinmastodon.android.ui.views.LinkedTextView
