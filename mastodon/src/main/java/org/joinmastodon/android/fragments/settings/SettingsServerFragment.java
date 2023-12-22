@@ -160,6 +160,8 @@ public class SettingsServerFragment extends AppKitFragment{
 			args.putString("account", accountID);
 			args.putString("domain", instance.normalizedUri);
 			Nav.go(getActivity(), CustomLocalTimelineFragment.class, args);
+		} else if (id==R.id.open_in_browser){
+			UiUtils.launchWebBrowser(getActivity(), new Uri.Builder().scheme("https").authority(instance.uri).appendPath("about").build().toString());
 		}
 		return true;
 	}
