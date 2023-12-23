@@ -865,8 +865,9 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}else{
 			blockDomain.setVisible(false);
 		}
-		menu.findItem(R.id.edit_note).setTitle(noteWrap.getVisibility()==View.GONE && (relationship.note==null || relationship.note.isEmpty())
-				? R.string.sk_add_note : R.string.sk_delete_note);
+		boolean canAddNote = noteWrap.getVisibility()==View.GONE && (relationship.note==null || relationship.note.isEmpty());
+		menu.findItem(R.id.edit_note).setTitle(canAddNote ? R.string.sk_add_note : R.string.sk_delete_note);
+		menu.findItem(R.id.edit_note).setIcon(canAddNote ? R.drawable.ic_fluent_person_note_24_regular : R.drawable.ic_fluent_person_delete_note_24_regular);
 	}
 
 	@Override
