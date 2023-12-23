@@ -648,13 +648,13 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(pinnedPostsFragment.isAdded())
 			getChildFragmentManager().putFragment(outState, "pinnedPosts", pinnedPostsFragment);
 	}
-//
-//	@Override
-//	public void onHidden(){
-//		if (relationship != null && !noteEdit.getText().toString().equals(relationship.note)){
-//			savePrivateNote(noteEdit.getText().toString());
-//		}
-//	}
+
+	@Override
+	public void onHidden(){
+		if (relationship != null && !noteEdit.getText().toString().equals(relationship.note)){
+			savePrivateNote(noteEdit.getText().toString());
+		}
+	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig){
