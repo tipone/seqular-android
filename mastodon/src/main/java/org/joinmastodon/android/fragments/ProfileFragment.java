@@ -957,7 +957,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 					InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
 					imm.showSoftInput(noteEdit, 0);
 				}, 100);
-			}else if(relationship.note.isEmpty()){
+			}else if(relationship.note.isEmpty() && noteEdit.getText().toString().isEmpty()){
 				hidePrivateNote();
 				noteEdit.clearFocus();
 				noteEdit.postDelayed(()->{
