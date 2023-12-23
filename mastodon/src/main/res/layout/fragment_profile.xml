@@ -231,12 +231,13 @@
 					<EditText
 						android:id="@+id/note_edit"
 						android:layout_width="match_parent"
+						android:minHeight="52dp"
+						android:maxHeight="200dp"
 						android:layout_height="match_parent"
 						android:layout_marginTop="8dp"
 						android:padding="16dp"
 						android:background="@null"
 						android:inputType="text|textMultiLine|textCapSentences"
-						android:maxHeight="200dp"
 						android:hint="@string/mo_personal_note"
 						tools:ignore="RtlSymmetry" />
 				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
