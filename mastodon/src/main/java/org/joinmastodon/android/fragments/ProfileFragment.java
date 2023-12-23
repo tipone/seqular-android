@@ -959,6 +959,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				}, 100);
 			}else if(relationship.note.isEmpty()){
 				hidePrivateNote();
+				noteEdit.clearFocus();
+				noteEdit.postDelayed(()->{
+					InputMethodManager imm=getActivity().getSystemService(InputMethodManager.class);
+					imm.hideSoftInputFromWindow(noteEdit.getWindowToken(), 0);
+				}, 100);
 				UiUtils.beginLayoutTransition(scrollableContent);
 			}else{
 				new M3AlertDialogBuilder(getActivity())
