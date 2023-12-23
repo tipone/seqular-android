@@ -822,7 +822,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		if(isOwnProfile){
 			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.scheduled, R.id.bookmarks, R.id.favorites);
 		}else{
-			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.edit_note, R.id.share);
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.edit_note);
 		}
 		boolean hasMultipleAccounts = AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1;
 		MenuItem openWithAccounts = menu.findItem(R.id.open_with_account);
