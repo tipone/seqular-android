@@ -70,4 +70,23 @@
     <string name="mo_setting_haptic_feedback_summary">Вибрировать при взаимодействии с постами</string>
     <string name="mo_color_palette_black_and_white">Чёрно-белая</string>
     <string name="mo_composer_behavior">Поведение экрана создания публикации</string>
+    <string name="mo_unmute_hashtag">Включение звука у хештега</string>
+    <string name="mo_show_media_preview">Показывать предварительный просмотр мультимедиа на временной ленте</string>
+    <string name="mo_settings_show_posts_without_alt">Показать сообщения с отсутствующим альтернативным текстом у медиаконтента</string>
+    <string name="mo_muted_accounts">Приглушённые аккаунты</string>
+    <string name="mo_confirm_to_unmute_conversation">Вы уверены, что хотите включить звук в этой беседе?</string>
+    <string name="mo_confirm_to_unmute_hashtag">Вы уверены, что хотите включить звук у данного хештега?</string>
+    <string name="mo_blocked_accounts">Заблокированные аккаунты</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Сообщения будут скрыты во всех лентах, но их можно будет увидеть в темах и уведомлениях.</string>
+    <string name="mo_confirm_to_mute_conversation">Вы уверены, что хотите приглушить эту беседу?</string>
+    <string name="mo_notification_filter_reset">Восстановление значений по умолчанию</string>
+    <string name="mo_muted_conversation_successfully">Беседа успешно приглушена</string>
+    <string name="mo_mute_conversation">Приглушение беседы</string>
+    <string name="mo_recent_emoji_cleared">Последние смайлы очищены</string>
+    <string name="mo_mute_hashtag">Приглушение хештега</string>
+    <string name="mo_filter_notifications">Фильтр уведомлений</string>
+    <string name="mo_muting">Отключение звука…</string>
+    <string name="mo_unmuting">Возвращение звука…</string>
+    <string name="mo_double_tap_to_search">Тапните дважды, чтобы открыть поиск</string>
+    <string name="mo_confirm_to_mute_hashtag">Вы уверены, что хотите приглушить данный хештег?</string>
 </resources>
