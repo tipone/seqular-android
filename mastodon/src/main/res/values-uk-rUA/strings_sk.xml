@@ -77,7 +77,7 @@
     <string name="sk_settings_translation_availability_note_unavailable">%s не підтримує переклад.</string>
     <string name="sk_clear_all_notifications">Очистити всі сповіщення</string>
     <string name="sk_clear_all_notifications_confirm">Ви впевнені, що хочете очистити всі сповіщення\?</string>
-    <string name="sk_loading_fediverse_resource_title">Переглядаємо Федівсесвіт</string>
+    <string name="sk_loading_fediverse_resource_title">Переглядаємо Федісвіт</string>
     <string name="sk_undo_reblog">Скасувати поширення</string>
     <string name="sk_reblog_with_visibility">Поширення з видимістю</string>
     <string name="sk_quote_post">Цитувати допис</string>
@@ -334,7 +334,7 @@
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_spoiler_show">Показати матеріали</string>
     <string name="sk_disable_pill_shaped_active_indicator">Вимкнути індикатор активної вкладки у формі таблетки</string>
-    <string name="sk_search_fediverse">Пошук у Федівсесвіті</string>
+    <string name="sk_search_fediverse">Пошук у Федісвіті</string>
     <string name="sk_settings_unifiedpush_no_distributor">Постачальника не знайдено</string>
     <string name="sk_tab_home">Головна</string>
     <string name="sk_tab_search">Пошук</string>
@@ -369,7 +369,7 @@
     <string name="sk_button_react">Реагуйте за допомогою емоджі</string>
     <string name="sk_again_for_system_keyboard">Торкніться ще раз, щоб відкрити системну клавіатуру</string>
     <string name="sk_settings_emoji_reactions">Увімкнути реакції з емоджі</string>
-    <string name="sk_settings_emoji_reactions_explanation">Показує реакції емоджі на дописи та дає змогу додавати свої. Різні сервери Fediverse підтримують цю функцію, але Mastodon не підтримує.</string>
+    <string name="sk_settings_emoji_reactions_explanation">Показує реакції емоджі на дописи та дає змогу додавати свої. Різні сервери Федісвіту підтримують цю функцію, але Mastodon не підтримує.</string>
     <string name="sk_enter_emoji_toast">Введіть емоджі</string>
     <string name="sk_enter_emoji_hint">Введіть емоджі або скористайтеся пошуком</string>
     <string name="sk_settings_emoji_reactions_in_lists_explanation">Чи відображати реакції емоджі у стрічках. Якщо цю опцію вимкнено, реакції емоджі показуватимуться лише під час перегляду гілки.</string>
@@ -395,11 +395,11 @@
     <string name="sk_load_missing_posts_newest_first">Спочатку найновіші (за спаданням)</string>
     <string name="sk_load_missing_posts_below">Завантажити давніші дописи</string>
     <string name="sk_load_missing_posts_above">Завантажити новіші дописи</string>
-    <string name="sk_trending_links_info_banner">Ці новини обговорюють у всьому Fediverse.</string>
+    <string name="sk_trending_links_info_banner">Ці новини обговорюють у всьому Федісвіті.</string>
     <string name="sk_time_minutes">%d хвилин</string>
     <string name="sk_time_hours">%d годин</string>
     <string name="sk_time_seconds">%d секунд</string>
-    <string name="sk_trending_posts_info_banner">Ці дописи зараз набирають популярність популярності у Fediverse.</string>
+    <string name="sk_trending_posts_info_banner">Ці дописи зараз набирають популярності у Федісвіті.</string>
     <string name="sk_time_days">%d днів</string>
     <string name="sk_blocked_accounts">Заблоковані облікові записи</string>
     <string name="sk_muted_accounts">Ігноровані облікові записи</string>
