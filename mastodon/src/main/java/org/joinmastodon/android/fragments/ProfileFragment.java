@@ -820,7 +820,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			return;
 		inflater.inflate(isOwnProfile ? R.menu.profile_own : R.menu.profile, menu);
 		if(isOwnProfile){
-			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.scheduled, R.id.bookmarks, R.id.favorites);
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.scheduled, R.id.bookmarks);
 		}else{
 			UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.edit_note);
 		}
