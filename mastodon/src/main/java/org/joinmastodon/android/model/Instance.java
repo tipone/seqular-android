@@ -245,19 +245,19 @@ public class Instance extends BaseModel{
 
 			@Parcel
 			public static class FieldsLimits {
-				public int maxFields;
-				public int maxRemoteFields;
-				public int nameLength;
-				public int valueLength;
+				public long maxFields;
+				public long maxRemoteFields;
+				public long nameLength;
+				public long valueLength;
 			}
 		}
 	}
 
 	@Parcel
 	public static class PleromaPollLimits {
-		public int maxExpiration;
-		public int maxOptionChars;
-		public int maxOptions;
-		public int minExpiration;
+		public long maxExpiration;
+		public long maxOptionChars;
+		public long maxOptions;
+		public long minExpiration;
 	}
 }

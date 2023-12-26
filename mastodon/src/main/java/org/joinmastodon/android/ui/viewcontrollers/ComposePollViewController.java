@@ -82,9 +82,9 @@ public class ComposePollViewController{
 				maxPollOptionLength=instance.configuration.polls.maxCharactersPerOption;
 		} else {
 			if(instance!=null && instance.pollLimits!=null && instance.pollLimits.maxOptions>0)
-				maxPollOptions=instance.pollLimits.maxOptions;
+				maxPollOptions= (int) instance.pollLimits.maxOptions;
 			if(instance!=null && instance.pollLimits!=null && instance.pollLimits.maxOptionChars>0)
-				maxPollOptionLength=instance.pollLimits.maxOptionChars;
+				maxPollOptionLength= (int) instance.pollLimits.maxOptionChars;
 		}
 
 		pollOptionsView=pollWrap.findViewById(R.id.poll_options);
