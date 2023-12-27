@@ -482,7 +482,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 
 				});
 			}catch(IOException x){
-				Log.w(TAG, "doSaveShareCurrentFile: ", x);
+				Log.w(TAG, "shareCurrentFile: ", x);
 				Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
 			}
 		}else{
