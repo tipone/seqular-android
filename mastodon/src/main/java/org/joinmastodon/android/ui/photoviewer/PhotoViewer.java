@@ -463,7 +463,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 			try{
 				File file=ImageCache.getInstance(activity).getFile(req);
 				if(file==null){
-					saveViaDownloadManager(att);
+					shareAfterDownloading(att);
 					return;
 				}
 				MastodonAPIController.runInBackground(()->{
