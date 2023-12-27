@@ -1,0 +1,6 @@
+- Log kerusakan terbaru kini disimpan dan siap disalin dari halaman pengaturan "Tentang Megalodon".
+- Tambahkan dan tampilkan catatan pribadi di profil
+- Modifikasi teks sekarang disorot dalam riwayat edit
+- Akkoma: Postingan yang dikutip ditampilkan di lini masa; terjemahan; pratinjau posting sebelum dipublikasikan
+- Menambahkan Markah dan Favorit Anda sebagai lini masa yang dapat disematkan
+- Berbagai perbaikan kutu
