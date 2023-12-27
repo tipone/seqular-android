@@ -51,10 +51,12 @@ import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.ui.ImageDescriptionSheet;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
+import org.joinmastodon.android.utils.FileProvider;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -72,6 +74,9 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Sink;
@@ -187,6 +192,14 @@ public class PhotoViewer implements ZoomPanView.Listener{
 					return true;
 				});
 		imageDescriptionButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		toolbar.getMenu()
+				.add(R.string.button_share)
+				.setIcon(R.drawable.ic_fluent_share_24_regular)
+				.setOnMenuItemClickListener(item -> {
+					shareCurrentFile();
+					return true;
+				})
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		toolbar.getMenu()
 				.add(R.string.download)
 				.setIcon(R.drawable.ic_fluent_arrow_download_24_regular)
@@ -441,6 +454,44 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		pauseVideo();
 	}
 
+	private void shareCurrentFile(){
+		Attachment att=attachments.get(pager.getCurrentItem());
+		Intent intent = new Intent(Intent.ACTION_SEND);
+
+		if(att.type==Attachment.Type.IMAGE){
+			UrlImageLoaderRequest req=new UrlImageLoaderRequest(att.url);
+			try{
+				File file=ImageCache.getInstance(activity).getFile(req);
+				if(file==null){
+					saveViaDownloadManager(att);
+					return;
+				}
+				MastodonAPIController.runInBackground(()->{
+					File imageDir = new File(activity.getCacheDir(), ".");
+					File renamedFile;
+					file.renameTo(renamedFile = new File(imageDir, Uri.parse(att.url).getLastPathSegment()));
+					Uri outputUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", renamedFile);
+
+					// setting type to image
+					intent.setType(mimeTypeForFileName(outputUri.getLastPathSegment()));
+
+					intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+
+					// calling startactivity() to share
+					activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.button_share)));
+
+				});
+			}catch(IOException x){
+				Log.w(TAG, "doSaveShareCurrentFile: ", x);
+				Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
+			}
+		}else{
+			shareAfterDownloading(att);
+		}
+
+
+	}
+
 	private void saveCurrentFile(){
 		if(Build.VERSION.SDK_INT>=29){
 			doSaveCurrentFile();
@@ -543,6 +594,47 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		req.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, uri.getLastPathSegment());
 		activity.getSystemService(DownloadManager.class).enqueue(req);
 		Toast.makeText(activity, R.string.downloading, Toast.LENGTH_SHORT).show();
+	}
+
+	private void shareAfterDownloading(Attachment att){
+		Uri uri=Uri.parse(att.url);
+
+		MastodonAPIController.runInBackground(()->{
+			try {
+				OkHttpClient client = new OkHttpClient();
+				Request request = new Request.Builder().url(att.url).build();
+
+				Response response = client.newCall(request).execute();
+				Toast.makeText(activity, R.string.downloading, Toast.LENGTH_SHORT);
+				if (!response.isSuccessful()) {
+					throw new IOException("" + response);
+				}
+
+				File imageDir = new File(activity.getCacheDir(), ".");
+				InputStream inputStream = response.body().byteStream();
+				File file = new File(imageDir, uri.getLastPathSegment());
+				FileOutputStream outputStream = new FileOutputStream(file);
+
+				byte[] buffer = new byte[4096];
+				int bytesRead;
+				while ((bytesRead = inputStream.read(buffer)) != -1) {
+					outputStream.write(buffer, 0, bytesRead);
+				}
+
+				outputStream.close();
+				inputStream.close();
+
+				Intent intent = new Intent(Intent.ACTION_SEND);
+
+				Uri outputUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", file);
+
+				intent.setType(mimeTypeForFileName(outputUri.getLastPathSegment()));
+				intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+				activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.button_share)));
+			} catch(IOException e){
+				Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
+			}
+		});
 	}
 
 	private void onAudioFocusChanged(int change){
