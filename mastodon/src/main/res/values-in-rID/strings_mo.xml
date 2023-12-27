@@ -93,4 +93,5 @@
     <string name="mo_double_tap_to_search">Ketuk ganda untuk membuka pencarian</string>
     <string name="mo_setting_haptic_feedback_summary">Bergetar ketika berinteraksi dengan kiriman</string>
     <string name="mo_confirm_to_mute_hashtag">Apakah Anda yakin ingin membisukan tagar ini\?</string>
+    <string name="mo_notification_filter_reset">Atur ulang ke bawaan</string>
 </resources>
