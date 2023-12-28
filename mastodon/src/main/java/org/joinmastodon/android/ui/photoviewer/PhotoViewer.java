@@ -193,18 +193,18 @@ public class PhotoViewer implements ZoomPanView.Listener{
 				});
 		imageDescriptionButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		toolbar.getMenu()
-				.add(R.string.button_share)
-				.setIcon(R.drawable.ic_fluent_share_24_regular)
-				.setOnMenuItemClickListener(item -> {
-					shareCurrentFile();
-					return true;
-				})
-				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		toolbar.getMenu()
 				.add(R.string.download)
 				.setIcon(R.drawable.ic_fluent_arrow_download_24_regular)
 				.setOnMenuItemClickListener(item -> {
 					saveCurrentFile();
+					return true;
+				})
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		toolbar.getMenu()
+				.add(R.string.button_share)
+				.setIcon(R.drawable.ic_fluent_share_24_regular)
+				.setOnMenuItemClickListener(item -> {
+					shareCurrentFile();
 					return true;
 				})
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
