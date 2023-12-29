@@ -619,6 +619,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			displayItems.addAll(index+1, spoilerItem.contentItems);
 			adapter.notifyItemRangeInserted(index+1, spoilerItem.contentItems.size());
 		}else{
+			if(spoilers.size()>1 && !isForQuote && status.quote.spoilerRevealed)
+				toggleSpoiler(status.quote, true, itemID);
 			displayItems.subList(index+1, index+1+spoilerItem.contentItems.size()).clear();
 			adapter.notifyItemRangeRemoved(index+1, spoilerItem.contentItems.size());
 		}
