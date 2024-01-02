@@ -1,0 +1,8 @@
+- Ulepszony, bardziej przejrzysty widok wątku
+- Otwieranie kont/postów przez menu udostępniania
+- Wczytywanie list obserwujących/ulubionych/... z instancji pochodzenia
+- Poprawki kompatybilności z serwerami innymi niż Mastodon
+- Możliwość ustawienia typu zawartości posta
+- Obsługa kopiowania adresów URL z Ostatnich aplikacji na urządzeniach Pixel
+- Automatyczne ujawnianie tych samych CW w wątkach
+- Poprawki błędów i ulepszenia interfejsu użytkownika
