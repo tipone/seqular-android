@@ -574,6 +574,25 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			}
 			i++;
 		}
+
+		// This is a temporary measure to deal with the app crashing when the poll isn't updated.
+		// This is needed because of a possible id mismatch that screws with things
+		if(firstOptionIndex==-1 || footerIndex==-1){
+			for(StatusDisplayItem item:displayItems){
+				if(status.id.equals(itemID)){
+					if(item instanceof SpoilerStatusDisplayItem){
+						spoilerItem=(SpoilerStatusDisplayItem) item;
+					}else if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
+						firstOptionIndex=i;
+					}else if(item instanceof PollFooterStatusDisplayItem){
+						footerIndex=i;
+						break;
+					}
+				}
+				i++;
+			}
+		}
+
 		if(firstOptionIndex==-1 || footerIndex==-1)
 			throw new IllegalStateException("Can't find all poll items in displayItems");
 		List<StatusDisplayItem> pollItems=displayItems.subList(firstOptionIndex, footerIndex+1);
