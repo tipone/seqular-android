@@ -264,7 +264,7 @@
     <string name="sk_icon_academic_cap">قبعة جامعية</string>
     <string name="sk_icon_tag">ملصقة</string>
     <string name="sk_add_timeline_tag_error_empty">لا يجب أن يُترَك الوسم فارغًا</string>
-    <string name="sk_unfinished_attachments">إصلاح المرفقات؟</string>
+    <string name="sk_unfinished_attachments">تحميل المرفقات</string>
     <plurals name="sk_posts_count_label">
         <item quantity="zero">لا منشور</item>
         <item quantity="one">منشور واحد</item>
@@ -293,7 +293,7 @@
     <string name="sk_settings_forward_report_default">إعادة ”تحويل الإبلاغ“ افتراضيا</string>
     <string name="sk_content_type_mfm">MFM</string>
     <string name="sk_settings_hide_fab">إخفاء زر التحرير مبدئيا</string>
-    <string name="sk_enter_emoji_hint">اضغط للتفاعل بوجوه تعبيرية</string>
+    <string name="sk_enter_emoji_hint">أكتب وجها تعبيريا أو قم ببحث</string>
     <string name="sk_content_type_markdown">Markdown</string>
     <string name="sk_content_type_bbcode">BBCode</string>
     <string name="sk_enter_emoji_toast">يُرجى إدخال إيموجي</string>
@@ -324,4 +324,13 @@
     <string name="sk_settings_enable_marquee">تمكين تمرير النص في عناوين الأشرطة</string>
     <string name="sk_settings_tabs_disable_swipe">تعطيل التمرير بين الألسِنة</string>
     <string name="sk_settings_color_palette_default">افتراضي (%s)</string>
+    <string name="sk_poll_hide_results">إخفاء النتائج</string>
+    <string name="sk_poll_multiple_choice">خيارات متعددة</string>
+    <string name="sk_private_note_update_failed">فشل حفظ الملاحظة</string>
+    <string name="sk_delete_note">حذف الملاحظة الخاصة</string>
+    <string name="sk_settings_crash_log_unavailable">غير متوفر … بعد</string>
+    <string name="sk_add_note">إضافة ملاحظة خاصة</string>
+    <string name="sk_poll_show_results">إظهار النتائج</string>
+    <string name="sk_open_post_preview">معاينة المنشور</string>
+    <string name="sk_post_preview">معاينة</string>
 </resources>
