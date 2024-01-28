@@ -84,7 +84,7 @@
     <string name="mo_unmuted_conversation_successfully">Conversación sin silencio</string>
     <string name="mo_confirm_to_unmute_conversation">¿Quieres dejar de silenciar esta conversación\?</string>
     <string name="mo_confirm_to_mute_conversation">¿Quieres silenciar esta conversación\?</string>
-    <string name="mo_muted_conversation_successfully">Conversación silenciada</string>
+    <string name="mo_muted_conversation_successfully">Conversación silenciada correctamente</string>
     <string name="mo_unmute_conversation">No silenciar conversación</string>
     <string name="mo_mute_conversation">Silenciar conversación</string>
     <string name="mo_muting">Silenciando…</string>
