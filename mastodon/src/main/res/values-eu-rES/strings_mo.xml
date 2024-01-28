@@ -57,4 +57,10 @@
     <string name="mo_relocate_publish_button">Birkokatu argitaratzeko botoia</string>
     <string name="mo_duration_days_3">3 egun</string>
     <string name="mo_setting_remote_follower_summary">Erakutsi beste instantzia batzuetako jarraitzaileak</string>
+    <string name="mo_muted_accounts">Isildutako kontuak</string>
+    <string name="mo_blocked_accounts">Blokeatutako kontuak</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Desgaitu Birkokatu argitaratzeko botoia pertsonalizazioa baimentzeko</string>
+    <string name="mo_notification_filter_reset">Berrezarri lehenetsita</string>
+    <string name="mo_muted_conversation_successfully">Ondo isildutako elkarrizketa</string>
+    <string name="mo_muting">Isiltzen…</string>
 </resources>
