@@ -58,7 +58,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		if(AccountSessionManager.get(parentFragment.getAccountID()).getLocalPreferences().customEmojiInNames)
 			HtmlParser.parseCustomEmoji(ssb, emojis);
 
-		if(status.reblog!=null){
+		if(status.reblog!=null&&handleClick!=null){
 			//add temp chars for span replacement, should be same as spans added below
 			ssb.insert(0, "  ");
 			ssb.setSpan(new AvatarSpan(status.account), 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
