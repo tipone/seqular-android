@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -15,48 +16,56 @@ import android.view.View;
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.Status;
-import org.joinmastodon.android.ui.OutlineProviders;
+import org.joinmastodon.android.ui.displayitems.AccountCardStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.NotificationHeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.NestedRecyclerScrollView;
 import org.joinmastodon.android.utils.ObjectIdComparator;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
+import me.grishka.appkit.utils.MergeRecyclerAdapter;
 
 public class NotificationsListFragment extends BaseStatusListFragment<Notification>{
 	private boolean onlyMentions;
 	private String maxID;
-	private View tabBar;
-	private View mentionsTab, allTab;
-	private View endMark;
-	private String unreadMarker, realUnreadMarker;
-	private MenuItem markAllReadItem;
 	private boolean reloadingFromCache;
+	private DiscoverInfoBannerHelper bannerHelper;
+
+	@Override
+	protected boolean wantsComposeButton() {
+		return false;
+	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setLayout(R.layout.fragment_notifications);
 		E.register(this);
 		onlyMentions=AccountSessionManager.get(accountID).isNotificationsMentionsOnly();
 		setHasOptionsMenu(true);
@@ -76,19 +85,59 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Notification n){
+		if(!onlyMentions){
+			switch(n.type){
+				case MENTION -> {
+					if(!getLocalPrefs().notificationFilters.mention)
+						return new ArrayList<>();
+				}
+				case REBLOG -> {
+					if(!getLocalPrefs().notificationFilters.reblog)
+						return new ArrayList<>();
+				}
+				case FAVORITE, REACTION -> {
+					if(!getLocalPrefs().notificationFilters.favourite)
+						return new ArrayList<>();
+				}
+				case FOLLOW, FOLLOW_REQUEST -> {
+					if(!getLocalPrefs().notificationFilters.follow)
+						return new ArrayList<>();
+				}
+				case POLL -> {
+					if(!getLocalPrefs().notificationFilters.poll)
+						return new ArrayList<>();
+				}
+				case UPDATE -> {
+					if(!getLocalPrefs().notificationFilters.update)
+						return new ArrayList<>();
+				}
+				case STATUS -> {
+					if(!getLocalPrefs().notificationFilters.status)
+						return new ArrayList<>();
+				}
+				default -> {}
+			}
+		}
+
 		NotificationHeaderStatusDisplayItem titleItem;
 		if(n.type==Notification.Type.MENTION || n.type==Notification.Type.STATUS){
 			titleItem=null;
 		}else{
 			titleItem=new NotificationHeaderStatusDisplayItem(n.id, this, n, accountID);
-			if(n.status!=null){
-				n.status.card=null;
-				n.status.spoilerText=null;
-			}
+		}
+		if (n.type == Notification.Type.FOLLOW_REQUEST || n.type == Notification.Type.FOLLOW) {
+			ArrayList<StatusDisplayItem> items = new ArrayList<>();
+			items.add(titleItem);
+			items.add(new AccountCardStatusDisplayItem(n.id, this, accountID, n.account, n));
+			return items;
 		}
 		if(n.status!=null){
-			int flags=titleItem==null ? 0 : (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_HEADER);
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, flags);
+			int flags=titleItem==null ? 0 : (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS); // | StatusDisplayItem.FLAG_NO_HEADER);
+			if (GlobalUserPreferences.spectatorMode)
+				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+			if (!GlobalUserPreferences.showMediaPreview)
+				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, null, flags);
 			if(titleItem!=null)
 				items.add(0, titleItem);
 			return items;
@@ -98,32 +147,52 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			return Collections.emptyList();
 		}
 	}
-
 	@Override
 	protected void addAccountToKnown(Notification s){
 		if(!knownAccounts.containsKey(s.account.id))
 			knownAccounts.put(s.account.id, s.account);
 		if(s.status!=null && !knownAccounts.containsKey(s.status.account.id))
 			knownAccounts.put(s.status.account.id, s.status.account);
+		if(s.status!=null && s.status.reblog!=null && !knownAccounts.containsKey(s.status.reblog.account.id))
+			knownAccounts.put(s.status.reblog.account.id, s.status.reblog.account);
 	}
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		if(!refreshing && !reloadingFromCache)
-			endMark.setVisibility(View.GONE);
 		AccountSessionManager.getInstance()
 				.getAccount(accountID).getCacheController()
-				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, refreshing && !reloadingFromCache, new SimpleCallback<>(this){
+				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, onlyPosts, refreshing && !reloadingFromCache, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(PaginatedResponse<List<Notification>> result){
 						if(getActivity()==null)
 							return;
-						onDataLoaded(result.items.stream().filter(n->n.type!=null).collect(Collectors.toList()), !result.items.isEmpty());
+
+						Set<String> needRelationships=result.items.stream()
+								.filter(ntf->ntf.status==null && !relationships.containsKey(ntf.account.id))
+								.map(ntf->ntf.account.id)
+								.collect(Collectors.toSet());
+						loadRelationships(needRelationships);
+
 						maxID=result.maxID;
-						endMark.setVisibility(result.items.isEmpty() ? View.VISIBLE : View.GONE);
+						onDataLoaded(result.items.stream().filter(n->n.type!=null).collect(Collectors.toList()), !result.items.isEmpty());
+						if(bannerHelper!=null) bannerHelper.onBannerBecameVisible();
 						reloadingFromCache=false;
+						if (getParentFragment() instanceof NotificationsFragment nf) {
+							nf.updateMarkAllReadButton();
+						}
 					}
 				});
+	}
+
+	@Override
+	protected void onRelationshipsLoaded(){
+		if(getActivity()==null)
+			return;
+		for(int i=0;i<list.getChildCount();i++){
+			RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+			if(holder instanceof AccountCardStatusDisplayItem.Holder accountHolder)
+				accountHolder.rebind();
+		}
 	}
 
 	@Override
@@ -145,43 +214,15 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	public void onItemClick(String id){
 		Notification n=getNotificationByID(id);
-		if(n.status!=null){
-			Status status=n.status;
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("status", Parcels.wrap(status.clone()));
-			if(status.inReplyToAccountId!=null && knownAccounts.containsKey(status.inReplyToAccountId))
-				args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status.inReplyToAccountId)));
-			Nav.go(getActivity(), ThreadFragment.class, args);
-		}else{
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			args.putParcelable("profileAccount", Parcels.wrap(n.account));
-			Nav.go(getActivity(), ProfileFragment.class, args);
-		}
+		Bundle args = new Bundle();
+		if(n.status != null && n.status.inReplyToAccountId != null && knownAccounts.containsKey(n.status.inReplyToAccountId))
+			args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(n.status.inReplyToAccountId)));
+		UiUtils.showFragmentForNotification(getContext(), n, accountID, args);
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
-		tabBar=view.findViewById(R.id.tabbar);
 		super.onViewCreated(view, savedInstanceState);
-		list.addItemDecoration(new InsetStatusItemDecoration(this));
-
-		View tabBarItself=view.findViewById(R.id.tabbar_inner);
-		tabBarItself.setOutlineProvider(OutlineProviders.roundedRect(20));
-		tabBarItself.setClipToOutline(true);
-
-		mentionsTab=view.findViewById(R.id.mentions_tab);
-		allTab=view.findViewById(R.id.all_tab);
-		mentionsTab.setOnClickListener(this::onTabClick);
-		allTab.setOnClickListener(this::onTabClick);
-		mentionsTab.setSelected(onlyMentions);
-		allTab.setSelected(!onlyMentions);
-
-		NestedRecyclerScrollView scroller=view.findViewById(R.id.scroller);
-		scroller.setScrollableChildSupplier(()->list);
-		scroller.setTakePriorityOverChildViews(true);
-
 		list.addItemDecoration(new RecyclerView.ItemDecoration(){
 			private Paint paint=new Paint();
 			private Rect tmpRect=new Rect();
@@ -192,15 +233,17 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 
 			@Override
 			public void onDraw(@NonNull Canvas c, @NonNull RecyclerView parent, @NonNull RecyclerView.State state){
-				if(TextUtils.isEmpty(unreadMarker))
-					return;
-				for(int i=0;i<parent.getChildCount();i++){
-					View child=parent.getChildAt(i);
-					if(parent.getChildViewHolder(child) instanceof StatusDisplayItem.Holder<?> holder){
-						String itemID=holder.getItemID();
-						if(ObjectIdComparator.INSTANCE.compare(itemID, unreadMarker)>0){
-							parent.getDecoratedBoundsWithMargins(child, tmpRect);
-							c.drawRect(tmpRect, paint);
+				if (getParentFragment() instanceof NotificationsFragment nf) {
+					if(TextUtils.isEmpty(nf.unreadMarker))
+						return;
+					for(int i=0;i<parent.getChildCount();i++){
+						View child=parent.getChildAt(i);
+						if(parent.getChildViewHolder(child) instanceof StatusDisplayItem.Holder<?> holder){
+							String itemID=holder.getItemID();
+							if(ObjectIdComparator.INSTANCE.compare(itemID, nf.unreadMarker)>0){
+								parent.getDecoratedBoundsWithMargins(child, tmpRect);
+								c.drawRect(tmpRect, paint);
+							}
 						}
 					}
 				}
@@ -210,9 +253,13 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 
 	@Override
 	protected List<View> getViewsForElevationEffect(){
-		ArrayList<View> views=new ArrayList<>(super.getViewsForElevationEffect());
-		views.add(tabBar);
-		return views;
+		if (getParentFragment() instanceof NotificationsFragment nf) {
+			ArrayList<View> views=new ArrayList<>(super.getViewsForElevationEffect());
+			views.add(nf.tabLayout);
+			return views;
+		} else {
+			return super.getViewsForElevationEffect();
+		}
 	}
 
 	private Notification getNotificationByID(String id){
@@ -232,7 +279,57 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 				continue;
 			Status contentStatus=ntf.status.getContentStatus();
 			if(contentStatus.poll!=null && contentStatus.poll.id.equals(ev.poll.id)){
-				updatePoll(ntf.id, ntf.status, ev.poll);
+				updatePoll(ntf.id, contentStatus, ev.poll);
+			}
+		}
+	}
+
+	// copied from StatusListFragment.EventListener (just like the method above)
+	// (which assumes this.data to be a list of statuses...)
+	@Subscribe
+	public void onStatusCountersUpdated(StatusCountersUpdatedEvent ev){
+		for(Notification n:data){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
+				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
+				for(int i=0;i<list.getChildCount();i++){
+					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+					if(holder instanceof FooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
+						footer.rebind();
+					}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==n.status.getContentStatus()){
+						footer.rebind();
+					}
+				}
+			}
+		}
+		for(Notification n:preloadedData){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
+				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
+			}
+		}
+	}
+
+	@Subscribe
+	public void onEmojiReactionsChanged(EmojiReactionsUpdatedEvent ev){
+		for(Notification n : data){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
+				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
+				for(int i=0; i<list.getChildCount(); i++){
+					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+					if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && reactions.getItem().status==n.status.getContentStatus() && ev.viewHolder!=holder){
+						reactions.rebind();
+					}else if(holder instanceof TextStatusDisplayItem.Holder text && text.getItem().parentID.equals(n.getID())){
+						text.rebind();
+					}
+				}
+			}
+		}
+		for(Notification n : preloadedData){
+			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
+				n.status.getContentStatus().update(ev);
+				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 			}
 		}
 	}
@@ -249,7 +346,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}
 	}
 
-	private void removeNotification(Notification n){
+	public void removeNotification(Notification n){
 		data.remove(n);
 		preloadedData.remove(n);
 		int index=-1;
@@ -324,31 +421,47 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}
 	}
 
-	private void resetUnreadBackground(){
-		unreadMarker=realUnreadMarker;
-		list.invalidate();
+	void resetUnreadBackground(){
+		if (getParentFragment() instanceof NotificationsFragment nf) {
+			nf.unreadMarker=nf.realUnreadMarker;
+			list.invalidate();
+		}
 	}
 
 	@Override
 	public void onRefresh(){
 		super.onRefresh();
+		if (getParentFragment() instanceof NotificationsFragment nf) {
+			if (!onlyMentions && !onlyPosts) nf.markAsRead();
+			else AccountSessionManager.get(accountID).reloadNotificationsMarker(m->{
+				nf.unreadMarker=nf.realUnreadMarker=m;
+				nf.updateMarkAllReadButton();
+			});
+		}
 		resetUnreadBackground();
 		AccountSessionManager.get(accountID).reloadNotificationsMarker(m->{
 			unreadMarker=realUnreadMarker=m;
 		});
 	}
 
+	private void updateMarkAllReadButton(){
+		markAllReadItem.setEnabled(!data.isEmpty() && realUnreadMarker!=null && !realUnreadMarker.equals(data.get(0).id));
+	}
+
 	@Override
-	public void onAppendItems(List<Notification> items){
-		super.onAppendItems(items);
-		if(data.isEmpty() || data.get(0).id.equals(realUnreadMarker))
-			return;
-		for(Notification n:items){
-			if(ObjectIdComparator.INSTANCE.compare(n.id, realUnreadMarker)<=0){
-				markAsRead();
-				break;
-			}
-		}
+	protected RecyclerView.Adapter<?> getAdapter(){
+		if (bannerHelper == null) return super.getAdapter();
+		MergeRecyclerAdapter adapter=new MergeRecyclerAdapter();
+		bannerHelper.maybeAddBanner(list, adapter);
+		adapter.addAdapter(super.getAdapter());
+		return adapter;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(isInstanceAkkoma()
+				? "/users/" + getSession().self.username + "/interactions"
+				: "/notifications").build();
 	}
 
 	private boolean canRefreshWithoutUpsettingUser(){

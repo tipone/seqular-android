@@ -92,7 +92,7 @@ public class FilterWordsFragment extends BaseSettingsFragment<FilterKeyword> imp
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
-		fab.setImageResource(R.drawable.ic_add_24px);
+		fab.setImageResource(R.drawable.ic_fluent_add_24_regular);
 		fab.setContentDescription(getString(R.string.add_muted_word));
 		fab.setOnClickListener(v->onFabClick());
 	}

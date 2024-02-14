@@ -1,25 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="vertical"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<LinearLayout
+	<ScrollView
 		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="vertical">
+		android:layout_height="0dp"
+		android:layout_weight="1">
 
-		<org.joinmastodon.android.ui.views.FixedAspectRatioImageView
-			android:id="@+id/photo"
+		<org.joinmastodon.android.ui.views.MaxWidthFrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:scaleType="centerCrop"
-			android:importantForAccessibility="no"
-			tools:src="#0f0"/>
+			android:layout_gravity="center_horizontal"
+			android:maxWidth="@dimen/layout_max_width">
+
+			<ImageView
+				android:id="@+id/photo"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:adjustViewBounds="true"
+				android:importantForAccessibility="no"
+				tools:src="#0f0"/>
+
+		</org.joinmastodon.android.ui.views.MaxWidthFrameLayout>
+
+	</ScrollView>
+
+	<LinearLayout
+		android:orientation="vertical"
+		android:layout_gravity="bottom"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
 		<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
-			android:id="@+id/bio_wrap"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="16dp"
@@ -32,7 +48,7 @@
 			<EditText
 				android:id="@+id/edit"
 				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
+				android:layout_height="match_parent"
 				android:layout_marginStart="16dp"
 				android:layout_marginEnd="16dp"
 				android:layout_marginTop="8dp"
@@ -40,6 +56,7 @@
 				android:background="@null"
 				android:inputType="textMultiLine|textCapSentences"
 				android:minLines="3"
+				android:maxHeight="200dp"
 				android:gravity="top"
 				android:hint="@string/alt_text"/>
 
@@ -47,4 +64,4 @@
 
 	</LinearLayout>
 
-</ScrollView>
+</LinearLayout>

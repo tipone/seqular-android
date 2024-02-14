@@ -1,0 +1,4 @@
+- Tekan lama pada tombol ikuti untuk mengikuti profil dari akun lain
+- Opsi untuk membuka profil di akun yang lain
+- Sembunyikan tombol komposer secara otomatia ketika menggulir lini masa ke bawah
+- Perbaiki kemogokan ketika membuka profil admin server

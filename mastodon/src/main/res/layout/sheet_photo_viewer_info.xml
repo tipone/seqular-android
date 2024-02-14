@@ -50,7 +50,7 @@
 					android:layout_width="64dp"
 					android:layout_height="64dp"
 					android:text="@string/button_favorite"
-					android:drawableTop="@drawable/ic_star_24px_selector"
+					android:drawableTop="@drawable/ic_fluent_star_24_selector"
 					style="@style/Widget.Mastodon.M3.Button.IconWithLabel"/>
 
 				<Space
@@ -63,7 +63,7 @@
 					android:layout_width="64dp"
 					android:layout_height="64dp"
 					android:text="@string/button_share"
-					android:drawableTop="@drawable/ic_share_24px"
+					android:drawableTop="@drawable/ic_fluent_share_24_regular"
 					style="@style/Widget.Mastodon.M3.Button.IconWithLabel"/>
 
 				<Space
@@ -76,7 +76,7 @@
 					android:layout_width="64dp"
 					android:layout_height="64dp"
 					android:text="@string/add_bookmark"
-					android:drawableTop="@drawable/ic_bookmark_24px_selector"
+					android:drawableTop="@drawable/ic_fluent_bookmark_24_selector"
 					style="@style/Widget.Mastodon.M3.Button.IconWithLabel"/>
 
 				<Space
@@ -89,7 +89,7 @@
 					android:layout_width="64dp"
 					android:layout_height="64dp"
 					android:text="@string/download"
-					android:drawableTop="@drawable/ic_download_24px"
+					android:drawableTop="@drawable/ic_fluent_arrow_download_24_regular"
 					style="@style/Widget.Mastodon.M3.Button.IconWithLabel"/>
 
 			</LinearLayout>

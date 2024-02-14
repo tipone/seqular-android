@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-	<string name="github_url" translatable="false">https://github.com/mastodon/mastodon-android</string>
+	<string name="repo_url" translatable="false">https://github.com/sk22/megalodon</string>
 	<string name="privacy_policy_url" translatable="false">https://joinmastodon.org/privacy-policy</string>
+	<string name="donate_hashtag" translatable="false">MutualAid</string>
 </resources>

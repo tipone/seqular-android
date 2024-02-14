@@ -1,0 +1,8 @@
+- Fragmen pengaturan yg didesain ulang sepenuhnya
+- Pintasan kamera baru ditambahkan ke fragmen Komposisi
+- Memperbaiki banyak kerusakan pada Calckey
+- Banyak perbaikan pada Akkoma/Pleroma
+- Banyak perbaikan pada filter perilaku
+- Lembar Akun baru yg didesain ulang
+- Tambahkan opsi untuk mengubah gaya konten postingan (Teks biasa, penurunan harga, dll) pada server yang mendukungnya
+- Tambahkan fitur untuk melihat info server seseorang dengan mengetuk nama penggunanya di dalam profil siapa pun

@@ -16,7 +16,7 @@
 		android:tint="@color/selectable_icon_tint"
 		android:background="@drawable/bg_round_ripple"
 		android:contentDescription="@string/help"
-		android:src="@drawable/ic_help_selectable"/>
+		android:src="@drawable/ic_fluent_question_circle_24_selector"/>
 	
 	<TextView
 		android:id="@+id/title"

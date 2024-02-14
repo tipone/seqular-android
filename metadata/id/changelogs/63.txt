@@ -1,0 +1,6 @@
+- Pilihan untuk membagikan ulang dengan visibilitas spesifik pada klik panjang
+- Tampilkan visibilitas reblog sendiri
+- Tambahkan daftar hashtag yang diikuti
+- Klik panjang untuk menyalin tautan
+- Pilihan untuk membuka postingan dengan akun lain
+- Perbaikan kutu dan perubahan kecil

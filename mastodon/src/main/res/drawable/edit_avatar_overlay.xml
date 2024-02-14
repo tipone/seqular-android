@@ -3,7 +3,7 @@
 	<item>
 		<color android:color="#80000000"/>
 	</item>
-	<item android:drawable="@drawable/ic_add_photo_alternate_48px_dark_on_surface"
+	<item android:drawable="@drawable/ic_fluent_image_edit_24_regular"
 		android:width="48dp"
 		android:height="48dp"
 		android:gravity="center"/>

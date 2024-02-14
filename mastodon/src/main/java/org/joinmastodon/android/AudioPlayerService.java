@@ -169,7 +169,8 @@ public class AudioPlayerService extends Service{
 		}
 
 		updateNotification(false, false);
-		getSystemService(AudioManager.class).requestAudioFocus(audioFocusChangeListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+		int audiofocus = GlobalUserPreferences.overlayMedia ? AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK : AudioManager.AUDIOFOCUS_GAIN;
+		getSystemService(AudioManager.class).requestAudioFocus(audioFocusChangeListener, AudioManager.STREAM_MUSIC, audiofocus);
 
 		player=new MediaPlayer();
 		player.setOnPreparedListener(this::onPlayerPrepared);
@@ -265,7 +266,7 @@ public class AudioPlayerService extends Service{
 	private void updateNotification(boolean dismissable, boolean removeNotification){
 		Notification.Builder bldr=new Notification.Builder(this)
 				.setSmallIcon(R.drawable.ic_ntf_logo)
-				.setContentTitle(status.account.displayName)
+				.setContentTitle(status.account.getDisplayName())
 				.setContentText(HtmlParser.strip(status.content))
 				.setOngoing(!dismissable)
 				.setShowWhen(false)
@@ -280,7 +281,7 @@ public class AudioPlayerService extends Service{
 
 		if(playerReady){
 			boolean isPlaying=player.isPlaying();
-			bldr.addAction(new Notification.Action.Builder(Icon.createWithResource(this, isPlaying ? R.drawable.ic_pause_24 : R.drawable.ic_play_24),
+			bldr.addAction(new Notification.Action.Builder(Icon.createWithResource(this, isPlaying ? R.drawable.ic_fluent_pause_24_filled : R.drawable.ic_fluent_play_24_filled),
 						getString(isPlaying ? R.string.pause : R.string.play),
 						PendingIntent.getBroadcast(this, 2, new Intent(ACTION_PLAY_PAUSE), PendingIntent.FLAG_IMMUTABLE))
 					.build());

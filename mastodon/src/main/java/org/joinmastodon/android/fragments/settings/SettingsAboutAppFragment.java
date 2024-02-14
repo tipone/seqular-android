@@ -5,20 +5,42 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joinmastodon.android.BuildConfig;
+import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.HasAccountID;
+import org.joinmastodon.android.model.viewmodel.CheckableListItem;
 import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.Snackbar;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.updater.GithubSelfUpdater;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.StringReader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
+import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,23 +49,51 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
-	private ListItem<Void> mediaCacheItem;
+public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> implements HasAccountID{
+	private static final String TAG="SettingsAboutAppFragment";
+	private ListItem<Void> mediaCacheItem, copyCrashLogItem;
+	private CheckableListItem<Void> enablePreReleasesItem;
+	private AccountSession session;
+	private boolean timelineCacheCleared=false;
+	private File crashLogFile=new File(MastodonApp.context.getFilesDir(), "crash.log");
 
+	// MOSHIDON
+	private ListItem<Void> clearRecentEmojisItem;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		setTitle(getString(R.string.about_app, getString(R.string.app_name)));
-		AccountSession s=AccountSessionManager.get(accountID);
-		onDataLoaded(List.of(
-				new ListItem<>(R.string.settings_even_more, 0, i->UiUtils.launchWebBrowser(getActivity(), "https://"+s.domain+"/auth/edit")),
-				new ListItem<>(R.string.settings_contribute, 0, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.github_url))),
-				new ListItem<>(R.string.settings_tos, 0, i->UiUtils.launchWebBrowser(getActivity(), "https://"+s.domain+"/terms")),
-				new ListItem<>(R.string.settings_privacy_policy, 0, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
-				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick)
+		setTitle(getString(R.string.about_app, getString(R.string.mo_app_name)));
+		session=AccountSessionManager.get(accountID);
+
+		String lastModified=crashLogFile.exists()
+				? DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT).withZone(ZoneId.systemDefault()).format(Instant.ofEpochMilli(crashLogFile.lastModified()))
+				: getString(R.string.sk_settings_crash_log_unavailable);
+		List<ListItem<Void>> items=new ArrayList<>(List.of(
+				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_donate_url))),
+				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_repo_url))),
+				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")),
+				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
+				clearRecentEmojisItem=new ListItem<>(R.string.mo_clear_recent_emoji, 0, this::onClearRecentEmojisClick),
+				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick),
+				new ListItem<>(getString(R.string.sk_settings_clear_timeline_cache), session.domain, this::onClearTimelineCacheClick),
+				copyCrashLogItem=new ListItem<>(getString(R.string.sk_settings_copy_crash_log), lastModified, 0, this::onCopyCrashLog)
 		));
 
+		if(GithubSelfUpdater.needSelfUpdating()){
+			items.add(enablePreReleasesItem=new CheckableListItem<>(R.string.sk_updater_enable_pre_releases, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enablePreReleases, i->toggleCheckableItem(enablePreReleasesItem)));
+		}
+
+		copyCrashLogItem.isEnabled=crashLogFile.exists();
+		onDataLoaded(items);
 		updateMediaCacheItem();
+	}
+
+	@Override
+	protected void onHidden(){
+		super.onHidden();
+		GlobalUserPreferences.enablePreReleases=enablePreReleasesItem!=null && enablePreReleasesItem.checked;
+		GlobalUserPreferences.save();
+		if(timelineCacheCleared) getActivity().recreate();
 	}
 
 	@Override
@@ -55,12 +105,11 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 		adapter.addAdapter(super.getAdapter());
 
 		TextView versionInfo=new TextView(getActivity());
-		versionInfo.setSingleLine();
 		versionInfo.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, V.dp(32)));
 		versionInfo.setTextAppearance(R.style.m3_label_medium);
 		versionInfo.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3Outline));
 		versionInfo.setGravity(Gravity.CENTER);
-		versionInfo.setText(getString(R.string.settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
+		versionInfo.setText(getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE));
 		versionInfo.setOnClickListener(v->{
 			getActivity().getSystemService(ClipboardManager.class).setPrimaryClip(ClipData.newPlainText("", BuildConfig.VERSION_NAME+" ("+BuildConfig.VERSION_CODE+")"));
 			if(Build.VERSION.SDK_INT<=Build.VERSION_CODES.S_V2){
@@ -85,10 +134,40 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void>{
 		});
 	}
 
+	private void onClearTimelineCacheClick(ListItem<?> item){
+		session.getCacheController().putHomeTimeline(List.of(), true);
+		Toast.makeText(getContext(), R.string.sk_timeline_cache_cleared, Toast.LENGTH_SHORT).show();
+		timelineCacheCleared=true;
+	}
+
+	private void onClearRecentEmojisClick(ListItem<?> item){
+		getLocalPrefs().recentCustomEmoji=new ArrayList<>();
+		getLocalPrefs().save();
+		Toast.makeText(getContext(), R.string.mo_recent_emoji_cleared, Toast.LENGTH_SHORT).show();
+	}
+
 	private void updateMediaCacheItem(){
 		long size=ImageCache.getInstance(getActivity()).getDiskCache().size();
 		mediaCacheItem.subtitle=UiUtils.formatFileSize(getActivity(), size, false);
 		mediaCacheItem.isEnabled=size>0;
 		rebindItem(mediaCacheItem);
+	}
+
+	@Override
+	public String getAccountID(){
+		return accountID;
+	}
+
+	private void onCopyCrashLog(ListItem<?> item){
+		if(!crashLogFile.exists()) return;
+		try(InputStream is=new FileInputStream(crashLogFile)){
+			BufferedReader reader=new BufferedReader(new InputStreamReader(is));
+			StringBuilder sb=new StringBuilder();
+			String line;
+			while ((line=reader.readLine())!=null) sb.append(line).append("\n");
+			UiUtils.copyText(list, sb.toString());
+		} catch(IOException e){
+			Log.e(TAG, "Error reading crash log", e);
+		}
 	}
 }

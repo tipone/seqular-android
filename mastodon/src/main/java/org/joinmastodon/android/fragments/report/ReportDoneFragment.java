@@ -34,7 +34,6 @@ import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.ViewImageLoader;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
-import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 
 public class ReportDoneFragment extends MastodonToolbarFragment{
@@ -131,9 +130,9 @@ public class ReportDoneFragment extends MastodonToolbarFragment{
 		unfollowTitle.setText(getString(R.string.unfollow_user, '@'+reportAccount.acct));
 		muteTitle.setText(getString(R.string.mute_user, '@'+reportAccount.acct));
 		blockTitle.setText(getString(R.string.block_user, '@'+reportAccount.acct));
-		setIconToButton(R.drawable.ic_person_remove_20px, unfollowTitle);
-		setIconToButton(R.drawable.ic_block_20px, blockTitle);
-		setIconToButton(R.drawable.ic_volume_off_20px, muteTitle);
+		setIconToButton(R.drawable.ic_fluent_person_delete_20_filled, unfollowTitle);
+		setIconToButton(R.drawable.ic_fluent_person_prohibited_20_filled, blockTitle);
+		setIconToButton(R.drawable.ic_fluent_speaker_0_20_filled, muteTitle);
 
 		unfollowBtn.setOnClickListener(v->onUnfollowClick());
 		muteBtn.setOnClickListener(v->onMuteClick());
@@ -184,7 +183,7 @@ public class ReportDoneFragment extends MastodonToolbarFragment{
 						E.post(new RemoveAccountPostsEvent(accountID, reportAccount.id, true));
 						unfollowTitle.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSecondaryContainer));
 						unfollowTitle.setText(getString(R.string.unfollowed_user, '@'+reportAccount.acct));
-						setIconToButton(R.drawable.ic_check_24px, unfollowTitle);
+						setIconToButton(R.drawable.ic_fluent_checkmark_24_regular, unfollowTitle);
 						unfollowBtn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
 						unfollowBtn.setClickable(false);
 						unfollowBtn.setFocusable(false);
@@ -203,7 +202,7 @@ public class ReportDoneFragment extends MastodonToolbarFragment{
 		UiUtils.confirmToggleMuteUser(getActivity(), accountID, reportAccount, false, rel->{
 			muteTitle.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSecondaryContainer));
 			muteTitle.setText(getString(R.string.muted_user, '@'+reportAccount.acct));
-			setIconToButton(R.drawable.ic_check_24px, muteTitle);
+			setIconToButton(R.drawable.ic_fluent_checkmark_24_regular, muteTitle);
 			muteBtn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
 			muteBtn.setClickable(false);
 			muteBtn.setFocusable(false);
@@ -214,7 +213,7 @@ public class ReportDoneFragment extends MastodonToolbarFragment{
 		UiUtils.confirmToggleBlockUser(getActivity(), accountID, reportAccount, false, rel->{
 			blockTitle.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSecondaryContainer));
 			blockTitle.setText(getString(R.string.blocked_user, '@'+reportAccount.acct));
-			setIconToButton(R.drawable.ic_check_24px, blockTitle);
+			setIconToButton(R.drawable.ic_fluent_checkmark_24_regular, blockTitle);
 			blockBtn.setBackgroundResource(R.drawable.bg_button_m3_tonal);
 			blockBtn.setClickable(false);
 			blockBtn.setFocusable(false);
@@ -227,7 +226,7 @@ public class ReportDoneFragment extends MastodonToolbarFragment{
 
 	@Override
 	protected int getNavigationIconDrawableResource(){
-		return R.drawable.ic_baseline_close_24;
+		return R.drawable.ic_fluent_dismiss_24_regular;
 	}
 
 	@Override

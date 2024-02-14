@@ -27,6 +27,7 @@ public class ElevationOnScrollListener extends RecyclerView.OnScrollListener imp
 	private boolean isAtTop;
 	private Animator currentPanelsAnim;
 	private List<View> views;
+	private View divider;
 	private FragmentRootLinearLayout fragmentRootLayout;
 	private Rect tmpRect=new Rect();
 
@@ -48,6 +49,10 @@ public class ElevationOnScrollListener extends RecyclerView.OnScrollListener imp
 				}
 			}
 		}
+	}
+
+	public void setDivider(View divider) {
+		this.divider = divider;
 	}
 
 	public void setViews(View... views){
@@ -88,7 +93,8 @@ public class ElevationOnScrollListener extends RecyclerView.OnScrollListener imp
 		handleScroll(v.getContext(), scrollY<=0);
 	}
 
-	private void handleScroll(Context context, boolean newAtTop){
+	public void handleScroll(Context context, boolean newAtTop){
+		if(UiUtils.isTrueBlackTheme()) newAtTop=true;
 		if(newAtTop!=isAtTop){
 			isAtTop=newAtTop;
 			if(currentPanelsAnim!=null)
@@ -100,19 +106,22 @@ public class ElevationOnScrollListener extends RecyclerView.OnScrollListener imp
 				if(v.getBackground() instanceof LayerDrawable ld){
 					Drawable overlay=ld.findDrawableByLayerId(R.id.color_overlay);
 					if(overlay!=null){
-						anims.add(ObjectAnimator.ofInt(overlay, "alpha", isAtTop ? 0 : 20));
+						anims.add(ObjectAnimator.ofInt(overlay, "alpha", newAtTop ? 0 : 20));
 					}
 				}
-				anims.add(ObjectAnimator.ofFloat(v, View.TRANSLATION_Z, isAtTop ? 0 : V.dp(3)));
+				anims.add(ObjectAnimator.ofFloat(v, View.TRANSLATION_Z, newAtTop ? 0 : V.dp(3)));
 			}
 			if(fragmentRootLayout!=null){
 				int color;
-				if(isAtTop){
+				if(newAtTop){
 					color=UiUtils.getThemeColor(context, R.attr.colorM3Background);
 				}else{
 					color=UiUtils.alphaBlendColors(UiUtils.getThemeColor(context, R.attr.colorM3Background), UiUtils.getThemeColor(context, R.attr.colorM3Primary), 0.07843137f);
 				}
 				anims.add(ObjectAnimator.ofArgb(fragmentRootLayout, "statusBarColor", color));
+			}
+			if(divider!=null){
+				anims.add(ObjectAnimator.ofFloat(divider, View.ALPHA, newAtTop ? 1 : 0));
 			}
 			set.playTogether(anims);
 			set.setDuration(150);

@@ -3,9 +3,12 @@ package org.joinmastodon.android.fragments;
 import android.view.ViewTreeObserver;
 
 import androidx.recyclerview.widget.RecyclerView;
-import me.grishka.appkit.utils.V;
+
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 public interface ScrollableToTop{
+//	boolean isScrolledToTop();
+
 	void scrollToTop();
 
 	/**
@@ -21,7 +24,7 @@ public interface ScrollableToTop{
 				@Override
 				public boolean onPreDraw(){
 					list.getViewTreeObserver().removeOnPreDrawListener(this);
-					list.scrollBy(0, V.dp(300));
+					list.scrollBy(0, UiUtils.SCROLL_TO_TOP_DELTA);
 					list.smoothScrollToPosition(0);
 					return true;
 				}

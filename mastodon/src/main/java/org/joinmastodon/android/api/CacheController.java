@@ -20,6 +20,7 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.CacheablePaginatedResponse;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FollowList;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
 import org.joinmastodon.android.model.SearchResult;
@@ -36,6 +37,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import me.grishka.appkit.api.Callback;
@@ -44,7 +46,7 @@ import me.grishka.appkit.utils.WorkerThread;
 
 public class CacheController{
 	private static final String TAG="CacheController";
-	private static final int DB_VERSION=3;
+	private static final int DB_VERSION=4;
 	private static final WorkerThread databaseThread=new WorkerThread("databaseThread");
 	private static final Handler uiHandler=new Handler(Looper.getMainLooper());
 
@@ -80,12 +82,11 @@ public class CacheController{
 								Status status=MastodonAPIController.gson.fromJson(cursor.getString(0), Status.class);
 								status.postprocess();
 								int flags=cursor.getInt(1);
-								status.hasGapAfter=((flags & POST_FLAG_GAP_AFTER)!=0);
+								status.hasGapAfter=((flags & POST_FLAG_GAP_AFTER)!=0) ? status.id : null;
 								newMaxID=status.id;
 								result.add(status);
 							}while(cursor.moveToNext());
 							String _newMaxID=newMaxID;
-							AccountSessionManager.get(accountID).filterStatuses(result, FilterContext.HOME);
 							uiHandler.post(()->callback.onSuccess(new CacheablePaginatedResponse<>(result, _newMaxID, true)));
 							return;
 						}
@@ -93,13 +94,11 @@ public class CacheController{
 						Log.w(TAG, "getHomeTimeline: corrupted status object in database", x);
 					}
 				}
-				new GetHomeTimeline(maxID, null, count, null)
+				new GetHomeTimeline(maxID, null, count, null, AccountSessionManager.get(accountID).getLocalPreferences().timelineReplyVisibility)
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Status> result){
-								ArrayList<Status> filtered=new ArrayList<>(result);
-								AccountSessionManager.get(accountID).filterStatuses(filtered, FilterContext.HOME);
-								callback.onSuccess(new CacheablePaginatedResponse<>(filtered, result.isEmpty() ? null : result.get(result.size()-1).id, false));
+								callback.onSuccess(new CacheablePaginatedResponse<>(result, result.isEmpty() ? null : result.get(result.size()-1).id, false));
 								putHomeTimeline(result, maxID==null);
 							}
 
@@ -127,20 +126,45 @@ public class CacheController{
 				values.put("id", s.id);
 				values.put("json", MastodonAPIController.gson.toJson(s));
 				int flags=0;
-				if(s.hasGapAfter)
+				if(Objects.equals(s.hasGapAfter, s.id))
 					flags|=POST_FLAG_GAP_AFTER;
 				values.put("flags", flags);
 				values.put("time", s.createdAt.getEpochSecond());
 				db.insertWithOnConflict("home_timeline", null, values, SQLiteDatabase.CONFLICT_REPLACE);
 			}
+			if(!clear)
+				db.delete("home_timeline", "`id` NOT IN (SELECT `id` FROM `home_timeline` ORDER BY `time` DESC LIMIT ?)", new String[]{"1000"});
 		});
 	}
 
-	public void getNotifications(String maxID, int count, boolean onlyMentions, boolean forceReload, Callback<PaginatedResponse<List<Notification>>> callback){
+	public void updateStatus(Status status) {
+		runOnDbThread((db)->{
+			ContentValues statusUpdate=new ContentValues(1);
+			statusUpdate.put("json", MastodonAPIController.gson.toJson(status));
+			db.update("home_timeline", statusUpdate, "id = ?", new String[] { status.id });
+		});
+	}
+
+	public void updateNotification(Notification notification) {
+		runOnDbThread((db)->{
+			ContentValues notificationUpdate=new ContentValues(1);
+			notificationUpdate.put("json", MastodonAPIController.gson.toJson(notification));
+			String[] notificationArgs = new String[] { notification.id };
+			db.update("notifications_all", notificationUpdate, "id = ?", notificationArgs);
+			db.update("notifications_mentions", notificationUpdate, "id = ?", notificationArgs);
+			db.update("notifications_posts", notificationUpdate, "id = ?", notificationArgs);
+
+			ContentValues statusUpdate=new ContentValues(1);
+			statusUpdate.put("json", MastodonAPIController.gson.toJson(notification.status));
+			db.update("home_timeline", statusUpdate, "id = ?", new String[] { notification.status.id });
+		});
+	}
+
+	public void getNotifications(String maxID, int count, boolean onlyMentions, boolean onlyPosts, boolean forceReload, Callback<PaginatedResponse<List<Notification>>> callback){
 		cancelDelayedClose();
 		databaseThread.postRunnable(()->{
 			try{
-				if(!onlyMentions && loadingNotifications){
+				if(!onlyMentions && !onlyPosts && loadingNotifications){
 					synchronized(pendingNotificationsCallbacks){
 						pendingNotificationsCallbacks.add(callback);
 					}
@@ -148,7 +172,8 @@ public class CacheController{
 				}
 				if(!forceReload){
 					SQLiteDatabase db=getOrOpenDatabase();
-					try(Cursor cursor=db.query(onlyMentions ? "notifications_mentions" : "notifications_all", new String[]{"json"}, maxID==null ? null : "`id`<?", maxID==null ? null : new String[]{maxID}, null, null, "`time` DESC", count+"")){
+					String table=onlyPosts ? "notifications_posts" : onlyMentions ? "notifications_mentions" : "notifications_all";
+					try(Cursor cursor=db.query(table, new String[]{"json"}, maxID==null ? null : "`id`<?", maxID==null ? null : new String[]{maxID}, null, null, "`time` DESC", count+"")){
 						if(cursor.getCount()==count){
 							ArrayList<Notification> result=new ArrayList<>();
 							cursor.moveToFirst();
@@ -168,9 +193,10 @@ public class CacheController{
 						Log.w(TAG, "getNotifications: corrupted notification object in database", x);
 					}
 				}
-				if(!onlyMentions)
+				if(!onlyMentions && !onlyPosts)
 					loadingNotifications=true;
-				new GetNotifications(maxID, count, onlyMentions ? EnumSet.of(Notification.Type.MENTION): EnumSet.allOf(Notification.Type.class))
+				boolean isAkkoma = AccountSessionManager.get(accountID).getInstance().map(Instance::isAkkoma).orElse(false);
+				new GetNotifications(maxID, count, onlyPosts ? EnumSet.of(Notification.Type.STATUS) : onlyMentions ? EnumSet.of(Notification.Type.MENTION): EnumSet.allOf(Notification.Type.class), isAkkoma)
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(List<Notification> result){
@@ -178,7 +204,7 @@ public class CacheController{
 								AccountSessionManager.get(accountID).filterStatusContainingObjects(filtered, n->n.status, FilterContext.NOTIFICATIONS);
 								PaginatedResponse<List<Notification>> res=new PaginatedResponse<>(filtered, result.isEmpty() ? null : result.get(result.size()-1).id);
 								callback.onSuccess(res);
-								putNotifications(result, onlyMentions, maxID==null);
+								putNotifications(result, onlyMentions, onlyPosts, maxID==null);
 								if(!onlyMentions){
 									loadingNotifications=false;
 									synchronized(pendingNotificationsCallbacks){
@@ -214,9 +240,9 @@ public class CacheController{
 		}, 0);
 	}
 
-	private void putNotifications(List<Notification> notifications, boolean onlyMentions, boolean clear){
+	private void putNotifications(List<Notification> notifications, boolean onlyMentions, boolean onlyPosts, boolean clear){
 		runOnDbThread((db)->{
-			String table=onlyMentions ? "notifications_mentions" : "notifications_all";
+			String table=onlyPosts ? "notifications_posts" : onlyMentions ? "notifications_mentions" : "notifications_all";
 			if(clear)
 				db.delete(table, null, null);
 			ContentValues values=new ContentValues(4);
@@ -259,6 +285,28 @@ public class CacheController{
 
 	public void deleteStatus(String id){
 		runOnDbThread((db)->{
+			String gapId=null;
+			int gapFlags=0;
+			// select to-be-removed and newer row
+			try(Cursor cursor=db.query("home_timeline", new String[]{"id", "flags"}, "`time`>=(SELECT `time` FROM `home_timeline` WHERE `id`=?)", new String[]{id}, null, null, "`time` ASC", "2")){
+				boolean hadGapAfter=false;
+				// always either one or two iterations (only one if there's no newer post)
+				while(cursor.moveToNext()){
+					String currentId=cursor.getString(0);
+					int currentFlags=cursor.getInt(1);
+					if(currentId.equals(id)){
+						hadGapAfter=((currentFlags & POST_FLAG_GAP_AFTER)!=0);
+					}else if(hadGapAfter){
+						gapFlags=currentFlags|POST_FLAG_GAP_AFTER;
+						gapId=currentId;
+					}
+				}
+			}
+			if(gapId!=null){
+				ContentValues values=new ContentValues();
+				values.put("flags", gapFlags);
+				db.update("home_timeline", values, "`id`=?", new String[]{gapId});
+			}
 			db.delete("home_timeline", "`id`=?", new String[]{id});
 		});
 	}
@@ -437,6 +485,7 @@ public class CacheController{
 							`time` INTEGER NOT NULL
 						)""");
 			createRecentSearchesTable(db);
+			createPostsNotificationsTable(db);
 		}
 
 		@Override
@@ -445,6 +494,10 @@ public class CacheController{
 				createRecentSearchesTable(db);
 			}
 			if(oldVersion<3){
+				// MEGALODON
+				createPostsNotificationsTable(db);
+			}
+			if(oldVersion<4){
 				addTimeColumns(db);
 			}
 		}
@@ -458,13 +511,26 @@ public class CacheController{
 						)""");
 		}
 
+		private void createPostsNotificationsTable(SQLiteDatabase db){
+			db.execSQL("""
+						CREATE TABLE `notifications_posts` (
+							`id` VARCHAR(25) NOT NULL PRIMARY KEY,
+							`json` TEXT NOT NULL,
+							`flags` INTEGER NOT NULL DEFAULT 0,
+							`type` INTEGER NOT NULL,
+							`time` INTEGER NOT NULL
+						)""");
+		}
+
 		private void addTimeColumns(SQLiteDatabase db){
 			db.execSQL("DELETE FROM `home_timeline`");
 			db.execSQL("DELETE FROM `notifications_all`");
 			db.execSQL("DELETE FROM `notifications_mentions`");
+			db.execSQL("DELETE FROM `notifications_posts`");
 			db.execSQL("ALTER TABLE `home_timeline` ADD `time` INTEGER NOT NULL DEFAULT 0");
 			db.execSQL("ALTER TABLE `notifications_all` ADD `time` INTEGER NOT NULL DEFAULT 0");
 			db.execSQL("ALTER TABLE `notifications_mentions` ADD `time` INTEGER NOT NULL DEFAULT 0");
+			db.execSQL("ALTER TABLE `notifications_posts` ADD `time` INTEGER NOT NULL DEFAULT 0");
 		}
 	}
 

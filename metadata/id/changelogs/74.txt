@@ -1,0 +1,9 @@
+- Garis waktu dapat disematkan dan diatur ulang
+- Mendukung postingan khusus lokal
+- Indikator untuk teks alternatif yang hilang
+- Editor teks alternatif yang ditingkatkan
+- Header di timeline untuk hashtag yang diikuti
+- Lebih banyak kategori notifikasi
+- Tambahkan kembali pembuka file
+- Konfirmasi saat menyimpan draf yang telah diedit
+- Pilihan untuk menonaktifkan tombol "Lihat postingan baru".

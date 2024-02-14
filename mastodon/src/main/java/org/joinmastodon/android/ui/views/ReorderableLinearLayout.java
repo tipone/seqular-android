@@ -2,14 +2,11 @@ package org.joinmastodon.android.ui.views;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
-
-import org.joinmastodon.android.R;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
@@ -284,7 +281,7 @@ public class ReorderableLinearLayout extends LinearLayout implements CustomViewH
 
 	private int getMaxDragScroll(){
 		if(cachedMaxScrollSpeed==-1){
-			cachedMaxScrollSpeed=getResources().getDimensionPixelSize(R.dimen.item_touch_helper_max_drag_scroll_per_frame);
+			cachedMaxScrollSpeed=getResources().getDimensionPixelSize(androidx.recyclerview.R.dimen.item_touch_helper_max_drag_scroll_per_frame);
 		}
 		return cachedMaxScrollSpeed;
 	}

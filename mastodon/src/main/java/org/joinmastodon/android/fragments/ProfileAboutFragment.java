@@ -44,7 +44,7 @@ import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareFragment{
-	private static final int MAX_FIELDS=4;
+	static final int MAX_FIELDS=4;
 
 	public UsableRecyclerView list;
 	private List<AccountField> fields=Collections.emptyList();
@@ -181,13 +181,13 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 	private class AboutViewHolder extends BaseViewHolder implements ImageLoaderViewHolder{
 		private final TextView title;
 		private final LinkedTextView value;
-		private final ImageView verifiedIcon;
+//		private final ImageView verifiedIcon;
 
 		public AboutViewHolder(){
 			super(R.layout.item_profile_about);
 			title=findViewById(R.id.title);
 			value=findViewById(R.id.value);
-			verifiedIcon=findViewById(R.id.verified_icon);
+//			verifiedIcon=findViewById(R.id.verified_icon);
 		}
 
 		@Override
@@ -195,7 +195,7 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 			super.onBind(item);
 			title.setText(item.parsedName);
 			value.setText(item.parsedValue);
-			verifiedIcon.setVisibility(item.verifiedAt!=null ? View.VISIBLE : View.GONE);
+//			verifiedIcon.setVisibility(item.verifiedAt!=null ? View.VISIBLE : View.GONE);
 		}
 
 		@Override
@@ -310,7 +310,7 @@ public class ProfileAboutFragment extends Fragment implements WindowInsetsAwareF
 		public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState){
 			super.onSelectedChanged(viewHolder, actionState);
 			if(actionState==ItemTouchHelper.ACTION_STATE_DRAG){
-				viewHolder.itemView.setTag(R.id.item_touch_helper_previous_elevation, viewHolder.itemView.getElevation()); // prevents the default behavior of changing elevation in onDraw()
+				viewHolder.itemView.setTag(me.grishka.appkit.R.id.item_touch_helper_previous_elevation, viewHolder.itemView.getElevation()); // prevents the default behavior of changing elevation in onDraw()
 				viewHolder.itemView.animate().translationZ(V.dp(1)).setDuration(200).setInterpolator(CubicBezierInterpolator.DEFAULT).start();
 			}
 		}

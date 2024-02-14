@@ -1,0 +1,10 @@
+- Tab beranda baru dengan garis waktu publik
+- Menampilkan pengumuman server
+- Teks diskalakan sesuai dengan pengaturan sistem
+- Peningkatan pemfilteran (tidak, "Sembunyikan dengan peringatan" belum berfungsi) oleh @thiagojedi
+- Fitur manajemen daftar
+- Hapus pengikut dengan memblokir mereka secara lunak
+- Larang hubungan dengan fasis
+- Memperbaiki gambar yang tidak dimuat saat terhubung ke instance Akkoma
+- Perbaikan bug dan penyesuaian UI
+- Tambahkan log perubahan ke pembaru oleh @LucasGGamerM

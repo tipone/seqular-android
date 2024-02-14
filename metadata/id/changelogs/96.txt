@@ -1,0 +1,3 @@
+Hal-hal baru untuk 96:
+- Meningkatkan kemampuan untuk memiliki lini masa lokal server lain di lini masa
+- Perbaikan dan peningkatan kecil

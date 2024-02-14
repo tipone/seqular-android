@@ -1,0 +1,4 @@
+Hal-hal baru untuk rilis 92:
+- Filter yang lebih baik
+- Tata letak halaman profil baru
+- Banyak perubahan dan peningkatan kecil

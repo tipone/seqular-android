@@ -21,8 +21,10 @@ public abstract class GithubSelfUpdater{
 	}
 
 	public static boolean needSelfUpdating(){
-		return BuildConfig.BUILD_TYPE.equals("githubRelease") || BuildConfig.BUILD_TYPE.equals("githubDebug");
+		return BuildConfig.BUILD_TYPE.equals("githubRelease") || BuildConfig.BUILD_TYPE.equals("debug") || BuildConfig.BUILD_TYPE.equals("nightly");
 	}
+
+	public abstract void checkForUpdates();
 
 	public abstract void maybeCheckForUpdates();
 
@@ -51,6 +53,7 @@ public abstract class GithubSelfUpdater{
 	}
 
 	public static class UpdateInfo{
+		public String changelog;
 		public String version;
 		public long size;
 	}

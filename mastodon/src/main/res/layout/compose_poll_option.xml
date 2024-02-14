@@ -33,7 +33,7 @@
 		android:tint="?colorM3OnSurfaceVariant"
 		android:contentDescription="@string/reorder"
 		android:paddingStart="4dp"
-		android:src="@drawable/ic_drag_indicator_20px"
+		android:src="@drawable/ic_fluent_re_order_dots_vertical_20_filled"
 		tools:ignore="RtlSymmetry" />
 
 </FrameLayout>

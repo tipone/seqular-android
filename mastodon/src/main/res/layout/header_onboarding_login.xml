@@ -51,7 +51,7 @@
 			android:scaleType="center"
 			android:importantForAccessibility="no"
 			android:tint="?colorM3OnSurfaceVariant"
-			android:src="@drawable/ic_m3_search"/>
+			android:src="@drawable/ic_fluent_search_20_filled"/>
 		
 		<ImageButton
 			android:id="@+id/search_clear"
@@ -66,7 +66,7 @@
 			android:stateListAnimator="@null"
 			android:elevation="0dp"
 			android:tint="?colorM3OnSurfaceVariant"
-			android:src="@drawable/ic_m3_cancel"/>
+			android:src="@drawable/ic_fluent_dismiss_20_filled"/>
 
 	</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
 

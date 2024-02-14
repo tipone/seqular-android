@@ -11,6 +11,7 @@ import java.net.IDN;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Parcel
 public class Instance extends BaseModel{
@@ -27,7 +28,7 @@ public class Instance extends BaseModel{
 	/**
 	 * Admin-defined description of the Mastodon site.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String description;
 	/**
 	 * A shorter description defined by the admin.
@@ -37,7 +38,7 @@ public class Instance extends BaseModel{
 	/**
 	 * An email that may be contacted for any inquiries.
 	 */
-	@RequiredField
+//	@RequiredField
 	public String email;
 	/**
 	 * The version of Mastodon installed on the instance.
@@ -82,6 +83,15 @@ public class Instance extends BaseModel{
 	// non-standard field in some Mastodon forks
 	public int maxTootChars;
 
+	public V2 v2;
+
+	public Pleroma pleroma;
+
+	public PleromaPollLimits pollLimits;
+
+	/** like uri, but always without scheme and trailing slash */
+	public transient String normalizedUri;
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
@@ -91,6 +101,10 @@ public class Instance extends BaseModel{
 			rules=Collections.emptyList();
 		if(shortDescription==null)
 			shortDescription="";
+		// akkoma says uri is "https://example.social" while just "example.social" on mastodon
+		normalizedUri = uri
+				.replaceFirst("^https://", "")
+				.replaceFirst("/$", "");
 	}
 
 	@Override
@@ -128,6 +142,34 @@ public class Instance extends BaseModel{
 		if(stats!=null)
 			ci.totalUsers=stats.userCount;
 		return ci;
+	}
+
+	public boolean isAkkoma() {
+		return pleroma != null;
+	}
+
+	public boolean isPixelfed() {
+		return version.contains("compatible; Pixelfed");
+	}
+
+	public boolean hasFeature(Feature feature) {
+		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
+				.map(p -> p.metadata)
+				.map(m -> m.features);
+
+		return switch (feature) {
+			case BUBBLE_TIMELINE -> pleromaFeatures
+					.map(f -> f.contains("bubble_timeline"))
+					.orElse(false);
+			case MACHINE_TRANSLATION -> pleromaFeatures
+					.map(f -> f.contains("akkoma:machine_translation"))
+					.orElse(false);
+		};
+	}
+
+	public enum Feature {
+		BUBBLE_TIMELINE,
+		MACHINE_TRANSLATION
 	}
 
 	@Parcel
@@ -175,5 +217,47 @@ public class Instance extends BaseModel{
 		public int maxCharactersPerOption;
 		public int minExpiration;
 		public int maxExpiration;
+	}
+
+	@Parcel
+	public static class V2 extends BaseModel {
+		public V2.Configuration configuration;
+
+		@Parcel
+		public static class Configuration {
+			public TranslationConfiguration translation;
+		}
+
+		@Parcel
+		public static class TranslationConfiguration{
+			public boolean enabled;
+		}
+	}
+
+	@Parcel
+	public static class Pleroma extends BaseModel {
+		public Pleroma.Metadata metadata;
+
+		@Parcel
+		public static class Metadata {
+			public List<String> features;
+			public Pleroma.Metadata.FieldsLimits fieldsLimits;
+
+			@Parcel
+			public static class FieldsLimits {
+				public long maxFields;
+				public long maxRemoteFields;
+				public long nameLength;
+				public long valueLength;
+			}
+		}
+	}
+
+	@Parcel
+	public static class PleromaPollLimits {
+		public long maxExpiration;
+		public long maxOptionChars;
+		public long maxOptions;
+		public long minExpiration;
 	}
 }

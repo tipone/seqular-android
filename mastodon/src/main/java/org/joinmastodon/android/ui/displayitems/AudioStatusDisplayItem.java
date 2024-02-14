@@ -32,7 +32,6 @@ import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 
 public class AudioStatusDisplayItem extends StatusDisplayItem{
-	public final Status status;
 	public final Attachment attachment;
 	private final ImageLoaderRequest imageRequest;
 
@@ -40,7 +39,7 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 		super(parentID, parentFragment);
 		this.status=status;
 		this.attachment=attachment;
-		imageRequest=new UrlImageLoaderRequest(TextUtils.isEmpty(attachment.previewUrl) ? status.account.avatarStatic : attachment.previewUrl, V.dp(100), V.dp(100));
+		imageRequest=new UrlImageLoaderRequest(TextUtils.isEmpty(attachment.previewUrl) ? (status.account != null ? status.account.avatarStatic : "") : attachment.previewUrl, V.dp(100), V.dp(100));
 	}
 
 	@Override
@@ -214,7 +213,7 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void setPlayButtonPlaying(boolean playing, boolean animated){
-			playPauseBtn.setImageResource(playing ? R.drawable.ic_pause_48px : R.drawable.ic_play_arrow_48px);
+			playPauseBtn.setImageResource(playing ? R.drawable.ic_fluent_pause_48_regular : R.drawable.ic_fluent_play_48_regular);
 			playPauseBtn.setContentDescription(item.parentFragment.getString(playing ? R.string.pause : R.string.play));
 			if(playing)
 				bgDrawable.startAnimation();

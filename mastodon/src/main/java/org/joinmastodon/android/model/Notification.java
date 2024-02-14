@@ -18,8 +18,10 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 	public Instant createdAt;
 	@RequiredField
 	public Account account;
-
 	public Status status;
+	public Report report;
+	public String emoji;
+	public String emojiUrl;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
@@ -53,6 +55,23 @@ public class Notification extends BaseModel implements DisplayItemsParent{
 		@SerializedName("poll")
 		POLL,
 		@SerializedName("status")
-		STATUS
+		STATUS,
+		@SerializedName("update")
+		UPDATE,
+		@SerializedName("reaction")
+		REACTION,
+		@SerializedName("pleroma:emoji_reaction")
+		PLEROMA_EMOJI_REACTION,
+		@SerializedName("admin.sign_up")
+		SIGN_UP,
+		@SerializedName("admin.report")
+		REPORT
+	}
+
+	@Parcel
+	public static class Report {
+		public String id;
+		public String comment;
+		public Account targetAccount;
 	}
 }

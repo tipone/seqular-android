@@ -52,18 +52,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.model.Attachment;
+import org.joinmastodon.android.ui.ImageDescriptionSheet;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
+import org.joinmastodon.android.utils.FileProvider;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -81,6 +85,9 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okio.BufferedSink;
 import okio.Okio;
 import okio.Sink;
@@ -110,6 +117,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 	private TextView videoTimeView;
 	private ImageButton videoPlayPauseButton;
 	private View videoControls;
+	private MenuItem imageDescriptionButton;
 	private boolean uiVisible=true;
 	private AudioManager.OnAudioFocusChangeListener audioFocusListener=this::onAudioFocusChanged;
 	private Runnable uiAutoHider=()->{
@@ -172,7 +180,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 						toolbarWrap.setPadding(0, 0, 0, 0);
 						videoControls.setPadding(0, 0, 0, 0);
 					}
-					insets=insets.replaceSystemWindowInsets(tappable.left, tappable.top, tappable.right, tappable.bottom);
+					insets=insets.replaceSystemWindowInsets(tappable.left, tappable.top, tappable.right, insets.getSystemWindowInsetBottom());
 				}
 				uiOverlay.dispatchApplyWindowInsets(insets);
 				int bottomInset=insets.getSystemWindowInsetBottom();
@@ -202,10 +210,36 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		toolbarWrap=uiOverlay.findViewById(R.id.toolbar_wrap);
 		toolbar=uiOverlay.findViewById(R.id.toolbar);
 		toolbar.setNavigationOnClickListener(v->onStartSwipeToDismissTransition(0));
+		imageDescriptionButton = toolbar.getMenu()
+				.add(R.string.sk_image_description)
+				.setIcon(R.drawable.ic_fluent_image_alt_text_24_regular)
+				.setVisible(attachments.get(pager.getCurrentItem()).description != null
+						&& !attachments.get(pager.getCurrentItem()).description.isEmpty())
+				.setOnMenuItemClickListener(item -> {
+					new ImageDescriptionSheet(activity,attachments.get(pager.getCurrentItem())).show();
+					return true;
+				});
+		imageDescriptionButton.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		toolbar.getMenu()
+				.add(R.string.download)
+				.setIcon(R.drawable.ic_fluent_arrow_download_24_regular)
+				.setOnMenuItemClickListener(item -> {
+					saveCurrentFile();
+					return true;
+				})
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		toolbar.getMenu()
+				.add(R.string.button_share)
+				.setIcon(R.drawable.ic_fluent_share_24_regular)
+				.setOnMenuItemClickListener(item -> {
+					shareCurrentFile();
+					return true;
+				})
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		if(status!=null)
-			toolbar.getMenu().add(R.string.info).setIcon(R.drawable.ic_info_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			toolbar.getMenu().add(R.string.info).setIcon(R.drawable.ic_fluent_info_24_regular).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		else
-			toolbar.getMenu().add(R.string.download).setIcon(R.drawable.ic_download_24px).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+			toolbar.getMenu().add(R.string.download).setIcon(R.drawable.ic_fluent_arrow_download_24_regular).setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 		toolbar.setOnMenuItemClickListener(item->{
 			if(status!=null)
 				showInfoSheet();
@@ -412,6 +446,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 	private void onPageChanged(int index){
 		currentIndex=index;
 		Attachment att=attachments.get(index);
+		imageDescriptionButton.setVisible(att.description != null && !att.description.isEmpty());
 		V.setVisibilityAnimated(videoControls, att.type==Attachment.Type.VIDEO ? View.VISIBLE : View.GONE);
 		if(att.type==Attachment.Type.VIDEO){
 			videoSeekBar.setSecondaryProgress(0);
@@ -436,7 +471,8 @@ public class PhotoViewer implements ZoomPanView.Listener{
 			WindowManager.LayoutParams wlp=(WindowManager.LayoutParams) windowView.getLayoutParams();
 			wlp.flags|=WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON;
 			wm.updateViewLayout(windowView, wlp);
-			activity.getSystemService(AudioManager.class).requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+			int audiofocus = GlobalUserPreferences.overlayMedia ? AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK : AudioManager.AUDIOFOCUS_GAIN;
+			activity.getSystemService(AudioManager.class).requestAudioFocus(audioFocusListener, AudioManager.STREAM_MUSIC, audiofocus);
 		}
 		screenOnRefCount++;
 	}
@@ -455,6 +491,44 @@ public class PhotoViewer implements ZoomPanView.Listener{
 
 	public void onPause(){
 		pauseVideo();
+	}
+
+	private void shareCurrentFile(){
+		Attachment att=attachments.get(pager.getCurrentItem());
+		Intent intent = new Intent(Intent.ACTION_SEND);
+
+		if(att.type==Attachment.Type.IMAGE){
+			UrlImageLoaderRequest req=new UrlImageLoaderRequest(att.url);
+			try{
+				File file=ImageCache.getInstance(activity).getFile(req);
+				if(file==null){
+					shareAfterDownloading(att);
+					return;
+				}
+				MastodonAPIController.runInBackground(()->{
+					File imageDir = new File(activity.getCacheDir(), ".");
+					File renamedFile;
+					file.renameTo(renamedFile = new File(imageDir, Uri.parse(att.url).getLastPathSegment()));
+					Uri outputUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", renamedFile);
+
+					// setting type to image
+					intent.setType(mimeTypeForFileName(outputUri.getLastPathSegment()));
+
+					intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+
+					// calling startactivity() to share
+					activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.button_share)));
+
+				});
+			}catch(IOException x){
+				Log.w(TAG, "shareCurrentFile: ", x);
+				Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
+			}
+		}else{
+			shareAfterDownloading(att);
+		}
+
+
 	}
 
 	private void saveCurrentFile(){
@@ -561,6 +635,47 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		Toast.makeText(activity, R.string.downloading, Toast.LENGTH_SHORT).show();
 	}
 
+	private void shareAfterDownloading(Attachment att){
+		Uri uri=Uri.parse(att.url);
+
+		MastodonAPIController.runInBackground(()->{
+			try {
+				OkHttpClient client = new OkHttpClient();
+				Request request = new Request.Builder().url(att.url).build();
+
+				Response response = client.newCall(request).execute();
+				Toast.makeText(activity, R.string.downloading, Toast.LENGTH_SHORT);
+				if (!response.isSuccessful()) {
+					throw new IOException("" + response);
+				}
+
+				File imageDir = new File(activity.getCacheDir(), ".");
+				InputStream inputStream = response.body().byteStream();
+				File file = new File(imageDir, uri.getLastPathSegment());
+				FileOutputStream outputStream = new FileOutputStream(file);
+
+				byte[] buffer = new byte[4096];
+				int bytesRead;
+				while ((bytesRead = inputStream.read(buffer)) != -1) {
+					outputStream.write(buffer, 0, bytesRead);
+				}
+
+				outputStream.close();
+				inputStream.close();
+
+				Intent intent = new Intent(Intent.ACTION_SEND);
+
+				Uri outputUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", file);
+
+				intent.setType(mimeTypeForFileName(outputUri.getLastPathSegment()));
+				intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+				activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.button_share)));
+			} catch(IOException e){
+				Toast.makeText(activity, R.string.error, Toast.LENGTH_SHORT).show();
+			}
+		});
+	}
+
 	private void onAudioFocusChanged(int change){
 		if(change==AudioManager.AUDIOFOCUS_LOSS || change==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT || change==AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK){
 			pauseVideo();
@@ -585,7 +700,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		if(holder==null || !holder.player.isPlaying())
 			return;
 		holder.player.pause();
-		videoPlayPauseButton.setImageResource(R.drawable.ic_play_24);
+		videoPlayPauseButton.setImageResource(R.drawable.ic_fluent_play_24_filled);
 		videoPlayPauseButton.setContentDescription(activity.getString(R.string.play));
 		stopUpdatingVideoPosition();
 		windowView.removeCallbacks(uiAutoHider);
@@ -599,7 +714,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		if(player==null || player.isPlaying())
 			return;
 		player.start();
-		videoPlayPauseButton.setImageResource(R.drawable.ic_pause_24);
+		videoPlayPauseButton.setImageResource(R.drawable.ic_fluent_pause_24_filled);
 		videoPlayPauseButton.setContentDescription(activity.getString(R.string.pause));
 		startUpdatingVideoPosition(player);
 	}
@@ -682,11 +797,11 @@ public class PhotoViewer implements ZoomPanView.Listener{
 			public void onButtonClick(int id){
 				if(id==R.id.btn_boost){
 					if(status!=null){
-						AccountSessionManager.get(accountID).getStatusInteractionController().setReblogged(status, !status.reblogged);
+						AccountSessionManager.get(accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->{});
 					}
 				}else if(id==R.id.btn_favorite){
 					if(status!=null){
-						AccountSessionManager.get(accountID).getStatusInteractionController().setFavorited(status, !status.favourited);
+						AccountSessionManager.get(accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{});
 					}
 				}else if(id==R.id.btn_share){
 					if(status!=null){
@@ -1053,7 +1168,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 
 		@Override
 		public void onCompletion(MediaPlayer mp){
-			videoPlayPauseButton.setImageResource(R.drawable.ic_play_24);
+			videoPlayPauseButton.setImageResource(R.drawable.ic_fluent_play_24_filled);
 			videoPlayPauseButton.setContentDescription(activity.getString(R.string.play));
 			stopUpdatingVideoPosition();
 			if(!uiVisible)

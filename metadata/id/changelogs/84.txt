@@ -1,0 +1,3 @@
+Rilis 84 memperbaiki beberapa bug, seperti:
+- Panggilan balik masuk tidak berfungsi
+- Memperbarui terjemahan bahasa Jerman. Terima kasih @DanTobi!

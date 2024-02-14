@@ -1,10 +1,12 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.net.Uri;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetBookmarkedStatuses;
 import org.joinmastodon.android.events.RemoveAccountPostsEvent;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.Status;
 
@@ -26,6 +28,7 @@ public class BookmarkedStatusListFragment extends StatusListFragment{
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(HeaderPaginationList<Status> result){
+						if(getActivity()==null) return;
 						if(result.nextPageUri!=null)
 							nextMaxID=result.nextPageUri.getQueryParameter("max_id");
 						else
@@ -39,5 +42,15 @@ public class BookmarkedStatusListFragment extends StatusListFragment{
 	@Override
 	protected void onRemoveAccountPostsEvent(RemoveAccountPostsEvent ev){
 		// no-op
+	}
+
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.ACCOUNT;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/bookmarks").build();
 	}
 }

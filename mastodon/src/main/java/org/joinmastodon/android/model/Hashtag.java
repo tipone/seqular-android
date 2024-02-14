@@ -11,15 +11,16 @@ public class Hashtag extends BaseModel implements DisplayItemsParent{
 	public String name;
 	@RequiredField
 	public String url;
+	public boolean following;
 	public List<History> history;
 	public int statusesCount;
-	public boolean following;
 
 	@Override
 	public String toString(){
 		return "Hashtag{"+
 				"name='"+name+'\''+
 				", url='"+url+'\''+
+				", following="+following+
 				", history="+history+
 				", statusesCount="+statusesCount+
 				", following="+following+

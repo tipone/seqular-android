@@ -1,0 +1,2 @@
+Memperbaiki tombol terbitkan yang terpotong pada DPI rendah atau pada bahasa yang lebih panjang. Sekarang menjadi ikon ketika berada dalam kondisi terjangkau!
+Perbaikan kecil pada pratinjau changelog

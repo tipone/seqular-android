@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,15 +23,15 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
+import me.grishka.appkit.utils.V;
 
 public class LinkCardStatusDisplayItem extends StatusDisplayItem{
-	private final Status status;
 	private final UrlImageLoaderRequest imgRequest;
 
-	public LinkCardStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status){
+	public LinkCardStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Status status, boolean showImagePreview){
 		super(parentID, parentFragment);
 		this.status=status;
-		if(status.card.image!=null)
+		if(status.card.image!=null && showImagePreview)
 			imgRequest=new UrlImageLoaderRequest(status.card.image, 1000, 1000);
 		else
 			imgRequest=null;
@@ -101,23 +102,36 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 				photo.setBackground(null);
 				photo.setImageTintList(null);
 				crossfadeDrawable.setSize(card.width, card.height);
+				if (card.width > 0) {
+					// akkoma servers don't provide width and height
+					crossfadeDrawable.setSize(card.width, card.height);
+				} else {
+					crossfadeDrawable.setSize(itemView.getWidth(), itemView.getHeight());
+				}
 				crossfadeDrawable.setBlurhashDrawable(card.blurhashPlaceholder);
 				crossfadeDrawable.setCrossfadeAlpha(0f);
 				photo.setImageDrawable(null);
 				photo.setImageDrawable(crossfadeDrawable);
+				photo.setVisibility(View.VISIBLE);
 				didClear=false;
-			}else{
-				photo.setBackgroundColor(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3SurfaceVariant));
-				photo.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3Outline)));
-				photo.setScaleType(ImageView.ScaleType.CENTER);
-				photo.setImageResource(R.drawable.ic_feed_48px);
+			} else {
+				photo.setVisibility(View.GONE);
 			}
+
+			// if there's no image, we don't want to cover the inset borders
+			FrameLayout.LayoutParams params=(FrameLayout.LayoutParams) inner.getLayoutParams();
+			int margin=item.inset && item.imgRequest == null ? V.dp(1) : 0;
+			params.setMargins(margin, 0, margin, margin);
+
+			boolean insetAndLast=item.inset && isLastDisplayItemForStatus();
+			inner.setClipToOutline(insetAndLast);
+			inner.setOutlineProvider(insetAndLast ? OutlineProviders.bottomRoundedRect(12) : null);
 		}
 
 		@Override
 		public void setImage(int index, Drawable drawable){
 			crossfadeDrawable.setImageDrawable(drawable);
-			if(didClear)
+			if(didClear && item.status.spoilerRevealed)
 				crossfadeDrawable.animateAlpha(0f);
 			Card card=item.status.card;
 			// Make sure the image is not stretched if the server returned wrong dimensions
@@ -134,7 +148,7 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private void onClick(View v){
-			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.status.card.url, item.status);
+			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), item.status.card.url);
 		}
 	}
 }

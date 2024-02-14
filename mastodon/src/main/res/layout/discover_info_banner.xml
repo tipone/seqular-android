@@ -5,7 +5,9 @@
 	android:orientation="horizontal"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
-	android:layout_margin="16dp"
+	android:layout_marginHorizontal="16dp"
+	android:layout_marginTop="16dp"
+	android:layout_marginBottom="8dp"
 	android:padding="16dp"
 	android:background="@drawable/rect_12dp"
 	android:backgroundTint="?colorM3SurfaceVariant">
@@ -15,10 +17,10 @@
 		android:layout_width="32dp"
 		android:layout_height="32dp"
 		android:layout_marginEnd="16dp"
-		android:tint="?colorM3OnPrimaryContainer"
+		android:tint="?colorM3Primary"
 		android:scaleType="center"
 		android:importantForAccessibility="no"
-		tools:src="@drawable/ic_whatshot_24px"/>
+		tools:src="@drawable/ic_fluent_arrow_trending_24_regular"/>
 
 	<TextView
 		android:id="@+id/banner_text"

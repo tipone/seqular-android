@@ -6,6 +6,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
@@ -23,17 +24,18 @@ import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 
 public class SpoilerStatusDisplayItem extends StatusDisplayItem{
-	public final Status status;
 	public final ArrayList<StatusDisplayItem> contentItems=new ArrayList<>();
 	private final CharSequence parsedTitle;
 	private CharSequence translatedTitle;
 	private final CustomEmojiHelper emojiHelper;
 	private final Type type;
+	private final int attachmentCount;
 
-	public SpoilerStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, String title, Status status, Status statusForContent, Type type){
+	public SpoilerStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, String title, Status statusForContent, Type type){
 		super(parentID, parentFragment);
-		this.status=status;
+		this.status=statusForContent;
 		this.type=type;
+		this.attachmentCount=statusForContent.mediaAttachments.size();
 		if(TextUtils.isEmpty(title)){
 			parsedTitle=HtmlParser.parseCustomEmoji(statusForContent.spoilerText, statusForContent.emojis);
 			emojiHelper=new CustomEmojiHelper();
@@ -62,12 +64,14 @@ public class SpoilerStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<SpoilerStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView title, action;
 		private final View button;
+		private final ImageView mediaIcon;
 
 		public Holder(Context context, ViewGroup parent, Type type){
 			super(context, R.layout.display_item_spoiler, parent);
 			title=findViewById(R.id.spoiler_title);
 			action=findViewById(R.id.spoiler_action);
 			button=findViewById(R.id.spoiler_button);
+			mediaIcon=findViewById(R.id.media_icon);
 
 			button.setOutlineProvider(OutlineProviders.roundedRect(8));
 			button.setClipToOutline(true);
@@ -94,7 +98,17 @@ public class SpoilerStatusDisplayItem extends StatusDisplayItem{
 			}else{
 				title.setText(item.parsedTitle);
 			}
-			action.setText(item.status.spoilerRevealed ? R.string.spoiler_hide : R.string.spoiler_show);
+			action.setText(item.status.spoilerRevealed ? R.string.spoiler_hide : R.string.sk_spoiler_show);
+			itemView.setPadding(
+					itemView.getPaddingLeft(),
+					itemView.getPaddingTop(),
+					itemView.getPaddingRight(),
+					item.inset ? itemView.getPaddingTop() : 0
+			);
+			mediaIcon.setVisibility(item.attachmentCount > 0 ? View.VISIBLE : View.GONE);
+			mediaIcon.setImageResource(item.attachmentCount > 1
+					? R.drawable.ic_fluent_image_multiple_24_regular
+					: R.drawable.ic_fluent_image_24_regular);
 		}
 
 		@Override

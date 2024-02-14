@@ -8,6 +8,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +35,7 @@ import org.joinmastodon.android.ui.viewholders.AccountViewHolder;
 import org.joinmastodon.android.ui.viewholders.SimpleListItemViewHolder;
 import org.joinmastodon.android.ui.views.FixedAspectRatioImageView;
 import org.joinmastodon.android.utils.ViewImageLoaderHolderTarget;
+import org.parceler.Parcels;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,6 +44,8 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.LoaderFragment;
 import me.grishka.appkit.imageloader.ViewImageLoader;
@@ -60,7 +64,7 @@ public class SettingsServerAboutFragment extends LoaderFragment{
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
-		instance=AccountSessionManager.getInstance().getInstanceInfo(AccountSessionManager.get(accountID).domain);
+		instance=Parcels.unwrap(getArguments().getParcelable("instance"));
 		loadData();
 	}
 
@@ -124,6 +128,8 @@ public class SettingsServerAboutFragment extends LoaderFragment{
 			hlp.leftMargin=hlp.rightMargin=V.dp(16);
 			scrollingLayout.addView(heading, hlp);
 
+			// if a remote instance is shown, the account is remote and need to be loaded accordingly when shown
+			instance.contactAccount.isRemote=!AccountSessionManager.get(accountID).domain.equals(instance.normalizedUri);
 			AccountViewModel model=new AccountViewModel(instance.contactAccount, accountID);
 			AccountViewHolder holder=new AccountViewHolder(this, scrollingLayout, null);
 			holder.setStyle(AccountViewHolder.AccessoryType.NONE, false);
@@ -139,7 +145,7 @@ public class SettingsServerAboutFragment extends LoaderFragment{
 		if(!TextUtils.isEmpty(instance.email)){
 			needDivider=true;
 			SimpleListItemViewHolder holder=new SimpleListItemViewHolder(getActivity(), scrollingLayout);
-			ListItem<Void> item=new ListItem<>(R.string.send_email_to_server_admin, 0, R.drawable.ic_mail_24px, i->{});
+			ListItem<Void> item=new ListItem<>(R.string.send_email_to_server_admin, 0, R.drawable.ic_fluent_mail_24_regular, i->{});
 			holder.bind(item);
 			holder.itemView.setBackground(UiUtils.getThemeDrawable(getActivity(), android.R.attr.selectableItemBackground));
 			holder.itemView.setOnClickListener(v->openAdminEmail());
@@ -160,7 +166,7 @@ public class SettingsServerAboutFragment extends LoaderFragment{
 	@Override
 	protected void doLoadData(){
 		new GetInstanceExtendedDescription()
-				.setCallback(new SimpleCallback<>(this){
+				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(GetInstanceExtendedDescription.Response result){
 						MastodonAPIController.runInBackground(()->{
@@ -196,8 +202,14 @@ public class SettingsServerAboutFragment extends LoaderFragment{
 							});
 						});
 					}
+
+					@Override
+					public void onError(ErrorResponse error){
+						// probably an akkoma instance where this isn't implemented
+						dataLoaded();
+					}
 				})
-				.exec(accountID);
+				.execRemote(instance.normalizedUri);
 	}
 
 	@Override

@@ -32,7 +32,7 @@
 			android:scaleType="center"
 			android:stateListAnimator="@animator/fab_shadow"
 			android:contentDescription="@string/new_post"
-			android:src="@drawable/ic_edit_24px"/>
+			android:src="@drawable/ic_fluent_compose_24_filled"/>
 
 		<FrameLayout
 			android:id="@+id/new_posts_btn_wrap"

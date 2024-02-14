@@ -2,6 +2,10 @@
 <resources>
 	<item name="header" type="id"/>
 
+	<item name="profile_posts" type="id"/>
+	<item name="profile_posts_with_replies" type="id"/>
+	<item name="profile_pinned_posts" type="id"/>
+	<item name="profile_media" type="id"/>
 	<item name="profile_featured" type="id"/>
 	<item name="profile_timeline" type="id"/>
 	<item name="profile_about" type="id"/>
@@ -11,12 +15,18 @@
 	<item name="discover_news" type="id"/>
 	<item name="discover_users" type="id"/>
 	<item name="discover_local_timeline" type="id"/>
+	<item name="discover_federated_timeline" type="id"/>
+	<item name="discover_lists" type="id"/>
 
 	<item name="notifications_all" type="id"/>
 	<item name="notifications_mentions" type="id"/>
 
 	<item name="save" type="id"/>
 	<item name="remove_from_list" type="id"/>
+
+	<item name="menu_add_timeline" type="id" />
+	<item name="menu_back" type="id" />
+	<item name="menu_add_local_timelines" type="id" />
 
 	<item name="list_item_simple" type="id"/>
 	<item name="list_item_simple_tinted" type="id"/>

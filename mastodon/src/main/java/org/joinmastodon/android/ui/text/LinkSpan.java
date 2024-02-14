@@ -3,7 +3,9 @@ package org.joinmastodon.android.ui.text;
 import android.content.Context;
 import android.text.TextPaint;
 import android.text.style.CharacterStyle;
+import android.view.View;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -33,7 +35,7 @@ public class LinkSpan extends CharacterStyle {
 	@Override
 	public void updateDrawState(TextPaint tp) {
 		tp.setColor(color=tp.linkColor);
-		tp.setUnderlineText(true);
+		tp.setUnderlineText(GlobalUserPreferences.underlinedLinks);
 	}
 	
 	public void onClick(Context context){
@@ -50,8 +52,19 @@ public class LinkSpan extends CharacterStyle {
 		}
 	}
 
+	public void onLongClick(View view) {
+		if(linkObject instanceof Hashtag ht)
+			UiUtils.copyText(view, ht.name);
+		else
+			UiUtils.copyText(view, link);
+	}
+
 	public String getLink(){
 		return link;
+	}
+
+	public String getText() {
+		return parentObject.toString();
 	}
 
 	public Type getType(){

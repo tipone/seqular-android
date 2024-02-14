@@ -42,6 +42,7 @@ public class ComposePollViewController{
 			30*60,
 			3600,
 			6*3600,
+			12*3600,
 			24*3600,
 			3*24*3600,
 			7*24*3600,
@@ -74,10 +75,17 @@ public class ComposePollViewController{
 		pollWrap=view.findViewById(R.id.poll_wrap);
 
 		Instance instance=fragment.instance;
-		if(instance!=null && instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxOptions>0)
-			maxPollOptions=instance.configuration.polls.maxOptions;
-		if(instance!=null && instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxCharactersPerOption>0)
-			maxPollOptionLength=instance.configuration.polls.maxCharactersPerOption;
+		if (!instance.isAkkoma()) {
+			if(instance!=null && instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxOptions>0)
+				maxPollOptions=instance.configuration.polls.maxOptions;
+			if(instance!=null && instance.configuration!=null && instance.configuration.polls!=null && instance.configuration.polls.maxCharactersPerOption>0)
+				maxPollOptionLength=instance.configuration.polls.maxCharactersPerOption;
+		} else {
+			if(instance!=null && instance.pollLimits!=null && instance.pollLimits.maxOptions>0)
+				maxPollOptions= (int) instance.pollLimits.maxOptions;
+			if(instance!=null && instance.pollLimits!=null && instance.pollLimits.maxOptionChars>0)
+				maxPollOptionLength= (int) instance.pollLimits.maxOptionChars;
+		}
 
 		pollOptionsView=pollWrap.findViewById(R.id.poll_options);
 		addPollOptionBtn=pollWrap.findViewById(R.id.add_poll_option);
@@ -127,7 +135,10 @@ public class ComposePollViewController{
 				DraftPollOption opt=createDraftPollOption(false);
 				opt.edit.setText(eopt.title);
 			}
-			pollDuration=(int)fragment.editingStatus.poll.expiresAt.minus(fragment.editingStatus.createdAt.toEpochMilli(), ChronoUnit.MILLIS).getEpochSecond();
+			if(fragment.scheduledStatus!=null && fragment.scheduledStatus.params.poll!=null)
+				pollDuration=Integer.parseInt(fragment.scheduledStatus.params.poll.expiresIn);
+			else if(fragment.editingStatus.poll.expiresAt!=null)
+				pollDuration=(int)fragment.editingStatus.poll.expiresAt.minus(fragment.editingStatus.createdAt.toEpochMilli(), ChronoUnit.MILLIS).getEpochSecond();
 			updatePollOptionHints();
 			pollDurationValue.setText(UiUtils.formatDuration(fragment.getContext(), pollDuration));
 			pollIsMultipleChoice=fragment.editingStatus.poll.multiple;

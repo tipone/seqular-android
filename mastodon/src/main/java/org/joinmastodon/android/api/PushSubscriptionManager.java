@@ -120,9 +120,21 @@ public class PushSubscriptionManager{
 		return !TextUtils.isEmpty(deviceToken);
 	}
 
+
 	public void registerAccountForPush(PushSubscription subscription){
-		if(TextUtils.isEmpty(deviceToken))
-			throw new IllegalStateException("No device push token available");
+		// this function is used for registering push notifications using FCM
+		// to avoid NonFreeNet in F-Droid, this registration is disabled in it
+		// see https://github.com/LucasGGamerM/moshidon/issues/206 for more context
+		if(BuildConfig.BUILD_TYPE.equals("fdroidRelease") || TextUtils.isEmpty(deviceToken)){
+			Log.d(TAG, "Skipping registering for FCM push notifications");
+			return;
+		}
+
+		String endpoint = "https://app.joinmastodon.org/relay-to/fcm/"+deviceToken+"/";
+		registerAccountForPush(subscription, endpoint);
+	}
+
+	public void registerAccountForPush(PushSubscription subscription, String endpoint){
 		MastodonAPIController.runInBackground(()->{
 			Log.d(TAG, "registerAccountForPush: started for "+accountID);
 			String encodedPublicKey, encodedAuthKey, pushAccountID;
@@ -151,12 +163,17 @@ public class PushSubscriptionManager{
 				Log.e(TAG, "registerAccountForPush: error generating encryption key", e);
 				return;
 			}
-			new RegisterForPushNotifications(deviceToken,
+
+			//work-around for adding the randomAccountId
+			String newEndpoint = endpoint;
+			if (endpoint.startsWith("https://app.joinmastodon.org/relay-to/fcm/"))
+				newEndpoint += pushAccountID;
+
+			new RegisterForPushNotifications(newEndpoint,
 					encodedPublicKey,
 					encodedAuthKey,
 					subscription==null ? PushSubscription.Alerts.ofAll() : subscription.alerts,
-					subscription==null ? PushSubscription.Policy.ALL : subscription.policy,
-					pushAccountID)
+					subscription==null ? PushSubscription.Policy.ALL : subscription.policy)
 					.setCallback(new Callback<>(){
 						@Override
 						public void onSuccess(PushSubscription result){
@@ -367,7 +384,7 @@ public class PushSubscriptionManager{
 		for(AccountSession session:AccountSessionManager.getInstance().getLoggedInAccounts()){
 			if(session.pushSubscription==null || forceReRegister)
 				session.getPushSubscriptionManager().registerAccountForPush(session.pushSubscription);
-			else if(session.needUpdatePushSettings)
+			else
 				session.getPushSubscriptionManager().updatePushSettings(session.pushSubscription);
 		}
 	}

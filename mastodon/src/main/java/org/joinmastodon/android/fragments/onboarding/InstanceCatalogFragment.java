@@ -16,6 +16,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
+import org.joinmastodon.android.fragments.MastodonRecyclerFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.catalog.CatalogInstance;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -45,14 +46,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
-import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import okhttp3.Call;
 import okhttp3.Request;
 import okhttp3.Response;
 
-abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInstance>{
+abstract class InstanceCatalogFragment extends MastodonRecyclerFragment<CatalogInstance> {
 	protected RecyclerView.Adapter adapter;
 	protected MergeRecyclerAdapter mergeAdapter;
 	protected CatalogInstance chosenInstance;
@@ -76,13 +76,13 @@ abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInsta
 	private static final double DUNBAR=Math.log(800);
 
 	public InstanceCatalogFragment(int layout, int perPage){
-		super(layout, perPage);
+	super(layout, perPage);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		isSignup=getArguments().getBoolean("signup");
+		isSignup=getArguments() != null && getArguments().getBoolean("signup");
 	}
 
 	protected abstract void proceedWithAuthOrSignup(Instance instance);
@@ -94,10 +94,10 @@ abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInsta
 		currentSearchQueryButWithCasePreserved=searchEdit.getText().toString().trim();
 		updateFilteredList();
 		searchEdit.removeCallbacks(searchDebouncer);
-		Instance instance=instancesCache.get(normalizeInstanceDomain(currentSearchQuery));
+		Instance instance=instancesCache.get(normalizeInstanceDomain(getCurrentSearchQuery()));
 		if(instance==null){
 			showProgressDialog();
-			loadInstanceInfo(currentSearchQuery, false);
+			loadInstanceInfo(getCurrentSearchQuery(), false);
 		}else{
 			proceedWithAuthOrSignup(instance);
 		}
@@ -108,7 +108,7 @@ abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInsta
 		currentSearchQuery=searchEdit.getText().toString().toLowerCase().trim();
 		currentSearchQueryButWithCasePreserved=searchEdit.getText().toString().trim();
 		updateFilteredList();
-		loadInstanceInfo(currentSearchQuery, false);
+		loadInstanceInfo(getCurrentSearchQuery(), false);
 	}
 
 	protected List<CatalogInstance> sortInstances(List<CatalogInstance> result){
@@ -128,9 +128,16 @@ abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInsta
 		instanceProgressDialog.show();
 	}
 
+	protected String getCurrentSearchQuery(){
+		String[] parts=currentSearchQuery.split("@");
+		return parts.length>0 ? parts[parts.length-1] : "";
+	}
+
 	protected String normalizeInstanceDomain(String _domain){
 		if(TextUtils.isEmpty(_domain))
 			return null;
+		String[] parts=_domain.split("@");
+		_domain=parts[parts.length - 1];
 		if(_domain.contains(":")){
 			try{
 				_domain=Uri.parse(_domain).getAuthority();
@@ -208,7 +215,7 @@ abstract class InstanceCatalogFragment extends BaseRecyclerFragment<CatalogInsta
 					instanceProgressDialog.dismiss();
 					instanceProgressDialog=null;
 				}
-				if(Objects.equals(domain, currentSearchQuery) || Objects.equals(currentSearchQuery, redirects.get(domain)) || Objects.equals(currentSearchQuery, redirectsInverse.get(domain))){
+				if(Objects.equals(domain, getCurrentSearchQuery()) || Objects.equals(getCurrentSearchQuery(), redirects.get(domain)) || Objects.equals(getCurrentSearchQuery(), redirectsInverse.get(domain))){
 					boolean found=false;
 					for(CatalogInstance ci:filteredData){
 						if(ci.domain.equals(domain) && ci!=fakeInstance){

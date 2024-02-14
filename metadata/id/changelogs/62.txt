@@ -1,0 +1,11 @@
+- Tombol Publikasikan yang dapat disesuaikan
+- Buka tautan Fediverse di aplikasi
+- Klik lama tombol boost untuk "mengutip" postingan
+- Salin URL kiriman saat menekan lama tombol bagikan
+- Menerapkan penghapusan notifikasi (dinonaktifkan secara default)
+- Ikon khusus untuk berbagai jenis notifikasi
+- Warna abu-abu baru
+- Tambahkan pengaturan untuk menonaktifkan gesekan antar tab
+- Tambahkan berbagai tautan ke pengaturan akun
+- Beralih untuk menyembunyikan tombol terjemahkan di timeline
+- Perbaikan bug dan penyesuaian

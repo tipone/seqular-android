@@ -15,15 +15,19 @@ import android.widget.CheckedTextView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
+import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.CheckableLinearLayout;
+import org.joinmastodon.android.utils.MastodonLanguage;
 import org.parceler.Parcel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -45,38 +49,39 @@ public class ComposeLanguageAlertViewController{
 	private List<LocaleInfo> allLocales;
 	private List<SpecialLocaleInfo> specialLocales=new ArrayList<>();
 	private int selectedIndex=0;
-	private Locale selectedLocale;
+	private MastodonLanguage selectedLocale;
+	private String selectedEncoding;
+	private MastodonLanguage.LanguageResolver resolver;
 
-	public ComposeLanguageAlertViewController(Context context, String preferred, SelectedOption previouslySelected, String postText){
+	public ComposeLanguageAlertViewController(Context context, String preferred, SelectedOption previouslySelected, String postText, MastodonLanguage.LanguageResolver resolver){
+		this(context, preferred, previouslySelected, postText, resolver, null);
+	}
+
+	public ComposeLanguageAlertViewController(Context context, String preferred, SelectedOption previouslySelected, String postText, MastodonLanguage.LanguageResolver resolver, AccountSession session){
 		this.context=context;
+		this.resolver=resolver;
 
-		allLocales=Arrays.stream(Locale.getAvailableLocales())
-				.map(Locale::getLanguage)
-				.distinct()
-				.map(code->{
-					Locale l=Locale.forLanguageTag(code);
-					String name=l.getDisplayLanguage(Locale.getDefault());
-					return new LocaleInfo(l, capitalizeLanguageName(name));
-				})
+		allLocales=MastodonLanguage.allLanguages.stream()
+				.map(l -> new LocaleInfo(l, l.getDisplayName(context)))
 				.sorted(Comparator.comparing(a->a.displayName))
 				.collect(Collectors.toList());
 
 		if(!TextUtils.isEmpty(preferred)){
-			Locale l=Locale.forLanguageTag(preferred);
-			SpecialLocaleInfo pref=new SpecialLocaleInfo();
-			pref.locale=l;
-			pref.displayName=capitalizeLanguageName(l.getDisplayLanguage(Locale.getDefault()));
-			pref.title=context.getString(R.string.language_default);
-			specialLocales.add(pref);
+			MastodonLanguage lang=resolver.fromOrFallback(preferred);
+			specialLocales.add(new SpecialLocaleInfo(
+					lang,
+					lang.getDisplayName(context),
+					context.getString(R.string.language_default)
+			));
 		}
 
-		Locale def=Locale.forLanguageTag(Locale.getDefault().getLanguage());
-		if(!def.getLanguage().equals(preferred)){
-			SpecialLocaleInfo d=new SpecialLocaleInfo();
-			d.locale=def;
-			d.displayName=capitalizeLanguageName(def.getDisplayName());
-			d.title=context.getString(R.string.language_system);
-			specialLocales.add(d);
+		if(!Locale.getDefault().getLanguage().equals(preferred)){
+			MastodonLanguage lang=resolver.getDefault();
+			specialLocales.add(new SpecialLocaleInfo(
+					lang,
+					lang.getDisplayName(context),
+					context.getString(R.string.language_system)
+			));
 		}
 
 		if(Build.VERSION.SDK_INT>=29 && !TextUtils.isEmpty(postText)){
@@ -87,11 +92,25 @@ public class ComposeLanguageAlertViewController{
 			detectLanguage(detected, postText);
 		}
 
+		AccountLocalPreferences lp=session==null ? null : session.getLocalPreferences();
+		if(lp!=null){
+			for(String tag : lp.recentLanguages){
+				if(specialLocales.stream().anyMatch(l->l.language!=null && l.language.languageTag!=null
+						&& l.language.languageTag.equals(tag))) continue;
+				resolver.from(tag).ifPresent(lang->specialLocales.add(new SpecialLocaleInfo(
+						lang, lang.getDisplayName(context), null
+				)));
+			}
+			if(lp.bottomEncoding) {
+				specialLocales.add(new SpecialLocaleInfo(null, "\uD83E\uDD7A\uD83D\uDC49\uD83D\uDC48", "bottom"));
+			}
+		}
+
 		if(previouslySelected!=null){
-			if(previouslySelected.index!=-1 && ((previouslySelected.index<specialLocales.size() && Objects.equals(previouslySelected.locale, specialLocales.get(previouslySelected.index).locale)) ||
-					(previouslySelected.index<specialLocales.size()+allLocales.size() && previouslySelected.index>-1 && Objects.equals(previouslySelected.locale, allLocales.get(previouslySelected.index-specialLocales.size()).locale)))){
+			if(previouslySelected.index!=-1 && ((previouslySelected.index<specialLocales.size() && Objects.equals(previouslySelected.language, specialLocales.get(previouslySelected.index).language)) ||
+					(previouslySelected.index<specialLocales.size()+allLocales.size() && Objects.equals(previouslySelected.language, allLocales.get(previouslySelected.index-specialLocales.size()).language)))){
 				selectedIndex=previouslySelected.index;
-				selectedLocale=previouslySelected.locale;
+				selectedLocale=previouslySelected.language;
 			}else{
 				int i=0;
 				boolean found=false;
@@ -106,8 +125,8 @@ public class ComposeLanguageAlertViewController{
 				}
 				if(!found){
 					for(LocaleInfo li:allLocales){
-						if(li.locale.equals(previouslySelected.locale)){
-							selectedLocale=li.locale;
+						if(li.language.equals(previouslySelected.language)){
+							selectedLocale=li.language;
 							selectedIndex=i;
 							break;
 						}
@@ -116,7 +135,7 @@ public class ComposeLanguageAlertViewController{
 				}
 			}
 		}else{
-			selectedLocale=specialLocales.get(0).locale;
+			selectedLocale=specialLocales.get(0).language;
 		}
 
 		list=new UsableRecyclerView(context);
@@ -126,12 +145,12 @@ public class ComposeLanguageAlertViewController{
 		list.setAdapter(adapter);
 		list.setLayoutManager(new LinearLayoutManager(context));
 
-		list.addItemDecoration(new DividerItemDecoration(context, R.attr.colorM3OutlineVariant, 1, 16, 16, vh->vh.getAbsoluteAdapterPosition()==specialLocales.size()-1));
+		list.addItemDecoration(new DividerItemDecoration(context, R.attr.colorM3Outline, 1, 0, 0, vh->vh.getAbsoluteAdapterPosition()==specialLocales.size()-1));
 		list.addItemDecoration(new RecyclerView.ItemDecoration(){
 			private Paint paint=new Paint();
 
 			{
-				paint.setColor(UiUtils.getThemeColor(context, R.attr.colorM3OutlineVariant));
+				paint.setColor(UiUtils.getThemeColor(context, R.attr.colorM3Outline));
 				paint.setStyle(Paint.Style.STROKE);
 				paint.setStrokeWidth(V.dp(1));
 			}
@@ -173,9 +192,9 @@ public class ComposeLanguageAlertViewController{
 				if(lang.getLocaleHypothesisCount()==0 || lang.getConfidenceScore(lang.getLocale(0))<0.75f){
 					info.displayName=context.getString(R.string.language_cant_detect);
 				}else{
-					Locale locale=lang.getLocale(0).toLocale();
-					info.locale=locale;
-					info.displayName=capitalizeLanguageName(locale.getDisplayName(Locale.getDefault()));
+					MastodonLanguage language = resolver.fromOrFallback(lang.getLocale(0).toLanguageTag());
+					info.language=language;
+					info.displayName=language.getDisplayName(context);
 					info.title=context.getString(R.string.language_detected);
 					info.enabled=true;
 					if(holder!=null)
@@ -197,7 +216,7 @@ public class ComposeLanguageAlertViewController{
 	}
 
 	public SelectedOption getSelectedOption(){
-		return new SelectedOption(selectedIndex, selectedLocale);
+		return new SelectedOption(selectedIndex, selectedLocale, selectedEncoding);
 	}
 
 	private void selectItem(int index){
@@ -256,7 +275,8 @@ public class ComposeLanguageAlertViewController{
 		@Override
 		public void onClick(){
 			selectItem(getAbsoluteAdapterPosition());
-			selectedLocale=item.locale;
+			selectedLocale=item.language;
+			selectedEncoding=null;
 		}
 	}
 
@@ -313,7 +333,8 @@ public class ComposeLanguageAlertViewController{
 		@Override
 		public void onClick(){
 			selectItem(getAbsoluteAdapterPosition());
-			selectedLocale=item.locale;
+			selectedLocale=item.language;
+			selectedEncoding=item.title != null && item.title.equals("bottom") ? "bottom" : null;
 		}
 
 		@Override
@@ -323,32 +344,50 @@ public class ComposeLanguageAlertViewController{
 	}
 
 	private static class LocaleInfo{
-		public final Locale locale;
+		public final MastodonLanguage language;
 		public final String displayName;
 
-		private LocaleInfo(Locale locale, String displayName){
-			this.locale=locale;
+		private LocaleInfo(MastodonLanguage language, String displayName){
+			this.language=language;
 			this.displayName=displayName;
 		}
 	}
 
 	private static class SpecialLocaleInfo{
-		public Locale locale;
+		public SpecialLocaleInfo() {}
+
+		public SpecialLocaleInfo(MastodonLanguage lang, String displayName, String title) {
+			this.language = lang;
+			this.displayName = displayName;
+			this.title = title;
+		}
+
+		public MastodonLanguage language;
 		public String displayName;
 		public String title;
 		public boolean enabled=true;
 	}
 
 	@Parcel
-	public static class SelectedOption{
+	public static class SelectedOption {
 		public int index;
-		public Locale locale;
+		public MastodonLanguage language;
+		public String encoding;
 
 		public SelectedOption(){}
 
-		public SelectedOption(int index, Locale locale){
-			this.index=index;
-			this.locale=locale;
+		public SelectedOption(int index, MastodonLanguage language, String encoding) {
+			this.index = index;
+			this.language = language;
+			this.encoding = encoding;
+		}
+
+		public SelectedOption(int index, MastodonLanguage language) {
+			this(index, language, null);
+		}
+
+		public SelectedOption(MastodonLanguage language) {
+			this(-1, language, null);
 		}
 	}
 }

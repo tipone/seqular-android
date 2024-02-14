@@ -1,10 +1,13 @@
 package org.joinmastodon.android.fragments.discover;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -12,6 +15,7 @@ import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.SearchResults;
@@ -33,6 +37,7 @@ import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
+import me.grishka.appkit.utils.V;
 
 public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	private String currentQuery;
@@ -50,7 +55,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 		super.onCreate(savedInstanceState);
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
-		setEmptyText(R.string.no_search_results);
+		setEmptyText(R.string.sk_recent_searches_placeholder);
 		loadData();
 	}
 
@@ -65,7 +70,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 		return switch(s.type){
 			case ACCOUNT -> Collections.singletonList(new AccountStatusDisplayItem(s.id, this, s.account));
 			case HASHTAG -> Collections.singletonList(new HashtagStatusDisplayItem(s.id, this, s.hashtag));
-			case STATUS -> StatusDisplayItem.buildItems(this, s.status, accountID, s, knownAccounts, false, true);
+			case STATUS -> StatusDisplayItem.buildItems(this, s.status, accountID, s, knownAccounts, FilterContext.PUBLIC, 0);
 		};
 	}
 
@@ -165,6 +170,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 							list.scrollToPosition(0);
 					}
 				})
+				.setTimeout(180000) // 3 minutes (searches can take a long time)
 				.exec(accountID);
 	}
 
@@ -180,13 +186,16 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 	}
 
 	public void setQuery(String q, SearchResult.Type filter){
-		if(q.isBlank())
+		if(q.isBlank()) {
+			setEmptyText(R.string.sk_recent_searches_placeholder);
 			return;
+		}
 		if(currentRequest!=null){
 			currentRequest.cancel();
 			currentRequest=null;
 		}
 		currentQuery=q;
+		setEmptyText(R.string.no_search_results);
 		if(filter==null)
 			currentFilter=EnumSet.allOf(SearchResult.Type.class);
 		else
@@ -226,6 +235,21 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 		if(imm.isActive()){
 			imm.hideSoftInputFromWindow(getActivity().getWindow().getDecorView().getWindowToken(), 0);
 		}
+	}
+
+	public void clear() {
+		data.clear();
+		preloadedData.clear();
+		adapter.notifyDataSetChanged();
+		V.setVisibilityAnimated(content, View.GONE);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		Uri.Builder searchUri = base.path("/search");
+		return isInstanceAkkoma()
+				? searchUri.appendQueryParameter("query", currentQuery).build()
+				: searchUri.build();
 	}
 
 	@FunctionalInterface

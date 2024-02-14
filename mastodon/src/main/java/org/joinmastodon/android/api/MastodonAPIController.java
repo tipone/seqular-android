@@ -12,11 +12,16 @@ import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 
 import org.joinmastodon.android.BuildConfig;
+import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.api.gson.IsoInstantTypeAdapter;
 import org.joinmastodon.android.api.gson.IsoLocalDateTypeAdapter;
 import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -38,11 +43,14 @@ import okhttp3.ResponseBody;
 
 public class MastodonAPIController{
 	private static final String TAG="MastodonAPIController";
-	public static final Gson gson=new GsonBuilder()
+	public static final Gson gsonWithoutDeserializer = new GsonBuilder()
 			.disableHtmlEscaping()
 			.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
 			.registerTypeAdapter(Instant.class, new IsoInstantTypeAdapter())
 			.registerTypeAdapter(LocalDate.class, new IsoLocalDateTypeAdapter())
+			.create();
+	public static final Gson gson = gsonWithoutDeserializer.newBuilder()
+			.registerTypeAdapter(Status.class, new Status.StatusDeserializer())
 			.create();
 	private static WorkerThread thread=new WorkerThread("MastodonAPIController");
 	private static OkHttpClient httpClient=new OkHttpClient.Builder()
@@ -52,9 +60,26 @@ public class MastodonAPIController{
 			.build();
 
 	private AccountSession session;
+	private static List<String> badDomains = new ArrayList<>();
 
 	static{
 		thread.start();
+		try {
+			final BufferedReader reader = new BufferedReader(new InputStreamReader(
+					MastodonApp.context.getAssets().open("blocks.txt")
+			));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				if (line.isBlank() || line.startsWith("#")) continue;
+				String[] parts = line.replaceAll("\"", "").split("[\s,;]");
+				if (parts.length == 0) continue;
+				String domain = parts[0].toLowerCase().trim();
+				if (domain.isBlank()) continue;
+				badDomains.add(domain);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public MastodonAPIController(@Nullable AccountSession session){
@@ -62,14 +87,17 @@ public class MastodonAPIController{
 	}
 
 	public <T> void submitRequest(final MastodonAPIRequest<T> req){
+		final String host = req.getURL().getHost();
+		final boolean isBad = host == null || badDomains.stream().anyMatch(h -> h.equalsIgnoreCase(host) || host.toLowerCase().endsWith("." + h));
 		thread.postRunnable(()->{
 			try{
+//				if (isBad) throw new IllegalArgumentException();
 				if(req.canceled)
 					return;
 				Request.Builder builder=new Request.Builder()
 						.url(req.getURL().toString())
 						.method(req.getMethod(), req.getRequestBody())
-						.header("User-Agent", "MastodonAndroid/"+BuildConfig.VERSION_NAME);
+						.header("User-Agent", "MoshidonAndroid/"+BuildConfig.VERSION_NAME);
 
 				String token=null;
 				if(session!=null)
@@ -87,12 +115,12 @@ public class MastodonAPIController{
 				}
 
 				Request hreq=builder.build();
-				Call call=httpClient.newCall(hreq);
+				OkHttpClient client=req.timeout>0
+						? httpClient.newBuilder().readTimeout(req.timeout, TimeUnit.MILLISECONDS).build()
+						: httpClient;
+				Call call=client.newCall(hreq);
 				synchronized(req){
 					req.okhttpCall=call;
-				}
-				if(req.timeout>0){
-					call.timeout().timeout(req.timeout, TimeUnit.MILLISECONDS);
 				}
 
 				if(BuildConfig.DEBUG)
@@ -143,6 +171,11 @@ public class MastodonAPIController{
 											respObj=null;
 									}
 								}catch(JsonIOException|JsonSyntaxException x){
+									if (req.context != null && response.body().contentType().subtype().equals("html")) {
+										UiUtils.launchWebBrowser(req.context, response.request().url().toString());
+										req.cancel();
+										return;
+									}
 									if(BuildConfig.DEBUG)
 										Log.w(TAG, logTag(session)+response+" error parsing or reading body", x);
 									req.onError(x.getLocalizedMessage(), response.code(), x);

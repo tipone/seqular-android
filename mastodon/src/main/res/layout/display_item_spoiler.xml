@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
+	android:orientation="horizontal"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
 	android:paddingLeft="16dp"
 	android:paddingTop="16dp"
 	android:paddingRight="16dp">
 
-	<LinearLayout
+	<RelativeLayout
 		android:id="@+id/spoiler_button"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -17,12 +18,27 @@
 		android:paddingTop="8dp"
 		android:paddingRight="12dp"
 		android:paddingBottom="8dp">
-		
+
+		<ImageView
+			android:id="@+id/media_icon"
+			android:layout_width="28dp"
+			android:layout_height="28dp"
+			android:layout_marginHorizontal="8dp"
+			android:layout_centerVertical="true"
+			android:layout_alignParentEnd="true"
+			android:scaleType="center"
+			android:contentDescription="@string/sk_post_contains_media"
+			android:src="@drawable/ic_fluent_image_24_regular"
+			android:tint="?colorM3OnSecondaryContainer" />
+
 		<TextView
 			android:id="@+id/spoiler_title"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="4dp"
+			android:layout_alignParentStart="true"
+			android:layout_alignParentTop="true"
+			android:layout_toStartOf="@id/media_icon"
 			android:textAppearance="@style/m3_body_large"
 			android:textColor="?colorM3OnSecondaryContainer"
 			tools:text="Spoilery stuff"/>
@@ -31,12 +47,14 @@
 			android:id="@+id/spoiler_action"
 			android:layout_width="match_parent"
 			android:layout_height="20dp"
+			android:layout_below="@id/spoiler_title"
+			android:layout_toStartOf="@id/media_icon"
 			android:textAppearance="@style/m3_label_large"
 			android:singleLine="true"
 			android:gravity="center_vertical"
 			android:textColor="?colorM3Primary"
 			tools:text="Re-hide"/>
 
-	</LinearLayout>
+	</RelativeLayout>
 
 </FrameLayout>

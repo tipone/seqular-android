@@ -6,24 +6,32 @@ import com.google.gson.annotations.SerializedName;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
+import org.parceler.Parcel;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.regex.Pattern;
 
+@Parcel
 public class LegacyFilter extends BaseModel{
-	@RequiredField
 	public String id;
-	@RequiredField
 	public String phrase;
+	public String title;
 	public transient EnumSet<FilterContext> context=EnumSet.noneOf(FilterContext.class);
 	public Instant expiresAt;
 	public boolean irreversible;
 	public boolean wholeWord;
 
 	@SerializedName("context")
-	private List<FilterContext> _context;
+	protected List<FilterContext> _context;
+
+	public FilterAction filterAction;
+
+	public List<FilterKeyword> keywords=new ArrayList<>();
+
+	public List<FilterStatus> statuses=new ArrayList<>();
 
 	private transient Pattern pattern;
 
@@ -36,6 +44,10 @@ public class LegacyFilter extends BaseModel{
 			if(c!=null)
 				context.add(c);
 		}
+		for(FilterKeyword keyword:keywords)
+			keyword.postprocess();
+		for(FilterStatus status:statuses)
+			status.postprocess();
 	}
 
 	public boolean matches(CharSequence text){
@@ -47,6 +59,7 @@ public class LegacyFilter extends BaseModel{
 			else
 				pattern=Pattern.compile(Pattern.quote(phrase), Pattern.CASE_INSENSITIVE);
 		}
+		if (title == null) title = phrase;
 		return pattern.matcher(text).find();
 	}
 
@@ -62,12 +75,15 @@ public class LegacyFilter extends BaseModel{
 	public String toString(){
 		return "Filter{"+
 				"id='"+id+'\''+
+				", title='"+title+'\''+
 				", phrase='"+phrase+'\''+
 				", context="+context+
 				", expiresAt="+expiresAt+
 				", irreversible="+irreversible+
 				", wholeWord="+wholeWord+
+				", filterAction="+filterAction+
+				", keywords="+keywords+
+				", statuses="+statuses+
 				'}';
 	}
-
 }

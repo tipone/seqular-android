@@ -16,7 +16,7 @@
 		android:textColor="?colorM3OnSurface"
 		android:maxLines="4"
 		android:ellipsize="end"
-		android:minHeight="36dp"
+		android:minHeight="48dp"
 		android:gravity="center_vertical"
 		tools:text="#CatsOfMastodonButLong"/>
 
@@ -31,7 +31,7 @@
 		<org.joinmastodon.android.ui.views.ProgressBarButton
 			android:id="@+id/profile_action_btn"
 			android:layout_width="wrap_content"
-			android:layout_height="36dp"
+			android:layout_height="48dp"
 			android:layout_gravity="center"
 			style="@style/Widget.Mastodon.M3.Button.Filled"
 			android:paddingHorizontal="16dp"
@@ -54,7 +54,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_below="@id/title"
-		android:layout_marginTop="8dp"
+		android:layout_marginTop="4dp"
 		android:textAppearance="@style/m3_label_large"
 		android:textColor="?colorM3OnSurfaceVariant"
 		tools:text="123 posts"/>

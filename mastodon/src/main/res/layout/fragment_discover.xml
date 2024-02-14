@@ -20,13 +20,12 @@
 
 			<ImageButton
 				android:id="@+id/search_back"
-				android:layout_width="40dp"
-				android:layout_height="40dp"
-				android:layout_margin="8dp"
+				android:layout_width="56dp"
+				android:layout_height="56dp"
 				android:contentDescription="@string/back"
-				android:background="@drawable/bg_round_ripple"
+				android:background="?android:actionBarItemBackground"
 				android:tint="?colorM3OnSurfaceVariant"
-				android:src="@drawable/ic_search_24px"/>
+				android:src="@drawable/ic_fluent_search_24_regular"/>
 
 			<TextView
 				android:id="@+id/search_text"
@@ -37,7 +36,7 @@
 				android:singleLine="true"
 				android:textColor="?colorM3OnSurfaceVariant"
 				android:textAppearance="@style/m3_body_large"
-				android:text="@string/search_mastodon"/>
+				android:text="@string/sk_search_fediverse"/>
 
 		</LinearLayout>
 	</FrameLayout>
@@ -47,6 +46,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		android:orientation="vertical">
+
 		<org.joinmastodon.android.ui.tabs.TabLayout
 			android:id="@+id/tabbar"
 			android:layout_width="match_parent"
@@ -58,6 +58,8 @@
 			app:tabIndicatorFullWidth="false"
 			app:tabMinWidth="90dp"
 			app:tabMode="scrollable"
+			android:clipToPadding="false"
+			android:paddingHorizontal="4dp"
 			android:background="?colorM3Surface"/>
 
 		<View

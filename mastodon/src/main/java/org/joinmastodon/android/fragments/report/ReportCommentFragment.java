@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.reports.SendReport;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -99,6 +100,7 @@ public class ReportCommentFragment extends MastodonToolbarFragment{
 
 		ProgressBar topProgress=view.findViewById(R.id.top_progress);
 		topProgress.setProgress(getArguments().containsKey("ruleIDs") ? 75 : 66);
+		forwardSwitch.setChecked(GlobalUserPreferences.forwardReportDefault);
 	}
 
 	@Override

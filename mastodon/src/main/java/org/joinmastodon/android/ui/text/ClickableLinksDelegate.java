@@ -1,9 +1,5 @@
 package org.joinmastodon.android.ui.text;
 
-import android.content.ClipData;
-import android.content.ClipboardManager;
-import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.CornerPathEffect;
 import android.graphics.Paint;
@@ -15,15 +11,14 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import org.joinmastodon.android.R;
-import org.joinmastodon.android.ui.utils.UiUtils;
 
 import androidx.annotation.NonNull;
-import me.grishka.appkit.utils.CustomViewHelper;
 
-public class ClickableLinksDelegate implements CustomViewHelper{
+import org.joinmastodon.android.ui.utils.UiUtils;
+
+import me.grishka.appkit.utils.V;
+
+public class ClickableLinksDelegate {
 
 	private final Paint hlPaint;
 	private Path hlPath;
@@ -36,9 +31,9 @@ public class ClickableLinksDelegate implements CustomViewHelper{
 		this.view=view;
 		hlPaint=new Paint();
 		hlPaint.setAntiAlias(true);
-		hlPaint.setPathEffect(new CornerPathEffect(dp(3)));
+		hlPaint.setPathEffect(new CornerPathEffect(V.dp(3)));
 		hlPaint.setStyle(Paint.Style.FILL_AND_STROKE);
-		hlPaint.setStrokeWidth(dp(4));
+		hlPaint.setStrokeWidth(V.dp(4));
 		gestureDetector = new GestureDetector(view.getContext(), new LinkGestureListener(), view.getHandler());
 	}
 
@@ -67,11 +62,6 @@ public class ClickableLinksDelegate implements CustomViewHelper{
 			canvas.drawPath(hlPath, hlPaint);
 			canvas.restore();
 		}
-	}
-
-	@Override
-	public Resources getResources(){
-		return view.getResources();
 	}
 
 	/**
@@ -125,13 +115,8 @@ public class ClickableLinksDelegate implements CustomViewHelper{
 
 		@Override
 		public void onLongPress(@NonNull MotionEvent event) {
-			//if target is not a link, don't copy
 			if (selectedSpan == null) return;
-			if (selectedSpan.getType() != LinkSpan.Type.URL) return;
-			//copy link text to clipboard
-			ClipboardManager clipboard = (ClipboardManager) view.getContext().getSystemService(Context.CLIPBOARD_SERVICE);
-			clipboard.setPrimaryClip(ClipData.newPlainText("", selectedSpan.getLink()));
-			UiUtils.maybeShowTextCopiedToast(view.getContext());
+			UiUtils.copyText(view, selectedSpan.getType() == LinkSpan.Type.URL ? selectedSpan.getLink() : selectedSpan.getText());
 			//reset view
 			resetAndInvalidate();
 		}

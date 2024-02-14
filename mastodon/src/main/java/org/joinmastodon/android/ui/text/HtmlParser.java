@@ -1,11 +1,22 @@
 package org.joinmastodon.android.ui.text;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.BulletSpan;
 import android.text.style.ForegroundColorSpan;
+import android.text.style.LeadingMarginSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StrikethroughSpan;
+import android.text.style.StyleSpan;
+import android.text.style.SubscriptSpan;
+import android.text.style.SuperscriptSpan;
+import android.text.style.TypefaceSpan;
+import android.text.style.UnderlineSpan;
 import android.widget.TextView;
 
 import com.twitter.twittertext.Regex;
@@ -26,6 +37,7 @@ import org.jsoup.safety.Safelist;
 import org.jsoup.select.NodeVisitor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -34,6 +46,8 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
+
+import me.grishka.appkit.utils.V;
 
 public class HtmlParser{
 	private static final String TAG="HtmlParser";
@@ -57,6 +71,18 @@ public class HtmlParser{
 
 	private HtmlParser(){}
 
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID){
+		return parse(source, emojis, mentions, tags, accountID, null, null);
+	}
+
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Context context){
+		return parse(source, emojis, mentions, tags, accountID, null, context);
+	}
+
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject){
+		return parse(source, emojis, mentions, tags, accountID, parentObject, null);
+	}
+
 	/**
 	 * Parse HTML and custom emoji into a spanned string for display.
 	 * Supported tags: <ul>
@@ -69,16 +95,22 @@ public class HtmlParser{
 	 * @param emojis Custom emojis that are present in source as <code>:code:</code>
 	 * @return a spanned string
 	 */
-	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject){
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject, Context context){
 		class SpanInfo{
 			public Object span;
 			public int start;
 			public Element element;
+			public boolean more;
 
 			public SpanInfo(Object span, int start, Element element){
+				this(span, start, element, false);
+			}
+
+			public SpanInfo(Object span, int start, Element element, boolean more){
 				this.span=span;
 				this.start=start;
 				this.element=element;
+				this.more=more;
 			}
 		}
 
@@ -88,6 +120,9 @@ public class HtmlParser{
 		Map<String, Hashtag> tagsByTag=tags.stream().distinct().collect(Collectors.toMap(t->t.name.toLowerCase(), Function.identity()));
 
 		final SpannableStringBuilder ssb=new SpannableStringBuilder();
+		int colorInsert=UiUtils.getThemeColor(context, R.attr.colorM3Success);
+		int colorDelete=UiUtils.getThemeColor(context, R.attr.colorM3Error);
+
 		Jsoup.parseBodyFragment(source).body().traverse(new NodeVisitor(){
 			private final ArrayList<SpanInfo> openSpans=new ArrayList<>();
 
@@ -129,24 +164,62 @@ public class HtmlParser{
 								openSpans.add(new SpanInfo(new InvisibleSpan(), ssb.length(), el));
 							}
 						}
+						case "li" -> openSpans.add(new SpanInfo(new BulletSpan(V.dp(8)), ssb.length(), el));
+						case "em", "i" -> openSpans.add(new SpanInfo(new StyleSpan(Typeface.ITALIC), ssb.length(), el));
+						case "h1", "h2", "h3", "h4", "h5", "h6" -> {
+							// increase line height above heading (multiplying the margin)
+							if (node.previousSibling()!=null) ssb.setSpan(new RelativeSizeSpan(2), ssb.length() - 1, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+							if (!node.nodeName().equals("h1")) {
+								openSpans.add(new SpanInfo(new StyleSpan(Typeface.BOLD), ssb.length(), el));
+							}
+							openSpans.add(new SpanInfo(new RelativeSizeSpan(switch(node.nodeName()) {
+								case "h1" -> 1.5f;
+								case "h2" -> 1.25f;
+								case "h3" -> 1.125f;
+								default -> 1;
+							}), ssb.length(), el, !node.nodeName().equals("h1")));
+						}
+						case "strong", "b" -> openSpans.add(new SpanInfo(new StyleSpan(Typeface.BOLD), ssb.length(), el));
+						case "u" -> openSpans.add(new SpanInfo(new UnderlineSpan(), ssb.length(), el));
+						case "s", "del" -> openSpans.add(new SpanInfo(new StrikethroughSpan(), ssb.length(), el));
+						case "sub", "sup" -> {
+							openSpans.add(new SpanInfo(node.nodeName().equals("sub") ? new SubscriptSpan() : new SuperscriptSpan(), ssb.length(), el));
+							openSpans.add(new SpanInfo(new RelativeSizeSpan(0.8f), ssb.length(), el, true));
+						}
+						case "code", "pre" -> openSpans.add(new SpanInfo(new TypefaceSpan("monospace"), ssb.length(), el));
+						case "blockquote" -> openSpans.add(new SpanInfo(new LeadingMarginSpan.Standard(V.dp(10)), ssb.length(), el));
+						// fake elements for the edit history diff view
+						case "edit-diff-insert" -> openSpans.add(new SpanInfo(new ForegroundColorSpan(colorInsert), ssb.length(), el));
+						case "edit-diff-delete" -> openSpans.add(new SpanInfo(new DiffRemovedSpan(el.text(), colorDelete), ssb.length(), el));
 					}
 				}
 			}
 
+			final static List<String> blockElements = Arrays.asList("p", "ul", "ol", "blockquote", "h1", "h2", "h3", "h4", "h5", "h6");
+
 			@Override
 			public void tail(@NonNull Node node, int depth){
 				if(node instanceof Element el){
+					processOpenSpan(el);
 					if("span".equals(el.nodeName()) && el.hasClass("ellipsis")){
 						ssb.append("…", new DeleteWhenCopiedSpan(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-					}else if("p".equals(el.nodeName())){
-						if(node.nextSibling()!=null)
-							ssb.append("\n\n");
-					}else if(!openSpans.isEmpty()){
-						SpanInfo si=openSpans.get(openSpans.size()-1);
-						if(si.element==el){
-							ssb.setSpan(si.span, si.start, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-							openSpans.remove(openSpans.size()-1);
-						}
+					}else if(blockElements.contains(el.nodeName()) && node.nextSibling()!=null){
+						ssb.append("\n"); // line end
+						ssb.append("\n", new RelativeSizeSpan(0.65f), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE); // margin after block
+					}
+				}
+			}
+
+			private void processOpenSpan(Element el) {
+				if(!openSpans.isEmpty()){
+					SpanInfo si=openSpans.get(openSpans.size()-1);
+					if(si.element==el){
+						ssb.setSpan(si.span, si.start, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+						openSpans.remove(openSpans.size()-1);
+						if(si.more) processOpenSpan(el);
+					}
+					if("li".equals(el.nodeName()) && el.nextSibling()!=null) {
+						ssb.append('\n');
 					}
 				}
 			}
@@ -157,6 +230,7 @@ public class HtmlParser{
 	}
 
 	public static void parseCustomEmoji(SpannableStringBuilder ssb, List<Emoji> emojis){
+		if(emojis==null) return;
 		Map<String, Emoji> emojiByCode =
 			emojis.stream()
 			.collect(
@@ -228,6 +302,10 @@ public class HtmlParser{
 		return sb.toString();
 	}
 
+	public static String text(String html) {
+		return Jsoup.parse(html).body().wholeText();
+	}
+
 	public static CharSequence parseLinks(String text){
 		Matcher matcher=URL_PATTERN.matcher(text);
 		if(!matcher.find()) // Return the original string if there are no URLs
@@ -243,6 +321,7 @@ public class HtmlParser{
 	}
 
 	public static void applyFilterHighlights(Context context, SpannableStringBuilder text, List<FilterResult> filters){
+		if (filters == null) return;
 		int fgColor=UiUtils.getThemeColor(context, R.attr.colorM3Error);
 		int bgColor=UiUtils.getThemeColor(context, R.attr.colorM3ErrorContainer);
 		for(FilterResult filter:filters){

@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.account_list;
 
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,9 +14,9 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.fragments.MastodonRecyclerFragment;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.viewmodel.AccountViewModel;
-import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.viewholders.AccountViewHolder;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,7 +35,7 @@ import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<AccountViewModel>{
+public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<AccountViewModel> implements ProvidesAssistContent.ProvidesWebUri {
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected String accountID;
 	protected ArrayList<APIRequest<?>> relationshipsRequests=new ArrayList<>();
@@ -85,6 +86,7 @@ public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<A
 						for(Relationship rel:result){
 							relationships.put(rel.id, rel);
 						}
+						if(getActivity()==null) return;
 						if(list==null)
 							return;
 						for(int i=0;i<list.getChildCount();i++){
@@ -139,6 +141,16 @@ public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<A
 			list.setPadding(0, V.dp(16), 0, V.dp(16));
 		}
 		super.onApplyWindowInsets(insets);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
 	}
 
 	protected void onConfigureViewHolder(AccountViewHolder holder){}

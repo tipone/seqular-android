@@ -1,0 +1,5 @@
+Hal-hal baru untuk rilis 91:
+- Kemampuan untuk menampilkan postingan yang difilter dengan peringatan
+- Memperbaiki pembaru otomatis yang disertakan
+- Memperbaiki beberapa kerusakan pada sistem pemfilteran
+- Peningkatan kecil kualitas hidup

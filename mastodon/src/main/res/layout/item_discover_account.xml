@@ -1,0 +1,350 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:background="@drawable/bg_filled_card">
+
+	<ImageView
+		android:id="@+id/cover"
+		android:layout_width="match_parent"
+		android:layout_height="128dp"
+		android:layout_marginTop="6dp"
+		android:layout_marginLeft="6dp"
+		android:layout_marginRight="6dp"
+		android:scaleType="centerCrop"
+		tools:src="#0f0"/>
+
+	<FrameLayout
+		android:id="@+id/avatar_wrap"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/cover"
+		android:layout_alignParentStart="true"
+		android:layout_marginTop="-12dp"
+		android:layout_marginStart="13dp"
+		android:layout_marginEnd="12dp">
+
+		<View
+			android:id="@+id/avatar_border"
+			android:layout_gravity="center"
+			android:layout_width="66dp"
+			android:layout_height="66dp"
+			android:background="@drawable/bg_filled_card"/>
+
+		<ImageView
+			android:id="@+id/avatar"
+			android:layout_gravity="center"
+			android:layout_width="60dp"
+			android:layout_height="60dp"
+			android:scaleType="centerCrop"
+			tools:src="#f00" />
+
+	</FrameLayout>
+
+
+	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+		android:id="@+id/name_wrap"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_toEndOf="@id/avatar_wrap"
+		android:layout_marginEnd="16dp"
+		android:layout_above="@+id/username">
+
+		<TextView
+			android:id="@+id/name"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:ellipsize="end"
+			android:singleLine="true"
+			android:textAppearance="@style/m3_title_medium"
+			android:textColor="?colorM3OnSurface"
+			android:gravity="start|center_vertical"
+			tools:text="Eugen" />
+
+		<TextView
+			android:id="@+id/pronouns"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="8sp"
+			android:maxWidth="161sp"
+			android:ellipsize="end"
+			android:singleLine="true"
+			android:textAppearance="@style/m3_title_medium"
+			android:fontFamily="sans-serif"
+			android:textAlignment="viewStart"
+			android:textColor="?colorM3OnSurface"
+			tools:text="they/them" />
+
+		<TextView
+			android:id="@+id/extra_text"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginStart="8sp"
+			android:ellipsize="end"
+			android:singleLine="true"
+			android:textAppearance="@style/m3_title_medium"
+			android:fontFamily="sans-serif"
+			android:textAlignment="viewStart"
+			android:textColor="?colorM3OnSurface"
+			tools:text="boosted your cat picture" />
+
+	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+
+	<TextView
+		android:id="@+id/username"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_alignBottom="@id/avatar_wrap"
+		android:layout_marginEnd="16dp"
+		android:layout_toEndOf="@id/avatar_wrap"
+		android:layout_marginBottom="3sp"
+		android:textAlignment="viewStart"
+		android:singleLine="true"
+		android:ellipsize="end"
+		android:textAppearance="@style/m3_body_medium"
+		android:textColor="?colorM3OnSurfaceVariant"
+		tools:text="\@Gargron@mastodon.social"/>
+
+	<TextView
+		android:id="@+id/bio"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/avatar_wrap"
+		android:layout_marginLeft="16dp"
+		android:layout_marginRight="16dp"
+		android:layout_marginTop="8dp"
+		android:textAppearance="@style/m3_body_large"
+		tools:text="Founder, CEO and lead developer @Mastodon, Germany." />
+
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/bio"
+		android:orientation="horizontal">
+
+		<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+			android:layout_width="0dp"
+			android:layout_weight="1"
+			android:layout_height="wrap_content"
+			android:layout_marginBottom="16dp"
+			android:layout_marginTop="6dp"
+			android:layout_marginStart="16dp"
+			android:paddingTop="3dp"
+			android:gravity="center_vertical"
+			android:minHeight="44dp">
+
+			<LinearLayout
+				android:id="@+id/posts_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="2dp"
+				android:layout_marginEnd="8dp"
+				android:gravity="center_vertical"
+				android:orientation="horizontal">
+
+				<TextView
+					android:id="@+id/posts_count"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginEnd="4dp"
+					android:ellipsize="end"
+					android:textAppearance="@style/m3_label_large"
+					android:fontFamily="sans-serif-black"
+					android:gravity="center_vertical"
+					android:singleLine="true"
+					android:textColor="?colorM3OnSurfaceVariant"
+					tools:text="123" />
+
+				<TextView
+					android:id="@+id/posts_label"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:ellipsize="middle"
+					android:gravity="center_vertical"
+					android:singleLine="true"
+					android:textAppearance="@style/m3_label_large"
+					android:textColor="?colorM3OnSurfaceVariant"
+					tools:text="posts" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/followers_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="2dp"
+				android:layout_marginEnd="8dp"
+				android:orientation="horizontal"
+				android:gravity="center_vertical">
+
+				<TextView
+					android:id="@+id/followers_count"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginEnd="4dp"
+					android:ellipsize="end"
+					android:textAppearance="@style/m3_label_large"
+					android:fontFamily="sans-serif-black"
+					android:gravity="center_vertical"
+					android:singleLine="true"
+					android:textColor="?colorM3OnSurfaceVariant"
+					tools:text="123" />
+
+				<TextView
+					android:id="@+id/followers_label"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:ellipsize="middle"
+					android:gravity="center_vertical"
+					android:singleLine="true"
+					android:textAppearance="@style/m3_label_large"
+					android:textColor="?colorM3OnSurfaceVariant"
+					tools:text="followers" />
+
+			</LinearLayout>
+
+			<LinearLayout
+				android:id="@+id/following_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginTop="2dp"
+				android:layout_marginEnd="8dp"
+				android:orientation="horizontal"
+				android:gravity="center_vertical">
+
+				<TextView
+					android:id="@+id/following_count"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:layout_marginEnd="4dp"
+					android:ellipsize="end"
+					android:textAppearance="@style/m3_label_large"
+					android:fontFamily="sans-serif-black"
+					android:gravity="center_vertical"
+					android:singleLine="true"
+					android:textColor="?colorM3OnSurfaceVariant"
+					tools:text="123" />
+
+				<TextView
+					android:id="@+id/following_label"
+					android:layout_width="wrap_content"
+					android:layout_height="match_parent"
+					android:ellipsize="middle"
+					android:gravity="center_vertical"
+					android:singleLine="true"
+					android:textAppearance="@style/m3_label_large"
+					android:textColor="?colorM3OnSurfaceVariant"
+					tools:text="following" />
+
+			</LinearLayout>
+
+		</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+
+		<FrameLayout
+			android:id="@+id/reject_btn_wrap"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			android:paddingStart="8dp"
+			android:paddingEnd="4dp"
+			android:clipToPadding="false"
+			android:paddingBottom="10dp"
+			android:visibility="gone">
+
+			<org.joinmastodon.android.ui.views.ProgressBarButton
+				android:id="@+id/reject_btn"
+				style="@style/Widget.Mastodon.M3.Button.Text"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minHeight="48dp"
+				android:minWidth="56dp"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				android:drawablePadding="0dp"
+				android:contentDescription="@string/sk_reject_follow_request"
+				android:drawableStart="@drawable/ic_fluent_dismiss_24_filled"
+				android:singleLine="true" />
+
+			<ProgressBar
+				android:id="@+id/reject_progress"
+				style="?android:progressBarStyleSmall"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:elevation="10dp"
+				android:indeterminate="true"
+				android:outlineProvider="none"
+				android:visibility="gone" />
+		</FrameLayout>
+
+		<FrameLayout
+			android:id="@+id/accept_btn_wrap"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			android:paddingStart="4dp"
+			android:paddingEnd="16dp"
+			android:clipToPadding="false"
+			android:paddingBottom="10dp"
+			android:visibility="gone">
+
+			<org.joinmastodon.android.ui.views.ProgressBarButton
+				android:id="@+id/accept_btn"
+				style="@style/Widget.Mastodon.M3.Button.Filled"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minHeight="48dp"
+				android:minWidth="56dp"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				android:drawablePadding="0dp"
+				android:contentDescription="@string/sk_accept_follow_request"
+				android:drawableStart="@drawable/ic_fluent_checkmark_24_filled"
+				android:singleLine="true" />
+
+			<ProgressBar
+				android:id="@+id/accept_progress"
+				style="?android:progressBarStyleSmall"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:elevation="10dp"
+				android:indeterminate="true"
+				android:outlineProvider="none"
+				android:visibility="gone" />
+		</FrameLayout>
+
+		<FrameLayout
+			android:id="@+id/action_btn_wrap"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_gravity="bottom"
+			android:paddingStart="8dp"
+			android:paddingEnd="16dp"
+			android:paddingBottom="10dp"
+			android:clipToPadding="false">
+
+			<org.joinmastodon.android.ui.views.ProgressBarButton
+				android:id="@+id/action_btn"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:minHeight="48dp"
+				android:minWidth="56dp"
+				android:singleLine="true"
+				tools:text="@string/follow_back"/>
+
+			<ProgressBar
+				android:id="@+id/action_progress"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center"
+				android:indeterminate="true"
+				style="?android:progressBarStyleSmall"
+				android:elevation="10dp"
+				android:outlineProvider="none"
+				android:visibility="gone"/>
+		</FrameLayout>
+	</LinearLayout>
+
+</RelativeLayout>

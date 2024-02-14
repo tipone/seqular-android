@@ -1,9 +1,8 @@
 package org.joinmastodon.android.fragments.report;
 
 import android.app.Activity;
-import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.graphics.Rect;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsets;
@@ -19,10 +18,12 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountStatuses;
 import org.joinmastodon.android.events.FinishReportFragmentsEvent;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.displayitems.AudioStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.CheckableHeaderStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
@@ -81,10 +82,11 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetAccountStatuses(reportAccount.id, offset>0 ? getMaxID() : null, null, count, GetAccountStatuses.Filter.OWN_POSTS_AND_REPLIES)
+		currentRequest=new GetAccountStatuses(reportAccount.id, getMaxID(), null, count, GetAccountStatuses.Filter.OWN_POSTS_AND_REPLIES)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
+						if(getActivity()==null) return;
 						for(Status s:result){
 							s.sensitive=true;
 						}
@@ -94,15 +96,14 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 				.exec(accountID);
 	}
 
-	@Override
-	public void onItemClick(String id){
+	public void onToggleItem(String id){
 		if(selectedIDs.contains(id))
 			selectedIDs.remove(id);
 		else
 			selectedIDs.add(id);
 		CheckableHeaderStatusDisplayItem.Holder holder=findHolderOfType(id, CheckableHeaderStatusDisplayItem.Holder.class);
-		if(holder!=null)
-			holder.rebind();
+		if(holder!=null) holder.rebind();
+		else notifyItemChanged(id, CheckableHeaderStatusDisplayItem.class);
 	}
 
 	@Override
@@ -118,13 +119,20 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 				RecyclerView.ViewHolder holder=parent.getChildViewHolder(view);
 				if(holder.getAbsoluteAdapterPosition()==0 || holder instanceof CheckableHeaderStatusDisplayItem.Holder)
 					return;
-				outRect.left=V.dp(40);
+				boolean isRTL=parent.getLayoutDirection()==View.LAYOUT_DIRECTION_RTL;
+				if(isRTL) outRect.right=V.dp(40);
+				else outRect.left=V.dp(40);
 				if(holder instanceof AudioStatusDisplayItem.Holder){
 					outRect.bottom=V.dp(16);
 				}else if(holder instanceof LinkCardStatusDisplayItem.Holder || holder instanceof MediaGridStatusDisplayItem.Holder){
-					outRect.bottom=V.dp(16);
-					outRect.left+=V.dp(16);
-					outRect.right=V.dp(16);
+					outRect.bottom=V.dp(8);
+					if(isRTL){
+						outRect.right+=V.dp(16);
+						outRect.left=V.dp(16);
+					}else{
+						outRect.left+=V.dp(16);
+						outRect.right=V.dp(16);
+					}
 				}
 			}
 		});
@@ -150,9 +158,6 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 		adapter.addAdapter(new SingleViewRecyclerAdapter(headerView));
 		adapter.addAdapter(super.getAdapter());
 		return adapter;
-	}
-
-	protected void drawDivider(View child, View bottomSibling, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder siblingHolder, RecyclerView parent, Canvas c, Paint paint){
 	}
 
 	private void onButtonClick(View v){
@@ -198,7 +203,14 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Status s){
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_CHECKABLE | StatusDisplayItem.FLAG_MEDIA_FORCE_HIDDEN);
+		List<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_CHECKABLE | StatusDisplayItem.FLAG_MEDIA_FORCE_HIDDEN);
+		items.add(new DummyStatusDisplayItem(s.getID(), this));
+		return items;
+	}
+
+	@Override
+	protected FilterContext getFilterContext(){
+		return null;
 	}
 
 	@Override
@@ -217,5 +229,10 @@ public class ReportAddPostsChoiceFragment extends StatusListFragment{
 
 	private boolean isChecked(CheckableHeaderStatusDisplayItem.Holder holder){
 		return selectedIDs.contains(holder.getItem().parentID);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }

@@ -4,12 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Fragment;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -22,19 +22,22 @@ import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
-import org.joinmastodon.android.MainActivity;
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.MastodonRecyclerFragment;
+import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.model.viewmodel.SearchResultViewModel;
 import org.joinmastodon.android.ui.DividerItemDecoration;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.SearchViewHelper;
 import org.joinmastodon.android.ui.adapters.GenericListItemsAdapter;
 import org.joinmastodon.android.ui.utils.HideableSingleViewRecyclerAdapter;
@@ -91,11 +94,11 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 		setRefreshEnabled(false);
 		setEmptyText("");
 
-		openUrlItem=new ListItem<>(R.string.search_open_url, 0, R.drawable.ic_link_24px, this::onOpenURLClick);
-		goToHashtagItem=new ListItem<>("", null, R.drawable.ic_tag_24px, this::onGoToHashtagClick);
-		goToAccountItem=new ListItem<>("", null, R.drawable.ic_person_24px, this::onGoToAccountClick);
-		goToStatusSearchItem=new ListItem<>("", null, R.drawable.ic_search_24px, this::onGoToStatusSearchClick);
-		goToAccountSearchItem=new ListItem<>("", null, R.drawable.ic_group_24px, this::onGoToAccountSearchClick);
+		openUrlItem=new ListItem<>(R.string.search_open_url, 0, R.drawable.ic_fluent_link_24_regular, this::onOpenURLClick);
+		goToHashtagItem=new ListItem<>("", null, R.drawable.ic_fluent_number_symbol_24_regular, this::onGoToHashtagClick);
+		goToAccountItem=new ListItem<>("", null, R.drawable.ic_fluent_person_24_regular, this::onGoToAccountClick);
+		goToStatusSearchItem=new ListItem<>("", null, R.drawable.ic_fluent_search_24_regular, this::onGoToStatusSearchClick);
+		goToAccountSearchItem=new ListItem<>("", null, R.drawable.ic_fluent_people_24_regular, this::onGoToAccountSearchClick);
 		currentQuery=getArguments().getString("query");
 
 		dataLoaded();
@@ -124,7 +127,11 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 					.setCallback(new SimpleCallback<>(this){
 						@Override
 						public void onSuccess(SearchResults result){
-							onDataLoaded(Stream.of(result.hashtags.stream().map(SearchResult::new), result.accounts.stream().map(SearchResult::new))
+							onDataLoaded(Stream
+									.of(
+											result.hashtags.stream().filter(hashtag -> !hashtag.name.isEmpty()).map(SearchResult::new),
+											result.accounts.stream().map(SearchResult::new)
+									)
 									.flatMap(Function.identity())
 									.map(sr->{
 										SearchResultViewModel vm=new SearchResultViewModel(sr, accountID, false);
@@ -159,14 +166,14 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
-		searchViewHelper=new SearchViewHelper(getActivity(), getToolbarContext(), getString(R.string.search_mastodon));
+		searchViewHelper=new SearchViewHelper(getActivity(), getToolbarContext(), getString(R.string.sk_search_fediverse));
 		searchViewHelper.setListeners(this::onQueryChanged, this::onQueryChangedNoDebounce);
 		searchViewHelper.addDivider(contentView);
 		searchViewHelper.setEnterCallback(this::onSearchViewEnter);
 
 		navigationIcon=new LayerDrawable(new Drawable[]{
-				searchIcon=getToolbarContext().getResources().getDrawable(R.drawable.ic_search_24px, getToolbarContext().getTheme()).mutate(),
-				backIcon=getToolbarContext().getResources().getDrawable(R.drawable.ic_arrow_back, getToolbarContext().getTheme()).mutate()
+				searchIcon=getToolbarContext().getResources().getDrawable(R.drawable.ic_fluent_search_24_regular, getToolbarContext().getTheme()).mutate(),
+				backIcon=getToolbarContext().getResources().getDrawable(R.drawable.ic_fluent_arrow_left_24_regular, getToolbarContext().getTheme()).mutate()
 		}){
 			@Override
 			public Drawable mutate(){
@@ -176,8 +183,8 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 
 		super.onViewCreated(view, savedInstanceState);
 
-		view.setBackgroundResource(R.drawable.bg_m3_surface3);
 		int color=UiUtils.alphaBlendThemeColors(getActivity(), R.attr.colorM3Surface, R.attr.colorM3Primary, 0.11f);
+		view.setBackgroundColor(color);
 		setStatusBarColor(color);
 		setNavigationBarColor(color);
 		if(currentQuery!=null){
@@ -331,7 +338,6 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 		anims.add(ObjectAnimator.ofFloat(outlineProvider, "radius", enter ? buttonRadius : screenRadius, enter ? screenRadius : buttonRadius));
 		anims.add(ObjectAnimator.ofFloat(toolbar, View.TRANSLATION_X, enter ? toolbarTX : 0, enter ? 0 : toolbarTX));
 		anims.add(ObjectAnimator.ofFloat(toolbar, View.TRANSLATION_Y, enter ? toolbarTY : 0, enter ? 0 : toolbarTY));
-		anims.add(ObjectAnimator.ofFloat(searchViewHelper.getSearchLayout(), View.TRANSLATION_X, enter ? V.dp(-4) : 0, enter ? 0 : V.dp(-4)));
 		anims.add(ObjectAnimator.ofFloat(searchViewHelper.getDivider(), View.ALPHA, enter ? 0 : 1, enter ? 1 : 0));
 		View parentContent=prev.findViewById(R.id.discover_content);
 		View parentContentParent=(View) parentContent.getParent();
@@ -375,29 +381,69 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 	}
 
 	private void openHashtag(SearchResult res){
-		UiUtils.openHashtagTimeline(getActivity(), accountID, res.hashtag);
-		AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putRecentSearch(res);
+		wrapSuicideDialog(()->{
+			UiUtils.openHashtagTimeline(getActivity(), accountID, res.hashtag);
+			AccountSessionManager.getInstance().getAccount(accountID).getCacheController().putRecentSearch(res);
+		});
 	}
 
 	private boolean isInRecentMode(){
 		return TextUtils.isEmpty(currentQuery);
 	}
 
+	private void wrapSuicideDialog(Runnable r){
+		if(!GlobalUserPreferences.showSuicideHelp || currentQuery==null){
+			r.run();
+			return;
+		}
+
+		String[] terms=getContext().getString(R.string.sk_suicide_search_terms).toLowerCase().split(",");
+		String query=currentQuery.trim().toLowerCase();
+		boolean termMatches=false;
+		for(String term : terms){
+			if(query.contains(term)){
+				termMatches=true;
+				break;
+			}
+		}
+
+		if(!termMatches){
+			r.run();
+			return;
+		}
+
+		String url=getContext().getString(R.string.sk_suicide_helplines_url);
+		new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.sk_search_suicide_title)
+				.setMessage(R.string.sk_search_suicide_message)
+				.setNegativeButton(R.string.sk_do_not_show_again, (dialog, which)->{
+					GlobalUserPreferences.showSuicideHelp = false;
+					GlobalUserPreferences.save();
+					r.run();
+				})
+				.setNeutralButton(R.string.sk_search_suicide_hotlines, (dialog, which)->UiUtils.launchWebBrowser(getContext(), url))
+				.setPositiveButton(R.string.ok, (dialog, which)->r.run())
+				.setOnDismissListener((dialog)->{})
+				.show();
+	}
+
 	private void onSearchViewEnter(){
 		if(TextUtils.isEmpty(currentQuery) || currentQuery.trim().isEmpty())
 			return;
-		deliverResult(currentQuery, null);
+		wrapSuicideDialog(()->deliverResult(currentQuery, null));
 	}
 
 	private void onOpenURLClick(ListItem<?> item_){
-		((MainActivity)getActivity()).handleURL(Uri.parse(searchViewHelper.getQuery()), accountID);
+		UiUtils.openURL(getContext(), accountID, searchViewHelper.getQuery(), false);
 	}
 
 	private void onGoToHashtagClick(ListItem<?> item_){
-		String q=searchViewHelper.getQuery();
-		if(q.startsWith("#"))
-			q=q.substring(1);
-		UiUtils.openHashtagTimeline(getActivity(), accountID, q);
+		wrapSuicideDialog(()->{
+			String q=searchViewHelper.getQuery();
+			if(q.startsWith("#"))
+				q=q.substring(1);
+			UiUtils.openHashtagTimeline(getActivity(), accountID, q);
+		});
 	}
 
 	private void onGoToAccountClick(ListItem<?> item_){
@@ -408,15 +454,21 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 		if(q.lastIndexOf('@')==0){
 			q+="@"+AccountSessionManager.get(accountID).domain;
 		}
-		((MainActivity)getActivity()).openSearchQuery(q, accountID, R.string.loading, true, GetSearchResults.Type.ACCOUNTS);
+		UiUtils.lookupAccountHandle(getContext(), accountID, q, (clazz, args) -> {
+			if (!args.containsKey("profileAccount")) {
+				Toast.makeText(getContext(), R.string.no_search_results, Toast.LENGTH_SHORT).show();
+				return;
+			}
+			Nav.go((Activity) getContext(), ProfileFragment.class, args);
+		}).ifPresent(progress -> progress.wrapProgress((Activity) getContext(), R.string.loading, true));
 	}
 
 	private void onGoToStatusSearchClick(ListItem<?> item_){
-		deliverResult(searchViewHelper.getQuery(), SearchResult.Type.STATUS);
+		wrapSuicideDialog(()->deliverResult(searchViewHelper.getQuery(), SearchResult.Type.STATUS));
 	}
 
 	private void onGoToAccountSearchClick(ListItem<?> item_){
-		deliverResult(searchViewHelper.getQuery(), SearchResult.Type.ACCOUNT);
+		wrapSuicideDialog(()->deliverResult(searchViewHelper.getQuery(), SearchResult.Type.ACCOUNT));
 	}
 
 	private void onClearRecentClick(){
@@ -429,6 +481,8 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 	}
 
 	private void deliverResult(String query, SearchResult.Type typeFilter){
+		if(query.isEmpty())
+			return;
 		Bundle res=new Bundle();
 		res.putString("query", query);
 		if(typeFilter!=null)

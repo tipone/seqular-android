@@ -7,7 +7,7 @@
 	android:paddingEnd="24dp"
 	android:textAppearance="@style/m3_body_large"
 	android:textColor="?colorM3OnSurface"
-	android:drawableEnd="@drawable/ic_add_24px"
+	android:drawableEnd="@drawable/ic_fluent_add_24_regular"
 	android:drawableTint="?colorM3OnSurface"
 	android:drawablePadding="16dp"
 	android:singleLine="true"

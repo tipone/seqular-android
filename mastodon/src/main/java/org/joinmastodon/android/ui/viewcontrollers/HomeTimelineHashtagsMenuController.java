@@ -40,7 +40,7 @@ public class HomeTimelineHashtagsMenuController extends DropdownSubmenuControlle
 	@Override
 	protected void createView(){
 		super.createView();
-		emptyAdapter=createEmptyView(R.drawable.ic_tag_24px, R.string.no_followed_hashtags_title, R.string.no_followed_hashtags_subtitle);
+		emptyAdapter=createEmptyView(R.drawable.ic_fluent_tag_24_regular, R.string.no_followed_hashtags_title, R.string.no_followed_hashtags_subtitle);
 		FrameLayout largeProgressView=new FrameLayout(dropdownController.getActivity());
 		int pad=V.dp(32);
 		largeProgressView.setPadding(0, pad, 0, pad);

@@ -3,11 +3,10 @@ package org.joinmastodon.android.ui.viewholders;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.style.TypefaceSpan;
@@ -15,8 +14,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -24,9 +23,11 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.ListsFragment;
 import org.joinmastodon.android.fragments.AddAccountToListsFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
@@ -34,6 +35,7 @@ import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.viewmodel.AccountViewModel;
 import org.joinmastodon.android.ui.OutlineProviders;
+import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
@@ -41,6 +43,7 @@ import org.parceler.Parcels;
 
 import java.util.HashMap;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
@@ -53,8 +56,9 @@ import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class AccountViewHolder extends BindableViewHolder<AccountViewModel> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable, UsableRecyclerView.LongClickable{
-	private final TextView name, username, followers, verifiedLink, bio;
+	private final TextView name, username, followers, pronouns, bio;
 	public final ImageView avatar;
+	private final FrameLayout accessory;
 	private final ProgressBarButton button;
 	private final PopupMenu contextMenu;
 	private final View menuAnchor;
@@ -89,10 +93,11 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		name=findViewById(R.id.name);
 		username=findViewById(R.id.username);
 		avatar=findViewById(R.id.avatar);
+		accessory=findViewById(R.id.accessory);
 		button=findViewById(R.id.button);
 		menuAnchor=findViewById(R.id.menu_anchor);
 		followers=findViewById(R.id.followers_count);
-		verifiedLink=findViewById(R.id.verified_link);
+		pronouns=findViewById(R.id.pronouns);
 		bio=findViewById(R.id.bio);
 		checkbox=findViewById(R.id.checkbox);
 		actionProgress=findViewById(R.id.action_progress);
@@ -102,11 +107,15 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		avatar.setClipToOutline(true);
 
 		button.setOnClickListener(this::onButtonClick);
+		accessory.setOnClickListener(v -> button.performClick());
 
 		contextMenu=new PopupMenu(fragment.getActivity(), menuAnchor);
 		contextMenu.inflate(R.menu.profile);
 		contextMenu.setOnMenuItemClickListener(this::onContextMenuItemSelected);
 		menuButton.setOnClickListener(v->showMenuFromButton());
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI())
+			contextMenu.getMenu().setGroupDividerEnabled(true);
+		UiUtils.enablePopupMenuIcons(fragment.getContext(), contextMenu);
 
 		setStyle(AccessoryType.BUTTON, false);
 	}
@@ -116,28 +125,40 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 	public void onBind(AccountViewModel item){
 		name.setText(item.parsedName);
 		username.setText("@"+item.account.acct);
-		if(followers!=null){
-			String followersStr=fragment.getResources().getQuantityString(R.plurals.x_followers, item.account.followersCount>1000 ? 999 : (int)item.account.followersCount);
-			String followersNum=UiUtils.abbreviateNumber(item.account.followersCount);
-			int index=followersStr.indexOf("%,d");
-			followersStr=followersStr.replace("%,d", followersNum);
-			SpannableStringBuilder followersFormatted=new SpannableStringBuilder(followersStr);
-			if(index!=-1){
-				followersFormatted.setSpan(mediumSpan, index, index+followersNum.length(), 0);
-			}
+		long num=item.account.followersCount > -1 ? item.account.followersCount : item.account.followingCount;
+		String followersStr = fragment.getResources().getQuantityString(item.account.followersCount > -1
+				? R.plurals.x_followers : R.plurals.x_following, num>1000 ? 999 : (int)num);
+		String followersNum=UiUtils.abbreviateNumber(num);
+		int index=followersStr.indexOf("%,d");
+		followersStr=followersStr.replace("%,d", followersNum);
+		SpannableStringBuilder followersFormatted=new SpannableStringBuilder(followersStr);
+		if(index!=-1){
+			followersFormatted.setSpan(mediumSpan, index, index+followersNum.length(), 0);
+		}
+		if (item.account.followingCount > -1 || item.account.followersCount > -1) {
+			followers.setVisibility(View.VISIBLE);
 			followers.setText(followersFormatted);
+		} else {
+			followers.setVisibility(View.GONE);
 		}
-		if(verifiedLink!=null){
-			boolean hasVerifiedLink=item.verifiedLink!=null;
-			if(!hasVerifiedLink)
-				verifiedLink.setText(R.string.no_verified_link);
-			else
-				verifiedLink.setText(item.verifiedLink);
-			verifiedLink.setCompoundDrawablesRelativeWithIntrinsicBounds(hasVerifiedLink ? R.drawable.ic_check_small_16px : R.drawable.ic_help_16px, 0, 0, 0);
-			int tintColor=UiUtils.getThemeColor(fragment.getActivity(), hasVerifiedLink ? R.attr.colorM3Primary : R.attr.colorM3Secondary);
-			verifiedLink.setTextColor(tintColor);
-			verifiedLink.setCompoundDrawableTintList(ColorStateList.valueOf(tintColor));
-		}
+
+		// you know what's cooler than followers or verified links? yep. pronouns
+		Optional<String> pronounsString=GlobalUserPreferences.displayPronounsInUserListings
+				? UiUtils.extractPronouns(itemView.getContext(), item.account) : Optional.empty();
+		pronouns.setVisibility(pronounsString.isPresent() ? View.VISIBLE : View.GONE);
+		pronounsString.ifPresent(p -> HtmlParser.setTextWithCustomEmoji(pronouns, p, item.account.emojis));
+
+		/* unused in megalodon
+		boolean hasVerifiedLink=item.verifiedLink!=null;
+		if(!hasVerifiedLink)
+			verifiedLink.setText(R.string.no_verified_link);
+		else
+			verifiedLink.setText(item.verifiedLink);
+		verifiedLink.setCompoundDrawablesRelativeWithIntrinsicBounds(hasVerifiedLink ? R.drawable.ic_fluent_checkmark_16_filled : R.drawable.ic_help_16px, 0, 0, 0);
+		int tintColor=UiUtils.getThemeColor(fragment.getActivity(), hasVerifiedLink ? R.attr.colorM3Primary : R.attr.colorM3Secondary);
+		verifiedLink.setTextColor(tintColor);
+		verifiedLink.setCompoundDrawableTintList(ColorStateList.valueOf(tintColor));
+		*/
 		bindRelationship();
 		if(showBio){
 			bio.setText(item.parsedBio);
@@ -187,7 +208,10 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		}
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
-		args.putParcelable("profileAccount", Parcels.wrap(item.account));
+		if (item.account.isRemote)
+			args.putParcelable("remoteAccount", Parcels.wrap(item.account));
+		else
+			args.putParcelable("profileAccount", Parcels.wrap(item.account));
 		Nav.go(fragment.getActivity(), ProfileFragment.class, args);
 	}
 
@@ -202,6 +226,41 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 			return true;
 		if(accessoryType==AccessoryType.MENU || !prepareMenu())
 			return false;
+		if(relationships==null)
+			return false;
+		Relationship relationship=relationships.get(item.account.id);
+		if(relationship==null)
+			return false;
+		Menu menu=contextMenu.getMenu();
+		Account account=item.account;
+
+		menu.findItem(R.id.edit_note).setVisible(false);
+		menu.findItem(R.id.manage_user_lists).setTitle(fragment.getString(R.string.sk_lists_with_user, account.getShortUsername()));
+		MenuItem mute=menu.findItem(R.id.mute);
+		mute.setTitle(fragment.getString(relationship.muting ? R.string.unmute_user : R.string.mute_user, account.getShortUsername()));
+		mute.setIcon(relationship.muting ? R.drawable.ic_fluent_speaker_0_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
+		UiUtils.insetPopupMenuIcon(fragment.getContext(), mute);
+		menu.findItem(R.id.block).setTitle(fragment.getString(relationship.blocking ? R.string.unblock_user : R.string.block_user, account.getShortUsername()));
+		menu.findItem(R.id.report).setTitle(fragment.getString(R.string.report_user, account.getShortUsername()));
+		menu.findItem(R.id.manage_user_lists).setVisible(relationship.following);
+		menu.findItem(R.id.soft_block).setVisible(relationship.followedBy && !relationship.following);
+		MenuItem hideBoosts=menu.findItem(R.id.hide_boosts);
+		if(relationship.following){
+			hideBoosts.setTitle(fragment.getString(relationship.showingReblogs ? R.string.hide_boosts_from_user : R.string.show_boosts_from_user, account.getShortUsername()));
+			hideBoosts.setIcon(relationship.showingReblogs ? R.drawable.ic_fluent_arrow_repeat_all_off_24_regular : R.drawable.ic_fluent_arrow_repeat_all_24_regular);
+			UiUtils.insetPopupMenuIcon(fragment.getContext(), hideBoosts);
+			hideBoosts.setVisible(true);
+		}else{
+			hideBoosts.setVisible(false);
+		}
+		MenuItem blockDomain=menu.findItem(R.id.block_domain);
+		if(!account.isLocal()){
+			blockDomain.setTitle(fragment.getString(relationship.domainBlocking ? R.string.unblock_domain : R.string.block_domain, account.getDomain()));
+			blockDomain.setVisible(true);
+		}else{
+			blockDomain.setVisible(false);
+		}
+
 		menuAnchor.setTranslationX(x);
 		menuAnchor.setTranslationY(y);
 		contextMenu.show();
@@ -243,6 +302,8 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 			UiUtils.confirmToggleMuteUser(fragment.getActivity(), accountID, account, relationship.muting, this::updateRelationship);
 		}else if(id==R.id.block){
 			UiUtils.confirmToggleBlockUser(fragment.getActivity(), accountID, account, relationship.blocking, this::updateRelationship);
+		}else if(id==R.id.soft_block){
+			UiUtils.confirmSoftBlockUser(fragment.getActivity(), accountID, account, this::updateRelationship);
 		}else if(id==R.id.report){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
@@ -252,10 +313,10 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		}else if(id==R.id.open_in_browser){
 			UiUtils.launchWebBrowser(fragment.getActivity(), account.url);
 		}else if(id==R.id.block_domain){
-			UiUtils.confirmToggleBlockDomain(fragment.getActivity(), accountID, account, relationship.domainBlocking, ()->{
+			UiUtils.confirmToggleBlockDomain(fragment.getActivity(), accountID, account.getDomain(), relationship.domainBlocking, ()->{
 				relationship.domainBlocking=!relationship.domainBlocking;
 				bindRelationship();
-			}, this::updateRelationship);
+			});
 		}else if(id==R.id.hide_boosts){
 			new SetAccountFollowed(account.id, true, !relationship.showingReblogs)
 					.setCallback(new Callback<>(){

@@ -16,7 +16,7 @@ public class SearchResultViewModel{
 		switch(result.type){
 			case ACCOUNT -> account=new AccountViewModel(result.account, accountID);
 			case HASHTAG -> {
-				hashtagItem=new ListItem<>((isRecents ? "#" : "")+result.hashtag.name, null, isRecents ? R.drawable.ic_history_24px : R.drawable.ic_tag_24px, null, result.hashtag);
+				hashtagItem=new ListItem<>((isRecents ? "#" : "")+result.hashtag.name, null, isRecents ? R.drawable.ic_fluent_history_24_regular : R.drawable.ic_fluent_number_symbol_24_regular, null, result.hashtag);
 				hashtagItem.isEnabled=true;
 			}
 		}

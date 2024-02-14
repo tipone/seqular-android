@@ -1,5 +1,7 @@
 package org.joinmastodon.android.fragments.settings;
 
+import static org.unifiedpush.android.connector.UnifiedPush.getDistributor;
+
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -10,10 +12,13 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.PushSubscriptionManager;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.PushSubscription;
@@ -22,14 +27,17 @@ import org.joinmastodon.android.model.viewmodel.ListItem;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.HideableSingleViewRecyclerAdapter;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.unifiedpush.android.connector.UnifiedPush;
 
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
 
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
+import me.grishka.appkit.utils.V;
 
 public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	private PushSubscription pushSubscription;
@@ -47,26 +55,53 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	private boolean needUpdateNotificationSettings;
 	private boolean notificationsAllowed=true;
 
+	// MEGALODON
+	private boolean useUnifiedPush = false;
+	private CheckableListItem<Void> uniformIconItem, deleteItem, onlyLatestItem, unifiedPushItem;
+	private CheckableListItem<Void> postsItem, updateItem;
+
+	// MOSHIDON
+	private CheckableListItem<Void> swapBookmarkWithReblogItem;
+
+	private AccountLocalPreferences lp;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		setTitle(R.string.settings_notifications);
+		lp=AccountSessionManager.get(accountID).getLocalPreferences();
 
 		getPushSubscription();
+		useUnifiedPush=!getDistributor(getContext()).isEmpty();
 
 		onDataLoaded(List.of(
-				pauseItem=new CheckableListItem<>(getString(R.string.pause_all_notifications), getPauseItemSubtitle(), CheckableListItem.Style.SWITCH, false, R.drawable.ic_notifications_paused_24px, i->onPauseNotificationsClick(false)),
-				policyItem=new ListItem<>(R.string.settings_notifications_policy, 0, R.drawable.ic_group_24px, this::onNotificationsPolicyClick),
+				pauseItem=new CheckableListItem<>(getString(R.string.pause_all_notifications), getPauseItemSubtitle(), CheckableListItem.Style.SWITCH, false, R.drawable.ic_fluent_alert_snooze_24_regular, i->onPauseNotificationsClick(false)),
+				policyItem=new ListItem<>(R.string.settings_notifications_policy, 0, R.drawable.ic_fluent_people_24_regular, this::onNotificationsPolicyClick, 0, true),
 
-				mentionsItem=new CheckableListItem<>(R.string.notification_type_mentions_and_replies, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.mention, this::toggleCheckableItem),
-				boostsItem=new CheckableListItem<>(R.string.notification_type_reblog, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.reblog, this::toggleCheckableItem),
-				favoritesItem=new CheckableListItem<>(R.string.notification_type_favorite, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.favourite, this::toggleCheckableItem),
-				followersItem=new CheckableListItem<>(R.string.notification_type_follow, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.follow, this::toggleCheckableItem),
-				pollsItem=new CheckableListItem<>(R.string.notification_type_poll, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.poll, this::toggleCheckableItem)
+				mentionsItem=new CheckableListItem<>(R.string.notification_type_mentions_and_replies, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.mention, R.drawable.ic_fluent_mention_24_regular, i->toggleCheckableItem(mentionsItem)),
+				boostsItem=new CheckableListItem<>(R.string.notification_type_reblog, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.reblog, R.drawable.ic_fluent_arrow_repeat_all_24_regular, i->toggleCheckableItem(boostsItem)),
+				favoritesItem=new CheckableListItem<>(R.string.notification_type_favorite, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.favourite, R.drawable.ic_fluent_star_24_regular, i->toggleCheckableItem(favoritesItem)),
+				followersItem=new CheckableListItem<>(R.string.notification_type_follow, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.follow, R.drawable.ic_fluent_person_add_24_regular, i->toggleCheckableItem(followersItem)),
+				pollsItem=new CheckableListItem<>(R.string.notification_type_poll, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.poll, R.drawable.ic_fluent_poll_24_regular, i->toggleCheckableItem(pollsItem)),
+				updateItem=new CheckableListItem<>(R.string.sk_notification_type_update, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.update, R.drawable.ic_fluent_history_24_regular, i->toggleCheckableItem(updateItem)),
+				postsItem=new CheckableListItem<>(R.string.sk_notification_type_posts, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.status, R.drawable.ic_fluent_chat_24_regular, i->toggleCheckableItem(postsItem), true),
+
+				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, R.string.mo_setting_uniform_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, i->toggleCheckableItem(uniformIconItem)),
+				swapBookmarkWithReblogItem=new CheckableListItem<>(R.string.mo_swap_bookmark_with_reblog, R.string.mo_swap_bookmark_with_reblog_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.swapBookmarkWithBoostAction, R.drawable.ic_boost, i->toggleCheckableItem(swapBookmarkWithReblogItem)),
+				deleteItem=new CheckableListItem<>(R.string.sk_settings_enable_delete_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enableDeleteNotifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, i->toggleCheckableItem(deleteItem)),
+				onlyLatestItem=new CheckableListItem<>(R.string.sk_settings_single_notification, 0, CheckableListItem.Style.SWITCH, lp.keepOnlyLatestNotification, R.drawable.ic_fluent_convert_range_24_regular, i->toggleCheckableItem(onlyLatestItem), true),
+				unifiedPushItem=new CheckableListItem<>(R.string.sk_settings_unifiedpush, 0, CheckableListItem.Style.SWITCH, useUnifiedPush, R.drawable.ic_fluent_alert_arrow_up_24_regular, i->onUnifiedPushClick(), true)
 		));
 
-		typeItems=List.of(mentionsItem, boostsItem, favoritesItem, followersItem, pollsItem);
+		//only enable when distributors, who can receive notifications, are available
+		unifiedPushItem.isEnabled=!UnifiedPush.getDistributors(getContext(), new ArrayList<>()).isEmpty();
+		if (!unifiedPushItem.isEnabled) {
+			unifiedPushItem.subtitleRes=R.string.sk_settings_unifiedpush_no_distributor_body;
+		}
+
+		typeItems=List.of(mentionsItem, boostsItem, favoritesItem, followersItem, pollsItem, updateItem, postsItem);
 		pauseItem.checkedChangeListener=checked->onPauseNotificationsClick(true);
+		unifiedPushItem.checkedChangeListener=checked->onUnifiedPushClick();
 		updatePolicyItem(null);
 		updatePauseItem();
 	}
@@ -83,12 +118,20 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 				|| favoritesItem.checked!=ps.alerts.favourite
 				|| followersItem.checked!=ps.alerts.follow
 				|| pollsItem.checked!=ps.alerts.poll;
+		GlobalUserPreferences.uniformNotificationIcon=uniformIconItem.checked;
+		GlobalUserPreferences.enableDeleteNotifications=deleteItem.checked;
+		GlobalUserPreferences.swapBookmarkWithBoostAction=swapBookmarkWithReblogItem.checked;
+		GlobalUserPreferences.save();
+		lp.keepOnlyLatestNotification=onlyLatestItem.checked;
+		lp.save();
 		if(needUpdateNotificationSettings && PushSubscriptionManager.arePushNotificationsAvailable()){
 			ps.alerts.mention=mentionsItem.checked;
 			ps.alerts.reblog=boostsItem.checked;
 			ps.alerts.favourite=favoritesItem.checked;
 			ps.alerts.follow=followersItem.checked;
 			ps.alerts.poll=pollsItem.checked;
+			ps.alerts.status=postsItem.checked;
+			ps.alerts.update=updateItem.checked;
 			AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().updatePushSettings(pushSubscription);
 		}
 	}
@@ -268,18 +311,56 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		long pauseTime=AccountSessionManager.get(accountID).getLocalPreferences().getNotificationsPauseEndTime();
 		if(!areNotificationsAllowed()){
 			bannerAdapter.setVisible(true);
-			bannerIcon.setImageResource(R.drawable.ic_app_badging_24px);
+			bannerIcon.setImageResource(R.drawable.ic_fluent_alert_badge_24_regular);
 			bannerText.setText(R.string.notifications_disabled_in_system);
 			bannerButton.setText(R.string.open_system_notification_settings);
 			bannerButton.setOnClickListener(v->openSystemNotificationSettings());
 		}else if(pauseTime>System.currentTimeMillis()){
 			bannerAdapter.setVisible(true);
-			bannerIcon.setImageResource(R.drawable.ic_notifications_paused_24px);
+			bannerIcon.setImageResource(R.drawable.ic_fluent_alert_snooze_24_regular);
 			bannerText.setText(getString(R.string.pause_notifications_banner, UiUtils.formatRelativeTimestampAsMinutesAgo(getActivity(), Instant.ofEpochMilli(pauseTime), false)));
 			bannerButton.setText(R.string.resume_notifications_now);
 			bannerButton.setOnClickListener(v->resumePausedNotifications());
 		}else{
 			bannerAdapter.setVisible(false);
 		}
+	}
+
+	private void onUnifiedPushClick(){
+		if(getDistributor(getContext()).isEmpty()){
+			List<String> distributors = UnifiedPush.getDistributors(getContext(), new ArrayList<>());
+			showUnifiedPushRegisterDialog(distributors);
+			return;
+		}
+
+		for (AccountSession accountSession : AccountSessionManager.getInstance().getLoggedInAccounts()) {
+			UnifiedPush.unregisterApp(
+					getContext(),
+					accountSession.getID()
+			);
+
+			//re-register to fcm
+			accountSession.getPushSubscriptionManager().registerAccountForPush(getPushSubscription());
+		}
+		unifiedPushItem.toggle();
+		rebindItem(unifiedPushItem);
+	}
+
+	private void showUnifiedPushRegisterDialog(List<String> distributors){
+		new M3AlertDialogBuilder(getContext()).setTitle(R.string.sk_settings_unifiedpush_choose).setItems(distributors.toArray(String[]::new),
+				(dialog, which)->{
+					String userDistrib = distributors.get(which);
+					UnifiedPush.saveDistributor(getContext(), userDistrib);
+					for (AccountSession accountSession : AccountSessionManager.getInstance().getLoggedInAccounts()){
+						UnifiedPush.registerApp(
+								getContext(),
+								accountSession.getID(),
+								new ArrayList<>(),
+								getContext().getPackageName()
+						);
+					}
+					unifiedPushItem.toggle();
+					rebindItem(unifiedPushItem);
+				}).setOnCancelListener(d->rebindItem(unifiedPushItem)).show();
 	}
 }

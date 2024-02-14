@@ -1,0 +1,6 @@
+-Opcións para promover con visibilidade específica cando se mantén preso
+-Mostrar visibilidade das miñas promocións
+-Engadida unha lista de cancelos seguidos
+-Manter preso para copiar ligazóns
+-Opción de abrir publicacións con outra conta
+-Corrección de erros e axustes menores

@@ -38,7 +38,8 @@
 			android:layout_height="96dp"
 			android:background="@drawable/bg_audio_play_button"
 			android:layout_gravity="center"
-			android:src="@drawable/ic_play_arrow_48px"/>
+			android:tint="?colorM3DarkOnSurface"
+			android:src="@drawable/ic_fluent_play_48_regular"/>
 		
 		<ImageButton
 			android:id="@+id/forward_btn"
@@ -47,6 +48,7 @@
 			android:layout_gravity="center_vertical|end"
 			android:layout_margin="16dp"
 			android:src="@drawable/ic_forward_10_48px"
+			android:tint="?colorM3DarkOnSurface"
 			android:background="@drawable/bg_round_ripple"/>
 
 		<ImageButton
@@ -56,6 +58,7 @@
 			android:layout_gravity="center_vertical|start"
 			android:layout_margin="16dp"
 			android:src="@drawable/ic_replay_5_48px"
+			android:tint="?colorM3DarkOnSurface"
 			android:background="@drawable/bg_round_ripple"/>
 
 	</FrameLayout>

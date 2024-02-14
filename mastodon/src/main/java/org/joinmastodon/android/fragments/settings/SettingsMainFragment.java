@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.settings;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -15,8 +16,9 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.viewmodel.ListItem;
-import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
+import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.HideableSingleViewRecyclerAdapter;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -29,6 +31,7 @@ import me.grishka.appkit.Nav;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 
 public class SettingsMainFragment extends BaseSettingsFragment<Void>{
+	private AccountSession account;
 	private boolean loggedOut;
 	private HideableSingleViewRecyclerAdapter bannerAdapter;
 	private Button updateButton1, updateButton2;
@@ -47,22 +50,27 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		account=AccountSessionManager.get(accountID);
 		setTitle(R.string.settings);
-		setSubtitle(AccountSessionManager.get(accountID).getFullUsername());
+		setSubtitle(account.getFullUsername());
 		onDataLoaded(List.of(
-				new ListItem<>(R.string.settings_behavior, 0, R.drawable.ic_settings_24px, this::onBehaviorClick),
-				new ListItem<>(R.string.settings_display, 0, R.drawable.ic_style_24px, this::onDisplayClick),
-				new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_privacy_tip_24px, this::onPrivacyClick),
-				new ListItem<>(R.string.settings_filters, 0, R.drawable.ic_filter_alt_24px, this::onFiltersClick),
-				new ListItem<>(R.string.settings_notifications, 0, R.drawable.ic_notifications_24px, this::onNotificationsClick),
-				new ListItem<>(AccountSessionManager.get(accountID).domain, getString(R.string.settings_server_explanation), R.drawable.ic_dns_24px, this::onServerClick),
-				new ListItem<>(getString(R.string.about_app, getString(R.string.app_name)), null, R.drawable.ic_info_24px, this::onAboutClick, null, 0, true),
-				new ListItem<>(R.string.manage_accounts, 0, R.drawable.ic_switch_account_24px, this::onManageAccountsClick),
-				new ListItem<>(R.string.log_out, 0, R.drawable.ic_logout_24px, this::onLogOutClick, R.attr.colorM3Error, false)
+				new ListItem<>(R.string.settings_behavior, 0, R.drawable.ic_fluent_settings_24_regular, this::onBehaviorClick),
+				new ListItem<>(R.string.settings_display, 0, R.drawable.ic_fluent_color_24_regular, this::onDisplayClick),
+				new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_fluent_shield_24_regular, this::onPrivacyClick),
+				new ListItem<>(R.string.settings_notifications, 0, R.drawable.ic_fluent_alert_24_regular, this::onNotificationsClick),
+				new ListItem<>(R.string.sk_settings_instance, 0, R.drawable.ic_fluent_server_24_regular, this::onInstanceClick),
+				new ListItem<>(getString(R.string.about_app, getString(R.string.mo_app_name)), null, R.drawable.ic_fluent_info_24_regular, this::onAboutClick, null, 0, true),
+				new ListItem<>(R.string.manage_accounts, 0, R.drawable.ic_fluent_person_swap_24_regular, this::onManageAccountsClick),
+				new ListItem<>(R.string.log_out, 0, R.drawable.ic_fluent_sign_out_24_regular, this::onLogOutClick, R.attr.colorM3Error, false)
 		));
 
+		Instance instance=AccountSessionManager.getInstance().getInstanceInfo(account.domain);
+		if(!instance.isAkkoma()){
+			data.add(3, new ListItem<>(R.string.settings_filters, 0, R.drawable.ic_fluent_filter_24_regular, this::onFiltersClick));
+		}
+
 		if(BuildConfig.DEBUG || BuildConfig.BUILD_TYPE.equals("appcenterPrivateBeta")){
-			data.add(0, new ListItem<>("Debug settings", null, R.drawable.ic_settings_24px, i->Nav.go(getActivity(), SettingsDebugFragment.class, makeFragmentArgs()), null, 0, true));
+			data.add(0, new ListItem<>("Debug settings", null, R.drawable.ic_fluent_wrench_screwdriver_24_regular, i->Nav.go(getActivity(), SettingsDebugFragment.class, makeFragmentArgs()), null, 0, true));
 		}
 
 		AccountSession session=AccountSessionManager.get(accountID);
@@ -84,7 +92,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 	protected void onHidden(){
 		super.onHidden();
 		if(!loggedOut)
-			AccountSessionManager.get(accountID).savePreferencesIfPending();
+			account.savePreferencesIfPending();
 	}
 
 	@Override
@@ -101,7 +109,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 		updateButton2.setOnClickListener(this::onUpdateButtonClick);
 
 		bannerTitle.setText(R.string.app_update_ready);
-		bannerIcon.setImageResource(R.drawable.ic_apk_install_24px);
+		bannerIcon.setImageResource(R.drawable.ic_fluent_phone_update_24_regular);
 
 		MergeRecyclerAdapter adapter=new MergeRecyclerAdapter();
 		adapter.addAdapter(bannerAdapter);
@@ -143,8 +151,8 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 		Nav.go(getActivity(), SettingsNotificationsFragment.class, makeFragmentArgs());
 	}
 
-	private void onServerClick(ListItem<?> item_){
-		Nav.go(getActivity(), SettingsServerFragment.class, makeFragmentArgs());
+	private void onInstanceClick(ListItem<?> item_){
+		Nav.go(getActivity(), SettingsInstanceFragment.class, makeFragmentArgs());
 	}
 
 	private void onAboutClick(ListItem<?> item_){
@@ -152,16 +160,17 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onManageAccountsClick(ListItem<?> item){
-		new AccountSwitcherSheet(getActivity(), null).setOnLoggedOutCallback(()->loggedOut=true).show();
+		new AccountSwitcherSheet(getActivity(), null).show();
 	}
 
 	private void onLogOutClick(ListItem<?> item_){
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.log_out)
 				.setMessage(getString(R.string.confirm_log_out, session.getFullUsername()))
-				.setPositiveButton(R.string.log_out, (dialog, which)->AccountSessionManager.get(accountID).logOut(getActivity(), ()->{
+				.setPositiveButton(R.string.log_out, (dialog, which)->account.logOut(getActivity(), ()->{
 					loggedOut=true;
-					((MainActivity)getActivity()).restartHomeFragment();
+					((MainActivity)getActivity()).restartActivity();
 				}))
 				.setNegativeButton(R.string.cancel, null)
 				.show();

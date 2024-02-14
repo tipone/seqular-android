@@ -1,12 +1,17 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import static org.joinmastodon.android.MastodonApp.context;
+import static org.joinmastodon.android.ui.utils.UiUtils.generateFormattedString;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.TypefaceSpan;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,14 +19,20 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.NotificationsListFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
+import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
+
+import java.util.Collections;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
@@ -32,41 +43,54 @@ import me.grishka.appkit.utils.V;
 public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	public final Notification notification;
 	private ImageLoaderRequest avaRequest;
-	private String accountID;
-	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
-	private CharSequence text;
+	private final String accountID;
+	private final CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
+	private final CharSequence text;
+	private final CharSequence timestamp;
 
 	public NotificationHeaderStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Notification notification, String accountID){
 		super(parentID, parentFragment);
 		this.notification=notification;
 		this.accountID=accountID;
+		this.timestamp=notification.createdAt==null ? null : UiUtils.formatRelativeTimestamp(context, notification.createdAt);
 
 		if(notification.type==Notification.Type.POLL){
 			text=parentFragment.getString(R.string.poll_ended);
 		}else{
-			avaRequest=new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? notification.account.avatar : notification.account.avatarStatic, V.dp(50), V.dp(50));
-			SpannableStringBuilder parsedName=new SpannableStringBuilder(notification.account.displayName);
+			AccountSession session = AccountSessionManager.get(accountID);
+			avaRequest=new UrlImageLoaderRequest(
+					TextUtils.isEmpty(notification.account.avatar) ? session.getDefaultAvatarUrl() :
+						GlobalUserPreferences.playGifs ? notification.account.avatar : notification.account.avatarStatic,
+					V.dp(50), V.dp(50));
+			SpannableStringBuilder parsedName=new SpannableStringBuilder(notification.account.getDisplayName());
 			HtmlParser.parseCustomEmoji(parsedName, notification.account.emojis);
-			emojiHelper.setText(parsedName);
-
-			String[] parts=parentFragment.getString(switch(notification.type){
+			String str = parentFragment.getString(switch(notification.type){
 				case FOLLOW -> R.string.user_followed_you;
 				case FOLLOW_REQUEST -> R.string.user_sent_follow_request;
 				case REBLOG -> R.string.notification_boosted;
 				case FAVORITE -> R.string.user_favorited;
+				case POLL -> R.string.poll_ended;
+				case UPDATE -> R.string.sk_post_edited;
+				case SIGN_UP -> R.string.sk_signed_up;
+				case REPORT -> R.string.sk_reported;
+				case REACTION, PLEROMA_EMOJI_REACTION ->
+						!TextUtils.isEmpty(notification.emoji) ? R.string.sk_reacted_with : R.string.sk_reacted;
 				default -> throw new IllegalStateException("Unexpected value: "+notification.type);
-			}).split("%s", 2);
-			SpannableStringBuilder text=new SpannableStringBuilder();
-			if(parts.length>1 && !TextUtils.isEmpty(parts[0]))
-				text.append(parts[0]);
-			text.append(parsedName, new TypefaceSpan("sans-serif-medium"), 0);
-			if(parts.length==1){
-				text.append(' ');
-				text.append(parts[0]);
-			}else if(!TextUtils.isEmpty(parts[1])){
-				text.append(parts[1]);
+			});
+
+			if (!TextUtils.isEmpty(notification.emoji)) {
+				SpannableStringBuilder emoji = new SpannableStringBuilder(notification.emoji);
+				if (!TextUtils.isEmpty(notification.emojiUrl)) {
+					HtmlParser.parseCustomEmoji(emoji, Collections.singletonList(new Emoji(
+							notification.emoji, notification.emojiUrl, notification.emojiUrl
+					)));
+				}
+				this.text = generateFormattedString(str, parsedName, emoji);
+			} else {
+				this.text = generateFormattedString(str, parsedName);
 			}
-			this.text=text;
+
+			emojiHelper.setText(text);
 		}
 	}
 
@@ -89,18 +113,26 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
-		private final ImageView icon, avatar;
-		private final TextView text;
+		private final ImageView icon, avatar, deleteNotification;
+		private final TextView text, timestamp;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_notification_header, parent);
 			icon=findViewById(R.id.icon);
 			avatar=findViewById(R.id.avatar);
 			text=findViewById(R.id.text);
+			timestamp=findViewById(R.id.timestamp);
+			deleteNotification=findViewById(R.id.delete_notification);
 
 			avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
 			avatar.setClipToOutline(true);
-			avatar.setOnClickListener(this::onAvaClick);
+			deleteNotification.setOnClickListener(v->UiUtils.confirmDeleteNotification(activity, item.parentFragment.getAccountID(), item.notification, ()->{
+				if (item.parentFragment instanceof NotificationsListFragment fragment) {
+					fragment.removeNotification(item.notification);
+				}
+			}));
+
+			itemView.setOnClickListener(this::onItemClick);
 		}
 
 		@Override
@@ -111,6 +143,8 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				item.emojiHelper.setImageDrawable(index-1, image);
 				text.invalidate();
 			}
+			if(image instanceof Animatable)
+				((Animatable) image).start();
 		}
 
 		@Override
@@ -121,28 +155,38 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				ImageLoaderViewHolder.super.clearImage(index);
 		}
 
+		@SuppressLint("ResourceType")
 		@Override
 		public void onBind(NotificationHeaderStatusDisplayItem item){
 			text.setText(item.text);
+			timestamp.setText(item.timestamp);
 			avatar.setVisibility(item.notification.type==Notification.Type.POLL ? View.GONE : View.VISIBLE);
-			// TODO use real icons
 			icon.setImageResource(switch(item.notification.type){
-				case FAVORITE -> R.drawable.ic_star_fill1_24px;
-				case REBLOG -> R.drawable.ic_repeat_fill1_24px;
-				case FOLLOW, FOLLOW_REQUEST -> R.drawable.ic_person_add_fill1_24px;
-				case POLL -> R.drawable.ic_insert_chart_fill1_24px;
+				case FAVORITE -> GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_24_filled : R.drawable.ic_fluent_star_24_filled;
+				case REBLOG -> R.drawable.ic_fluent_arrow_repeat_all_24_filled;
+				case FOLLOW, FOLLOW_REQUEST -> R.drawable.ic_fluent_person_add_24_filled;
+				case POLL -> R.drawable.ic_fluent_poll_24_filled;
+				case REPORT -> R.drawable.ic_fluent_warning_24_filled;
+				case SIGN_UP -> R.drawable.ic_fluent_person_available_24_filled;
+				case UPDATE -> R.drawable.ic_fluent_edit_24_filled;
+				case REACTION, PLEROMA_EMOJI_REACTION -> R.drawable.ic_fluent_add_24_filled;
 				default -> throw new IllegalStateException("Unexpected value: "+item.notification.type);
 			});
 			icon.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(item.parentFragment.getActivity(), switch(item.notification.type){
-				case FAVORITE -> R.attr.colorFavorite;
+				case FAVORITE -> GlobalUserPreferences.likeIcon ? R.attr.colorLike : R.attr.colorFavorite;
 				case REBLOG -> R.attr.colorBoost;
-				case FOLLOW, FOLLOW_REQUEST -> R.attr.colorFollow;
 				case POLL -> R.attr.colorPoll;
-				default -> throw new IllegalStateException("Unexpected value: "+item.notification.type);
+				default -> android.R.attr.colorAccent;
 			})));
+			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification != null ? View.VISIBLE : View.GONE);
+			itemView.setBackgroundResource(0);
 		}
 
-		private void onAvaClick(View v){
+		public void onItemClick(View v) {
+			if (item.notification.type == Notification.Type.REPORT) {
+				UiUtils.showFragmentForNotification(item.parentFragment.getContext(), item.notification, item.accountID, null);
+				return;
+			}
 			Bundle args=new Bundle();
 			args.putString("account", item.accountID);
 			args.putParcelable("profileAccount", Parcels.wrap(item.notification.account));

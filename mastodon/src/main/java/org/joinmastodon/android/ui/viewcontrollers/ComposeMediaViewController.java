@@ -4,11 +4,12 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Build;
@@ -19,6 +20,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewOutlineProvider;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -27,8 +29,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.StringRes;
 
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -51,11 +53,8 @@ import org.parceler.Parcel;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.function.Consumer;
@@ -174,6 +173,7 @@ public class ComposeMediaViewController{
 		}
 		fragment.updatePublishButtonState();
 		fragment.updateMediaPollStates();
+		fragment.updateSensitive();
 		return true;
 	}
 
@@ -200,6 +200,15 @@ public class ComposeMediaViewController{
 			Toast.makeText(fragment.getActivity(), text, Toast.LENGTH_SHORT).show();
 			attachmentsErrorShowing=true;
 			attachmentsView.postDelayed(()->attachmentsErrorShowing=false, 2000);
+		}
+	}
+
+	private void updateButton(ImageButton btn, @DrawableRes int drawableId, @StringRes int labelId){
+		btn.setImageResource(drawableId);
+		String label=fragment.getContext().getString(labelId);
+		btn.setContentDescription(label);
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+			btn.setTooltipText(label);
 		}
 	}
 
@@ -230,12 +239,11 @@ public class ComposeMediaViewController{
 		draft.removeButton.setOnClickListener(this::onRemoveMediaAttachmentClick);
 		draft.editButton.setTag(draft);
 
-		thumb.setOutlineProvider(OutlineProviders.roundedRect(12));
+		thumb.setOutlineProvider(ViewOutlineProvider.BACKGROUND);
 		thumb.setClipToOutline(true);
 		img.setOutlineProvider(OutlineProviders.roundedRect(12));
 		img.setClipToOutline(true);
 
-		thumb.setBackgroundColor(UiUtils.getThemeColor(fragment.getActivity(), R.attr.colorM3Surface));
 		thumb.setOnLongClickListener(v->{
 			if(!v.hasTransientState() && attachments.size()>1){
 				attachmentsView.startDragging(v);
@@ -265,11 +273,11 @@ public class ComposeMediaViewController{
 			draft.subtitleView.setText(subtitleRes);
 		}
 		draft.titleView.setText(fragment.getString(R.string.attachment_x_percent_uploaded, 0));
-		draft.removeButton.setImageResource(R.drawable.ic_baseline_close_24);
+		updateButton(draft.removeButton, R.drawable.ic_fluent_dismiss_24_regular, R.string.delete);
 
 		if(draft.state==AttachmentUploadState.ERROR){
 			draft.titleView.setText(R.string.upload_failed);
-			draft.editButton.setImageResource(R.drawable.ic_restart_alt_24px);
+			updateButton(draft.removeButton, R.drawable.ic_fluent_arrow_counterclockwise_24_regular, R.string.retry);
 			draft.editButton.setOnClickListener(this::onRetryOrCancelMediaUploadClick);
 			draft.progressBar.setVisibility(View.GONE);
 			draft.setUseErrorColors(true);
@@ -279,7 +287,7 @@ public class ComposeMediaViewController{
 			draft.editButton.setOnClickListener(this::onEditMediaDescriptionClick);
 		}else{
 			draft.editButton.setVisibility(View.GONE);
-			draft.removeButton.setImageResource(R.drawable.ic_baseline_close_24);
+			updateButton(draft.removeButton, R.drawable.ic_fluent_dismiss_24_regular, R.string.delete);
 			if(draft.state==AttachmentUploadState.PROCESSING){
 				draft.titleView.setText(R.string.upload_processing);
 			}else{
@@ -373,7 +381,7 @@ public class ComposeMediaViewController{
 //						attachment.retryButton.setContentDescription(fragment.getString(R.string.retry_upload));
 
 						V.setVisibilityAnimated(attachment.editButton, View.VISIBLE);
-						attachment.editButton.setImageResource(R.drawable.ic_restart_alt_24px);
+						updateButton(attachment.editButton, R.drawable.ic_fluent_arrow_counterclockwise_24_regular, R.string.retry);
 						attachment.editButton.setOnClickListener(ComposeMediaViewController.this::onRetryOrCancelMediaUploadClick);
 						attachment.setUseErrorColors(true);
 						V.setVisibilityAnimated(attachment.progressBar, View.GONE);
@@ -402,6 +410,7 @@ public class ComposeMediaViewController{
 		}
 		fragment.updatePublishButtonState();
 		fragment.updateMediaPollStates();
+		fragment.updateSensitive();
 	}
 
 	private void onRetryOrCancelMediaUploadClick(View v){
@@ -476,8 +485,8 @@ public class ComposeMediaViewController{
 			throw new IllegalStateException("Unexpected state "+attachment.state);
 		attachment.uploadRequest=null;
 		attachment.state=AttachmentUploadState.DONE;
-		attachment.editButton.setImageResource(R.drawable.ic_edit_24px);
-		attachment.removeButton.setImageResource(R.drawable.ic_delete_24px);
+		updateButton(attachment.editButton, R.drawable.ic_fluent_edit_24_regular, R.string.sk_edit_alt_text);
+		updateButton(attachment.removeButton, R.drawable.ic_fluent_dismiss_24_regular, R.string.delete);
 		attachment.editButton.setOnClickListener(this::onEditMediaDescriptionClick);
 		V.setVisibilityAnimated(attachment.progressBar, View.GONE);
 		V.setVisibilityAnimated(attachment.editButton, View.VISIBLE);
@@ -499,6 +508,14 @@ public class ComposeMediaViewController{
 	public boolean areThereAnyUploadingAttachments(){
 		for(DraftMediaAttachment att:attachments){
 			if(att.state==AttachmentUploadState.UPLOADING)
+				return true;
+		}
+		return false;
+	}
+
+	public boolean areAnyAttachmentsNotDone() {
+		for(DraftMediaAttachment att:attachments){
+			if(att.state!=AttachmentUploadState.DONE)
 				return true;
 		}
 		return false;
@@ -698,18 +715,21 @@ public class ComposeMediaViewController{
 			if(errorTransitionAnimator!=null)
 				errorTransitionAnimator.cancel();
 			AnimatorSet set=new AnimatorSet();
-			int color1, color2, color3;
+			int defaultBg=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3Surface);
+			int errorBg=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3ErrorContainer);
+			int color2, color3;
 			if(use){
-				color1=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3ErrorContainer);
 				color2=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3Error);
 				color3=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3OnErrorContainer);
 			}else{
-				color1=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3Surface);
 				color2=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3OnSurface);
 				color3=UiUtils.getThemeColor(view.getContext(), R.attr.colorM3OnSurfaceVariant);
 			}
+			GradientDrawable bg=(GradientDrawable) view.getBackground().mutate();
+			ValueAnimator bgAnim=ValueAnimator.ofArgb(use ? defaultBg : errorBg, use ? errorBg : defaultBg);
+			bgAnim.addUpdateListener(anim->bg.setColor((Integer) anim.getAnimatedValue()));
 			set.playTogether(
-					ObjectAnimator.ofArgb(view, "backgroundColor", ((ColorDrawable)view.getBackground()).getColor(), color1),
+					bgAnim,
 					ObjectAnimator.ofArgb(titleView, "textColor", titleView.getCurrentTextColor(), color2),
 					ObjectAnimator.ofArgb(subtitleView, "textColor", subtitleView.getCurrentTextColor(), color3),
 					ObjectAnimator.ofArgb(removeButton.getDrawable(), "tint", subtitleView.getCurrentTextColor(), color3)

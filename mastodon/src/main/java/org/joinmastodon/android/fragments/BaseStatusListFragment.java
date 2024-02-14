@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
+import android.app.assist.AssistContent;
 import android.content.res.Configuration;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -11,17 +12,28 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
+import android.view.animation.TranslateAnimation;
+import android.widget.ImageButton;
 import android.widget.Toolbar;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.polls.SubmitPollVote;
+import org.joinmastodon.android.api.requests.statuses.AkkomaTranslateStatus;
 import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
+import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.AkkomaTranslation;
 import org.joinmastodon.android.model.DisplayItemsParent;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.Relationship;
@@ -29,21 +41,29 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.Translation;
 import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
-import org.joinmastodon.android.ui.sheets.NonMutualPreReplySheet;
-import org.joinmastodon.android.ui.sheets.OldPostPreReplySheet;
+import org.joinmastodon.android.ui.NonMutualPreReplySheet;
+import org.joinmastodon.android.ui.OldPostPreReplySheet;
 import org.joinmastodon.android.ui.displayitems.AccountStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HashtagStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollOptionStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.PreviewlessMediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.SpoilerStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
+import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
+import org.joinmastodon.android.ui.utils.PreviewlessMediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 import org.joinmastodon.android.utils.TypedObjectPool;
 
 import java.time.Instant;
@@ -55,13 +75,17 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
+
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
+import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -70,23 +94,38 @@ import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends MastodonRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop{
+public abstract class BaseStatusListFragment<T extends DisplayItemsParent> extends MastodonRecyclerFragment<T> implements PhotoViewerHost, ScrollableToTop, IsOnTop, HasFab, ProvidesAssistContent.ProvidesWebUri {
 	protected ArrayList<StatusDisplayItem> displayItems=new ArrayList<>();
 	protected DisplayItemsAdapter adapter;
 	protected String accountID;
 	protected PhotoViewer currentPhotoViewer;
+	protected ImageButton fab;
+	protected int scrollDiff = 0;
 	protected HashMap<String, Account> knownAccounts=new HashMap<>();
 	protected HashMap<String, Relationship> relationships=new HashMap<>();
 	protected Rect tmpRect=new Rect();
 	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> attachmentViewsPool=new TypedObjectPool<>(this::makeNewMediaAttachmentView);
+	protected TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, PreviewlessMediaAttachmentViewController> previewlessAttachmentViewsPool=new TypedObjectPool<>(this::makeNewPreviewlessMediaAttachmentView);
+
+	protected boolean currentlyScrolling;
+	protected String maxID;
 
 	public BaseStatusListFragment(){
 		super(20);
+		if (wantsComposeButton()) setListLayoutId(R.layout.recycler_fragment_with_fab);
+	}
+
+	protected boolean wantsComposeButton() {
+		return false;
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
+		if(GlobalUserPreferences.toolbarMarquee){
+			setTitleMarqueeEnabled(false);
+			setSubtitleMarqueeEnabled(false);
+		}
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
 	}
@@ -120,7 +159,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		displayItems.clear();
 	}
 
-	protected void prependItems(List<T> items, boolean notify){
+	protected int prependItems(List<T> items, boolean notify){
 		data.addAll(0, items);
 		int offset=0;
 		for(T s:items){
@@ -134,15 +173,24 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(notify)
 			adapter.notifyItemRangeInserted(0, offset);
 		loadRelationships(items.stream().map(DisplayItemsParent::getAccountID).filter(Objects::nonNull).collect(Collectors.toSet()));
+		return offset;
 	}
 
 	protected String getMaxID(){
+		if(refreshing) return null;
+		if(maxID!=null) return maxID;
 		if(!preloadedData.isEmpty())
 			return preloadedData.get(preloadedData.size()-1).getID();
 		else if(!data.isEmpty())
 			return data.get(data.size()-1).getID();
 		else
 			return null;
+	}
+
+	protected boolean applyMaxID(List<Status> result){
+		boolean empty=result.isEmpty();
+		if(!empty) maxID=result.get(result.size()-1).id;
+		return !empty;
 	}
 
 	protected abstract List<StatusDisplayItem> buildDisplayItems(T s);
@@ -194,7 +242,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			@Override
 			public boolean startPhotoViewTransition(int index, @NonNull Rect outRect, @NonNull int[] outCornerRadius){
 				MediaAttachmentViewController holder=findPhotoViewHolder(index);
-				if(holder!=null){
+				if(holder!=null && list!=null){
 					transitioningHolder=holder;
 					View view=transitioningHolder.photo;
 					int[] pos={0, 0};
@@ -262,21 +310,159 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		gridHolder.itemView.setHasTransientState(true);
 	}
 
+
+	public void openPreviewlessMediaPhotoViewer(String parentID, Status _status, int attachmentIndex, PreviewlessMediaGridStatusDisplayItem.Holder gridHolder){
+		final Status status=_status.getContentStatus();
+		currentPhotoViewer=new PhotoViewer(getActivity(), status.mediaAttachments, attachmentIndex, status, accountID, new PhotoViewer.Listener(){
+			private PreviewlessMediaAttachmentViewController transitioningHolder;
+
+			@Override
+			public void setPhotoViewVisibility(int index, boolean visible){
+
+			}
+
+			@Override
+			public boolean startPhotoViewTransition(int index, @NonNull Rect outRect, @NonNull int[] outCornerRadius){
+				PreviewlessMediaAttachmentViewController holder=findPhotoViewHolder(index);
+				if(holder!=null && list!=null){
+					transitioningHolder=holder;
+					View view=transitioningHolder.inner;
+					int[] pos={0, 0};
+					view.getLocationOnScreen(pos);
+					outRect.set(pos[0], pos[1], pos[0]+view.getWidth(), pos[1]+view.getHeight());
+					list.setClipChildren(false);
+					gridHolder.setClipChildren(false);
+					transitioningHolder.view.setElevation(1f);
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public void setTransitioningViewTransform(float translateX, float translateY, float scale){
+				View view=transitioningHolder.inner;
+				view.setTranslationX(translateX);
+				view.setTranslationY(translateY);
+				view.setScaleX(scale);
+				view.setScaleY(scale);
+			}
+
+			@Override
+			public void endPhotoViewTransition(){
+				View view=transitioningHolder.inner;
+				view.setTranslationX(0f);
+				view.setTranslationY(0f);
+				view.setScaleX(1f);
+				view.setScaleY(1f);
+				transitioningHolder.view.setElevation(0f);
+				if(list!=null)
+					list.setClipChildren(true);
+				gridHolder.setClipChildren(true);
+				transitioningHolder=null;
+			}
+
+			@Nullable
+			@Override
+			public Drawable getPhotoViewCurrentDrawable(int index){
+				return null;
+			}
+
+			@Override
+			public void photoViewerDismissed(){
+				currentPhotoViewer=null;
+			}
+
+			@Override
+			public void onRequestPermissions(String[] permissions){
+				requestPermissions(permissions, PhotoViewer.PERMISSION_REQUEST);
+			}
+
+			private PreviewlessMediaAttachmentViewController findPhotoViewHolder(int index){
+				return gridHolder.getViewController(index);
+			}
+		});
+	}
+
+	@Override
+	public @Nullable View getFab() {
+		if (getParentFragment() instanceof HasFab l) return l.getFab();
+		else return fab;
+	}
+
+	@Override
+	public void showFab() {
+		View fab = getFab();
+		if (fab == null || fab.getVisibility() == View.VISIBLE) return;
+		fab.setVisibility(View.VISIBLE);
+		TranslateAnimation animate = new TranslateAnimation(
+				0,
+				0,
+				fab.getHeight() * 2,
+				0);
+		animate.setDuration(300);
+		fab.startAnimation(animate);
+	}
+
+	public boolean isScrolling() {
+		return currentlyScrolling;
+	}
+
+	@Override
+	public void hideFab() {
+		View fab = getFab();
+		if (fab == null || fab.getVisibility() != View.VISIBLE) return;
+		TranslateAnimation animate = new TranslateAnimation(
+				0,
+				0,
+				0,
+				fab.getHeight() * 2);
+		animate.setDuration(300);
+		fab.startAnimation(animate);
+		fab.setVisibility(View.INVISIBLE);
+		scrollDiff = 0;
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		fab=view.findViewById(R.id.fab);
+
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
 				if(currentPhotoViewer!=null)
 					currentPhotoViewer.offsetView(-dx, -dy);
+
+				View fab = getFab();
+				if (fab!=null && GlobalUserPreferences.autoHideFab && dy != UiUtils.SCROLL_TO_TOP_DELTA) {
+					if (dy > 0 && fab.getVisibility() == View.VISIBLE) {
+						hideFab();
+					} else if (dy < 0 && fab.getVisibility() != View.VISIBLE) {
+						if (list.getChildAt(0).getTop() == 0 || scrollDiff > 400) {
+							showFab();
+							scrollDiff = 0;
+						} else {
+							scrollDiff += Math.abs(dy);
+						}
+					}
+				}
+			}
+
+			@Override
+			public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+				super.onScrollStateChanged(recyclerView, newState);
+				currentlyScrolling = newState != RecyclerView.SCROLL_STATE_IDLE;
 			}
 		});
 		list.addItemDecoration(new StatusListItemDecoration());
+		list.addItemDecoration(new InsetStatusItemDecoration(this));
 		((UsableRecyclerView)list).setSelectorBoundsProvider(new UsableRecyclerView.SelectorBoundsProvider(){
 			private Rect tmpRect=new Rect();
 			@Override
 			public void getSelectorBounds(View view, Rect outRect){
+				if(list!=view.getParent()) return;
+				boolean hasDescendant=false, hasAncestor=false, isWarning=false;
+				int lastIndex=-1, firstIndex=-1;
 				if(((UsableRecyclerView) list).isIncludeMarginsInItemHitbox()){
 					list.getDecoratedBoundsWithMargins(view, outRect);
 				}else{
@@ -292,23 +478,55 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					for(int i=0;i<list.getChildCount();i++){
 						View child=list.getChildAt(i);
 						holder=list.getChildViewHolder(child);
-						if(holder instanceof StatusDisplayItem.Holder){
+						if(holder instanceof StatusDisplayItem.Holder<?> h){
 							String otherID=((StatusDisplayItem.Holder<?>) holder).getItemID();
 							if(otherID.equals(id)){
+								if (firstIndex < 0) firstIndex = i;
+								lastIndex = i;
+								StatusDisplayItem item = h.getItem();
+								hasDescendant = item.hasDescendantNeighbor;
+								// no for direct descendants because main status (right above) is
+								// being displayed with an extended footer - no connected layout
+								hasAncestor = item.hasAncestoringNeighbor && !item.isDirectDescendant;
 								list.getDecoratedBoundsWithMargins(child, tmpRect);
 								outRect.left=Math.min(outRect.left, tmpRect.left);
 								outRect.top=Math.min(outRect.top, tmpRect.top);
 								outRect.right=Math.max(outRect.right, tmpRect.right);
 								outRect.bottom=Math.max(outRect.bottom, tmpRect.bottom);
+								if (holder instanceof WarningFilteredStatusDisplayItem.Holder) {
+									isWarning = true;
+								}
 							}
 						}
 					}
 				}
+				// shifting the selection box down
+				// see also: FooterStatusDisplayItem#onBind (setMargins)
+				if (isWarning || firstIndex < 0 || lastIndex < 0 ||
+						!(list.getChildViewHolder(list.getChildAt(lastIndex))
+						instanceof FooterStatusDisplayItem.Holder)) return;
+				int prevIndex = firstIndex - 1, nextIndex = lastIndex + 1;
+				boolean prevIsWarning = prevIndex > 0 && prevIndex < list.getChildCount() &&
+						list.getChildViewHolder(list.getChildAt(prevIndex))
+						instanceof WarningFilteredStatusDisplayItem.Holder;
+				boolean nextIsWarning = nextIndex > 0 && nextIndex < list.getChildCount() &&
+						list.getChildViewHolder(list.getChildAt(nextIndex))
+						instanceof WarningFilteredStatusDisplayItem.Holder;
+				if (!prevIsWarning && hasAncestor) outRect.top += V.dp(4);
+				if (!nextIsWarning && hasDescendant) outRect.bottom += V.dp(4);
 			}
 		});
 		list.setItemAnimator(new BetterItemAnimator());
 		((UsableRecyclerView) list).setIncludeMarginsInItemHitbox(true);
 		updateToolbar();
+
+		if (wantsComposeButton() && !getArguments().getBoolean("__disable_fab", false)) {
+			fab.setVisibility(View.VISIBLE);
+			fab.setOnClickListener(this::onFabClick);
+			fab.setOnLongClickListener(this::onFabLongClick);
+		} else if (fab != null) {
+			fab.setVisibility(View.GONE);
+		}
 	}
 
 	@Override
@@ -349,10 +567,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	protected void updatePoll(String itemID, Status status, Poll poll){
 		status.poll=poll;
 		int firstOptionIndex=-1, footerIndex=-1;
+		int spoilerFirstOptionIndex=-1, spoilerFooterIndex=-1;
+		SpoilerStatusDisplayItem spoilerItem=null;
 		int i=0;
 		for(StatusDisplayItem item:displayItems){
 			if(item.parentID.equals(itemID)){
-				if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
+				if(item instanceof SpoilerStatusDisplayItem){
+					spoilerItem=(SpoilerStatusDisplayItem) item;
+				}else if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
 					firstOptionIndex=i;
 				}else if(item instanceof PollFooterStatusDisplayItem){
 					footerIndex=i;
@@ -361,12 +583,39 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			}
 			i++;
 		}
+
+		// This is a temporary measure to deal with the app crashing when the poll isn't updated.
+		// This is needed because of a possible id mismatch that screws with things
+		if(firstOptionIndex==-1 || footerIndex==-1){
+			for(StatusDisplayItem item:displayItems){
+				if(status.id.equals(itemID)){
+					if(item instanceof SpoilerStatusDisplayItem){
+						spoilerItem=(SpoilerStatusDisplayItem) item;
+					}else if(item instanceof PollOptionStatusDisplayItem && firstOptionIndex==-1){
+						firstOptionIndex=i;
+					}else if(item instanceof PollFooterStatusDisplayItem){
+						footerIndex=i;
+						break;
+					}
+				}
+				i++;
+			}
+		}
+
 		if(firstOptionIndex==-1 || footerIndex==-1)
 			throw new IllegalStateException("Can't find all poll items in displayItems");
 		List<StatusDisplayItem> pollItems=displayItems.subList(firstOptionIndex, footerIndex+1);
 		int prevSize=pollItems.size();
+		if(spoilerItem!=null){
+			spoilerFirstOptionIndex=spoilerItem.contentItems.indexOf(pollItems.get(0));
+			spoilerFooterIndex=spoilerItem.contentItems.indexOf(pollItems.get(pollItems.size()-1));
+		}
 		pollItems.clear();
 		StatusDisplayItem.buildPollItems(itemID, this, poll, status, pollItems);
+		if(spoilerItem!=null){
+			spoilerItem.contentItems.subList(spoilerFirstOptionIndex, spoilerFooterIndex+1).clear();
+			spoilerItem.contentItems.addAll(spoilerFirstOptionIndex, pollItems);
+		}
 		if(prevSize!=pollItems.size()){
 			adapter.notifyItemRangeRemoved(firstOptionIndex, prevSize);
 			adapter.notifyItemRangeInserted(firstOptionIndex, pollItems.size());
@@ -378,10 +627,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onPollOptionClick(PollOptionStatusDisplayItem.Holder holder){
 		Poll poll=holder.getItem().poll;
 		Poll.Option option=holder.getItem().option;
-		if(poll.multiple){
+		// MEGALODON: always show vote button
+//		if(poll.multiple){
 			if(poll.selectedOptions==null)
 				poll.selectedOptions=new ArrayList<>();
-			if(poll.selectedOptions.contains(option)){
+			boolean optionContained=poll.selectedOptions.contains(option);
+			if(!poll.multiple) poll.selectedOptions.clear();
+			if(optionContained){
 				poll.selectedOptions.remove(option);
 				holder.itemView.setSelected(false);
 			}else{
@@ -390,6 +642,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			}
 			for(int i=0;i<list.getChildCount();i++){
 				RecyclerView.ViewHolder vh=list.getChildViewHolder(list.getChildAt(i));
+				if(!poll.multiple && vh instanceof PollOptionStatusDisplayItem.Holder item){
+					if(item!=holder) item.itemView.setSelected(false);
+				}
 				if(vh instanceof PollFooterStatusDisplayItem.Holder footer){
 					if(footer.getItemID().equals(holder.getItemID())){
 						footer.rebind();
@@ -397,14 +652,22 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					}
 				}
 			}
-		}else{
-			submitPollVote(holder.getItemID(), poll.id, Collections.singletonList(poll.options.indexOf(option)));
-		}
+//		}else{
+//			submitPollVote(holder.getItemID(), poll.id, Collections.singletonList(poll.options.indexOf(option)));
+//		}
 	}
 
 	public void onPollVoteButtonClick(PollFooterStatusDisplayItem.Holder holder){
 		Poll poll=holder.getItem().poll;
 		submitPollVote(holder.getItemID(), poll.id, poll.selectedOptions.stream().map(opt->poll.options.indexOf(opt)).collect(Collectors.toList()));
+	}
+
+	public void onPollViewResultsButtonClick(PollFooterStatusDisplayItem.Holder holder, boolean shown){
+			for(int i=0;i<list.getChildCount();i++){
+				if(list.getChildViewHolder(list.getChildAt(i)) instanceof PollOptionStatusDisplayItem.Holder item && item.getItemID().equals(holder.getItemID())){
+					item.showResults(shown);
+				}
+			}
 	}
 
 	protected void submitPollVote(String parentID, String pollID, List<Integer> choices){
@@ -428,15 +691,39 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public void onRevealSpoilerClick(SpoilerStatusDisplayItem.Holder holder){
 		Status status=holder.getItem().status;
-		toggleSpoiler(status, holder.getItemID());
+		boolean isForQuote=holder.getItem().isForQuote;
+		toggleSpoiler(status, isForQuote, holder.getItemID());
 	}
 
-	protected void toggleSpoiler(Status status, String itemID){
+	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder) {
+		Status status = holder.getItem().status;
+		if(holder.getItem().hasVisibilityToggle) holder.animateVisibilityToggle(false);
+		MediaGridStatusDisplayItem.Holder mediaGrid=findHolderOfType(holder.getItemID(), MediaGridStatusDisplayItem.Holder.class);
+		if(mediaGrid!=null){
+			if(!status.sensitiveRevealed) mediaGrid.revealSensitive();
+			else mediaGrid.hideSensitive();
+		}else{
+			status.sensitiveRevealed=false;
+			notifyItemChangedAfter(holder.getItem(), MediaGridStatusDisplayItem.class);
+		}
+	}
+
+	public void onSensitiveRevealed(MediaGridStatusDisplayItem.Holder holder) {
+		HeaderStatusDisplayItem.Holder header=findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
+		if(header!=null && header.getItem().hasVisibilityToggle) header.animateVisibilityToggle(true);
+		else notifyItemChangedBefore(holder.getItem(), HeaderStatusDisplayItem.class);
+	}
+
+	protected void toggleSpoiler(Status status, boolean isForQuote, String itemID){
 		status.spoilerRevealed=!status.spoilerRevealed;
-		SpoilerStatusDisplayItem.Holder spoiler=findHolderOfType(itemID, SpoilerStatusDisplayItem.Holder.class);
-		if(spoiler!=null)
-			spoiler.rebind();
-		SpoilerStatusDisplayItem spoilerItem=Objects.requireNonNull(findItemOfType(itemID, SpoilerStatusDisplayItem.class));
+		if (!status.spoilerRevealed && !AccountSessionManager.get(accountID).getLocalPreferences().revealCWs)
+			status.sensitiveRevealed = false;
+
+		List<SpoilerStatusDisplayItem.Holder> spoilers=findAllHoldersOfType(itemID, SpoilerStatusDisplayItem.Holder.class);
+		SpoilerStatusDisplayItem.Holder spoiler=spoilers.size() > 1 && isForQuote ? spoilers.get(1) : spoilers.get(0);
+		if(spoiler!=null) spoiler.rebind();
+		else notifyItemChanged(itemID, SpoilerStatusDisplayItem.class);
+		SpoilerStatusDisplayItem spoilerItem=Objects.requireNonNull(spoiler.getItem());
 
 		int index=displayItems.indexOf(spoilerItem);
 		if(status.spoilerRevealed){
@@ -446,11 +733,44 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			displayItems.subList(index+1, index+1+spoilerItem.contentItems.size()).clear();
 			adapter.notifyItemRangeRemoved(index+1, spoilerItem.contentItems.size());
 		}
+
+		notifyItemChanged(itemID, TextStatusDisplayItem.class);
+		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
+		if(header!=null) header.rebind();
+		else notifyItemChanged(itemID, HeaderStatusDisplayItem.class);
+
 		list.invalidateItemDecorations();
 	}
 
-	public void onGapClick(GapStatusDisplayItem.Holder item){}
+	public void onEnableExpandable(TextStatusDisplayItem.Holder holder, boolean expandable) {
+		Status s=holder.getItem().status;
+		if(s.textExpandable!=expandable && list!=null) {
+			s.textExpandable=expandable;
+			HeaderStatusDisplayItem.Holder header=findHolderOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
+			if(header!=null) header.bindCollapseButton();
+		}
+	}
 
+	public void onToggleExpanded(Status status, String itemID) {
+		status.textExpanded = !status.textExpanded;
+		notifyItemChanged(itemID, TextStatusDisplayItem.class);
+		HeaderStatusDisplayItem.Holder header=findHolderOfType(itemID, HeaderStatusDisplayItem.Holder.class);
+		if(header!=null) header.animateExpandToggle();
+		else notifyItemChanged(itemID, HeaderStatusDisplayItem.class);
+	}
+
+	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){}
+
+	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
+		int startPos = warning.getAbsoluteAdapterPosition();
+		displayItems.remove(startPos);
+		displayItems.addAll(startPos, warning.filteredItems);
+		adapter.notifyItemRangeInserted(startPos, warning.filteredItems.size() - 1);
+		if (startPos == 0) scrollToTop();
+		warning.getItem().status.filterRevealed = true;
+	}
+
+	@Override
 	public String getAccountID(){
 		return accountID;
 	}
@@ -498,9 +818,61 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		return null;
 	}
 
+	/**
+	 * Use this as a fallback if findHolderOfType fails to find the ViewHolder.
+	 * It might still be bound but off-screen and therefore not a child of the RecyclerView -
+	 * resulting in the ViewHolder displaying an outdated state once scrolled back into view.
+	 */
+	protected <I extends StatusDisplayItem> int notifyItemChanged(String id, Class<I> type){
+		boolean encounteredParent=false;
+		for(int i=0; i<displayItems.size(); i++){
+			StatusDisplayItem item=displayItems.get(i);
+			boolean idEquals=id.equals(item.parentID);
+			if(!encounteredParent && idEquals) encounteredParent=true; // reached top of the parent
+			else if(encounteredParent && !idEquals) break; // passed by bottom of the parent. man muss ja wissen wann schluss is
+			if(idEquals && type.isInstance(item)){
+				adapter.notifyItemChanged(i);
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	protected <I extends StatusDisplayItem> int notifyItemChangedAfter(StatusDisplayItem afterThis, Class<I> type){
+		int startIndex=displayItems.indexOf(afterThis);
+		if(startIndex == -1) throw new IllegalStateException("notifyItemChangedAfter didn't find the passed StatusDisplayItem");
+		String parentID=afterThis.parentID;
+		for(int i=startIndex; i<displayItems.size(); i++){
+			StatusDisplayItem item=displayItems.get(i);
+			if(!parentID.equals(item.parentID)) break; // didn't find anything
+			if(type.isInstance(item)){
+				// found it
+				adapter.notifyItemChanged(i);
+				return i;
+			}
+		}
+		return -1;
+	}
+
+	protected <I extends StatusDisplayItem> int notifyItemChangedBefore(StatusDisplayItem beforeThis, Class<I> type){
+		int startIndex=displayItems.indexOf(beforeThis);
+		if(startIndex == -1) throw new IllegalStateException("notifyItemChangedBefore didn't find the passed StatusDisplayItem");
+		String parentID=beforeThis.parentID;
+		for(int i=startIndex; i>=0; i--){
+			StatusDisplayItem item=displayItems.get(i);
+			if(!parentID.equals(item.parentID)) break; // didn't find anything
+			if(type.isInstance(item)){
+				// found it
+				adapter.notifyItemChanged(i);
+				return i;
+			}
+		}
+		return -1;
+	}
+
 	@Nullable
 	protected <I extends StatusDisplayItem, H extends StatusDisplayItem.Holder<I>> H findHolderOfType(String id, Class<H> type){
-		for(int i=0;i<list.getChildCount();i++){
+		for(int i=0; i<list.getChildCount(); i++){
 			RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
 			if(holder instanceof StatusDisplayItem.Holder<?> itemHolder && itemHolder.getItemID().equals(id) && type.isInstance(holder))
 				return type.cast(holder);
@@ -521,6 +893,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	@Override
 	public void scrollToTop(){
 		smoothScrollRecyclerViewToTop(list);
+	}
+
+	@Override
+	public boolean isOnTop() {
+		return isRecyclerViewOnTop(list);
 	}
 
 	protected int getListWidthForMediaLayout(){
@@ -569,12 +946,35 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			currentPhotoViewer.onPause();
 	}
 
+	public void onFabClick(View v){
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		Nav.go(getActivity(), ComposeFragment.class, args);
+	}
+
+	public boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID);
+	}
+
 	private MediaAttachmentViewController makeNewMediaAttachmentView(MediaGridStatusDisplayItem.GridItemType type){
 		return new MediaAttachmentViewController(getActivity(), type);
 	}
 
+	private PreviewlessMediaAttachmentViewController makeNewPreviewlessMediaAttachmentView(MediaGridStatusDisplayItem.GridItemType type){
+		return new PreviewlessMediaAttachmentViewController(getActivity(), type);
+	}
+
 	public TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, MediaAttachmentViewController> getAttachmentViewsPool(){
 		return attachmentViewsPool;
+	}
+
+	public TypedObjectPool<MediaGridStatusDisplayItem.GridItemType, PreviewlessMediaAttachmentViewController> getPreviewlessAttachmentViewsPool(){
+		return previewlessAttachmentViewsPool;
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		assistContent.setWebUri(getWebUri(getSession().getInstanceUri().buildUpon()));
 	}
 
 	public void togglePostTranslation(Status status, String itemID){
@@ -590,35 +990,50 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 					status.translationState=Status.TranslationState.SHOWN;
 				}else{
 					status.translationState=Status.TranslationState.LOADING;
-					new TranslateStatus(status.getContentStatus().id, Locale.getDefault().getLanguage())
-							.setCallback(new Callback<>(){
+					Consumer<Translation> successCallback=(result)->{
+						status.translation=result;
+						status.translationState=Status.TranslationState.SHOWN;
+						updateTranslation(itemID);
+					};
+					MastodonAPIRequest<?> req=isInstanceAkkoma()
+							? new AkkomaTranslateStatus(status.getContentStatus().id, Locale.getDefault().getLanguage()).setCallback(new Callback<>(){
+								@Override
+								public void onSuccess(AkkomaTranslation result){
+									if(getActivity()!=null) successCallback.accept(result.toTranslation());
+								}
+								@Override
+								public void onError(ErrorResponse error){
+									if(getActivity()!=null) translationCallbackError(status, itemID);
+								}
+							})
+							: new TranslateStatus(status.getContentStatus().id, Locale.getDefault().getLanguage()).setCallback(new Callback<>(){
 								@Override
 								public void onSuccess(Translation result){
-									if(getActivity()==null)
-										return;
-									status.translation=result;
-									status.translationState=Status.TranslationState.SHOWN;
-									updateTranslation(itemID);
+									if(getActivity()!=null) successCallback.accept(result);
 								}
 
 								@Override
 								public void onError(ErrorResponse error){
-									if(getActivity()==null)
-										return;
-									status.translationState=Status.TranslationState.HIDDEN;
-									updateTranslation(itemID);
-									new M3AlertDialogBuilder(getActivity())
-											.setTitle(R.string.error)
-											.setMessage(R.string.translation_failed)
-											.setPositiveButton(R.string.ok, null)
-											.show();
+									if(getActivity()!=null) translationCallbackError(status, itemID);
 								}
-							})
-							.exec(accountID);
+							});
+
+					// 1 minute
+					req.setTimeout(60000).exec(accountID);
 				}
 			}
 		}
 		updateTranslation(itemID);
+	}
+
+	private void translationCallbackError(Status status, String itemID) {
+		status.translationState=Status.TranslationState.HIDDEN;
+		updateTranslation(itemID);
+		new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.error)
+				.setMessage(R.string.translation_failed)
+				.setPositiveButton(R.string.ok, null)
+				.show();
 	}
 
 	private void updateTranslation(String itemID) {
@@ -626,7 +1041,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(text!=null){
 			text.updateTranslation(true);
 			imgLoader.bindViewHolder((ImageLoaderRecyclerAdapter) list.getAdapter(), text, text.getAbsoluteAdapterPosition());
+		}else{
+			notifyItemChanged(itemID, TextStatusDisplayItem.class);
 		}
+
+		if(isInstanceAkkoma())
+			return;
 
 		SpoilerStatusDisplayItem.Holder spoiler=findHolderOfType(itemID, SpoilerStatusDisplayItem.Holder.class);
 		if(spoiler!=null){
@@ -636,6 +1056,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		MediaGridStatusDisplayItem.Holder media=findHolderOfType(itemID, MediaGridStatusDisplayItem.Holder.class);
 		if (media!=null) {
 			media.rebind();
+		}
+
+		PreviewlessMediaGridStatusDisplayItem.Holder previewLessMedia=findHolderOfType(itemID, PreviewlessMediaGridStatusDisplayItem.Holder.class);
+		if (previewLessMedia!=null) {
+			previewLessMedia.rebind();
 		}
 
 		for(int i=0;i<list.getChildCount();i++){
@@ -674,6 +1099,20 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	protected void onModifyItemViewHolder(BindableViewHolder<StatusDisplayItem> holder){}
+
+	@Override
+	protected void onDataLoaded(List<T> d, boolean more) {
+		if(getContext()==null) return;
+		super.onDataLoaded(d, more);
+		// more available, but the page isn't even full yet? seems wrong, let's load some more
+		if(more && data.size() < itemsPerPage){
+			preloader.onScrolledToLastItem();
+		}
+	}
+
+	public void scrollBy(int x, int y) {
+		list.scrollBy(x, y);
+	}
 
 	protected class DisplayItemsAdapter extends UsableRecyclerView.Adapter<BindableViewHolder<StatusDisplayItem>> implements ImageLoaderRecyclerAdapter{
 
@@ -720,9 +1159,9 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		private Paint dividerPaint=new Paint();
 
 		{
-			dividerPaint.setColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OutlineVariant));
+			dividerPaint.setColor(UiUtils.getThemeColor(getActivity(), GlobalUserPreferences.showDividers ? R.attr.colorM3OutlineVariant : R.attr.colorM3Surface));
 			dividerPaint.setStyle(Paint.Style.STROKE);
-			dividerPaint.setStrokeWidth(V.dp(0.5f));
+			dividerPaint.setStrokeWidth(V.dp(1f));
 		}
 
 		@Override
@@ -745,7 +1184,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				// Do not draw dividers between hashtag and/or account rows
 				if((ih instanceof HashtagStatusDisplayItem.Holder || ih instanceof AccountStatusDisplayItem.Holder) && (sh instanceof HashtagStatusDisplayItem.Holder || sh instanceof AccountStatusDisplayItem.Holder))
 					return false;
-				return !ih.getItemID().equals(sh.getItemID()) && ih.getItem().getType()!=StatusDisplayItem.Type.GAP;
+				if (!ih.getItem().isMainStatus && ih.getItem().hasDescendantNeighbor) return false;
+				return (!ih.getItemID().equals(sh.getItemID()) || sh instanceof ExtendedFooterStatusDisplayItem.Holder) && ih.getItem().getType()!=StatusDisplayItem.Type.GAP;
 			}
 			return false;
 		}

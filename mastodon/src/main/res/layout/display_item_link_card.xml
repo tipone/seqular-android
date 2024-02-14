@@ -16,6 +16,7 @@
 		android:foreground="@drawable/fg_link_card"
 		android:padding="1dp"
 		android:maxWidth="400dp">
+<!--		TODO figure out how to make blank space disappear when image is gone-->
 		<org.joinmastodon.android.ui.views.FixedAspectRatioImageView
 			android:id="@+id/photo"
 			android:layout_width="match_parent"

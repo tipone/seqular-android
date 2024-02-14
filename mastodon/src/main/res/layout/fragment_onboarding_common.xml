@@ -30,7 +30,7 @@
 			android:paddingBottom="0dp"
 			android:paddingStart="12dp"
 			android:paddingEnd="40dp"
-			android:drawableStart="@drawable/ic_m3_search"
+			android:drawableStart="@drawable/ic_fluent_search_20_filled"
 			android:drawablePadding="8dp"
 			android:drawableTint="?colorM3OnSurfaceVariant"
 			android:gravity="center_vertical"
@@ -72,7 +72,7 @@
 			android:contentDescription="@string/clear"
 			android:tint="?colorM3OnSurfaceVariant"
 			android:visibility="gone"
-			android:src="@drawable/ic_m3_cancel"/>
+			android:src="@drawable/ic_fluent_dismiss_20_filled"/>
 
 		<HorizontalScrollView
 			android:id="@+id/filters_scroll"

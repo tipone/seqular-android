@@ -3,6 +3,7 @@ package org.joinmastodon.android.api.session;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.util.Log;
 
@@ -24,6 +25,7 @@ import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.FollowList;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Preferences;
@@ -36,6 +38,8 @@ import org.joinmastodon.android.utils.ObjectIdComparator;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -62,7 +66,7 @@ public class AccountSession{
 	public AccountActivationInfo activationInfo;
 	public Preferences preferences;
 	private transient MastodonAPIController apiController;
-	private transient StatusInteractionController statusInteractionController;
+	private transient StatusInteractionController statusInteractionController, remoteStatusInteractionController;
 	private transient CacheController cacheController;
 	private transient PushSubscriptionManager pushSubscriptionManager;
 	private transient SharedPreferences prefs;
@@ -98,6 +102,12 @@ public class AccountSession{
 		return statusInteractionController;
 	}
 
+	public StatusInteractionController getRemoteStatusInteractionController(){
+		if(remoteStatusInteractionController==null)
+			remoteStatusInteractionController=new StatusInteractionController(getID(), false);
+		return remoteStatusInteractionController;
+	}
+
 	public CacheController getCacheController(){
 		if(cacheController==null)
 			cacheController=new CacheController(getID());
@@ -114,12 +124,22 @@ public class AccountSession{
 		return '@'+self.username+'@'+domain;
 	}
 
+	public void preferencesFromAccountSource(Account account) {
+		if (account != null && account.source != null && preferences != null) {
+			if (account.source.privacy != null)
+				preferences.postingDefaultVisibility = account.source.privacy;
+			if (account.source.language != null)
+				preferences.postingDefaultLanguage = account.source.language;
+		}
+	}
+
 	public void reloadPreferences(Consumer<Preferences> callback){
 		new GetPreferences()
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(Preferences result){
 						preferences=result;
+						preferencesFromAccountSource(self);
 						if(callback!=null)
 							callback.accept(result);
 						AccountSessionManager.getInstance().writeAccountsFile();
@@ -128,6 +148,9 @@ public class AccountSession{
 					@Override
 					public void onError(ErrorResponse error){
 						Log.w(TAG, "Failed to load preferences for account "+getID()+": "+error);
+						if (preferences==null)
+							preferences=new Preferences();
+						preferencesFromAccountSource(self);
 					}
 				})
 				.exec(getID());
@@ -198,7 +221,7 @@ public class AccountSession{
 
 	public void savePreferencesIfPending(){
 		if(preferencesNeedSaving){
-			new UpdateAccountCredentialsPreferences(preferences, null, self.discoverable, self.source.indexable)
+			new UpdateAccountCredentialsPreferences(preferences, self.locked, self.discoverable, self.source.indexable)
 					.setCallback(new Callback<>(){
 						@Override
 						public void onSuccess(Account result){
@@ -218,55 +241,110 @@ public class AccountSession{
 
 	public AccountLocalPreferences getLocalPreferences(){
 		if(localPreferences==null)
-			localPreferences=new AccountLocalPreferences(getRawLocalPreferences());
+			localPreferences=new AccountLocalPreferences(getRawLocalPreferences(), this);
 		return localPreferences;
 	}
 
 	public void filterStatuses(List<Status> statuses, FilterContext context){
-		filterStatusContainingObjects(statuses, Function.identity(), context);
+		filterStatuses(statuses, context, null);
+	}
+
+	public void filterStatuses(List<Status> statuses, FilterContext context, Account profile){
+		filterStatusContainingObjects(statuses, Function.identity(), context, profile);
 	}
 
 	public <T> void filterStatusContainingObjects(List<T> objects, Function<T, Status> extractor, FilterContext context){
-		if(getLocalPreferences().serverSideFiltersSupported){
-			// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
-			objects.removeIf(o->{
-				Status s=extractor.apply(o);
-				if(s==null)
-					return false;
-				if(s.filtered==null)
-					return false;
-				for(FilterResult filter:s.filtered){
-					if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
-						return true;
-				}
-				return false;
-			});
-			return;
-		}
-		if(wordFilters==null)
-			return;
-		for(T obj:objects){
+		filterStatusContainingObjects(objects, extractor, context, null);
+	}
+
+	private boolean statusIsOnOwnProfile(Status s, Account profile){
+		return self != null && profile != null && s.account != null
+				&& Objects.equals(self.id, profile.id) && Objects.equals(self.id, s.account.id);
+	}
+
+	private boolean isFilteredType(Status s){
+		AccountLocalPreferences localPreferences = getLocalPreferences();
+		return (!localPreferences.showReplies && s.inReplyToId != null)
+				|| (!localPreferences.showBoosts && s.reblog != null);
+	}
+
+	public <T> void filterStatusContainingObjects(List<T> objects, Function<T, Status> extractor, FilterContext context, Account profile){
+		AccountLocalPreferences localPreferences = getLocalPreferences();
+		if(!localPreferences.serverSideFiltersSupported) for(T obj:objects){
 			Status s=extractor.apply(obj);
 			if(s!=null && s.filtered!=null){
-				getLocalPreferences().serverSideFiltersSupported=true;
-				getLocalPreferences().save();
-				return;
+				localPreferences.serverSideFiltersSupported=true;
+				localPreferences.save();
+				break;
 			}
 		}
-		objects.removeIf(o->{
-			Status s=extractor.apply(o);
-			if(s==null)
-				return false;
-			for(LegacyFilter filter:wordFilters){
+
+		List<T> removeUs=new ArrayList<>();
+		for(int i=0; i<objects.size(); i++){
+			T o=objects.get(i);
+			if(filterStatusContainingObject(o, extractor, context, profile)){
+				Status s=extractor.apply(o);
+				removeUs.add(o);
+				if(s!=null && s.hasGapAfter!=null && i>0){
+					// oops, we're about to remove an item that has a gap after...
+					// gotta find the previous status that's not also about to be removed
+					for(int j=i-1; j>=0; j--){
+						T p=objects.get(j);
+						Status prev=extractor.apply(objects.get(j));
+						if(prev!=null && !removeUs.contains(p)){
+							prev.hasGapAfter=s.hasGapAfter;
+							break;
+						}
+					}
+				}
+			}
+		}
+		objects.removeAll(removeUs);
+	}
+
+	public <T> boolean filterStatusContainingObject(T object, Function<T, Status> extractor, FilterContext context, Account profile){
+		Status s=extractor.apply(object);
+		if(s==null)
+			return false;
+		// don't hide own posts in own profile
+		if(statusIsOnOwnProfile(s, profile))
+			return false;
+		if(isFilteredType(s) && (context == FilterContext.HOME || context == FilterContext.PUBLIC))
+			return true;
+		// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
+		if(getLocalPreferences().serverSideFiltersSupported){
+			for(FilterResult filter : s.filtered){
+				if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
+					return true;
+			}
+		}else if(wordFilters!=null){
+			for(LegacyFilter filter : wordFilters){
 				if(filter.context.contains(context) && filter.matches(s) && filter.isActive())
 					return true;
 			}
-			return false;
-		});
+		}
+		return false;
 	}
 
 	public void updateAccountInfo(){
 		AccountSessionManager.getInstance().updateSessionLocalInfo(this);
+	}
+
+	public Optional<Instance> getInstance() {
+		return Optional.ofNullable(AccountSessionManager.getInstance().getInstanceInfo(domain));
+	}
+
+	public Uri getInstanceUri() {
+		return new Uri.Builder()
+				.scheme("https")
+				.authority(getInstance().map(i -> i.normalizedUri).orElse(domain))
+				.build();
+	}
+
+	public String getDefaultAvatarUrl() {
+		return getInstance()
+				.map(instance->"https://"+domain+(instance.isAkkoma() ? "/images/avi.png" : "/avatars/original/missing.png"))
+				.orElse("");
 	}
 
 	public boolean isNotificationsMentionsOnly(){

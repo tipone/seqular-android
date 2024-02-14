@@ -10,9 +10,11 @@ public enum StatusPrivacy{
 	@SerializedName("private")
 	PRIVATE(2),
 	@SerializedName("direct")
-	DIRECT(3);
+	DIRECT(3),
+	@SerializedName("local")
+	LOCAL(4); // akkoma
 
-	private int privacy;
+	private final int privacy;
 
 	StatusPrivacy(int privacy) {
 		this.privacy = privacy;
@@ -20,6 +22,13 @@ public enum StatusPrivacy{
 
 	public boolean isLessVisibleThan(StatusPrivacy other) {
 		return privacy > other.getPrivacy();
+	}
+
+	public boolean isReblogPermitted(boolean isOwnStatus){
+		return (this == StatusPrivacy.PUBLIC ||
+				this == StatusPrivacy.UNLISTED ||
+				this == StatusPrivacy.LOCAL ||
+				(this == StatusPrivacy.PRIVATE && isOwnStatus));
 	}
 
 	public int getPrivacy() {

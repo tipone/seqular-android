@@ -1,18 +1,71 @@
 plugins {
 	id 'com.android.application'
-	id 'com.google.android.libraries.mapsplatform.secrets-gradle-plugin'
+}
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17)
+	}
 }
 
 android {
 	compileSdk 33
 	defaultConfig {
-		applicationId "org.joinmastodon.android"
+		manifestPlaceholders = [oAuthScheme:"moshidon-android-auth"]
+		archivesBaseName = "moshidon"
+		applicationId "org.joinmastodon.android.moshinda"
 		minSdk 23
 		targetSdk 33
-		versionCode 84
-		versionName "2.3.0"
+		versionCode 104
+		versionName "2.2.4+fork.104.moshinda"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-		resConfigs "ar-rSA", "be-rBY", "bn-rBD", "bs-rBA", "ca-rES", "cs-rCZ", "da-rDK", "de-rDE", "el-rGR", "es-rES", "eu-rES", "fa-rIR", "fi-rFI", "fil-rPH", "fr-rFR", "ga-rIE", "gd-rGB", "gl-rES", "hi-rIN", "hr-rHR", "hu-rHU", "hy-rAM", "ig-rNG", "in-rID", "is-rIS", "it-rIT", "iw-rIL", "ja-rJP", "ka-rGE", "kab", "ko-rKR", "lt-rLT", "my-rMM", "nl-rNL", "no-rNO", "oc-rFR", "pl-rPL", "pt-rBR", "pt-rPT", "ro-rRO", "ru-rRU", "si-rLK", "sl-rSI", "sv-rSE", "th-rTH", "tr-rTR", "uk-rUA", "ur-rIN", "vi-rVN", "zh-rCN", "zh-rTW"
+        resourceConfigurations += ['ar-rSA', 'ar-rDZ', 'be-rBY', 'bn-rBD', 'bs-rBA', 'ca-rES', 'cs-rCZ', 'da-rDK', 'de-rDE', 'el-rGR', 'es-rES', 'eu-rES', 'fa-rIR', 'fi-rFI', 'fil-rPH', 'fr-rFR', 'ga-rIE', 'gd-rGB', 'gl-rES', 'hi-rIN', 'hr-rHR', 'hu-rHU', 'hy-rAM', 'ig-rNG', 'in-rID', 'is-rIS', 'it-rIT', 'iw-rIL', 'ja-rJP', 'kab', 'ko-rKR', 'my-rMM', 'nl-rNL', 'no-rNO', 'oc-rFR', 'pl-rPL', 'pt-rBR', 'pt-rPT', 'ro-rRO', 'ru-rRU', 'si-rLK', 'sl-rSI', 'sv-rSE', 'th-rTH', 'tr-rTR', 'uk-rUA', 'ur-rIN', 'vi-rVN', 'zh-rCN', 'zh-rTW']
+    }
+
+	signingConfigs {
+		nightly{
+			storeFile = file("keystore/nightly_keystore.jks")
+			storePassword System.getenv("SIGNING_STORE_PASSWORD")
+			if (storePassword == null) {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				storePassword = properties.getProperty('SIGNING_STORE_PASSWORD')
+			}
+			keyAlias System.getenv("SIGNING_KEY_ALIAS")
+			if (keyAlias == null) {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				keyAlias = properties.getProperty('SIGNING_KEY_ALIAS')
+			}
+			keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+			if (keyPassword == null) {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				keyPassword = properties.getProperty('SIGNING_KEY_PASSWORD')
+			}
+		}
+
+//		release{
+//			storeFile = file("keystore/release_keystore.jks")
+//			storePassword System.getenv("RELEASE_SIGNING_STORE_PASSWORD")
+//			if (storePassword == null) {
+//				Properties properties = new Properties()
+//				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//				storePassword = properties.getProperty('RELEASE_SIGNING_STORE_PASSWORD')
+//			}
+//			keyAlias System.getenv("RELEASE_SIGNING_KEY_ALIAS")
+//			if (keyAlias == null) {
+//				Properties properties = new Properties()
+//				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//				keyAlias = properties.getProperty('RELEASE_SIGNING_KEY_ALIAS')
+//			}
+//			keyPassword System.getenv("RELEASE_SIGNING_KEY_PASSWORD")
+//			if (keyPassword == null) {
+//				Properties properties = new Properties()
+//				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//				keyPassword = properties.getProperty('RELEASE_SIGNING_KEY_PASSWORD')
+//			}
+//		}
 	}
 
 	buildTypes {
@@ -23,22 +76,36 @@ android {
 		}
 		debug{
 			debuggable true
-		}
-		appcenterPrivateBeta{
-			initWith release
-			minifyEnabled false
-			shrinkResources false
-			versionNameSuffix "-priv-beta"
-		}
-		appcenterPublicBeta{
-			initWith release
-			versionNameSuffix "-beta"
+			versionNameSuffix '-debug'
+			applicationIdSuffix '.debug'
+			manifestPlaceholders = [oAuthScheme:"moshidon-android-debug-auth"]
 		}
 		githubRelease{
 			initWith release
 		}
-		githubDebug{
-			initWith debug
+		nightly{
+			if(System.getenv("CURRENT_DATE") != null){
+				versionNameSuffix '-nightly+@' + System.getenv("CURRENT_DATE")
+			} else {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				versionNameSuffix '-nightly+@' + properties.getProperty('CURRENT_DATE')
+			}
+			applicationIdSuffix '.nightly'
+
+			signingConfig signingConfigs.nightly
+			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
+		}
+		playRelease{
+			initWith release
+			minifyEnabled true
+			shrinkResources true
+			versionNameSuffix '-play'
+		}
+		githubRelease { initWith release }
+		fdroidRelease {
+			initWith release
+//			signingConfig signingConfigs.release
 		}
 	}
 	compileOptions {
@@ -47,27 +114,26 @@ android {
 		coreLibraryDesugaringEnabled true
 	}
 	sourceSets{
-		appcenterPrivateBeta{
-			setRoot "src/appcenter"
-		}
-		appcenterPublicBeta{
-			setRoot "src/appcenter"
-		}
 		githubRelease{
 			setRoot "src/github"
 		}
-		githubDebug{
-			setRoot "src/github"
+		debug {
+			setRoot "src/debug"
 		}
 	}
-	lintOptions{
-		checkReleaseBuilds false
+	namespace 'org.joinmastodon.android'
+	lint {
 		abortOnError false
+		checkReleaseBuilds false
+	}
+
+	buildFeatures {
+		buildConfig true
 	}
 }
 
 dependencies {
-	api 'androidx.annotation:annotation:1.3.0'
+	api 'androidx.annotation:annotation:1.6.0'
 	implementation 'com.squareup.okhttp3:okhttp:3.14.9'
 	implementation 'me.grishka.litex:recyclerview:1.2.1.1'
 	implementation 'me.grishka.litex:swiperefreshlayout:1.1.0.1'
@@ -77,19 +143,15 @@ dependencies {
 	implementation 'me.grishka.litex:viewpager2:1.0.0'
 	implementation 'me.grishka.litex:palette:1.0.0'
 	implementation 'me.grishka.appkit:appkit:1.2.16'
-	implementation 'com.google.code.gson:gson:2.8.9'
+	implementation 'com.google.code.gson:gson:2.9.0'
 	implementation 'org.jsoup:jsoup:1.14.3'
 	implementation 'com.squareup:otto:1.3.8'
 	implementation 'de.psdev:async-otto:1.0.3'
 	implementation 'org.parceler:parceler-api:1.1.12'
+	implementation 'com.github.bottom-software-foundation:bottom-java:2.1.0'
 	annotationProcessor 'org.parceler:parceler:1.1.12'
 	coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.3'
-
-	def appCenterSdkVersion = "4.4.2"
-	appcenterPrivateBetaImplementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
-	appcenterPrivateBetaImplementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
-	appcenterPublicBetaImplementation "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
-	appcenterPublicBetaImplementation "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
+	implementation 'com.github.UnifiedPush:android-connector:2.1.1'
 
 	androidTestImplementation 'androidx.test:core:1.5.0'
 	androidTestImplementation 'androidx.test.ext:junit:1.1.5'

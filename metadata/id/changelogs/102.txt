@@ -1,0 +1,11 @@
+Rilis baru ini hadir dgn:
+- Desain Material 3 baru
+- Dukungan notifikasi UnifiedPush
+- Blokir & bisu sekarang terlihat dr profil Anda
+- Sekarang dapat menonaktifkan tagar langsung dari tampilan tagar
+- Reaksi emoji kini menjadi hal yg penting pada server yg mendukungnya
+- Edit filter di aplikasi sekarang bisa
+- Sekarang dapat menyembunyikan pratinjau media dr lini masa
+- Tema hitam baru ditambahkan
+- Mematikan percakapan sekarang dapat dilakukan
+- Bnyk perbaikan & peningkatan kecil

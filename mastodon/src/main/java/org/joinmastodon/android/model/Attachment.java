@@ -3,6 +3,7 @@ package org.joinmastodon.android.model;
 import android.graphics.Bitmap;
 import android.graphics.PointF;
 import android.graphics.drawable.Drawable;
+import android.media.MediaMetadataRetriever;
 
 import com.google.gson.annotations.SerializedName;
 
@@ -16,7 +17,7 @@ import org.parceler.ParcelProperty;
 
 @Parcel
 public class Attachment extends BaseModel{
-	@RequiredField
+//	@RequiredField
 	public String id;
 	@RequiredField
 	public Type type;
@@ -85,6 +86,13 @@ public class Attachment extends BaseModel{
 		return 0;
 	}
 
+	public boolean hasSound() {
+		MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+		retriever.setDataSource(url);
+		String hasAudioStr = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_HAS_AUDIO);
+		return "yes".equals(hasAudioStr);
+	}
+
 	@Override
 	public void postprocess() throws ObjectValidationException{
 		super.postprocess();
@@ -92,6 +100,12 @@ public class Attachment extends BaseModel{
 			Bitmap placeholder=BlurHashDecoder.decode(blurhash, 16, 16);
 			if(placeholder!=null)
 				blurhashPlaceholder=new BlurHashDrawable(placeholder, getWidth(), getHeight());
+		}
+
+		if (id == null) {
+			// akkoma servers doesn't provide IDs for attachments,
+			// but IDs are needed by the AudioPlayerService
+			id = "" + this.hashCode();
 		}
 	}
 

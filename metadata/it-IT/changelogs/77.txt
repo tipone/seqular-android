@@ -1,0 +1,4 @@
+- Possibilità di seguire con un altro account con tocco prolungato
+- Possibilità di aprire profili con un altro account
+- Aggiunta la possibilità di nascondere il pulsante per pubblicare quando si scorre nella timeline
+- Corretti crash nell'apertura di profili degli amministratori del server

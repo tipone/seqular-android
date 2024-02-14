@@ -4,7 +4,8 @@ dependencyResolutionManagement {
 		google()
 		mavenCentral()
 		mavenLocal()
+		maven { url 'https://jitpack.io' }
 	}
 }
-rootProject.name = "Mastodon"
+rootProject.name = "Moshidon"
 include ':mastodon'

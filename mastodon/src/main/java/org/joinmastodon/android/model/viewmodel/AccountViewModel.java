@@ -2,8 +2,10 @@ package org.joinmastodon.android.model.viewmodel;
 
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextUtils;
 
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AccountField;
@@ -26,12 +28,16 @@ public class AccountViewModel{
 
 	public AccountViewModel(Account account, String accountID){
 		this.account=account;
-		avaRequest=new UrlImageLoaderRequest(GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic, V.dp(50), V.dp(50));
+		AccountSession session = AccountSessionManager.get(accountID);
+		avaRequest=new UrlImageLoaderRequest(
+				TextUtils.isEmpty(account.avatar) ? session.getDefaultAvatarUrl() :
+						GlobalUserPreferences.playGifs ? account.avatar : account.avatarStatic,
+				V.dp(50), V.dp(50));
 		emojiHelper=new CustomEmojiHelper();
-		if(AccountSessionManager.get(accountID).getLocalPreferences().customEmojiInNames)
-			parsedName=HtmlParser.parseCustomEmoji(account.displayName, account.emojis);
+		if(session.getLocalPreferences().customEmojiInNames)
+			parsedName=HtmlParser.parseCustomEmoji(account.getDisplayName(), account.emojis);
 		else
-			parsedName=account.displayName;
+			parsedName=account.getDisplayName();
 		parsedBio=HtmlParser.parse(account.note, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID, account);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(parsedName);
 		ssb.append(parsedBio);

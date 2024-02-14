@@ -83,7 +83,7 @@ public class ComposeAutocompleteViewController{
 		list=new UsableRecyclerView(activity);
 		list.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.HORIZONTAL, false));
 		list.setItemAnimator(new BetterItemAnimator());
-		list.setPadding(V.dp(16), V.dp(12), V.dp(16), V.dp(12));
+		list.setPadding(V.dp(16), V.dp(4), V.dp(16), V.dp(4));
 		list.setClipToPadding(false);
 		list.setSelector(null);
 		list.addItemDecoration(new RecyclerView.ItemDecoration(){
@@ -162,7 +162,7 @@ public class ComposeAutocompleteViewController{
 						usersMergeAdapter.addAdapter(usersAdapter);
 					}
 					emptyButton.setText(R.string.compose_autocomplete_users_empty);
-					emptyButton.setDrawableStartTinted(R.drawable.ic_search_20px);
+					emptyButton.setDrawableStartTinted(R.drawable.ic_fluent_search_20_regular);
 					yield usersMergeAdapter;
 				}
 				case EMOJIS -> {
@@ -173,7 +173,7 @@ public class ComposeAutocompleteViewController{
 						emojisMergeAdapter.addAdapter(emojisAdapter);
 					}
 					emptyButton.setText(R.string.compose_autocomplete_emoji_empty);
-					emptyButton.setDrawableStartTinted(R.drawable.ic_mood_20px);
+					emptyButton.setDrawableStartTinted(R.drawable.ic_fluent_emoji_20_regular);
 					yield emojisMergeAdapter;
 				}
 				case HASHTAGS -> {

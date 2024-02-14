@@ -12,8 +12,12 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.SearchResult;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.SimpleViewHolder;
@@ -31,7 +35,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.V;
 
-public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener{
+public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, IsOnTop {
 	private static final int QUERY_RESULT=937;
 
 	private TabLayout tabLayout;
@@ -52,6 +56,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 
 	private String accountID;
 	private String currentQuery;
+
+	private boolean disableDiscover;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -74,8 +80,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
-				case 0 -> R.id.discover_posts;
-				case 1 -> R.id.discover_hashtags;
+				case 0 -> R.id.discover_hashtags;
+				case 1 -> R.id.discover_posts;
 				case 2 -> R.id.discover_news;
 				case 3 -> R.id.discover_users;
 				default -> throw new IllegalStateException("Unexpected value: "+i);
@@ -93,8 +99,6 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		pager.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback(){
 			@Override
 			public void onPageSelected(int position){
-				if(position==0)
-					return;
 				Fragment _page=getFragmentForPage(position);
 				if(_page instanceof BaseRecyclerFragment<?> page){
 					if(!page.loaded && !page.isDataLoading())
@@ -103,7 +107,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			}
 		});
 
-		if(postsFragment==null){
+		if(hashtagsFragment==null){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putBoolean("__is_tab", true);
@@ -121,8 +125,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			accountsFragment.setArguments(args);
 
 			getChildFragmentManager().beginTransaction()
-					.add(R.id.discover_posts, postsFragment)
 					.add(R.id.discover_hashtags, hashtagsFragment)
+					.add(R.id.discover_posts, postsFragment)
 					.add(R.id.discover_news, newsFragment)
 					.add(R.id.discover_users, accountsFragment)
 					.commit();
@@ -132,8 +136,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			@Override
 			public void onConfigureTab(@NonNull TabLayout.Tab tab, int position){
 				tab.setText(switch(position){
-					case 0 -> R.string.posts;
-					case 1 -> R.string.hashtags;
+					case 0 -> R.string.hashtags;
+					case 1 -> R.string.posts;
 					case 2 -> R.string.news;
 					case 3 -> R.string.for_you;
 					default -> throw new IllegalStateException("Unexpected value: "+position);
@@ -154,6 +158,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			}
 		});
 
+		disableDiscover=AccountSessionManager.get(accountID).getInstance().map(Instance::isAkkoma).orElse(false);
 		searchView=view.findViewById(R.id.search_fragment);
 		if(searchFragment==null){
 			searchFragment=new SearchFragment();
@@ -165,11 +170,13 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 
 		searchBack=view.findViewById(R.id.search_back);
 		searchText=view.findViewById(R.id.search_text);
-		searchBack.setEnabled(searchActive);
 		searchBack.setImportantForAccessibility(searchActive ? View.IMPORTANT_FOR_ACCESSIBILITY_YES : View.IMPORTANT_FOR_ACCESSIBILITY_NO);
-		searchBack.setOnClickListener(v->exitSearch());
-		if(searchActive){
-			searchBack.setImageResource(R.drawable.ic_arrow_back);
+		searchBack.setOnClickListener(v->{
+			if(searchActive) exitSearch(); else openSearch();
+		});
+		if(searchActive) searchBack.setImageResource(R.drawable.ic_fluent_arrow_left_24_regular);
+		else searchBack.setEnabled(false);
+		if(searchActive || disableDiscover){
 			pager.setVisibility(View.GONE);
 			tabLayout.setVisibility(View.GONE);
 			searchView.setVisibility(View.VISIBLE);
@@ -178,22 +185,35 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		View searchWrap=view.findViewById(R.id.search_wrap);
 		searchWrap.setOutlineProvider(OutlineProviders.roundedRect(28));
 		searchWrap.setClipToOutline(true);
-		searchText.setOnClickListener(v->{
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			if(!TextUtils.isEmpty(currentQuery)){
-				args.putString("query", currentQuery);
-			}
-			Nav.goForResult(getActivity(), SearchQueryFragment.class, args, QUERY_RESULT, DiscoverFragment.this);
-		});
+		searchText.setOnClickListener(v->openSearch());
 		tabsDivider=view.findViewById(R.id.tabs_divider);
 
 		return view;
 	}
 
 	@Override
+	public boolean isOnTop() {
+		return searchActive ? searchFragment.isOnTop()
+				: ((IsOnTop)getFragmentForPage(pager.getCurrentItem())).isOnTop();
+	}
+
+	public void openSearch() {
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		if(!TextUtils.isEmpty(currentQuery)){
+			args.putString("query", currentQuery);
+		}
+		Nav.goForResult(getActivity(), SearchQueryFragment.class, args, QUERY_RESULT, DiscoverFragment.this);
+	}
+
+	@Override
 	public void scrollToTop(){
 		if(!searchActive){
+			if (((IsOnTop)getFragmentForPage(pager.getCurrentItem())).isOnTop() && GlobalUserPreferences.doubleTapToSwipe){
+				int nextPage=(pager.getCurrentItem()+1)%tabViews.length;
+				pager.setCurrentItem(nextPage, true);
+				return;
+			}
 			((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).scrollToTop();
 		}else{
 			searchFragment.scrollToTop();
@@ -201,8 +221,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	}
 
 	public void loadData(){
-		if(postsFragment!=null && !postsFragment.loaded && !postsFragment.dataLoading)
-			postsFragment.loadData();
+		if(hashtagsFragment!=null && !hashtagsFragment.loaded && !hashtagsFragment.dataLoading)
+			hashtagsFragment.loadData();
 	}
 
 	private void enterSearch(){
@@ -211,7 +231,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			pager.setVisibility(View.GONE);
 			tabLayout.setVisibility(View.GONE);
 			searchView.setVisibility(View.VISIBLE);
-			searchBack.setImageResource(R.drawable.ic_arrow_back);
+			searchBack.setImageResource(R.drawable.ic_fluent_arrow_left_24_regular);
 			searchBack.setEnabled(true);
 			searchBack.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_YES);
 			tabsDivider.setVisibility(View.GONE);
@@ -222,21 +242,24 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		if(!searchActive)
 			return;
 		searchActive=false;
+		searchText.setText(R.string.sk_search_fediverse);
+		searchBack.setImageResource(R.drawable.ic_fluent_search_24_regular);
+		searchBack.setEnabled(false);
+		searchBack.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
+		currentQuery=null;
+		searchFragment.clear();
+
+		if(disableDiscover) return;
 		pager.setVisibility(View.VISIBLE);
 		tabLayout.setVisibility(View.VISIBLE);
 		searchView.setVisibility(View.GONE);
-		searchText.setText(R.string.search_mastodon);
-		searchBack.setImageResource(R.drawable.ic_search_24px);
-		searchBack.setEnabled(false);
-		searchBack.setImportantForAccessibility(View.IMPORTANT_FOR_ACCESSIBILITY_NO);
 		tabsDivider.setVisibility(View.VISIBLE);
-		currentQuery=null;
 	}
 
 	private Fragment getFragmentForPage(int page){
 		return switch(page){
-			case 0 -> postsFragment;
-			case 1 -> hashtagsFragment;
+			case 0 -> hashtagsFragment;
+			case 1 -> postsFragment;
 			case 2 -> newsFragment;
 			case 3 -> accountsFragment;
 			default -> throw new IllegalStateException("Unexpected value: "+page);

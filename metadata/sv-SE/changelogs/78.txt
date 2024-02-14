@@ -1,0 +1,1 @@
+Tar bort tutavdelaren på huvudtidslinjen! Det är också konfigurerbart.

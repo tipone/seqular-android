@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.onboarding;
 
 import android.app.ProgressDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsets;
@@ -55,7 +56,7 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 		buttonBar=view.findViewById(R.id.button_bar);
 
 		view.findViewById(R.id.btn_next).setOnClickListener(UiUtils.rateLimitedClickListener(this::onFollowAllClick));
-		view.findViewById(R.id.btn_skip).setOnClickListener(UiUtils.rateLimitedClickListener(v->proceed()));
+//		view.findViewById(R.id.btn_skip).setOnClickListener(UiUtils.rateLimitedClickListener(v->proceed()));
 	}
 
 	@Override
@@ -160,9 +161,9 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 	}
 
 	private void proceed(){
-		Bundle args=new Bundle();
-		args.putString("account", accountID);
-		Nav.go(getActivity(), OnboardingProfileSetupFragment.class, args);
+//		Bundle args=new Bundle();
+//		args.putString("account", accountID);
+//		Nav.go(getActivity(), OnboardingProfileSetupFragment.class, args);
 	}
 
 	@Override
@@ -170,5 +171,10 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 		super.onConfigureViewHolder(holder);
 		holder.setStyle(AccountViewHolder.AccessoryType.BUTTON, true);
 		holder.avatar.setOutlineProvider(OutlineProviders.roundedRect(8));
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }

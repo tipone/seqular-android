@@ -3,10 +3,12 @@ package org.joinmastodon.android.ui.displayitems;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.CheckBox;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.fragments.report.ReportAddPostsChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
@@ -15,8 +17,8 @@ import java.time.Instant;
 import java.util.function.Predicate;
 
 public class CheckableHeaderStatusDisplayItem extends HeaderStatusDisplayItem{
-	public CheckableHeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment parentFragment, String accountID, Status status, String extraText){
-		super(parentID, user, createdAt, parentFragment, accountID, status, extraText);
+	public CheckableHeaderStatusDisplayItem(String parentID, Account user, Instant createdAt, BaseStatusListFragment<?> parentFragment, String accountID, Status status, CharSequence extraText){
+		super(parentID, user, createdAt, parentFragment, accountID, status, extraText, null, null);
 	}
 
 	@Override
@@ -32,8 +34,16 @@ public class CheckableHeaderStatusDisplayItem extends HeaderStatusDisplayItem{
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_header_checkable, parent);
 			checkbox=findViewById(R.id.checkbox);
-			view=(CheckableRelativeLayout) itemView;
+			view=findViewById(R.id.checkbox_wrap);
 			checkbox.setBackground(new CheckBox(activity).getButtonDrawable());
+			view.setOnClickListener(this::onToggle);
+			view.setAccessibilityDelegate(new View.AccessibilityDelegate(){
+				@Override
+				public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info){
+					super.onInitializeAccessibilityNodeInfo(host, info);
+					info.setClassName(CheckBox.class.getName());
+				}
+			});
 		}
 
 		@Override
@@ -41,6 +51,12 @@ public class CheckableHeaderStatusDisplayItem extends HeaderStatusDisplayItem{
 			super.onBind(item);
 			if(isChecked!=null){
 				view.setChecked(isChecked.test(this));
+			}
+		}
+
+		private void onToggle(View v){
+			if(item.parentFragment instanceof ReportAddPostsChoiceFragment reportFragment){
+				reportFragment.onToggleItem(item.parentID);
 			}
 		}
 

@@ -20,13 +20,15 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
+import org.joinmastodon.android.ui.utils.ColorPalette;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.FixedAspectRatioImageView;
 
 import java.util.Collections;
 
@@ -42,22 +44,24 @@ public class ComposeImageDescriptionFragment extends MastodonToolbarFragment imp
 
 	private String accountID, attachmentID;
 	private EditText edit;
-	private FixedAspectRatioImageView image;
+	private ImageView image;
 	private ContextThemeWrapper themeWrapper;
 	private PhotoViewer photoViewer;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
-		accountID=getArguments().getString("account");
-		attachmentID=getArguments().getString("attachment");
 		setHasOptionsMenu(true);
 	}
 
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
+		accountID=getArguments().getString("account");
+		attachmentID=getArguments().getString("attachment");
 		themeWrapper=new ContextThemeWrapper(activity, R.style.Theme_Mastodon_Dark);
+		ColorPalette.palettes.get(AccountSessionManager.get(accountID).getLocalPreferences().getCurrentColor())
+				.apply(themeWrapper, GlobalUserPreferences.ThemePreference.DARK);
 		setTitle(R.string.add_alt_text);
 	}
 
@@ -75,7 +79,7 @@ public class ComposeImageDescriptionFragment extends MastodonToolbarFragment imp
 		int width=getArguments().getInt("width", 0);
 		int height=getArguments().getInt("height", 0);
 		if(width>0 && height>0){
-			image.setAspectRatio(Math.max(1f, (float)width/height));
+			// image.setAspectRatio(Math.max(1f, (float)width/height));
 		}
 		image.setOnClickListener(v->openPhotoViewer());
 		Uri uri=getArguments().getParcelable("uri");

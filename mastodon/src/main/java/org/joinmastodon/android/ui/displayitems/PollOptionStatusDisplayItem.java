@@ -5,6 +5,7 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.joinmastodon.android.R;
@@ -12,10 +13,12 @@ import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
+import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
+import java.util.Collections;
 import java.util.Locale;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
@@ -43,6 +46,10 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 		text=HtmlParser.parseCustomEmoji(option.title, poll.emojis);
 		emojiHelper.setText(text);
 		showResults=poll.isExpired() || poll.voted;
+		calculateResults();
+	}
+
+	private void calculateResults() {
 		int total=poll.votersCount>0 ? poll.votersCount : poll.votesCount;
 		if(showResults && option.votesCount!=null && total>0){
 			votesFraction=(float)option.votesCount/(float)total;
@@ -70,17 +77,17 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<PollOptionStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final TextView text, percent;
-		private final View check, button;
-		private final Drawable progressBg, progressBgInset;
+		private final View button;
+		private final ImageView icon;
+		private final Drawable progressBg;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_poll_option, parent);
 			text=findViewById(R.id.text);
 			percent=findViewById(R.id.percent);
-			check=findViewById(R.id.checkbox);
+			icon=findViewById(R.id.icon);
 			button=findViewById(R.id.button);
 			progressBg=activity.getResources().getDrawable(R.drawable.bg_poll_option_voted, activity.getTheme()).mutate();
-			progressBgInset=activity.getResources().getDrawable(R.drawable.bg_poll_option_voted_inset, activity.getTheme()).mutate();
 			itemView.setOnClickListener(this::onButtonClick);
 			button.setOutlineProvider(OutlineProviders.roundedRect(20));
 			button.setClipToOutline(true);
@@ -98,24 +105,22 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 			}
 			percent.setVisibility(item.showResults ? View.VISIBLE : View.GONE);
 			itemView.setClickable(!item.showResults);
+			icon.setImageDrawable(itemView.getContext().getDrawable(item.poll.multiple ?
+					item.showResults ? R.drawable.ic_poll_checkbox_regular_selector : R.drawable.ic_poll_checkbox_filled_selector :
+					item.showResults ? R.drawable.ic_poll_option_button : R.drawable.ic_fluent_radio_button_24_selector
+			));
 			if(item.showResults){
-				Drawable bg=item.inset ? progressBgInset : progressBg;
+				Drawable bg=progressBg;
 				bg.setLevel(Math.round(10000f*item.votesFraction));
 				button.setBackground(bg);
-				itemView.setSelected(item.isMostVoted);
-				check.setSelected(item.poll.ownVotes!=null && item.poll.ownVotes.contains(item.optionIndex));
+				itemView.setSelected(item.poll.ownVotes!=null && item.poll.ownVotes.contains(item.optionIndex));
 				percent.setText(String.format(Locale.getDefault(), "%d%%", Math.round(item.votesFraction*100f)));
 			}else{
 				itemView.setSelected(item.poll.selectedOptions!=null && item.poll.selectedOptions.contains(item.option));
-				button.setBackgroundResource(item.inset ? R.drawable.bg_poll_option_clickable_inset : R.drawable.bg_poll_option_clickable);
+				button.setBackgroundResource(R.drawable.bg_poll_option_clickable);
 			}
-			if(item.inset){
-				text.setTextColor(itemView.getContext().getColorStateList(R.color.poll_option_text_inset));
-				percent.setTextColor(itemView.getContext().getColorStateList(R.color.poll_option_text_inset));
-			}else{
-				text.setTextColor(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3Primary));
-				percent.setTextColor(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3OnSecondaryContainer));
-			}
+			text.setTextColor(UiUtils.getThemeColor(itemView.getContext(), android.R.attr.textColorPrimary));
+			percent.setTextColor(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3OnSecondaryContainer));
 		}
 
 		@Override
@@ -135,6 +140,12 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 
 		private void onButtonClick(View v){
 			item.parentFragment.onPollOptionClick(this);
+		}
+
+		public void showResults(boolean shown) {
+			item.showResults = shown;
+			item.calculateResults();
+			rebind();
 		}
 	}
 }

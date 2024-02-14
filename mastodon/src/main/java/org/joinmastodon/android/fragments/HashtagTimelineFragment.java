@@ -2,8 +2,10 @@ package org.joinmastodon.android.fragments;
 
 import android.app.Activity;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
+import android.view.HapticFeedbackConstants;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -12,52 +14,82 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonErrorResponse;
+import org.joinmastodon.android.api.requests.filters.CreateFilter;
+import org.joinmastodon.android.api.requests.filters.DeleteFilter;
+import org.joinmastodon.android.api.requests.filters.GetFilters;
 import org.joinmastodon.android.api.requests.tags.GetTag;
 import org.joinmastodon.android.api.requests.tags.SetTagFollowed;
 import org.joinmastodon.android.api.requests.timelines.GetHashtagTimeline;
+import org.joinmastodon.android.model.Filter;
+import org.joinmastodon.android.model.FilterAction;
+import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.FilterContext;
+import org.joinmastodon.android.model.FilterKeyword;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.text.SpacerSpan;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
-import me.grishka.appkit.utils.CubicBezierInterpolator;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 
-public class HashtagTimelineFragment extends StatusListFragment{
+public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	private Hashtag hashtag;
 	private String hashtagName;
-	private ImageButton fab;
 	private TextView headerTitle, headerSubtitle;
 	private ProgressBarButton followButton;
 	private ProgressBar followProgress;
-	private MenuItem followMenuItem;
+	private MenuItem followMenuItem, pinMenuItem, muteMenuItem;
 	private boolean followRequestRunning;
 	private boolean toolbarContentVisible;
 	private String maxID;
 
-	public HashtagTimelineFragment(){
-		setListLayoutId(R.layout.recycler_fragment_with_fab);
+	private List<String> any;
+	private List<String> all;
+	private List<String> none;
+	private boolean following;
+	private boolean localOnly;
+	private Menu optionsMenu;
+	private MenuInflater optionsMenuInflater;
+
+	private Optional<Filter> filter = Optional.empty();
+
+	@Override
+	protected boolean wantsComposeButton() {
+		return true;
 	}
 
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
+		following=getArguments().getBoolean("following", false);
+		localOnly=getArguments().getBoolean("localOnly", false);
+		any=getArguments().getStringArrayList("any");
+		all=getArguments().getStringArrayList("all");
+		none=getArguments().getStringArrayList("none");
 		if(getArguments().containsKey("hashtag")){
 			hashtag=Parcels.unwrap(getArguments().getParcelable("hashtag"));
 			hashtagName=hashtag.name;
@@ -68,16 +100,71 @@ public class HashtagTimelineFragment extends StatusListFragment{
 		setHasOptionsMenu(true);
 	}
 
+	private void updateMuteState(boolean newMute) {
+		muteMenuItem.setTitle(getString(newMute ? R.string.unmute_user : R.string.mute_user, "#" + hashtag));
+		muteMenuItem.setIcon(newMute ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
+	}
+
+	private void showMuteDialog(boolean mute) {
+		UiUtils.showConfirmationAlert(getContext(),
+										   mute ? R.string.mo_unmute_hashtag : R.string.mo_mute_hashtag,
+										   mute ? R.string.mo_confirm_to_unmute_hashtag : R.string.mo_confirm_to_mute_hashtag,
+										   mute ? R.string.do_unmute : R.string.do_mute,
+										   mute ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_off_28_regular,
+				mute ? this::unmuteHashtag : this::muteHashtag
+		);
+	}
+	private void unmuteHashtag() {
+		//safe to get, this only called if filter is present
+		new DeleteFilter(filter.get().id).setCallback(new Callback<>(){
+			@Override
+			public void onSuccess(Void result){
+				filter=Optional.empty();
+				updateMuteState(false);
+			}
+
+			@Override
+			public void onError(ErrorResponse error){
+				error.showToast(getContext());
+			}
+		}).exec(accountID);
+	}
+
+	private void muteHashtag() {
+		FilterKeyword hashtagFilter=new FilterKeyword();
+		hashtagFilter.wholeWord=true;
+		hashtagFilter.keyword="#"+hashtagName;
+		new CreateFilter("#"+hashtagName, EnumSet.of(FilterContext.HOME), FilterAction.HIDE, 0 , List.of(hashtagFilter)).setCallback(new Callback<>(){
+			@Override
+			public void onSuccess(Filter result){
+				filter=Optional.of(result);
+				updateMuteState(true);
+			}
+
+			@Override
+			public void onError(ErrorResponse error){
+				error.showToast(getContext());
+			}
+		}).exec(accountID);
+	}
+
+
+
+	@Override
+	protected TimelineDefinition makeTimelineDefinition() {
+		return TimelineDefinition.ofHashtag(hashtagName);
+	}
+
 	@Override
 	protected void doLoadData(int offset, int count){
-		currentRequest=new GetHashtagTimeline(hashtagName, offset==0 ? null : maxID, null, count)
+		currentRequest=new GetHashtagTimeline(hashtagName, getMaxID(), null, count, any, all, none, localOnly, getLocalPrefs().timelineReplyVisibility)
 				.setCallback(new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(List<Status> result){
-						if(!result.isEmpty())
-							maxID=result.get(result.size()-1).id;
-						AccountSessionManager.get(accountID).filterStatuses(result, FilterContext.PUBLIC);
-						onDataLoaded(result, !result.isEmpty());
+						if(getActivity()==null) return;
+						boolean more=applyMaxID(result);
+						AccountSessionManager.get(accountID).filterStatuses(result, getFilterContext());
+						onDataLoaded(result, more);
 					}
 				})
 				.exec(accountID);
@@ -102,6 +189,8 @@ public class HashtagTimelineFragment extends StatusListFragment{
 		fab=view.findViewById(R.id.fab);
 		fab.setOnClickListener(this::onFabClick);
 
+		if(getParentFragment() instanceof HomeTabFragment) return;
+
 		list.addOnScrollListener(new RecyclerView.OnScrollListener(){
 			@Override
 			public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy){
@@ -112,14 +201,19 @@ public class HashtagTimelineFragment extends StatusListFragment{
 				boolean newToolbarVisibility=newAlpha>0.5f;
 				if(newToolbarVisibility!=toolbarContentVisible){
 					toolbarContentVisible=newToolbarVisibility;
-					if(followMenuItem!=null)
-						followMenuItem.setVisible(toolbarContentVisible);
+					createOptionsMenu();
 				}
 			}
 		});
 	}
 
-	private void onFabClick(View v){
+	@Override
+	public boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, '#'+hashtagName+' ');
+	}
+
+	@Override
+	public void onFabClick(View v){
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		args.putString("prefilledText", '#'+hashtagName+' ');
@@ -129,6 +223,16 @@ public class HashtagTimelineFragment extends StatusListFragment{
 	@Override
 	protected void onSetFabBottomInset(int inset){
 		((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+inset;
+	}
+
+	@Override
+	protected FilterContext getFilterContext() {
+		return FilterContext.PUBLIC;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path((isInstanceAkkoma() ? "/tag/" : "/tags/") + hashtag).build();
 	}
 
 	@Override
@@ -146,10 +250,33 @@ public class HashtagTimelineFragment extends StatusListFragment{
 				return;
 			setFollowed(!hashtag.following);
 		});
+		followButton.setOnLongClickListener(v->{
+			if(hashtag==null) return false;
+			UiUtils.pickAccount(getActivity(), accountID, R.string.sk_follow_as, R.drawable.ic_fluent_person_add_28_regular, session -> {
+				new SetTagFollowed(hashtagName, true).setCallback(new Callback<>(){
+					@Override
+					public void onSuccess(Hashtag hashtag) {
+						Toast.makeText(
+								getActivity(),
+								getString(R.string.sk_followed_as, session.self.getShortUsername()),
+								Toast.LENGTH_SHORT
+						).show();
+					}
+
+					@Override
+					public void onError(ErrorResponse error) {
+						error.showToast(getActivity());
+					}
+				}).exec(session.getID());
+			}, null);
+			return true;
+		});
 		updateHeader();
 
 		MergeRecyclerAdapter mergeAdapter=new MergeRecyclerAdapter();
-		mergeAdapter.addAdapter(new SingleViewRecyclerAdapter(header));
+		if(!(getParentFragment() instanceof HomeTabFragment)){
+			mergeAdapter.addAdapter(new SingleViewRecyclerAdapter(header));
+		}
 		mergeAdapter.addAdapter(super.getAdapter());
 		return mergeAdapter;
 	}
@@ -159,16 +286,55 @@ public class HashtagTimelineFragment extends StatusListFragment{
 		return 1;
 	}
 
+	private void createOptionsMenu(){
+		optionsMenu.clear();
+		optionsMenuInflater.inflate(R.menu.hashtag_timeline, optionsMenu);
+		followMenuItem=optionsMenu.findItem(R.id.follow_hashtag);
+		pinMenuItem=optionsMenu.findItem(R.id.pin);
+		followMenuItem.setVisible(toolbarContentVisible);
+//		pinMenuItem.setShowAsAction(toolbarContentVisible ? MenuItem.SHOW_AS_ACTION_NEVER : MenuItem.SHOW_AS_ACTION_ALWAYS);
+		super.updatePinButton(pinMenuItem);
+
+		muteMenuItem = optionsMenu.findItem(R.id.mute_hashtag);
+		updateMuteState(filter.isPresent());
+		new GetFilters().setCallback(new Callback<>() {
+			@Override
+			public void onSuccess(List<Filter> filters) {
+				if (getActivity() == null) return;
+				filter=filters.stream().filter(filter->filter.title.equals("#"+hashtagName)).findAny();
+				updateMuteState(filter.isPresent());
+			}
+
+			@Override
+			public void onError(ErrorResponse error) {
+				error.showToast(getActivity());
+			}
+		}).exec(accountID);
+	}
+
+	@Override
+	public void updatePinButton(MenuItem pin){
+		super.updatePinButton(pin);
+		if(toolbarContentVisible) UiUtils.insetPopupMenuIcon(getContext(), pin);
+	}
+
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
-		followMenuItem=menu.add(getString(hashtag!=null && hashtag.following ? R.string.unfollow_user : R.string.follow_user, "#"+hashtagName));
-		followMenuItem.setVisible(toolbarContentVisible);
+		inflater.inflate(R.menu.hashtag_timeline, menu);
+		super.onCreateOptionsMenu(menu, inflater);
+		optionsMenu=menu;
+		optionsMenuInflater=inflater;
+		createOptionsMenu();
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
-		if(hashtag!=null){
+		if (super.onOptionsItemSelected(item)) return true;
+		if (item.getItemId() == R.id.follow_hashtag && hashtag!=null) {
 			setFollowed(!hashtag.following);
+		} else if (item.getItemId() == R.id.mute_hashtag) {
+			showMuteDialog(filter.isPresent());
+			return true;
 		}
 		return true;
 	}
@@ -177,8 +343,7 @@ public class HashtagTimelineFragment extends StatusListFragment{
 	protected void onUpdateToolbar(){
 		super.onUpdateToolbar();
 		toolbarTitleView.setAlpha(toolbarContentVisible ? 1f : 0f);
-		if(followMenuItem!=null)
-			followMenuItem.setVisible(toolbarContentVisible);
+		createOptionsMenu();
 	}
 
 	private void updateHeader(){
@@ -224,6 +389,11 @@ public class HashtagTimelineFragment extends StatusListFragment{
 		followProgress.setVisibility(View.GONE);
 		if(followMenuItem!=null){
 			followMenuItem.setTitle(getString(hashtag.following ? R.string.unfollow_user : R.string.follow_user, "#"+hashtagName));
+			followMenuItem.setIcon(hashtag.following ? R.drawable.ic_fluent_person_delete_24_filled : R.drawable.ic_fluent_person_add_24_regular);
+		}
+		if(muteMenuItem!=null){
+			muteMenuItem.setTitle(getString(filter.isPresent() ? R.string.unmute_user : R.string.mute_user, "#" + hashtag));
+			muteMenuItem.setIcon(filter.isPresent() ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 		}
 	}
 
@@ -247,6 +417,7 @@ public class HashtagTimelineFragment extends StatusListFragment{
 	private void setFollowed(boolean followed){
 		if(followRequestRunning)
 			return;
+		getToolbar().performHapticFeedback(HapticFeedbackConstants.CONTEXT_CLICK);
 		followButton.setTextVisible(false);
 		followProgress.setVisibility(View.VISIBLE);
 		followRequestRunning=true;

@@ -1,0 +1,4 @@
+Nya saker för release 86:
+- Möjlighet att stapla meddelanden, dvs: ha flera meddelanden;
+- Introduktion av meddelanden;
+- Många mindre UI-fixar.

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Status;
@@ -20,7 +21,7 @@ public class MediaAttachmentViewController{
 	public final View view;
 	public final MediaGridStatusDisplayItem.GridItemType type;
 	public final ImageView photo;
-	public final View altButton;
+	public final View altButton, noAltButton, btnsWrap, extraBadge;
 	public final TextView duration;
 	public final View playButton;
 	private BlurhashCrossfadeDrawable crossfadeDrawable=new BlurhashCrossfadeDrawable();
@@ -37,8 +38,11 @@ public class MediaAttachmentViewController{
 			}, null);
 		photo=view.findViewById(R.id.photo);
 		altButton=view.findViewById(R.id.alt_button);
+		noAltButton=view.findViewById(R.id.no_alt_button);
+		btnsWrap=view.findViewById(R.id.alt_badges);
 		duration=view.findViewById(R.id.duration);
 		playButton=view.findViewById(R.id.play_button);
+		extraBadge=view.findViewById(R.id.extra_badge);
 		this.type=type;
 		this.context=context;
 		if(playButton!=null){
@@ -57,9 +61,12 @@ public class MediaAttachmentViewController{
 		crossfadeDrawable.setCrossfadeAlpha(0f);
 		photo.setImageDrawable(null);
 		photo.setImageDrawable(crossfadeDrawable);
-		photo.setContentDescription(TextUtils.isEmpty(attachment.description) ? context.getString(R.string.media_no_description) : attachment.description);
-		if(altButton!=null){
-			altButton.setVisibility(TextUtils.isEmpty(attachment.description) ? View.GONE : View.VISIBLE);
+		boolean hasAltText = !TextUtils.isEmpty(attachment.description);
+		photo.setContentDescription(!hasAltText ? context.getString(R.string.media_no_description) : attachment.description);
+		if(btnsWrap!=null){
+			btnsWrap.setVisibility(View.VISIBLE);
+			altButton.setVisibility(hasAltText && GlobalUserPreferences.showAltIndicator ? View.VISIBLE : View.GONE);
+			noAltButton.setVisibility(!hasAltText && GlobalUserPreferences.showNoAltIndicator ? View.VISIBLE : View.GONE);
 		}
 		if(type==MediaGridStatusDisplayItem.GridItemType.VIDEO){
 			duration.setText(UiUtils.formatMediaDuration((int)attachment.getDuration()));

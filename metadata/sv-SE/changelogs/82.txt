@@ -1,0 +1,9 @@
+Release 82 lägger till många funktioner från uppströms, till exempel:
+- Utkast och schemalagda inlägg
+- En omarbetning av en inställningssida
+- Möjligheten att välja publiceringsknappens text
+- Möjligheten att minska animationer
+- En botikon för botkontoprofiler! Tack @FineFindus
+- Och uppdaterad tysk översättning! Tack @dantobi
+- Många mindre UI-förbättringar
+- Stora användbarhetsförbättringar, som möjligheten att hålla åtgärdsknappar för att interagera med ett annat konto

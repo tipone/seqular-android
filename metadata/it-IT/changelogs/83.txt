@@ -1,0 +1,5 @@
+- Mi piace/salva/rispondi direttamente dalla notifica
+- Intestazioni più belle e coerenti per i reblog e le risposte nella timeline
+- Punto di notifica (che, in realtà, non carica ancora le notifiche)
+- Per utenti di Akkoma: visibilità delle risposte, citazioni, risposte ai thread ordinate...
+- Correzione di alcuni crash e piccole modifiche

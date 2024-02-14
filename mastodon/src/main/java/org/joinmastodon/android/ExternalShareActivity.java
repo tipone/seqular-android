@@ -3,21 +3,25 @@ package org.joinmastodon.android;
 import android.app.Fragment;
 import android.content.ClipData;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Pair;
 import android.widget.Toast;
 
+import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
-import org.joinmastodon.android.ui.M3AlertDialogBuilder;
+import org.joinmastodon.android.ui.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.jsoup.internal.StringUtil;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.BiConsumer;
 
 import androidx.annotation.Nullable;
 import me.grishka.appkit.FragmentStackActivity;
@@ -28,21 +32,51 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		UiUtils.setUserPreferredTheme(this);
 		super.onCreate(savedInstanceState);
 		if(savedInstanceState==null){
+			Optional<String> text = Optional.ofNullable(getIntent().getStringExtra(Intent.EXTRA_TEXT));
+			Optional<Pair<String, Optional<String>>> fediHandle = text.flatMap(UiUtils::parseFediverseHandle);
+			boolean isFediUrl = text.map(UiUtils::looksLikeFediverseUrl).orElse(false);
+			boolean isOpenable = isFediUrl || fediHandle.isPresent();
+
 			List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
-			if(sessions.isEmpty()){
+			if (sessions.isEmpty()){
 				Toast.makeText(this, R.string.err_not_logged_in, Toast.LENGTH_SHORT).show();
 				finish();
-			}else if(sessions.size()==1){
+			} else if (isOpenable || sessions.size() > 1) {
+				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, true, isOpenable);
+				sheet.setOnClick((accountId, open) -> {
+					if (open && text.isPresent()) {
+						BiConsumer<Class<? extends Fragment>, Bundle> callback = (clazz, args) -> {
+							if (clazz == null) {
+								Toast.makeText(this, R.string.sk_open_in_app_failed, Toast.LENGTH_SHORT).show();
+								// TODO: do something about the window getting leaked
+								sheet.dismiss();
+								finish();
+								return;
+							}
+							args.putString("fromExternalShare", clazz.getSimpleName());
+							Intent intent = new Intent(this, MainActivity.class);
+							intent.putExtras(args);
+							finish();
+							startActivity(intent);
+						};
+
+						fediHandle
+								.<MastodonAPIRequest<?>>map(handle ->
+										UiUtils.lookupAccountHandle(this, accountId, handle, callback))
+								.or(() ->
+										UiUtils.lookupURL(this, accountId, text.get(), callback))
+								.ifPresent(req ->
+										req.wrapProgress(this, R.string.loading, true, d -> {
+											UiUtils.transformDialogForLookup(this, accountId, isFediUrl ? text.get() : null, d);
+											d.setOnDismissListener((x) -> finish());
+										}));
+					} else {
+						openComposeFragment(accountId);
+					}
+				});
+				sheet.show();
+			} else if (sessions.size() == 1) {
 				openComposeFragment(sessions.get(0).getID());
-			}else{
-				getWindow().setBackgroundDrawable(new ColorDrawable(0xff000000));
-				new M3AlertDialogBuilder(this)
-						.setItems(sessions.stream().map(as->"@"+as.self.username+"@"+as.domain).toArray(String[]::new), (dialog, which)->{
-							openComposeFragment(sessions.get(which).getID());
-						})
-						.setTitle(R.string.choose_account)
-						.setOnCancelListener(dialog -> finish())
-						.show();
 			}
 		}
 	}
@@ -51,7 +85,20 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		getWindow().setBackgroundDrawable(null);
 
 		Intent intent=getIntent();
-		String text=intent.getStringExtra(Intent.EXTRA_TEXT);
+		StringBuilder builder=new StringBuilder();
+		String subject = "";
+		if (intent.hasExtra(Intent.EXTRA_SUBJECT)) {
+			subject = intent.getStringExtra(Intent.EXTRA_SUBJECT);
+			if (!StringUtil.isBlank(subject)) builder.append(subject).append("\n\n");
+		}
+		if (intent.hasExtra(Intent.EXTRA_TEXT)) {
+			String extra = intent.getStringExtra(Intent.EXTRA_TEXT);
+			if (!StringUtil.isBlank(extra)) {
+				if (extra.startsWith(subject)) extra = extra.substring(subject.length()).trim();
+				builder.append(extra).append("\n\n");
+			}
+		}
+		String text=builder.toString();
 		List<Uri> mediaUris;
 		if(Intent.ACTION_SEND.equals(intent.getAction())){
 			Uri singleUri=intent.getParcelableExtra(Intent.EXTRA_STREAM);
@@ -77,6 +124,7 @@ public class ExternalShareActivity extends FragmentStackActivity{
 		args.putString("account", accountID);
 		if(!TextUtils.isEmpty(text))
 			args.putString("prefilledText", text);
+		args.putInt("selectionStart", StringUtil.isBlank(subject) ? 0 : subject.length());
 		if(mediaUris!=null && !mediaUris.isEmpty())
 			args.putParcelableArrayList("mediaAttachments", toArrayList(mediaUris));
 		Fragment fragment=new ComposeFragment();
