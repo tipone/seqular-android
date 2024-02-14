@@ -152,6 +152,10 @@ public class Instance extends BaseModel{
 		return version.contains("compatible; Pixelfed");
 	}
 
+	public boolean isIceshrimp() {
+		return version.contains("compatible; Iceshrimp");
+	}
+
 	public boolean hasFeature(Feature feature) {
 		Optional<List<String>> pleromaFeatures = Optional.ofNullable(pleroma)
 				.map(p -> p.metadata)
