@@ -22,6 +22,10 @@ public interface HasAccountID {
         return getInstance().map(Instance::isPixelfed).orElse(false);
     }
 
+	default boolean isInstanceIceshrimp() {
+		return getInstance().map(Instance::isIceshrimp).orElse(false);
+	}
+
     default Optional<Instance> getInstance() {
         return getSession().getInstance();
     }

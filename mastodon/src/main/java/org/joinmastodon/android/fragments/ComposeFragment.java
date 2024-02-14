@@ -829,14 +829,18 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		publishButton=wrap.findViewById(R.id.publish_btn);
 		languageButton=wrap.findViewById(R.id.language_btn);
-		languageButton.setOnClickListener(v->showLanguageAlert());
-		languageButton.setOnLongClickListener(v->{
-			if(!getLocalPrefs().bottomEncoding){
-				getLocalPrefs().bottomEncoding=true;
-				getLocalPrefs().save();
-			}
-			return false;
-		});
+		if(instance.isIceshrimp())
+			languageButton.setVisibility(View.GONE);
+		else {
+			languageButton.setOnClickListener(v->showLanguageAlert());
+			languageButton.setOnLongClickListener(v->{
+				if(!getLocalPrefs().bottomEncoding){
+					getLocalPrefs().bottomEncoding=true;
+					getLocalPrefs().save();
+				}
+				return false;
+			});
+		}
 		publishButton.post(()->publishButton.setMinimumWidth(publishButton.getWidth()));
 
 		publishButton.setOnClickListener(v->{
