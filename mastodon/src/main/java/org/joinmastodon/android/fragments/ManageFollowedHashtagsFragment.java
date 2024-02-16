@@ -46,7 +46,7 @@ public class ManageFollowedHashtagsFragment extends BaseSettingsFragment<Hashtag
 						onDataLoaded(result.stream().map(t->{
 							int posts=t.getWeekPosts();
 							return new ListItemWithOptionsMenu<>(t.name, getResources().getQuantityString(R.plurals.x_posts_recently, posts, posts), ManageFollowedHashtagsFragment.this,
-									R.drawable.ic_tag_24px, ManageFollowedHashtagsFragment.this::onItemClick, t, false);
+									R.drawable.ic_fluent_tag_24_regular, ManageFollowedHashtagsFragment.this::onItemClick, t, false);
 						}).collect(Collectors.toList()), maxID!=null);
 					}
 				})

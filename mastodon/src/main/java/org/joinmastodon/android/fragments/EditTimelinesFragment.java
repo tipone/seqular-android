@@ -41,17 +41,14 @@ import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
-import org.joinmastodon.android.api.session.AccountSession;
-import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.CustomLocalTimeline;
+import org.joinmastodon.android.model.FollowList;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
-import org.joinmastodon.android.model.ListTimeline;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.TextInputFrameLayout;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -74,7 +71,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 	private Menu optionsMenu;
 	private boolean updated;
 	private final Map<MenuItem, TimelineDefinition> timelineByMenuItem=new HashMap<>();
-	private final List<ListTimeline> listTimelines=new ArrayList<>();
+	private final List<FollowList> followLists =new ArrayList<>();
 	private final List<Hashtag> hashtags=new ArrayList<>();
 	private MenuItem addHashtagItem;
     private final List<CustomLocalTimeline> localTimelines = new ArrayList<>();
@@ -94,8 +91,8 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 
 		new GetLists().setCallback(new Callback<>(){
 			@Override
-			public void onSuccess(List<ListTimeline> result){
-				listTimelines.addAll(result);
+			public void onSuccess(List<FollowList> result){
+				followLists.addAll(result);
 				updateOptionsMenu();
 			}
 
@@ -224,7 +221,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
         makeBackItem(hashtagsMenu);
 
 		TimelineDefinition.getAllTimelines(accountID).stream().forEach(tl->addTimelineToOptions(tl, timelinesMenu));
-		listTimelines.stream().map(TimelineDefinition::ofList).forEach(tl->addTimelineToOptions(tl, listsMenu));
+		followLists.stream().map(TimelineDefinition::ofList).forEach(tl->addTimelineToOptions(tl, listsMenu));
 		addHashtagItem=addOptionsItem(hashtagsMenu, getContext().getString(R.string.sk_timelines_add), R.drawable.ic_fluent_add_24_regular);
 		hashtags.stream().map(TimelineDefinition::ofHashtag).forEach(tl->addTimelineToOptions(tl, hashtagsMenu));
 

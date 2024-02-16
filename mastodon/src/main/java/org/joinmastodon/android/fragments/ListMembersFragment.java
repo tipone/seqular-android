@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -13,6 +14,7 @@ import com.squareup.otto.Subscribe;
 
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.requests.HeaderPaginationRequest;
 import org.joinmastodon.android.api.requests.lists.AddAccountsToList;
 import org.joinmastodon.android.api.requests.lists.GetListAccounts;
@@ -77,6 +79,21 @@ public class ListMembersFragment extends PaginatedAccountListFragment{
 	}
 
 	@Override
+	protected MastodonAPIRequest loadRemoteInfo(){
+		return null;
+	}
+
+	@Override
+	public Object getCurrentInfo(){
+		return null;
+	}
+
+	@Override
+	public String getRemoteDomain(){
+		return null;
+	}
+
+	@Override
 	protected void onConfigureViewHolder(AccountViewHolder holder){
 		super.onConfigureViewHolder(holder);
 		holder.setStyle(inSelectionMode ? AccountViewHolder.AccessoryType.CHECKBOX : AccountViewHolder.AccessoryType.MENU, false);
@@ -125,7 +142,7 @@ public class ListMembersFragment extends PaginatedAccountListFragment{
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
-		fab.setImageResource(R.drawable.ic_add_24px);
+		fab.setImageResource(R.drawable.ic_fluent_add_24_regular);
 		fab.setContentDescription(getString(R.string.add_list_member));
 		fab.setOnClickListener(v->onFabClick());
 	}
@@ -297,5 +314,10 @@ public class ListMembersFragment extends PaginatedAccountListFragment{
 				list.getAdapter().notifyItemRemoved(i);
 			}
 		}
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		return null;
 	}
 }

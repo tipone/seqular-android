@@ -4,7 +4,6 @@ import com.google.gson.reflect.TypeToken;
 
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.model.FollowList;
-import org.joinmastodon.android.model.ListTimeline;
 
 import java.util.List;
 

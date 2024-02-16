@@ -45,7 +45,8 @@ public abstract class PaginatedAccountListFragment<T> extends BaseAccountListFra
 		}
 
 		remoteDisabled = !GlobalUserPreferences.allowRemoteLoading
-				|| getSession().domain.equals(getRemoteDomain());
+				|| getSession().domain.equals(getRemoteDomain())
+				|| remoteInfoRequest == null;
 		if (!remoteDisabled) {
 			remoteInfoRequest = loadRemoteInfo().setCallback(new Callback<>() {
 				@Override

@@ -57,6 +57,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	private String maxID;
 	private boolean reloadingFromCache;
 	private DiscoverInfoBannerHelper bannerHelper;
+	private String unreadMarker, realUnreadMarker;
+	private MenuItem markAllReadItem;
 
 	@Override
 	protected boolean wantsComposeButton() {
@@ -161,7 +163,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	protected void doLoadData(int offset, int count){
 		AccountSessionManager.getInstance()
 				.getAccount(accountID).getCacheController()
-				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, onlyPosts, refreshing && !reloadingFromCache, new SimpleCallback<>(this){
+				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, false, refreshing && !reloadingFromCache, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(PaginatedResponse<List<Notification>> result){
 						if(getActivity()==null)
@@ -367,28 +369,6 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		adapter.notifyItemRangeRemoved(index, lastIndex-index);
 	}
 
-	private void onTabClick(View v){
-		boolean newOnlyMentions=v.getId()==R.id.mentions_tab;
-		if(newOnlyMentions==onlyMentions)
-			return;
-		onlyMentions=newOnlyMentions;
-		mentionsTab.setSelected(onlyMentions);
-		allTab.setSelected(!onlyMentions);
-		maxID=null;
-		showProgress();
-		refreshing=true;
-		reloadingFromCache=true;
-		loadData(0, 20);
-		AccountSessionManager.get(accountID).setNotificationsMentionsOnly(onlyMentions);
-	}
-
-	@Override
-	protected View onCreateFooterView(LayoutInflater inflater){
-		View v=inflater.inflate(R.layout.load_more_with_end_mark, null);
-		endMark=v.findViewById(R.id.end_mark);
-		endMark.setVisibility(View.GONE);
-		return v;
-	}
 
 	@Override
 	protected boolean needDividerForExtraItem(View child, View bottomSibling, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder siblingHolder){
@@ -432,7 +412,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onRefresh(){
 		super.onRefresh();
 		if (getParentFragment() instanceof NotificationsFragment nf) {
-			if (!onlyMentions && !onlyPosts) nf.markAsRead();
+			if (!onlyMentions) nf.markAsRead();
 			else AccountSessionManager.get(accountID).reloadNotificationsMarker(m->{
 				nf.unreadMarker=nf.realUnreadMarker=m;
 				nf.updateMarkAllReadButton();

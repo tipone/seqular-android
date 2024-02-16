@@ -18,6 +18,6 @@ public class OldPostPreReplySheet extends PreReplySheet{
 		String monthsStr=months>24 ? context.getString(R.string.more_than_two_years) : context.getResources().getQuantityString(R.plurals.x_months, months, months);
 		title.setText(context.getString(R.string.old_post_sheet_title, monthsStr));
 		text.setText(R.string.old_post_sheet_text);
-		icon.setImageResource(R.drawable.ic_history_24px);
+		icon.setImageResource(R.drawable.ic_fluent_clock_24_regular);
 	}
 }

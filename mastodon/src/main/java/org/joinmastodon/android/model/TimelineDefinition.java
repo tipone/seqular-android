@@ -9,7 +9,6 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
-import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -53,7 +52,7 @@ public class TimelineDefinition {
         return def;
     }
 
-    public static TimelineDefinition ofList(ListTimeline list) {
+    public static TimelineDefinition ofList(FollowList list) {
         return ofList(list.id, list.title, list.exclusive);
     }
 
