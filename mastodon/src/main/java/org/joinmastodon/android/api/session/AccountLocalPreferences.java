@@ -50,6 +50,7 @@ public class AccountLocalPreferences{
 	public ShowEmojiReactions showEmojiReactions;
 	public ColorPreference color;
 	public ArrayList<Emoji> recentCustomEmoji;
+	public boolean preReplySheet;
 
 	private final static Type recentLanguagesType=new TypeToken<ArrayList<String>>() {}.getType();
 	private final static Type timelinesType=new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
@@ -68,6 +69,7 @@ public class AccountLocalPreferences{
 		revealCWs=prefs.getBoolean("revealCWs", false);
 		hideSensitiveMedia=prefs.getBoolean("hideSensitive", true);
 		serverSideFiltersSupported=prefs.getBoolean("serverSideFilters", false);
+//		preReplySheet=prefs.getBoolean("preReplySheet", false);
 
 		// MEGALODON
 		showReplies=prefs.getBoolean("showReplies", true);
@@ -111,6 +113,9 @@ public class AccountLocalPreferences{
 				.putBoolean("revealCWs", revealCWs)
 				.putBoolean("hideSensitive", hideSensitiveMedia)
 				.putBoolean("serverSideFilters", serverSideFiltersSupported)
+
+				//TODO figure this stuff out
+//				.putBoolean("preReplySheet", preReplySheet)
 
 				// MEGALODON
 				.putBoolean("showReplies", showReplies)
@@ -169,4 +174,9 @@ public class AccountLocalPreferences{
 		ONLY_OPENED,
 		ALWAYS
 	}
+
+//	public enum PreReplySheetType{
+//		OLD_POST,
+//		NON_MUTUAL
+//	}
 }

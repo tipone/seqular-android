@@ -147,7 +147,7 @@ public class PhotoViewerInfoSheet extends BottomSheet{
 		statusID=status.id;
 		boostBtn.setCompoundDrawablesWithIntrinsicBounds(0, switch(status.visibility){
 			case DIRECT -> R.drawable.ic_boost_disabled_24px;
-			case PUBLIC, UNLISTED -> R.drawable.ic_boost;
+			case PUBLIC, UNLISTED, LOCAL -> R.drawable.ic_boost;
 			case PRIVATE -> R.drawable.ic_boost_private;
 		}, 0, 0);
 		boostBtn.setEnabled(status.visibility!=StatusPrivacy.DIRECT);
