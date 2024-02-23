@@ -289,7 +289,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					args.putString("profileDisplayUsername", account.getDisplayUsername());
 					Nav.go(item.parentFragment.getActivity(), ListsFragment.class, args);
 				}else if(id==R.id.share){
-					UiUtils.openSystemShareSheet(activity, item.status.url);
+					UiUtils.openSystemShareSheet(activity, item.status);
 				}
 				return true;
 			});
