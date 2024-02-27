@@ -66,7 +66,8 @@ public class SettingsDebugFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onResetPreReplySheetsClick(ListItem<?> item){
-		GlobalUserPreferences.resetPreReplySheets();
+		// TODO fix this
+//		GlobalUserPreferences.resetPreReplySheets();
 		Toast.makeText(getActivity(), "Pre-reply sheets were reset", Toast.LENGTH_SHORT).show();
 	}
 

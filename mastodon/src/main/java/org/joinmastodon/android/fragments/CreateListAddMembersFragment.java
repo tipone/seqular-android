@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments;
 
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -128,7 +129,7 @@ public class CreateListAddMembersFragment extends BaseAccountListFragment implem
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		MenuItem item=menu.add(R.string.add_list_member);
-		item.setIcon(R.drawable.ic_add_24px);
+		item.setIcon(R.drawable.ic_fluent_add_24_regular);
 		item.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
 	}
 
@@ -319,5 +320,11 @@ public class CreateListAddMembersFragment extends BaseAccountListFragment implem
 	@Override
 	protected void loadRelationships(List<AccountViewModel> accounts){
 		// no-op
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base){
+		// TODO this
+		return null;
 	}
 }

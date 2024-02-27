@@ -114,7 +114,7 @@ public class ManageListsFragment extends BaseSettingsFragment<FollowList> implem
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
 		fab=view.findViewById(R.id.fab);
-		fab.setImageResource(R.drawable.ic_add_24px);
+		fab.setImageResource(R.drawable.ic_fluent_add_24_regular);
 		fab.setContentDescription(getString(R.string.create_list));
 		fab.setOnClickListener(v->onFabClick());
 	}

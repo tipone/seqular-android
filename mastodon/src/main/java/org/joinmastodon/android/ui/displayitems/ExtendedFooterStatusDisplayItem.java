@@ -79,9 +79,9 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			applicationName=findViewById(R.id.application_name);
 			visibility=findViewById(R.id.visibility);
 			time=findViewById(R.id.time);
-			date=findViewById(R.id.date);
-			app=findViewById(R.id.app_name);
-			dateAppSeparator=findViewById(R.id.date_app_separator);
+//			date=findViewById(R.id.date);
+//			app=findViewById(R.id.app_name);
+//			dateAppSeparator=findViewById(R.id.date_app_separator);
 
 			reblogs.setOnClickListener(v->startAccountListFragment(StatusReblogsListFragment.class));
 			favorites.setOnClickListener(v->startAccountListFragment(StatusFavoritesListFragment.class));
@@ -108,7 +108,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			String timeStr=item.status.createdAt != null ? TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault())) : null;
 
 			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
-				time.setText(timeStr != null ? item.parentFragment.getString(R.string.timestamp_via_app, timeStr, "") : "");
+				time.setText(timeStr != null ? item.parentFragment.getString(R.string., timeStr, "") : "");
 				applicationName.setText(item.status.application.name);
 				if (item.status.application.website != null && item.status.application.website.toLowerCase().startsWith("https://")) {
 					applicationName.setOnClickListener(e -> UiUtils.openURL(context, null, item.status.application.website));
