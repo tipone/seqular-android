@@ -31,6 +31,7 @@
 			android:paddingHorizontal="8dp"
 			android:layout_marginVertical="-4dp"
 			android:layout_marginHorizontal="-8dp"
+			android:gravity="center_vertical"
 			tools:text="8:24 AM"/>
 
 		<TextView
@@ -74,7 +75,8 @@
 			android:layout_marginHorizontal="-8dp"
 			android:background="@drawable/bg_button_borderless_rounded"
 			android:backgroundTint="?colorM3Secondary"
-			tools:text="Mastodon for Android dfjklafjdsalkfjdslakfjdsaklfjdslak"/>
+			android:gravity="center_vertical"
+			tools:text="Moshidon dfjklafjdsalkfjdslakfjdsaklfjdslak"/>
 
 	</org.joinmastodon.android.ui.views.WrappingLinearLayout>
 
@@ -113,6 +115,7 @@
 			android:paddingHorizontal="8dp"
 			android:layout_marginVertical="-4dp"
 			android:layout_marginHorizontal="-8dp"
+			android:gravity="center_vertical"
 			tools:text="123 boosts"/>
 
 		<TextView
@@ -129,6 +132,7 @@
 			android:paddingHorizontal="8dp"
 			android:layout_marginVertical="-4dp"
 			android:layout_marginHorizontal="-8dp"
+			android:gravity="center_vertical"
 			tools:text="123 favorites"/>
 
 	</org.joinmastodon.android.ui.views.WrappingLinearLayout>
