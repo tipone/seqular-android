@@ -66,8 +66,8 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 
 	public static class Holder extends StatusDisplayItem.Holder<ExtendedFooterStatusDisplayItem>{
 		private final TextView time, date, app, dateAppSeparator;
-		private final Button favorites, reblogs, editHistory, applicationName;
-		private final ImageView visibility;
+		private final TextView favorites, reblogs, editHistory;
+//		private final ImageView visibility;
 		private final Context context;
 
 		public Holder(Context context, ViewGroup parent){
@@ -76,12 +76,10 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			reblogs=findViewById(R.id.reblogs);
 			favorites=findViewById(R.id.favorites);
 			editHistory=findViewById(R.id.edit_history);
-			applicationName=findViewById(R.id.application_name);
-			visibility=findViewById(R.id.visibility);
 			time=findViewById(R.id.time);
-//			date=findViewById(R.id.date);
-//			app=findViewById(R.id.app_name);
-//			dateAppSeparator=findViewById(R.id.date_app_separator);
+			date=findViewById(R.id.date);
+			app=findViewById(R.id.app_name);
+			dateAppSeparator=findViewById(R.id.date_app_separator);
 
 			reblogs.setOnClickListener(v->startAccountListFragment(StatusReblogsListFragment.class));
 			favorites.setOnClickListener(v->startAccountListFragment(StatusFavoritesListFragment.class));
@@ -94,39 +92,67 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void onBind(ExtendedFooterStatusDisplayItem item){
 			Status s=item.status;
-			favorites.setCompoundDrawablesRelativeWithIntrinsicBounds(GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_20_regular : R.drawable.ic_fluent_star_20_regular, 0, 0, 0);
-			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
-			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
-			reblogs.setVisibility(s.visibility != StatusPrivacy.DIRECT ? View.VISIBLE : View.GONE);
-
+			favorites.setText(getFormattedPlural(R.plurals.x_favorites, item.status.favouritesCount));
+			reblogs.setText(getFormattedPlural(R.plurals.x_reblogs, item.status.reblogsCount));
 			if(s.editedAt!=null){
 				editHistory.setVisibility(View.VISIBLE);
-				editHistory.setText(UiUtils.formatRelativeTimestampAsMinutesAgo(itemView.getContext(), s.editedAt, false));
+				ZonedDateTime dt=s.editedAt.atZone(ZoneId.systemDefault());
+				String time=TIME_FORMATTER.format(dt);
+				if(!dt.toLocalDate().equals(LocalDate.now())){
+					time+=" · "+DATE_FORMATTER.format(dt);
+				}
+				editHistory.setText(getFormattedSubstitutedString(R.string.last_edit_at_x, time));
 			}else{
 				editHistory.setVisibility(View.GONE);
 			}
-			String timeStr=item.status.createdAt != null ? TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault())) : null;
-
-			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
-				time.setText(timeStr != null ? item.parentFragment.getString(R.string., timeStr, "") : "");
-				applicationName.setText(item.status.application.name);
-				if (item.status.application.website != null && item.status.application.website.toLowerCase().startsWith("https://")) {
-					applicationName.setOnClickListener(e -> UiUtils.openURL(context, null, item.status.application.website));
-				} else {
-					applicationName.setEnabled(false);
-				}
-			} else {
-				time.setText(timeStr);
-				applicationName.setVisibility(View.GONE);
+			ZonedDateTime dt=item.status.createdAt.atZone(ZoneId.systemDefault());
+			time.setText(TIME_FORMATTER.format(dt));
+			date.setText(DATE_FORMATTER.format(dt));
+			if(item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)){
+				app.setVisibility(View.VISIBLE);
+				dateAppSeparator.setVisibility(View.VISIBLE);
+				app.setText(item.status.application.name);
+				app.setEnabled(!TextUtils.isEmpty(item.status.application.website));
+			}else{
+				app.setVisibility(View.GONE);
+				dateAppSeparator.setVisibility(View.GONE);
 			}
 
-			visibility.setImageResource(switch (s.visibility) {
-				case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
-				case UNLISTED -> R.drawable.ic_fluent_lock_open_20_regular;
-				case PRIVATE -> R.drawable.ic_fluent_lock_closed_20_filled;
-				case DIRECT -> R.drawable.ic_fluent_mention_20_regular;
-				case LOCAL -> R.drawable.ic_fluent_eye_20_regular;
-			});
+			//This is the old implementation. TODO: I gotta readd the things missing
+//			Status s=item.status;
+//			favorites.setCompoundDrawablesRelativeWithIntrinsicBounds(GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_20_regular : R.drawable.ic_fluent_star_20_regular, 0, 0, 0);
+//			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
+//			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
+//			reblogs.setVisibility(s.visibility != StatusPrivacy.DIRECT ? View.VISIBLE : View.GONE);
+//
+//			if(s.editedAt!=null){
+//				editHistory.setVisibility(View.VISIBLE);
+//				editHistory.setText(UiUtils.formatRelativeTimestampAsMinutesAgo(itemView.getContext(), s.editedAt, false));
+//			}else{
+//				editHistory.setVisibility(View.GONE);
+//			}
+//			String timeStr=item.status.createdAt != null ? TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault())) : null;
+//
+//			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
+//				time.setText(timeStr != null ? item.parentFragment.getString(R.string., timeStr, "") : "");
+//				applicationName.setText(item.status.application.name);
+//				if (item.status.application.website != null && item.status.application.website.toLowerCase().startsWith("https://")) {
+//					applicationName.setOnClickListener(e -> UiUtils.openURL(context, null, item.status.application.website));
+//				} else {
+//					applicationName.setEnabled(false);
+//				}
+//			} else {
+//				time.setText(timeStr);
+//				applicationName.setVisibility(View.GONE);
+//			}
+//
+//			visibility.setImageResource(switch (s.visibility) {
+//				case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
+//				case UNLISTED -> R.drawable.ic_fluent_lock_open_20_regular;
+//				case PRIVATE -> R.drawable.ic_fluent_lock_closed_20_filled;
+//				case DIRECT -> R.drawable.ic_fluent_mention_20_regular;
+//				case LOCAL -> R.drawable.ic_fluent_eye_20_regular;
+//			});
 		}
 
 		@Override
