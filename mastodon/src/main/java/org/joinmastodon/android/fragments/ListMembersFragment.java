@@ -130,9 +130,9 @@ public class ListMembersFragment extends PaginatedAccountListFragment{
 		if(id==R.id.select){
 			enterSelectionMode();
 		}else if(id==R.id.select_all){
-			for(AccountViewModel a:data){
-				selectedAccounts.add(a.account.id);
-			}
+//			for(AccountViewModel a:data){
+//				selectedAccounts.add(a.account.id);
+//			}
 			enterSelectionMode();
 		}
 		return true;
@@ -309,10 +309,10 @@ public class ListMembersFragment extends PaginatedAccountListFragment{
 
 	private void removeAccountRows(Set<String> ids){
 		for(int i=data.size()-1;i>=0;i--){
-			if(ids.contains(data.get(i).account.id)){
-				data.remove(i);
-				list.getAdapter().notifyItemRemoved(i);
-			}
+//			if(ids.contains(data.get(i).account.id)){
+//				data.remove(i);
+//				list.getAdapter().notifyItemRemoved(i);
+//			}
 		}
 	}
 

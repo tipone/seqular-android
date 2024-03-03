@@ -97,7 +97,7 @@ public class ListsFragment extends MastodonRecyclerFragment<FollowList> implemen
 					.setIcon(R.drawable.ic_fluent_people_add_28_regular)
 					.setView(editor)
 					.setPositiveButton(R.string.sk_create, (d, which) ->
-							new CreateList(editor.getTitle(), editor.isExclusive(), editor.getRepliesPolicy()).setCallback(new Callback<>() {
+							new CreateList(editor.getTitle(), editor.getRepliesPolicy(), editor.isExclusive()).setCallback(new Callback<>() {
 								@Override
 								public void onSuccess(FollowList list) {
 									data.add(0, list);
@@ -120,16 +120,16 @@ public class ListsFragment extends MastodonRecyclerFragment<FollowList> implemen
 	private void saveListMembership(String listId, boolean isMember) {
 		userInList.put(listId, isMember);
 		List<String> accountIdList = Collections.singletonList(profileAccountId);
-		MastodonAPIRequest<Object> req = isMember ? new AddAccountsToList(listId, accountIdList) : new RemoveAccountsFromList(listId, accountIdList);
-		req.setCallback(new Callback<>() {
-			@Override
-			public void onSuccess(Object o) {}
-
-			@Override
-			public void onError(ErrorResponse error) {
-				error.showToast(getContext());
-			}
-		}).exec(accountID);
+//		MastodonAPIRequest<Object> req = (MastodonAPIRequest<Object>) (isMember ? new AddAccountsToList(listId, accountIdList) : new RemoveAccountsFromList(listId, accountIdList));
+//		req.setCallback(new Callback<>() {
+//			@Override
+//			public void onSuccess(Object o) {}
+//
+//			@Override
+//			public void onError(ErrorResponse error) {
+//				error.showToast(getContext());
+//			}
+//		}).exec(accountID);
 	}
 
 	@Override
@@ -170,7 +170,7 @@ public class ListsFragment extends MastodonRecyclerFragment<FollowList> implemen
 	public void onListDeletedEvent(ListDeletedEvent event) {
 		for (int i = 0; i < data.size(); i++) {
 			FollowList item = data.get(i);
-			if (item.id.equals(event.id)) {
+			if (item.id.equals(event.listID)) {
 				data.remove(i);
 				adapter.notifyItemRemoved(i);
 				break;
