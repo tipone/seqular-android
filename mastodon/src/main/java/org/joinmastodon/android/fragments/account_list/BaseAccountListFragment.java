@@ -130,6 +130,10 @@ public abstract class BaseAccountListFragment extends MastodonRecyclerFragment<A
 		}
 	}
 
+	protected boolean hasSubtitle(){
+		return true;
+	}
+
 	@Override
 	public void onApplyWindowInsets(WindowInsets insets){
 		if(Build.VERSION.SDK_INT>=29 && insets.getTappableElementInsets().bottom==0){
