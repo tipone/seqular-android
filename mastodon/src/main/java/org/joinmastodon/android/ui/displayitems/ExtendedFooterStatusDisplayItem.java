@@ -67,7 +67,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<ExtendedFooterStatusDisplayItem>{
 		private final TextView time, date, app, dateAppSeparator;
 		private final TextView favorites, reblogs, editHistory;
-//		private final ImageView visibility;
+		private final ImageView visibility;
 		private final Context context;
 
 		public Holder(Context context, ViewGroup parent){
@@ -79,6 +79,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 			time=findViewById(R.id.time);
 			date=findViewById(R.id.date);
 			app=findViewById(R.id.app_name);
+			visibility=findViewById(R.id.visibility);
 			dateAppSeparator=findViewById(R.id.date_app_separator);
 
 			reblogs.setOnClickListener(v->startAccountListFragment(StatusReblogsListFragment.class));
@@ -118,41 +119,14 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 				dateAppSeparator.setVisibility(View.GONE);
 			}
 
-			//This is the old implementation. TODO: I gotta readd the things missing
-//			Status s=item.status;
-//			favorites.setCompoundDrawablesRelativeWithIntrinsicBounds(GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_20_regular : R.drawable.ic_fluent_star_20_regular, 0, 0, 0);
-//			favorites.setText(context.getResources().getQuantityString(R.plurals.x_favorites, (int)(s.favouritesCount%1000), s.favouritesCount));
-//			reblogs.setText(context.getResources().getQuantityString(R.plurals.x_reblogs, (int) (s.reblogsCount % 1000), s.reblogsCount));
-//			reblogs.setVisibility(s.visibility != StatusPrivacy.DIRECT ? View.VISIBLE : View.GONE);
-//
-//			if(s.editedAt!=null){
-//				editHistory.setVisibility(View.VISIBLE);
-//				editHistory.setText(UiUtils.formatRelativeTimestampAsMinutesAgo(itemView.getContext(), s.editedAt, false));
-//			}else{
-//				editHistory.setVisibility(View.GONE);
-//			}
-//			String timeStr=item.status.createdAt != null ? TIME_FORMATTER.format(item.status.createdAt.atZone(ZoneId.systemDefault())) : null;
-//
-//			if (item.status.application!=null && !TextUtils.isEmpty(item.status.application.name)) {
-//				time.setText(timeStr != null ? item.parentFragment.getString(R.string., timeStr, "") : "");
-//				applicationName.setText(item.status.application.name);
-//				if (item.status.application.website != null && item.status.application.website.toLowerCase().startsWith("https://")) {
-//					applicationName.setOnClickListener(e -> UiUtils.openURL(context, null, item.status.application.website));
-//				} else {
-//					applicationName.setEnabled(false);
-//				}
-//			} else {
-//				time.setText(timeStr);
-//				applicationName.setVisibility(View.GONE);
-//			}
-//
-//			visibility.setImageResource(switch (s.visibility) {
-//				case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
-//				case UNLISTED -> R.drawable.ic_fluent_lock_open_20_regular;
-//				case PRIVATE -> R.drawable.ic_fluent_lock_closed_20_filled;
-//				case DIRECT -> R.drawable.ic_fluent_mention_20_regular;
-//				case LOCAL -> R.drawable.ic_fluent_eye_20_regular;
-//			});
+			//TODO: make a snackbar pop up on hold of this
+			visibility.setImageResource(switch (s.visibility) {
+				case PUBLIC -> R.drawable.ic_fluent_earth_20_regular;
+				case UNLISTED -> R.drawable.ic_fluent_lock_open_20_regular;
+				case PRIVATE -> R.drawable.ic_fluent_lock_closed_20_filled;
+				case DIRECT -> R.drawable.ic_fluent_mention_20_regular;
+				case LOCAL -> R.drawable.ic_fluent_eye_20_regular;
+			});
 		}
 
 		@Override
