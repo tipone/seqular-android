@@ -38,7 +38,7 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 
 	public OnboardingFollowSuggestionsFragment(){
 		super(R.layout.fragment_onboarding_follow_suggestions, 40);
-		itemLayoutRes=R.layout.item_account_list_onboarding;
+		itemLayoutRes=R.layout.item_account_list;
 	}
 
 	@Override
@@ -84,13 +84,14 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 
 	@Override
 	protected RecyclerView.Adapter<?> getAdapter(){
-		TextView introText=new TextView(getActivity());
-		introText.setTextAppearance(R.style.m3_body_large);
-		introText.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSurface));
-		introText.setPaddingRelative(V.dp(56), 0, V.dp(24), V.dp(8));
-		introText.setText(R.string.onboarding_recommendations_intro);
+//		Unused in Moshidon
+//		TextView introText=new TextView(getActivity());
+//		introText.setTextAppearance(R.style.m3_body_large);
+//		introText.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSurface));
+//		introText.setPaddingRelative(V.dp(56), 0, V.dp(24), V.dp(8));
+//		introText.setText(R.string.onboarding_recommendations_intro);
 		MergeRecyclerAdapter mergeAdapter=new MergeRecyclerAdapter();
-		mergeAdapter.addAdapter(new SingleViewRecyclerAdapter(introText));
+//		mergeAdapter.addAdapter(new SingleViewRecyclerAdapter(introText));
 		mergeAdapter.addAdapter(super.getAdapter());
 		return mergeAdapter;
 	}
