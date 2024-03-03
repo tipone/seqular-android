@@ -22,13 +22,13 @@
 			android:layout_height="20dp"
 			android:layout_width="20dp"
 			android:src="@drawable/ic_fluent_earth_20_regular"
-			android:tint="?colorM3Secondary" />
+			android:tint="?colorM3OnSurfaceVariant" />
 
 		<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:importantForAccessibility="no"
 			android:text="·"/>
 
@@ -37,9 +37,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:background="@drawable/bg_button_borderless_rounded"
-			android:backgroundTint="?colorM3Secondary"
+			android:backgroundTint="?colorM3OnSurfaceVariant"
 			android:singleLine="true"
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
@@ -53,7 +53,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:importantForAccessibility="no"
 			android:text="·"/>
 
@@ -62,7 +62,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:singleLine="true"
 			android:ellipsize="end"
 			tools:text="2023-11-08"/>
@@ -72,7 +72,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:importantForAccessibility="no"
 			android:text="·"/>
 
@@ -81,7 +81,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:singleLine="true"
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
@@ -103,7 +103,7 @@
 		android:paddingEnd="24dp"
 		android:background="?android:selectableItemBackground"
 		android:textAppearance="@style/m3_label_large"
-		android:textColor="?colorM3Secondary"
+		android:textColor="?colorM3OnSurfaceVariant"
 		android:gravity="center_vertical"
 		tools:text="Last edit bla bla"/>
 
@@ -121,9 +121,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:background="@drawable/bg_button_borderless_rounded"
-			android:backgroundTint="?colorM3Secondary"
+			android:backgroundTint="?colorM3OnSurfaceVariant"
 			android:singleLine="true"
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
@@ -138,9 +138,9 @@
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:textAppearance="@style/m3_label_large"
-			android:textColor="?colorM3Secondary"
+			android:textColor="?colorM3OnSurfaceVariant"
 			android:background="@drawable/bg_button_borderless_rounded"
-			android:backgroundTint="?colorM3Secondary"
+			android:backgroundTint="?colorM3OnSurfaceVariant"
 			android:singleLine="true"
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
