@@ -115,17 +115,11 @@ public class LinkCardStatusDisplayItem extends StatusDisplayItem{
 				photo.setVisibility(View.VISIBLE);
 				didClear=false;
 			} else {
-				photo.setVisibility(View.GONE);
+				photo.setBackgroundColor(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3SurfaceVariant));
+				photo.setImageTintList(ColorStateList.valueOf(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3Outline)));
+				photo.setScaleType(ImageView.ScaleType.CENTER);
+				photo.setImageResource(R.drawable.ic_feed_48px);
 			}
-
-			// if there's no image, we don't want to cover the inset borders
-			FrameLayout.LayoutParams params=(FrameLayout.LayoutParams) inner.getLayoutParams();
-			int margin=item.inset && item.imgRequest == null ? V.dp(1) : 0;
-			params.setMargins(margin, 0, margin, margin);
-
-			boolean insetAndLast=item.inset && isLastDisplayItemForStatus();
-			inner.setClipToOutline(insetAndLast);
-			inner.setOutlineProvider(insetAndLast ? OutlineProviders.bottomRoundedRect(12) : null);
 		}
 
 		@Override
