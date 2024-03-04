@@ -23,12 +23,9 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
-import android.text.TextWatcher;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.TransitionManager;
@@ -45,8 +42,6 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -74,11 +69,9 @@ import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.BlockedAccountsListFragment;
-import org.joinmastodon.android.fragments.account_list.BlocksListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowingListFragment;
 import org.joinmastodon.android.fragments.account_list.MutedAccountsListFragment;
-import org.joinmastodon.android.fragments.account_list.MutesListFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.fragments.settings.SettingsServerFragment;
 import org.joinmastodon.android.model.Account;
@@ -976,7 +969,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 						.show();
 			}
 			invalidateOptionsMenu();
-		}else if(id==R.id.add_to_list){
+		}else if(id==R.id.manage_user_lists){
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
 			args.putParcelable("targetAccount", Parcels.wrap(account));
