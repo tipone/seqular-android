@@ -1847,6 +1847,10 @@ public class UiUtils {
 		}
 	}
 
+	public static boolean needShowClipboardToast(){
+		return Build.VERSION.SDK_INT<=Build.VERSION_CODES.S_V2;
+	}
+
 	public static void setAllPaddings(View view, int paddingDp){
 		int pad=V.dp(paddingDp);
 		view.setPadding(pad, pad, pad, pad);

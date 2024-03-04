@@ -1,4 +1,4 @@
-package org.joinmastodon.android.ui;
+package org.joinmastodon.android.ui.sheets;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -8,7 +8,6 @@ import android.graphics.drawable.Animatable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.text.SpannableStringBuilder;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -27,8 +26,10 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.SplashFragment;
 import org.joinmastodon.android.fragments.onboarding.CustomWelcomeFragment;
+import org.joinmastodon.android.ui.ClickableSingleViewRecyclerAdapter;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
+import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.text.HtmlParser;
-import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 
