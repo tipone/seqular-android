@@ -11,10 +11,11 @@ import androidx.annotation.NonNull;
 public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmationSheet{
 	public MuteAccountConfirmationSheet(@NonNull Context context, Account user, ConfirmCallback confirmCallback){
 		super(context, user, confirmCallback);
+		//TODO: readd the time option
 		titleView.setText(R.string.mute_user_confirm_title);
 		confirmBtn.setText(R.string.do_mute);
 		secondaryBtn.setVisibility(View.GONE);
-		icon.setImageResource(R.drawable.ic_fluent_speaker_mute_24_regular);
+		icon.setImageResource(R.drawable.ic_fluent_speaker_off_24_regular);
 		subtitleView.setText(user.getDisplayUsername());
 		addRow(R.drawable.ic_campaign_24px, R.string.user_wont_know_muted);
 		addRow(R.drawable.ic_fluent_eye_off_24_regular, R.string.user_can_still_see_your_posts);

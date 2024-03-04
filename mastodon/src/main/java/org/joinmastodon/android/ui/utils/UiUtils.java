@@ -125,6 +125,8 @@ import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
+import org.joinmastodon.android.ui.Snackbar;
+import org.joinmastodon.android.ui.sheets.MuteAccountConfirmationSheet;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcels;
@@ -581,69 +583,109 @@ public class UiUtils {
 				});
 	}
 	public static void confirmToggleMuteUser(Context context, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback){
-		View durationView=LayoutInflater.from(context).inflate(R.layout.mute_user_dialog, null);
-		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, V.dp(-12), 0, 0);
-		durationView.setLayoutParams(params);
-		Button button=durationView.findViewById(R.id.button);
-		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.getDisplayName()));
+		if(!currentlyMuted){
+			new MuteAccountConfirmationSheet(context, account, (onSuccess, onError)->{
+				new SetAccountMuted(account.id, true, 0)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(Relationship result){
+								resultCallback.accept(result);
+								onSuccess.run();
+								E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
+							}
 
-		AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(context);
+								onError.run();
+							}
+						})
+						.exec(accountID);
+			}).show();
+		}else{
+			new SetAccountMuted(account.id, false, 0)
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Relationship result){
+							resultCallback.accept(result);
+							new Snackbar.Builder(context)
+									.setText(context.getString(R.string.unmuted_user_x, account.getDisplayUsername()))
+									.show();
+						}
 
-		PopupMenu popupMenu=new PopupMenu(context, button, Gravity.CENTER_HORIZONTAL);
-		popupMenu.inflate(R.menu.mute_duration);
-		popupMenu.setOnMenuItemClickListener(item->{
-			int id=item.getItemId();
-			if(id==R.id.duration_indefinite)
-				muteDuration.set(Duration.ZERO);
-			else if(id==R.id.duration_minutes_5){
-				muteDuration.set(Duration.ofMinutes(5));
-			}else if(id==R.id.duration_minutes_30){
-				muteDuration.set(Duration.ofMinutes(30));
-			}else if(id==R.id.duration_hours_1){
-				muteDuration.set(Duration.ofHours(1));
-			}else if(id==R.id.duration_hours_6){
-				muteDuration.set(Duration.ofHours(6));
-			}else if(id==R.id.duration_days_1){
-				muteDuration.set(Duration.ofDays(1));
-			}else if(id==R.id.duration_days_3){
-				muteDuration.set(Duration.ofDays(3));
-			}else if(id==R.id.duration_days_7){
-				muteDuration.set(Duration.ofDays(7));
-			}
-			button.setText(item.getTitle());
-			return true;
-		});
-		button.setOnTouchListener(popupMenu.getDragToOpenListener());
-		button.setOnClickListener(v->popupMenu.show());
-		button.setText(popupMenu.getMenu().getItem(0).getTitle());
+						@Override
+						public void onError(ErrorResponse error){
+							error.showToast(context);
+						}
+					})
+					.wrapProgress(context, R.string.loading, false)
+					.exec(accountID);
+		}
 
-		new M3AlertDialogBuilder(context)
-				.setTitle(context.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
-				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.getDisplayName()) : null)
-				.setView(currentlyMuted ? null : durationView)
-				.setPositiveButton(context.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)->{
-					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())
-							.setCallback(new Callback<>(){
-								@Override
-								public void onSuccess(Relationship result){
-									resultCallback.accept(result);
-									if(!currentlyMuted){
-										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
-									}
-								}
-
-								@Override
-								public void onError(ErrorResponse error){
-									error.showToast(context);
-								}
-							})
-							.wrapProgress(context, R.string.loading, false)
-							.exec(accountID);
-				})
-				.setNegativeButton(R.string.cancel, null)
-				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
-				.show();
+		// I need to readd the mute thing, so this is gonna stay as a comment for now
+//		View durationView=LayoutInflater.from(context).inflate(R.layout.mute_user_dialog, null);
+//		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//		params.setMargins(0, V.dp(-12), 0, 0);
+//		durationView.setLayoutParams(params);
+//		Button button=durationView.findViewById(R.id.button);
+//		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.getDisplayName()));
+//
+//		AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+//
+//		PopupMenu popupMenu=new PopupMenu(context, button, Gravity.CENTER_HORIZONTAL);
+//		popupMenu.inflate(R.menu.mute_duration);
+//		popupMenu.setOnMenuItemClickListener(item->{
+//			int id=item.getItemId();
+//			if(id==R.id.duration_indefinite)
+//				muteDuration.set(Duration.ZERO);
+//			else if(id==R.id.duration_minutes_5){
+//				muteDuration.set(Duration.ofMinutes(5));
+//			}else if(id==R.id.duration_minutes_30){
+//				muteDuration.set(Duration.ofMinutes(30));
+//			}else if(id==R.id.duration_hours_1){
+//				muteDuration.set(Duration.ofHours(1));
+//			}else if(id==R.id.duration_hours_6){
+//				muteDuration.set(Duration.ofHours(6));
+//			}else if(id==R.id.duration_days_1){
+//				muteDuration.set(Duration.ofDays(1));
+//			}else if(id==R.id.duration_days_3){
+//				muteDuration.set(Duration.ofDays(3));
+//			}else if(id==R.id.duration_days_7){
+//				muteDuration.set(Duration.ofDays(7));
+//			}
+//			button.setText(item.getTitle());
+//			return true;
+//		});
+//		button.setOnTouchListener(popupMenu.getDragToOpenListener());
+//		button.setOnClickListener(v->popupMenu.show());
+//		button.setText(popupMenu.getMenu().getItem(0).getTitle());
+//
+//		new M3AlertDialogBuilder(context)
+//				.setTitle(context.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
+//				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.getDisplayName()) : null)
+//				.setView(currentlyMuted ? null : durationView)
+//				.setPositiveButton(context.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)->{
+//					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())
+//							.setCallback(new Callback<>(){
+//								@Override
+//								public void onSuccess(Relationship result){
+//									resultCallback.accept(result);
+//									if(!currentlyMuted){
+//										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
+//									}
+//								}
+//
+//								@Override
+//								public void onError(ErrorResponse error){
+//									error.showToast(context);
+//								}
+//							})
+//							.wrapProgress(context, R.string.loading, false)
+//							.exec(accountID);
+//				})
+//				.setNegativeButton(R.string.cancel, null)
+//				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
+//				.show();
 	}
 
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback, boolean forRedraft) {
