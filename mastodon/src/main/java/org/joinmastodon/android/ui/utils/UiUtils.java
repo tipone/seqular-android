@@ -126,6 +126,7 @@ import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.Snackbar;
+import org.joinmastodon.android.ui.sheets.BlockAccountConfirmationSheet;
 import org.joinmastodon.android.ui.sheets.MuteAccountConfirmationSheet;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
@@ -501,30 +502,44 @@ public class UiUtils {
 	}
 
 	public static void confirmToggleBlockUser(Activity activity, String accountID, Account account, boolean currentlyBlocked, Consumer<Relationship> resultCallback) {
-		showConfirmationAlert(activity, activity.getString(currentlyBlocked ? R.string.confirm_unblock_title : R.string.confirm_block_title),
-				activity.getString(currentlyBlocked ? R.string.confirm_unblock : R.string.confirm_block, account.getDisplayName()),
-				activity.getString(currentlyBlocked ? R.string.do_unblock : R.string.do_block),
-				R.drawable.ic_fluent_person_prohibited_28_regular,
-				() -> {
-					new SetAccountBlocked(account.id, !currentlyBlocked)
-							.setCallback(new Callback<>() {
-								@Override
-								public void onSuccess(Relationship result) {
-									if (activity == null) return;
-									resultCallback.accept(result);
-									if (!currentlyBlocked) {
-										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
-									}
-								}
+		if(!currentlyBlocked){
+			new BlockAccountConfirmationSheet(activity, account, (onSuccess, onError)->{
+				new SetAccountBlocked(account.id, true)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(Relationship result){
+								resultCallback.accept(result);
+								onSuccess.run();
+								E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
+							}
 
-								@Override
-								public void onError(ErrorResponse error) {
-									error.showToast(activity);
-								}
-							})
-							.wrapProgress(activity, R.string.loading, false)
-							.exec(accountID);
-				});
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(activity);
+								onError.run();
+							}
+						})
+						.exec(accountID);
+			}).show();
+		}else{
+			new SetAccountBlocked(account.id, false)
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Relationship result){
+							resultCallback.accept(result);
+							new Snackbar.Builder(activity)
+									.setText(activity.getString(R.string.unblocked_user_x, account.getDisplayUsername()))
+									.show();
+						}
+
+						@Override
+						public void onError(ErrorResponse error){
+							error.showToast(activity);
+						}
+					})
+					.wrapProgress(activity, R.string.loading, false)
+					.exec(accountID);
+		}
 	}
 
 	public static void confirmSoftBlockUser(Activity activity, String accountID, Account account, Consumer<Relationship> resultCallback) {
