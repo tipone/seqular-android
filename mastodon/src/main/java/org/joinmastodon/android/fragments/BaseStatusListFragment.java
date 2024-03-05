@@ -28,6 +28,7 @@ import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.polls.SubmitPollVote;
 import org.joinmastodon.android.api.requests.statuses.AkkomaTranslateStatus;
 import org.joinmastodon.android.api.requests.statuses.TranslateStatus;
+import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -1079,27 +1080,23 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	public void maybeShowPreReplySheet(Status status, Runnable proceed){
-		// TODO: figure this stuff out
-//		Relationship rel=getRelationship(status.account.id);
-//		if(!GlobalUserPreferences.isOptedOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.NON_MUTUAL, status.account, accountID) &&
-//				!status.account.id.equals(AccountSessionManager.get(accountID).self.id) && rel!=null && !rel.followedBy && status.account.followingCount>=1){
-//			new NonMutualPreReplySheet(getActivity(), notAgain->{
-//				GlobalUserPreferences.optOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.NON_MUTUAL, notAgain ? null : status.account, accountID);
-//				proceed.run();
-//			}, status.account, accountID).show();
-//		}else if(!GlobalUserPreferences.isOptedOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.OLD_POST, null, null) &&
-//				status.createdAt.isBefore(Instant.now().minus(90, ChronoUnit.DAYS))){
-//			new OldPostPreReplySheet(getActivity(), notAgain->{
-//				if(notAgain)
-//					GlobalUserPreferences.optOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.OLD_POST, null, null);
-//				proceed.run();
-//			}, status).show();
-//		}else{
-//			proceed.run();
-//		}
-
-
-		proceed.run();
+		Relationship rel=getRelationship(status.account.id);
+		if(!GlobalUserPreferences.isOptedOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.NON_MUTUAL, status.account, accountID) &&
+				!status.account.id.equals(AccountSessionManager.get(accountID).self.id) && rel!=null && !rel.followedBy && status.account.followingCount>=1){
+			new NonMutualPreReplySheet(getActivity(), notAgain->{
+				GlobalUserPreferences.optOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.NON_MUTUAL, notAgain ? null : status.account, accountID);
+				proceed.run();
+			}, status.account, accountID).show();
+		}else if(!GlobalUserPreferences.isOptedOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.OLD_POST, null, null) &&
+				status.createdAt.isBefore(Instant.now().minus(90, ChronoUnit.DAYS))){
+			new OldPostPreReplySheet(getActivity(), notAgain->{
+				if(notAgain)
+					GlobalUserPreferences.optOutOfPreReplySheet(GlobalUserPreferences.PreReplySheetType.OLD_POST, null, null);
+				proceed.run();
+			}, status).show();
+		}else{
+			proceed.run();
+		}
 	}
 
 	protected void onModifyItemViewHolder(BindableViewHolder<StatusDisplayItem> holder){}

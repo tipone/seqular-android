@@ -174,9 +174,4 @@ public class AccountLocalPreferences{
 		ONLY_OPENED,
 		ALWAYS
 	}
-
-//	public enum PreReplySheetType{
-//		OLD_POST,
-//		NON_MUTUAL
-//	}
 }
