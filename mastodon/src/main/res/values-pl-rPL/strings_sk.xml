@@ -15,7 +15,7 @@
     <string name="sk_mark_media_as_sensitive">Oznacz jako wrażliwe</string>
     <string name="sk_user_post_notifications_on">Włączono powiadomienia dla wpisu %s</string>
     <string name="sk_user_post_notifications_off">Wyłączono powiadomienia dla wpisu %s</string>
-    <string name="sk_federated_timeline">fediwersum</string>
+    <string name="sk_federated_timeline">Federacja</string>
     <string name="sk_federated_timeline_info_banner">To są najnowsze wpisy z wszystkich serwerów z którymi twoja instancja jest sfederowana.</string>
     <string name="sk_update_available">Megalodon %s jest dostępny do pobrania.</string>
     <string name="sk_update_ready">Megalodon %s został pobrany i jest gotowy do instalacji.</string>
@@ -336,7 +336,7 @@
     <string name="sk_settings_auto_reveal_anyone">Odpowiedzi wszystkich użytkowników</string>
     <string name="sk_settings_content_types_explanation">Umożliwia ustawienie typu zawartości, takiego jak Markdown, podczas tworzenia postu. Pamiętaj, że nie wszystkie instancje obsługują tę funkcję.</string>
     <string name="sk_timeline_bubble">Bańka</string>
-    <string name="sk_settings_color_palette_default">Domyślny (%s)</string>
+    <string name="sk_settings_color_palette_default">Domyślne (%s)</string>
     <string name="sk_tab_home">Główna</string>
     <string name="sk_settings_show_emoji_reactions_hide_empty">Ukrywaj puste reakcje emoji</string>
     <string name="sk_edit_timeline_tags_explanation">Pamiętaj, że serwer obsługuje te operacje. Łączenie ich może nie być obsługiwane.</string>
@@ -347,12 +347,12 @@
         <item quantity="many">postów</item>
         <item quantity="other">postów</item>
     </plurals>
-    <string name="sk_notification_mention">%s wspomniał(-a) o Tobie</string>
+    <string name="sk_notification_mention">Zostałxś wspomnianx przez %s</string>
     <string name="sk_settings_emoji_reactions">Włącz reakcje emoji</string>
     <string name="sk_blocked_accounts">Zablokowane konta</string>
     <string name="sk_suicide_search_terms">Samobójstwo</string>
     <string name="sk_duration_minutes_5">5 minut</string>
-    <string name="sk_settings_unifiedpush_no_distributor_body">Aby powiadomienia UnifiedPush działały, należy zainstalować wybranego dostawcę powiadomień. Więcej informacji można znaleźć na stronie https://unifiedpush.org/</string>
+    <string name="sk_settings_unifiedpush_no_distributor_body">Musisz zainstalować dystrybutora oo to by powiadomienia UnifiedPush działały. Dla więcej informacji, sprawdź https://unifiedpush.org/</string>
     <string name="sk_settings_default_visibility">Domyślna widoczność postów</string>
     <string name="sk_settings_default_content_type_explanation">Pozwala to na wstępne wybranie typu zawartości podczas tworzenia nowych postów, nadpisując wartość ustawioną w \"Preferencjach publikowania\".</string>
     <string name="sk_settings_underlined_links">Podkreślone linki</string>
@@ -369,7 +369,7 @@
     </plurals>
     <string name="sk_settings_show_labels_in_navigation_bar">Wyświetlaj etykiety zakładek na pasku nawigacyjnym</string>
     <string name="sk_confirm_changes">Zatwierdź zmiany</string>
-    <string name="sk_hashtag_timeline_local_only_switch">Pokazywać tylko lokalne posty?</string>
+    <string name="sk_hashtag_timeline_local_only_switch">Pokazać tylko lokalne posty?</string>
     <string name="sk_external_share_or_open_title">Udostępnij lub otwórz za pomocą konta</string>
     <string name="sk_tab_search">Szukaj</string>
     <string name="sk_settings_crash_log_unavailable">Brak dostępnych... na razie</string>
@@ -388,14 +388,14 @@
     <string name="sk_icon_sun">Słońce</string>
     <string name="sk_enter_emoji_hint">Wprowadź emoji lub wyszukaj</string>
     <string name="sk_duration_days_7">7 dni</string>
-    <string name="sk_settings_unifiedpush_no_distributor">Nie znaleziono dostawcy</string>
+    <string name="sk_settings_unifiedpush_no_distributor">Nie znaleziono dystrybutora</string>
     <string name="sk_settings_true_black">Tryb głębokiej czerni</string>
     <string name="sk_crash_log_copied">Skopiowano raport awarii</string>
     <string name="sk_settings_auto_reveal_author">Odpowiedzi tego samego autora</string>
     <string name="sk_do_not_show_again">Nie pokazuj ponownie</string>
     <string name="sk_suicide_helplines_url">https://forumprzeciwdepresji.pl/wazne-telefony-antydepresyjne</string>
     <string name="sk_add_note">Dodaj osobistą notkę</string>
-    <string name="sk_edit_timeline_tag_any">...lub którykolwiek z tych</string>
+    <string name="sk_edit_timeline_tag_any">...albo jakieś z tych</string>
     <string name="sk_settings_display_pronouns_in_threads">Wyświetlaj zaimki w wątkach</string>
     <string name="sk_settings_prefix_replies_to_others">W odpowiedzi do innych użytkowników</string>
     <string name="sk_error_loading_profile">Ładowanie profilu przez %s nie powiodło się</string>
@@ -416,10 +416,10 @@
     <string name="sk_icon_rain">Deszcz</string>
     <string name="sk_recently_used">Ostatnio używane</string>
     <string name="sk_icon_thunderstorm">Burza</string>
-    <string name="sk_bubble_timeline_info_banner">To są najnowsze posty z sieci wyselekcjonowane przez administratorów Twojej instancji.</string>
-    <string name="sk_edit_timeline_tag_none">...ale żadne z tych</string>
+    <string name="sk_bubble_timeline_info_banner">To są najnowsze posty wybrane przez administratorów Twojej instancji.</string>
+    <string name="sk_edit_timeline_tag_none">...ale żadne z tego</string>
     <string name="sk_search_suicide_title">W razie gdybyś potrzebował pomocy…</string>
-    <string name="sk_settings_unifiedpush_choose">Wybierz dostawcę</string>
+    <string name="sk_settings_unifiedpush_choose">Wybierz dystrybutora</string>
     <string name="sk_button_mutuals">Znajomi</string>
     <string name="sk_open_in_app_failed">Nie można otworzyć w aplikacji</string>
     <plurals name="sk_time_minutes">
@@ -428,7 +428,7 @@
         <item quantity="many">%d minut</item>
         <item quantity="other">%d minut</item>
     </plurals>
-    <string name="sk_settings_continues_playback_summary">Zezwalaj na nakładanie się dźwięku poprzez kontynuowanie odtwarzania już odtwarzanych multimediów</string>
+    <string name="sk_settings_continues_playback_summary">Zezwalaj na kontynuowanie odtwarzania multimediów, nakładając je na inne.</string>
     <string name="sk_post_preview">Podgląd</string>
     <plurals name="sk_users_reacted_with">
         <item quantity="one">Użytkownik zareagował(-a) za pomocą %2$s</item>
@@ -438,13 +438,14 @@
     </plurals>
     <string name="sk_settings_continues_playback">Nakładanie dźwięku</string>
     <string name="sk_search_suicide_message">Jeśli szukasz znaku, by nie popełniać samobójstwa, to jest to. Rozważ skontaktowanie się z lokalną infolinią dla samobójców, jeśli potrzebujesz wsparcia.</string>
-    <string name="sk_trending_links_info_banner">Te wiadomości są obecnie omawiane w całym Fediwersum.</string>
+    <string name="sk_trending_links_info_banner">Te wpisy zyskują teraz na popularności w Fediwersum.</string>
     <string name="sk_private_note_confirm_delete">Usunąć osobistą notkę o %s?</string>
     <string name="sk_post_contains_media">Post zawiera multimedia</string>
     <string name="sk_tab_notifications">Powiadomienia</string>
     <string name="sk_settings_clear_timeline_cache">Wyczyść pamięć podręczną głównej osi czasu</string>
     <string name="sk_edit_alt_text">Edytuj tekst alternatywny</string>
-    <string name="sk_settings_unifiedpush">Korzystaj z UnifiedPush</string>
+    <string name="sk_settings_unifiedpush">Użyj UnifiedPush</string>
     <string name="sk_add_timeline_tag_error_empty">Hashtag nie może być pusty</string>
     <string name="sk_list_exclusive_switch_explanation">Członkowie listy na wyłączność nie będą wyświetlani na głównej osi czasu — jeśli Twoja instancja ją obsługuje.</string>
+    <string name="sk_icon_beaker">Szkło laboratoryjne</string>
 </resources>
