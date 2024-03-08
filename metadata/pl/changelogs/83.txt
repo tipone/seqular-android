@@ -1,5 +1,4 @@
-- Polubienia / dodawanie zakładek / odpowiadanie bezpośrednio z powiadomienia
-- Ładniejsze i bardziej spójne nagłówki dla reblogów i odpowiedzi na osi czasu
-- Kropka powiadomień (która w rzeczywistości nie ładuje jeszcze powiadomień)
-- Dla użytkowników Akkoma: widoczność odpowiedzi, posortowane odpowiedzi na wątek, cytowanie, itp.
-- Naprawienie błędów i inne drobne poprawki
+Wydanie 83 wprowadza kilka drobnych usprawnień, takich jak:
+- Naprawiono awarie podczas klikania wzmianek
+- Przeprojektowana ikona bota
+- Dodanie przypomnienia o dodaniu opisu obrazu, jeśli publikujesz załącznik, aby ułatwić korzystanie osobom niedowidzącym. Dzięki @FineFindus!
