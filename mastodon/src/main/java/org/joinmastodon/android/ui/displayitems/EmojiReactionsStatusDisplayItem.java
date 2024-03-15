@@ -1,5 +1,6 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
@@ -38,6 +39,7 @@ import org.joinmastodon.android.fragments.account_list.StatusEmojiReactionsListF
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.EmojiReaction;
+import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.utils.TextDrawable;
@@ -151,6 +153,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		private final ProgressBar progress;
 		private final EmojiReactionsAdapter adapter;
 		private final ListImageLoaderWrapper imgLoader;
+		private int meReactionCount = 0;
 
 		public Holder(Activity activity, ViewGroup parent) {
 			super(activity, R.layout.display_item_emoji_reactions, parent);
@@ -171,6 +174,13 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			if(emojiKeyboard != null) root.removeView(emojiKeyboard.getView());
 			addButton.setSelected(false);
 			AccountSession session=item.parentFragment.getSession();
+			Instance instance=item.parentFragment.getInstance().get();
+			if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
+				meReactionCount=(int) item.status.reactions.stream().filter(r->r.me).count();
+				boolean canReact=meReactionCount<instance.configuration.reactions.maxReactions;
+				addButton.setClickable(canReact);
+				addButton.setAlpha(canReact ? 1 : ALPHA_DISABLED);
+			}
 			item.status.reactions.forEach(r->r.request=r.getUrl(item.playGifs)!=null
 					? new UrlImageLoaderRequest(r.getUrl(item.playGifs), V.sp(24), V.sp(24))
 					: null);
@@ -391,6 +401,20 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 						if(parent.isHidden()){
 							adapter.parentHolder.root.setVisibility(View.GONE);
 							adapter.parentHolder.line.setVisibility(View.GONE);
+						}
+
+						Instance instance=parent.parentFragment.getInstance().get();
+						if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
+							adapter.parentHolder.meReactionCount+=deleting ? -1 : 1;
+							boolean canReact=adapter.parentHolder.meReactionCount<instance.configuration.reactions.maxReactions;
+							adapter.parentHolder.addButton.setClickable(canReact);
+
+							ObjectAnimator anim=ObjectAnimator.ofFloat(
+									adapter.parentHolder.addButton, View.ALPHA,
+									canReact ? ALPHA_DISABLED : 1,
+									canReact ? 1 : ALPHA_DISABLED);
+							anim.setDuration(200);
+							anim.start();
 						}
 						E.post(new EmojiReactionsUpdatedEvent(parent.status.id, parent.status.reactions, parent.status.reactions.isEmpty(), adapter.parentHolder));
 						adapter.parentHolder.imgLoader.updateImages();

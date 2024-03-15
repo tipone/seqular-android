@@ -196,6 +196,7 @@ public class Instance extends BaseModel{
 		public StatusesConfiguration statuses;
 		public MediaAttachmentsConfiguration mediaAttachments;
 		public PollsConfiguration polls;
+		public ReactionsConfiguration reactions;
 	}
 
 	@Parcel
@@ -221,6 +222,11 @@ public class Instance extends BaseModel{
 		public int maxCharactersPerOption;
 		public int minExpiration;
 		public int maxExpiration;
+	}
+
+	@Parcel
+	public static class ReactionsConfiguration {
+		public int maxReactions;
 	}
 
 	@Parcel
