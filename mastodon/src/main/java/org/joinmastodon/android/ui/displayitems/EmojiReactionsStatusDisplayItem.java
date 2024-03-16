@@ -44,7 +44,7 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
-import org.joinmastodon.android.ui.views.ProgressBarButton;
+import org.joinmastodon.android.ui.views.EmojiReactionButton;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -340,7 +340,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		}
 
 		private static class EmojiReactionViewHolder extends BindableViewHolder<Pair<EmojiReactionsStatusDisplayItem, EmojiReaction>> implements ImageLoaderViewHolder{
-			private final ProgressBarButton btn;
+			private final EmojiReactionButton btn;
 			private final ProgressBar progress;
 
 			public EmojiReactionViewHolder(Context context, RecyclerView list){
@@ -379,6 +379,14 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					btn.setCompoundDrawablesRelative(item.first.placeholder, null, null, null);
 				}
 				btn.setSelected(reaction.me);
+				if(parent.parentFragment.isInstanceIceshrimp() && reaction.name.contains("@")){
+					btn.setEnabled(false);
+					btn.setClickable(false);
+					btn.setLongClickable(true);
+				}else{
+					btn.setEnabled(true);
+					btn.setClickable(true);
+				}
 				btn.setOnClickListener(e->{
 					boolean deleting=reaction.me;
 					parent.createRequest(reaction.name, reaction.count, deleting, this, ()->{
