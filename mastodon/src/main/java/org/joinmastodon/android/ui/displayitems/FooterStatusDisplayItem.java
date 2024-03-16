@@ -303,6 +303,17 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			return true;
 		}
 
+		public void onFavoriteClick() {
+			favorite.setSelected(item.status.favourited);
+			favorite.animate().scaleX(0.95f).scaleY(0.95f).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(75).start();
+			UiUtils.opacityOut(favorite);
+			favorite.postDelayed(() -> {
+				favorite.animate().scaleX(1).scaleY(1).setInterpolator(CubicBezierInterpolator.DEFAULT).setDuration(150).start();
+				UiUtils.opacityIn(favorite);
+			}, 300);
+			bindText(favorites, item.status.favouritesCount);
+		}
+
 		private void onFavoriteClick(View v){
 			if(item.status.preview) return;
 			favorite.setSelected(!item.status.favourited);

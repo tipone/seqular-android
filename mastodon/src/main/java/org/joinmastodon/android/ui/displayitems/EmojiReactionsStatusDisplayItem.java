@@ -34,6 +34,7 @@ import org.joinmastodon.android.api.requests.statuses.PleromaDeleteStatusReactio
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
+import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.account_list.StatusEmojiReactionsListFragment;
 import org.joinmastodon.android.model.Account;
@@ -45,6 +46,8 @@ import org.joinmastodon.android.ui.CustomEmojiPopupKeyboard;
 import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.EmojiReactionButton;
+
+import java.util.function.Consumer;
 
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
@@ -103,7 +106,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		vh.btn.setAlpha(visible ? ALPHA_DISABLED : 1);
 	}
 
-	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Runnable cb, Runnable err){
+	private MastodonAPIRequest<?> createRequest(String name, int count, boolean delete, Holder.EmojiReactionViewHolder vh, Consumer<Status> cb, Runnable err){
 		setActionProgressVisible(vh, true);
 		boolean ak=parentFragment.isInstanceAkkoma();
 		boolean keepSpinning=delete && count == 1;
@@ -115,7 +118,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				@Override
 				public void onSuccess(Object result){
 					if(!keepSpinning) setActionProgressVisible(vh, false);
-					cb.run();
+					cb.accept(null);
 				}
 				@Override
 				public void onError(ErrorResponse error){
@@ -132,7 +135,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				@Override
 				public void onSuccess(Status result){
 					if(!keepSpinning) setActionProgressVisible(vh, false);
-					cb.run();
+					cb.accept(result);
 				}
 				@Override
 				public void onError(ErrorResponse error){
@@ -255,7 +258,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				}
 			}
 			EmojiReaction finalExisting=existing;
-			item.createRequest(emoji, existing==null ? 1 : existing.count, false, null, ()->{
+			item.createRequest(emoji, existing==null ? 1 : existing.count, false, null, (status)->{
 				resetBtn.run();
 				if(finalExisting==null){
 					int pos=item.status.reactions.size();
@@ -268,6 +271,10 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				}else{
 					finalExisting.add(me);
 					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
+				}
+				if(instance.isIceshrimp() && status!=null){
+					item.parentFragment.onFavoriteChanged(status, getItemID());
+					E.post(new StatusCountersUpdatedEvent(status));
 				}
 				E.post(new EmojiReactionsUpdatedEvent(item.status.id, item.status.reactions, countBefore==0, adapter.parentHolder));
 			}, resetBtn).exec(item.accountID);
@@ -404,7 +411,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				}
 				btn.setOnClickListener(e->{
 					boolean deleting=reaction.me;
-					parent.createRequest(reaction.name, reaction.count, deleting, this, ()->{
+					parent.createRequest(reaction.name, reaction.count, deleting, this, (status)->{
 						EmojiReactionsAdapter adapter = (EmojiReactionsAdapter) getBindingAdapter();
 						for(int i=0; i<parent.status.reactions.size(); i++){
 							EmojiReaction r=parent.status.reactions.get(i);
@@ -429,6 +436,10 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 						Instance instance=parent.parentFragment.getInstance().get();
 						if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
 							adapter.parentHolder.updateAddButtonClickable(deleting);
+						}
+						if(instance.isIceshrimp() && status!=null){
+							parent.parentFragment.onFavoriteChanged(status, adapter.parentHolder.getItemID());
+							E.post(new StatusCountersUpdatedEvent(status));
 						}
 						E.post(new EmojiReactionsUpdatedEvent(parent.status.id, parent.status.reactions, parent.status.reactions.isEmpty(), adapter.parentHolder));
 						adapter.parentHolder.imgLoader.updateImages();
