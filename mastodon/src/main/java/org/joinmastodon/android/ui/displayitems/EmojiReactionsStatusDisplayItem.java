@@ -154,6 +154,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		private final EmojiReactionsAdapter adapter;
 		private final ListImageLoaderWrapper imgLoader;
 		private int meReactionCount = 0;
+		private Instance instance;
 
 		public Holder(Activity activity, ViewGroup parent) {
 			super(activity, R.layout.display_item_emoji_reactions, parent);
@@ -174,7 +175,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			if(emojiKeyboard != null) root.removeView(emojiKeyboard.getView());
 			addButton.setSelected(false);
 			AccountSession session=item.parentFragment.getSession();
-			Instance instance=item.parentFragment.getInstance().get();
+			instance=item.parentFragment.getInstance().get();
 			if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
 				meReactionCount=(int) item.status.reactions.stream().filter(r->r.me).count();
 				boolean canReact=meReactionCount<instance.configuration.reactions.maxReactions;
@@ -263,6 +264,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
 					scroller.setTargetPosition(pos);
 					list.getLayoutManager().startSmoothScroll(scroller);
+					updateAddButtonClickable(false);
 				}else{
 					finalExisting.add(me);
 					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
@@ -286,6 +288,19 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			if (fromScreenTop > 0.75) {
 				item.parentFragment.scrollBy(0, (int) (displayMetrics.heightPixels * 0.3));
 			}
+		}
+
+		private void updateAddButtonClickable(boolean deleting) {
+			meReactionCount+=deleting ? -1 : 1;
+			boolean canReact=meReactionCount<instance.configuration.reactions.maxReactions;
+			addButton.setClickable(canReact);
+
+			ObjectAnimator anim=ObjectAnimator.ofFloat(
+					addButton, View.ALPHA,
+					canReact ? ALPHA_DISABLED : 1,
+					canReact ? 1 : ALPHA_DISABLED);
+			anim.setDuration(200);
+			anim.start();
 		}
 
 		@Override
@@ -413,16 +428,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 						Instance instance=parent.parentFragment.getInstance().get();
 						if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
-							adapter.parentHolder.meReactionCount+=deleting ? -1 : 1;
-							boolean canReact=adapter.parentHolder.meReactionCount<instance.configuration.reactions.maxReactions;
-							adapter.parentHolder.addButton.setClickable(canReact);
-
-							ObjectAnimator anim=ObjectAnimator.ofFloat(
-									adapter.parentHolder.addButton, View.ALPHA,
-									canReact ? ALPHA_DISABLED : 1,
-									canReact ? 1 : ALPHA_DISABLED);
-							anim.setDuration(200);
-							anim.start();
+							adapter.parentHolder.updateAddButtonClickable(deleting);
 						}
 						E.post(new EmojiReactionsUpdatedEvent(parent.status.id, parent.status.reactions, parent.status.reactions.isEmpty(), adapter.parentHolder));
 						adapter.parentHolder.imgLoader.updateImages();
