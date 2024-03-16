@@ -32,6 +32,8 @@ import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterKeyword;
+import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
@@ -63,6 +65,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	private MenuItem followMenuItem, pinMenuItem, muteMenuItem;
 	private boolean followRequestRunning;
 	private boolean toolbarContentVisible;
+	private String maxID;
 
 	private List<String> any;
 	private List<String> all;

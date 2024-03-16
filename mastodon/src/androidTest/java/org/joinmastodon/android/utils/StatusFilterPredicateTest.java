@@ -4,6 +4,9 @@ import static org.joinmastodon.android.model.FilterAction.*;
 import static org.joinmastodon.android.model.FilterContext.*;
 import static org.junit.Assert.*;
 
+import android.graphics.drawable.ColorDrawable;
+
+import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Status;
 import org.junit.Test;
@@ -32,11 +35,11 @@ public class StatusFilterPredicateTest {
         warnMeFilter.filterAction = WARN;
         warnMeFilter.context = EnumSet.of(PUBLIC, HOME);
 
-        noAltText.mediaAttachments = Attachment.createFakeAttachments("fakeurl", new ColorDrawable());
-        withAltText.mediaAttachments = Attachment.createFakeAttachments("fakeurl", new ColorDrawable());
-        for (Attachment mediaAttachment : withAltText.mediaAttachments) {
-            mediaAttachment.description = "Alt Text";
-        }
+//        noAltText.mediaAttachments = Attachment.createFakeAttachments("fakeurl", new ColorDrawable());
+//        withAltText.mediaAttachments = Attachment.createFakeAttachments("fakeurl", new ColorDrawable());
+//        for (Attachment mediaAttachment : withAltText.mediaAttachments) {
+//            mediaAttachment.description = "Alt Text";
+//        }
     }
 
     @Test

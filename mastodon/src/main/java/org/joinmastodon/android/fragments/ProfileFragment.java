@@ -8,6 +8,8 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
@@ -21,12 +23,9 @@ import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputType;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
-import android.text.style.ImageSpan;
-import android.text.TextWatcher;
 import android.transition.ChangeBounds;
 import android.transition.Fade;
 import android.transition.TransitionManager;
@@ -43,8 +42,6 @@ import android.view.ViewOutlineProvider;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
-import android.view.animation.TranslateAnimation;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
@@ -72,11 +69,9 @@ import org.joinmastodon.android.api.requests.accounts.UpdateAccountCredentials;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.account_list.BlockedAccountsListFragment;
-import org.joinmastodon.android.fragments.account_list.BlocksListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowerListFragment;
 import org.joinmastodon.android.fragments.account_list.FollowingListFragment;
 import org.joinmastodon.android.fragments.account_list.MutedAccountsListFragment;
-import org.joinmastodon.android.fragments.account_list.MutesListFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.fragments.settings.SettingsServerFragment;
 import org.joinmastodon.android.model.Account;
@@ -430,7 +425,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(!usernameString.contains("@")){
 				usernameString+="@"+domain;
 			}
-			UiUtils.copyText(username, '@'+usernameString);
+			getActivity().getSystemService(ClipboardManager.class).setPrimaryClip(ClipData.newPlainText(null, "@"+usernameString));
+			UiUtils.maybeShowTextCopiedToast(getActivity());
 			return true;
 		});
 
@@ -743,7 +739,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingCount.setText(UiUtils.abbreviateNumber(account.followingCount));
 		followersLabel.setText(getResources().getQuantityString(R.plurals.followers, (int)Math.min(999, account.followersCount)));
 		followingLabel.setText(getResources().getQuantityString(R.plurals.following, (int)Math.min(999, account.followingCount)));
-		
+
 		if (account.followersCount < 0) followersBtn.setVisibility(View.GONE);
 		if (account.followingCount < 0) followingBtn.setVisibility(View.GONE);
 		if (account.followersCount < 0 || account.followingCount < 0)
@@ -775,7 +771,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		}
 
 		for(AccountField field:account.fields){
-			field.parsedValue=ssb=HtmlParser.parse(field.value, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID);
+			field.parsedValue=ssb=HtmlParser.parse(field.value, account.emojis, Collections.emptyList(), Collections.emptyList(), accountID, account);
 			field.valueEmojis=ssb.getSpans(0, ssb.length(), CustomEmojiSpan.class);
 			ssb=new SpannableStringBuilder(field.name);
 			HtmlParser.parseCustomEmoji(ssb, account.emojis);
@@ -973,6 +969,11 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 						.show();
 			}
 			invalidateOptionsMenu();
+		}else if(id==R.id.manage_user_lists){
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putParcelable("targetAccount", Parcels.wrap(account));
+			Nav.go(getActivity(), AddAccountToListsFragment.class, args);
 		}
 		return true;
 	}
@@ -1364,7 +1365,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 				return;
 			int radius=V.dp(25);
 			currentPhotoViewer=new PhotoViewer(getActivity(), createFakeAttachments(TextUtils.isEmpty(account.avatar) ? getSession().getDefaultAvatarUrl() : account.avatar, ava), 0,
-					new SingleImagePhotoViewerListener(avatar, avatarBorder, new int[]{radius, radius, radius, radius}, this, ()->currentPhotoViewer=null, ()->ava, null, null));
+					null, accountID, new SingleImagePhotoViewerListener(avatar, avatarBorder, new int[]{radius, radius, radius, radius}, this, ()->currentPhotoViewer=null, ()->ava, null, null));
 		}
 	}
 
@@ -1376,7 +1377,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			if(drawable==null || drawable instanceof ColorDrawable)
 				return;
 			currentPhotoViewer=new PhotoViewer(getActivity(), createFakeAttachments(account.header, drawable), 0,
-					new SingleImagePhotoViewerListener(cover, cover, null, this, ()->currentPhotoViewer=null, ()->drawable, ()->avatarBorder.setTranslationZ(2), ()->avatarBorder.setTranslationZ(0)));
+					null, accountID, new SingleImagePhotoViewerListener(cover, cover, null, this, ()->currentPhotoViewer=null, ()->drawable, ()->avatarBorder.setTranslationZ(2), ()->avatarBorder.setTranslationZ(0)));
 		}
 	}
 

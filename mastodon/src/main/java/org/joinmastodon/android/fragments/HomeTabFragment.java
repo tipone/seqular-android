@@ -53,7 +53,7 @@ import org.joinmastodon.android.fragments.settings.SettingsMainFragment;
 import org.joinmastodon.android.model.Announcement;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
-import org.joinmastodon.android.model.ListTimeline;
+import org.joinmastodon.android.model.FollowList;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -95,7 +95,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 	private ImageView collapsedChevron;
 	private TextView timelineTitle;
 	private PopupMenu switcherPopup;
-	private final Map<Integer, ListTimeline> listItems = new HashMap<>();
+	private final Map<Integer, FollowList> listItems = new HashMap<>();
 	private final Map<Integer, Hashtag> hashtagsItems = new HashMap<>();
 	private List<TimelineDefinition> timelinesList;
 	private int count;
@@ -270,7 +270,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 		new GetLists().setCallback(new Callback<>() {
 			@Override
-			public void onSuccess(List<ListTimeline> lists) {
+			public void onSuccess(List<FollowList> lists) {
 				updateList(lists, listItems);
 			}
 
@@ -512,7 +512,7 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
 		int id = item.getItemId();
-		ListTimeline list;
+		FollowList list;
 		Hashtag hashtag;
 
 		if (item.getItemId() == R.id.menu_back) {
@@ -701,13 +701,13 @@ public class HomeTabFragment extends MastodonToolbarFragment implements Scrollab
 
 	@Subscribe
 	public void onListDeletedEvent(ListDeletedEvent event) {
-		handleListEvent(listItems, l -> l.id.equals(event.id), false, null);
+		handleListEvent(listItems, l -> l.id.equals(event.listID), false, null);
 	}
 
 	@Subscribe
 	public void onListUpdatedCreatedEvent(ListUpdatedCreatedEvent event) {
 		handleListEvent(listItems, l -> l.id.equals(event.id), true, () -> {
-			ListTimeline list = new ListTimeline();
+			FollowList list = new FollowList();
 			list.id = event.id;
 			list.title = event.title;
 			list.repliesPolicy = event.repliesPolicy;

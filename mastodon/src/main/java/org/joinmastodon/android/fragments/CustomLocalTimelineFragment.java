@@ -46,7 +46,7 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment impl
 
     @Override
     protected void doLoadData(int offset, int count){
-        currentRequest=new GetPublicTimeline(true, false, refreshing ? null : maxID, count, getLocalPrefs().timelineReplyVisibility)
+        currentRequest=new GetPublicTimeline(true, false, refreshing ? null : maxID, null, count, null, getLocalPrefs().timelineReplyVisibility)
                 .setCallback(new SimpleCallback<>(this){
                     @Override
                     public void onSuccess(List<Status> result){

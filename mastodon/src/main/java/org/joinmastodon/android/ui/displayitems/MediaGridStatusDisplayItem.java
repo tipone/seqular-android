@@ -31,6 +31,7 @@ import org.joinmastodon.android.model.Translation;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
+import org.joinmastodon.android.ui.photoviewer.AltTextSheet;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;

@@ -143,7 +143,7 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 		}*/
 		int offset=_offset;
 		currentRequest=new GetSearchResults(currentQuery, type, type==null, maxID, offset, type==null ? 0 : count)
-				.setCallback(new SimpleCallback<>(this){
+				.setCallback(new SimpleCallback<SearchResults>(this){
 					@Override
 					public void onSuccess(SearchResults result){
 						ArrayList<SearchResult> results=new ArrayList<>();
@@ -164,7 +164,10 @@ public class SearchFragment extends BaseStatusListFragment<SearchResult>{
 						}
 						prevDisplayItems=new ArrayList<>(displayItems);
 						unfilteredResults=results;
+						boolean wasRefreshing=refreshing;
 						onDataLoaded(filterSearchResults(results), type!=null && !results.isEmpty());
+						if(wasRefreshing)
+							list.scrollToPosition(0);
 					}
 				})
 				.setTimeout(180000) // 3 minutes (searches can take a long time)

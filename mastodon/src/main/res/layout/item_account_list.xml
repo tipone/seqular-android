@@ -44,9 +44,10 @@
 			android:layout_marginStart="4dp"
 			android:singleLine="true"
 			android:ellipsize="end"
-			android:gravity="center_vertical"
+			android:gravity="center_vertical|start"
 			android:textAppearance="@style/m3_body_medium"
 			android:textColor="?colorM3Secondary"
+			android:textAlignment="viewStart"
 			tools:text="\@user@server"/>
 
 	</LinearLayout>
@@ -123,6 +124,17 @@
 			android:layout_marginHorizontal="4dp"
 			android:layout_marginTop="2dp"
 			android:duplicateParentState="true"
+			android:visibility="gone"/>
+		
+		<ImageButton
+			android:id="@+id/options_btn"
+			android:layout_width="40dp"
+			android:layout_height="36dp"
+			android:layout_gravity="top"
+			android:background="?android:actionBarItemBackground"
+			android:tint="?colorM3OnSurfaceVariant"
+			android:contentDescription="@string/more_options"
+			android:src="@drawable/ic_more_vert_24px"
 			android:visibility="gone"/>
 
 	</FrameLayout>

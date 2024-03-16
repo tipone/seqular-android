@@ -17,15 +17,15 @@ public class LinkSpan extends CharacterStyle {
 	private Type type;
 	private String accountID;
 	private Object linkObject;
-	private String text;
+	private Object parentObject;
 
-	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, Object linkObject, String text){
+	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, Object linkObject, Object parentObject){
 		this.listener=listener;
 		this.link=link;
 		this.type=type;
 		this.accountID=accountID;
 		this.linkObject=linkObject;
-		this.text=text;
+		this.parentObject=parentObject;
 	}
 
 	public int getColor(){
@@ -40,7 +40,7 @@ public class LinkSpan extends CharacterStyle {
 	
 	public void onClick(Context context){
 		switch(getType()){
-			case URL -> UiUtils.openURL(context, accountID, link);
+			case URL -> UiUtils.openURL(context, accountID, link, parentObject);
 			case MENTION -> UiUtils.openProfileByID(context, accountID, link);
 			case HASHTAG -> {
 				if(linkObject instanceof Hashtag ht)
@@ -53,7 +53,10 @@ public class LinkSpan extends CharacterStyle {
 	}
 
 	public void onLongClick(View view) {
-		UiUtils.copyText(view, getType() == Type.URL ? link : text);
+		if(linkObject instanceof Hashtag ht)
+			UiUtils.copyText(view, ht.name);
+		else
+			UiUtils.copyText(view, link);
 	}
 
 	public String getLink(){
@@ -61,7 +64,7 @@ public class LinkSpan extends CharacterStyle {
 	}
 
 	public String getText() {
-		return text;
+		return parentObject.toString();
 	}
 
 	public Type getType(){

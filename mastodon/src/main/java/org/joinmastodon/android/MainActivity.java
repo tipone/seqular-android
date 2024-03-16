@@ -12,6 +12,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.Uri;
+import android.os.BadParcelableException;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -131,11 +132,11 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 			session=AccountSessionManager.get(accountID);
 		if(session==null || !session.activated)
 			return;
-		openSearchQuery(uri.toString(), session.getID(), R.string.opening_link, false);
+		openSearchQuery(uri.toString(), session.getID(), R.string.opening_link, false, null);
 	}
 
-	public void openSearchQuery(String q, String accountID, int progressText, boolean fromSearch){
-		new GetSearchResults(q, null, true, null, 0, 0)
+	public void openSearchQuery(String q, String accountID, int progressText, boolean fromSearch, GetSearchResults.Type type){
+		new GetSearchResults(q, type, true, null, 0, 0)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(SearchResults result){
@@ -334,8 +335,14 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 			Fragment fragment=session.activated ? new HomeFragment() : new AccountActivationFragment();
 			fragment.setArguments(args);
 			if(fromNotification && hasNotification){
-				Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
-				showFragmentForNotification(notification, session.getID());
+				// Parcelables might not be compatible across app versions so this protects against possible crashes
+				// when a notification was received, then the app was updated, and then the user opened the notification
+				try{
+					Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
+					showFragmentForNotification(notification, session.getID());
+				}catch(BadParcelableException x){
+					Log.w(TAG, x);
+				}
 			} else if (intent.getBooleanExtra("compose", false)){
 				showCompose();
 			} else if (Intent.ACTION_VIEW.equals(intent.getAction())){

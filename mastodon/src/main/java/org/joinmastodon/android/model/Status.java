@@ -55,7 +55,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public StatusPrivacy visibility;
 	public boolean sensitive;
 	@RequiredField
-	public String spoilerText;
+	public String spoilerText="";
 	public List<Attachment> mediaAttachments;
 	public Application application;
 	@RequiredField
@@ -186,6 +186,11 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return id;
 	}
 
+	@Override
+	public String getAccountID(){
+		return getContentStatus().account.id;
+	}
+
 	public void update(StatusCountersUpdatedEvent ev){
 		favouritesCount=ev.favorites;
 		reblogsCount=ev.reblogs;
@@ -225,7 +230,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	@NonNull
 	@Override
 	public Status clone(){
-		return (Status) super.clone();
+		Status copy=(Status) super.clone();
+		copy.spoilerRevealed=false;
+		copy.translationState=TranslationState.HIDDEN;
+		return copy;
 	}
 
 	public static final Pattern BOTTOM_TEXT_PATTERN = Pattern.compile("(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️)(?:\uD83D\uDC49\uD83D\uDC48(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️))*\uD83D\uDC49\uD83D\uDC48");

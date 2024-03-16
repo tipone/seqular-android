@@ -60,6 +60,8 @@
 		<item name="colorM3Background">?colorGray25</item>
 		<item name="colorM3OnBackground">?colorGray900</item>
 		<item name="colorM3Surface">?colorGray25</item>
+		<item name="colorM3SurfaceInverse">?colorNeutral800</item>
+		<item name="colorM3OnSurfaceInverse">?colorNeutral50</item>
 		<item name="colorM3OnSurface">?colorGray900</item>
 		<item name="colorM3SurfaceVariant">?colorNeutral100</item>
 		<item name="colorM3OnSurfaceVariant">?colorNeutral700</item>
@@ -150,6 +152,8 @@
 		<item name="colorM3OnBackground">?colorGray100</item>
 		<item name="colorM3Surface">?colorGray900</item>
 		<item name="colorM3OnSurface">?colorGray100</item>
+		<item name="colorM3SurfaceInverse">?colorNeutral100</item>
+		<item name="colorM3OnSurfaceInverse">?colorNeutral800</item>
 		<item name="colorM3SurfaceVariant">?colorNeutral700</item>
 		<item name="colorM3OnSurfaceVariant">?colorNeutral100</item>
 		<item name="colorM3Outline">?colorGray300</item>

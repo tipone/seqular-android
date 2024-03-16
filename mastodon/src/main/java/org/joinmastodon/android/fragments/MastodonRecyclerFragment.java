@@ -7,6 +7,7 @@ import android.widget.TextView;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ElevationOnScrollListener;
 

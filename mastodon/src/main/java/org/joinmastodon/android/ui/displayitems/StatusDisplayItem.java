@@ -125,7 +125,8 @@ public abstract class StatusDisplayItem{
 			case AUDIO -> new AudioStatusDisplayItem.Holder(activity, parent);
 			case POLL_OPTION -> new PollOptionStatusDisplayItem.Holder(activity, parent);
 			case POLL_FOOTER -> new PollFooterStatusDisplayItem.Holder(activity, parent);
-			case CARD -> new LinkCardStatusDisplayItem.Holder(activity, parent);
+			case CARD_LARGE -> new LinkCardStatusDisplayItem.Holder(activity, parent, true);
+			case CARD_COMPACT -> new LinkCardStatusDisplayItem.Holder(activity, parent, false);
 			case EMOJI_REACTIONS -> new EmojiReactionsStatusDisplayItem.Holder(activity, parent);
 			case FOOTER -> new FooterStatusDisplayItem.Holder(activity, parent);
 			case ACCOUNT_CARD -> new AccountCardStatusDisplayItem.Holder(activity, parent);
@@ -392,7 +393,8 @@ public abstract class StatusDisplayItem{
 		AUDIO,
 		POLL_OPTION,
 		POLL_FOOTER,
-		CARD,
+		CARD_LARGE,
+		CARD_COMPACT,
 		EMOJI_REACTIONS,
 		FOOTER,
 		ACCOUNT_CARD,

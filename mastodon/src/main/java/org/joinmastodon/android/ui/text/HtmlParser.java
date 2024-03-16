@@ -66,12 +66,21 @@ public class HtmlParser{
 						")" +
 					")";
 	public static final Pattern URL_PATTERN=Pattern.compile(VALID_URL_PATTERN_STRING, Pattern.CASE_INSENSITIVE);
+	public static final Pattern INVITE_LINK_PATTERN=Pattern.compile("^https://"+Regex.URL_VALID_DOMAIN+"/invite/[a-z\\d]+$", Pattern.CASE_INSENSITIVE);
 	private static Pattern EMOJI_CODE_PATTERN=Pattern.compile(":([\\w]+):");
 
 	private HtmlParser(){}
 
 	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID){
-		return parse(source, emojis, mentions, tags, accountID, null);
+		return parse(source, emojis, mentions, tags, accountID, null, null);
+	}
+
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Context context){
+		return parse(source, emojis, mentions, tags, accountID, null, context);
+	}
+
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject){
+		return parse(source, emojis, mentions, tags, accountID, parentObject, null);
 	}
 
 	/**
@@ -86,7 +95,7 @@ public class HtmlParser{
 	 * @param emojis Custom emojis that are present in source as <code>:code:</code>
 	 * @return a spanned string
 	 */
-	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Context context){
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject, Context context){
 		class SpanInfo{
 			public Object span;
 			public int start;
@@ -105,7 +114,7 @@ public class HtmlParser{
 			}
 		}
 
-		Map<String, String> idsByUrl=mentions.stream().filter(mention -> mention.id != null).collect(Collectors.toMap(m->m.url, m->m.id));
+		Map<String, String> idsByUrl=mentions.stream().distinct().collect(Collectors.toMap(m->m.url, m->m.id));
 		// Hashtags in remote posts have remote URLs, these have local URLs so they don't match.
 //		Map<String, String> tagsByUrl=tags.stream().collect(Collectors.toMap(t->t.url, t->t.name));
 		Map<String, Hashtag> tagsByTag=tags.stream().distinct().collect(Collectors.toMap(t->t.name.toLowerCase(), Function.identity()));
@@ -120,15 +129,15 @@ public class HtmlParser{
 			@Override
 			public void head(@NonNull Node node, int depth){
 				if(node instanceof TextNode textNode){
-					ssb.append(textNode.getWholeText());
+					ssb.append(textNode.text());
 				}else if(node instanceof Element el){
 					switch(el.nodeName()){
 						case "a" -> {
 							Object linkObject=null;
 							String href=el.attr("href");
 							LinkSpan.Type linkType;
-							String text=el.text();
 							if(el.hasClass("hashtag")){
+								String text=el.text();
 								if(text.startsWith("#")){
 									linkType=LinkSpan.Type.HASHTAG;
 									href=text.substring(1);
@@ -147,7 +156,7 @@ public class HtmlParser{
 							}else{
 								linkType=LinkSpan.Type.URL;
 							}
-							openSpans.add(new SpanInfo(new LinkSpan(href, null, linkType, accountID, linkObject, text), ssb.length(), el));
+							openSpans.add(new SpanInfo(new LinkSpan(href, null, linkType, accountID, linkObject, parentObject), ssb.length(), el));
 						}
 						case "br" -> ssb.append('\n');
 						case "span" -> {
@@ -269,8 +278,28 @@ public class HtmlParser{
 	public static String stripAndRemoveInvisibleSpans(String html){
 		Document doc=Jsoup.parseBodyFragment(html);
 		doc.body().select("span.invisible").remove();
-		Cleaner cleaner=new Cleaner(Safelist.none());
-		return cleaner.clean(doc).body().html();
+		Cleaner cleaner=new Cleaner(Safelist.none().addTags("br", "p"));
+		StringBuilder sb=new StringBuilder();
+		cleaner.clean(doc).body().traverse(new NodeVisitor(){
+			@Override
+			public void head(Node node, int depth){
+				if(node instanceof TextNode tn){
+					sb.append(tn.text());
+				}else if(node instanceof Element el){
+					if("br".equals(el.tagName())){
+						sb.append('\n');
+					}
+				}
+			}
+
+			@Override
+			public void tail(Node node, int depth){
+				if(node instanceof Element el && "p".equals(el.tagName()) && el.nextSibling()!=null){
+					sb.append("\n\n");
+				}
+			}
+		});
+		return sb.toString();
 	}
 
 	public static String text(String html) {
