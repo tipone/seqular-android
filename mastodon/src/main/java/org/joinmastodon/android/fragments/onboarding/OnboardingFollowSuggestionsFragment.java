@@ -178,9 +178,4 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 	public Uri getWebUri(Uri.Builder base){
 		return null;
 	}
-
-	@Override
-	public Uri getWebUri(Uri.Builder base){
-		return null;
-	}
 }

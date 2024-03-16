@@ -28,10 +28,6 @@
 	<item name="menu_back" type="id" />
 	<item name="menu_add_local_timelines" type="id" />
 
-	<item name="menu_add_timeline" type="id" />
-	<item name="menu_back" type="id" />
-	<item name="menu_add_local_timelines" type="id" />
-
 	<item name="list_item_simple" type="id"/>
 	<item name="list_item_simple_tinted" type="id"/>
 	<item name="list_item_switch" type="id"/>
