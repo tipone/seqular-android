@@ -69,7 +69,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		E.register(this);
-		onlyMentions=AccountSessionManager.get(accountID).isNotificationsMentionsOnly();
+		onlyMentions=getArguments().getBoolean("onlyMentions", false);
 		setHasOptionsMenu(true);
 	}
 
