@@ -104,6 +104,9 @@
 		android:textAppearance="@style/m3_label_large"
 		android:textColor="?colorM3OnSurfaceVariant"
 		android:gravity="center_vertical"
+		android:drawableStart="@drawable/ic_fluent_history_20_regular"
+		android:drawablePadding="8dp"
+		android:drawableTint="?colorM3OnSurfaceVariant"
 		tools:text="Last edit bla bla"/>
 
 	<org.joinmastodon.android.ui.views.WrappingLinearLayout
