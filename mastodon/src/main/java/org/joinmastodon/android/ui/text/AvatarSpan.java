@@ -29,6 +29,7 @@ public class AvatarSpan extends CustomEmojiSpan{
 		//modified draw of a CustomEmojiSpan, drawing a circular image instead.
 		if(drawable==null)
 			return;
+		top += 4;
 		int size=Math.round(paint.descent()-paint.ascent());
 		Rect bounds=drawable.getBounds();
 		int dw=drawable.getIntrinsicWidth();
