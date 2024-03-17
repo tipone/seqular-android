@@ -6,7 +6,8 @@
 	android:layout_height="wrap_content"
 	android:paddingBottom="8dp"
 	android:divider="@drawable/divider_inset_16dp"
-	android:showDividers="middle">
+	android:showDividers="middle"
+	android:background="?colorM3SurfaceVariant">
 
 	<org.joinmastodon.android.ui.views.WrappingLinearLayout
 		android:layout_width="match_parent"
@@ -127,11 +128,13 @@
 			android:singleLine="true"
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
-			android:paddingHorizontal="8dp"
-			android:layout_marginVertical="-4dp"
-			android:layout_marginHorizontal="-8dp"
+			android:paddingEnd="8dp"
 			android:gravity="center_vertical"
-			tools:text="123 boosts"/>
+			android:drawableStart="@drawable/ic_fluent_arrow_repeat_all_20_regular"
+			android:drawablePadding="8dp"
+			android:drawableTint="?colorM3OnSurfaceVariant"
+			tools:text="123 boosts"
+			tools:ignore="RtlSymmetry" />
 
 		<TextView
 			android:id="@+id/favorites"
@@ -145,9 +148,10 @@
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
 			android:paddingHorizontal="8dp"
-			android:layout_marginVertical="-4dp"
-			android:layout_marginHorizontal="-8dp"
 			android:gravity="center_vertical"
+			android:drawableStart="@drawable/ic_fluent_star_20_regular"
+			android:drawablePadding="8dp"
+			android:drawableTint="?colorM3OnSurfaceVariant"
 			tools:text="123 favorites"/>
 
 	</org.joinmastodon.android.ui.views.WrappingLinearLayout>
