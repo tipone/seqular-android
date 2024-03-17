@@ -110,7 +110,7 @@
 	<org.joinmastodon.android.ui.views.WrappingLinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingHorizontal="16dp"
+		android:paddingHorizontal="8dp"
 		android:paddingVertical="8dp"
 		android:horizontalGap="8dp"
 		android:verticalGap="8dp"
@@ -127,7 +127,7 @@
 			android:singleLine="true"
 			android:ellipsize="end"
 			android:paddingVertical="4dp"
-			android:paddingEnd="8dp"
+			android:paddingHorizontal="8dp"
 			android:gravity="center_vertical"
 			android:drawableStart="@drawable/ic_fluent_arrow_repeat_all_20_regular"
 			android:drawablePadding="8dp"
