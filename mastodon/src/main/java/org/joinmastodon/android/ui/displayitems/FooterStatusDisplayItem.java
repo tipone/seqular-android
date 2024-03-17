@@ -205,35 +205,35 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 						item.status, item.accountID, null,
 						status -> {
 							UiUtils.opacityIn(v);
-							Bundle args=new Bundle();
-							args.putString("account", item.accountID);
-							args.putParcelable("replyTo", Parcels.wrap(status));
-							Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
+							openComposeView(status, item.accountID);
 						}
 				);
 				return;
 			}
 			UiUtils.opacityIn(v);
-			Bundle args=new Bundle();
-			args.putString("account", item.accountID);
-			args.putParcelable("replyTo", Parcels.wrap(item.status));
-			Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
+			openComposeView(item.status, item.accountID);
 		}
 
 		private boolean onReplyLongClick(View v) {
 			if(item.status.preview) return false;
 			if (AccountSessionManager.getInstance().getLoggedInAccounts().size() < 2) return false;
 			UiUtils.pickAccount(v.getContext(), item.accountID, R.string.sk_reply_as, R.drawable.ic_fluent_arrow_reply_28_regular, session -> {
-				Bundle args=new Bundle();
 				String accountID = session.getID();
-				args.putString("account", accountID);
 				UiUtils.lookupStatus(v.getContext(), item.status, accountID, item.accountID, status -> {
 					if (status == null) return;
-					args.putParcelable("replyTo", Parcels.wrap(status));
-					Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
+					openComposeView(status, accountID);
 				});
 			}, null);
 			return true;
+		}
+
+		private  void openComposeView(Status status, String accountID) {
+			item.parentFragment.maybeShowPreReplySheet(status, () ->{
+				Bundle args=new Bundle();
+				args.putString("account", accountID);
+				args.putParcelable("replyTo", Parcels.wrap(status));
+				Nav.go(item.parentFragment.getActivity(), ComposeFragment.class, args);
+			});
 		}
 
 		private void onBoostClick(View v){
