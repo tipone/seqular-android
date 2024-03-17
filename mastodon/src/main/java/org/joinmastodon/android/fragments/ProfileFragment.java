@@ -398,28 +398,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 
 		content.findViewById(R.id.username_wrap).setOnClickListener(v->{
-			try {
-				new GetInstance()
-						.setCallback(new Callback<>(){
-							@Override
-							public void onSuccess(Instance result){
-								Bundle args = new Bundle();
-								args.putParcelable("instance", Parcels.wrap(result));
-								args.putString("account", accountID);
-								Nav.go(getActivity(), SettingsServerFragment.class, args);
-							}
-
-							@Override
-							public void onError(ErrorResponse error){
-								error.showToast(getContext());
-							}
-						})
-						.wrapProgress((Activity) getContext(), R.string.loading, true)
-						.execRemote(Uri.parse(account.url).getHost());
-			} catch (NullPointerException ignored) {
-				// maybe the url was malformed?
-				Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
-			}
+			UiUtils.goToInstanceAboutFragment(Uri.parse(account.url).getHost(), accountID, getContext());
 		});
 
 		content.findViewById(R.id.username_wrap).setOnLongClickListener(v->{
@@ -456,7 +435,15 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		nameEdit.addTextChangedListener(new SimpleTextWatcher(e->editDirty=true));
 		bioEdit.addTextChangedListener(new SimpleTextWatcher(e->editDirty=true));
 
-		usernameDomain.setOnClickListener(v->new DecentralizationExplainerSheet(getActivity(), accountID, account).show());
+		usernameDomain.setOnClickListener(v->{
+			UiUtils.goToInstanceAboutFragment(Uri.parse(account.url).getHost(), accountID, getContext());
+		});
+
+		usernameDomain.setOnLongClickListener(v->{
+			new DecentralizationExplainerSheet(getActivity(), accountID, account).show();
+			return true;
+		});
+
 //		qrCodeButton.setOnClickListener(v->{
 //			Bundle args=new Bundle();
 //			args.putString("account", accountID);

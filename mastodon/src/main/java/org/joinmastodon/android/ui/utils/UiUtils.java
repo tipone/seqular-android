@@ -1798,6 +1798,31 @@ public class UiUtils {
 		return text;
 	}
 
+	public static void goToInstanceAboutFragment(String instanceUrl, String accountID ,Context context){
+		try {
+			new GetInstance()
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Instance result){
+							Bundle args = new Bundle();
+							args.putParcelable("instance", Parcels.wrap(result));
+							args.putString("account", accountID);
+							Nav.go((Activity) context, SettingsServerFragment.class, args);
+						}
+
+						@Override
+						public void onError(ErrorResponse error){
+							error.showToast(context);
+						}
+					})
+					.wrapProgress((Activity) context, R.string.loading, true)
+					.execRemote(instanceUrl);
+		} catch (NullPointerException ignored) {
+			// maybe the url was malformed?
+			Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
+		}
+	}
+
 	private static final String[] pronounsUrls= new String[] {
 			"pronouns.within.lgbt/",
 			"pronouns.cc/pronouns/",
