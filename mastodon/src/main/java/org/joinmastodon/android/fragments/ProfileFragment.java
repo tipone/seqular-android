@@ -85,6 +85,7 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.SingleImagePhotoViewerListener;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewer;
+import org.joinmastodon.android.ui.sheets.DecentralizationExplainerSheet;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
@@ -138,7 +139,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	private ImageView avatar;
 	private CoverImageView cover;
 	private View avatarBorder;
-	private TextView name, username, bio, followersCount, followersLabel, followingCount, followingLabel;
+	private TextView name, username, usernameDomain, bio, followersCount, followersLabel, followingCount, followingLabel;
 	private ImageView lockIcon, botIcon;
 	private ProgressBarButton actionButton, notifyButton;
 	private ViewPager2 pager;
@@ -244,6 +245,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		name=content.findViewById(R.id.name);
 		usernameWrap=content.findViewById(R.id.username_wrap);
 		username=content.findViewById(R.id.username);
+		usernameDomain=content.findViewById(R.id.username_domain);
 		lockIcon=content.findViewById(R.id.lock_icon);
 		botIcon=content.findViewById(R.id.bot_icon);
 		bio=content.findViewById(R.id.bio);
@@ -453,6 +455,16 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		nameEdit.addTextChangedListener(new SimpleTextWatcher(e->editDirty=true));
 		bioEdit.addTextChangedListener(new SimpleTextWatcher(e->editDirty=true));
+
+		usernameDomain.setOnClickListener(v->new DecentralizationExplainerSheet(getActivity(), accountID, account).show());
+//		qrCodeButton.setOnClickListener(v->{
+//			Bundle args=new Bundle();
+//			args.putString("account", accountID);
+//			args.putParcelable("targetAccount", Parcels.wrap(account));
+//			ProfileQrCodeFragment qf=new ProfileQrCodeFragment();
+//			qf.setArguments(args);
+//			qf.show(getChildFragmentManager(), "qrDialog");
+//		});
 
 		return sizeWrapper;
 	}
@@ -714,13 +726,18 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			}
 		}
 
-		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
+//		boolean isSelf=AccountSessionManager.getInstance().isSelf(accountID, account);
 
-		String acct = ((isSelf || account.isRemote)
-					? account.getFullyQualifiedName()
-					: account.acct);
+//		String acct = ((isSelf || account.isRemote)
+//					? account.getFullyQualifiedName()
+//					: account.acct);
 
-		username.setText('@'+acct);
+		username.setText("@"+account.username);
+
+		String domain=account.getDomain();
+		if(TextUtils.isEmpty(domain))
+			domain=AccountSessionManager.get(accountID).domain;
+		usernameDomain.setText(domain);
 
 		lockIcon.setVisibility(account.locked ? View.VISIBLE : View.GONE);
 		lockIcon.setImageTintList(ColorStateList.valueOf(username.getCurrentTextColor()));
