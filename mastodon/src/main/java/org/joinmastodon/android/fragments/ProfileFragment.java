@@ -398,7 +398,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		followingBtn.setOnClickListener(this::onFollowersOrFollowingClick);
 
 		content.findViewById(R.id.username_wrap).setOnClickListener(v->{
-			UiUtils.goToInstanceAboutFragment(Uri.parse(account.url).getHost(), accountID, getContext());
+			new DecentralizationExplainerSheet(getActivity(), accountID, account).show();
 		});
 
 		content.findViewById(R.id.username_wrap).setOnLongClickListener(v->{
@@ -435,14 +435,6 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		nameEdit.addTextChangedListener(new SimpleTextWatcher(e->editDirty=true));
 		bioEdit.addTextChangedListener(new SimpleTextWatcher(e->editDirty=true));
 
-		usernameDomain.setOnClickListener(v->{
-			UiUtils.goToInstanceAboutFragment(Uri.parse(account.url).getHost(), accountID, getContext());
-		});
-
-		usernameDomain.setOnLongClickListener(v->{
-			new DecentralizationExplainerSheet(getActivity(), accountID, account).show();
-			return true;
-		});
 
 //		qrCodeButton.setOnClickListener(v->{
 //			Bundle args=new Bundle();
