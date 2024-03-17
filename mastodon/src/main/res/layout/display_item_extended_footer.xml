@@ -6,8 +6,7 @@
 	android:layout_height="wrap_content"
 	android:paddingBottom="8dp"
 	android:divider="@drawable/divider_inset_16dp"
-	android:showDividers="middle"
-	android:background="?colorM3SurfaceVariant">
+	android:showDividers="middle">
 
 	<org.joinmastodon.android.ui.views.WrappingLinearLayout
 		android:layout_width="match_parent"
