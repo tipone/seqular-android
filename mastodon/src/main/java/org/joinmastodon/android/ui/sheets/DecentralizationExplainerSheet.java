@@ -72,7 +72,7 @@ public class DecentralizationExplainerSheet extends BottomSheet{
 			@Override
 			public void tail(Node node, int depth){
 				if(node instanceof Element){
-					ssb.setSpan(new LinkSpan("", DecentralizationExplainerSheet.this::showActivityPubAlert, LinkSpan.Type.CUSTOM, null, null, null), spanStart, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+					ssb.setSpan(new LinkSpan("", DecentralizationExplainerSheet.this::showActivityPubAlert, LinkSpan.Type.CUSTOM, null, null, null, null), spanStart, ssb.length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 				}
 			}
 		});
