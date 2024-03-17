@@ -81,6 +81,11 @@
     <string name="mo_show_media_preview">Afficher l’aperçu des médias dans les fils</string>
     <string name="mo_setting_marquee_summary">Désactive le défilement du titre tronqué</string>
     <string name="mo_confirm_to_mute_conversation">Voulez-vous vraiment masquer cette conversation \?</string>
-    <string name="mo_muted_conversation_successfully">Conversation masquée avec succes</string>
+    <string name="mo_muted_conversation_successfully">Conversation masquée avec succès</string>
     <string name="mo_mute_conversation">Masquer la conversation</string>
+    <string name="mo_filter_notifications">Filtrer les notifications</string>
+    <string name="mo_notification_filter_reset">Réinitialiser le filtre par défaut</string>
+    <string name="mo_blocked_accounts">Comptes bloqués</string>
+    <string name="mo_haptic_feedback">Retour haptique</string>
+    <string name="mo_instance_view_info">Afficher les informations du serveur</string>
 </resources>
