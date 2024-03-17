@@ -53,7 +53,7 @@
     <string name="mo_instance_users">Користувачі</string>
     <string name="mo_instance_status">Статус</string>
     <string name="mo_instance_registration">Реєстрація</string>
-    <string name="mo_instance_registration_open">Відчинена</string>
+    <string name="mo_instance_registration_open">Відкрита</string>
     <string name="mo_instance_registration_approval">Потрібне схвалення</string>
     <string name="mo_instance_info_open_timeline">Локальна стрічка</string>
     <string name="mo_instance_info_moderated_servers">Модеровані сервери</string>
@@ -79,4 +79,5 @@
     <string name="mo_blocked_accounts">Заблоковані облікові записи</string>
     <string name="mo_notification_filter_reset">Скинути до замовчування</string>
     <string name="mo_filter_notifications">Фільтрувати сповіщення</string>
+    <string name="mo_instance_view_info">Переглянути інформацію про сервер</string>
 </resources>
