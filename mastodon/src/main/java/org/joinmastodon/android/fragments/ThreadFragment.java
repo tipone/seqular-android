@@ -414,7 +414,8 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		replyButtonAva=replyButton.findViewById(R.id.avatar);
 		replyButton.setOutlineProvider(OutlineProviders.roundedRect(20));
 		replyButton.setClipToOutline(true);
-		replyButtonText.setText(getString(R.string.reply_to_user, mainStatus.account.displayName));
+		replyButtonText.setText(HtmlParser.parseCustomEmoji(getString(R.string.reply_to_user, mainStatus.account.displayName), mainStatus.account.emojis));
+		UiUtils.loadCustomEmojiInTextView(replyButtonText);
 		replyButtonAva.setOutlineProvider(OutlineProviders.OVAL);
 		replyButtonAva.setClipToOutline(true);
 		replyButton.setOnClickListener(v->openReply());
