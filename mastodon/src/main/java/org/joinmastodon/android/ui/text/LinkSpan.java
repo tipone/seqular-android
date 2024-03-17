@@ -18,14 +18,16 @@ public class LinkSpan extends CharacterStyle {
 	private String accountID;
 	private Object linkObject;
 	private Object parentObject;
+	private String text;
 
-	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, Object linkObject, Object parentObject){
+	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, Object linkObject, Object parentObject, String text){
 		this.listener=listener;
 		this.link=link;
 		this.type=type;
 		this.accountID=accountID;
 		this.linkObject=linkObject;
 		this.parentObject=parentObject;
+		this.text=text;
 	}
 
 	public int getColor(){
@@ -64,7 +66,7 @@ public class LinkSpan extends CharacterStyle {
 	}
 
 	public String getText() {
-		return parentObject.toString();
+		return text;
 	}
 
 	public Type getType(){
