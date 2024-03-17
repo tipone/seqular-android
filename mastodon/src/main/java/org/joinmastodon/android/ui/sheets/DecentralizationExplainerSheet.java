@@ -4,6 +4,7 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -44,6 +45,11 @@ public class DecentralizationExplainerSheet extends BottomSheet{
 		TextView serverExplanation=findViewById(R.id.server_text);
 		TextView handleExplanation=findViewById(R.id.handle_explanation);
 		findViewById(R.id.btn_cancel).setOnClickListener(v->dismiss());
+
+		findViewById(R.id.btn_view_info).setOnClickListener(v->{
+			UiUtils.goToInstanceAboutFragment(Uri.parse(account.url).getHost(), accountID, context);
+			dismiss();
+		});
 
 		String domain=account.getDomain();
 		if(TextUtils.isEmpty(domain))

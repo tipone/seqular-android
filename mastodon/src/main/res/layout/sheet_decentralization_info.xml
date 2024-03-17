@@ -174,5 +174,14 @@
 			style="@style/Widget.Mastodon.M3.Button.Filled"
 			android:text="@string/got_it"/>
 
+		<Button
+			android:id="@+id/btn_view_info"
+			android:layout_width="match_parent"
+			android:layout_height="40dp"
+			android:layout_marginBottom="8dp"
+			android:layout_marginHorizontal="16dp"
+			style="@style/Widget.Mastodon.M3.Button.Text"
+			android:text="@string/mo_instance_view_info"/>
+
 	</LinearLayout>
 </org.joinmastodon.android.ui.views.CustomScrollView>
