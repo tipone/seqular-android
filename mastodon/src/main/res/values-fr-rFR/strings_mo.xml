@@ -88,4 +88,7 @@
     <string name="mo_blocked_accounts">Comptes bloqués</string>
     <string name="mo_haptic_feedback">Retour haptique</string>
     <string name="mo_instance_view_info">Afficher les informations du serveur</string>
+    <string name="mo_mute_hashtag">Masquer le hashtag</string>
+    <string name="mo_unmute_hashtag">Ne plus masquer le hashtag</string>
+    <string name="mo_muted_accounts">Comptes masqués</string>
 </resources>
