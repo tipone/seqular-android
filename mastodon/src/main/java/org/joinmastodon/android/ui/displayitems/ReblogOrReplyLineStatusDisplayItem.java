@@ -21,7 +21,6 @@ import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.text.AvatarSpan;
-import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.text.SpacerSpan;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
@@ -48,7 +47,6 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	public boolean needBottomPadding;
 	ReblogOrReplyLineStatusDisplayItem extra;
 	CharSequence fullText;
-	CharSequence boostingTimestamp;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, Status status) {
 		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, text, status, null);
@@ -59,20 +57,14 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		if(AccountSessionManager.get(parentFragment.getAccountID()).getLocalPreferences().customEmojiInNames)
 			HtmlParser.parseCustomEmoji(ssb, emojis);
-
-		if(status.reblog!=null&&handleClick!=null){
-			//add temp chars for span replacement, should be same as spans added below
-			ssb.insert(0, "  ");
-			ssb.setSpan(new AvatarSpan(status.account), 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-			ssb.setSpan(new SpacerSpan(15, 20), 1, 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-		}
-		int replyPrefixLength=context.getString(R.string.in_reply_to).length()-2; //subtract 2 for placeholder
-		if(status.inReplyToAccountId!=null&&ssb.length()>replyPrefixLength&&account!=null){
-			//add temp chars for span replacement, should be same as spans added below
-			ssb.insert(replyPrefixLength, "   ");
-			ssb.setSpan(new SpacerSpan(15, 20), replyPrefixLength+1, replyPrefixLength+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-			ssb.setSpan(new AvatarSpan(account), replyPrefixLength+1, replyPrefixLength+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
-			ssb.setSpan(new SpacerSpan(15, 20), replyPrefixLength+2, replyPrefixLength+3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+		//this is fine, since the display name is surround by '\u2068' and '\u2069'
+		int nameLoc=account!=null ? text.toString().indexOf(account.getDisplayName()) : -1;
+		if(nameLoc!=-1&&ssb.length()>=nameLoc&&handleClick!=null){
+			//add temp chars for span replacement, length should be the same as the amount of spans replacing below
+			ssb.insert(nameLoc, "   ");
+			ssb.setSpan(new SpacerSpan(15, 20), nameLoc+1, nameLoc+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+			ssb.setSpan(new AvatarSpan(account), nameLoc+1, nameLoc+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+			ssb.setSpan(new SpacerSpan(15, 20), nameLoc+2, nameLoc+3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 		}
 		this.text=ssb;
 		emojiHelper.setText(ssb);
