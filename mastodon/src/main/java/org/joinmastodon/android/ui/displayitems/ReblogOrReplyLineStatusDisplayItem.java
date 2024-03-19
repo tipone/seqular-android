@@ -67,7 +67,12 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			ssb.setSpan(new SpacerSpan(15, 20), 1, 2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
 		}
 		int replyPrefixLength=context.getString(R.string.in_reply_to).length()-2; //subtract 2 for placeholder
-		if(status.inReplyToAccountId!=null&&ssb.length()>replyPrefixLength&&account!=null){
+		boolean shortText=false;
+		if(account!=null&&text.toString().equals(account.getDisplayName())){
+			replyPrefixLength=0;
+			shortText=true;
+		}
+		if((status.inReplyToAccountId!=null || shortText) && ssb.length()>=replyPrefixLength && account!=null){
 			//add temp chars for span replacement, should be same as spans added below
 			ssb.insert(replyPrefixLength, "   ");
 			ssb.setSpan(new SpacerSpan(15, 20), replyPrefixLength+1, replyPrefixLength+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
