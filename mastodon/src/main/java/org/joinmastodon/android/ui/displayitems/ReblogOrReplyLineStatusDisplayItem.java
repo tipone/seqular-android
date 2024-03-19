@@ -59,7 +59,7 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			HtmlParser.parseCustomEmoji(ssb, emojis);
 		//this is fine, since the display name is surround by '\u2068' and '\u2069'
 		int nameLoc=account!=null ? text.toString().indexOf(account.getDisplayName()) : -1;
-		if(nameLoc!=-1&&ssb.length()>=nameLoc&&handleClick!=null){
+		if(nameLoc!=-1&&ssb.length()>=nameLoc){
 			//add temp chars for span replacement, length should be the same as the amount of spans replacing below
 			ssb.insert(nameLoc, "   ");
 			ssb.setSpan(new SpacerSpan(15, 20), nameLoc+1, nameLoc+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
