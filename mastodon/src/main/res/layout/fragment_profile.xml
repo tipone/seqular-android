@@ -193,6 +193,20 @@
 						android:textColor="?colorM3OnSurfaceVariant"
 						tools:text="\@Gargron" />
 
+					<TextView
+						android:id="@+id/username_domain"
+						android:layout_width="wrap_content"
+						android:layout_height="20dp"
+						android:textAppearance="@style/m3_label_small"
+						android:gravity="center_vertical"
+						android:paddingHorizontal="4dp"
+						android:textColor="?colorM3OnSurfaceVariant"
+						android:singleLine="true"
+						android:ellipsize="end"
+						android:background="@drawable/rect_4dp"
+						android:backgroundTint="?colorM3SurfaceVariant"
+						tools:text="mastodon.social"/>
+
 					<ImageView
 						android:id="@+id/lock_icon"
 						android:layout_width="18sp"
@@ -214,21 +228,6 @@
 						android:importantForAccessibility="no"
 						android:contentDescription="@string/sk_icon_bot"
 						android:src="@drawable/ic_fluent_bot_20_filled" />
-
-					<TextView
-						android:id="@+id/username_domain"
-						android:layout_width="wrap_content"
-						android:layout_height="20dp"
-						android:textAppearance="@style/m3_label_small"
-						android:gravity="center_vertical"
-						android:paddingHorizontal="4dp"
-						android:textColor="?colorM3OnSurfaceVariant"
-						android:singleLine="true"
-						android:ellipsize="end"
-						android:background="@drawable/rect_4dp"
-						android:backgroundTint="?colorM3SurfaceVariant"
-						tools:text="mastodon.social"/>
-
 				</LinearLayout>
 
 				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
