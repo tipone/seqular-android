@@ -15,7 +15,7 @@
 		android:importantForAccessibility="no"
 		tools:src="#0f0"/>
 
-	<LinearLayout
+	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/line1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
 
 		<TextView
 			android:id="@+id/username"
-			android:layout_width="match_parent"
+			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
 			android:layout_marginStart="4dp"
 			android:singleLine="true"
@@ -50,7 +50,19 @@
 			android:textAlignment="viewStart"
 			tools:text="\@user@server"/>
 
-	</LinearLayout>
+		<ImageView
+			android:id="@+id/bot_icon"
+			android:layout_width="18sp"
+			android:layout_height="18sp"
+			android:layout_marginEnd="4dp"
+			android:layout_gravity="center_vertical"
+			android:visibility="gone"
+			android:importantForAccessibility="no"
+			android:contentDescription="@string/sk_icon_bot"
+			android:tint="?colorM3Secondary"
+			android:src="@drawable/ic_fluent_bot_16_filled" />
+
+	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
 
 	<LinearLayout
 		android:id="@+id/line2"
@@ -84,6 +96,7 @@
 			android:textAppearance="@style/m3_body_medium"
 			android:textColor="?colorM3Secondary"
 			tools:text="123 followers"/>
+
 	</LinearLayout>
 
 	<FrameLayout

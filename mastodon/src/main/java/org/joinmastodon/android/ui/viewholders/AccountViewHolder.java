@@ -56,7 +56,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 
 public class AccountViewHolder extends BindableViewHolder<AccountViewModel> implements ImageLoaderViewHolder, UsableRecyclerView.Clickable, UsableRecyclerView.LongClickable{
 	private final TextView name, username, followers, pronouns, bio;
-	public final ImageView avatar;
+	public final ImageView avatar, botIcon;
 	private final FrameLayout accessory;
 	private final ProgressBarButton button;
 	private final PopupMenu contextMenu;
@@ -92,6 +92,7 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		name=findViewById(R.id.name);
 		username=findViewById(R.id.username);
 		avatar=findViewById(R.id.avatar);
+		botIcon=findViewById(R.id.bot_icon);
 		accessory=findViewById(R.id.accessory);
 		button=findViewById(R.id.button);
 		menuAnchor=findViewById(R.id.menu_anchor);
@@ -146,6 +147,10 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 				? UiUtils.extractPronouns(itemView.getContext(), item.account) : Optional.empty();
 		pronouns.setVisibility(pronounsString.isPresent() ? View.VISIBLE : View.GONE);
 		pronounsString.ifPresent(p -> HtmlParser.setTextWithCustomEmoji(pronouns, p, item.account.emojis));
+
+		if(item.account.bot) {
+			botIcon.setVisibility(View.VISIBLE);
+		}
 
 		/* unused in megalodon
 		boolean hasVerifiedLink=item.verifiedLink!=null;
