@@ -205,6 +205,7 @@
 						android:ellipsize="end"
 						android:background="@drawable/rect_4dp"
 						android:backgroundTint="?colorM3SurfaceVariant"
+						android:layout_marginEnd="4dp"
 						tools:text="mastodon.social"/>
 
 					<ImageView
