@@ -419,6 +419,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		replyButtonAva.setOutlineProvider(OutlineProviders.OVAL);
 		replyButtonAva.setClipToOutline(true);
 		replyButton.setOnClickListener(v->openReply());
+		replyButton.setOnLongClickListener(this::onReplyLongClick);
 		Account self=AccountSessionManager.get(accountID).self;
 		if(!TextUtils.isEmpty(self.avatar)){
 			ViewImageLoader.loadWithoutAnimation(replyButtonAva, getResources().getDrawable(R.drawable.image_placeholder), new UrlImageLoaderRequest(self.avatar, V.dp(24), V.dp(24)));
@@ -577,6 +578,17 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 			args.putBoolean("fromThreadFragment", true);
 			Nav.go(getActivity(), ComposeFragment.class, args);
 		});
+	}
+	private boolean onReplyLongClick(View v) {
+		if(mainStatus.preview) return false;
+		if (AccountSessionManager.getInstance().getLoggedInAccounts().size() < 2) return false;
+		UiUtils.pickAccount(v.getContext(), accountID, R.string.sk_reply_as, R.drawable.ic_fluent_arrow_reply_28_regular, session -> {
+			UiUtils.lookupStatus(v.getContext(), mainStatus, accountID, session.getID(), status -> {
+				if (status == null) return;
+				openReply();
+			});
+		}, null);
+		return true;
 	}
 
 	public int getSnackbarOffset(){

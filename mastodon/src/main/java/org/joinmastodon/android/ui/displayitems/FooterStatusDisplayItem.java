@@ -227,7 +227,7 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			return true;
 		}
 
-		private  void openComposeView(Status status, String accountID) {
+		private void openComposeView(Status status, String accountID) {
 			item.parentFragment.maybeShowPreReplySheet(status, () ->{
 				Bundle args=new Bundle();
 				args.putString("account", accountID);
