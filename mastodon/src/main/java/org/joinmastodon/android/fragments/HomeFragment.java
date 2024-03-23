@@ -310,11 +310,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			discoverFragment.openSearch();
 			return true;
 		}
-		if(tab==R.id.tab_home){
-			Bundle args=new Bundle();
-			args.putString("account", accountID);
-			Nav.go(getActivity(), OnboardingFollowSuggestionsFragment.class, args);
-		}
 		return false;
 	}
 
