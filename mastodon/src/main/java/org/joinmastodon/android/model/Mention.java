@@ -34,10 +34,7 @@ public class Mention extends BaseModel{
 
 	@Override
 	public int hashCode(){
-		int result = 0;
-		if (id != null) {
-			result=id.hashCode();
-		}
+		int result=id.hashCode();
 		result=31*result+url.hashCode();
 		return result;
 	}
