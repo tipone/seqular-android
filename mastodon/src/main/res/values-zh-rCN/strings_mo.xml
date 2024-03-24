@@ -62,7 +62,7 @@
     <string name="mo_setting_relocate_publish_summary">将发布按钮移至底栏</string>
     <string name="mo_swap_bookmark_with_reblog_summary">在通知中收藏或转发帖文</string>
     <string name="mo_setting_disable_swipe_summary">滑动以切换浏览的时间线</string>
-    <string name="mo_notification_audience_settings">消息通知受众</string>
+    <string name="mo_notification_audience_settings">消息通知接收范围</string>
     <string name="mo_open_camera">拍照</string>
     <string name="mo_setting_default_reply_privacy_summary">回复将不会被显示在发现功能中</string>
     <string name="mo_setting_interaction_count_summary">在时间线中显示与帖文互动的人数</string>
