@@ -21,7 +21,7 @@
     <string name="mo_sending_error">发布帖文时出错</string>
     <string name="mo_filtered">已过滤：%s</string>
     <string name="mo_disable_reminder_to_add_alt_text">禁用添加ALT文本的提醒</string>
-    <string name="mo_add_custom_server_local_timeline">添加自定义实例的本地时间线</string>
+    <string name="mo_add_custom_server_local_timeline">添加一个自定义服务器的本地时间线</string>
     <string name="mo_notification_action_replied">成功回复 %s 的帖文</string>
     <string name="mo_duration_minutes_5">5分钟</string>
     <string name="mo_duration_hours_6">6小时</string>
