@@ -209,7 +209,7 @@
 	<color name="m3_sys_dark_outline">#938F99</color>
 	<color name="m3_sys_dark_outline_variant">#49454F</color>
 
-	<item name="overlay_ripple_alpha" format="float" type="dimen">0.50</item>
+	<item name="overlay_ripple_alpha" format="float" type="dimen">0.12</item>
 
 
 	<!-- PALETTE COLORS -->
