@@ -42,7 +42,7 @@ public class LinkSpan extends CharacterStyle {
 	
 	public void onClick(Context context){
 		switch(getType()){
-			case URL -> UiUtils.openURL(context, accountID, link, parentObject);
+			case URL -> UiUtils.openURL(context, accountID, link);
 			case MENTION -> UiUtils.openProfileByID(context, accountID, link);
 			case HASHTAG -> {
 				if(linkObject instanceof Hashtag ht)
