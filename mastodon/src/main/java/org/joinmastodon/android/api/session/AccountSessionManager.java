@@ -72,7 +72,6 @@ public class AccountSessionManager{
 	private HashMap<String, List<EmojiCategory>> customEmojis=new HashMap<>();
 	private HashMap<String, Long> instancesLastUpdated=new HashMap<>();
 	private HashMap<String, Instance> instances=new HashMap<>();
-	private MastodonAPIController unauthenticatedApiController=new MastodonAPIController(null);
 	private Instance authenticatingInstance;
 	private Application authenticatingApp;
 	private String lastActiveAccountID;
@@ -230,11 +229,6 @@ public class AccountSessionManager{
 			nm.deleteNotificationChannelGroup(id);
 		}
 		maybeUpdateShortcuts();
-	}
-
-	@NonNull
-	public MastodonAPIController getUnauthenticatedApiController(){
-		return unauthenticatedApiController;
 	}
 
 	public void authenticate(Activity activity, Instance instance){
