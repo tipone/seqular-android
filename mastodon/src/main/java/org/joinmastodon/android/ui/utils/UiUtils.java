@@ -599,8 +599,10 @@ public class UiUtils {
 	}
 	public static void confirmToggleMuteUser(Context context, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback){
 		if(!currentlyMuted){
-			new MuteAccountConfirmationSheet(context, account, (onSuccess, onError)->{
-				new SetAccountMuted(account.id, true, 0)
+			//pass a reference to the duration, so it can be changed inside the confirmation sheet
+			AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+			new MuteAccountConfirmationSheet(context, account, muteDuration, (onSuccess, onError)->{
+				new SetAccountMuted(account.id, true, muteDuration.get().getSeconds())
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(Relationship result){
