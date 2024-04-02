@@ -17,6 +17,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.ui.drawables.EmptyDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.ui.views.AutoOrientationLinearLayout;
 import org.joinmastodon.android.ui.views.ProgressBarButton;
 
 import androidx.annotation.DrawableRes;
@@ -66,7 +67,7 @@ public abstract class AccountRestrictionConfirmationSheet extends BottomSheet{
 		});
 	}
 
-	protected void addRow(@DrawableRes int icon, CharSequence text){
+	protected void addRow(@DrawableRes int icon, CharSequence text, View view) {
 		TextView tv=new TextView(getContext());
 		tv.setTextAppearance(R.style.m3_body_large);
 		tv.setTextColor(UiUtils.getThemeColor(getContext(), R.attr.colorM3OnSurfaceVariant));
@@ -77,7 +78,26 @@ public abstract class AccountRestrictionConfirmationSheet extends BottomSheet{
 		drawable.setBounds(0, 0, V.dp(40), V.dp(40));
 		tv.setCompoundDrawablesRelative(drawable, null, null, null);
 		tv.setCompoundDrawablePadding(V.dp(16));
-		contentWrap.addView(tv, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+		if(view==null){
+			contentWrap.addView(tv, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+			return;
+		}
+
+		AutoOrientationLinearLayout layout = new AutoOrientationLinearLayout(getContext());
+		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT);
+		lp.weight=1f;
+		layout.addView(tv, lp);
+		layout.addView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+		contentWrap.addView(layout, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+	}
+
+	protected void addRow(@DrawableRes int icon, @StringRes int text, View view){
+		addRow(icon, getContext().getString(text), view);
+	}
+
+	protected void addRow(@DrawableRes int icon, CharSequence text){
+		addRow(icon, text, null);
 	}
 
 	protected void addRow(@DrawableRes int icon, @StringRes int text){
