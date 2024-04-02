@@ -86,6 +86,7 @@ public abstract class AccountRestrictionConfirmationSheet extends BottomSheet{
 
 		AutoOrientationLinearLayout layout = new AutoOrientationLinearLayout(getContext());
 		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT);
+		lp.gravity=Gravity.CENTER;
 		lp.weight=1f;
 		layout.addView(tv, lp);
 		layout.addView(view, new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
