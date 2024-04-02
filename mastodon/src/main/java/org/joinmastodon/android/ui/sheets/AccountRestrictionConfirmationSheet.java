@@ -85,6 +85,9 @@ public abstract class AccountRestrictionConfirmationSheet extends BottomSheet{
 		}
 
 		AutoOrientationLinearLayout layout = new AutoOrientationLinearLayout(getContext());
+		// allow complete row to trigger child click listener
+		if(view.hasOnClickListeners())
+			layout.setOnClickListener(v -> view.performClick());
 		LinearLayout.LayoutParams lp=new LinearLayout.LayoutParams(0,ViewGroup.LayoutParams.WRAP_CONTENT);
 		lp.gravity=Gravity.CENTER;
 		lp.weight=1f;
