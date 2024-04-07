@@ -69,14 +69,14 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="8dp">
 			<org.joinmastodon.android.ui.views.ProgressBarButton
-				android:id="@+id/btn_confirm"
+				android:id="@+id/btn_secondary"
 				android:layout_width="match_parent"
 				android:layout_height="40dp"
-				style="@style/Widget.Mastodon.M3.Button.Filled"
-				app:progressBar="@id/confirm_progress"
+				style="@style/Widget.Mastodon.M3.Button.Tonal"
+				app:progressBar="@id/secondary_progress"
 				tools:text="@string/got_it"/>
 			<ProgressBar
-				android:id="@+id/confirm_progress"
+				android:id="@+id/secondary_progress"
 				style="?android:progressBarStyleSmall"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
@@ -93,14 +93,14 @@
 			android:layout_height="wrap_content"
 			android:layout_marginBottom="8dp">
 			<org.joinmastodon.android.ui.views.ProgressBarButton
-				android:id="@+id/btn_secondary"
+				android:id="@+id/btn_confirm"
 				android:layout_width="match_parent"
 				android:layout_height="40dp"
-				style="@style/Widget.Mastodon.M3.Button.Tonal"
-				app:progressBar="@id/secondary_progress"
+				style="@style/Widget.Mastodon.M3.Button.Filled"
+				app:progressBar="@id/confirm_progress"
 				tools:text="@string/got_it"/>
 			<ProgressBar
-				android:id="@+id/secondary_progress"
+				android:id="@+id/confirm_progress"
 				style="?android:progressBarStyleSmall"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
