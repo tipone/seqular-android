@@ -156,6 +156,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
@@ -599,8 +600,11 @@ public class UiUtils {
 	}
 	public static void confirmToggleMuteUser(Context context, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback){
 		if(!currentlyMuted){
-			new MuteAccountConfirmationSheet(context, account, (onSuccess, onError)->{
-				new SetAccountMuted(account.id, true, 0)
+			//pass a references, so they can be changed inside the confirmation sheet
+			AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+			AtomicBoolean muteNotifications=new AtomicBoolean(true);
+			new MuteAccountConfirmationSheet(context, account, muteDuration, muteNotifications, (onSuccess, onError)->{
+				new SetAccountMuted(account.id, true, muteDuration.get().getSeconds(), muteNotifications.get())
 						.setCallback(new Callback<>(){
 							@Override
 							public void onSuccess(Relationship result){
@@ -618,7 +622,7 @@ public class UiUtils {
 						.exec(accountID);
 			}).show();
 		}else{
-			new SetAccountMuted(account.id, false, 0)
+			new SetAccountMuted(account.id, false, 0, false)
 					.setCallback(new Callback<>(){
 						@Override
 						public void onSuccess(Relationship result){
