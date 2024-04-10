@@ -8,6 +8,9 @@ public class SetAccountMuted extends MastodonAPIRequest<Relationship>{
 		super(HttpMethod.POST, "/accounts/"+id+"/"+(muted ? "mute" : "unmute"), Relationship.class);
 		if(muted)
 			setRequestBody(new Request(duration, muteNotifications));
+		else{
+			setRequestBody(new Object());
+		}
 	}
 
 	private static class Request{
