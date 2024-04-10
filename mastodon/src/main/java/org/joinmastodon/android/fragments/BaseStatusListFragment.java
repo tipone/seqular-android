@@ -763,12 +763,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	public void onGapClick(GapStatusDisplayItem.Holder item, boolean downwards){}
 
 	public void onWarningClick(WarningFilteredStatusDisplayItem.Holder warning){
-		int startPos = warning.getAbsoluteAdapterPosition();
+		WarningFilteredStatusDisplayItem filterItem=findItemOfType(warning.getItemID(), WarningFilteredStatusDisplayItem.class);
+		int startPos=displayItems.indexOf(filterItem);
 		displayItems.remove(startPos);
 		displayItems.addAll(startPos, warning.filteredItems);
 		adapter.notifyItemRangeInserted(startPos, warning.filteredItems.size() - 1);
 		if (startPos == 0) scrollToTop();
 		warning.getItem().status.filterRevealed = true;
+		list.invalidateItemDecorations();
 	}
 
 	@Override
