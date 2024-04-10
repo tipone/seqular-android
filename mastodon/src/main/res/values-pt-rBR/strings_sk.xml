@@ -247,7 +247,7 @@
     <string name="sk_filtered">Filtrado: %s</string>
     <string name="sk_expand">Mostrar mais</string>
     <string name="sk_unfinished_attachments_message">Alguns anexos ainda não foram enviados.</string>
-    <string name="sk_unfinished_attachments">Corrigir anexos\?</string>
+    <string name="sk_unfinished_attachments">Anexos sendo enviados</string>
     <string name="sk_settings_glitch_mode_explanation">Habilite isso se sua instância inicial for executada no Glitch. Não é necessário para Hometown ou Akkoma.</string>
     <string name="sk_collapse">Mostrar menos</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Prefixe com “Aviso de conteúdo” ao responder</string>
@@ -322,7 +322,7 @@
     <string name="sk_icon_beaker">Béquer</string>
     <string name="sk_icon_doctor">Doutor</string>
     <string name="sk_edit_timeline_tag_main">Postagens contendo hashtag…</string>
-    <string name="sk_edit_timeline_tags_explanation">Observe que o servidor lida com essas operações. A combinação deles pode não ser suportada.</string>
+    <string name="sk_edit_timeline_tags_explanation">Observe que o servidor trata essas operações. A combinação delas pode não ser suportada.</string>
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_advanced_options_show">Mostrar opções avançadas</string>
     <string name="sk_advanced_options_hide">Ocultar opções avançadas</string>
@@ -375,21 +375,29 @@
     <string name="sk_settings_show_emoji_reactions">Mostrar reações com emojis nas linhas do tempo</string>
     <string name="sk_settings_show_emoji_reactions_always">Sempre mostrar o botão adicionar</string>
     <string name="sk_search_suicide_title">Caso você precise de ajuda…</string>
-    <string name="sk_disable_pill_shaped_active_indicator">Desativar indicador de guia ativa em forma de comprimido</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Desativar o indicador de aba ativa em forma de pílula</string>
     <string name="sk_tab_home">Início</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Mostrar nomes das guias na barra de navegação</string>
     <string name="sk_load_missing_posts_below">Carregar publicações mais antigas</string>
     <string name="sk_do_not_show_again">Não mostrar novamente</string>
     <string name="sk_search_suicide_hotlines">Encontre uma linha de apoio</string>
-    <string name="sk_trending_links_info_banner">Estas são as notícias mais comentadas em seu servidor.</string>
+    <string name="sk_trending_links_info_banner">Essas notícias estão sendo comentadas em todo o Fediverso..</string>
     <string name="sk_post_contains_media">A publicação contém mídia</string>
     <string name="sk_load_missing_posts_above">Carregar publicações mais recentes</string>
     <string name="sk_search_suicide_message">Se você está procurando um sinal para não se matar, aqui está. Por favor, caso esteja deprimido e/ou tendo pensamentos suicidas, considere entrar em contato com uma linha de apoio para prevenção do suicídio.</string>
     <string name="sk_suicide_helplines_url">https://findahelpline.com/br</string>
-    <string name="sk_trending_posts_info_banner">Essas são as publicações que estão ganhando força no seu servidor.</string>
+    <string name="sk_trending_posts_info_banner">Essas postagens estão ganhando força no Fediverse.</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">publicação</item>
         <item quantity="many">publicações</item>
         <item quantity="other">publicações</item>
     </plurals>
+    <string name="sk_icon_water">Água</string>
+    <string name="sk_icon_sun">Sol</string>
+    <string name="sk_icon_sunset">Pôr do sol</string>
+    <string name="sk_icon_cloud">Nuvem</string>
+    <string name="sk_icon_rain">Chuva</string>
+    <string name="sk_icon_snowflake">Floco de neve</string>
+    <string name="sk_settings_color_palette_default">Default (%s)</string>
+    <string name="sk_icon_thunderstorm">Tempestade</string>
 </resources>
