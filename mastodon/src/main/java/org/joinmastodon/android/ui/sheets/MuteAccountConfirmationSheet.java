@@ -1,13 +1,19 @@
 package org.joinmastodon.android.ui.sheets;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.views.M3Switch;
 
 import java.time.Duration;
@@ -38,41 +44,59 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 		addRow(R.drawable.ic_fluent_alert_off_24_regular, R.string.mo_mute_notifications, m3Switch);
 
 		// add mute duration (Moshidon)
-		Button button=new Button(getContext());
-		PopupMenu popupMenu=getMuteDurationPopupMenu(context, muteDuration, button);
-		button.setOnClickListener(v->popupMenu.show());
-		button.setOnTouchListener(popupMenu.getDragToOpenListener());
-		button.setText(popupMenu.getMenu().getItem(0).getTitle());
-
-		addRow(R.drawable.ic_fluent_clock_20_regular, R.string.sk_mute_label, button);
+		secondaryBtn.setVisibility(View.VISIBLE);
+		secondaryBtn.setOnClickListener(v->getMuteDurationDialog(context, muteDuration, secondaryBtn).show());
+		secondaryBtn.setText(R.string.sk_duration_indefinite);
+		secondaryBtn.setTypeface(null, Typeface.BOLD_ITALIC);
 	}
 
 	@NonNull
-	private PopupMenu getMuteDurationPopupMenu(@NonNull Context context, AtomicReference<Duration> muteDuration, Button button){
-		PopupMenu popupMenu=new PopupMenu(context, button, Gravity.CENTER_HORIZONTAL);
-		popupMenu.inflate(R.menu.mute_duration);
-		popupMenu.setOnMenuItemClickListener(item->{
-			int id=item.getItemId();
-			if(id==R.id.duration_indefinite)
+	private M3AlertDialogBuilder getMuteDurationDialog(@NonNull Context context, AtomicReference<Duration> muteDuration, Button button){
+		M3AlertDialogBuilder builder=new M3AlertDialogBuilder(context);
+		builder.setTitle(R.string.sk_mute_label);
+		builder.setIcon(R.drawable.ic_fluent_clock_20_regular);
+
+		String[] choices = {context.getString(R.string.sk_duration_indefinite),
+				context.getString(R.string.sk_duration_minutes_5),
+				context.getString(R.string.sk_duration_minutes_30),
+				context.getString(R.string.sk_duration_hours_1),
+				context.getString(R.string.sk_duration_hours_6),
+				context.getString(R.string.sk_duration_days_1),
+				context.getString(R.string.sk_duration_days_3),
+				context.getString(R.string.sk_duration_days_7)};
+
+		builder.setSingleChoiceItems(choices, 0, (dialog, which) -> {});
+
+		builder.setPositiveButton(R.string.save, (dialog, which)->{
+			int selected = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
+			if(selected==0){
 				muteDuration.set(Duration.ZERO);
-			else if(id==R.id.duration_minutes_5){
+			}else if(selected==1){
 				muteDuration.set(Duration.ofMinutes(5));
-			}else if(id==R.id.duration_minutes_30){
+			}else if(selected==2){
 				muteDuration.set(Duration.ofMinutes(30));
-			}else if(id==R.id.duration_hours_1){
+			}else if(selected==3){
 				muteDuration.set(Duration.ofHours(1));
-			}else if(id==R.id.duration_hours_6){
+			}else if(selected==4){
 				muteDuration.set(Duration.ofHours(6));
-			}else if(id==R.id.duration_days_1){
+			}else if(selected==5){
 				muteDuration.set(Duration.ofDays(1));
-			}else if(id==R.id.duration_days_3){
+			}else if(selected==6){
 				muteDuration.set(Duration.ofDays(3));
-			}else if(id==R.id.duration_days_7){
+			}else if(selected==7){
 				muteDuration.set(Duration.ofDays(7));
 			}
-			button.setText(item.getTitle());
-			return true;
+			if(selected >= 0 && selected <= 7){
+				button.setText(choices[selected]);
+			} else {
+				Toast.makeText(context, "" + selected, Toast.LENGTH_SHORT).show();
+			}
 		});
-		return popupMenu;
+
+		builder.setNegativeButton(R.string.cancel, ((dialogInterface, i) -> {}));
+
+		return builder;
 	}
+
+
 }
