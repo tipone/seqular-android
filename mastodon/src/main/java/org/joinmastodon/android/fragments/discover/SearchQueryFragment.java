@@ -10,6 +10,7 @@ import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -434,7 +436,7 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 	}
 
 	private void onOpenURLClick(ListItem<?> item_){
-		UiUtils.openURL(getContext(), accountID, searchViewHelper.getQuery(), false);
+		((MainActivity)getActivity()).handleURL(Uri.parse(searchViewHelper.getQuery()), accountID);
 	}
 
 	private void onGoToHashtagClick(ListItem<?> item_){
