@@ -24,6 +24,8 @@ import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+// TODO: This whole class has been ditched upstream. I plan to eventually refactor it to only have the still relevant clientFilters code
+
 public class StatusFilterPredicate implements Predicate<Status>{
 	private final List<LegacyFilter> clientFilters;
 	private final List<LegacyFilter> filters;

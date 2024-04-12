@@ -240,6 +240,13 @@ public abstract class StatusDisplayItem{
 					break;
 				}
 			}
+
+			// Moshidon
+			if(applyingFilter==null){
+				StatusFilterPredicate predicate = new StatusFilterPredicate(accountID, filterContext, FilterAction.WARN);
+				predicate.test(status);
+				applyingFilter = predicate.getApplyingFilter();
+			}
 		}
 
 		ArrayList<StatusDisplayItem> contentItems;
