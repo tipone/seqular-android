@@ -168,7 +168,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 					if(start == 0){
 						if(emojiRegex.matcher(s.toString()).find()){
 							imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
-							listener.onEmojiSelected(s.toString().substring(before));
+							listener.onEmojiSelected(s.toString());
 							input.getText().clear();
 						}
 					}
@@ -402,7 +402,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 	public interface Listener{
 		void onEmojiSelected(Emoji customEmoji);
-		void onEmojiSelected(String emoji);
+		void   onEmojiSelected(String emoji);
 		void onBackspace();
 	}
 }
