@@ -94,4 +94,5 @@
     <string name="mo_setting_remote_follower_summary">Mostrar seguidoras doutras instancias</string>
     <string name="mo_notification_filter_reset">Restablecer por defecto</string>
     <string name="mo_instance_view_info">Ver Info do Servidor</string>
+    <string name="mo_mute_notifications">Agochar as notificacións de esta usuaria?</string>
 </resources>
