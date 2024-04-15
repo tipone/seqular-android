@@ -21,7 +21,7 @@
     <string name="mo_sending_error">发布帖文时出错</string>
     <string name="mo_filtered">已过滤：%s</string>
     <string name="mo_disable_reminder_to_add_alt_text">禁用添加ALT文本的提醒</string>
-    <string name="mo_add_custom_server_local_timeline">添加自定义实例的本地时间线</string>
+    <string name="mo_add_custom_server_local_timeline">添加一个自定义服务器的本地时间线</string>
     <string name="mo_notification_action_replied">成功回复 %s 的帖文</string>
     <string name="mo_duration_minutes_5">5分钟</string>
     <string name="mo_duration_hours_6">6小时</string>
@@ -62,7 +62,7 @@
     <string name="mo_setting_relocate_publish_summary">将发布按钮移至底栏</string>
     <string name="mo_swap_bookmark_with_reblog_summary">在通知中收藏或转发帖文</string>
     <string name="mo_setting_disable_swipe_summary">滑动以切换浏览的时间线</string>
-    <string name="mo_notification_audience_settings">消息通知受众</string>
+    <string name="mo_notification_audience_settings">消息通知接收范围</string>
     <string name="mo_open_camera">拍照</string>
     <string name="mo_setting_default_reply_privacy_summary">回复将不会被显示在发现功能中</string>
     <string name="mo_setting_interaction_count_summary">在时间线中显示与帖文互动的人数</string>
@@ -95,4 +95,5 @@
     <string name="mo_confirm_to_mute_hashtag">您确定要禁用此话题标签的通知吗？</string>
     <string name="mo_filter_notifications">过滤通知</string>
     <string name="mo_notification_filter_reset">重置为默认值</string>
+    <string name="mo_instance_view_info">查看服务器信息</string>
 </resources>
