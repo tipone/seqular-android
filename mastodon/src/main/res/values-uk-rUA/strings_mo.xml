@@ -44,7 +44,7 @@
     <string name="mo_color_palette_black_and_white">Чорно-біла</string>
     <string name="mo_enable_dividers">Показати розділювачі публікацій</string>
     <string name="mo_notification_management_settings">Керувати сповіщеннями</string>
-    <string name="mo_double_tap_to_swipe_between_tabs">Двічі торкніться, щоб перемикатися між вкладками</string>
+    <string name="mo_double_tap_to_swipe_between_tabs">Торкніться двічі, щоб перемикатися між вкладками</string>
     <string name="mo_setting_true_black_summary">Може економити енергію на дисплеях AMOLED</string>
     <string name="mo_setting_marquee_summary">Вимикає прокручування довгих заголовків</string>
     <string name="mo_confirm_unfollow">Підтвердьте, щоб скасувати підписку %s</string>
@@ -80,4 +80,9 @@
     <string name="mo_notification_filter_reset">Скинути до замовчування</string>
     <string name="mo_filter_notifications">Фільтрувати сповіщення</string>
     <string name="mo_instance_view_info">Переглянути інформацію про сервер</string>
+    <string name="mo_show_media_preview">Попередній перегляд медіа в стрічках</string>
+    <string name="mo_settings_show_posts_without_alt">Показувати дописи з відсутнім альтернативним текстом</string>
+    <string name="mo_double_tap_to_search">Торкніться двічі, щоб відкрити пошук</string>
+    <string name="mo_mute_notifications">Приховати сповіщення від цього користувача?</string>
+    <string name="mo_settings_show_posts_without_alt_summary">Дописи будуть приховані в усіх стрічках, але їх можна буде бачити в гілках і сповіщеннях</string>
 </resources>
