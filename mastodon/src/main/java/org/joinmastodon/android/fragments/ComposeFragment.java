@@ -1662,7 +1662,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 			}
 		}
 		UiUtils.enablePopupMenuIcons(getActivity(), visibilityPopup);
-		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P) m.setGroupDividerEnabled(true);
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI()) m.setGroupDividerEnabled(true);
 		visibilityPopup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
 			@Override
 			public boolean onMenuItemClick(MenuItem item){
