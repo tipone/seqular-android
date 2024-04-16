@@ -86,4 +86,10 @@
     <string name="mo_muted_conversation_successfully">Succesvol genegeerd gesprek</string>
     <string name="mo_filter_notifications">Filter meldingen</string>
     <string name="mo_double_tap_to_search">Dubbeltik om \"zoeken\" te openen</string>
+    <string name="mo_mute_conversation">Negeer gesprek</string>
+    <string name="mo_unmute_conversation">Gesprek niet meer negeren</string>
+    <string name="mo_confirm_to_mute_conversation">Weet je zeker dat je dit gesprek wilt negeren?</string>
+    <string name="mo_mute_notifications">Verberg meldingen van dit account?</string>
+    <string name="mo_confirm_to_unmute_conversation">Weet je zeker dat je dit gesprek niet meer wilt negeren?</string>
+    <string name="mo_instance_view_info">Bekijk serverinformatie</string>
 </resources>
