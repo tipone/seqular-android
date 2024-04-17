@@ -100,4 +100,5 @@
     <string name="mo_filter_notifications">Filtrar notificações</string>
     <string name="mo_notification_filter_reset">Redefinir para padrão</string>
     <string name="mo_instance_view_info">Ver informações do servidor</string>
+    <string name="mo_mute_notifications">Ocultar notificações deste usuário?</string>
 </resources>
