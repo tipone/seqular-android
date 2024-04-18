@@ -133,7 +133,11 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 			if(intent.hasExtra("notification")){
 				org.joinmastodon.android.model.Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
-				String statusID=notification.status.id;
+
+				String statusID = null;
+				if(notification != null && notification.status != null)
+					statusID=notification.status.id;
+
 				if (statusID != null) {
 					AccountSessionManager accountSessionManager = AccountSessionManager.getInstance();
 					Preferences preferences = accountSessionManager.getAccount(accountID).preferences;
