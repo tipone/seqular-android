@@ -5,7 +5,7 @@
     <string name="mo_app_username" translatable="false">\@moshidon</string>
     <string name="mo_disable_dividers">Beitrags-Trennlinien deaktivieren</string>
     <string name="mo_relocate_publish_button">Veröffentlichen-Schaltfläche verschieben</string>
-    <string name="mo_hide_compose_button_while_scrolling_setting">Veröffentlichen-Schaltfläche beim Scrollen ausblenden</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Veröffentlichen Schaltfläche beim scrollen ausblenden</string>
     <string name="mo_welcome_text">Moshidon sagt Hi! Gib den Domain-Namen deiner Heimat-Instanz unten ein.</string>
     <!--    Setting this as non-translatable as it simply doesnt change with language-->
     <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
@@ -13,13 +13,13 @@
     <string name="mo_personal_note_confirm">Änderungen der Notiz bestätigen</string>
     <string name="mo_personal_note_update_failed">Speichern der Notiz ist fehlgeschlagen</string>
     <string name="mo_settings_contribute">Zu Moshidon beitragen</string>
-    <string name="mo_update_available">Moshidon %s ist bereit zum Herunterladen.</string>
+    <string name="mo_update_available">Moshidon %s ist bereit zum herunterladen.</string>
     <string name="mo_update_ready">Moshidon %s ist heruntergeladen und bereit zur Installation.</string>
     <string name="mo_no_image_desc_title">Keine Bildbeschreibung</string>
     <string name="mo_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
     <string name="mo_emoji_recent">Kürzlich verwendet</string>
     <string name="mo_clear_recent_emoji">Kürzlich verwendete Emojis löschen</string>
-    <string name="mo_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion „Veröffentlichen-Schaltfläche verschieben“, um eine Anpassung zu ermöglichen</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">Deaktiviere die Funktion Veröffentlichen-Schaltfläche verschieben, um eine Anpassung zu ermöglichen</string>
     <!--    accessibility labels-->
     <string name="mo_poll_option_add">Neue Umfrageoption hinzufügen</string>
     <string name="mo_fab_compose">Verfassen</string>
@@ -43,9 +43,9 @@
     <string name="mo_share_open_url">In der App öffnen</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Deaktiviere doppeltes Tippen, um zwischen Tabs zu wechseln</string>
     <string name="mo_swap_bookmark_with_reblog">Teilen statt Lesezeichen-Aktion</string>
-    <string name="mo_download_latest_nightly_release">Neueste Nightly-Version herunterladen</string>
-    <string name="mo_load_remote_followers">Follower des Remote-Profils laden</string>
-    <string name="mo_confirm_unfollow">Bestätige, %s zu entfolgen</string>
+    <string name="mo_download_latest_nightly_release">Neueste Nightly Version herunterladen</string>
+    <string name="mo_load_remote_followers">Follower und Follower des Remote Profils laden</string>
+    <string name="mo_confirm_unfollow">Bestätige %s zu entfolgen</string>
     <string name="mo_confirm_unfollow_title">Entfolge Account</string>
     <string name="mo_instance_registration">Registrierung</string>
     <string name="mo_instance_registration_open">Offen</string>
@@ -77,7 +77,7 @@
     <string name="mo_setting_play_gif_summary">GIFs in Profilbildern und Emojis automatisch abspielen</string>
     <string name="mo_settings_show_posts_without_alt">Zeige Medienbeiträge ohne Bildbeschreibung</string>
     <string name="mo_settings_show_posts_without_alt_summary">Beiträge werden in allen Timelines ausgeblendet, können aber in Threads und Benachrichtungen angezeigt werden</string>
-    <string name="mo_color_palette_black_and_white">Schwarz-Weiß</string>
+    <string name="mo_color_palette_black_and_white">Schwarz und Weiß</string>
     <string name="mo_haptic_feedback">Haptisches Feedback</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrieren beim Interagieren mit Posts</string>
     <string name="mo_camera_not_available">Keine Kamera verfügbar!</string>
@@ -100,4 +100,6 @@
     <string name="mo_confirm_to_mute_hashtag">Sind Sie sicher, dass Sie diesen Hashtag stummschalten möchten\?</string>
     <string name="mo_filter_notifications">Benachrichtigungen filtern</string>
     <string name="mo_notification_filter_reset">Auf Standardwerte zurücksetzen</string>
+    <string name="mo_instance_view_info">Serverinformationen anzeigen</string>
+    <string name="mo_mute_notifications">Benachrichtigungen dieses Users verstecken?</string>
 </resources>
