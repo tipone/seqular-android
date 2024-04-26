@@ -404,7 +404,7 @@
     <plurals name="sk_time_seconds">
         <item quantity="one">%d segundo</item>
         <item quantity="many">%d segundos</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="sk_settings_clear_timeline_cache">Limpar cache da linha do tempo inicial</string>
     <string name="sk_private_note_update_failed">Falha ao salvar nota</string>
@@ -421,17 +421,17 @@
     <plurals name="sk_time_minutes">
         <item quantity="one">%d minuto</item>
         <item quantity="many">%d minutos</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="sk_time_hours">
         <item quantity="one">%d hora</item>
         <item quantity="many">%d horas</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <plurals name="sk_time_days">
         <item quantity="one">%d dia</item>
         <item quantity="many">%d dias</item>
-        <item quantity="other"></item>
+        <item quantity="other"/>
     </plurals>
     <string name="sk_muted_accounts">Contas silenciadas</string>
     <string name="sk_recently_used">Usado recentemente</string>
@@ -444,4 +444,6 @@
     <string name="sk_private_note_hint">Adicione uma nota pessoal sobre este perfil</string>
     <string name="sk_private_note_confirm_delete">Excluir nota pessoal sobre %s?</string>
     <string name="sk_settings_crash_log_unavailable">Nenhum disponível... ainda</string>
+    <string name="sk_open_post_preview">Pré-visualizar postagem</string>
+    <string name="sk_post_preview">Pré-visualizar</string>
 </resources>
