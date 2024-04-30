@@ -83,7 +83,11 @@ public class SettingsServerAboutFragment extends LoaderFragment{
 			public boolean shouldOverrideUrlLoading(WebView view, String url){
 				Uri uri=Uri.parse(url);
 				if(uri.getScheme().equals("http") || uri.getScheme().equals("https")){
-					UiUtils.launchWebBrowser(getActivity(), url);
+					if(uri.getHost()!=null && uri.getHost().equals(instance.uri))
+						//try to open linked accounts, etc in the app
+						UiUtils.openURL(getActivity(),accountID, url);
+					else
+						UiUtils.launchWebBrowser(getActivity(), url);
 				}else{
 					Intent intent=new Intent(Intent.ACTION_VIEW, uri);
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
