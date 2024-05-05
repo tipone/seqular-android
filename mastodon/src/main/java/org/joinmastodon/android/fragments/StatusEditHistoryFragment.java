@@ -3,8 +3,8 @@ package org.joinmastodon.android.fragments;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.statuses.GetStatusEditHistory;
 import org.joinmastodon.android.model.FilterContext;
@@ -13,7 +13,6 @@ import org.joinmastodon.android.ui.displayitems.DummyStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ReblogOrReplyLineStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.text.HtmlParser;
-import org.joinmastodon.android.ui.utils.InsetStatusItemDecoration;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.time.ZoneId;
@@ -26,6 +25,8 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.api.SimpleCallback;
 import name.fraser.neil.plaintext.diff_match_patch;
 
@@ -54,10 +55,45 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 					public void onSuccess(List<Status> result){
 						if(getActivity()==null) return;
 						Collections.sort(result, Comparator.comparing((Status s)->s.createdAt).reversed());
+						if(result.size()<=1&& GlobalUserPreferences.allowRemoteLoading) {
+							//server send only a single edit, which is always the original status
+							//try to get the complete history from the remote server
+							loadRemoteData(result);
+							return;
+						}
 						onDataLoaded(result, false);
 					}
 				})
 				.exec(accountID);
+	}
+
+	void loadRemoteData(List<Status> prevData){
+		String remoteURL = Uri.parse(url).getHost();
+		String[] parts=url.split("/");
+
+		if(parts.length==0||remoteURL==null) {
+			onDataLoaded(prevData, false);
+			setSubtitle(getContext().getString(R.string.sk_no_remote_info_hint));
+			return;
+		}
+
+		new GetStatusEditHistory(parts[parts.length-1])
+				.setCallback(new Callback<>(){
+					@Override
+					public void onSuccess(List<Status> result){
+						if(getActivity()==null) return;
+						Collections.sort(result, Comparator.comparing((Status s)->s.createdAt).reversed());
+						onDataLoaded(result, false);
+					}
+
+					@Override
+					public void onError(ErrorResponse errorResponse){
+						//fallback to previously loaded data
+						onDataLoaded(prevData, false);
+						setSubtitle(getContext().getString(R.string.sk_no_remote_info_hint));
+					}
+				})
+				.execNoAuth(remoteURL);
 	}
 
 	@Override
