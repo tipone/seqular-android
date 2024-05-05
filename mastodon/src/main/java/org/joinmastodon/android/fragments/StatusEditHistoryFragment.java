@@ -73,6 +73,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 
 		if(parts.length==0||remoteURL==null) {
 			onDataLoaded(prevData, false);
+			setSubtitle(getContext().getString(R.string.sk_no_remote_info_hint));
 			return;
 		}
 
@@ -89,6 +90,7 @@ public class StatusEditHistoryFragment extends StatusListFragment{
 					public void onError(ErrorResponse errorResponse){
 						//fallback to previously loaded data
 						onDataLoaded(prevData, false);
+						setSubtitle(getContext().getString(R.string.sk_no_remote_info_hint));
 					}
 				})
 				.execNoAuth(remoteURL);
