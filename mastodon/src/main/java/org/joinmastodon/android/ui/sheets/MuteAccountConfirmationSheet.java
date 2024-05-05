@@ -67,7 +67,7 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 
 		builder.setSingleChoiceItems(choices, 0, (dialog, which) -> {});
 
-		builder.setPositiveButton(R.string.save, (dialog, which)->{
+		builder.setPositiveButton(R.string.ok, (dialog, which)->{
 			int selected = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
 			if(selected==0){
 				muteDuration.set(Duration.ZERO);
