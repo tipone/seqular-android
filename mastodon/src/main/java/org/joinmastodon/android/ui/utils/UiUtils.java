@@ -1073,6 +1073,12 @@ public class UiUtils {
 
 	public static void enablePopupMenuIcons(Context context, PopupMenu menu) {
 		Menu m = menu.getMenu();
+
+		// MOSHIDON disable menu icons on android 14 and higher because of InsetDrawables breaking
+		if (Build.VERSION.SDK_INT >= 34) {
+			return;
+		}
+
 		if (Build.VERSION.SDK_INT >= 29) {
 			menu.setForceShowIcon(true);
 		} else {
