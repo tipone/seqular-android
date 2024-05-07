@@ -314,7 +314,7 @@ public class AccountSession{
 		// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
 		if(getLocalPreferences().serverSideFiltersSupported){
 			for(FilterResult filter : s.filtered){
-				if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
+				if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE && filter.filter.context.contains(context))
 					return true;
 			}
 		}else if(wordFilters!=null){
