@@ -82,7 +82,7 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment impl
 
     @Override
     protected FilterContext getFilterContext() {
-        return null;
+        return FilterContext.PUBLIC;
     }
 
     @Override
