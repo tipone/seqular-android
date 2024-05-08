@@ -396,7 +396,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 					tl.setTitle(name);
 					if(item == null || item.getType()==TimelineDefinition.TimelineType.HASHTAG){
 						tl.setTagOptions(
-								mainHashtag,
+								TextUtils.isEmpty(mainHashtag) ? name : mainHashtag,
 								tagsAny.getChipValues(),
 								tagsAll.getChipValues(),
 								tagsNone.getChipValues(),
