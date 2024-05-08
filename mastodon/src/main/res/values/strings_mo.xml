@@ -120,8 +120,13 @@
 	<string name="mo_blocked_accounts">Blocked accounts</string>
 <!--	<string name="mo_blocks">Blocks</string>-->
 	<string name="mo_mute_notifications">Hide notifications from this user?</string>
+	<string name="import_settings_confirm">Confirm to import settings?</string>
+	<string name="import_settings_confirm_body">All current settings and timelines will be overwritten! This action cannot be undone.</string>
+	<string name="import_settings_failed">Failed to import settings</string>
 	<string name="export_settings_share">Export Settings</string>
 	<string name="export_settings_fail">Failed to export settings</string>
 	<string name="export_settings_title">Export settings</string>
 	<string name="export_settings_summary">Export all logged-in accounts\' settings and timelines</string>
+	<string name="import_settings_title">Import settings</string>
+	<string name="import_settings_summary">Import previously exported settings and timelines</string>
 </resources>
