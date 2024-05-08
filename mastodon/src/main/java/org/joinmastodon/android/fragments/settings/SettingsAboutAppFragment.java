@@ -251,7 +251,6 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 					Object value=jsonGlobalPrefs.get(key);
 					if(value==null)
 						continue;
-					Log.e(TAG, "onActivityResult: " + key + ":" + value);
 					savePrefValue(globalPrefsEditor, key, value);
 				}
 
