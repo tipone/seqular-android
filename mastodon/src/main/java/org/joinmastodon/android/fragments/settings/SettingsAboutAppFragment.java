@@ -233,6 +233,12 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 				String jsonString=stringBuilder.toString();
 
 				Gson gson=new GsonBuilder().setObjectToNumberStrategy(ToNumberPolicy.LONG_OR_DOUBLE).create();
+
+				//check if json is not null
+				if(jsonString.isEmpty()) {
+					throw new IOException();
+				}
+
 				JsonObject jsonObject=JsonParser.parseString(jsonString).getAsJsonObject();
 
 				//check if json has required attributes
