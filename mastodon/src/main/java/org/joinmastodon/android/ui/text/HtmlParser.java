@@ -321,12 +321,11 @@ public class HtmlParser{
 	}
 
 	public static void applyFilterHighlights(Context context, SpannableStringBuilder text, List<FilterResult> filters){
-		if (filters == null) return;
 		int fgColor=UiUtils.getThemeColor(context, R.attr.colorM3Error);
 		int bgColor=UiUtils.getThemeColor(context, R.attr.colorM3ErrorContainer);
 		for(FilterResult filter:filters){
 			if(!filter.filter.isActive())
-				continue;;
+				continue;
 			for(String word:filter.keywordMatches){
 				Matcher matcher=Pattern.compile("\\b"+Pattern.quote(word)+"\\b", Pattern.CASE_INSENSITIVE).matcher(text);
 				while(matcher.find()){

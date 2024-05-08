@@ -275,8 +275,9 @@ public abstract class StatusDisplayItem{
 		boolean hasSpoiler=!TextUtils.isEmpty(statusForContent.spoilerText);
 		if(!TextUtils.isEmpty(statusForContent.content)){
 			SpannableStringBuilder parsedText=HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID, fragment.getContext());
-			HtmlParser.applyFilterHighlights(fragment.getActivity(), parsedText, status.filtered);
-			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID, fragment.getContext()), fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
+			if(applyingFilter!=null)
+				HtmlParser.applyFilterHighlights(fragment.getActivity(), parsedText, status.filtered);
+			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, parsedText, fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
 			contentItems.add(text);
 		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
