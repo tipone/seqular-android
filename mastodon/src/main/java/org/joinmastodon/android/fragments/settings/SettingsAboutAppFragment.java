@@ -3,6 +3,11 @@ package org.joinmastodon.android.fragments.settings;
 import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
+import android.content.ComponentName;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,9 +16,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.google.gson.ToNumberPolicy;
+
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
 import org.joinmastodon.android.api.session.AccountSession;
@@ -21,27 +32,26 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.HasAccountID;
 import org.joinmastodon.android.model.viewmodel.CheckableListItem;
 import org.joinmastodon.android.model.viewmodel.ListItem;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.Snackbar;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
+import org.joinmastodon.android.utils.FileProvider;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.imageloader.ImageCache;
@@ -58,7 +68,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 	private File crashLogFile=new File(MastodonApp.context.getFilesDir(), "crash.log");
 
 	// MOSHIDON
-	private ListItem<Void> clearRecentEmojisItem;
+	private ListItem<Void> clearRecentEmojisItem, exportItem;
 	@Override
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
@@ -73,6 +83,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_repo_url))),
 				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")),
 				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
+				exportItem=new ListItem<>(R.string.export_settings_title, R.string.export_settings_summary, R.drawable.ic_fluent_arrow_export_24_filled, this::onExportClick),
 				clearRecentEmojisItem=new ListItem<>(R.string.mo_clear_recent_emoji, 0, this::onClearRecentEmojisClick),
 				mediaCacheItem=new ListItem<>(R.string.settings_clear_cache, 0, this::onClearMediaCacheClick),
 				new ListItem<>(getString(R.string.sk_settings_clear_timeline_cache), session.domain, this::onClearTimelineCacheClick),
@@ -144,6 +155,43 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 		getLocalPrefs().recentCustomEmoji=new ArrayList<>();
 		getLocalPrefs().save();
 		Toast.makeText(getContext(), R.string.mo_recent_emoji_cleared, Toast.LENGTH_SHORT).show();
+	}
+
+	private void onExportClick(ListItem<?> item){
+		Gson gson = new Gson();
+		JsonObject jsonObject = new JsonObject();
+		jsonObject.addProperty("versionName", BuildConfig.VERSION_NAME);
+		jsonObject.addProperty("versionCode", BuildConfig.VERSION_CODE);
+
+		// GlobalUserPreferences
+		//TODO: remove prefs that should not be exported
+		JsonElement je = gson.toJsonTree(GlobalUserPreferences.getPrefs().getAll());
+		jsonObject.add("GlobalUserPreferences", je);
+
+		// add account local prefs
+		for(AccountSession accountSession: AccountSessionManager.getInstance().getLoggedInAccounts()) {
+            Map<String, ?> prefs = accountSession.getRawLocalPreferences().getAll();
+			//TODO: remove prefs that should not be exported
+			JsonElement accountPrefs = gson.toJsonTree(prefs);
+			jsonObject.add(accountSession.self.id, accountPrefs);
+		}
+
+		try {
+			File file = new File(getContext().getCacheDir(), "moshidon-exported-settings.json");
+			FileWriter writer = new FileWriter(file);
+			writer.write(jsonObject.toString());
+			writer.flush();
+			writer.close();
+
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("application/json");
+			Uri outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
+			intent.putExtra(Intent.EXTRA_STREAM, outputUri);
+			startActivity(Intent.createChooser(intent, getContext().getString(R.string.export_settings_share)));
+		} catch (IOException e) {
+			Toast.makeText(getContext(), getContext().getString(R.string.export_settings_fail), Toast.LENGTH_SHORT).show();
+			Log.w(TAG, e);
+		}
 	}
 
 	private void updateMediaCacheItem(){
