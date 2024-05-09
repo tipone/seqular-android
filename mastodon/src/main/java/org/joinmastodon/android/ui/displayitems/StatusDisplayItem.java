@@ -26,13 +26,11 @@ import org.joinmastodon.android.fragments.ProfileFragment;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
-import org.joinmastodon.android.model.AltTextFilter;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
-import org.joinmastodon.android.model.FilterAction;
-import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
+import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
@@ -45,7 +43,6 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -231,16 +228,7 @@ public abstract class StatusDisplayItem{
 		LegacyFilter applyingFilter=null;
 		if(status.filtered!=null){
 			List<FilterResult> filters = status.filtered;
-
-			//add a client side filter to filter posts that have no alt text
-			//it only applies when activated in the settings
-			AltTextFilter altTextFilter=new AltTextFilter(FilterAction.WARN, EnumSet.allOf(FilterContext.class));
-			if(altTextFilter.matches(status)){
-				FilterResult filterResult=new FilterResult();
-				filterResult.filter=altTextFilter;
-				filterResult.keywordMatches=List.of();
-				filters.add(filterResult);
-			}
+			filters.addAll(AccountSessionManager.get(accountID).getClientSideFilters(status));
 
 			for(FilterResult filter:filters){
 				LegacyFilter f=filter.filter;

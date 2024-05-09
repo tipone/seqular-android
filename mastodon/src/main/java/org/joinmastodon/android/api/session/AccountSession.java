@@ -21,6 +21,7 @@ import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
 import org.joinmastodon.android.events.NotificationsMarkerUpdatedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.AltTextFilter;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
@@ -37,6 +38,7 @@ import org.joinmastodon.android.utils.ObjectIdComparator;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -324,6 +326,21 @@ public class AccountSession{
 			}
 		}
 		return false;
+	}
+
+	public List<FilterResult> getClientSideFilters(Status status) {
+		List<FilterResult> filters = List.of();
+
+		// filter post that have no alt text
+		// it only applies when activated in the settings
+		AltTextFilter altTextFilter=new AltTextFilter(FilterAction.WARN, EnumSet.allOf(FilterContext.class));
+		if(altTextFilter.matches(status)){
+			FilterResult filterResult=new FilterResult();
+			filterResult.filter=altTextFilter;
+			filterResult.keywordMatches=List.of();
+			filters.add(filterResult);
+		}
+		return filters;
 	}
 
 	public void updateAccountInfo(){
