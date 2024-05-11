@@ -329,7 +329,7 @@ public class AccountSession{
 	}
 
 	public List<FilterResult> getClientSideFilters(Status status) {
-		List<FilterResult> filters = List.of();
+		List<FilterResult> filters = new ArrayList<>();
 
 		// filter post that have no alt text
 		// it only applies when activated in the settings
