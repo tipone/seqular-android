@@ -228,7 +228,10 @@ public abstract class StatusDisplayItem{
 		LegacyFilter applyingFilter=null;
 		if(status.filtered!=null){
 			List<FilterResult> filters = status.filtered;
-			filters.addAll(AccountSessionManager.get(accountID).getClientSideFilters(status));
+
+			// Only add client filters if there are no pre-existing status filter
+			if(filters.isEmpty())
+				filters.addAll(AccountSessionManager.get(accountID).getClientSideFilters(status));
 
 			for(FilterResult filter:filters){
 				LegacyFilter f=filter.filter;
