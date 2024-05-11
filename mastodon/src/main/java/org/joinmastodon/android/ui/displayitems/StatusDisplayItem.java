@@ -28,10 +28,9 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.DisplayItemsParent;
-import org.joinmastodon.android.model.FilterAction;
-import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
+import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
@@ -40,7 +39,6 @@ import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.viewholders.AccountViewHolder;
-import org.joinmastodon.android.utils.StatusFilterPredicate;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -168,10 +166,6 @@ public abstract class StatusDisplayItem{
 		args.putString("account", accountID);
 		ScheduledStatus scheduledStatus = parentObject instanceof ScheduledStatus s ? s : null;
 
-		// Hide statuses that have a filter action of hide
-		if(!new StatusFilterPredicate(accountID, filterContext, FilterAction.HIDE).test(status))
-			return new ArrayList<StatusDisplayItem>() ;
-
 		HeaderStatusDisplayItem header=null;
 		boolean hideCounts=!AccountSessionManager.get(accountID).getLocalPreferences().showInteractionCounts;
 
@@ -233,19 +227,15 @@ public abstract class StatusDisplayItem{
 
 		LegacyFilter applyingFilter=null;
 		if(status.filtered!=null){
-			for(FilterResult filter:status.filtered){
+			List<FilterResult> filters = status.filtered;
+			filters.addAll(AccountSessionManager.get(accountID).getClientSideFilters(status));
+
+			for(FilterResult filter:filters){
 				LegacyFilter f=filter.filter;
 				if(f.isActive() && filterContext != null && f.context.contains(filterContext)){
 					applyingFilter=f;
 					break;
 				}
-			}
-
-			// Moshidon
-			if(applyingFilter==null){
-				StatusFilterPredicate predicate = new StatusFilterPredicate(accountID, filterContext, FilterAction.WARN);
-				predicate.test(status);
-				applyingFilter = predicate.getApplyingFilter();
 			}
 		}
 
@@ -273,8 +263,9 @@ public abstract class StatusDisplayItem{
 		boolean hasSpoiler=!TextUtils.isEmpty(statusForContent.spoilerText);
 		if(!TextUtils.isEmpty(statusForContent.content)){
 			SpannableStringBuilder parsedText=HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID, fragment.getContext());
-			HtmlParser.applyFilterHighlights(fragment.getActivity(), parsedText, status.filtered);
-			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, HtmlParser.parse(statusForContent.content, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, accountID, fragment.getContext()), fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
+			if(applyingFilter!=null)
+				HtmlParser.applyFilterHighlights(fragment.getActivity(), parsedText, status.filtered);
+			TextStatusDisplayItem text=new TextStatusDisplayItem(parentID, parsedText, fragment, statusForContent, (flags & FLAG_NO_TRANSLATE) != 0);
 			contentItems.add(text);
 		}else if(!hasSpoiler && header!=null){
 			header.needBottomPadding=true;
