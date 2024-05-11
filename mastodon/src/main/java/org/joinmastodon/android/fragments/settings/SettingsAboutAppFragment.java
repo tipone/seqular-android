@@ -37,7 +37,6 @@ import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.Snackbar;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.updater.GithubSelfUpdater;
-import org.joinmastodon.android.utils.FileProvider;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -46,6 +45,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -63,6 +63,7 @@ import me.grishka.appkit.utils.V;
 public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> implements HasAccountID{
 	private static final String TAG="SettingsAboutAppFragment";
 	private static final int IMPORT_RESULT=314;
+	private static final int EXPORT_RESULT=271;
 	private ListItem<Void> mediaCacheItem, copyCrashLogItem;
 	private CheckableListItem<Void> enablePreReleasesItem;
 	private AccountSession session;
@@ -161,40 +162,11 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 	}
 
 	private void onExportClick(ListItem<?> item){
-		Gson gson = new Gson();
-		JsonObject jsonObject = new JsonObject();
-		jsonObject.addProperty("versionName", BuildConfig.VERSION_NAME);
-		jsonObject.addProperty("versionCode", BuildConfig.VERSION_CODE);
-
-		// GlobalUserPreferences
-		//TODO: remove prefs that should not be exported
-		JsonElement je = gson.toJsonTree(GlobalUserPreferences.getPrefs().getAll());
-		jsonObject.add("GlobalUserPreferences", je);
-
-		// add account local prefs
-		for(AccountSession accountSession: AccountSessionManager.getInstance().getLoggedInAccounts()) {
-            Map<String, ?> prefs = accountSession.getRawLocalPreferences().getAll();
-			//TODO: remove prefs that should not be exported
-			JsonElement accountPrefs = gson.toJsonTree(prefs);
-			jsonObject.add(accountSession.self.id, accountPrefs);
-		}
-
-		try {
-			File file = new File(getContext().getCacheDir(), "moshidon-exported-settings.json");
-			FileWriter writer = new FileWriter(file);
-			writer.write(jsonObject.toString());
-			writer.flush();
-			writer.close();
-
-			Intent intent = new Intent(Intent.ACTION_SEND);
-			intent.setType("application/json");
-			Uri outputUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", file);
-			intent.putExtra(Intent.EXTRA_STREAM, outputUri);
-			startActivity(Intent.createChooser(intent, getContext().getString(R.string.export_settings_share)));
-		} catch (IOException e) {
-			Toast.makeText(getContext(), getContext().getString(R.string.export_settings_fail), Toast.LENGTH_SHORT).show();
-			Log.w(TAG, e);
-		}
+		// The magic will happen on the onActivityResult Method
+		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+		intent.setType("application/json");
+		intent.putExtra(Intent.EXTRA_TITLE,"moshidon-exported-settings.json");
+		startActivityForResult(intent, EXPORT_RESULT);
 	}
 
 	private void onImportClick(ListItem<?> item){
@@ -290,6 +262,46 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 			}catch(IOException e){
 				Log.w(TAG, e);
 				Toast.makeText(getContext(), getContext().getString(R.string.import_settings_failed), Toast.LENGTH_SHORT).show();
+			}
+		}
+
+		if(requestCode == EXPORT_RESULT && resultCode==Activity.RESULT_OK) {
+			try{
+				Gson gson = new Gson();
+				JsonObject jsonObject = new JsonObject();
+				jsonObject.addProperty("versionName", BuildConfig.VERSION_NAME);
+				jsonObject.addProperty("versionCode", BuildConfig.VERSION_CODE);
+
+				// GlobalUserPreferences
+				//TODO: remove prefs that should not be exported
+				JsonElement je = gson.toJsonTree(GlobalUserPreferences.getPrefs().getAll());
+				jsonObject.add("GlobalUserPreferences", je);
+
+				// add account local prefs
+				for(AccountSession accountSession: AccountSessionManager.getInstance().getLoggedInAccounts()) {
+					Map<String, ?> prefs = accountSession.getRawLocalPreferences().getAll();
+					//TODO: remove prefs that should not be exported
+					JsonElement accountPrefs = gson.toJsonTree(prefs);
+					jsonObject.add(accountSession.self.id, accountPrefs);
+				}
+
+				File file = new File(getContext().getCacheDir(), "moshidon-exported-settings.json");
+				FileWriter writer = new FileWriter(file);
+				writer.write(jsonObject.toString());
+				writer.flush();
+				writer.close();
+
+				// Got this from stackoverflow at https://stackoverflow.com/a/67046741
+				InputStream is = new FileInputStream(file);
+				OutputStream os = getContext().getContentResolver().openOutputStream(data.getData());
+
+				byte[] buffer = new byte[1024];
+				int length;
+				while ((length = is.read(buffer)) > 0) {
+					os.write(buffer, 0, length);
+				}
+			}catch(IOException e){
+				Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT);
 			}
 		}
 	}
