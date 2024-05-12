@@ -85,7 +85,10 @@ public class CustomLocalTimelineFragment extends PinnableStatusListFragment impl
 
     @Override
     public Uri getWebUri(Uri.Builder base) {
-        return Uri.parse(domain);
+		return new Uri.Builder()
+				.scheme("https")
+				.authority(domain)
+				.build();
     }
 
     @Override
