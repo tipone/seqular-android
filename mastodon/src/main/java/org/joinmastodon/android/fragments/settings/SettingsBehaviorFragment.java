@@ -178,14 +178,14 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 
 	private void onCustomTabsClick(ListItem<?> item){
 //		GlobalUserPreferences.useCustomTabs=customTabsItem.checked;
-		Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("http://example.com"));
-		ResolveInfo info=getActivity().getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
-		final String browserName;
-		if(info==null){
-			browserName="??";
-		}else{
-			browserName=info.loadLabel(getActivity().getPackageManager()).toString();
-		}
+//		Intent intent=new Intent(Intent.ACTION_VIEW, Uri.parse("http://example.com"));
+//		ResolveInfo info=getActivity().getPackageManager().resolveActivity(intent, PackageManager.MATCH_DEFAULT_ONLY);
+		final String browserName = getContext().getString(R.string.system_browser);
+//		if(info==null){
+//			browserName="??";
+//		}else{
+//			browserName=info.loadLabel(getActivity().getPackageManager()).toString();
+//		}
 		ArrayAdapter<CharSequence> adapter=new ArrayAdapter<>(getActivity(), R.layout.item_alert_single_choice_2lines_but_different, R.id.text,
 				new String[]{getString(R.string.in_app_browser), getString(R.string.system_browser)}){
 			@Override

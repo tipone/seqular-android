@@ -25,10 +25,6 @@
 		<intent>
 			<action android:name="android.intent.action.TRANSLATE" />
 		</intent>
-		<intent>
-			<action android:name="android.intent.action.VIEW"/>
-			<data android:scheme="http"/>
-		</intent>
 	</queries>
 
 	<application
