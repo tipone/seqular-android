@@ -198,12 +198,12 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 			public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent){
 				View view=super.getView(position, convertView, parent);
 				TextView subtitle=view.findViewById(R.id.subtitle);
-				if(position==0){
-					subtitle.setVisibility(View.GONE);
-				}else{
-					subtitle.setVisibility(View.VISIBLE);
-					subtitle.setText(browserName);
-				}
+//				if(position==0){
+				subtitle.setVisibility(View.GONE);
+//				}else{
+//					subtitle.setVisibility(View.VISIBLE);
+//					subtitle.setText(browserName);
+//				}
 				return view;
 			}
 		};
