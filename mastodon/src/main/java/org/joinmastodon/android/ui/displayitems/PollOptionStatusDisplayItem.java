@@ -154,6 +154,7 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 			int targetLevel=shown ? Math.round(10000f*item.votesFraction) : 0;
 			ObjectAnimator animator=ObjectAnimator.ofInt(bg, "level", startLevel, targetLevel);
 			animator.setDuration(ANIMATION_DURATION);
+			animator.setInterpolator(new DecelerateInterpolator());
 			button.setBackground(bg);
 			if(shown){
 				itemView.setSelected(item.poll.ownVotes!=null && item.poll.ownVotes.contains(item.optionIndex));
