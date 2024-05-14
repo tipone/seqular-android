@@ -418,7 +418,7 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		UiUtils.loadCustomEmojiInTextView(replyButtonText);
 		replyButtonAva.setOutlineProvider(OutlineProviders.OVAL);
 		replyButtonAva.setClipToOutline(true);
-		replyButton.setOnClickListener(v->openReply());
+		replyButton.setOnClickListener(v->openReply(mainStatus, accountID));
 		replyButton.setOnLongClickListener(this::onReplyLongClick);
 		Account self=AccountSessionManager.get(accountID).self;
 		if(!TextUtils.isEmpty(self.avatar)){
@@ -570,11 +570,11 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		super.onApplyWindowInsets(UiUtils.applyBottomInsetToFixedView(replyContainer, insets));
 	}
 
-	private void openReply(){
-		maybeShowPreReplySheet(mainStatus, ()->{
+	private void openReply(Status status, String accountID){
+		maybeShowPreReplySheet(status, ()->{
 			Bundle args=new Bundle();
 			args.putString("account", accountID);
-			args.putParcelable("replyTo", Parcels.wrap(mainStatus));
+			args.putParcelable("replyTo", Parcels.wrap(status));
 			args.putBoolean("fromThreadFragment", true);
 			Nav.go(getActivity(), ComposeFragment.class, args);
 		});
@@ -583,9 +583,10 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 		if(mainStatus.preview) return false;
 		if (AccountSessionManager.getInstance().getLoggedInAccounts().size() < 2) return false;
 		UiUtils.pickAccount(v.getContext(), accountID, R.string.sk_reply_as, R.drawable.ic_fluent_arrow_reply_28_regular, session -> {
-			UiUtils.lookupStatus(v.getContext(), mainStatus, accountID, session.getID(), status -> {
+			String pickedAccountID = session.getID();
+				UiUtils.lookupStatus(v.getContext(), mainStatus, pickedAccountID, accountID, status -> {
 				if (status == null) return;
-				openReply();
+				openReply(status, pickedAccountID);
 			});
 		}, null);
 		return true;
