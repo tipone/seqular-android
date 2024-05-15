@@ -96,4 +96,5 @@
     <string name="mo_filter_notifications">过滤通知</string>
     <string name="mo_notification_filter_reset">重置为默认值</string>
     <string name="mo_instance_view_info">查看服务器信息</string>
+    <string name="mo_mute_notifications">隐藏来自此用户的通知？</string>
 </resources>
