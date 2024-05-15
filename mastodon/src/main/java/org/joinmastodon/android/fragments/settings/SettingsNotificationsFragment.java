@@ -363,4 +363,9 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 					rebindItem(unifiedPushItem);
 				}).setOnCancelListener(d->rebindItem(unifiedPushItem)).show();
 	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/settings/preferences/notifications").build();
+	}
 }

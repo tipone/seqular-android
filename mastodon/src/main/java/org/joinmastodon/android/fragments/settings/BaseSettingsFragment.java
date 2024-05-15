@@ -1,11 +1,13 @@
 package org.joinmastodon.android.fragments.settings;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowInsets;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.fragments.HasAccountID;
 import org.joinmastodon.android.fragments.MastodonRecyclerFragment;
 import org.joinmastodon.android.model.viewmodel.CheckableListItem;
 import org.joinmastodon.android.model.viewmodel.ListItem;
@@ -14,10 +16,11 @@ import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.adapters.GenericListItemsAdapter;
 import org.joinmastodon.android.ui.viewholders.ListItemViewHolder;
 import org.joinmastodon.android.ui.viewholders.SimpleListItemViewHolder;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public abstract class BaseSettingsFragment<T> extends MastodonRecyclerFragment<ListItem<T>>{
+public abstract class BaseSettingsFragment<T> extends MastodonRecyclerFragment<ListItem<T>> implements HasAccountID, ProvidesAssistContent.ProvidesWebUri{
 	protected GenericListItemsAdapter<T> itemsAdapter;
 	protected String accountID;
 
@@ -82,5 +85,15 @@ public abstract class BaseSettingsFragment<T> extends MastodonRecyclerFragment<L
 			list.setPadding(0, 0, 0, 0);
 		}
 		super.onApplyWindowInsets(insets);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/settings").build();
 	}
 }

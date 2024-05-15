@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments.discover;
 
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -19,6 +20,7 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +42,7 @@ import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> implements ScrollableToTop, IsOnTop{
+public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> implements ScrollableToTop, IsOnTop, ProvidesAssistContent.ProvidesWebUri{
 	private String accountID;
 	private DiscoverInfoBannerHelper bannerHelper;
 	private MergeRecyclerAdapter mergeAdapter;
@@ -113,6 +115,16 @@ public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> im
 	@Override
 	public boolean isOnTop(){
 		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/links").build();
 	}
 
 	private class LinksAdapter extends UsableRecyclerView.Adapter<BaseLinkViewHolder> implements ImageLoaderRecyclerAdapter{

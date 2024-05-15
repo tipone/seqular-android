@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.settings;
 
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
@@ -328,5 +329,9 @@ public class EditFilterFragment extends BaseSettingsFragment<Void> implements On
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(filter == null ? "/filters/new" : "/filters/"+ filter.id + "/edit").build();
 	}
 }
