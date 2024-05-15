@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.discover;
 
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -13,6 +14,7 @@ import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.HashtagChartView;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import java.util.List;
 
@@ -23,7 +25,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class TrendingHashtagsFragment extends BaseRecyclerFragment<Hashtag> implements ScrollableToTop, IsOnTop{
+public class TrendingHashtagsFragment extends BaseRecyclerFragment<Hashtag> implements ScrollableToTop, IsOnTop, ProvidesAssistContent.ProvidesWebUri{
 	private String accountID;
 
 	public TrendingHashtagsFragment(){
@@ -63,6 +65,16 @@ public class TrendingHashtagsFragment extends BaseRecyclerFragment<Hashtag> impl
 	@Override
 	public boolean isOnTop(){
 		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/tags").build();
 	}
 
 	private class HashtagsAdapter extends RecyclerView.Adapter<HashtagViewHolder>{
