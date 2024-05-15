@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.settings;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import com.squareup.otto.Subscribe;
@@ -106,5 +107,10 @@ public class SettingsFiltersFragment extends BaseSettingsFragment<Filter>{
 		}
 		data.add(makeListItem(ev.filter));
 		itemsAdapter.notifyItemInserted(data.size()-1);
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/filters").build();
 	}
 }
