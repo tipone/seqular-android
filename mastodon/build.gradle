@@ -102,9 +102,13 @@ android {
 			shrinkResources true
 			versionNameSuffix '-play'
 		}
-		githubRelease { initWith release }
+		githubRelease {
+			initWith release
+			versionNameSuffix '-github'
+		}
 		fdroidRelease {
 			initWith release
+			versionNameSuffix '-fdroid'
 //			signingConfig signingConfigs.release
 		}
 	}
