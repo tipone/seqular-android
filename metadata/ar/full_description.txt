@@ -1,17 +1,13 @@
-Megalodon is a modified version of the <a href="https://github.com/mastodon/mastodon-android">official Mastodon Android app</a> adding important features that are missing in the official app, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
+Megalodon هو نسخة معدلة من <a href="https://github.com/mastodon/mastodon-android">تطبيق Mastodon الرسمي لنظام Android</a>، مما يضيف ميزات مهمة مفقودة في التطبيق الرسمي، مثل الجدول الزمني والنشر غير المدرج وعارض وصف الصورة.
 
-<b>Key features</b>
+<b>الميزات الرئيسية</b>
 
-- <b>Unlisted posting</b>: Post publicly without having your post show up in trends, hashtags or public timelines.
-- <b>Federated timeline</b>: See all public posts from people on all other Fediverse neighborhoods your home instance is connected to.
-- <b>Image description viewer</b>: Quickly check whether an image or video has an alt text attached to it.
-- <b>Pinning posts</b>: Pin your most important posts to your profile and see what others have pinned using the “Pinned“ tab.
-- <b>Bookmarks</b>: Quickly save posts and find them later in the Bookmarks list.
-- <b>Follow hashtags</b>: See new posts from specific hashtags directly in your home timeline by following them.
-- <b>Answering follow requests</b>: Accept or decline follow requests from your notifications or the dedicated Follow requests list.
-- <b>Delete and re-draft</b>: The much-loved feature that made editing possible without an actual editing function.
-
-<b>Unreleased official features, available in advance</b>
-
-- Editing posts
-- Integrated updater for GitHub releases
+- <b>النشر غير المدرج</b>: انشر بشكل عام دون ظهور منشورك في الاتجاهات أو علامات التصنيف أو الخطوط الزمنية العامة.
+- <b>المخطط الزمني المتحد</b>: شاهد جميع المنشورات العامة من الأشخاص في جميع أحياء Fediverse الأخرى التي يتصل بها مثيل منزلك.
+- <b>الجداول الزمنية المخصصة</b>: قم بتثبيت أي قائمة أو علامة تصنيف في علامة التبويب الرئيسية في Megalodon للتمرير بين الموضوعات والأشخاص المفضلين لديك!
+- <b>المسودات والمشاركات المجدولة</b>: تتيح إمكانية إعداد منشور وجدولة إرساله تلقائيًا في وقت محدد.
+- <b>الرد على طلبات المتابعة</b>: قبول طلبات المتابعة أو رفضها من إشعاراتك أو قائمة طلبات المتابعة المخصصة.
+- <b>الحذف وإعادة الصياغة</b>: الميزة المحبوبة جدًا التي جعلت التحرير ممكنًا بدون وظيفة تحرير فعلية.
+- <b>مؤشر رؤية المنشور</b>: عند فتح مشاركة أو الرد عليها، سيتم عرض رمز مفيد يشير إلى رؤية المشاركة.
+- <b>سمات الألوان</b>: إذا لم يعجبك اللون الوردي الافتراضي (سمكة القرش تحكم عليك بصمت)، فإن سمات الألوان في Moshidon ستلبي احتياجاتك.
+- <b>توافق أفضل</b>: بالنسبة لأولئك الذين يستخدمون خوادم Glitch أو Akkoma، يوفر Megalodon العديد من الميزات والتحسينات الإضافية.
