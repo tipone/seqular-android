@@ -1,10 +1,15 @@
 package org.joinmastodon.android.ui.displayitems;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,12 +18,10 @@ import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.OutlineProviders;
-import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
-import java.util.Collections;
 import java.util.Locale;
 
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
@@ -80,6 +83,7 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 		private final View button;
 		private final ImageView icon;
 		private final Drawable progressBg;
+		private static final int ANIMATION_DURATION=500;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_poll_option, parent);
@@ -145,7 +149,33 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 		public void showResults(boolean shown) {
 			item.showResults = shown;
 			item.calculateResults();
-			rebind();
+			Drawable bg=progressBg;
+			int startLevel=shown ? 0 : progressBg.getLevel();
+			int targetLevel=shown ? Math.round(10000f*item.votesFraction) : 0;
+			ObjectAnimator animator=ObjectAnimator.ofInt(bg, "level", startLevel, targetLevel);
+			animator.setDuration(ANIMATION_DURATION);
+			animator.setInterpolator(new DecelerateInterpolator());
+			button.setBackground(bg);
+			if(shown){
+				itemView.setSelected(item.poll.ownVotes!=null && item.poll.ownVotes.contains(item.optionIndex));
+				// animate percent
+				percent.setVisibility(View.VISIBLE);
+				ValueAnimator percentAnimation=ValueAnimator.ofInt(0, Math.round(100f*item.votesFraction));
+				percentAnimation.setDuration(ANIMATION_DURATION);
+				percentAnimation.setInterpolator(new DecelerateInterpolator());
+				percentAnimation.addUpdateListener(animation -> percent.setText(String.format(Locale.getDefault(), "%d%%", (int) animation.getAnimatedValue())));
+				percentAnimation.start();
+			}else{
+				animator.addListener(new AnimatorListenerAdapter(){
+					@Override
+					public void onAnimationEnd(Animator animation){
+						button.setBackgroundResource(R.drawable.bg_poll_option_clickable);
+					}
+				});
+				itemView.setSelected(item.poll.selectedOptions!=null && item.poll.selectedOptions.contains(item.option));
+				percent.setVisibility(View.GONE);
+			}
+			animator.start();
 		}
 	}
 }
