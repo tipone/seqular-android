@@ -150,10 +150,11 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 			item.showResults = shown;
 			item.calculateResults();
 			Drawable bg=progressBg;
+			long animationDuration = (long) (ANIMATION_DURATION*item.votesFraction);
 			int startLevel=shown ? 0 : progressBg.getLevel();
 			int targetLevel=shown ? Math.round(10000f*item.votesFraction) : 0;
 			ObjectAnimator animator=ObjectAnimator.ofInt(bg, "level", startLevel, targetLevel);
-			animator.setDuration(ANIMATION_DURATION);
+			animator.setDuration(animationDuration);
 			animator.setInterpolator(new DecelerateInterpolator());
 			button.setBackground(bg);
 			if(shown){
@@ -161,7 +162,7 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 				// animate percent
 				percent.setVisibility(View.VISIBLE);
 				ValueAnimator percentAnimation=ValueAnimator.ofInt(0, Math.round(100f*item.votesFraction));
-				percentAnimation.setDuration(ANIMATION_DURATION);
+				percentAnimation.setDuration(animationDuration);
 				percentAnimation.setInterpolator(new DecelerateInterpolator());
 				percentAnimation.addUpdateListener(animation -> percent.setText(String.format(Locale.getDefault(), "%d%%", (int) animation.getAnimatedValue())));
 				percentAnimation.start();
