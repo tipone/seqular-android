@@ -95,4 +95,6 @@
     <string name="mo_double_tap_to_search">Dotknij dwukrotnie, aby otworzyć wyszukiwanie</string>
     <string name="mo_muted_conversation_successfully">Pomyślnie wyciszono konwersację</string>
     <string name="mo_settings_show_posts_without_alt_summary">Posty będą ukryte na wszystkich osiach czasu, ale mogą zostać ujawnione w wątkach i powiadomieniach</string>
+    <string name="mo_instance_view_info">Zobacz informacje o serwerze</string>
+    <string name="mo_mute_notifications">Ukryć powiadomienia od tego użytkownika?</string>
 </resources>
