@@ -1,7 +1,5 @@
 package org.joinmastodon.android.fragments.settings;
 
-import static org.unifiedpush.android.connector.UnifiedPush.getDistributor;
-
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -15,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -48,6 +47,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	private HideableSingleViewRecyclerAdapter bannerAdapter;
 	private ImageView bannerIcon;
 	private TextView bannerText;
+	private TextView bannerTitle;
 	private Button bannerButton;
 
 	private CheckableListItem<Void> mentionsItem, boostsItem, favoritesItem, followersItem, pollsItem;
@@ -72,7 +72,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		lp=AccountSessionManager.get(accountID).getLocalPreferences();
 
 		getPushSubscription();
-		useUnifiedPush=!getDistributor(getContext()).isEmpty();
+		useUnifiedPush=!UnifiedPush.getDistributor(getContext()).isEmpty();
 
 		onDataLoaded(List.of(
 				pauseItem=new CheckableListItem<>(getString(R.string.pause_all_notifications), getPauseItemSubtitle(), CheckableListItem.Style.SWITCH, false, R.drawable.ic_fluent_alert_snooze_24_regular, i->onPauseNotificationsClick(false)),
@@ -158,6 +158,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	@Override
 	protected RecyclerView.Adapter<?> getAdapter(){
 		View banner=getActivity().getLayoutInflater().inflate(R.layout.item_settings_banner, list, false);
+		bannerTitle=banner.findViewById(R.id.title);
 		bannerText=banner.findViewById(R.id.text);
 		bannerIcon=banner.findViewById(R.id.icon);
 		bannerButton=banner.findViewById(R.id.button);
@@ -315,6 +316,20 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 			bannerText.setText(R.string.notifications_disabled_in_system);
 			bannerButton.setText(R.string.open_system_notification_settings);
 			bannerButton.setOnClickListener(v->openSystemNotificationSettings());
+		}else if(BuildConfig.BUILD_TYPE.equals("fdroidRelease") && UnifiedPush.getDistributor(getContext()).isEmpty()){
+			bannerAdapter.setVisible(true);
+			bannerIcon.setImageResource(R.drawable.ic_fluent_warning_24_filled);
+			bannerTitle.setVisibility(View.VISIBLE);
+			bannerTitle.setText(R.string.mo_settings_unifiedpush_warning);
+			if(UnifiedPush.getDistributors(getContext(), new ArrayList<>()).isEmpty()) {
+				bannerText.setText(R.string.mo_settings_unifiedpush_warning_no_distributors);
+				bannerButton.setText(R.string.info);
+				bannerButton.setOnClickListener(v->UiUtils.launchWebBrowser(getContext(), "https://unifiedpush.org/"));
+			} else {
+				bannerText.setText(R.string.mo_settings_unifiedpush_warning_disabled);
+				bannerButton.setText(R.string.mo_settings_unifiedpush_enable);
+				bannerButton.setOnClickListener(v->onUnifiedPushClick());
+			}
 		}else if(pauseTime>System.currentTimeMillis()){
 			bannerAdapter.setVisible(true);
 			bannerIcon.setImageResource(R.drawable.ic_fluent_alert_snooze_24_regular);
@@ -327,7 +342,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onUnifiedPushClick(){
-		if(getDistributor(getContext()).isEmpty()){
+		if(UnifiedPush.getDistributor(getContext()).isEmpty()){
 			List<String> distributors = UnifiedPush.getDistributors(getContext(), new ArrayList<>());
 			showUnifiedPushRegisterDialog(distributors);
 			return;
