@@ -648,7 +648,8 @@ public class PhotoViewer implements ZoomPanView.Listener{
 	private void shareFile(@NonNull File file) {
 		Intent intent = new Intent(Intent.ACTION_SEND);
 		Uri outputUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", file);
-		intent.setType(mimeTypeForFileName(outputUri.getLastPathSegment()));
+		intent.setDataAndType(outputUri, mimeTypeForFileName(outputUri.getLastPathSegment()));
+		intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		intent.putExtra(Intent.EXTRA_STREAM, outputUri);
 		activity.startActivity(Intent.createChooser(intent, activity.getString(R.string.button_share)));
 	}
