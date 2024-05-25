@@ -59,7 +59,7 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Attachment;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
-import org.joinmastodon.android.utils.FileProvider;
+import org.joinmastodon.android.ui.utils.UiUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -647,7 +647,7 @@ public class PhotoViewer implements ZoomPanView.Listener{
 
 	private void shareFile(@NonNull File file) {
 		Intent intent = new Intent(Intent.ACTION_SEND);
-		Uri outputUri = FileProvider.getUriForFile(activity, activity.getPackageName() + ".fileprovider", file);
+		Uri outputUri = UiUtils.getFileProviderUri(activity, file);
 		intent.setDataAndType(outputUri, mimeTypeForFileName(outputUri.getLastPathSegment()));
 		intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 		intent.putExtra(Intent.EXTRA_STREAM, outputUri);
