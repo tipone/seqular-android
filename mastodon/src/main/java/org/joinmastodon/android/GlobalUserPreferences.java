@@ -57,7 +57,6 @@ public class GlobalUserPreferences{
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
 	public static boolean allowRemoteLoading;
-	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static boolean disableM3PillActiveIndicator;
 	public static boolean showNavigationLabels;
@@ -135,7 +134,6 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
-		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
 		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
@@ -209,7 +207,6 @@ public class GlobalUserPreferences{
 				.putBoolean("autoHideFab", autoHideFab)
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
-				.putBoolean("forwardReportDefault", forwardReportDefault)
 				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
 				.putBoolean("showNavigationLabels", showNavigationLabels)
 				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)

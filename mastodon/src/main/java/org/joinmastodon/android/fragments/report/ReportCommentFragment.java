@@ -100,7 +100,6 @@ public class ReportCommentFragment extends MastodonToolbarFragment{
 
 		ProgressBar topProgress=view.findViewById(R.id.top_progress);
 		topProgress.setProgress(getArguments().containsKey("ruleIDs") ? 75 : 66);
-		forwardSwitch.setChecked(GlobalUserPreferences.forwardReportDefault);
 	}
 
 	@Override
