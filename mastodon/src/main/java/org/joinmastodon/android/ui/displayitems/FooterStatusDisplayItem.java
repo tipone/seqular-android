@@ -200,18 +200,10 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		private void onReplyClick(View v){
 			if(item.status.preview) return;
-			if(item.status.isRemote){
-				UiUtils.lookupStatus(v.getContext(),
-						item.status, item.accountID, null,
-						status -> {
-							UiUtils.opacityIn(v);
-							openComposeView(status, item.accountID);
-						}
-				);
-				return;
-			}
-			UiUtils.opacityIn(v);
-			openComposeView(item.status, item.accountID);
+			applyInteraction(v, status -> {
+				UiUtils.opacityIn(v);
+				openComposeView(status, item.accountID);
+			});
 		}
 
 		private boolean onReplyLongClick(View v) {
@@ -243,22 +235,13 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 				onBoostLongClick(v);
 				return;
 			}
-			if(item.status.isRemote){
-				UiUtils.lookupStatus(v.getContext(),
-						item.status, item.accountID, null,
-						status -> {
-							if(status == null)
-								return;
-							boost.setSelected(!status.reblogged);
-							vibrateForAction(boost, !status.reblogged);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
-						}
-				);
-				return;
-			}
-			boost.setSelected(!item.status.reblogged);
-			vibrateForAction(boost, !item.status.reblogged);
-			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(item.status, !item.status.reblogged, null, r->boostConsumer(v, r));
+			applyInteraction(v, status -> {
+				if(status == null)
+					return;
+				boost.setSelected(!status.reblogged);
+				vibrateForAction(boost, !status.reblogged);
+				AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setReblogged(status, !status.reblogged, null, r->boostConsumer(v, r));
+			});
 		}
 
 		private void boostConsumer(View v, Status r) {
@@ -275,22 +258,12 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 			Consumer<StatusPrivacy> doReblog = (visibility) -> {
 				UiUtils.opacityOut(v);
-				if(item.status.isRemote){
-					UiUtils.lookupStatus(v.getContext(),
-							item.status, item.accountID, null,
-							status -> {
-								session.getStatusInteractionController()
-										.setReblogged(status, !status.reblogged, visibility, r->boostConsumer(v, r));
-								boost.setSelected(status.reblogged);
-								dialog.dismiss();
-							}
-					);
-				} else {
+				applyInteraction(v,status -> {
 					session.getStatusInteractionController()
-							.setReblogged(item.status, !item.status.reblogged, visibility, r->boostConsumer(v, r));
-					boost.setSelected(item.status.reblogged);
+							.setReblogged(status, !status.reblogged, visibility, r->boostConsumer(v, r));
+					boost.setSelected(status.reblogged);
 					dialog.dismiss();
-				}
+				});
 			};
 
 			View separator = menu.findViewById(R.id.separator);
@@ -364,33 +337,18 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		private void onFavoriteClick(View v){
 			if(item.status.preview) return;
-			if(item.status.isRemote){
-				UiUtils.lookupStatus(v.getContext(),
-						item.status, item.accountID, null,
-						status -> {
-							if(status == null)
-								return;
-							favorite.setSelected(!status.favourited);
-							vibrateForAction(favorite, !status.favourited);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
-								if (status.favourited && !GlobalUserPreferences.reduceMotion && !GlobalUserPreferences.likeIcon) {
-									v.startAnimation(spin);
-								}
-								UiUtils.opacityIn(v);
-								bindText(favorites, r.favouritesCount);
-							});
-						}
-				);
-				return;
-			}
-			favorite.setSelected(!item.status.favourited);
-			vibrateForAction(favorite, !item.status.favourited);
-			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(item.status, !item.status.favourited, r->{
-				if (item.status.favourited && !GlobalUserPreferences.reduceMotion && !GlobalUserPreferences.likeIcon) {
-					v.startAnimation(spin);
-				}
-				UiUtils.opacityIn(v);
-				bindText(favorites, r.favouritesCount);
+			applyInteraction(v, status -> {
+				if(status == null)
+					return;
+				favorite.setSelected(!status.favourited);
+				vibrateForAction(favorite, !status.favourited);
+				AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{
+					if (status.favourited && !GlobalUserPreferences.reduceMotion && !GlobalUserPreferences.likeIcon) {
+						v.startAnimation(spin);
+					}
+					UiUtils.opacityIn(v);
+					bindText(favorites, r.favouritesCount);
+				});
 			});
 		}
 
@@ -411,26 +369,16 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 
 		private void onBookmarkClick(View v){
 			if(item.status.preview) return;
-			if(item.status.isRemote){
-				UiUtils.lookupStatus(v.getContext(),
-						item.status, item.accountID, null,
-						status -> {
-							if(status == null)
-								return;
-							bookmark.setSelected(!status.bookmarked);
-							vibrateForAction(bookmark, !status.bookmarked);
-							AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
-								UiUtils.opacityIn(v);
-							});
-						}
-				);
-				return;
-			}
-			bookmark.setSelected(!item.status.bookmarked);
-			vibrateForAction(bookmark, !item.status.bookmarked);
-			AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(item.status, !item.status.bookmarked, r->{
-				UiUtils.opacityIn(v);
-			});
+			applyInteraction(v,
+					status -> {
+						if(status == null)
+							return;
+						bookmark.setSelected(!status.bookmarked);
+						vibrateForAction(bookmark, !status.bookmarked);
+						AccountSessionManager.getInstance().getAccount(item.accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked, r->{
+							UiUtils.opacityIn(v);
+						});
+					});
 		}
 
 		private boolean onBookmarkLongClick(View v) {
@@ -472,6 +420,17 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			if(id==R.id.share_btn)
 				return R.string.button_share;
 			return 0;
+		}
+
+		private void applyInteraction(View v, Consumer<Status> interactionConsumer) {
+			if(!item.status.isRemote){
+				interactionConsumer.accept(item.status);
+				return;
+			}
+			UiUtils.lookupStatus(v.getContext(),
+					item.status, item.accountID, null,
+					interactionConsumer
+			);
 		}
 
 		private static void vibrateForAction(View view, boolean isPositive) {
