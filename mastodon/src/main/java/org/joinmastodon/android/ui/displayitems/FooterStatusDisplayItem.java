@@ -422,6 +422,17 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 			return 0;
 		}
 
+		private void applyInteraction(View v, Consumer<Status> interactionConsumer) {
+			if(!item.status.isRemote){
+				interactionConsumer.accept(item.status);
+				return;
+			}
+			UiUtils.lookupStatus(v.getContext(),
+					item.status, item.accountID, null,
+					interactionConsumer
+			);
+		}
+
 		private static void vibrateForAction(View view, boolean isPositive) {
 			if (!GlobalUserPreferences.hapticFeedback) return;
 
