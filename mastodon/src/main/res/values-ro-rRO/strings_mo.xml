@@ -94,4 +94,6 @@
     <string name="mo_confirm_to_mute_hashtag">Sunteți sigur că doriți să amuțiți acest hashtag\?</string>
     <string name="mo_filter_notifications">Filtrați notificările</string>
     <string name="mo_notification_filter_reset">Resetați la valorile implicite</string>
+    <string name="mo_mute_notifications">Ascundeți notificările de la acest utilizator?</string>
+    <string name="mo_instance_view_info">Vizualizați informații server</string>
 </resources>
