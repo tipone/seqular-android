@@ -230,10 +230,13 @@ public class ThreadFragment extends StatusListFragment implements ProvidesAssist
 				s.filterRevealed = oldStatus.filterRevealed;
 			}
 			if (GlobalUserPreferences.autoRevealEqualSpoilers != AutoRevealMode.NEVER &&
-					s.spoilerText != null &&
-					s.spoilerText.equals(mainStatus.spoilerText)) {
-				if (GlobalUserPreferences.autoRevealEqualSpoilers == AutoRevealMode.DISCUSSIONS || Objects.equals(mainStatus.account.id, s.account.id)) {
-					s.spoilerRevealed = mainStatus.spoilerRevealed;
+					s.spoilerText != null){
+				if (s.spoilerText.equals(mainStatus.spoilerText) ||
+						(s.spoilerText.toLowerCase().startsWith("re: ") &&
+								s.spoilerText.substring(4).equals(mainStatus.spoilerText))){
+					if (GlobalUserPreferences.autoRevealEqualSpoilers == AutoRevealMode.DISCUSSIONS || Objects.equals(mainStatus.account.id, s.account.id)) {
+						s.spoilerRevealed = mainStatus.spoilerRevealed;
+					}
 				}
 			}
 		}
