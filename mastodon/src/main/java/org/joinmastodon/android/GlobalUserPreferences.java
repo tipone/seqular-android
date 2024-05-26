@@ -57,7 +57,6 @@ public class GlobalUserPreferences{
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
 	public static boolean allowRemoteLoading;
-	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static boolean disableM3PillActiveIndicator;
 	public static boolean showNavigationLabels;
@@ -75,10 +74,8 @@ public class GlobalUserPreferences{
 	public static boolean doubleTapToSearch;
 	public static boolean doubleTapToSwipe;
 	public static boolean confirmBeforeReblog;
-	public static boolean hapticFeedback;
 	public static boolean replyLineAboveHeader;
 	public static boolean swapBookmarkWithBoostAction;
-	public static boolean loadRemoteAccountFollowers;
 	public static boolean mentionRebloggerAutomatically;
 	public static boolean showPostsWithoutAlt;
 	public static boolean showMediaPreview;
@@ -137,7 +134,6 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
-		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
 		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
@@ -158,9 +154,7 @@ public class GlobalUserPreferences{
 		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
-		hapticFeedback=prefs.getBoolean("hapticFeedback", true);
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
-		loadRemoteAccountFollowers=prefs.getBoolean("loadRemoteAccountFollowers", true);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
 		showPostsWithoutAlt=prefs.getBoolean("showPostsWithoutAlt", true);
 		showMediaPreview=prefs.getBoolean("showMediaPreview", true);
@@ -213,7 +207,6 @@ public class GlobalUserPreferences{
 				.putBoolean("autoHideFab", autoHideFab)
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
-				.putBoolean("forwardReportDefault", forwardReportDefault)
 				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
 				.putBoolean("showNavigationLabels", showNavigationLabels)
 				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)
@@ -232,8 +225,6 @@ public class GlobalUserPreferences{
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
-				.putBoolean("loadRemoteAccountFollowers", loadRemoteAccountFollowers)
-				.putBoolean("hapticFeedback", hapticFeedback)
 				.putBoolean("mentionRebloggerAutomatically", mentionRebloggerAutomatically)
 				.putBoolean("showDividers", showDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
