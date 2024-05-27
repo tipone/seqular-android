@@ -614,6 +614,8 @@ public class PhotoViewer implements ZoomPanView.Listener{
 	private void shareAfterDownloading(Attachment att){
 		Uri uri=Uri.parse(att.url);
 
+		Toast.makeText(activity, R.string.downloading, Toast.LENGTH_SHORT).show();
+
 		MastodonAPIController.runInBackground(()->{
 			try {
 				OkHttpClient client = new OkHttpClient();
