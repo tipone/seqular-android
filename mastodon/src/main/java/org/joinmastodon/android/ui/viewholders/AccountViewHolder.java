@@ -148,9 +148,7 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		pronouns.setVisibility(pronounsString.isPresent() ? View.VISIBLE : View.GONE);
 		pronounsString.ifPresent(p -> HtmlParser.setTextWithCustomEmoji(pronouns, p, item.account.emojis));
 
-		if(item.account.bot) {
-			botIcon.setVisibility(View.VISIBLE);
-		}
+		botIcon.setVisibility(item.account.bot ? View.VISIBLE : View.GONE);
 
 		/* unused in megalodon
 		boolean hasVerifiedLink=item.verifiedLink!=null;
