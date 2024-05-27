@@ -102,9 +102,9 @@ public class PhotoViewerInfoSheet extends BottomSheet{
 
 		boostBtn.setOnClickListener(clickListener);
 		favoriteBtn.setOnClickListener(clickListener);
-		findViewById(R.id.btn_share).setOnClickListener(clickListener);
+//		findViewById(R.id.btn_share).setOnClickListener(clickListener);
 		bookmarkBtn.setOnClickListener(clickListener);
-		findViewById(R.id.btn_download).setOnClickListener(clickListener);
+//		findViewById(R.id.btn_download).setOnClickListener(clickListener);
 	}
 
 	private void showAltTextHelp(){

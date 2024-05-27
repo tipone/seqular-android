@@ -207,29 +207,29 @@ public class PhotoViewer implements ZoomPanView.Listener{
 		toolbar=uiOverlay.findViewById(R.id.toolbar);
 		toolbar.setNavigationOnClickListener(v->onStartSwipeToDismissTransition(0));
 
-		if(status!=null) {
+		toolbar.getMenu()
+				.add(R.string.download)
+				.setIcon(R.drawable.ic_fluent_arrow_download_24_regular)
+				.setOnMenuItemClickListener(item -> {
+					saveCurrentFile();
+					return true;
+				})
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+		toolbar.getMenu()
+				.add(R.string.button_share)
+				.setIcon(R.drawable.ic_fluent_share_24_regular)
+				.setOnMenuItemClickListener(item -> {
+					shareCurrentFile();
+					return true;
+				})
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+		if(status!=null){
 			toolbar.getMenu()
 					.add(R.string.info)
 					.setIcon(R.drawable.ic_fluent_info_24_regular)
-					.setOnMenuItemClickListener(item -> {
+					.setOnMenuItemClickListener(item->{
 						showInfoSheet();
-						return true;
-					})
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-		} else {
-			toolbar.getMenu()
-					.add(R.string.download)
-					.setIcon(R.drawable.ic_fluent_arrow_download_24_regular)
-					.setOnMenuItemClickListener(item -> {
-						saveCurrentFile();
-						return true;
-					})
-					.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
-			toolbar.getMenu()
-					.add(R.string.button_share)
-					.setIcon(R.drawable.ic_fluent_share_24_regular)
-					.setOnMenuItemClickListener(item -> {
-						shareCurrentFile();
 						return true;
 					})
 					.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
@@ -781,17 +781,18 @@ public class PhotoViewer implements ZoomPanView.Listener{
 					if(status!=null){
 						AccountSessionManager.get(accountID).getStatusInteractionController().setFavorited(status, !status.favourited, r->{});
 					}
-				}else if(id==R.id.btn_share){
-					if(status!=null){
-						shareCurrentFile();
-					}
+//				}else if(id==R.id.btn_share){
+//					if(status!=null){
+//						shareCurrentFile();
+//					}
 				}else if(id==R.id.btn_bookmark){
 					if(status!=null){
 						AccountSessionManager.get(accountID).getStatusInteractionController().setBookmarked(status, !status.bookmarked);
 					}
-				}else if(id==R.id.btn_download){
-					saveCurrentFile();
 				}
+//				else if(id==R.id.btn_download){
+//					saveCurrentFile();
+//				}
 			}
 		});
 		sheet.setStatus(status);
