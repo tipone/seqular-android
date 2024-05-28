@@ -434,6 +434,8 @@ public class FooterStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		private static void vibrateForAction(View view, boolean isPositive) {
+			if (!GlobalUserPreferences.hapticFeedback) return;
+
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
 				view.performHapticFeedback(isPositive ? HapticFeedbackConstants.CONFIRM : HapticFeedbackConstants.REJECT);
 				return;

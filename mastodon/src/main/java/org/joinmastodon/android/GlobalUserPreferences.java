@@ -74,6 +74,7 @@ public class GlobalUserPreferences{
 	public static boolean doubleTapToSearch;
 	public static boolean doubleTapToSwipe;
 	public static boolean confirmBeforeReblog;
+	public static boolean hapticFeedback;
 	public static boolean replyLineAboveHeader;
 	public static boolean swapBookmarkWithBoostAction;
 	public static boolean mentionRebloggerAutomatically;
@@ -154,6 +155,7 @@ public class GlobalUserPreferences{
 		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
 		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
 		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
+		hapticFeedback=prefs.getBoolean("hapticFeedback", true);
 		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
 		showPostsWithoutAlt=prefs.getBoolean("showPostsWithoutAlt", true);
@@ -225,6 +227,7 @@ public class GlobalUserPreferences{
 				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
 				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
 				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
+				.putBoolean("hapticFeedback", hapticFeedback)
 				.putBoolean("mentionRebloggerAutomatically", mentionRebloggerAutomatically)
 				.putBoolean("showDividers", showDividers)
 				.putBoolean("relocatePublishButton", relocatePublishButton)
