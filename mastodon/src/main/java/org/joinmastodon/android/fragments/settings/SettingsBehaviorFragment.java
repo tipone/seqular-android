@@ -1,5 +1,6 @@
 package org.joinmastodon.android.fragments.settings;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 	private CheckableListItem<Void> remoteLoadingItem, showBoostsItem, showRepliesItem, loadNewPostsItem, seeNewPostsBtnItem, overlayMediaItem;
 
 	// MOSHIDON
-    private CheckableListItem<Void> mentionRebloggerAutomaticallyItem, showPostsWithoutAltItem;
+    private CheckableListItem<Void> mentionRebloggerAutomaticallyItem, hapticFeedbackItem, showPostsWithoutAltItem;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState){
@@ -74,6 +75,11 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		if(isInstanceAkkoma()) items.add(
 				replyVisibilityItem=new ListItem<>(R.string.sk_settings_reply_visibility, getReplyVisibilityString(), R.drawable.ic_fluent_chat_24_regular, this::onReplyVisibilityClick)
 		);
+
+		// add a haptic feedback item for devices running Android 11 and below,
+		// as some OEMs do not implement the system setting haptic feedback setting
+		if(Build.VERSION.SDK_INT<=Build.VERSION_CODES.R)
+			items.add(hapticFeedbackItem=new CheckableListItem<>(R.string.mo_haptic_feedback, R.string.mo_setting_haptic_feedback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.hapticFeedback, R.drawable.ic_fluent_phone_vibrate_24_regular, i->toggleCheckableItem(hapticFeedbackItem), true));
 
 		loadNewPostsItem.checkedChangeListener=checked->onLoadNewPostsClick();
 		seeNewPostsBtnItem.isEnabled=loadNewPostsItem.checked;
@@ -211,6 +217,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.showNewPostsButton=seeNewPostsBtnItem.checked;
 		GlobalUserPreferences.allowRemoteLoading=remoteLoadingItem.checked;
 		GlobalUserPreferences.mentionRebloggerAutomatically=mentionRebloggerAutomaticallyItem.checked;
+		GlobalUserPreferences.hapticFeedback=hapticFeedbackItem.checked;
 		GlobalUserPreferences.showPostsWithoutAlt=showPostsWithoutAltItem.checked;
 		GlobalUserPreferences.save();
 		AccountLocalPreferences lp=getLocalPrefs();
