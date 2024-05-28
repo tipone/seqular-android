@@ -66,6 +66,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 				prefixRepliesItem=new ListItem<>(R.string.sk_settings_prefix_reply_cw_with_re, getPrefixWithRepliesString(), R.drawable.ic_fluent_arrow_reply_24_regular, this::onPrefixRepliesClick),
 				loadNewPostsItem=new CheckableListItem<>(R.string.sk_settings_load_new_posts, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.loadNewPosts, R.drawable.ic_fluent_arrow_sync_24_regular, i->onLoadNewPostsClick()),
 				seeNewPostsBtnItem=new CheckableListItem<>(R.string.sk_settings_see_new_posts_button, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.showNewPostsButton, R.drawable.ic_fluent_arrow_up_24_regular, i->toggleCheckableItem(seeNewPostsBtnItem)),
+				hapticFeedbackItem=new CheckableListItem<>(R.string.mo_haptic_feedback, R.string.mo_setting_haptic_feedback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.hapticFeedback, R.drawable.ic_fluent_phone_vibrate_24_regular, i->toggleCheckableItem(hapticFeedbackItem)),
 				remoteLoadingItem=new CheckableListItem<>(R.string.sk_settings_allow_remote_loading, R.string.sk_settings_allow_remote_loading_explanation, CheckableListItem.Style.SWITCH, GlobalUserPreferences.allowRemoteLoading, R.drawable.ic_fluent_communication_24_regular, i->toggleCheckableItem(remoteLoadingItem)),
 				mentionRebloggerAutomaticallyItem=new CheckableListItem<>(R.string.mo_mention_reblogger_automatically, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.mentionRebloggerAutomatically, R.drawable.ic_fluent_comment_mention_24_regular, i->toggleCheckableItem(mentionRebloggerAutomaticallyItem), true),
 				showBoostsItem=new CheckableListItem<>(R.string.sk_settings_show_boosts, 0, CheckableListItem.Style.SWITCH, lp.showBoosts, R.drawable.ic_fluent_arrow_repeat_all_24_regular, i->toggleCheckableItem(showBoostsItem)),
@@ -75,11 +76,6 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		if(isInstanceAkkoma()) items.add(
 				replyVisibilityItem=new ListItem<>(R.string.sk_settings_reply_visibility, getReplyVisibilityString(), R.drawable.ic_fluent_chat_24_regular, this::onReplyVisibilityClick)
 		);
-
-		// add a haptic feedback item for devices running Android 11 and below,
-		// as some OEMs do not implement the system setting haptic feedback setting
-		if(Build.VERSION.SDK_INT<=Build.VERSION_CODES.R)
-			items.add(hapticFeedbackItem=new CheckableListItem<>(R.string.mo_haptic_feedback, R.string.mo_setting_haptic_feedback_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.hapticFeedback, R.drawable.ic_fluent_phone_vibrate_24_regular, i->toggleCheckableItem(hapticFeedbackItem), true));
 
 		loadNewPostsItem.checkedChangeListener=checked->onLoadNewPostsClick();
 		seeNewPostsBtnItem.isEnabled=loadNewPostsItem.checked;
