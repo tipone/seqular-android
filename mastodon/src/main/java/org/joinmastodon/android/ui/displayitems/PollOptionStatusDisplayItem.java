@@ -32,7 +32,8 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 	private CharSequence translatedText;
 	public final Poll.Option option;
 	private CustomEmojiHelper emojiHelper=new CustomEmojiHelper();
-	private boolean showResults;
+	public boolean showResults;
+	public boolean isAnimating;
 	private float votesFraction; // 0..1
 	private boolean isMostVoted;
 	private final int optionIndex;
@@ -125,6 +126,11 @@ public class PollOptionStatusDisplayItem extends StatusDisplayItem{
 			}
 			text.setTextColor(UiUtils.getThemeColor(itemView.getContext(), android.R.attr.textColorPrimary));
 			percent.setTextColor(UiUtils.getThemeColor(itemView.getContext(), R.attr.colorM3OnSecondaryContainer));
+
+			if (item.isAnimating) {
+				showResults(item.showResults);
+				item.isAnimating= false;
+			}
 		}
 
 		@Override
