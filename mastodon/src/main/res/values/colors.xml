@@ -20,18 +20,41 @@
 	<color name="gray_50">#f5f5f9</color>
 	<color name="gray_25">#f7f8fa</color>
 
-	<color name="primary_25">#fafaff</color>
-	<color name="primary_50">#f4f3ff</color>
-	<color name="primary_100">#d7d7ff</color>
-	<color name="primary_200">#c7c7ff</color>
-	<color name="primary_300">#c2c2ff</color>
-	<color name="primary_400">#9999ff</color>
-	<color name="primary_500">#6364ff</color>
-	<color name="primary_600">#562cfc</color>
-	<color name="primary_700">#431cbb</color>
-	<color name="primary_800">#2f0c7a</color>
-	<color name="primary_900">#17063b</color>
+	<color name="purple_neutral_25">#FDF9FD</color>
+	<color name="purple_neutral_50">#EFEBFD</color>
+	<color name="purple_neutral_100">#E0DCF4</color>
+	<color name="purple_neutral_200">#C4C0D9</color>
+	<color name="purple_neutral_300">#AAA6BC</color>
+	<color name="purple_neutral_400">#908CA2</color>
+	<color name="purple_neutral_500">#757188</color>
+	<color name="purple_neutral_600">#5E5B6F</color>
+	<color name="purple_neutral_700">#484558</color>
+	<color name="purple_neutral_800">#333342</color>
+	<color name="purple_neutral_900">#212030</color>
 
+	<color name="purple_primary_25">#FDF9FD</color>
+	<color name="purple_primary_50">#EFEBFD</color>
+	<color name="purple_primary_100">#E1DCFD</color>
+	<color name="purple_primary_200">#C2BDFB</color>
+	<color name="purple_primary_300">#A7A2DF</color>
+	<color name="purple_primary_400">#8E88C2</color>
+	<color name="purple_primary_500">#726FA5</color>
+	<color name="purple_primary_600">#5B568E</color>
+	<color name="purple_primary_700">#464176</color>
+	<color name="purple_primary_800">#332D5E</color>
+	<color name="purple_primary_900">#1F1948</color>
+
+	<color name="primary_25">@color/purple_primary_25</color>
+	<color name="primary_50">@color/purple_primary_50</color>
+	<color name="primary_100">@color/purple_primary_100</color>
+	<color name="primary_200">@color/purple_primary_200</color>
+	<color name="primary_300">@color/purple_primary_300</color>
+	<color name="primary_400">@color/purple_primary_400</color>
+	<color name="primary_500">@color/purple_primary_500</color>
+	<color name="primary_600">@color/purple_primary_600</color>
+	<color name="primary_700">@color/purple_primary_700</color>
+	<color name="primary_800">@color/purple_primary_800</color>
+	<color name="primary_900">@color/purple_primary_900</color>
 
 	<color name="error_25">#FFFBFA</color>
 	<color name="error_50">#FEF3F2</color>
