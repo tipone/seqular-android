@@ -113,7 +113,7 @@ public class AccountViewHolder extends BindableViewHolder<AccountViewModel> impl
 		contextMenu.inflate(R.menu.profile);
 		contextMenu.setOnMenuItemClickListener(this::onContextMenuItemSelected);
 		menuButton.setOnClickListener(v->showMenuFromButton());
-		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI())
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI() && !UiUtils.isMagic())
 			contextMenu.getMenu().setGroupDividerEnabled(true);
 		UiUtils.enablePopupMenuIcons(fragment.getContext(), contextMenu);
 
