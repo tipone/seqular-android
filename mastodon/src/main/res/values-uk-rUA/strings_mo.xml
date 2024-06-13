@@ -58,7 +58,7 @@
     <string name="mo_instance_info_open_timeline">Локальна стрічка</string>
     <string name="mo_instance_info_moderated_servers">Модеровані сервери</string>
     <string name="mo_instance_admin">Адмініструється</string>
-    <string name="mo_setting_uniform_summary">Використовувати значок додатку для всіх сповіщень</string>
+    <string name="mo_setting_uniform_summary">Використовувати значок додатка для всіх сповіщень</string>
     <string name="mo_setting_reduced_motion_summary">Вимкнути анімацію взаємодії</string>
     <string name="mo_setting_play_gif_summary">Автоматичне відтворення GIF-файлів в аватарах та емоджі</string>
     <string name="mo_setting_remote_follower_summary">Показати підписників з інших серверів</string>
