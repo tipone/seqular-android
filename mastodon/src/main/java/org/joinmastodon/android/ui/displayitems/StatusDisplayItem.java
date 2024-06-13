@@ -230,7 +230,7 @@ public abstract class StatusDisplayItem{
 
 			LegacyFilter applyingFilter=null;
 			if(status.filtered!=null){
-				List<FilterResult> filters=status.filtered;
+				ArrayList<FilterResult> filters= new ArrayList<>(status.filtered);
 
 				// Only add client filters if there are no pre-existing status filter
 				if(filters.isEmpty())
