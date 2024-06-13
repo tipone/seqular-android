@@ -232,7 +232,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 
 	@Override
 	public Uri getWebUri(Uri.Builder base) {
-		return base.path((isInstanceAkkoma() ? "/tag/" : "/tags/") + hashtag).build();
+		return base.path((isInstanceAkkoma() ? "/tag/" : "/tags/") + hashtagName).build();
 	}
 
 	@Override
