@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.R;
@@ -32,7 +33,9 @@ public class ErrorStatusDisplayItem extends StatusDisplayItem{
 
 		public Holder(Context context, ViewGroup parent) {
 			super(context, R.layout.display_item_error, parent);
-			findViewById(R.id.button_open_browser).setOnClickListener(v -> UiUtils.launchWebBrowser(v.getContext(), item.status.url));
+			Button openInBrowserButton=findViewById(R.id.button_open_browser);
+			openInBrowserButton.setEnabled(item.status.url!=null);
+			openInBrowserButton.setOnClickListener(v -> UiUtils.launchWebBrowser(v.getContext(), item.status.url));
 			findViewById(R.id.button_copy_error_details).setOnClickListener(this::copyErrorDetails);
 		}
 
