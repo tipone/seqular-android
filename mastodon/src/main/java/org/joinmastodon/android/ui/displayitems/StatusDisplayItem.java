@@ -10,6 +10,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -379,7 +380,8 @@ public abstract class StatusDisplayItem{
 					: Collections.singletonList(warning)
 			);
 		} catch(Exception e) {
-			return new ArrayList<>(Collections.singletonList(new ErrorStatusDisplayItem(parentID, fragment, e)));
+			Log.e("StatusDisplayItem", "buildItems: failed to build StatusDisplayItem " + e);
+			return new ArrayList<>(Collections.singletonList(new ErrorStatusDisplayItem(parentID, statusForContent, fragment, e)));
 		}
 	}
 

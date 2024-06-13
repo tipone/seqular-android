@@ -133,4 +133,9 @@
 	<string name="export_settings_summary">Export all logged-in accounts\' settings and timelines</string>
 	<string name="import_settings_title">Import settings</string>
 	<string name="import_settings_summary">Import previously exported settings and timelines</string>
+
+	<!-- error display item	-->
+	<string name="mo_error_display_title">Failed to display post</string>
+	<string name="mo_error_display_text">Something went wrong while loading this post. If the problem persists, please report it on our Issues page along with the error details.</string>
+	<string name="mo_error_display_copy_error_details">Copy details</string>
 </resources>
