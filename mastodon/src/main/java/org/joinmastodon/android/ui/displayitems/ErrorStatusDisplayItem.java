@@ -1,23 +1,26 @@
 package org.joinmastodon.android.ui.displayitems;
 
 import android.content.Context;
-import android.net.Uri;
-import android.text.TextUtils;
+import android.os.Build;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
+import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
-import org.joinmastodon.android.model.Attachment;
+import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.utils.UiUtils;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public class ErrorStatusDisplayItem extends StatusDisplayItem{
 	private final Exception exception;
 
-	public ErrorStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Exception exception) {
+	public ErrorStatusDisplayItem(String parentID, Status status, BaseStatusListFragment<?> parentFragment, Exception exception) {
 		super(parentID, parentFragment);
 		this.exception=exception;
+		this.status=status;
 	}
 
 	@Override
@@ -26,24 +29,30 @@ public class ErrorStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ErrorStatusDisplayItem> {
-		private final TextView title, domain;
 
 		public Holder(Context context, ViewGroup parent) {
-			super(context, R.layout.display_item_file, parent);
-			title=findViewById(R.id.title);
-			domain=findViewById(R.id.domain);
-			findViewById(R.id.inner).setOnClickListener(this::onClick);
+			super(context, R.layout.display_item_error, parent);
+			findViewById(R.id.button_open_browser).setOnClickListener(v -> UiUtils.launchWebBrowser(v.getContext(), item.status.url));
+			findViewById(R.id.button_copy_error_details).setOnClickListener(this::copyErrorDetails);
 		}
 
 		@Override
-		public void onBind(ErrorStatusDisplayItem item) {
-			title.setText(item.exception.getMessage());
-//			title.setEllipsize(item.attachment.description != null ? TextUtils.TruncateAt.END : TextUtils.TruncateAt.MIDDLE);
-//			domain.setText(url.getHost());
-		}
+		public void onBind(ErrorStatusDisplayItem item) {}
 
-		private void onClick(View v) {
-//			UiUtils.openURL(itemView.getContext(), item.parentFragment.getAccountID(), getUrl());
+		private void copyErrorDetails(View v) {
+			StringWriter stringWriter=new StringWriter();
+			PrintWriter printWriter=new PrintWriter(stringWriter);
+			item.exception.printStackTrace(printWriter);
+			String stackTrace=stringWriter.toString();
+
+			String errorDetails=String.format(
+					"App Version: %s\nOS Version: %s\nStatus URL: %s\nException: %s",
+					v.getContext().getString(R.string.mo_settings_app_version, BuildConfig.VERSION_NAME, BuildConfig.VERSION_CODE),
+					"Android " + Build.VERSION.RELEASE,
+					item.status.url,
+					stackTrace
+			);
+			UiUtils.copyText(v, errorDetails);
 		}
 	}
 }
