@@ -35,6 +35,7 @@ import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -338,7 +339,8 @@ public class AccountSwitcherSheet extends BottomSheet{
 				onClick.accept(item.getID(), false);
 				return;
 			}
-			if(AccountSessionManager.getInstance().tryGetAccount(item.getID())!=null){
+			AccountSessionManager accountSessionManager=AccountSessionManager.getInstance();
+			if(accountSessionManager.tryGetAccount(item.getID())!=null && !Objects.equals(accountSessionManager.getLastActiveAccountID(), item.getID())){
 				AccountSessionManager.getInstance().setLastActiveAccountID(item.getID());
 				((MainActivity)activity).restartActivity();
 			}
