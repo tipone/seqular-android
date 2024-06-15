@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.timelines.GetTrendingLinksTimeline;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HomeTabFragment;
 import org.joinmastodon.android.fragments.StatusListFragment;
 import org.joinmastodon.android.model.Card;
@@ -28,6 +29,7 @@ import org.parceler.Parcels;
 
 import java.util.List;
 
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
@@ -82,6 +84,8 @@ public class DiscoverTrendingLinkTimelineFragment extends StatusListFragment{
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState){
 		super.onViewCreated(view, savedInstanceState);
+		fab=view.findViewById(R.id.fab);
+		fab.setOnClickListener(this::onFabClick);
 
 		if(getParentFragment() instanceof HomeTabFragment) return;
 
@@ -99,6 +103,20 @@ public class DiscoverTrendingLinkTimelineFragment extends StatusListFragment{
 				}
 			}
 		});
+	}
+
+
+	@Override
+	public boolean onFabLongClick(View v) {
+		return UiUtils.pickAccountForCompose(getActivity(), accountID, trendingLink.url);
+	}
+
+	@Override
+	public void onFabClick(View v){
+		Bundle args=new Bundle();
+		args.putString("account", accountID);
+		args.putString("prefilledText", trendingLink.url);
+		Nav.go(getActivity(), ComposeFragment.class, args);
 	}
 
 	@Override
