@@ -161,6 +161,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		notificationsBadge=tabBar.findViewById(R.id.notifications_badge);
 		notificationsBadge.setVisibility(View.GONE);
 
+		tabBar.selectTab(currentTab);
+
 		if(savedInstanceState==null){
 			getChildFragmentManager().beginTransaction()
 					.add(me.grishka.appkit.R.id.fragment_wrap, homeTabFragment)
@@ -182,7 +184,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				});
 			}
 		}
-		tabBar.selectTab(currentTab);
 
 		return content;
 	}
