@@ -21,6 +21,7 @@ import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +30,7 @@ import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
@@ -215,7 +217,16 @@ public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> im
 
 		@Override
 		public void onClick(){
-			UiUtils.launchWebBrowser(getActivity(), item.url);
+			//TODO: enable timeline for all servers once 4.3.0 is released
+			if(getInstance().isEmpty() ||
+					!getInstance().get().version.contains("4.3.0")){
+				UiUtils.launchWebBrowser(getActivity(), item.url);
+				return;
+			}
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putParcelable("trendingLink", Parcels.wrap(item));
+			Nav.go(getActivity(), DiscoverTrendingLinkTimelineFragment.class, args);
 		}
 	}
 
