@@ -38,9 +38,9 @@
     <string name="mo_miscellaneous_settings">Інші Налаштування</string>
     <string name="mo_duration_minutes_5">5 хвилин</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Вимкнути подвійне тицяння для перемикання між вкладками</string>
-    <string name="mo_swap_bookmark_with_reblog">Поміняти місцями кнопку закладки і реблогу</string>
+    <string name="mo_swap_bookmark_with_reblog">Поміняти місцями кнопку закладки і репосту</string>
     <string name="mo_load_remote_followers">Завантажити підписки та підписників з віддаленого профілю</string>
-    <string name="mo_mention_reblogger_automatically">Автоматично згадувати у відповідях акаунт, що реблогнув публікацію</string>
+    <string name="mo_mention_reblogger_automatically">Автоматично згадувати у відповідях обліковий запис, що реблогнув публікацію</string>
     <string name="mo_color_palette_black_and_white">Чорно-біла</string>
     <string name="mo_enable_dividers">Показати розділювачі публікацій</string>
     <string name="mo_notification_management_settings">Керувати сповіщеннями</string>
@@ -85,4 +85,21 @@
     <string name="mo_double_tap_to_search">Торкніться двічі, щоб відкрити пошук</string>
     <string name="mo_mute_notifications">Приховати сповіщення від цього користувача?</string>
     <string name="mo_settings_show_posts_without_alt_summary">Дописи будуть приховані в усіх стрічках, але їх можна буде бачити в гілках і сповіщеннях</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush не ввімкнено</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Не встановлено жодного дистриб\'ютора UnifiedPush. Ви не отримуватимете жодних сповіщень.</string>
+    <string name="mo_trending_link_read">Читати</string>
+    <string name="import_settings_confirm">Підтвердити імпорт налаштувань?</string>
+    <string name="import_settings_failed">Не вдалося імпортувати налаштування</string>
+    <string name="export_settings_share">Експортувати налаштування</string>
+    <string name="export_settings_title">Експортувати налаштування</string>
+    <string name="import_settings_title">Імпортувати налаштування</string>
+    <string name="mo_error_display_copy_error_details">Копіювати дані</string>
+    <string name="import_settings_confirm_body">Усі поточні налаштування і стрічки буде перезаписано! Цю дію не можна скасувати.</string>
+    <string name="export_settings_summary">Експортувати налаштування і стрічки всіх облікових записів, що увійшли до системи</string>
+    <string name="import_settings_summary">Імпортувати раніше експортовані налаштування і стрічки</string>
+    <string name="mo_settings_unifiedpush_enable">Увімкнути</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush не ввімкнено. Ви не отримуватимете жодних сповіщень.</string>
+    <string name="export_settings_fail">Не вдалося експортувати налаштування</string>
+    <string name="mo_error_display_title">Не вдалося відобразити публікацію</string>
+    <string name="mo_error_display_text">Щось пішло не так під час завантаження цього повідомлення. Якщо проблема не зникне, будь ласка, повідомте про неї на нашій сторінці «Issues» (Проблеми), вказавши деталі помилки.</string>
 </resources>
