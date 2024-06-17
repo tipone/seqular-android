@@ -25,7 +25,7 @@ Does this issue also occur with the respective upstream release?
 > No / Yes
 
 > In case it does, please consider filing an [upstream bug report](https://github.com/mastodon/mastodon-android/issues) instead.
-> If this bug is seriously impacting your usage or you think I might want to try to fix it for Megalodon, feel free to still create this issue!
+> If this bug is seriously impacting your usage or you think I might want to try to fix it for Moshidon, feel free to still create this issue!
 
 **Screenshots and screen recordings**
 
