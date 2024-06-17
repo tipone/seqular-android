@@ -95,4 +95,21 @@
     <string name="mo_notification_filter_reset">Restablecer por defecto</string>
     <string name="mo_instance_view_info">Ver Info do Servidor</string>
     <string name="mo_mute_notifications">Agochar as notificacións de esta usuaria?</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush non está activado. Non vas recibir notificacións.</string>
+    <string name="mo_settings_unifiedpush_enable">Activar</string>
+    <string name="import_settings_confirm">Confirmas a importación de axustes?</string>
+    <string name="import_settings_confirm_body">Todos os axustes actuais e cronoloxías serán substituídas! Esta decisión non ten volta.</string>
+    <string name="import_settings_failed">Fallou a importación de axutes</string>
+    <string name="export_settings_share">Exportar Axustes</string>
+    <string name="export_settings_fail">Fallou a exportación dos axustes</string>
+    <string name="export_settings_title">Exportar axustes</string>
+    <string name="import_settings_title">Importar axustes</string>
+    <string name="import_settings_summary">Importar axustes e cronoloxías de contas previamente exportadas</string>
+    <string name="mo_error_display_copy_error_details">Copiar detalles</string>
+    <string name="mo_trending_link_read">Ler</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush non está activado</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Non hai distribuidores UnifiedPush instalados. Non vas recibir notificacións.</string>
+    <string name="export_settings_summary">Exportar os axustes e cronoloxías de todas as contas</string>
+    <string name="mo_error_display_title">Non se puido mostrar a publicación</string>
+    <string name="mo_error_display_text">Algo fallou ao cargar esta publicación. Se o problema persiste, informa dos detalles do problema na nosa páxina de Incidencias.</string>
 </resources>
