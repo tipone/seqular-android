@@ -91,7 +91,11 @@ public class MastodonAPIController{
 		final boolean isBad = host == null || badDomains.stream().anyMatch(h -> h.equalsIgnoreCase(host) || host.toLowerCase().endsWith("." + h));
 		thread.postRunnable(()->{
 			try{
-//				if (isBad) throw new IllegalArgumentException();
+				if(isBad){
+					Log.i(TAG, "submitRequest: refusing to connect to bad domain: " + host);
+					throw new IllegalArgumentException("Failed to connect to domain");
+				}
+
 				if(req.canceled)
 					return;
 				Request.Builder builder=new Request.Builder()
