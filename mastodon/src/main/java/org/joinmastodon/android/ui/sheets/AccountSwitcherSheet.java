@@ -340,7 +340,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 				return;
 			}
 			AccountSessionManager accountSessionManager=AccountSessionManager.getInstance();
-			if(accountSessionManager.tryGetAccount(item.getID())!=null && !Objects.equals(accountSessionManager.getLastActiveAccountID(), item.getID())){
+			if(accountSessionManager.tryGetAccount(item.getID())!=null && !view.isChecked()){
 				AccountSessionManager.getInstance().setLastActiveAccountID(item.getID());
 				((MainActivity)activity).restartActivity();
 			}
