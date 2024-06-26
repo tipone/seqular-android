@@ -99,4 +99,21 @@
     <string name="mo_notification_filter_reset">Restablecer valores por defecto</string>
     <string name="mo_instance_view_info">Ver información del servidor</string>
     <string name="mo_mute_notifications">¿Ocultar las notificaciones de este usuario?</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush no habilitado</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush no está habilitado. No recibirás ninguna notificación.</string>
+    <string name="export_settings_share">Exportar configuración</string>
+    <string name="mo_error_display_text">Algo salió mal al cargar esta publicación. Si el problema persiste, infórmelo en nuestra página de Problemas junto con los detalles del error.</string>
+    <string name="import_settings_summary">Importar configuraciones y líneas de tiempo previamente exportadas</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">No hay distribuidores de UnifiedPush instalados. No recibirás ninguna notificación.</string>
+    <string name="mo_settings_unifiedpush_enable">Permitir</string>
+    <string name="import_settings_confirm">¿Confirmar para importar la configuración?</string>
+    <string name="import_settings_confirm_body">¡Se sobrescribirán todas las configuraciones y líneas de tiempo actuales! Esta acción no se puede deshacer.</string>
+    <string name="import_settings_failed">No se pudo importar la configuración</string>
+    <string name="export_settings_fail">No se pudo exportar la configuración</string>
+    <string name="export_settings_title">Exportar configuración</string>
+    <string name="export_settings_summary">Exportar configuraciones y cronogramas para todas las cuentas</string>
+    <string name="import_settings_title">Importar ajustes</string>
+    <string name="mo_error_display_title">No se pudo mostrar la publicación</string>
+    <string name="mo_error_display_copy_error_details">Copiar detalles</string>
+    <string name="mo_trending_link_read">Leer</string>
 </resources>
