@@ -123,6 +123,9 @@ public class HtmlParser{
 		int colorInsert=UiUtils.getThemeColor(context, R.attr.colorM3Success);
 		int colorDelete=UiUtils.getThemeColor(context, R.attr.colorM3Error);
 
+		if(source.endsWith("\n"))
+			source=source.stripTrailing();
+
 		Jsoup.parseBodyFragment(source).body().traverse(new NodeVisitor(){
 			private final ArrayList<SpanInfo> openSpans=new ArrayList<>();
 
