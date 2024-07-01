@@ -97,4 +97,14 @@
     <string name="mo_settings_show_posts_without_alt_summary">Posty będą ukryte na wszystkich osiach czasu, ale mogą zostać ujawnione w wątkach i powiadomieniach</string>
     <string name="mo_instance_view_info">Zobacz informacje o serwerze</string>
     <string name="mo_mute_notifications">Ukryć powiadomienia od tego użytkownika?</string>
+    <string name="mo_settings_unifiedpush_enable">Włącz</string>
+    <string name="export_settings_share">Eksportuj ustawienia</string>
+    <string name="export_settings_title">Eksport ustawień</string>
+    <string name="import_settings_title">Importuj ustawienia</string>
+    <string name="mo_error_display_copy_error_details">Kopiuj szczegóły</string>
+    <string name="mo_settings_unifiedpush_warning">Nie włączono UnifiedPush</string>
+    <string name="import_settings_confirm">Czy na pewno chcesz zaimportować ustawienia?</string>
+    <string name="import_settings_failed">Import ustawień się nie powiódł</string>
+    <string name="export_settings_fail">Nie udało się wyeksportować ustawień</string>
+    <string name="mo_error_display_title">Nie udało się wyświetlić wpisu</string>
 </resources>
