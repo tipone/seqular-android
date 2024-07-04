@@ -35,7 +35,6 @@ import org.joinmastodon.android.ui.views.CheckableRelativeLayout;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 
@@ -63,7 +62,7 @@ import me.grishka.appkit.views.UsableRecyclerView;
 public class AccountSwitcherSheet extends BottomSheet{
 	private final Activity activity;
 	private final HomeFragment fragment;
-	private final boolean externalShare, openInApp;
+	private final boolean accountChooser, openInApp;
 	private BiConsumer<String, Boolean> onClick;
 	private UsableRecyclerView list;
 	private List<WrappedAccount> accounts;
@@ -72,17 +71,22 @@ public class AccountSwitcherSheet extends BottomSheet{
 	private Runnable onLoggedOutCallback;
 
 	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment){
-		this(activity, fragment, false, false);
+		this(activity, fragment, 0, 0, null, false);
 	}
 
-	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, boolean externalShare, boolean openInApp){
+
+	public AccountSwitcherSheet(@NonNull Activity activity, @Nullable HomeFragment fragment, @DrawableRes int headerIcon,  @StringRes int headerTitle, String exceptFor, boolean openInApp){
 		super(activity);
 		this.activity=activity;
 		this.fragment=fragment;
-		this.externalShare = externalShare;
-		this.openInApp = openInApp;
+		this.accountChooser=headerTitle!=0;
+		// currently there is only one use case for a end row button (openInApp)
+		// if more are needed ti should be generified
+		this.openInApp=openInApp;
 
-		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream().map(WrappedAccount::new).collect(Collectors.toList());
+		accounts=AccountSessionManager.getInstance().getLoggedInAccounts().stream()
+					.filter(accountSession -> !accountSession.getID().equals(exceptFor))
+					.map(WrappedAccount::new).collect(Collectors.toList());
 
 		list=new UsableRecyclerView(activity);
 		imgLoader=new ListImageLoaderWrapper(activity, list, new RecyclerViewDelegate(list), null);
@@ -96,20 +100,21 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 		adapter.addAdapter(new SingleViewRecyclerAdapter(handle));
 
-		if (externalShare) {
+		if (accountChooser) {
 			FrameLayout shareHeading = new FrameLayout(activity);
 			activity.getLayoutInflater().inflate(R.layout.item_external_share_heading, shareHeading);
-			((TextView) shareHeading.findViewById(R.id.title)).setText(openInApp
-					? R.string.sk_external_share_or_open_title
-					: R.string.sk_external_share_title);
+			((ImageView) shareHeading.findViewById(R.id.icon)).setImageDrawable(getContext().getDrawable(headerIcon));
+			((TextView) shareHeading.findViewById(R.id.title)).setText(getContext().getString(headerTitle));
+
 			adapter.addAdapter(new SingleViewRecyclerAdapter(shareHeading));
 
-			setOnDismissListener((d) -> activity.finish());
+			// we're using the sheet for interactAs picking, so the activity should not be closed
+			setOnDismissListener(exceptFor!=null ? null : (d) ->  activity.finish());
 		}
 
 		adapter.addAdapter(accountsAdapter = new AccountsAdapter());
 
-		if (!externalShare) {
+		if (!accountChooser) {
 			adapter.addAdapter(new ClickableSingleViewRecyclerAdapter(makeSimpleListItem(R.string.add_account, R.drawable.ic_fluent_add_24_regular), () -> {
 				Nav.go(activity, CustomWelcomeFragment.class, null);
 				dismiss();
@@ -302,9 +307,9 @@ public class AccountSwitcherSheet extends BottomSheet{
 		public void onBind(AccountSession item){
 			HtmlParser.setTextWithCustomEmoji(name, item.self.getDisplayName(), item.self.emojis);
 			username.setText(item.getFullUsername());
-			radioButton.setVisibility(externalShare ? View.GONE : View.VISIBLE);
-			extraBtnWrap.setVisibility(externalShare && openInApp ? View.VISIBLE : View.GONE);
-			if (externalShare) view.setCheckable(false);
+			radioButton.setVisibility(accountChooser ? View.GONE : View.VISIBLE);
+			extraBtnWrap.setVisibility(accountChooser && openInApp ? View.VISIBLE : View.GONE);
+			if (accountChooser) view.setCheckable(false);
 			else {
 				String accountId = fragment != null
 						? fragment.getAccountID()
@@ -348,7 +353,7 @@ public class AccountSwitcherSheet extends BottomSheet{
 
 		@Override
 		public boolean onLongClick(){
-			if (externalShare) return false;
+			if (accountChooser) return false;
 			confirmLogOut(item.getID());
 			return true;
 		}

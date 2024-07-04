@@ -42,7 +42,11 @@ public class ExternalShareActivity extends FragmentStackActivity{
 				Toast.makeText(this, R.string.err_not_logged_in, Toast.LENGTH_SHORT).show();
 				finish();
 			} else if (isOpenable || sessions.size() > 1) {
-				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, true, isOpenable);
+				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, R.drawable.ic_fluent_share_28_regular,
+						isOpenable
+								? R.string.sk_external_share_or_open_title
+								: R.string.sk_external_share_title,
+						null, isOpenable);
 				sheet.setOnClick((accountId, open) -> {
 					if (open && text.isPresent()) {
 						BiConsumer<Class<? extends Fragment>, Bundle> callback = (clazz, args) -> {
