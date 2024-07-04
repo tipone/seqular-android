@@ -723,8 +723,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 
 		int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS | StatusDisplayItem.FLAG_IS_FOR_QUOTE);
-		if (GlobalUserPreferences.spectatorMode)
-			flags |= StatusDisplayItem.FLAG_NO_FOOTER;
 		if (!GlobalUserPreferences.showMediaPreview)
 			flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
 
