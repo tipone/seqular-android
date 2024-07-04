@@ -47,6 +47,7 @@ import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HashtagStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollOptionStatusDisplayItem;
@@ -704,6 +705,47 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		Status status=holder.getItem().status;
 		boolean isForQuote=holder.getItem().isForQuote;
 		toggleSpoiler(status, isForQuote, holder.getItemID());
+	}
+
+	public void onAddQuoteToStatus(Status status, Status parentStatus) {
+		int cardIndex=-1;
+		int textIndex=-1;
+		int i=0;
+		for(StatusDisplayItem item:displayItems){
+			if(item.parentID.equals(parentStatus.id)){
+				if(item instanceof LinkCardStatusDisplayItem){
+					cardIndex=i;
+				}else if(item instanceof TextStatusDisplayItem){
+					textIndex=i;
+				}
+			}
+			i++;
+		}
+
+		if (cardIndex!=-1) {
+			int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS);
+			if (GlobalUserPreferences.spectatorMode)
+				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+			if (!GlobalUserPreferences.showMediaPreview)
+				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, parentStatus, knownAccounts, null, flags);
+			displayItems.remove(cardIndex);
+			adapter.notifyItemRemoved(cardIndex);
+			displayItems.addAll(cardIndex, items);
+			adapter.notifyItemRangeInserted(cardIndex, items.size());
+			return;
+		}
+
+		if (textIndex!=-1) {
+			int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS);
+			if (GlobalUserPreferences.spectatorMode)
+				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+			if (!GlobalUserPreferences.showMediaPreview)
+				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, parentStatus, knownAccounts, null, flags);
+			displayItems.addAll(textIndex+1, items);
+			adapter.notifyItemRangeInserted(textIndex+1, items.size());
+		}
 	}
 
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder) {

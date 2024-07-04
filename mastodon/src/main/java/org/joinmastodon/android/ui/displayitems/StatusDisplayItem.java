@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
@@ -35,6 +36,7 @@ import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.ScheduledStatus;
+import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.text.HtmlParser;
@@ -48,9 +50,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import me.grishka.appkit.Nav;
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
 import me.grishka.appkit.utils.BindableViewHolder;
 import me.grishka.appkit.views.UsableRecyclerView;
@@ -370,6 +376,33 @@ public abstract class StatusDisplayItem{
 					}
 					item.index=i++;
 				}
+			}
+
+			// I actually forgot where I took this, but it works
+			Pattern pattern = Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
+			Matcher matcher = pattern.matcher(statusForContent.content);
+
+			String lastUrl = null;
+			if (matcher.find()) {
+				lastUrl = matcher.group(0);
+				// The regex doesn't capture the scheme, so I add one here manually, so that the looksLikeFediverseUrlMethod actually works
+				lastUrl = "https://" + lastUrl;
+			}
+
+			if (UiUtils.looksLikeFediverseUrl(lastUrl)) {
+				new GetSearchResults(lastUrl, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
+					@Override
+					public void onSuccess(SearchResults results){
+						if (!results.statuses.isEmpty()){
+							fragment.onAddQuoteToStatus(results.statuses.get(0), statusForContent);
+						}
+					}
+
+					@Override
+					public void onError(ErrorResponse error){
+						// Nothing
+					}
+				}).exec(accountID);
 			}
 
 			List<StatusDisplayItem> nonGapItems=gap!=null ? items.subList(0, items.size()-1) : items;
