@@ -722,12 +722,13 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			i++;
 		}
 
+		int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS | StatusDisplayItem.FLAG_IS_FOR_QUOTE);
+		if (GlobalUserPreferences.spectatorMode)
+			flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+		if (!GlobalUserPreferences.showMediaPreview)
+			flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
+
 		if (cardIndex!=-1) {
-			int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS);
-			if (GlobalUserPreferences.spectatorMode)
-				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
-			if (!GlobalUserPreferences.showMediaPreview)
-				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
 			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, parentStatus, knownAccounts, null, flags);
 			displayItems.remove(cardIndex);
 			adapter.notifyItemRemoved(cardIndex);
@@ -737,11 +738,6 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 
 		if (textIndex!=-1) {
-			int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS);
-			if (GlobalUserPreferences.spectatorMode)
-				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
-			if (!GlobalUserPreferences.showMediaPreview)
-				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
 			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, parentStatus, knownAccounts, null, flags);
 			displayItems.addAll(textIndex+1, items);
 			adapter.notifyItemRangeInserted(textIndex+1, items.size());
