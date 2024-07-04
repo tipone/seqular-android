@@ -389,7 +389,7 @@ public abstract class StatusDisplayItem{
 				lastUrl = "https://" + lastUrl;
 			}
 
-			if (UiUtils.looksLikeFediverseUrl(lastUrl)) {
+			if (UiUtils.looksLikeFediverseUrl(lastUrl) && statusForContent.quote == null) {
 				new GetSearchResults(lastUrl, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(SearchResults results){
