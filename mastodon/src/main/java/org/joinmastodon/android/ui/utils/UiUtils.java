@@ -131,6 +131,7 @@ import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.Snackbar;
+import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.sheets.BlockAccountConfirmationSheet;
 import org.joinmastodon.android.ui.sheets.MuteAccountConfirmationSheet;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
@@ -1213,18 +1214,9 @@ public class UiUtils {
 	}
 
 	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {
-		List<AccountSession> sessions = AccountSessionManager.getInstance().getLoggedInAccounts()
-				.stream().filter(s -> !s.getID().equals(exceptFor)).collect(Collectors.toList());
-
-		AlertDialog.Builder builder = new M3AlertDialogBuilder(context)
-				.setItems(
-						sessions.stream().map(AccountSession::getFullUsername).toArray(String[]::new),
-						(dialog, which) -> sessionConsumer.accept(sessions.get(which))
-				)
-				.setTitle(titleRes == 0 ? R.string.choose_account : titleRes)
-				.setIcon(iconRes);
-		if (transformDialog != null) transformDialog.accept(builder);
-		builder.show();
+		AccountSwitcherSheet sheet = new AccountSwitcherSheet((Activity) context, null, iconRes, titleRes == 0 ? R.string.choose_account : titleRes, exceptFor, false);
+		sheet.setOnClick((accountId, open) ->sessionConsumer.accept(AccountSessionManager.get(accountId)));
+		sheet.show();
 	}
 
 	public static void restartApp() {
