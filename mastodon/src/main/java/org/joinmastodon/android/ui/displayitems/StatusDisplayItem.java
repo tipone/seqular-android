@@ -380,10 +380,10 @@ public abstract class StatusDisplayItem{
 
 			// I actually forgot where I took this, but it works
 			Pattern pattern = Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
-			Matcher matcher = pattern.matcher(statusForContent.content);
+			Matcher matcher = pattern.matcher(statusForContent.getStrippedText());
 
 			String lastUrl = null;
-			if (matcher.find()) {
+			while (matcher.find()) {
 				lastUrl = matcher.group(0);
 				// The regex doesn't capture the scheme, so I add one here manually, so that the looksLikeFediverseUrlMethod actually works
 				lastUrl = "https://" + lastUrl;
