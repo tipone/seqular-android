@@ -13,7 +13,6 @@ import android.app.ProgressDialog;
 import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.ClipboardManager;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -38,8 +37,6 @@ import android.os.SystemClock;
 import android.os.ext.SdkExtensions;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
-import android.system.ErrnoException;
-import android.system.Os;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
@@ -51,12 +48,9 @@ import android.transition.Fade;
 import android.transition.TransitionManager;
 import android.transition.TransitionSet;
 import android.util.Log;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.HapticFeedbackConstants;
-import android.view.LayoutInflater;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -67,7 +61,6 @@ import android.view.ViewPropertyAnimator;
 import android.view.WindowInsets;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -78,10 +71,8 @@ import android.widget.Toast;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.FileProvider;
 import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
@@ -95,7 +86,6 @@ import org.joinmastodon.android.api.requests.accounts.RejectFollowRequest;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
 import org.joinmastodon.android.api.requests.lists.DeleteList;
 import org.joinmastodon.android.api.requests.notifications.DismissNotification;
-import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
@@ -126,7 +116,6 @@ import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.ScheduledStatus;
-import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -159,7 +148,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -1654,17 +1642,6 @@ public class UiUtils {
 		if(maxCount>1)
 			intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 		return intent;
-	}
-
-	public static void populateAccountsMenu(String excludeAccountID, Menu menu, Consumer<AccountSession> onClick) {
-		List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
-		sessions.stream().filter(s -> !s.getID().equals(excludeAccountID)).forEach(s -> {
-			String username = "@"+s.self.username+"@"+s.domain;
-			menu.add(username).setOnMenuItemClickListener((c) -> {
-				onClick.accept(s);
-				return true;
-			});
-		});
 	}
 
 	public static void showFragmentForNotification(Context context, Notification n, String accountID, Bundle extras) {
