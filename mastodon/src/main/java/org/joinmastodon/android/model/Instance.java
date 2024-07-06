@@ -1,6 +1,7 @@
 package org.joinmastodon.android.model;
 
 import android.text.Html;
+import android.util.Log;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
@@ -8,6 +9,7 @@ import org.joinmastodon.android.model.catalog.CatalogInstance;
 import org.parceler.Parcel;
 
 import java.net.IDN;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -165,6 +167,31 @@ public class Instance extends BaseModel{
 					.map(f -> f.contains("akkoma:machine_translation"))
 					.orElse(false);
 		};
+	}
+	/**
+	 * Returns true if the instance version is the same as or newer than the passed in version.
+	 * @param major: The major version to check for.
+	 * @param minor: the minor version to check for.
+	 * @param patch: The patch version to check for.
+	 */
+	public boolean checkVersion(int major, int minor, int patch) {
+		try{
+			String[] parts=version.split("-", 2);
+			String[] numbers=parts[0].split("\\.", 3);
+			if(numbers.length < 3)
+				throw new IllegalArgumentException("Invalid version format. Expected format: major.minor.micro");
+
+			int majorVersion=Integer.parseInt(numbers[0]);
+			int minorVersion=Integer.parseInt(numbers[1]);
+			int patchVersion=Integer.parseInt(numbers[2]);
+			return (majorVersion > major ||
+					(majorVersion == major && minorVersion > minor) ||
+					(majorVersion == major && minorVersion == minor &&
+							patchVersion>= patch));
+		} catch(Exception e) {
+			Log.w("Instance", "checkVersion: failed to parse " + version + ", " + e);
+			return false;
+		}
 	}
 
 	public enum Feature {

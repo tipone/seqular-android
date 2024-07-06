@@ -219,7 +219,7 @@ public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> im
 		public void onClick(){
 			//TODO: enable timeline for all servers once 4.3.0 is released
 			if(getInstance().isEmpty() ||
-					!getInstance().get().version.contains("4.3.0")){
+					!getInstance().get().checkVersion(4,3,0)){
 				UiUtils.launchWebBrowser(getActivity(), item.url);
 				return;
 			}
