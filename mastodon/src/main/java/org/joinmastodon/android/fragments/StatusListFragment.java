@@ -61,7 +61,9 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			flags |= StatusDisplayItem.FLAG_NO_TRANSLATE;
 		if(!GlobalUserPreferences.showMediaPreview)
 			flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), isMainThreadStatus ? 0 : flags);
+		/* MOSHIDON: we make the filterContext null in the main status in the thread fragment, so that the main status is never filtered (because you just clicked on it).
+		This also restores old behavior that got lost to time and changes in the filter system	*/
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, isMainThreadStatus ? null : getFilterContext(), isMainThreadStatus ? 0 : flags);
 	}
 
 	protected abstract FilterContext getFilterContext();
