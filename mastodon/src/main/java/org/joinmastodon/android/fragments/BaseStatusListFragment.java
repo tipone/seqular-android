@@ -706,12 +706,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		toggleSpoiler(status, isForQuote, holder.getItemID());
 	}
 
-	public void updateStatusWithQuote(Status status) {
+	public void updateStatusWithQuote(DisplayItemsParent parent) {
 		int startIndex=-1;
 		int endIndex=-1;
 		for(int i=0; i<displayItems.size(); i++){
 			StatusDisplayItem item = displayItems.get(i);
-			if(item.parentID.equals(status.id)) {
+			if(item.parentID.equals(parent.getID())) {
 				startIndex= startIndex==-1 ? i : startIndex;
 				endIndex=i;
 			}
@@ -719,8 +719,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 		if (startIndex!=-1 && endIndex!=-1) {
 			//Only StatusListFragments can display Status/Quotes
-			assert this instanceof StatusListFragment;
-			List<StatusDisplayItem> items=((StatusListFragment) this).buildDisplayItems(status);
+			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
+			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
 			displayItems.subList(startIndex, endIndex+1).clear();
 			boolean isEmpty=displayItems.isEmpty();
 			displayItems.addAll(startIndex, items);
