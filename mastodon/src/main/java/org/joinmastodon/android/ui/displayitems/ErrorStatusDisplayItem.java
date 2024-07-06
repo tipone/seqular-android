@@ -30,17 +30,19 @@ public class ErrorStatusDisplayItem extends StatusDisplayItem{
 	}
 
 	public static class Holder extends StatusDisplayItem.Holder<ErrorStatusDisplayItem> {
+		private final Button openInBrowserButton;
 
 		public Holder(Context context, ViewGroup parent) {
 			super(context, R.layout.display_item_error, parent);
-			Button openInBrowserButton=findViewById(R.id.button_open_browser);
-			openInBrowserButton.setEnabled(item.status.url!=null);
+			openInBrowserButton=findViewById(R.id.button_open_browser);
 			openInBrowserButton.setOnClickListener(v -> UiUtils.launchWebBrowser(v.getContext(), item.status.url));
 			findViewById(R.id.button_copy_error_details).setOnClickListener(this::copyErrorDetails);
 		}
 
 		@Override
-		public void onBind(ErrorStatusDisplayItem item) {}
+		public void onBind(ErrorStatusDisplayItem item) {
+			openInBrowserButton.setEnabled(item.status!=null && item.status.url!=null);
+		}
 
 		private void copyErrorDetails(View v) {
 			StringWriter stringWriter=new StringWriter();
