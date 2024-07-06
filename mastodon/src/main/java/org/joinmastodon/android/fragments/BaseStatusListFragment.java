@@ -718,10 +718,14 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 
 		if (startIndex!=-1 && endIndex!=-1) {
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, status, knownAccounts, null, 0);
+			//Only StatusListFragments can display Status/Quotes
+			assert this instanceof StatusListFragment;
+			List<StatusDisplayItem> items=((StatusListFragment) this).buildDisplayItems(status);
 			displayItems.subList(startIndex, endIndex+1).clear();
+			boolean isEmpty=displayItems.isEmpty();
 			displayItems.addAll(startIndex, items);
-			adapter.notifyItemRangeChanged(startIndex, items.size());
+			if(!isEmpty)
+				adapter.notifyItemRangeChanged(startIndex, items.size());
 		}
 	}
 
