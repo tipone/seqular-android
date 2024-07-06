@@ -87,7 +87,7 @@ public abstract class StatusDisplayItem{
 
 
 	private final static  Pattern QUOTE_MENTION_PATTERN=Pattern.compile("(?:<p>)?\\s?(?:RE:\\s?)?<a href=\"https:\\/\\/[^\"]+\"[^>]*><span class=\"invisible\">https:\\/\\/<\\/span><span class=\"ellipsis\">[^<]+<\\/span><span class=\"invisible\">[^<]+<\\/span><\\/a>(?:<\\/p>)?$");
-	private final static  Pattern QUOTE_PATTERN=Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
+	private final static  Pattern QUOTE_PATTERN=Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$");
 
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
@@ -422,11 +422,9 @@ public abstract class StatusDisplayItem{
 	private static void tryAddNonOfficialQuote(Status status, BaseStatusListFragment fragment, String accountID) {
 		Matcher matcher=QUOTE_PATTERN.matcher(status.getStrippedText());
 
-		String quoteURL=null;
-		while (matcher.find()) {
-			quoteURL=matcher.group(0);
-		}
-		quoteURL="https://"+quoteURL;
+		if(!matcher.find())
+			return;
+		String quoteURL="https://"+matcher.group();
 
 		if (UiUtils.looksLikeFediverseUrl(quoteURL)) {
 			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
@@ -444,7 +442,7 @@ public abstract class StatusDisplayItem{
 
 				@Override
 				public void onError(ErrorResponse error){
-					Log.w("StatusDisplayItem", "onError: failed to find quote status" +error);
+					Log.w("StatusDisplayItem", "onError: failed to find quote status with URL: " + quoteURL + " " + error);
 				}
 			}).exec(accountID);
 		}
