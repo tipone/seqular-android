@@ -290,6 +290,10 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					Nav.go(item.parentFragment.getActivity(), ListsFragment.class, args);
 				}else if(id==R.id.share){
 					UiUtils.openSystemShareSheet(activity, item.status);
+				}else if(id==R.id.open_with_account){
+					UiUtils.pickAccount(item.parentFragment.getActivity(), item.accountID, R.string.sk_open_with_account, R.drawable.ic_fluent_person_swap_24_regular, session ->UiUtils.openURL(
+							item.parentFragment.getActivity(), session.getID(), item.status.url, false
+					), null);
 				}
 				return true;
 			});
@@ -489,17 +493,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			Account account=item.user;
 			Menu menu=optionsMenu.getMenu();
 
-			MenuItem openWithAccounts = menu.findItem(R.id.open_with_account);
-			SubMenu accountsMenu = openWithAccounts != null ? openWithAccounts.getSubMenu() : null;
-			if (hasMultipleAccounts && accountsMenu != null) {
-				openWithAccounts.setVisible(true);
-				accountsMenu.clear();
-				UiUtils.populateAccountsMenu(item.accountID, accountsMenu, s-> UiUtils.openURL(
-						item.parentFragment.getActivity(), s.getID(), item.status.url, false
-				));
-			} else if (openWithAccounts != null) {
-				openWithAccounts.setVisible(false);
-			}
 
 			String username = account.getShortUsername();
 			boolean isOwnPost=AccountSessionManager.getInstance().isSelf(item.parentFragment.getAccountID(), account);
