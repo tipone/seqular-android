@@ -796,8 +796,10 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		if(s.textExpandable!=expandable && list!=null) {
 			s.textExpandable=expandable;
 			List<HeaderStatusDisplayItem.Holder> headers=findAllHoldersOfType(holder.getItemID(), HeaderStatusDisplayItem.Holder.class);
-			HeaderStatusDisplayItem.Holder header=headers.size() > 1 && isForQuote ? headers.get(1) : headers.get(0);
-			if(header!=null) header.bindCollapseButton();
+			if(headers!=null && !headers.isEmpty()){
+				HeaderStatusDisplayItem.Holder header=headers.size() > 1 && isForQuote ? headers.get(1) : headers.get(0);
+				if(header!=null) header.bindCollapseButton();
+			}
 		}
 	}
 
