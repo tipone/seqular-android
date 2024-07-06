@@ -86,6 +86,7 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 8;
 
 
+	private final static  Pattern QUOTE_MENTION_PATTERN=Pattern.compile("(?:<p>)?\\s?(?:RE:\\s?)?<a href=\"https:\\/\\/[^\"]+\"[^>]*><span class=\"invisible\">https:\\/\\/<\\/span><span class=\"ellipsis\">[^<]+<\\/span><span class=\"invisible\">[^<]+<\\/span><\\/a>(?:<\\/p>)?$");
 	private final static  Pattern QUOTE_PATTERN=Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
 
 	public void setAncestryInfo(
@@ -274,6 +275,14 @@ public abstract class StatusDisplayItem{
 				int quoteInlineIndex=statusForContent.content.lastIndexOf("<span class=\"quote-inline\"><br/><br/>RE:");
 				if(quoteInlineIndex!=-1)
 					statusForContent.content=statusForContent.content.substring(0, quoteInlineIndex);
+				else {
+					// hide non-official quote patters
+					Matcher matcher=QUOTE_MENTION_PATTERN.matcher(status.content);
+					if(matcher.find()){
+						String quoteMention=matcher.group();
+						statusForContent.content=statusForContent.content.replace(quoteMention, "");
+					}
+				}
 			}
 
 			boolean hasSpoiler=!TextUtils.isEmpty(statusForContent.spoilerText);
