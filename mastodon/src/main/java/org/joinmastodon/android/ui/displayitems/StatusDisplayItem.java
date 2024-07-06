@@ -424,8 +424,12 @@ public abstract class StatusDisplayItem{
 				@Override
 				public void onSuccess(SearchResults results){
 					if (!results.statuses.isEmpty()){
-						status.quote=results.statuses.get(0);
-						fragment.updateStatusWithQuote(status);
+						Status quote=results.statuses.get(0);
+						// don't show self-referential quotes
+						if(!Objects.equals(status.id, results.statuses.get(0).id)){
+							status.quote=quote;
+							fragment.updateStatusWithQuote(status);
+						}
 					}
 				}
 
