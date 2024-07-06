@@ -48,6 +48,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.regex.Matcher;
@@ -328,6 +329,8 @@ public abstract class StatusDisplayItem{
 				if(!statusForContent.mediaAttachments.isEmpty() && statusForContent.poll==null) // add spacing if immediately preceded by attachment
 					contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
 				contentItems.addAll(buildItems(fragment, statusForContent.quote, accountID, parentObject, knownAccounts, filterContext, FLAG_NO_FOOTER|FLAG_INSET|FLAG_NO_EMOJI_REACTIONS|FLAG_IS_FOR_QUOTE));
+			} else {
+				tryAddNonOfficialQuote(statusForContent, fragment, accountID);
 			}
 			if(contentItems!=items && statusForContent.spoilerRevealed){
 				items.addAll(contentItems);
@@ -381,32 +384,6 @@ public abstract class StatusDisplayItem{
 				}
 			}
 
-			// I actually forgot where I took this, but it works
-			Matcher matcher = QUOTE_PATTERN.matcher(statusForContent.getStrippedText());
-
-			String lastUrl = null;
-			while (matcher.find()) {
-				lastUrl = matcher.group(0);
-				// The regex doesn't capture the scheme, so I add one here manually, so that the looksLikeFediverseUrlMethod actually works
-				lastUrl = "https://" + lastUrl;
-			}
-
-			if (UiUtils.looksLikeFediverseUrl(lastUrl) && statusForContent.quote == null) {
-				new GetSearchResults(lastUrl, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
-					@Override
-					public void onSuccess(SearchResults results){
-						if (!results.statuses.isEmpty()){
-							fragment.onAddQuoteToStatus(results.statuses.get(0), statusForContent);
-						}
-					}
-
-					@Override
-					public void onError(ErrorResponse error){
-						// Nothing
-					}
-				}).exec(accountID);
-			}
-
 			List<StatusDisplayItem> nonGapItems=gap!=null ? items.subList(0, items.size()-1) : items;
 			WarningFilteredStatusDisplayItem warning=applyingFilter==null ? null :
 					new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, nonGapItems, applyingFilter);
@@ -427,6 +404,37 @@ public abstract class StatusDisplayItem{
 			i++;
 		}
 		items.add(new PollFooterStatusDisplayItem(parentID, fragment, poll, status));
+	}
+
+	/**
+	 * Tries to adds a non-official quote to a status.
+	 * A non-official quote is a quote on an instance that does not support quotes officially.
+	 */
+	private static void tryAddNonOfficialQuote(Status status, BaseStatusListFragment fragment, String accountID) {
+		Matcher matcher=QUOTE_PATTERN.matcher(status.getStrippedText());
+
+		String quoteURL=null;
+		while (matcher.find()) {
+			quoteURL=matcher.group(0);
+		}
+		quoteURL="https://"+quoteURL;
+
+		if (UiUtils.looksLikeFediverseUrl(quoteURL)) {
+			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
+				@Override
+				public void onSuccess(SearchResults results){
+					if (!results.statuses.isEmpty()){
+						status.quote=results.statuses.get(0);
+						fragment.updateStatusWithQuote(status);
+					}
+				}
+
+				@Override
+				public void onError(ErrorResponse error){
+					Log.w("StatusDisplayItem", "onError: failed to find quote status" +error);
+				}
+			}).exec(accountID);
+		}
 	}
 
 	public enum Type{

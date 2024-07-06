@@ -47,7 +47,6 @@ import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HashtagStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
-import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.PollOptionStatusDisplayItem;
@@ -707,38 +706,22 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		toggleSpoiler(status, isForQuote, holder.getItemID());
 	}
 
-	public void onAddQuoteToStatus(Status status, Status parentStatus) {
-		int cardIndex=-1;
-		int textIndex=-1;
-		int i=0;
-		for(StatusDisplayItem item:displayItems){
-			if(item.parentID.equals(parentStatus.id)){
-				if(item instanceof LinkCardStatusDisplayItem){
-					cardIndex=i;
-				}else if(item instanceof TextStatusDisplayItem){
-					textIndex=i;
-				}
+	public void updateStatusWithQuote(Status status) {
+		int startIndex=-1;
+		int endIndex=-1;
+		for(int i=0; i<displayItems.size(); i++){
+			StatusDisplayItem item = displayItems.get(i);
+			if(item.parentID.equals(status.id)) {
+				startIndex= startIndex==-1 ? i : startIndex;
+				endIndex=i;
 			}
-			i++;
 		}
 
-		int flags= (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS | StatusDisplayItem.FLAG_IS_FOR_QUOTE);
-		if (!GlobalUserPreferences.showMediaPreview)
-			flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
-
-		if (cardIndex!=-1) {
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, parentStatus, knownAccounts, null, flags);
-			displayItems.remove(cardIndex);
-			adapter.notifyItemRemoved(cardIndex);
-			displayItems.addAll(cardIndex, items);
-			adapter.notifyItemRangeInserted(cardIndex, items.size());
-			return;
-		}
-
-		if (textIndex!=-1) {
-			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, parentStatus, knownAccounts, null, flags);
-			displayItems.addAll(textIndex+1, items);
-			adapter.notifyItemRangeInserted(textIndex+1, items.size());
+		if (startIndex!=-1 && endIndex!=-1) {
+			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, status, accountID, status, knownAccounts, null, 0);
+			displayItems.subList(startIndex, endIndex+1).clear();
+			displayItems.addAll(startIndex, items);
+			adapter.notifyItemRangeChanged(startIndex, items.size());
 		}
 	}
 
