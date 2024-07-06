@@ -84,6 +84,9 @@ public abstract class StatusDisplayItem{
 	public static final int FLAG_IS_FOR_QUOTE=1 << 7;
 	public static final int FLAG_NO_MEDIA_PREVIEW=1 << 8;
 
+
+	private final static  Pattern QUOTE_PATTERN=Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
+
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
 			boolean hasAncestoringNeighbor,
@@ -379,8 +382,7 @@ public abstract class StatusDisplayItem{
 			}
 
 			// I actually forgot where I took this, but it works
-			Pattern pattern = Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)");
-			Matcher matcher = pattern.matcher(statusForContent.getStrippedText());
+			Matcher matcher = QUOTE_PATTERN.matcher(statusForContent.getStrippedText());
 
 			String lastUrl = null;
 			while (matcher.find()) {
