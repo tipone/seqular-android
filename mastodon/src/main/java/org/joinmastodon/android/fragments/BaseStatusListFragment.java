@@ -722,10 +722,11 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
 			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
 			displayItems.subList(startIndex, endIndex+1).clear();
+			adapter.notifyItemRangeRemoved(startIndex, endIndex+1);
 			boolean isEmpty=displayItems.isEmpty();
 			displayItems.addAll(startIndex, items);
 			if(!isEmpty)
-				adapter.notifyItemRangeChanged(startIndex, items.size());
+				adapter.notifyItemRangeInserted(startIndex, items.size());
 		}
 	}
 
