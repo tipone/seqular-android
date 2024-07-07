@@ -718,14 +718,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 
 		if (startIndex!=-1 && endIndex!=-1) {
-			//Only StatusListFragments can display Status/Quotes
+			// Only StatusListFragments/NotificationsListFragments can display status with quotes
 			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
 			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
 			displayItems.subList(startIndex, endIndex+1).clear();
+			adapter.notifyItemRangeRemoved(startIndex, endIndex+1);
 			boolean isEmpty=displayItems.isEmpty();
 			displayItems.addAll(startIndex, items);
 			if(!isEmpty)
-				adapter.notifyItemRangeChanged(startIndex, items.size());
+				adapter.notifyItemRangeInserted(startIndex, items.size());
 		}
 	}
 
@@ -792,9 +793,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 
 	public void onToggleExpanded(Status status, boolean isForQuote, String itemID) {
 		status.textExpanded = !status.textExpanded;
-		List<TextStatusDisplayItem.Holder> textItems = findAllHoldersOfType(itemID, TextStatusDisplayItem.Holder.class);
-		TextStatusDisplayItem.Holder text = textItems.size() > 1 && isForQuote ? textItems.get(1) : textItems.get(0);
-		adapter.notifyItemChanged(text.getAbsoluteAdapterPosition());
+		// TODO: simplify this to a single case
+		if(!isForQuote)
+			// using the adapter directly to update the item does not work for non-quoted texts
+			notifyItemChanged(itemID, TextStatusDisplayItem.class);
+		else{
+			List<TextStatusDisplayItem.Holder> textItems=findAllHoldersOfType(itemID, TextStatusDisplayItem.Holder.class);
+			TextStatusDisplayItem.Holder text=textItems.size()>1 ? textItems.get(1) : textItems.get(0);
+			adapter.notifyItemChanged(text.getAbsoluteAdapterPosition());
+		}
 		List<HeaderStatusDisplayItem.Holder> headers=findAllHoldersOfType(itemID, HeaderStatusDisplayItem.Holder.class);
 		HeaderStatusDisplayItem.Holder header=headers.size() > 1 && isForQuote ? headers.get(1) : headers.get(0);
 		if(header!=null) header.animateExpandToggle();
