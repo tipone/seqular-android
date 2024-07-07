@@ -718,7 +718,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		}
 
 		if (startIndex!=-1 && endIndex!=-1) {
-			//Only StatusListFragments can display Status/Quotes
+			// Only StatusListFragments/NotificationsListFragments can display status with quotes
 			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
 			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
 			displayItems.subList(startIndex, endIndex+1).clear();
