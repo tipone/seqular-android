@@ -821,6 +821,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 
 		if(isOwnProfile) {
 			if (isInstancePixelfed()) menu.findItem(R.id.scheduled).setVisible(false);
+			menu.findItem(R.id.favorites).setIcon(GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_20_regular : R.drawable.ic_fluent_star_20_regular);
+			UiUtils.insetPopupMenuIcon(getContext(), menu.findItem(R.id.favorites));
 			return;
 		}
 

@@ -3,6 +3,7 @@ package org.joinmastodon.android.ui.displayitems;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.SpannableStringBuilder;
@@ -94,6 +95,7 @@ public class ExtendedFooterStatusDisplayItem extends StatusDisplayItem{
 		public void onBind(ExtendedFooterStatusDisplayItem item){
 			Status s=item.status;
 			favorites.setText(getFormattedPlural(R.plurals.x_favorites, item.status.favouritesCount));
+			favorites.setCompoundDrawablesRelativeWithIntrinsicBounds(GlobalUserPreferences.likeIcon ? R.drawable.ic_fluent_heart_20_regular : R.drawable.ic_fluent_star_20_regular, 0, 0, 0);
 			reblogs.setText(getFormattedPlural(R.plurals.x_reblogs, item.status.reblogsCount));
 			if(s.editedAt!=null){
 				editHistory.setVisibility(View.VISIBLE);
