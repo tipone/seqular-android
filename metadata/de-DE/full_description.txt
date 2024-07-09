@@ -9,7 +9,7 @@ Moshidon ist eine veränderte Version der <a href="https://github.com/mastodon/m
 - <b>Föderierte Timeline</b>: Sieh alle öffentlichen Beiträge von allen Fediverse-Servern, mit denen deine Instanz verbunden ist.
 - <b>Bildbeschreibungen</b>: Sieh auf einen Blick, ob ein Bild oder ein Video einen Alternativtext hat.
 - <b>Posts anpinnen</b>: Pinne deine wichtigsten Beiträge auf der Profilseite an und finde Pins von anderen Nutzern im „Angepinnt“-Tab.
-- <b>Hashtags folgen</b>: Sieh Posts mit bestimmten Hashtags direkt auf deiner Startseite, indem du ihnen einfach folgst.
+- <b>Hashtags folgen</b>: Sieh Posts mit bestimmten Hashtags direkt auf deiner Startseite durch einfaches Folgen
 - <b>Follower-Anfragen beantworten</b>: Bestätige oder lehne Follower-Anfragen direkt in Benachrichtigungen oder auf der separaten Follower-Anfrageliste ab.
 - <b>Löschen und Neuverfassen</b>: Die beliebte Funktion, die das Bearbeiten von Beiträgen ohne eigentliche Bearbeitungsfunktion möglich gemacht hat.
 - <b>Extras</b>: Viele Anpassungen der Nutzeroberfläche, wie z. B. Interaktionssymbole in Benachrichtigungen und die Entfernung von vielen Unstimmigkeiten beim ursprünglichen Design!
