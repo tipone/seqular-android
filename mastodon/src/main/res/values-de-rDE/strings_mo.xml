@@ -44,7 +44,7 @@
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Deaktiviere doppeltes Tippen, um zwischen Tabs zu wechseln</string>
     <string name="mo_swap_bookmark_with_reblog">Teilen statt Lesezeichen-Aktion</string>
     <string name="mo_download_latest_nightly_release">Neueste Nightly-Version herunterladen</string>
-    <string name="mo_load_remote_followers">Follower und Follower des Remote-Profils laden</string>
+    <string name="mo_load_remote_followers">Follower des Remote-Profils laden</string>
     <string name="mo_confirm_unfollow">Bestätige, %s zu entfolgen</string>
     <string name="mo_confirm_unfollow_title">Entfolge Account</string>
     <string name="mo_instance_registration">Registrierung</string>
