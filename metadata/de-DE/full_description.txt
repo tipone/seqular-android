@@ -1,15 +1,15 @@
-Moshidon ist eine veränderte Version der <a href="https://github.com/mastodon/mastodon-android">offiziellen Mastodon Android-App</a> , die wichtige Funktionen ergänzt, die in der offiziellen App fehlen, wie z. B. eine föderierte Timeline, ungelistetes Veröffentlichen und die Möglichkeit Bildbeschreibungen zu sehen.
+Moshidon ist eine veränderte Version der <a href="https://github.com/mastodon/mastodon-android">offiziellen Mastodon-Android-App</a>, die wichtige Funktionen ergänzt, die in der offiziellen App fehlen, wie z. B. eine föderierte Timeline, ungelistetes Veröffentlichen und die Möglichkeit Bildbeschreibungen zu sehen.
 
 <b>Wichtigste Funktionen</b>
 
-- <b>große Farbauswahl</b>: Material You und viele weitere Farbschemen!
+- <b>große Farbauswahl</b>: Material You und viele weitere Farbschemata!
 - <b>Übersetzungsfunktion</b>: Eine Schaltfläche, um Beiträge zu übersetzen!
 - <b>Beitrags-Sprachauswahl</b>: Eine Schaltfläche, um die Sprache deines Beitrags auszuwählen!
 - <b>Ungelistetes Veröffentlichen</b>: Poste öffentlich, ohne dass deine Beiträge in Trends, Hashtags oder auf öffentlichen Timelines erscheinen.
 - <b>Föderierte Timeline</b>: Sieh alle öffentlichen Beiträge von allen Fediverse-Servern, mit denen deine Instanz verbunden ist.
 - <b>Bildbeschreibungen</b>: Sieh auf einen Blick, ob ein Bild oder ein Video einen Alternativtext hat.
-- <b>Posts anpinnen</b>: Pinne deine wichtigsten Beiträge auf der Profilseite an und finde Pins von anderen Nutzern im "Angepinnt"-Tab.
-- <b>Hashtags folgen</b>: Sieh Posts mit bestimmten Hashtags direkt auf deiner Startseite, indem ihnen einfach folgst.
+- <b>Posts anpinnen</b>: Pinne deine wichtigsten Beiträge auf der Profilseite an und finde Pins von anderen Nutzern im „Angepinnt“-Tab.
+- <b>Hashtags folgen</b>: Sieh Posts mit bestimmten Hashtags direkt auf deiner Startseite durch einfaches Folgen
 - <b>Follower-Anfragen beantworten</b>: Bestätige oder lehne Follower-Anfragen direkt in Benachrichtigungen oder auf der separaten Follower-Anfrageliste ab.
 - <b>Löschen und Neuverfassen</b>: Die beliebte Funktion, die das Bearbeiten von Beiträgen ohne eigentliche Bearbeitungsfunktion möglich gemacht hat.
 - <b>Extras</b>: Viele Anpassungen der Nutzeroberfläche, wie z. B. Interaktionssymbole in Benachrichtigungen und die Entfernung von vielen Unstimmigkeiten beim ursprünglichen Design!
