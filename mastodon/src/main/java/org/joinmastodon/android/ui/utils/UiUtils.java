@@ -1458,7 +1458,7 @@ public class UiUtils {
 									return;
 								}
 								Optional<Account> account = results.accounts.stream()
-										.filter(a -> uri.getPath().contains(a.getFullyQualifiedName())).findAny();
+										.filter(a -> uri.getPath().contains(a.username)).findAny();
 								if (account.isPresent()) {
 									args.putParcelable("profileAccount", Parcels.wrap(account.get()));
 									go.accept(ProfileFragment.class, args);
