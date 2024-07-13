@@ -1341,10 +1341,6 @@ public class UiUtils {
 		openURL(context, accountID, url, true);
 	}
 
-	public static void openURL(Context context, String accountID, String url, Object parentObject) {
-		openURL(context, accountID, url, !(parentObject instanceof Status || parentObject instanceof Account));
-	}
-
 	public static void openURL(Context context, String accountID, String url, boolean launchBrowser) {
 		lookupURL(context, accountID, url, (clazz, args) -> {
 			if (clazz == null) {
@@ -1462,7 +1458,7 @@ public class UiUtils {
 									return;
 								}
 								Optional<Account> account = results.accounts.stream()
-										.filter(a -> uri.getPath().contains(a.getFullyQualifiedName())).findAny();
+										.filter(a -> uri.getPath().contains(a.username)).findAny();
 								if (account.isPresent()) {
 									args.putParcelable("profileAccount", Parcels.wrap(account.get()));
 									go.accept(ProfileFragment.class, args);
