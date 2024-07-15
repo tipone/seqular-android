@@ -65,6 +65,7 @@ import com.twitter.twittertext.TwitterTextEmojiRegex;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.TweakedFileProvider;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
@@ -98,7 +99,6 @@ import org.joinmastodon.android.ui.text.ComposeAutocompleteSpan;
 import org.joinmastodon.android.ui.text.ComposeHashtagOrMentionSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
-import org.joinmastodon.android.utils.FileProvider;
 import org.joinmastodon.android.utils.TransferSpeedTracker;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.viewcontrollers.ComposeAutocompleteViewController;
@@ -1505,7 +1505,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 	private void openCamera() throws IOException {
 		if (getContext().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
 			File photoFile = File.createTempFile("img", ".jpg");
-			photoUri = FileProvider.getUriForFile(getContext(), getContext().getPackageName() + ".fileprovider", photoFile);
+			photoUri = UiUtils.getFileProviderUri(getContext(), photoFile);
 
 			Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
 			cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
