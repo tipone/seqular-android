@@ -1765,9 +1765,9 @@ public class UiUtils {
 		ImageCache cache=ImageCache.getInstance(context);
 		try{
 			File ava=cache.getFile(new UrlImageLoaderRequest(account.avatarStatic));
-			if(!ava.exists())
+			if(ava==null || !ava.exists())
 				ava=cache.getFile(new UrlImageLoaderRequest(account.avatar));
-			if(ava.exists()){
+			if(ava!=null && ava.exists()){
 				intent.setClipData(ClipData.newRawUri(null, getFileProviderUri(context, ava)));
 				intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
 			}
