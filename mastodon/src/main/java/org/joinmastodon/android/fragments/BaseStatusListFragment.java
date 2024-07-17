@@ -717,17 +717,18 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			}
 		}
 
-		if (startIndex!=-1 && endIndex!=-1) {
-			// Only StatusListFragments/NotificationsListFragments can display status with quotes
-			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
-			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
-			int itemCount = displayItems.subList(startIndex, endIndex+1).size()-1;
-			displayItems.subList(startIndex, endIndex+1).clear();
-			adapter.notifyItemRangeChanged(startIndex, itemCount);
-			displayItems.addAll(startIndex, items);
-			if(!displayItems.isEmpty())
-				adapter.notifyItemRangeChanged(startIndex, items.size()-1);
-		}
+		if (startIndex==-1 && endIndex==-1)
+			return;
+
+		// Only StatusListFragments/NotificationsListFragments can display status with quotes
+		assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
+		List<StatusDisplayItem> oldItems = displayItems.subList(startIndex, endIndex+1);
+		List<StatusDisplayItem> newItems=this.buildDisplayItems((T) parent);
+		int prevSize=oldItems.size();
+		oldItems.clear();
+		displayItems.addAll(startIndex, newItems);
+		adapter.notifyItemRangeRemoved(startIndex, prevSize);
+		adapter.notifyItemRangeInserted(startIndex, newItems.size());
 	}
 
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder) {
