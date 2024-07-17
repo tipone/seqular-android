@@ -1530,7 +1530,7 @@ public class UiUtils {
 
 	public static boolean pickAccountForCompose(Activity activity, String accountID, Bundle args) {
 		if (AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1) {
-			UiUtils.pickAccount(activity, accountID, 0, 0, session -> {
+			UiUtils.pickAccount(activity, accountID, 0, R.drawable.ic_fluent_compose_28_regular, session -> {
 				args.putString("account", session.getID());
 				Nav.go(activity, ComposeFragment.class, args);
 			}, null);
