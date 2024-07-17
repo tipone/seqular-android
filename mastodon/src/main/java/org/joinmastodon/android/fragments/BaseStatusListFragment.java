@@ -721,12 +721,12 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			// Only StatusListFragments/NotificationsListFragments can display status with quotes
 			assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
 			List<StatusDisplayItem> items=this.buildDisplayItems((T) parent);
+			int itemCount = displayItems.subList(startIndex, endIndex+1).size()-1;
 			displayItems.subList(startIndex, endIndex+1).clear();
-//			adapter.notifyItemRangeRemoved(startIndex, endIndex+1);
-			boolean isEmpty=displayItems.isEmpty();
+			adapter.notifyItemRangeChanged(startIndex, itemCount);
 			displayItems.addAll(startIndex, items);
-			if(!isEmpty)
-				adapter.notifyItemRangeInserted(startIndex, items.size());
+			if(!displayItems.isEmpty())
+				adapter.notifyItemRangeChanged(startIndex, items.size()-1);
 		}
 	}
 
