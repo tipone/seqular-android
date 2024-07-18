@@ -717,7 +717,7 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			}
 		}
 
-		if (startIndex==-1 && endIndex==-1)
+		if (startIndex==-1)
 			return;
 
 		// Only StatusListFragments/NotificationsListFragments can display status with quotes
