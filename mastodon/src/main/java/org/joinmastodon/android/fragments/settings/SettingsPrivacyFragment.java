@@ -25,7 +25,7 @@ public class SettingsPrivacyFragment extends BaseSettingsFragment<Void>{
 	private Instance instance;
 
 	//MOSHIDON
-	private CheckableListItem<Void> unlistedRepliesItem;
+	private CheckableListItem<Void> unlistedRepliesItem, removeTrackingParams;
 
 
 	@Override
@@ -38,7 +38,8 @@ public class SettingsPrivacyFragment extends BaseSettingsFragment<Void>{
 		privacy=self.source.privacy;
 		onDataLoaded(List.of(
 				privacyItem=new ListItem<>(R.string.sk_settings_default_visibility, getPrivacyString(privacy), R.drawable.ic_fluent_eye_24_regular, this::onPrivacyClick, 0, false),
-				unlistedRepliesItem=new CheckableListItem<>(R.string.mo_change_default_reply_visibility_to_unlisted, R.string.mo_setting_default_reply_privacy_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.defaultToUnlistedReplies, R.drawable.ic_fluent_lock_open_24_regular, i->toggleCheckableItem(unlistedRepliesItem), true),
+				unlistedRepliesItem=new CheckableListItem<>(R.string.mo_change_default_reply_visibility_to_unlisted, R.string.mo_setting_default_reply_privacy_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.defaultToUnlistedReplies, R.drawable.ic_fluent_lock_open_24_regular, i->toggleCheckableItem(unlistedRepliesItem)),
+				removeTrackingParams=new CheckableListItem<>(R.string.mo_settings_remove_tracking_params, R.string.mo_settings_remove_tracking_params_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.removeTrackingParams, R.drawable.ic_fluent_eye_tracking_off_24_filled, i->toggleCheckableItem(removeTrackingParams), true),
 				lockedItem=new CheckableListItem<>(R.string.sk_settings_lock_account, 0, CheckableListItem.Style.SWITCH, self.locked, R.drawable.ic_fluent_person_available_24_regular, i->toggleCheckableItem(lockedItem))
 		));
 
@@ -89,6 +90,7 @@ public class SettingsPrivacyFragment extends BaseSettingsFragment<Void>{
 	public void onPause(){
 		super.onPause();
 		GlobalUserPreferences.defaultToUnlistedReplies=unlistedRepliesItem.checked;
+		GlobalUserPreferences.removeTrackingParams=removeTrackingParams.checked;
 		GlobalUserPreferences.save();
 		AccountSession s=AccountSessionManager.get(accountID);
 		Account self=s.self;

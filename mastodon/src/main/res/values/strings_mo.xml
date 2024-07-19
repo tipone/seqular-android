@@ -97,6 +97,7 @@
     <string name="mo_setting_haptic_feedback_summary">Vibrate when interacting with posts</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Bookmark or reblog posts from the notification</string>
     <string name="mo_settings_show_posts_without_alt_summary">Posts will be hidden in all timelines, but can be revealed in threads and notifications</string>
+	<string name="mo_settings_remove_tracking_params_summary">Strip tracking information from links</string>
 
 <!--  Settings  -->
     <string name="mo_notification_audience_settings">Notification Audience</string>
@@ -117,6 +118,7 @@
 	<string name="mo_settings_unifiedpush_warning_no_distributors">No UnifiedPush Distributors installed. You will not receive any notifications.</string>
 	<string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush is not enabled. You will not receive any notifications.</string>
 	<string name="mo_settings_unifiedpush_enable">Enable</string>
+	<string name="mo_settings_remove_tracking_params">Private Links</string>
 
 	<!--	Temporary Strings. They exist in strings_sk.xml, but are not available on Megalodon's weblate-->
 	<string name="mo_muted_accounts">Muted accounts</string>

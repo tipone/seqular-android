@@ -1,12 +1,9 @@
 package org.joinmastodon.android.utils;
 
 import android.net.Uri;
-import android.util.Log;
-import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 import java.util.Arrays;
-import java.util.regex.Matcher;
 
 // Inspired by https://github.com/GeopJr/Tuba/blob/91a036edff9ab1ffb38d5b54a33023e5db551051/src/Utils/Tracking.vala
 
@@ -72,8 +69,6 @@ public class Tracking{
 				for (String paramValue : uri.getQueryParameters(paramName)) {
 					uriBuilder.appendQueryParameter(paramName, paramValue);
 				}
-			} else {
-				Log.e("Tacking", "removeTrackingParameters: removing: " + paramName);
 			}
 		}
 
