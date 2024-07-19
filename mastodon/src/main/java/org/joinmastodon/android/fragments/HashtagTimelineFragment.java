@@ -101,7 +101,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 	}
 
 	private void updateMuteState(boolean newMute) {
-		muteMenuItem.setTitle(getString(newMute ? R.string.unmute_user : R.string.mute_user, "#" + hashtag));
+		muteMenuItem.setTitle(getString(newMute ? R.string.unmute_user : R.string.mute_user, "#" + hashtagName));
 		muteMenuItem.setIcon(newMute ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 	}
 
