@@ -93,4 +93,7 @@
     <string name="mo_setting_remote_follower_summary">Montri sekvantojn de aliaj instancoj</string>
     <string name="mo_notification_filter_reset">Restarigi al defaŭlta</string>
     <string name="mo_instance_view_info">Vidi servilan informon</string>
+    <string name="mo_trending_link_read">Legi</string>
+    <string name="mo_error_display_copy_error_details">Kopii informojn</string>
+    <string name="mo_settings_unifiedpush_enable">Ebligi</string>
 </resources>
