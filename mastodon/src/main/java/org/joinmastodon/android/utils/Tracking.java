@@ -1,9 +1,11 @@
 package org.joinmastodon.android.utils;
 
 import android.net.Uri;
+import android.util.Patterns;
 
 import androidx.annotation.NonNull;
 import java.util.Arrays;
+import java.util.regex.Matcher;
 
 // Inspired by https://github.com/GeopJr/Tuba/blob/91a036edff9ab1ffb38d5b54a33023e5db551051/src/Utils/Tracking.vala
 
@@ -73,6 +75,24 @@ public class Tracking{
 		}
 
 		return uriBuilder.build().toString();
+	}
+
+	/**
+	 * Cleans URLs within the provided text, removing the tracking parameters from them.
+	 *
+	 * @param text The text that may contain URLs.
+	 * @return The given text with cleaned URLs.
+	 */
+	public static String cleanUrlsInText(String text) {
+		Matcher matcher = Patterns.WEB_URL.matcher(text);
+		StringBuffer sb = new StringBuffer();
+
+		while (matcher.find()) {
+			String url = matcher.group();
+			matcher.appendReplacement(sb, removeTrackingParameters(url));
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
 	}
 
 	/**

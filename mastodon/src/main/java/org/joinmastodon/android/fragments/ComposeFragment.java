@@ -99,6 +99,7 @@ import org.joinmastodon.android.ui.text.ComposeAutocompleteSpan;
 import org.joinmastodon.android.ui.text.ComposeHashtagOrMentionSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.joinmastodon.android.ui.utils.SimpleTextWatcher;
+import org.joinmastodon.android.utils.Tracking;
 import org.joinmastodon.android.utils.TransferSpeedTracker;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.viewcontrollers.ComposeAutocompleteViewController;
@@ -1175,6 +1176,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 	private void actuallyPublish(boolean preview){
 		String text=mainEditText.getText().toString();
+		if(GlobalUserPreferences.removeTrackingParams)
+			text=Tracking.cleanUrlsInText(text);
 		CreateStatus.Request req=new CreateStatus.Request();
 		if("bottom".equals(postLang.encoding)){
 			text=new StatusTextEncoder(Bottom::encode).encode(text);
