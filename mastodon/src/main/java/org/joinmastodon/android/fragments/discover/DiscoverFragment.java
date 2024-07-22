@@ -82,8 +82,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
-				case 0 -> R.id.discover_hashtags;
-				case 1 -> R.id.discover_posts;
+				case 0 -> R.id.discover_posts;
+				case 1 -> R.id.discover_hashtags;
 				case 2 -> R.id.discover_news;
 				case 3 -> R.id.discover_users;
 				default -> throw new IllegalStateException("Unexpected value: "+i);
@@ -127,8 +127,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			accountsFragment.setArguments(args);
 
 			getChildFragmentManager().beginTransaction()
-					.add(R.id.discover_hashtags, hashtagsFragment)
 					.add(R.id.discover_posts, postsFragment)
+					.add(R.id.discover_hashtags, hashtagsFragment)
 					.add(R.id.discover_news, newsFragment)
 					.add(R.id.discover_users, accountsFragment)
 					.commit();
@@ -138,8 +138,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			@Override
 			public void onConfigureTab(@NonNull TabLayout.Tab tab, int position){
 				tab.setText(switch(position){
-					case 0 -> R.string.hashtags;
-					case 1 -> R.string.posts;
+					case 0 -> R.string.posts;
+					case 1 -> R.string.hashtags;
 					case 2 -> R.string.news;
 					case 3 -> R.string.for_you;
 					default -> throw new IllegalStateException("Unexpected value: "+position);
