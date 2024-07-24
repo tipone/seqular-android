@@ -435,4 +435,5 @@
     <string name="sk_poll_hide_results">Ocultar los resultados</string>
     <string name="sk_poll_multiple_choice">Varias opciones</string>
     <string name="sk_poll_show_results">Resultados</string>
+    <string name="sk_posted">%s publicado</string>
 </resources>
