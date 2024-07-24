@@ -116,4 +116,5 @@
     <string name="mo_error_display_title">No se pudo mostrar la publicación</string>
     <string name="mo_error_display_copy_error_details">Copiar detalles</string>
     <string name="mo_trending_link_read">Leer</string>
+    <string name="mo_settings_remove_tracking_params">Enlaces Privados</string>
 </resources>
