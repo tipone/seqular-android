@@ -111,8 +111,6 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 				fragment.setArguments(args);
 				showFragmentClearingBackStack(fragment);
 			}
-		}else if(intent.getBooleanExtra("compose", false)){
-			showCompose();
 		}else if(Intent.ACTION_VIEW.equals(intent.getAction())){
 			handleURL(intent.getData(), null);
 		}/*else if(intent.hasExtra(PackageInstaller.EXTRA_STATUS) && GithubSelfUpdater.needSelfUpdating()){
@@ -185,17 +183,6 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		args.putBoolean("_can_go_back", true);
 		fragment.setArguments(args);
 		showFragment(fragment);
-	}
-
-	private void showCompose(){
-		AccountSession session=AccountSessionManager.getInstance().getLastActiveAccount();
-		if(session==null || !session.activated)
-			return;
-		ComposeFragment compose=new ComposeFragment();
-		Bundle composeArgs=new Bundle();
-		composeArgs.putString("account", session.getID());
-		compose.setArguments(composeArgs);
-		showFragment(compose);
 	}
 
 	private void maybeRequestNotificationsPermission(){
@@ -343,8 +330,6 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 				}catch(BadParcelableException x){
 					Log.w(TAG, x);
 				}
-			} else if (intent.getBooleanExtra("compose", false)){
-				showCompose();
 			} else if (Intent.ACTION_VIEW.equals(intent.getAction())){
 				handleURL(intent.getData(), null);
 			} else {

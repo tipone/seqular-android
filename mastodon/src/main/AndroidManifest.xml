@@ -81,6 +81,15 @@
 				<data android:mimeType="*/*"/>
 			</intent-filter>
 		</activity>
+		<activity android:name=".ChooseAccountForComposeActivity" android:exported="true" android:configChanges="orientation|screenSize" android:windowSoftInputMode="adjustResize"
+			android:theme="@style/TransparentDialog">
+			<intent-filter>
+				<action android:name="android.intent.action.CHOOSER"/>
+				<category android:name="android.intent.category.LAUNCHER"/>
+				<data android:mimeType="*/*"/>
+			</intent-filter>
+		</activity>
+
 
 		<service android:name=".AudioPlayerService" android:foregroundServiceType="mediaPlayback"/>
 

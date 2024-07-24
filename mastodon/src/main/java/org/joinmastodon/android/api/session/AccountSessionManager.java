@@ -1,7 +1,5 @@
 package org.joinmastodon.android.api.session;
 
-import static org.unifiedpush.android.connector.UnifiedPush.getDistributor;
-
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -17,8 +15,7 @@ import android.util.Log;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
-import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MainActivity;
+import org.joinmastodon.android.ChooseAccountForComposeActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.MastodonAPIController;
@@ -494,12 +491,11 @@ public class AccountSessionManager{
 		if((sm.getDynamicShortcuts().isEmpty() || BuildConfig.DEBUG) && !sessions.isEmpty()){
 			// There are no shortcuts, but there are accounts. Add a compose shortcut.
 			ShortcutInfo info=new ShortcutInfo.Builder(MastodonApp.context, "compose")
-					.setActivity(ComponentName.createRelative(MastodonApp.context, MainActivity.class.getName()))
+					.setActivity(ComponentName.createRelative(MastodonApp.context, ChooseAccountForComposeActivity.class.getName()))
 					.setShortLabel(MastodonApp.context.getString(R.string.new_post))
 					.setIcon(Icon.createWithResource(MastodonApp.context, R.mipmap.ic_shortcut_compose))
-					.setIntent(new Intent(MastodonApp.context, MainActivity.class)
-							.setAction(Intent.ACTION_MAIN)
-							.putExtra("compose", true))
+					.setIntent(new Intent(MastodonApp.context, ChooseAccountForComposeActivity.class)
+							.setAction(Intent.ACTION_CHOOSER))
 					.build();
 			sm.setDynamicShortcuts(Collections.singletonList(info));
 		}else if(sessions.isEmpty()){
