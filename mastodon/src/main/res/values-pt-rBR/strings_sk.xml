@@ -446,4 +446,5 @@
     <string name="sk_settings_crash_log_unavailable">Nenhum disponível... ainda</string>
     <string name="sk_open_post_preview">Pré-visualizar postagem</string>
     <string name="sk_post_preview">Pré-visualizar</string>
+    <string name="sk_posted">%s postou</string>
 </resources>
