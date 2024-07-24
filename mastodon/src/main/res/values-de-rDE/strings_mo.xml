@@ -102,4 +102,23 @@
     <string name="mo_notification_filter_reset">Auf Standardwerte zurücksetzen</string>
     <string name="mo_instance_view_info">Serverinformationen anzeigen</string>
     <string name="mo_mute_notifications">Benachrichtigungen dieses Users verstecken?</string>
+    <string name="mo_settings_remove_tracking_params">Private Links</string>
+    <string name="import_settings_title">Einstellungen importieren</string>
+    <string name="mo_error_display_title">Beitrag kann nicht angezeigt werden</string>
+    <string name="mo_error_display_copy_error_details">Details kopieren</string>
+    <string name="mo_trending_link_read">Lesen</string>
+    <string name="import_settings_summary">Zuvor exportierte Einstellungen und Timelines importieren</string>
+    <string name="mo_error_display_text">Beim Laden dieses Beitrags ist ein Fehler aufgetreten. Wenn das Problem weiterhin besteht, melde es bitte auf unserer Issues-Seite zusammen mit den Fehlerdetails.</string>
+    <string name="mo_settings_remove_tracking_params_summary">Tracking-Informationen aus Links entfernen</string>
+    <string name="export_settings_summary">Alle Einstellungen und Timelines der angemeldeten Konten exportieren</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush nicht aktiviert</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Keine UnifiedPush-Verteiler installiert. Du wirst keine Benachrichtigungen erhalten.</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush ist nicht aktiviert. Du wirst keine Benachrichtigungen erhalten.</string>
+    <string name="mo_settings_unifiedpush_enable">Aktivieren</string>
+    <string name="import_settings_confirm">Import der Einstellungen bestätigen?</string>
+    <string name="import_settings_confirm_body">Alle aktuellen Einstellungen und Timelines werden überschrieben! Diese Aktion kann nicht rückgängig gemacht werden.</string>
+    <string name="import_settings_failed">Importieren der Einstellungen fehlgeschlagen</string>
+    <string name="export_settings_share">Einstellungen exportieren</string>
+    <string name="export_settings_fail">Exportieren der Einstellungen fehlgeschlagen</string>
+    <string name="export_settings_title">Einstellungen exportieren</string>
 </resources>
