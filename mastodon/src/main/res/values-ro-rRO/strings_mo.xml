@@ -96,4 +96,21 @@
     <string name="mo_notification_filter_reset">Resetați la valorile implicite</string>
     <string name="mo_mute_notifications">Ascundeți notificările de la acest utilizator?</string>
     <string name="mo_instance_view_info">Vizualizați informații server</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush nu este activat</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Niciun distribuitor UnifiedPush instalat. Nu veți primi notificări.</string>
+    <string name="export_settings_fail">Eroare la exportarea setărilor</string>
+    <string name="import_settings_summary">Importați setările și cronologiile exportate anterior</string>
+    <string name="mo_error_display_text">A apărut o eroare la încărcarea acestei postări. Dacă problema persistă, vă rugăm să o raportați pe pagina Probleme împreună cu detaliile erorii.</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush nu este activat. Nu veți primi notificări.</string>
+    <string name="mo_settings_unifiedpush_enable">Activați</string>
+    <string name="import_settings_confirm">Confirmați importarea setărilor?</string>
+    <string name="import_settings_confirm_body">Toate setările curente și cronologiile vor fi suprascrise! Această acțiune nu poate fi anulată.</string>
+    <string name="import_settings_failed">Eroare la importarea setărilor</string>
+    <string name="export_settings_share">Setări export</string>
+    <string name="export_settings_title">Setări export</string>
+    <string name="export_settings_summary">Exportați toate cronologiile și setările conturilor logate</string>
+    <string name="import_settings_title">Setări import</string>
+    <string name="mo_error_display_title">Eroare la afișarea postării</string>
+    <string name="mo_error_display_copy_error_details">Copiați detaliile</string>
+    <string name="mo_trending_link_read">Citiți</string>
 </resources>
