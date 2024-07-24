@@ -436,4 +436,5 @@
         <item quantity="other">αναρτήσεις</item>
     </plurals>
     <string name="sk_settings_clear_timeline_cache">Εκκαθάριση κρυφής μνήμης ροής αρχικής</string>
+    <string name="sk_posted">ο χρήστης %s δημοσίευσε</string>
 </resources>
