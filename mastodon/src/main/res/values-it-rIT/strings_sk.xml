@@ -334,4 +334,16 @@
     <string name="sk_list_exclusive_switch">Crea lista esclusiva</string>
     <string name="sk_list_exclusive_switch_explanation">I membri di una lista esclusiva non appariranno nella tua timeline home - se la tua istanza lo supporta.</string>
     <string name="sk_search_fediverse">Cerca nel Fediverso</string>
+    <string name="sk_trending_posts_info_banner">Questi post al momento stanno guardando popolarità nel Fediverso.</string>
+    <string name="sk_icon_sun">Sole</string>
+    <string name="sk_icon_sunset">Tramonto</string>
+    <string name="sk_icon_cloud">Nuvola</string>
+    <string name="sk_icon_rain">Pioggia</string>
+    <string name="sk_icon_snowflake">Fiocco di neve</string>
+    <string name="sk_settings_continues_playback">Sovrapposizione audio</string>
+    <string name="sk_settings_continues_playback_summary">Consenti ai contenuti multimediali già in riproduzione di proseguire, sovrapponendo il nuovo audio</string>
+    <string name="sk_icon_thunderstorm">Temporale</string>
+    <string name="sk_icon_water">Acqua</string>
+    <string name="sk_settings_display_pronouns_in_threads">Mostra i pronomi nelle discussioni</string>
+    <string name="sk_settings_display_pronouns_in_timelines">Mostra i pronomi nelle timeline</string>
 </resources>
