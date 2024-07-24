@@ -346,4 +346,15 @@
     <string name="sk_icon_water">Acqua</string>
     <string name="sk_settings_display_pronouns_in_threads">Mostra i pronomi nelle discussioni</string>
     <string name="sk_settings_display_pronouns_in_timelines">Mostra i pronomi nelle timeline</string>
+    <string name="sk_tab_home">Home</string>
+    <string name="sk_tab_search">Cerca</string>
+    <string name="sk_tab_notifications">Notifiche</string>
+    <string name="sk_tab_profile">Profilo</string>
+    <string name="sk_settings_show_labels_in_navigation_bar">Mostra le etichette delle schede nella barra di navigazione</string>
+    <string name="sk_settings_display_pronouns_in_user_listings">Mostra i pronomi negli elenchi utenti</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="one">Un utente ha reagito con %2$s</item>
+        <item quantity="many">%1$,d utenti hanno reagito con %2$s</item>
+        <item quantity="other">%1$,d utenti hanno reagito con %2$s</item>
+    </plurals>
 </resources>
