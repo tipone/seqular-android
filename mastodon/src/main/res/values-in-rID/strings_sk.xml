@@ -427,4 +427,5 @@
     <string name="sk_icon_thunderstorm">Guntur</string>
     <string name="sk_post_preview">Pratinjau</string>
     <string name="sk_private_note_confirm_delete">Hapus catatan pribadi tentang %s?</string>
+    <string name="sk_posted">%s mengirimkan</string>
 </resources>
