@@ -24,4 +24,8 @@
     <string name="mo_mute_label">Durada:</string>
     <string name="mo_duration_minutes_5">5 minuts</string>
     <string name="mo_mention_reblogger_automatically">En respondre, menciona automàticament el compte que ha impulsat la publicació</string>
+    <string name="mo_color_palette_black_and_white">Blanc i Negre</string>
+    <string name="mo_welcome_text">Per començar, per favor introduïu el nom de la vostra instància a continuació</string>
+    <string name="mo_no_image_desc">Les imatges incloses no tenen descripció. Penseu a afegir-ne un per permetre que les persones amb discapacitat visual hi puguin participar.</string>
+    <string name="mo_enable_dividers">Mostrar els separadors de les publicacions</string>
 </resources>
