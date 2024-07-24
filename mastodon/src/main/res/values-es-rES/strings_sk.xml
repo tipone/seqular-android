@@ -426,4 +426,13 @@
     <string name="sk_icon_rain">Lluvia</string>
     <string name="sk_icon_thunderstorm">Tormenta eléctrica</string>
     <string name="sk_private_note_confirm_delete">¿Borrar la nota personal sobre %s\?</string>
+    <string name="sk_confirm_changes">Confirmar los cambios</string>
+    <string name="sk_settings_crash_log_unavailable">Ninguno disponible... todavía</string>
+    <string name="sk_crash_log_copied">Registro de fallos copiado</string>
+    <string name="sk_settings_copy_crash_log">Copiar el último registro de fallos</string>
+    <string name="sk_open_post_preview">Vista previa</string>
+    <string name="sk_post_preview">Previsualizar</string>
+    <string name="sk_poll_hide_results">Ocultar los resultados</string>
+    <string name="sk_poll_multiple_choice">Varias opciones</string>
+    <string name="sk_poll_show_results">Resultados</string>
 </resources>

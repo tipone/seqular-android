@@ -358,7 +358,7 @@
     <string name="sk_settings_continues_playback_summary">Autoriser les médias déjà en cours de lecture à continuer à jouer, en superposant la nouvelle lecture</string>
     <string name="sk_settings_unifiedpush">Utiliser UnifiedPush</string>
     <string name="sk_settings_unifiedpush_no_distributor_body">Vous devez installer un distributeur pour que les notifications UnifiedPush fonctionnent. Pour plus d\'informations, visitez https://unifiedpush.org/</string>
-    <string name="sk_settings_display_pronouns_in_timelines">Afficher les pronoms dans les timelines</string>
+    <string name="sk_settings_display_pronouns_in_timelines">Afficher les pronoms dans les fils</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Afficher les étiquettes des onglets dans la barre de navigation</string>
     <string name="sk_settings_emoji_reactions">Activer les réactions emoji</string>
     <string name="sk_settings_emoji_reactions_explanation">Affiche les réactions emoji aux messages et vous permet d\'ajouter les vôtres. Divers serveurs du Fediverse le prennent en charge, mais pas Mastodon.</string>

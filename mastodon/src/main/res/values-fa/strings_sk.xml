@@ -407,4 +407,25 @@
     <string name="sk_timeline_cache_cleared">کش خط زمانی خانه پاک شد</string>
     <string name="sk_button_mutuals">متقابل</string>
     <string name="sk_settings_clear_timeline_cache">پاک کردن کش خط زمانی خانه</string>
+    <string name="sk_poll_hide_results">نهفتن نتایج</string>
+    <string name="sk_poll_multiple_choice">چند گزینه‌ای</string>
+    <string name="sk_icon_snowflake">دانه برف</string>
+    <string name="sk_private_note_update_failed">یادداشت ذخیره نشد</string>
+    <string name="sk_icon_cloud">ابر</string>
+    <string name="sk_delete_note">حذف یادداشت شخصی</string>
+    <string name="sk_icon_sunset">غروب آفتاب</string>
+    <string name="sk_confirm_changes">تایید تغییرات</string>
+    <string name="sk_settings_crash_log_unavailable">هیچکدام دردسترس نیست… هنوز</string>
+    <string name="sk_private_note_hint">افزودن یک یادداشت شخصی درباره این نمایه</string>
+    <string name="sk_icon_water">آب</string>
+    <string name="sk_icon_sun">خورشید</string>
+    <string name="sk_crash_log_copied">گزارش کرش کپی شد</string>
+    <string name="sk_add_note">افزودن یادداشت شخصی</string>
+    <string name="sk_settings_copy_crash_log">کپی آخرین گزارش کرش</string>
+    <string name="sk_poll_show_results">نمایش نتایج</string>
+    <string name="sk_open_post_preview">پیش‌نمایش فرسته</string>
+    <string name="sk_icon_rain">بارانی</string>
+    <string name="sk_icon_thunderstorm">رعد و برق</string>
+    <string name="sk_post_preview">پیش‌نمایش</string>
+    <string name="sk_private_note_confirm_delete">یادداشت شخصی درمورد %s حذف شود؟</string>
 </resources>

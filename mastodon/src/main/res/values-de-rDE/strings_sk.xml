@@ -92,7 +92,7 @@
     <string name="sk_bookmark_as">Lesezeichen mit anderem Konto</string>
     <string name="sk_bookmarked_as">Lesezeichen gesetzt als %s</string>
     <string name="sk_already_bookmarked">Bereits in den Lesezeichen</string>
-    <string name="sk_favorite_as">Favorit mit anderem Konto</string>
+    <string name="sk_favorite_as">Favorisieren mit anderem Konto</string>
     <string name="sk_favorited_as">Favorisiert als %s</string>
     <string name="sk_already_favorited">Bereits favorisiert</string>
     <string name="sk_reblog_as">Mit einem anderen Konto teilen</string>
@@ -183,7 +183,7 @@
     <string name="sk_icon_bot">Bot</string>
     <string name="sk_icon_language">Sprache</string>
     <string name="sk_icon_location">Standort</string>
-    <string name="sk_icon_microphone">Mikrophon</string>
+    <string name="sk_icon_microphone">Mikrofon</string>
     <string name="sk_icon_microscope">Mikroskop</string>
     <string name="sk_icon_keyboard">Keyboard</string>
     <string name="sk_icon_coffee">Kaffee</string>
@@ -220,7 +220,7 @@
     <string name="sk_icon_gauge">Gage</string>
     <string name="sk_icon_headphones">Kopfhörer</string>
     <string name="sk_icon_human">Mensch</string>
-    <string name="sk_icon_megaphone">Megaphon</string>
+    <string name="sk_icon_megaphone">Megafon</string>
     <string name="sk_icon_light_bulb">Glühbirne</string>
     <string name="sk_icon_globe">Globus</string>
     <string name="sk_attach_file">Datei anhängen</string>
@@ -246,7 +246,7 @@
     <string name="sk_reported">hat gemeldet</string>
     <string name="sk_sign_ups">Registrierungen</string>
     <string name="sk_new_reports">Neue Meldungen</string>
-    <string name="sk_settings_see_new_posts_button">“Neue Beiträge anzeigen”-Button</string>
+    <string name="sk_settings_see_new_posts_button">„Neue Beiträge anzeigen“-Button</string>
     <string name="sk_settings_server_version">Server-Version: %s</string>
     <string name="sk_notify_poll_results">Umfrage-Ergebnisse</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Voranstellen von „re:“ an CWs in Antworten an</string>
@@ -254,7 +254,7 @@
     <string name="sk_expand">Erweitern</string>
     <string name="sk_collapse">Einklappen</string>
     <string name="sk_settings_collapse_long_posts">Sehr lange Beiträge einklappen</string>
-    <string name="sk_unfinished_attachments">Anhänge laden hoch</string>
+    <string name="sk_unfinished_attachments">Anhänge werden hochgeladen</string>
     <string name="sk_settings_hide_interaction">Interaktions-Buttons verstecken</string>
     <string name="sk_unfinished_attachments_message">Einige Anhänge sind nicht fertig hochgeladen.</string>
     <string name="sk_followed_as">Mit %s gefolgt</string>
@@ -269,7 +269,7 @@
     <string name="sk_notification_action_replied">Antwort an %s gesendet</string>
     <string name="sk_show_thread">Thread öffnen</string>
     <string name="sk_compact_reblog_reply_line">Kompakte Geteilt-/Geantwortet-Zeile</string>
-    <string name="sk_reply_line_above_avatar">“Als Antwort auf”-Zeile über Profilbild</string>
+    <string name="sk_reply_line_above_avatar">„Als Antwort auf“-Zeile über Profilbild</string>
     <string name="sk_settings_confirm_before_reblog">Vor dem Teilen bestätigen</string>
     <string name="sk_reacted">%s hat reagiert</string>
     <string name="sk_reacted_with">%1$s hat mit %2$s reagiert</string>
@@ -290,10 +290,10 @@
     <string name="sk_settings_default_content_type">Standard-Inhaltstyp</string>
     <string name="sk_instance_info_unavailable">Informationen zur Instanz momentan nicht verfügbar</string>
     <string name="sk_open_in_app">In App öffnen</string>
-    <string name="sk_settings_content_types_explanation">Dadurch lässt beim Erstellen von Beiträgen ein Inhaltstyp wie Markdown angeben. Nicht alle Instanzen unterstützen das.</string>
+    <string name="sk_settings_content_types_explanation">Dadurch kann beim Erstellen von Beiträgen ein Inhaltstyp wie z.B. Markdown angegeben werden. Nicht alle Instanzen unterstützen das.</string>
     <string name="sk_settings_allow_remote_loading">Infos von Remote-Instanzen laden</string>
     <string name="sk_no_remote_info_hint">keine Remote-Infos abrufbar</string>
-    <string name="sk_error_loading_profile">Konnte das Profil via %s nicht laden</string>
+    <string name="sk_error_loading_profile">Konnte das Profil nicht via %s laden</string>
     <string name="sk_settings_allow_remote_loading_explanation">Für vollständigere Auflistung von Follower_innen, Likes und Boosts können die Informationen von der Ursprungs-Instanz geladen werden.</string>
     <string name="sk_settings_auto_reveal_equal_spoilers">Automatisches Aufdecken von gleichen CWs in Antworten von</string>
     <string name="sk_settings_auto_reveal_nobody">Nie</string>
@@ -342,7 +342,7 @@
     <string name="sk_settings_continues_playback_summary">Musik im Hintergrund nicht pausieren, wenn in der App Medien abgespielt werden</string>
     <string name="sk_settings_unifiedpush_choose">Verteiler auswählen</string>
     <string name="sk_settings_display_pronouns_in_threads">Pronomen in Threads anzeigen</string>
-    <string name="sk_settings_display_pronouns_in_user_listings">Pronomen in User-Auflistungen anzeigen</string>
+    <string name="sk_settings_display_pronouns_in_user_listings">Pronomen in Nutzer-Auflistungen anzeigen</string>
     <string name="sk_tab_home">Start</string>
     <string name="sk_tab_search">Suche</string>
     <string name="sk_tab_notifications">Benachrichtigungen</string>
@@ -423,7 +423,7 @@
     <string name="sk_icon_sun">Sonne</string>
     <string name="sk_icon_rain">Regen</string>
     <string name="sk_icon_thunderstorm">Gewitter</string>
-    <string name="sk_private_note_update_failed">Notiz speichern fehlgeschlagen</string>
+    <string name="sk_private_note_update_failed">Speichern der Notiz fehlgeschlagen</string>
     <string name="sk_delete_note">Private Notiz löschen</string>
     <string name="sk_confirm_changes">Änderungen bestätigen</string>
     <string name="sk_settings_crash_log_unavailable">Keines verfügbar… noch</string>
@@ -433,5 +433,7 @@
     <string name="sk_open_post_preview">Vorschau öffnen</string>
     <string name="sk_post_preview">Vorschau</string>
     <string name="sk_private_note_confirm_delete">Private Notiz über %s löschen\?</string>
-	<string name="sk_poll_multiple_choice">Mehrfachauswahl</string>
+    <string name="sk_poll_multiple_choice">Mehrfachauswahl</string>
+    <string name="sk_poll_hide_results">Ergebnisse ausblenden</string>
+    <string name="sk_poll_show_results">Ergebnisse anzeigen</string>
 </resources>

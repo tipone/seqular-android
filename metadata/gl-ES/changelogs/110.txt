@@ -1,0 +1,6 @@
+- O último rexistro de fallos agora gárdase e está listo para ser copiado dende a páxina de configuración "Sobre Megalodon"
+- Engadir e amosar notas persoais nos perfís
+- As modificaciones de texto agora resáltanse no historial de edición
+- Akkoma: As publicacións citadas amósanse na cronoloxía; tradución; previsualiza as publicacións antes de publicalas
+- Engadíronse Marcadores e Os teus favoritos como cronoloxías fixábeis
+- Varias correccións de erros
