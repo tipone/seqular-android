@@ -125,6 +125,7 @@ import org.joinmastodon.android.ui.sheets.BlockAccountConfirmationSheet;
 import org.joinmastodon.android.ui.sheets.MuteAccountConfirmationSheet;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.utils.Tracking;
 import org.parceler.Parcels;
 
 import java.io.File;
@@ -196,6 +197,8 @@ public class UiUtils {
 	}
 
 	public static void launchWebBrowser(Context context, String url) {
+		if(GlobalUserPreferences.removeTrackingParams)
+			url=Tracking.removeTrackingParameters(url);
 		try {
 			if (GlobalUserPreferences.useCustomTabs) {
 				new CustomTabsIntent.Builder()
@@ -1480,6 +1483,8 @@ public class UiUtils {
 	}
 
 	public static void copyText(View v, String text) {
+		if(GlobalUserPreferences.removeTrackingParams)
+			text=Tracking.cleanUrlsInText(text);
 		Context context = v.getContext();
 		context.getSystemService(ClipboardManager.class).setPrimaryClip(ClipData.newPlainText(null, text));
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || UiUtils.isMIUI()) { // Android 13+ SystemUI shows its own thing when you put things into the clipboard

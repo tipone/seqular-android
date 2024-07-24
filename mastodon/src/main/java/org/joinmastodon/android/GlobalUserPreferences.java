@@ -80,6 +80,7 @@ public class GlobalUserPreferences{
 	public static boolean mentionRebloggerAutomatically;
 	public static boolean showPostsWithoutAlt;
 	public static boolean showMediaPreview;
+	public static boolean removeTrackingParams;
 
 	public static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
@@ -160,6 +161,7 @@ public class GlobalUserPreferences{
 		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
 		showPostsWithoutAlt=prefs.getBoolean("showPostsWithoutAlt", true);
 		showMediaPreview=prefs.getBoolean("showMediaPreview", true);
+		removeTrackingParams=prefs.getBoolean("removeTrackingParams", true);
 
 		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
 
@@ -234,6 +236,7 @@ public class GlobalUserPreferences{
 				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
 				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
 				.putBoolean("showMediaPreview", showMediaPreview)
+				.putBoolean("removeTrackingParams", removeTrackingParams)
 
 				.apply();
 	}
