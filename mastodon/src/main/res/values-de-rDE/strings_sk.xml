@@ -436,4 +436,5 @@
     <string name="sk_poll_multiple_choice">Mehrfachauswahl</string>
     <string name="sk_poll_hide_results">Ergebnisse ausblenden</string>
     <string name="sk_poll_show_results">Ergebnisse anzeigen</string>
+    <string name="sk_posted">%s gepostet</string>
 </resources>
