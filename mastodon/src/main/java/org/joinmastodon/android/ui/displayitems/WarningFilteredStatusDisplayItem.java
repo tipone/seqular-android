@@ -54,7 +54,7 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 
 			if(item.inset){
 				itemView.setClipToOutline(true);
-				itemView.setOutlineProvider(OutlineProviders.roundedRect(12));
+				itemView.setOutlineProvider(OutlineProviders.roundedRect(8));
 			}
 		}
 
