@@ -34,4 +34,6 @@
     <string name="mo_instance_info_moderated_servers">خوادم تحت الإشراف</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_emoji_recent">المُستخدَمة حديثًا</string>
+    <string name="mo_muted_accounts">الحسابات المكتومة</string>
+    <string name="mo_blocked_accounts">الحسابات المحظورة</string>
 </resources>
