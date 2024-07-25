@@ -90,4 +90,18 @@
     <string name="mo_double_tap_to_search">Тапните дважды, чтобы открыть поиск</string>
     <string name="mo_confirm_to_mute_hashtag">Вы уверены, что хотите приглушить данный хештег?</string>
     <string name="mo_fab_compose">Новая запись</string>
+    <string name="mo_error_display_copy_error_details">Скопировать данные</string>
+    <string name="mo_trending_link_read">Читать</string>
+    <string name="mo_settings_remove_tracking_params">Приватная ссылка</string>
+    <string name="mo_settings_remove_tracking_params_summary">Удалить информацию для отслеживания из ссылки</string>
+    <string name="mo_error_display_title">Не удалось показать пост</string>
+    <string name="mo_instance_view_info">Посмотреть информацию о сервере</string>
+    <string name="mo_mute_notifications">Скрыть уведомления от этого пользователя?</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush не включён</string>
+    <string name="mo_settings_unifiedpush_enable">Включить</string>
+    <string name="import_settings_failed">Не удалось импортировать настройки</string>
+    <string name="export_settings_share">Настройки экспорта</string>
+    <string name="export_settings_fail">Не удалось экспортировать настройка</string>
+    <string name="export_settings_title">Экспортировать настройки</string>
+    <string name="import_settings_title">Импортировать настройки</string>
 </resources>
