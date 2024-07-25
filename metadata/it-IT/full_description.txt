@@ -1,0 +1,16 @@
+Moshidon è una versione modificata dell'<a href="https://github.com/mastodon/mastodon-android">applicazione ufficiale Mastodon per Android</a> che aggiunge funzionalità importanti che sono assenti nell'app ufficiale, come la timeline federata, la pubblicazione silenziosa e un visualizzatore delle descrizioni delle immagini.
+
+<b>Funzionalità principali</b>
+
+- <b>Tanti colori</b>: Aggiunge il tema material you e tante opzioni colorate per i temi!
+- <b>Post filtrati!</b>: La possibilità di mostrare i post filtrati con un avvertimento!
+- <b>Tasto Traduci</b>: Aggiunge un tasto per tradurre!
+- <b>Selettore di lingua del toot</b>: Aggiunge un selettore di lingua del toot!
+- <b>Post silenziosi</b>: Posta pubblicamente senza che il tuo post compaia nei trend, hashtag o timeline pubbliche.
+- <b>Timeline federata</b>: Mostra tutti i post pubblici da persone su tutti i vicinati Fediverse a cui la tua istanza locale è connessa.
+- <b>Visualizzatore descrizione immagini</b>: Controlla rapidamente se un'immagine o video ha un testo alternativo o meno.
+- <b>Fissa post</b>: Fissa al tuo profilo i tuoi post più importanti al tuo profilo e vedi cosa hanno fissato gli altri utilizzando la scheda "Fissati".
+- <b>Segui hashtag</b>: Vedi nuovi post da hashtag specifici direttamente nella tua timeline home seguendoli.
+- <b>Rispondi a richieste di seguirti</b>: Accetta o rifiuta richieste di seguirti dalle tue notifiche o dalla lista dedicata "Richieste di seguirti".
+- <b>Elimina e riscrivi</b>: La tanto amata funzione che permetteva le modifiche senza un'effettiva funzionalità di editing.
+- <b>Extra</b>: Aggiunge molte funzionalità UI extra, come le icone di interazione sulle Notifiche e la rimozione di molti fastidi nell'UI originale!
