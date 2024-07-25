@@ -52,13 +52,13 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 			String title=item.applyingFilter.title;
 			text.setText(item.parentFragment.getString(R.string.sk_filtered, title));
 
-			itemView.setClipToOutline(item.inset);
-			itemView.setOutlineProvider(item.inset ? OutlineProviders.roundedRect(12) : null);
+			if(item.inset){
+				itemView.setClipToOutline(true);
+				itemView.setOutlineProvider(OutlineProviders.roundedRect(12));
+			}
 		}
 
 		@Override
-		public void onClick(){
-
-		}
+		public void onClick(){}
 	}
 }

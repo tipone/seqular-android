@@ -11,6 +11,7 @@ import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.LinkCardStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.MediaGridStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.WarningFilteredStatusDisplayItem;
 
 import java.util.List;
 
@@ -42,13 +43,16 @@ public class InsetStatusItemDecoration extends RecyclerView.ItemDecoration{
 			boolean inset=(holder instanceof StatusDisplayItem.Holder<?> sdi) && sdi.getItem().inset;
 			if(inset){
 				if(rect.isEmpty()){
-					if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder){
-						rect.set(child.getX(), i == 0 && pos > 0 && displayItems.get(pos - 1).inset ? V.dp(-10) : child.getY(), child.getX() + child.getWidth(), child.getY() + child.getHeight() + V.dp(4));
+					if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder || holder instanceof WarningFilteredStatusDisplayItem.Holder){
+						float topInset=i == 0 && pos > 0 && displayItems.get(pos - 1).inset ? V.dp(-10) : child.getY();
+						if(holder instanceof WarningFilteredStatusDisplayItem.Holder)
+							topInset-=V.dp(4);
+						rect.set(child.getX(), topInset, child.getX() + child.getWidth(), child.getY() + child.getHeight() + V.dp(4));
 					}else {
 						rect.set(child.getX(), i == 0 && pos > 0 && displayItems.get(pos - 1).inset ? V.dp(-10) : child.getY(), child.getX() + child.getWidth(), child.getY() + child.getHeight());
 					}
 				}else{
-					if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder){
+					if(holder instanceof MediaGridStatusDisplayItem.Holder || holder instanceof LinkCardStatusDisplayItem.Holder || holder instanceof WarningFilteredStatusDisplayItem.Holder){
 						rect.bottom=Math.max(rect.bottom, child.getY()+child.getHeight()) + V.dp(4);
 					}else {
 						rect.bottom=Math.max(rect.bottom, child.getY()+child.getHeight());
