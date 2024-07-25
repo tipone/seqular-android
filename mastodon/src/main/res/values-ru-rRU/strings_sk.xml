@@ -448,4 +448,5 @@
     <string name="sk_settings_default_visibility">Видимость записей по умоланию</string>
     <string name="sk_confirm_changes">Применить изменения</string>
     <string name="sk_open_post_preview">Предпросмотр</string>
+    <string name="sk_posted">%s опубликовал</string>
 </resources>
