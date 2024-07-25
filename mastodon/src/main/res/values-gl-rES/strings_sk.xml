@@ -425,4 +425,5 @@
     <string name="sk_icon_water">Auga</string>
     <string name="sk_private_note_confirm_delete">Borrar unha nota persoal sobre %s?</string>
     <string name="sk_confirm_changes">Confirmar cambios</string>
+    <string name="sk_posted">%s publicou</string>
 </resources>
