@@ -89,4 +89,5 @@
     <string name="mo_unmuting">Возвращение звука…</string>
     <string name="mo_double_tap_to_search">Тапните дважды, чтобы открыть поиск</string>
     <string name="mo_confirm_to_mute_hashtag">Вы уверены, что хотите приглушить данный хештег?</string>
+    <string name="mo_fab_compose">Новая запись</string>
 </resources>
