@@ -5,4 +5,5 @@
 - Molti miglioramenti al comportamento dei filtri
 - Nuovo design del selettore degli account
 - Nuova opzione per modificare lo stile del contenuto del post (testo semplice, Markdown, etc.) nelle istanze che lo supportano
+- Aggiunta l'opzione di visualizzare le info del server di qualcuno cliccando sul nome utente nel profilo
 - Molte, molte piccole correzioni e miglioramenti

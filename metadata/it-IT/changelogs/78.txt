@@ -1,0 +1,1 @@
+Rimozione dei divisori tra i post sulla timeline principale! Anche questo è configurabile.

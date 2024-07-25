@@ -1,0 +1,11 @@
+Novità in questa versione:
+- Nuovo Material Design 3 completamente aggiornato dall'upstream
+- Supporto per notifiche UnifiedPush (grazie @FineFindus!)
+- Blocchi e silenziamenti ora visualizzabili dal tuo profilo
+- Puoi silenziare gli hashtag dalla loro schermata
+- È ora possibile reagire con emoji sulle istanze che lo supportano (grazie @sk22!)
+- È possibile modificare i filtri nell'app (grazie upstream)
+- Puoi nascondere le anteprime dei media dalle timeline
+- Aggiunta modalità bianco e nero
+- È ora possibile silenziare le conversazioni
+- Tante piccole correzioni e migliorie

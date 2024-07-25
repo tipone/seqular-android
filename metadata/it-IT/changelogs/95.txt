@@ -1,0 +1,3 @@
+Novità della versione 95:
+- Aggiunta la possibilità di avere le timeline locali di altri server tra le proprie timeline
+- Piccole correzioni e miglioramenti

@@ -1,0 +1,5 @@
+Novità per la versione 91:
+- L'abilità di mostrare i post filtrati con un avvertimento
+- Sistemato il sistema di aggiornamento automatico
+- Risolti dei crash con il sistema di filtraggio
+- Piccoli miglioramenti della qualità della vita

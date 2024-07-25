@@ -1,0 +1,4 @@
+Novità della versione 86:
+- Possibilità di impilare notifiche, ovvero: avere diverse notifiche;
+- Introdotti Annunci;
+- Tanti piccoli miglioramenti dell'interfaccia utente.
