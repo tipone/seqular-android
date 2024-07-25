@@ -1,6 +1,8 @@
 package org.joinmastodon.android.model;
 
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MastodonApp;
+import org.joinmastodon.android.R;
 import org.jsoup.internal.StringUtil;
 
 import java.util.EnumSet;
@@ -8,9 +10,10 @@ import java.util.EnumSet;
 public class AltTextFilter extends LegacyFilter {
 
 	public AltTextFilter(FilterAction filterAction, EnumSet<FilterContext> filterContexts) {
-		this.filterAction = filterAction;
-		isRemote = false;
-		context = filterContexts;
+		this.filterAction=filterAction;
+		this.title=MastodonApp.context.getString(R.string.sk_no_alt_text);
+		this.isRemote=false;
+		this.context=filterContexts;
 	}
 
 	@Override
