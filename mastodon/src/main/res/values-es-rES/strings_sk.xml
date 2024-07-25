@@ -266,7 +266,7 @@
     <string name="sk_settings_reply_visibility">Visibilidad de la respuesta</string>
     <string name="sk_settings_reply_visibility_all">Todas las respuestas</string>
     <string name="sk_settings_reply_visibility_following">Respuestas a mis seguidores</string>
-    <string name="sk_settings_reply_visibility_self">Respuestas hacia mi</string>
+    <string name="sk_settings_reply_visibility_self">Respuestas para mí</string>
     <string name="sk_notification_action_replied">Respuesta enviada a %s</string>
     <string name="sk_reply_line_above_avatar">\"En respuesta a\" línea sobre el avatar</string>
     <string name="sk_show_thread">Mostrar hilo</string>
