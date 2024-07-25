@@ -117,4 +117,5 @@
     <string name="mo_error_display_copy_error_details">Copiar detalles</string>
     <string name="mo_trending_link_read">Leer</string>
     <string name="mo_settings_remove_tracking_params">Enlaces Privados</string>
+    <string name="mo_settings_remove_tracking_params_summary">Eliminar información de rastreo de los enlaces</string>
 </resources>
