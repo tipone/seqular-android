@@ -437,4 +437,5 @@
     <string name="sk_poll_hide_results">Сховати результати</string>
     <string name="sk_poll_multiple_choice">Кілька варіантів</string>
     <string name="sk_poll_show_results">Показати результати</string>
+    <string name="sk_posted">%s опублікував</string>
 </resources>
