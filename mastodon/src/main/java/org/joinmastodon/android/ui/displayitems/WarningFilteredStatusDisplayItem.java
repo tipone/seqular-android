@@ -10,6 +10,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.ui.OutlineProviders;
 
 import java.util.List;
 
@@ -50,6 +51,9 @@ public class WarningFilteredStatusDisplayItem extends StatusDisplayItem{
 			filteredItems=item.filteredItems;
 			String title=item.applyingFilter.title;
 			text.setText(item.parentFragment.getString(R.string.sk_filtered, title));
+
+			itemView.setClipToOutline(item.inset);
+			itemView.setOutlineProvider(item.inset ? OutlineProviders.roundedRect(12) : null);
 		}
 
 		@Override

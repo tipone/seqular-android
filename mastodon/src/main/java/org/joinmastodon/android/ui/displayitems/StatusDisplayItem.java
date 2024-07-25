@@ -396,6 +396,8 @@ public abstract class StatusDisplayItem{
 			List<StatusDisplayItem> nonGapItems=gap!=null ? items.subList(0, items.size()-1) : items;
 			WarningFilteredStatusDisplayItem warning=applyingFilter==null ? null :
 					new WarningFilteredStatusDisplayItem(parentID, fragment, statusForContent, nonGapItems, applyingFilter);
+			if(warning!=null)
+				warning.inset=inset;
 			return applyingFilter==null ? items : new ArrayList<>(gap!=null
 					? List.of(warning, gap)
 					: Collections.singletonList(warning)
