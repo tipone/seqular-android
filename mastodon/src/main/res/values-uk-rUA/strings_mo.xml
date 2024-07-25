@@ -102,4 +102,18 @@
     <string name="export_settings_fail">Не вдалося експортувати налаштування</string>
     <string name="mo_error_display_title">Не вдалося відобразити публікацію</string>
     <string name="mo_error_display_text">Щось пішло не так під час завантаження цього повідомлення. Якщо проблема не зникне, будь ласка, повідомте про неї на нашій сторінці «Issues» (Проблеми), вказавши деталі помилки.</string>
+    <string name="mo_mute_conversation">Заблокувати розмову</string>
+    <string name="mo_confirm_to_mute_conversation">Ви впевнені що хочете заблокувати цю розмову?</string>
+    <string name="mo_settings_remove_tracking_params_summary">Видаліть інформацію про відстеження з посилань</string>
+    <string name="mo_settings_remove_tracking_params">Приватні посилання</string>
+    <string name="mo_confirm_to_mute_hashtag">Ви впевнені що хочете заблокувати цей хештег?</string>
+    <string name="mo_muted_conversation_successfully">Розмову успішно приглушено</string>
+    <string name="mo_unmuted_conversation_successfully">Розмову успішно розблоковано</string>
+    <string name="mo_muting">Приглушення…</string>
+    <string name="mo_unmuting">Розглушення…</string>
+    <string name="mo_unmute_conversation">Розблокувати розмову</string>
+    <string name="mo_confirm_to_unmute_conversation">Ви впевнені що хочете розблокувати цю розмову?</string>
+    <string name="mo_mute_hashtag">Заблокувати хештег</string>
+    <string name="mo_unmute_hashtag">Розблокувати хештег</string>
+    <string name="mo_confirm_to_unmute_hashtag">Ви впевнені що хочете розблокувати цей хештег?</string>
 </resources>
