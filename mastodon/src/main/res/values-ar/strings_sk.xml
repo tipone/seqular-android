@@ -333,4 +333,9 @@
     <string name="sk_poll_show_results">إظهار النتائج</string>
     <string name="sk_open_post_preview">معاينة المنشور</string>
     <string name="sk_post_preview">معاينة</string>
+    <string name="sk_confirm_changes">أكِّد التغييرات</string>
+    <string name="sk_crash_log_copied">تم نسخ سجل الأعطال</string>
+    <string name="sk_post_scheduled">تم جدولة المنشور</string>
+    <string name="sk_alt_text_missing">مرفق واحد على الأقل ليس له وصف.</string>
+    <string name="sk_settings_auto_reveal_anyone">ردود مِن الجميع</string>
 </resources>
