@@ -430,4 +430,5 @@
     <string name="sk_poll_hide_results">Ascundeți rezultatele</string>
     <string name="sk_poll_multiple_choice">Alegeri multiple</string>
     <string name="sk_poll_show_results">Afișați rezultatele</string>
+    <string name="sk_posted">%s a postat</string>
 </resources>
