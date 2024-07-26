@@ -172,7 +172,18 @@ public class AccountCardStatusDisplayItem extends StatusDisplayItem{
 
 		private void onFollowRequestButtonClick(View v) {
 			itemView.setHasTransientState(true);
-			UiUtils.handleFollowRequest((Activity) v.getContext(), item.account, item.parentFragment.getAccountID(), null, v == acceptButton, relationship, rel -> {
+			UiUtils.handleFollowRequest((Activity) v.getContext(), item.account, item.parentFragment.getAccountID(), null, v == acceptButton, relationship, (Boolean visible) -> {
+				if(v==acceptButton){
+					acceptButton.setTextVisible(!visible);
+					acceptProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+					acceptButton.setClickable(!visible);
+				}else{
+					rejectButton.setTextVisible(!visible);
+					rejectProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+					rejectButton.setClickable(!visible);
+				}
+				itemView.setHasTransientState(false);
+			}, rel -> {
 				if(v.getContext()==null || rel==null) return;
 				itemView.setHasTransientState(false);
 				item.parentFragment.putRelationship(item.account.id, rel);

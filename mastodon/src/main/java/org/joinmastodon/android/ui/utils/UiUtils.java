@@ -934,17 +934,20 @@ public class UiUtils {
 	}
 
 
-	public static void handleFollowRequest(Activity activity, Account account, String accountID, @Nullable String notificationID, boolean accepted, Relationship relationship, Consumer<Relationship> resultCallback) {
+	public static void handleFollowRequest(Activity activity, Account account, String accountID, @Nullable String notificationID, boolean accepted, Relationship relationship, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
+		progressCallback.accept(true);
 		if (accepted) {
 			new AuthorizeFollowRequest(account.id).setCallback(new Callback<>() {
 				@Override
 				public void onSuccess(Relationship rel) {
 					E.post(new FollowRequestHandledEvent(accountID, true, account, rel));
+					progressCallback.accept(false);
 					resultCallback.accept(rel);
 				}
 
 				@Override
 				public void onError(ErrorResponse error) {
+					progressCallback.accept(false);
 					resultCallback.accept(relationship);
 					error.showToast(activity);
 				}
@@ -956,11 +959,13 @@ public class UiUtils {
 					E.post(new FollowRequestHandledEvent(accountID, false, account, rel));
 					if (notificationID != null)
 						E.post(new NotificationDeletedEvent(notificationID));
+					progressCallback.accept(false);
 					resultCallback.accept(rel);
 				}
 
 				@Override
 				public void onError(ErrorResponse error) {
+					progressCallback.accept(false);
 					resultCallback.accept(relationship);
 					error.showToast(activity);
 				}
