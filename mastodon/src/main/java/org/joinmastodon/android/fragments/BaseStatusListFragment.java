@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.polls.SubmitPollVote;
@@ -33,6 +34,7 @@ import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.AkkomaTranslation;
 import org.joinmastodon.android.model.DisplayItemsParent;
+import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.Status;
@@ -727,6 +729,15 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 		int prevSize=oldItems.size();
 		oldItems.clear();
 		displayItems.addAll(startIndex, newItems);
+
+		// Update the cache
+		final CacheController cache=AccountSessionManager.get(accountID).getCacheController();
+		if (parent instanceof Status) {
+			cache.updateStatus((Status) parent);
+		} else if (parent instanceof Notification) {
+			cache.updateNotification((Notification) parent);
+		}
+
 		adapter.notifyItemRangeRemoved(startIndex, prevSize);
 		adapter.notifyItemRangeInserted(startIndex, newItems.size());
 	}
