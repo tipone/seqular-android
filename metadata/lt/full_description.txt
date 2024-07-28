@@ -1,0 +1,16 @@
+„Moshidon“– tai modifikuota <a href="https://github.com/mastodon/mastodon-android">oficialiosios „Mastodon“ „Android“ programėlės</a> versija, pridedant svarbių funkcijų, kurių trūksta oficialiojoje programėlėje, pavyzdžiui, federacinę laiko skalę, neįtrauktą į sąrašą skelbimą ir vaizdo aprašymo žiūryklę.
+
+<b>Pagrindinės funkcijos</b>
+
+- <b>Daugybė spalvų</b>: suteikia „Material You“ tema ir daug spalvingų parinkčių temų!
+- <b>Filtruoti įrašai</b>: galimybė, kad filtruoti įrašai būtų rodomi su įspėjimu!
+- <b>Vertimo mygtukas</b>: suteikia vertimo mygtuką!
+- <b>Įrašo kalbos parinkiklis</b>: suteikia įrašo kalbos parinkiklį!
+- <b>Neįtrauktas į sąrašą skelbimas</b>: skelbk viešai, nerodant savo įrašo tendencijose, saitažodžiuose ar viešose laiko skalėse.
+- <b>Federacinė laiko skalė</b>: žiūrėk visus viešus žmonių įrašus iš visų kitų Fediverso apylinkių, prie kurių prijungta tavo pagrindinis serveris.
+- <b>Vaizdo aprašymo žiūryklė</b>: sparčiai patikrink, ar prie vaizdo ar vaizdo įrašo yra pridėtas jo alternatyvusis tekstas.
+- <b>Pranešimų prisegimas</b>: prisek svarbiausius įrašus prie savo profilio ir žiūrėk, ką kiti prisegė, naudojant skirtuku Prisegta.
+- <b>Sekti saitažodžius</b>: žiūrėk naujus įrašus iš konkrečių saitažodžių tiesiai savo pagrindinėje laiko skalėje, sekant juos.
+- <b>Atsakyti į sekimo prašymus</b>: priimk arba atmesk sekimo prašymus iš savo pranešimų arba skirtinė sekimo prašymų sąrašo.
+- <b>Ištrinti ir iš naujo parengti</b>: ši labai pamėgta funkcija suteikė galimybę redaguoti be tikros redagavimo funkcijos.
+- <b>Papildomai</b>: suteikia daug papildomų naudotojo sąsajos funkcijų, pavyzdžiui, sąveikos piktogramos pranešimuose ir pašalina daugybę originalios naudotojo sąsajos nepatogumų!
