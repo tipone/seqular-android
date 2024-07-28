@@ -116,4 +116,8 @@
     <string name="export_settings_summary">Exportar as configurações e linhas de tempo de todas as contas logadas</string>
     <string name="import_settings_summary">Importar configurações e linhas e tempo previamente exportadas</string>
     <string name="mo_settings_unifiedpush_warning">UnifiedPush não ativado</string>
+    <string name="mo_error_display_title">Falha ao renderizar postagem</string>
+    <string name="mo_error_display_copy_error_details">Copiar detalhes</string>
+    <string name="mo_trending_link_read">Ler</string>
+    <string name="mo_error_display_text">Algo deu errado enquanto carregava-mos essa postagem. Se o problema persistir, por favor reporte isso na páginas de problemas junto com os detalhes do erro.</string>
 </resources>
