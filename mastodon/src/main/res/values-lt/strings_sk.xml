@@ -311,7 +311,7 @@
     <string name="sk_content_type_html">HTML</string>
     <string name="sk_content_type_mfm">MFM</string>
     <string name="sk_content_type_bbcode">BBCode</string>
-    <string name="sk_content_type_markdown">Markdown</string>
+    <string name="sk_content_type_markdown">„Markdown“</string>
     <string name="sk_settings_default_content_type">Numatytas turinio tipas</string>
     <string name="sk_instance_info_unavailable">Serverio informacija laikinai nepasiekiama.</string>
     <string name="sk_open_in_app">Atidaryti programėlėje</string>
