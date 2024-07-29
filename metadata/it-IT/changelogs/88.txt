@@ -1,0 +1,6 @@
+Novità per la versione numero 88:
+- Comportamento FAB migliorato
+- Migliore gestione dei testi alternativi
+- Abilita la pubblicazione locale sulle istanze che la supportano
+- Risolti dei crash
+- Piccole migliorie

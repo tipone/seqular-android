@@ -111,4 +111,6 @@
     <string name="mo_error_display_text">Κάτι πήγε στραβά κατά τη φόρτωση της ανάρτησης. Αν το πρόβλημα παραμένει, παρακαλώ ανάφερε το στην σελίδα Issues μαζί με τις λεπτομέρειες του σφάλματος.</string>
     <string name="mo_error_display_copy_error_details">Αντιγραφή λεπτομερειών</string>
     <string name="mo_trending_link_read">Ανάγνωση</string>
+    <string name="mo_settings_remove_tracking_params_summary">Απομάκρυνση πληροφοριών ανίχνευσης από συνδέσμους</string>
+    <string name="mo_settings_remove_tracking_params">Ιδιωτικοί Σύνδεσμοι</string>
 </resources>

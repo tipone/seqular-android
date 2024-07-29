@@ -1,0 +1,3 @@
+Novità della versione 96:
+- Migliorata l'abilità di avere le timeline locali di altri server tra le proprie timeline
+- Piccole correzioni e migliorie

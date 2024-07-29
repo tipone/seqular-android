@@ -113,4 +113,6 @@
     <string name="mo_error_display_title">Eroare la afișarea postării</string>
     <string name="mo_error_display_copy_error_details">Copiați detaliile</string>
     <string name="mo_trending_link_read">Citiți</string>
+    <string name="mo_settings_remove_tracking_params_summary">Eliminați informațiile de urmărire din linkuri</string>
+    <string name="mo_settings_remove_tracking_params">Linkuri private</string>
 </resources>

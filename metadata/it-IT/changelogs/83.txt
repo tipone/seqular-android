@@ -1,5 +1,4 @@
-- Mi piace/salva/rispondi direttamente dalla notifica
-- Intestazioni più belle e coerenti per i reblog e le risposte nella timeline
-- Punto di notifica (che, in realtà, non carica ancora le notifiche)
-- Per utenti di Akkoma: visibilità delle risposte, citazioni, risposte ai thread ordinate...
-- Correzione di alcuni crash e piccole modifiche
+La versione 83 apporta qualche piccola miglioria, come:
+- Risoluzione dei crash quando si fa clic sulle mezioni
+- Modifica dell'icona bot
+- Aggiunto un promemoria per l'aggiunta di una descrizione se posti un'immagine, per permettere alle persone con ridotta capacità visiva di partecipare. Grazie @FineFindus!

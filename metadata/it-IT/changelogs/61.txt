@@ -1,4 +1,4 @@
-- Nuovi temi colore: Material You e Red
+- Nuovi temi colore: Material You e Rosso
 - Nuove tonalità di grigio scuro per tutti i temi
 - Icona boost piena più distinta
 - Animazioni per pulsanti di interazione

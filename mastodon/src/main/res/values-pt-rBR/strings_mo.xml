@@ -101,4 +101,23 @@
     <string name="mo_notification_filter_reset">Redefinir para padrão</string>
     <string name="mo_instance_view_info">Ver informações do servidor</string>
     <string name="mo_mute_notifications">Ocultar notificações deste usuário?</string>
+    <string name="mo_settings_unifiedpush_enable">Ativar</string>
+    <string name="mo_settings_remove_tracking_params">Links Privados</string>
+    <string name="import_settings_confirm">Confirma querer importar configurações?</string>
+    <string name="import_settings_failed">Falha ao importar configurações</string>
+    <string name="export_settings_fail">Falha ao exportar configurações</string>
+    <string name="export_settings_title">Exportar configurações</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Nenhum distribuidor UnifiedPush instalado. Você não receberá nenhuma notificação.</string>
+    <string name="export_settings_share">Exportar Configurações</string>
+    <string name="import_settings_title">Importar configurações</string>
+    <string name="mo_settings_remove_tracking_params_summary">Remover informação de rastreamento de links</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">O UnifiedPush não está ativado. Você não recebera nenhuma notificação.</string>
+    <string name="import_settings_confirm_body">Todas as configurações e linhas de tempo serão sobrescrevidas! Esta ação não pode ser desfeita.</string>
+    <string name="export_settings_summary">Exportar as configurações e linhas de tempo de todas as contas logadas</string>
+    <string name="import_settings_summary">Importar configurações e linhas e tempo previamente exportadas</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush não ativado</string>
+    <string name="mo_error_display_title">Falha ao renderizar postagem</string>
+    <string name="mo_error_display_copy_error_details">Copiar detalhes</string>
+    <string name="mo_trending_link_read">Ler</string>
+    <string name="mo_error_display_text">Algo deu errado enquanto carregava-mos essa postagem. Se o problema persistir, por favor reporte isso na páginas de problemas junto com os detalhes do erro.</string>
 </resources>

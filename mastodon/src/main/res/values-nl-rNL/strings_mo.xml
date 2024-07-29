@@ -12,7 +12,7 @@
     <string name="mo_poll_option_add">Voeg een nieuwe peiling optie toe</string>
     <string name="mo_sending_error">Fout bij plaatsen bericht</string>
     <string name="mo_disable_dividers">Berichten scheidingslijn uitschakelen</string>
-    <string name="mo_relocate_publish_button">Verplaats publiceerknop</string>
+    <string name="mo_relocate_publish_button">Knop voor opstellen bericht verplaatsen</string>
     <string name="mo_welcome_text">Om te beginnen vul je hieronder de domeinnaam in van de instance (server).</string>
     <string name="mo_clear_recent_emoji">Wis recent gebruikte emoji</string>
     <string name="mo_no_image_desc">De bijgesloten afbeeldingen hebben geen omschrijving. Overweeg deze alsnog toe te voegen, zodat ook mensen met een visuele handicap kunnen deelnemen.</string>
@@ -31,7 +31,7 @@
     <string name="mo_miscellaneous_settings">Diverse instellingen</string>
     <string name="mo_swap_bookmark_with_reblog">Gebruik reblog in plaats van bookmark</string>
     <string name="mo_notification_action_replied">Succesvol gereageerd op het bericht door %s</string>
-    <string name="mo_load_remote_followers">Laad remote profiel follows en volgers</string>
+    <string name="mo_load_remote_followers">Volgers en gevolgde accounts van het profiel op afstand laden</string>
     <string name="mo_download_latest_nightly_release">Download nieuwste nightly versie</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Uitschakelen dubbele tik om te vegen tussen tabs</string>
     <string name="mo_fab_compose">Samenstellen</string>
@@ -64,7 +64,7 @@
     <string name="mo_setting_reduced_motion_summary">Uitschakelen animatie bij interacties</string>
     <string name="mo_setting_interaction_count_summary">Toon hoeveel mensen interactie hebben met een bericht op de tijdlijn</string>
     <string name="mo_setting_default_reply_privacy_summary">Reacties worden dan niet meegenomen in de discovery features</string>
-    <string name="mo_setting_relocate_publish_summary">Verplaats de publiceerknop naar de onderste balk</string>
+    <string name="mo_setting_relocate_publish_summary">Knop voor opstellen bericht naar de onderste balk verplaatsen</string>
     <string name="mo_setting_disable_swipe_summary">Niet naar andere tijdlijnen kunnen swipen</string>
     <string name="mo_setting_marquee_summary">Schakelt de horizontaal scrollende tekst uit</string>
     <string name="mo_mention_reblogger_automatically">In reacties automatisch ook het account erbij vermelden, van degene die het bericht boost</string>
@@ -92,4 +92,30 @@
     <string name="mo_mute_notifications">Verberg meldingen van dit account?</string>
     <string name="mo_confirm_to_unmute_conversation">Weet je zeker dat je dit gesprek niet meer wilt negeren?</string>
     <string name="mo_instance_view_info">Bekijk serverinformatie</string>
+    <string name="mo_settings_remove_tracking_params_summary">Websitetracking uit links verwijderen</string>
+    <string name="import_settings_failed">Importeren van instellingen mislukt</string>
+    <string name="export_settings_share">Instellingen exporteren</string>
+    <string name="export_settings_fail">Exporteren van instellingen mislukt</string>
+    <string name="export_settings_title">Instellingen exporteren</string>
+    <string name="export_settings_summary">Alle instellingen en tijdlijnen van ingelogde accounts exporteren</string>
+    <string name="import_settings_title">Instellingen importeren</string>
+    <string name="import_settings_summary">Eerder geëxporteerde instellingen en tijdlijnen importeren</string>
+    <string name="mo_error_display_title">Tonen van bericht mislukt</string>
+    <string name="mo_error_display_copy_error_details">Foutmeldingen kopiëren</string>
+    <string name="mo_trending_link_read">Lezen</string>
+    <string name="mo_unmuted_conversation_successfully">Gesprek wordt niet langer genegeerd</string>
+    <string name="mo_muting">Negeren…</string>
+    <string name="mo_unmuting">Niet langer negeren…</string>
+    <string name="mo_notification_filter_reset">Standaardwaarden terugzetten</string>
+    <string name="mo_recent_emoji_cleared">Recente emoji\'s gewist</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush uitgeschakeld. Je ontvangt geen meldingen.</string>
+    <string name="import_settings_confirm">Importeren van instellingen toestaan?</string>
+    <string name="mo_composer_behavior">Gedrag tijdens opstellen bericht</string>
+    <string name="mo_settings_remove_tracking_params">Privélinks</string>
+    <string name="mo_error_display_text">Er ging iets mis tijdens het laden van het bericht. Wanneer het probleem niet verdwijnt, rapporteer dit dan samen met eventuele foutmeldingen op onze issue-pagina.</string>
+    <string name="import_settings_confirm_body">Alle huidige instellingen en tijdlijnen worden overschreven! Deze actie kan niet worden teruggedraaid.</string>
+    <string name="mo_disable_relocate_publish_button_to_enable_customization">\'Knop voor opstellen bericht verplaatsen\' uitschakelen om aanpassing mogelijk te maken</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush uitgeschakeld</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Geen UnifiedPush-distributors geïnstalleerd. Je ontvangt geen meldingen.</string>
+    <string name="mo_settings_unifiedpush_enable">Inschakelen</string>
 </resources>

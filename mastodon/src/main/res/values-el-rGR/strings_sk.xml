@@ -19,7 +19,7 @@
     <string name="sk_post_language">Γλώσσα: %s</string>
     <string name="sk_available_languages">Διαθέσιμες γλώσσες</string>
     <string name="sk_language_name">%1$s (%2$s)</string>
-    <string name="sk_trending_posts_info_banner">Αυτές οι αναρτήσεις λαμβάνουν προσοχή στο Σύμπαν Ομοσπονδιών.</string>
+    <string name="sk_trending_posts_info_banner">Αυτές οι αναρτήσεις λαμβάνουν προσοχή στο Fediverse.</string>
     <string name="sk_settings_always_reveal_content_warnings">Πάντα αποκάλυψη των προειδοποιήσεων περιεχομένου</string>
     <string name="sk_settings_enable_marquee">Ενεργοποίηση κυλιόμενου κειμένου στις γραμμές τίτλου</string>
     <string name="sk_notification_type_status">Αναρτήσεις</string>
@@ -44,7 +44,7 @@
     <string name="sk_settings_translation_availability_note_unavailable">Το %s δεν φαίνεται να υποστηρίζει μετάφραση.</string>
     <string name="sk_clear_all_notifications_confirm_action">Διαγραφή όλων</string>
     <string name="sk_clear_all_notifications_confirm">Θες σίγουρα να διαγράψεις όλες τις ειδοποιήσεις;</string>
-    <string name="sk_loading_fediverse_resource_title">Αναζήτηση για αυτό στο Σύμπαν Ομοσπονδιών</string>
+    <string name="sk_loading_fediverse_resource_title">Αναζήτηση για αυτό στο Fediverse</string>
     <string name="sk_undo_reblog">Αναίρεση ενίσχυσης</string>
     <string name="sk_reblog_with_visibility">Ενίσχυση με ορατότητα</string>
     <string name="sk_loading_resource_on_instance_title">Αναζήτηση για αυτό στο %s</string>
@@ -137,7 +137,7 @@
     <string name="sk_confirm_delete_draft">Θες σίγουρα να διαγράψεις αυτή την πρόχειρη ανάρτηση;</string>
     <string name="sk_schedule_post">Προγραμματισμός ανάρτησης</string>
     <string name="sk_settings_continues_playback">Επικάλυψη ήχου</string>
-    <string name="sk_trending_links_info_banner">Αυτές οι ειδήσεις συζητούνται σε όλο το Σύμπαν Ομοσπονδιών.</string>
+    <string name="sk_trending_links_info_banner">Αυτές οι ειδήσεις συζητούνται σε όλο το Fediverse.</string>
     <string name="sk_clear_recent_languages">Εκκαθάριση πρόσφατα χρησιμοποιημένων γλωσσών</string>
     <string name="sk_schedule">Προγραμματισμός</string>
     <string name="sk_schedule_or_draft">Προγραμματισμός ή πρόχειρο</string>
@@ -436,4 +436,5 @@
         <item quantity="other">αναρτήσεις</item>
     </plurals>
     <string name="sk_settings_clear_timeline_cache">Εκκαθάριση κρυφής μνήμης ροής αρχικής</string>
+    <string name="sk_posted">ο χρήστης %s δημοσίευσε</string>
 </resources>
