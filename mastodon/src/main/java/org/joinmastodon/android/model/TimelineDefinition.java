@@ -336,6 +336,7 @@ public class TimelineDefinition {
 		THUNDERSTORM(R.drawable.ic_fluent_weather_thunderstorm_24_regular, R.string.sk_icon_thunderstorm),
 		RAIN(R.drawable.ic_fluent_weather_rain_24_regular, R.string.sk_icon_rain),
 		SNOWFLAKE(R.drawable.ic_fluent_weather_snowflake_24_regular, R.string.sk_icon_snowflake),
+		GNOME(R.drawable.ic_gnome_logo, R.string.mo_icon_gnome),
 
         HOME(R.drawable.ic_fluent_home_24_regular, R.string.sk_timeline_home, true),
         LOCAL(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
