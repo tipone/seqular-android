@@ -116,6 +116,6 @@
     <string name="import_settings_confirm_body">Alle huidige instellingen en tijdlijnen worden overschreven! Deze actie kan niet worden teruggedraaid.</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">\'Knop voor opstellen bericht verplaatsen\' uitschakelen om aanpassing mogelijk te maken</string>
     <string name="mo_settings_unifiedpush_warning">UnifiedPush uitgeschakeld</string>
-    <string name="mo_settings_unifiedpush_warning_no_distributors">Geen UnifiedPush Distributors geïnstalleerd. Je ontvangt geen meldingen.</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Geen UnifiedPush-distributors geïnstalleerd. Je ontvangt geen meldingen.</string>
     <string name="mo_settings_unifiedpush_enable">Inschakelen</string>
 </resources>
