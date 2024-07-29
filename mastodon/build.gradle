@@ -15,7 +15,7 @@ android {
 		archivesBaseName = "moshidon"
 		applicationId "org.joinmastodon.android.moshinda"
 		minSdk 23
-		targetSdk 33
+		targetSdk 34
 		versionCode 105
 		versionName "2.3.0+fork.105.moshinda"
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
