@@ -1,6 +1,0 @@
-- The latest crash log is now kept and ready to be copied from the "About Megalodon" settings page
-- Add and display personal notes on profiles
-- Text modifications are now highlighted in the edit history
-- Akkoma: Quoted posts are displayed in the timeline; translation; preview posts before publishing
-- Added Bookmarks and Your favorites as pinnable timelines
-- Various bugfixes
