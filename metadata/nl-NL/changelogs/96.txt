@@ -1,0 +1,3 @@
+New things for 96:
+- Improving the ability to have other server's local timelines in the timelines
+- Minor fixes and improvements
