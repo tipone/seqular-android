@@ -87,7 +87,7 @@ public abstract class StatusDisplayItem{
 
 
 	private final static  Pattern QUOTE_MENTION_PATTERN=Pattern.compile("(?:<p>)?\\s?(?:RE:\\s?(<br\\s?\\/?>)?)?<a href=\"https:\\/\\/[^\"]+\"[^>]*><span class=\"invisible\">https:\\/\\/<\\/span><span class=\"ellipsis\">[^<]+<\\/span><span class=\"invisible\">[^<]+<\\/span><\\/a>(?:<\\/p>)?$");
-	private final static  Pattern QUOTE_PATTERN=Pattern.compile("[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,6}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$");
+	private final static  Pattern QUOTE_PATTERN=Pattern.compile("https://[-a-zA-Z0-9@:%._\\+~#=]{1,256}\\.[a-zA-Z0-9()]{1,8}\\b([-a-zA-Z0-9()@:%_\\+.~#?&//=]*)$");
 
 	public void setAncestryInfo(
 			boolean hasDescendantNeighbor,
@@ -338,7 +338,7 @@ public abstract class StatusDisplayItem{
 				if(!statusForContent.mediaAttachments.isEmpty() && statusForContent.poll==null) // add spacing if immediately preceded by attachment
 					contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
 				contentItems.addAll(buildItems(fragment, statusForContent.quote, accountID, parentObject, knownAccounts, filterContext, FLAG_NO_FOOTER|FLAG_INSET|FLAG_NO_EMOJI_REACTIONS|FLAG_IS_FOR_QUOTE));
-			} else if((flags & FLAG_INSET)==0){
+			} else if((flags & FLAG_INSET)==0 && statusForContent.mediaAttachments.isEmpty()){
 				tryAddNonOfficialQuote(statusForContent, fragment, accountID);
 			}
 			if(contentItems!=items && statusForContent.spoilerRevealed){
@@ -426,7 +426,7 @@ public abstract class StatusDisplayItem{
 
 		if(!matcher.find())
 			return;
-		String quoteURL="https://"+matcher.group();
+		String quoteURL=matcher.group();
 
 		if (UiUtils.looksLikeFediverseUrl(quoteURL)) {
 			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
