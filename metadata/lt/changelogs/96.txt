@@ -1,0 +1,3 @@
+Nauji dalykai 96 leidimui:
+- Patobulinta galimybė turėti kitų serverių vietines laiko skales laiko skalėse
+- Smulkūs pataisymai ir patobulinimai
