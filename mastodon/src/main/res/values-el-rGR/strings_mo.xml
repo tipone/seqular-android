@@ -53,7 +53,7 @@
     <string name="mo_swap_bookmark_with_reblog">Εναλλαγή σελιδοδείκτη με ενέργεια αναδημοσίευσης</string>
     <string name="mo_show_media_preview">Εμφάνιση προεπισκόπησης πολυμέσων στις ροές</string>
     <string name="mo_settings_unifiedpush_warning">UnifiedPush μη ενεργό</string>
-    <string name="mo_mention_reblogger_automatically">Αυτόματη αναφορά λογαριασμού που αναδημοσίευσε την ανάρτηση, στις απαντήσεις</string>
+    <string name="mo_mention_reblogger_automatically">Αυτόματη επισήμανση λογαριασμού που αναδημοσίευσε την ανάρτηση, στις απαντήσεις</string>
     <string name="mo_confirm_unfollow_title">Άρση ακολούθησης Λογαριασμού</string>
     <string name="mo_settings_unifiedpush_warning_no_distributors">Δεν έχουν εγκατασταθεί διανομείς UnifiedPush. Δεν θα λάβεις ειδοποιήσεις.</string>
     <string name="mo_mute_notifications">Απόκρυψη ειδοποιήσεων από αυτόν τον χρήστη;</string>
