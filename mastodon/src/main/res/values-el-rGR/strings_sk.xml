@@ -249,7 +249,7 @@
     <string name="sk_add_timeline_tag_error_empty">Η ετικέτα δε μπορεί να είναι κενή</string>
     <string name="sk_updater_enable_pre_releases">Ενεργοποίηση προ-κυκολοφορίας</string>
     <string name="sk_inline_local_only">Μόνο τοπικά</string>
-    <string name="sk_inline_direct">Μόνο με αναφορά</string>
+    <string name="sk_inline_direct">Μόνο με επισήμανση</string>
     <string name="sk_separator">·</string>
     <string name="sk_local_only">Μόνο τοπική οντότητα</string>
     <string name="sk_instance_features">Δυνατότητες οντότητας</string>
@@ -374,7 +374,7 @@
     <string name="sk_duration_hours_6">6 ώρες</string>
     <string name="sk_duration_days_1">1 ημέρα</string>
     <string name="sk_duration_days_3">3 ημέρες</string>
-    <string name="sk_notification_mention">Αναφέρθηκες από τον χρήστη %s</string>
+    <string name="sk_notification_mention">Επισημάνθηκες από τον χρήστη %s</string>
     <string name="sk_suicide_search_terms">Αυτοκτονία</string>
     <string name="sk_search_suicide_title">Σε περίπτωση που είσαι σε κρίση…</string>
     <string name="sk_search_suicide_hotlines">Βρες γραμμή βοήθειας</string>
