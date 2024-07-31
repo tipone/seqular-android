@@ -87,6 +87,8 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
         s.visibility=params.visibility;
         s.language=params.language;
         s.sensitive=params.sensitive;
+		// hide media preview only if status is marked as sensitive
+		s.sensitiveRevealed=!params.sensitive;
         if(params.poll!=null) s.poll=params.poll.toPoll();
         return s;
     }
