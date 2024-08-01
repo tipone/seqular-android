@@ -64,7 +64,7 @@ public class Tracking{
 	@NonNull
 	public static String removeTrackingParameters(@NonNull String url){
 		Uri uri=Uri.parse(url);
-		if(uri==null)
+		if(uri==null || !uri.isHierarchical())
 			return url;
 		Uri.Builder uriBuilder=uri.buildUpon().clearQuery();
 
