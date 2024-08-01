@@ -94,7 +94,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 				copyCrashLogItem=new ListItem<>(getString(R.string.sk_settings_copy_crash_log), lastModified, 0, this::onCopyCrashLog)
 		));
 
-		if(GithubSelfUpdater.needSelfUpdating()){
+		if(GithubSelfUpdater.needSelfUpdating() && !BuildConfig.BUILD_TYPE.equals("nightly") ){
 			items.add(enablePreReleasesItem=new CheckableListItem<>(R.string.sk_updater_enable_pre_releases, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enablePreReleases, i->toggleCheckableItem(enablePreReleasesItem)));
 		}
 
