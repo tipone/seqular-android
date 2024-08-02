@@ -1,17 +1,27 @@
 package org.joinmastodon.android.model;
 
+import android.util.Patterns;
+
+import androidx.annotation.NonNull;
+
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
+import org.joinmastodon.android.api.session.AccountSession;
+import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Poll.Option;
 import org.parceler.Parcel;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Parcel
 public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
+	private static final Pattern HIGHLIGHT_PATTER=Pattern.compile("(?<!\\w)(?:@([a-z0-9_]+)(@[a-z0-9_\\.\\-]*)?|#([^\\s.]+)|:([a-z0-9_]+))|" +Patterns.WEB_URL, Pattern.CASE_INSENSITIVE);
+
     @RequiredField
     public String id;
     @RequiredField
@@ -87,7 +97,61 @@ public class ScheduledStatus extends BaseModel implements DisplayItemsParent{
         s.visibility=params.visibility;
         s.language=params.language;
         s.sensitive=params.sensitive;
+		// hide media preview only if status is marked as sensitive
+		s.sensitiveRevealed=!params.sensitive;
         if(params.poll!=null) s.poll=params.poll.toPoll();
         return s;
     }
+
+	/**
+	 * Creates a fake status, which has (somewhat) correctly formatted mentions, hashtags and URLs.
+	 *
+	 * @param accountID the ID of the account
+	 * @return the formatted Status object
+	 */
+	public Status toFormattedStatus(String accountID){
+		AccountSession self=AccountSessionManager.get(accountID);
+		Status s=this.toStatus();
+		// the mastodon api does not return formatted (html) content, only the raw content, so we modify it
+		s.content=s.content.replace("\n", "<br>");
+		if(!s.content.contains("@") && !s.content.contains("#") && !s.content.contains(":"))
+			return s;
+
+		StringBuffer sb=new StringBuffer();
+		Matcher matcher=HIGHLIGHT_PATTER.matcher(s.content);
+
+		// I'm sure this will cause problems at some point...
+		while(matcher.find()){
+			String content=matcher.group();
+			String href="";
+			// add relevant links, so on-click actions work
+			// hashtags are done by the parser
+			if(content.startsWith("@"))
+				href=" href=\""+formatMention(content, self.domain)+"\" class=\"u-url mention\"";
+			else if(content.startsWith("https://"))
+				href=" href=\""+content+"\"";
+
+			matcher.appendReplacement(sb, "<a"+href+">"+content+"</a>");
+		}
+		matcher.appendTail(sb);
+		s.content=sb.toString();
+		return s;
+	}
+
+	/**
+	 * Converts a string mention into a URL of the account.
+	 * @param mention Mention in the form a of user name with an optional instance URL
+	 * @param instanceURL URL of the home instance of the user
+	 * @return Formatted HTML or the mention
+	 */
+	@NonNull
+	private static String formatMention(@NonNull String mention, @NonNull String instanceURL){
+		String[] parts=mention.split("@");
+		if(parts.length>1){
+			String username=parts[1];
+			String domain=parts.length==3 ? parts[2] : instanceURL;
+			return "https://"+domain+"/@"+username;
+		}
+		return mention;
+	}
 }
