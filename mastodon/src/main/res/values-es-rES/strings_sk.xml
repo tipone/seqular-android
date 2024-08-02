@@ -16,7 +16,7 @@
     <string name="sk_image_description">Descripción de la imagen</string>
     <string name="sk_visibility_unlisted">No listada</string>
     <string name="sk_settings_show_replies">Mostrar respuestas</string>
-    <string name="sk_settings_show_boosts">Mostrar boosts</string>
+    <string name="sk_settings_show_boosts">Mostrar mejoras</string>
     <string name="sk_settings_load_new_posts">Cargar publicaciones nuevas automáticamente</string>
     <string name="sk_settings_show_interaction_counts">Mostrar recuento de interacciones</string>
     <string name="sk_mark_media_as_sensitive">Marcar contenido como delicado</string>
