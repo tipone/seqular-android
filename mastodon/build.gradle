@@ -108,7 +108,8 @@ android {
 		}
 		fdroidRelease {
 			initWith release
-			versionNameSuffix '-fdroid'
+			// The F-droid build system doesn't like this at all for some reason.
+//			versionNameSuffix '-fdroid'
 //			signingConfig signingConfigs.release
 		}
 	}
