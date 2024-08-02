@@ -339,7 +339,7 @@ public abstract class StatusDisplayItem{
 					contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
 				contentItems.addAll(buildItems(fragment, statusForContent.quote, accountID, parentObject, knownAccounts, filterContext, FLAG_NO_FOOTER|FLAG_INSET|FLAG_NO_EMOJI_REACTIONS|FLAG_IS_FOR_QUOTE));
 			} else if((flags & FLAG_INSET)==0 && statusForContent.mediaAttachments.isEmpty()){
-				tryAddNonOfficialQuote(statusForContent, fragment, accountID);
+				tryAddNonOfficialQuote(statusForContent, fragment, accountID, filterContext);
 			}
 			if(contentItems!=items && statusForContent.spoilerRevealed){
 				items.addAll(contentItems);
@@ -421,7 +421,7 @@ public abstract class StatusDisplayItem{
 	 * Tries to adds a non-official quote to a status.
 	 * A non-official quote is a quote on an instance that does not support quotes officially.
 	 */
-	private static void tryAddNonOfficialQuote(Status status, BaseStatusListFragment fragment, String accountID) {
+	private static void tryAddNonOfficialQuote(Status status, BaseStatusListFragment fragment, String accountID, FilterContext filterContext) {
 		Matcher matcher=QUOTE_PATTERN.matcher(status.getStrippedText());
 
 		if(!matcher.find())
@@ -432,6 +432,7 @@ public abstract class StatusDisplayItem{
 			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
 				@Override
 				public void onSuccess(SearchResults results){
+					AccountSessionManager.get(accountID).filterStatuses(results.statuses, filterContext);
 					if (!results.statuses.isEmpty()){
 						status.quote=results.statuses.get(0);
 						fragment.updateStatusWithQuote(status);
