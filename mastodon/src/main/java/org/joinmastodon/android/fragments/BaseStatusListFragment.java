@@ -815,6 +815,8 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			adapter.notifyItemChanged(text.getAbsoluteAdapterPosition());
 		}
 		List<HeaderStatusDisplayItem.Holder> headers=findAllHoldersOfType(itemID, HeaderStatusDisplayItem.Holder.class);
+		if (headers.isEmpty())
+			return;
 		HeaderStatusDisplayItem.Holder header=headers.size() > 1 && isForQuote ? headers.get(1) : headers.get(0);
 		if(header!=null) header.animateExpandToggle();
 		else notifyItemChanged(itemID, HeaderStatusDisplayItem.class);
