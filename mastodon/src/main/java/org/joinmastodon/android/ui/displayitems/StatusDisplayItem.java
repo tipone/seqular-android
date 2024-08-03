@@ -432,7 +432,7 @@ public abstract class StatusDisplayItem{
 			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
 				@Override
 				public void onSuccess(SearchResults results){
-					if (!results.statuses.isEmpty()){
+					if (results.statuses != null && !results.statuses.isEmpty()){
 						status.quote=results.statuses.get(0);
 						fragment.updateStatusWithQuote(status);
 					}
