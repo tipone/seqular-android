@@ -260,8 +260,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 
 	private Fragment getFragmentForPage(int page){
 		return switch(page){
-			case 0 -> hashtagsFragment;
-			case 1 -> postsFragment;
+			case 0 -> postsFragment;
+			case 1 -> hashtagsFragment;
 			case 2 -> newsFragment;
 			case 3 -> accountsFragment;
 			default -> throw new IllegalStateException("Unexpected value: "+page);
