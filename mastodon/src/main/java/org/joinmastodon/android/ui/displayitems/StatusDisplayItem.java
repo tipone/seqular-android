@@ -20,6 +20,7 @@ import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -449,7 +450,8 @@ public abstract class StatusDisplayItem{
 									return;
 
 								Relationship relationship=relationships.get(0);
-								if(relationship.domainBlocking || relationship.muting || relationship.blocking) {
+								String selfId=AccountSessionManager.get(accountID).self.id;
+								if(!status.account.id.equals(selfId) && (relationship.domainBlocking || relationship.muting || relationship.blocking)) {
 									// do not show posts that are quoting a muted/blocked user
 									fragment.removeStatus(status);
 									return;
