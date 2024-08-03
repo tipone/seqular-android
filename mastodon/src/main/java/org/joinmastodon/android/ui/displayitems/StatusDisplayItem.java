@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -35,6 +36,7 @@ import org.joinmastodon.android.model.FilterResult;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
+import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
@@ -428,23 +430,46 @@ public abstract class StatusDisplayItem{
 			return;
 		String quoteURL=matcher.group();
 
-		if (UiUtils.looksLikeFediverseUrl(quoteURL)) {
-			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
-				@Override
-				public void onSuccess(SearchResults results){
-					AccountSessionManager.get(accountID).filterStatuses(results.statuses, filterContext);
-					if (!results.statuses.isEmpty()){
-						status.quote=results.statuses.get(0);
-						fragment.updateStatusWithQuote(status);
-					}
-				}
+		if (!UiUtils.looksLikeFediverseUrl(quoteURL))
+			return;
 
-				@Override
-				public void onError(ErrorResponse error){
-					Log.w("StatusDisplayItem", "onError: failed to find quote status with URL: " + quoteURL + " " + error);
-				}
-			}).exec(accountID);
-		}
+		new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
+			@Override
+			public void onSuccess(SearchResults results){
+				AccountSessionManager.get(accountID).filterStatuses(results.statuses, filterContext);
+				if (results.statuses.isEmpty())
+					return;
+
+				Status quote=results.statuses.get(0);
+				new GetAccountRelationships(Collections.singletonList(quote.account.id))
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(List<Relationship> relationships){
+								if(relationships.isEmpty())
+									return;
+
+								Relationship relationship=relationships.get(0);
+								if(relationship.domainBlocking || relationship.muting || relationship.blocking) {
+									// do not show posts that are quoting a muted/blocked user
+									fragment.removeStatus(status);
+									return;
+								}
+
+								status.quote=results.statuses.get(0);
+								fragment.updateStatusWithQuote(status);
+							}
+
+							@Override
+							public void onError(ErrorResponse error){}
+						})
+						.exec(accountID);
+			}
+
+			@Override
+			public void onError(ErrorResponse error){
+				Log.w("StatusDisplayItem", "onError: failed to find quote status with URL: " + quoteURL + " " + error);
+			}
+		}).exec(accountID);
 	}
 
 	public enum Type{

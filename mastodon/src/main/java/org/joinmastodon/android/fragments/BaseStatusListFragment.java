@@ -9,6 +9,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowInsets;
@@ -709,26 +710,17 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 	}
 
 	public void updateStatusWithQuote(DisplayItemsParent parent) {
-		int startIndex=-1;
-		int endIndex=-1;
-		for(int i=0; i<displayItems.size(); i++){
-			StatusDisplayItem item = displayItems.get(i);
-			if(item.parentID.equals(parent.getID())) {
-				startIndex= startIndex==-1 ? i : startIndex;
-				endIndex=i;
-			}
-		}
-
-		if (startIndex==-1 || endIndex==-1)
+		Pair<Integer, Integer> items=findAllItemsOfParent(parent);
+		if (items==null)
 			return;
 
 		// Only StatusListFragments/NotificationsListFragments can display status with quotes
 		assert (this instanceof StatusListFragment) || (this instanceof NotificationsListFragment);
-		List<StatusDisplayItem> oldItems = displayItems.subList(startIndex, endIndex+1);
+		List<StatusDisplayItem> oldItems = displayItems.subList(items.first, items.second+1);
 		List<StatusDisplayItem> newItems=this.buildDisplayItems((T) parent);
 		int prevSize=oldItems.size();
 		oldItems.clear();
-		displayItems.addAll(startIndex, newItems);
+		displayItems.addAll(items.first, newItems);
 
 		// Update the cache
 		final CacheController cache=AccountSessionManager.get(accountID).getCacheController();
@@ -738,8 +730,19 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 			cache.updateNotification((Notification) parent);
 		}
 
-		adapter.notifyItemRangeRemoved(startIndex, prevSize);
-		adapter.notifyItemRangeInserted(startIndex, newItems.size());
+		adapter.notifyItemRangeRemoved(items.first, prevSize);
+		adapter.notifyItemRangeInserted(items.first, newItems.size());
+	}
+
+	public void removeStatus(DisplayItemsParent parent) {
+		Pair<Integer, Integer> items=findAllItemsOfParent(parent);
+		if (items==null)
+			return;
+
+		List<StatusDisplayItem> statusDisplayItems = displayItems.subList(items.first, items.second+1);
+		int prevSize=statusDisplayItems.size();
+		statusDisplayItems.clear();
+		adapter.notifyItemRangeRemoved(items.first, prevSize);
 	}
 
 	public void onVisibilityIconClick(HeaderStatusDisplayItem.Holder holder) {
@@ -941,6 +944,23 @@ public abstract class BaseStatusListFragment<T extends DisplayItemsParent> exten
 				return type.cast(holder);
 		}
 		return null;
+	}
+
+	@Nullable
+	protected Pair<Integer, Integer> findAllItemsOfParent(DisplayItemsParent parent){
+		int startIndex=-1;
+		int endIndex=-1;
+		for(int i=0; i<displayItems.size(); i++){
+			StatusDisplayItem item = displayItems.get(i);
+			if(item.parentID.equals(parent.getID())) {
+				startIndex= startIndex==-1 ? i : startIndex;
+				endIndex=i;
+			}
+		}
+
+		if(startIndex==-1 || endIndex==-1)
+			return null;
+		return Pair.create(startIndex, endIndex);
 	}
 
 	protected <I extends StatusDisplayItem, H extends StatusDisplayItem.Holder<I>> List<H> findAllHoldersOfType(String id, Class<H> type){
