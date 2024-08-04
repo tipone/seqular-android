@@ -97,4 +97,20 @@
     <string name="mo_notification_filter_reset">重置为默认值</string>
     <string name="mo_instance_view_info">查看服务器信息</string>
     <string name="mo_mute_notifications">隐藏来自此用户的通知？</string>
+    <string name="mo_settings_remove_tracking_params_summary">删除链接中的跟踪信息</string>
+    <string name="import_settings_confirm">确认导入设置？</string>
+    <string name="mo_settings_unifiedpush_warning">未启用 UnifiedPush</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">未安装 UnifiedPush 分发程序。您将不会收到任何通知。</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">未启用 UnifiedPush。您将不会收到任何通知。</string>
+    <string name="mo_settings_unifiedpush_enable">启用</string>
+    <string name="import_settings_confirm_body">所有当前设置和时间线将被覆盖！此操作无法撤销。</string>
+    <string name="import_settings_failed">导入设置失败</string>
+    <string name="export_settings_share">导出设置</string>
+    <string name="export_settings_fail">导出设置失败</string>
+    <string name="export_settings_title">导出设置</string>
+    <string name="export_settings_summary">导出所有已登录账户的设置和时间线</string>
+    <string name="import_settings_title">导入设置</string>
+    <string name="import_settings_summary">导入先前导出的设置和时间线</string>
+    <string name="mo_error_display_title">显示帖文失败</string>
+    <string name="mo_error_display_text">加载这篇帖文时出了问题。如果问题持续存在，请在我们的 Issues 页面上报告，并提供错误详情。</string>
 </resources>
