@@ -17,8 +17,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.fragments.HashtagTimelineFragment;
@@ -35,6 +37,7 @@ import org.joinmastodon.android.model.FilterResult;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Poll;
+import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
 import org.joinmastodon.android.model.Status;
@@ -339,7 +342,7 @@ public abstract class StatusDisplayItem{
 					contentItems.add(new DummyStatusDisplayItem(parentID, fragment));
 				contentItems.addAll(buildItems(fragment, statusForContent.quote, accountID, parentObject, knownAccounts, filterContext, FLAG_NO_FOOTER|FLAG_INSET|FLAG_NO_EMOJI_REACTIONS|FLAG_IS_FOR_QUOTE));
 			} else if((flags & FLAG_INSET)==0 && statusForContent.mediaAttachments.isEmpty()){
-				tryAddNonOfficialQuote(statusForContent, fragment, accountID);
+				tryAddNonOfficialQuote(statusForContent, fragment, accountID, filterContext);
 			}
 			if(contentItems!=items && statusForContent.spoilerRevealed){
 				items.addAll(contentItems);
@@ -421,29 +424,54 @@ public abstract class StatusDisplayItem{
 	 * Tries to adds a non-official quote to a status.
 	 * A non-official quote is a quote on an instance that does not support quotes officially.
 	 */
-	private static void tryAddNonOfficialQuote(Status status, BaseStatusListFragment fragment, String accountID) {
+	private static void tryAddNonOfficialQuote(Status status, BaseStatusListFragment fragment, String accountID, FilterContext filterContext) {
 		Matcher matcher=QUOTE_PATTERN.matcher(status.getStrippedText());
 
 		if(!matcher.find())
 			return;
 		String quoteURL=matcher.group();
 
-		if (UiUtils.looksLikeFediverseUrl(quoteURL)) {
-			new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
-				@Override
-				public void onSuccess(SearchResults results){
-					if (results.statuses != null && !results.statuses.isEmpty()){
-						status.quote=results.statuses.get(0);
-						fragment.updateStatusWithQuote(status);
-					}
-				}
+		if (!UiUtils.looksLikeFediverseUrl(quoteURL))
+			return;
 
-				@Override
-				public void onError(ErrorResponse error){
-					Log.w("StatusDisplayItem", "onError: failed to find quote status with URL: " + quoteURL + " " + error);
-				}
-			}).exec(accountID);
-		}
+		new GetSearchResults(quoteURL, GetSearchResults.Type.STATUSES, true, null, 0, 0).setCallback(new Callback<>(){
+			@Override
+			public void onSuccess(SearchResults results){
+				AccountSessionManager.get(accountID).filterStatuses(results.statuses, filterContext);
+				if (results.statuses == null || results.statuses.isEmpty())
+					return;
+
+				Status quote=results.statuses.get(0);
+				new GetAccountRelationships(Collections.singletonList(quote.account.id))
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(List<Relationship> relationships){
+								if(relationships.isEmpty())
+									return;
+
+								Relationship relationship=relationships.get(0);
+								String selfId=AccountSessionManager.get(accountID).self.id;
+								if(!status.account.id.equals(selfId) && (relationship.domainBlocking || relationship.muting || relationship.blocking)) {
+									// do not show posts that are quoting a muted/blocked user
+									fragment.removeStatus(status);
+									return;
+								}
+
+								status.quote=results.statuses.get(0);
+								fragment.updateStatusWithQuote(status);
+							}
+
+							@Override
+							public void onError(ErrorResponse error){}
+						})
+						.exec(accountID);
+			}
+
+			@Override
+			public void onError(ErrorResponse error){
+				Log.w("StatusDisplayItem", "onError: failed to find quote status with URL: " + quoteURL + " " + error);
+			}
+		}).exec(accountID);
 	}
 
 	public enum Type{
