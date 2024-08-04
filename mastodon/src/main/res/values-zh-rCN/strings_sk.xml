@@ -427,4 +427,5 @@
     <string name="sk_poll_multiple_choice">多选</string>
     <string name="sk_poll_show_results">显示结果</string>
     <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
+    <string name="sk_posted">%s 发布了</string>
 </resources>
