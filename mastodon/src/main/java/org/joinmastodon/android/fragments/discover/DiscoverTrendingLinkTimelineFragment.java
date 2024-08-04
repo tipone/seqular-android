@@ -131,8 +131,7 @@ public class DiscoverTrendingLinkTimelineFragment extends StatusListFragment{
 
 	@Override
 	public Uri getWebUri(Uri.Builder base) {
-		//TODO: add URL link once web version implements a UI
-		return base.path("/explore/links").build();
+		return base.path("/links").appendPath(trendingLink.url).build();
 	}
 
 	@Override
