@@ -112,7 +112,7 @@
     <string name="import_settings_title">导入设置</string>
     <string name="import_settings_summary">导入先前导出的设置和时间线</string>
     <string name="mo_error_display_title">显示帖文失败</string>
-    <string name="mo_error_display_text">加载这篇帖文时出了问题。如果问题持续存在，请在我们的 Issues 页面上报告，并提供错误详情。</string>
+    <string name="mo_error_display_text">加载此帖文时出了问题。如果问题仍然存在，请在我们的工单页面上报告，并提供错误详情。</string>
     <string name="mo_settings_remove_tracking_params">链接隐私保护</string>
     <string name="mo_error_display_copy_error_details">复制详情</string>
     <string name="mo_trending_link_read">阅读</string>
