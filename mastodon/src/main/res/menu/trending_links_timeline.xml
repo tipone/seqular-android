@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/open_link"
-        android:icon="@drawable/ic_fluent_document_one_page_24_filled"
+        android:icon="@drawable/ic_fluent_open_24_regular"
         android:showAsAction="always"
         android:title="@string/mo_trending_link_read"/>
 </menu>
