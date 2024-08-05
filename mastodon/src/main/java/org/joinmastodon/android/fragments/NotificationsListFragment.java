@@ -275,13 +275,17 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onEmojiReactionsChanged(EmojiReactionsUpdatedEvent ev){
 		for(Notification n : data){
 			if(n.status!=null && n.status.getContentStatus().id.equals(ev.id)){
-				n.status.getContentStatus().update(ev);
-				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 				for(int i=0; i<list.getChildCount(); i++){
 					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
 					if(holder instanceof EmojiReactionsStatusDisplayItem.Holder reactions && reactions.getItem().status==n.status.getContentStatus() && ev.viewHolder!=holder){
-						reactions.rebind();
-					}else if(holder instanceof TextStatusDisplayItem.Holder text && text.getItem().parentID.equals(n.getID())){
+						reactions.updateReactions(ev.reactions);
+					}
+				}
+				n.status.getContentStatus().update(ev);
+				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
+				for(int i=0;i<list.getChildCount();i++){
+					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+					if(holder instanceof TextStatusDisplayItem.Holder text && text.getItem().parentID.equals(n.getID())){
 						text.rebind();
 					}
 				}

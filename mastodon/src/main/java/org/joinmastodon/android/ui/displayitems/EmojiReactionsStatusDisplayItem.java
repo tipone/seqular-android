@@ -47,6 +47,8 @@ import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.EmojiReactionButton;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.function.Consumer;
 
 import me.grishka.appkit.Nav;
@@ -196,18 +198,24 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			emojiKeyboard.setListener(this);
 			space.setVisibility(View.GONE);
 			root.addView(emojiKeyboard.getView());
-			boolean hidden=item.isHidden();
-			root.setVisibility(hidden ? View.GONE : View.VISIBLE);
-			line.setVisibility(hidden ? View.GONE : View.VISIBLE);
+			updateVisibility(item.isHidden(), true);
+			imgLoader.updateImages();
+			adapter.notifyDataSetChanged();
+        }
+
+		private void updateVisibility(boolean hidden, boolean force){
+			int visibility=hidden ? View.GONE : View.VISIBLE;
+			if(!force && visibility==root.getVisibility())
+				return;
+			root.setVisibility(visibility);
+			line.setVisibility(visibility);
 			line.setPadding(
 					list.getPaddingLeft(),
 					hidden ? 0 : V.dp(8),
 					list.getPaddingRight(),
 					item.forAnnouncement ? V.dp(8) : 0
 			);
-			imgLoader.updateImages();
-			adapter.notifyDataSetChanged();
-        }
+		}
 
 		private void hideEmojiKeyboard(){
 			space.setVisibility(View.GONE);
@@ -267,7 +275,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
 					scroller.setTargetPosition(pos);
 					list.getLayoutManager().startSmoothScroll(scroller);
-					updateAddButtonClickable(false);
+					updateMeReactionCount(false);
 				}else{
 					finalExisting.add(me);
 					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
@@ -297,8 +305,9 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			}
 		}
 
-		private void updateAddButtonClickable(boolean deleting) {
-			meReactionCount+=deleting ? -1 : 1;
+		private void updateAddButtonClickable() {
+			if(instance==null || instance.configuration==null || instance.configuration.reactions==null || instance.configuration.reactions.maxReactions==0)
+				return;
 			boolean canReact=meReactionCount<instance.configuration.reactions.maxReactions;
 			addButton.setClickable(canReact);
 
@@ -308,6 +317,68 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					canReact ? 1 : ALPHA_DISABLED);
 			anim.setDuration(200);
 			anim.start();
+		}
+
+		private void updateMeReactionCount(boolean deleting) {
+			meReactionCount=Math.max(0, meReactionCount + (deleting ? -1 : 1));
+			updateAddButtonClickable();
+		}
+
+		public void updateReactions(List<EmojiReaction> reactions){
+			for(int i=0;i<item.status.reactions.size();i++){
+				EmojiReaction reaction=item.status.reactions.get(i);
+				Optional<EmojiReaction> newReactionOptional=reactions.stream().filter(r->r.name.equals(reaction.name)).findFirst();
+				if(newReactionOptional.isEmpty()){ // deleted reactions
+					adapter.notifyItemRemoved(i);
+					continue;
+				}
+
+				// changed reactions
+				EmojiReaction newReaction=newReactionOptional.get();
+				if(reaction.count!=newReaction.count || reaction.me!=newReaction.me || reaction.pendingChange!=newReaction.pendingChange){
+					if(newReaction.pendingChange){
+						View holderView=list.getChildAt(i);
+						if(holderView!=null){
+							EmojiReactionViewHolder reactionHolder=(EmojiReactionViewHolder) list.getChildViewHolder(holderView);
+							item.setActionProgressVisible(reactionHolder, true);
+						}
+					}else{
+						adapter.notifyItemChanged(i);
+					}
+				}
+			}
+			boolean pendingAddReaction=false;
+			for(EmojiReaction reaction:reactions){
+				if(item.status.reactions.stream().anyMatch(r->r.name.equals(reaction.name)))
+					continue;
+
+				// new reactions
+				if(reaction.pendingChange){
+					pendingAddReaction=true;
+					continue;
+				}
+				int pos=item.status.reactions.size();
+				item.status.reactions.add(pos, reaction);
+				adapter.notifyItemInserted(pos);
+				RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
+				scroller.setTargetPosition(pos);
+				list.getLayoutManager().startSmoothScroll(scroller);
+			}
+			if(pendingAddReaction){
+				progress.setVisibility(View.VISIBLE);
+				addButton.setClickable(false);
+				addButton.setAlpha(ALPHA_DISABLED);
+			}else{
+				progress.setVisibility(View.GONE);
+			}
+
+			int newMeReactionCount=(int) reactions.stream().filter(r->r.me || r.pendingChange).count();
+			if (newMeReactionCount!=meReactionCount){
+				meReactionCount=newMeReactionCount;
+				updateAddButtonClickable();
+			}
+
+			updateVisibility(reactions.isEmpty() && item.hideEmpty, false);
 		}
 
 		@Override
@@ -386,6 +457,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 			@Override
 			public void onBind(Pair<EmojiReactionsStatusDisplayItem, EmojiReaction> item){
+				if(item.second.pendingChange){
+					itemView.setVisibility(View.GONE);
+					return;
+				}else{
+					itemView.setVisibility(View.VISIBLE);
+				}
 				item.first.setActionProgressVisible(this, false);
 				EmojiReactionsStatusDisplayItem parent=item.first;
 				EmojiReaction reaction=item.second;
@@ -435,7 +512,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 
 						Instance instance=parent.parentFragment.getInstance().get();
 						if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
-							adapter.parentHolder.updateAddButtonClickable(deleting);
+							adapter.parentHolder.updateMeReactionCount(deleting);
 						}
 						if(instance.isIceshrimp() && status!=null){
 							parent.parentFragment.onFavoriteChanged(status, adapter.parentHolder.getItemID());

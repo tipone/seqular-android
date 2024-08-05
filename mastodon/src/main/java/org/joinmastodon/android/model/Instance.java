@@ -227,6 +227,7 @@ public class Instance extends BaseModel{
 	@Parcel
 	public static class ReactionsConfiguration {
 		public int maxReactions;
+		public String defaultReaction;
 	}
 
 	@Parcel
