@@ -6,4 +6,4 @@
 * Žr. laiko skales prie tenden. nuorodų (serve. turi tai palaikyti)
 * Prid. parinktį, kad būtų galima pašal. URL sekimo parametr.
 * Dabar galima pasirin. paskyrą palei. rengyklę iš paleid. meniu
-* Daug smulkių klai. taisym. ir patobul.
+* Daug smulkių rik. taisym. ir patobul.

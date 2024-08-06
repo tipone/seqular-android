@@ -1,0 +1,1 @@
+Dabar pridėtas pasirinktinis jungiklis, kad skelbimo mygtuką būtų galima perkelti į lengviau pasiekiamą vietą! Dabar tai numatytasis nustatymas.
