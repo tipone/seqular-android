@@ -224,7 +224,7 @@
     <string name="sk_timeline_posts">Publicaciones</string>
     <string name="sk_timelines_add">Añadir</string>
     <string name="sk_timeline">Línea de tiempo</string>
-    <string name="sk_hashtag">Hashtag</string>
+    <string name="sk_hashtag">Etiqueta</string>
     <string name="sk_pin_timeline">Anclar cronología</string>
     <string name="sk_unpin_timeline">Desanclar cronología</string>
     <string name="sk_pinned_timeline">Anclado a inicio</string>
