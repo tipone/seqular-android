@@ -1,9 +1,9 @@
-* Importar configuraciones de exportación (solo para cuentas registradas)
-* Representar las URL de las publicaciones como si fueran publicaciones de citas reales
-* Ver aspectos destacados del filtro
-* Advertir si UnifiedPush está deshabilitado en fdroid
-* Colocar los botones de descarga/compartir en el visor de imágenes en su lugar anterior
-* Ver líneas de tiempo de enlaces de tendencia (el servidor debe soportarlo)
-* Agregar opción para eliminar los parámetros de seguimiento de la URL
-* Ahora puedes elegir una cuenta al iniciar la redacción desde un menú de inicio
-* Muchas correcciones de errores menores y mejoras.
+* Se puede importar y exportar los ajustes (solo para cuentas registradas)
+* Se muestran los enlaces a publicaciones como si fuesen citas
+* Las palabras filtradas aparecen destacadas
+* Advertencia si UnifiedPush está deshabilitado en Fdroid
+* Los botones de descarga y compartir han vuelto a su lugar en el visor de imágenes
+* Puedes ver la línea de tiempo de moda (el servidor debe admitirlo)
+* Se añade la opción de quitar los datos de seguimiento de enlaces
+*Ahora puedes escoger una cuenta al empezar a escribir desde el atajo de la pantalla de inicio
+* Muchas correcciones de errores menores y mejoras

@@ -1,11 +1,11 @@
 Esta nueva versión viene con:
 - Material design 3 completamente actualizado
 - Notificaciones UnifiedPush (¡Gracias @FineFindus!)
-- Los bloqueos y silenciamientos son ahora visibles desde tu perfil
-- Ahora puedes silenciar hashtags directamente desde la vista de hashtags.
-- Reacciones Emoji ahora son una soportados (¡Gracias @sk22!)
-- Ahora también es posible editar filtros en la aplicación (Gracias)
-- Ahora puedes ocultar las vistas previas de los medios en las líneas de tiempo.
+- Puedes ver los bloqueos y silencios desde tu perfil
+- Ahora puedes silenciar etiquetas directamente desde la vista de etiquetas
+- Se soportan las reacciones con emoji en las instancias (¡Gracias @sk22!)
+- Ahora puedes editar filtros directamente en la app
+- Puedes ocultar las previsualizaciones de multimedia
 - Tema en blanco y negro
 - Es posible silenciar conversaciones
-- Pequeñas correcciones mejoras
+- Pequeñas correcciones y mejoras
