@@ -289,8 +289,8 @@
     <string name="sk_settings_content_types">启用嘟文格式</string>
     <string name="sk_settings_content_types_explanation">允许在创建文章时设置类似Markdown的内容类型。注意，不是所有的实例都支持这个。</string>
     <string name="sk_settings_default_content_type">默认的内容类型</string>
-    <string name="sk_timeline_bubble">Bubble</string>
-    <string name="sk_icon_feed">Feed</string>
+    <string name="sk_timeline_bubble">气泡</string>
+    <string name="sk_icon_feed">食物</string>
     <string name="sk_settings_default_content_type_explanation">这可以让你在创建新帖子时预选内容类型，覆盖 \"发帖偏好 \"中设置的值。</string>
     <string name="sk_instance_info_unavailable">实例信息暂时不可用</string>
     <string name="sk_open_in_app">在应用程序中打开</string>
