@@ -116,4 +116,5 @@
     <string name="mo_settings_remove_tracking_params">链接隐私保护</string>
     <string name="mo_error_display_copy_error_details">复制详情</string>
     <string name="mo_trending_link_read">阅读</string>
+    <string name="mo_personal_note_saved">备注已保存</string>
 </resources>
