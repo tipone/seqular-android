@@ -468,6 +468,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			public void onSuccess(Relationship result) {
 				updateRelationship(result);
 				invalidateOptionsMenu();
+				Toast.makeText(getContext(), R.string.mo_personal_note_saved, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
