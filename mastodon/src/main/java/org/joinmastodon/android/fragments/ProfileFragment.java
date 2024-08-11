@@ -287,11 +287,10 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 		noteEdit.setOnFocusChangeListener((v, hasFocus)->{
 			if(hasFocus){
 				hideFab();
-				noteEdit.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE | InputType.TYPE_TEXT_FLAG_CAP_SENTENCES);
-			}else{
-				showFab();
-				savePrivateNote(noteEdit.getText().toString());
+				return;
 			}
+			showFab();
+			savePrivateNote(noteEdit.getText().toString());
 		});
 
 		FrameLayout sizeWrapper=new FrameLayout(getActivity()){
@@ -469,6 +468,7 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			public void onSuccess(Relationship result) {
 				updateRelationship(result);
 				invalidateOptionsMenu();
+				Toast.makeText(getContext(), R.string.mo_personal_note_saved, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
