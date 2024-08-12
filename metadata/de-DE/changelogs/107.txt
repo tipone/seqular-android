@@ -1,0 +1,4 @@
+- Behebt fehlerhaften Pixelfed-Login
+- Behebt diverse Abstürze
+
+Für eine komplette Liste aller Änderungen, siehe: https://github.com/LucasGGamerM/moshidon/releases/tag/2.3.0%2Bfork.107.moshinda
