@@ -57,7 +57,7 @@
     <string name="sk_settings_show_federated_timeline">Показувати федеративну стрічку</string>
     <string name="sk_example_domain">example.social</string>
     <string name="sk_welcome_title">Вітаємо!</string>
-    <string name="sk_welcome_text">Акулка вітає вас! Щоб розпочати, введіть нижче доменне ім’я вашого сервера.</string>
+    <string name="sk_welcome_text">Акулка вітає вас! Щоб розпочати, введіть нижче доменне ім\'я вашого сервера.</string>
     <string name="sk_settings_profile">Налаштувати профіль</string>
     <string name="sk_settings_posting">Налаштувати постинг</string>
     <string name="sk_settings_filters">Налаштувати фільтри</string>
