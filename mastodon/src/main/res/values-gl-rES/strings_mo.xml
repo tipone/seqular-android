@@ -114,4 +114,5 @@
     <string name="mo_error_display_text">Algo fallou ao cargar esta publicación. Se o problema persiste, informa dos detalles do problema na nosa páxina de Incidencias.</string>
     <string name="mo_settings_remove_tracking_params">Ligazóns privadas</string>
     <string name="mo_settings_remove_tracking_params_summary">Retirar os parámetros de rastrexo das ligazóns</string>
+    <string name="mo_personal_note_saved">Gardouse a nota</string>
 </resources>
