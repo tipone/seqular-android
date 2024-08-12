@@ -115,4 +115,5 @@
     <string name="mo_trending_link_read">Citiți</string>
     <string name="mo_settings_remove_tracking_params_summary">Eliminați informațiile de urmărire din linkuri</string>
     <string name="mo_settings_remove_tracking_params">Linkuri private</string>
+    <string name="mo_personal_note_saved">Notă salvată</string>
 </resources>
