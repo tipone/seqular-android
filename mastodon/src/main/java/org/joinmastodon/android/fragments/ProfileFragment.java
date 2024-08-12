@@ -454,8 +454,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void hidePrivateNote(){
-		noteWrap.setVisibility(View.GONE);
 		noteEdit.setText(null);
+		noteWrap.setVisibility(View.GONE);
 	}
 
 	private void savePrivateNote(String note){
