@@ -1,0 +1,1 @@
+Engadimos unha opción nova para situar o botón de publicar nunha posición máis accesible! É o valor por defecto!

@@ -1,0 +1,9 @@
+A versión 82 trae moitas novidades desde o proxecto orixe, como son:
+- Borradores e programación de publicacións
+- Reorganización da páxina de axustes
+- Posibilidade de escoller o texto do botón de publicar
+- Posibilidade de reducir as animacións
+- Icona dun bot para contas tipo bot! Grazas a @FineFindus
+- Actualización da tradución ao alemán! Grazas a @dantobi
+- Moitas pequenas melloras na interface
+- Melloras importantes na usabilidade, como posibilidades de interacción con outras contas ao manter premido un botón

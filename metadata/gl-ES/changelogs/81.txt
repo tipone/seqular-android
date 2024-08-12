@@ -1,0 +1,2 @@
+Arranxo do problema co botón de publicar cortado en pantallas de baixa resolución ou polo idioma. Agora é unha icona para mellor accesibilidade!
+Arranxos menores na vista previa dos cambios realizados
