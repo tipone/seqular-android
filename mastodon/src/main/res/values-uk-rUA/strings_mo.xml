@@ -6,7 +6,7 @@
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_disable_dividers">Вимкнути роздільники публікацій</string>
     <string name="mo_relocate_publish_button">Перемістити кнопку «Опублікувати»</string>
-    <string name="mo_hide_compose_button_while_scrolling_setting">Сховати кнопку «Нова публікація» під час прокручування</string>
+    <string name="mo_hide_compose_button_while_scrolling_setting">Сховати кнопку «Новий допис» під час прокручування</string>
     <string name="mo_personal_note">Додати нотатку до цього профілю</string>
     <string name="mo_personal_note_confirm">Підтвердити зміни</string>
     <string name="mo_personal_note_update_failed">Не вдалося зберегти нотатку</string>
