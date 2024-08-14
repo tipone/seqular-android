@@ -366,7 +366,7 @@
         <item quantity="many">%1$,d користувачів зреагували %2$s</item>
         <item quantity="other">%1$,d користувачів зреагували %2$s</item>
     </plurals>
-    <string name="sk_button_react">Реагуйте за допомогою емоджі</string>
+    <string name="sk_button_react">Реагувати за допомогою емоджі</string>
     <string name="sk_again_for_system_keyboard">Торкніться ще раз, щоб відкрити системну клавіатуру</string>
     <string name="sk_settings_emoji_reactions">Увімкнути реакції з емоджі</string>
     <string name="sk_settings_emoji_reactions_explanation">Показує реакції емоджі на дописи та дає змогу додавати свої. Різні сервери Федісвіту підтримують цю функцію, але Mastodon не підтримує.</string>
