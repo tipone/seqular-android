@@ -58,6 +58,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewpager2.widget.ViewPager2;
 
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.accounts.GetAccountByID;
 import org.joinmastodon.android.api.requests.accounts.GetAccountRelationships;
@@ -453,8 +454,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 	}
 
 	private void hidePrivateNote(){
-		noteWrap.setVisibility(View.GONE);
 		noteEdit.setText(null);
+		noteWrap.setVisibility(View.GONE);
 	}
 
 	private void savePrivateNote(String note){
@@ -468,7 +469,8 @@ public class ProfileFragment extends LoaderFragment implements OnBackPressedList
 			public void onSuccess(Relationship result) {
 				updateRelationship(result);
 				invalidateOptionsMenu();
-				Toast.makeText(getContext(), R.string.mo_personal_note_saved, Toast.LENGTH_SHORT).show();
+				if(!TextUtils.isEmpty(result.note))
+					Toast.makeText(MastodonApp.context, R.string.mo_personal_note_saved, Toast.LENGTH_SHORT).show();
 			}
 
 			@Override
