@@ -44,10 +44,11 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 		addRow(R.drawable.ic_fluent_alert_off_24_regular, R.string.mo_mute_notifications, m3Switch);
 
 		// add mute duration (Moshidon)
-		secondaryBtn.setVisibility(View.VISIBLE);
-		secondaryBtn.setOnClickListener(v->getMuteDurationDialog(context, muteDuration, secondaryBtn).show());
-		secondaryBtn.setText(R.string.sk_duration_indefinite);
-		secondaryBtn.setTypeface(null, Typeface.BOLD_ITALIC);
+		Button muteDurationBtn=new Button(getContext());
+		muteDurationBtn.setOnClickListener(v->getMuteDurationDialog(context, muteDuration, muteDurationBtn).show());
+		muteDurationBtn.setText(R.string.sk_duration_indefinite);
+
+		addRow(R.drawable.ic_fluent_clock_20_regular, R.string.sk_mute_label, muteDurationBtn);
 	}
 
 	@NonNull
