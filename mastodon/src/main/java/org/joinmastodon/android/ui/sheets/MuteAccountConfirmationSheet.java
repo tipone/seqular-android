@@ -2,14 +2,8 @@ package org.joinmastodon.android.ui.sheets;
 
 import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Typeface;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
-import android.widget.PopupMenu;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.Account;
@@ -17,6 +11,7 @@ import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.views.M3Switch;
 
 import java.time.Duration;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -47,7 +42,6 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 		Button muteDurationBtn=new Button(getContext());
 		muteDurationBtn.setOnClickListener(v->getMuteDurationDialog(context, muteDuration, muteDurationBtn).show());
 		muteDurationBtn.setText(R.string.sk_duration_indefinite);
-
 		addRow(R.drawable.ic_fluent_clock_20_regular, R.string.sk_mute_label, muteDurationBtn);
 	}
 
@@ -56,6 +50,15 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 		M3AlertDialogBuilder builder=new M3AlertDialogBuilder(context);
 		builder.setTitle(R.string.sk_mute_label);
 		builder.setIcon(R.drawable.ic_fluent_clock_20_regular);
+		List<Duration> durations =List.of(Duration.ZERO,
+				Duration.ofMinutes(5),
+				Duration.ofMinutes(30),
+				Duration.ofHours(1),
+				Duration.ofHours(6),
+				Duration.ofDays(1),
+				Duration.ofDays(3),
+				Duration.ofDays(7),
+				Duration.ofDays(7));
 
 		String[] choices = {context.getString(R.string.sk_duration_indefinite),
 				context.getString(R.string.sk_duration_minutes_5),
@@ -66,35 +69,14 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 				context.getString(R.string.sk_duration_days_3),
 				context.getString(R.string.sk_duration_days_7)};
 
-		builder.setSingleChoiceItems(choices, 0, (dialog, which) -> {});
+		builder.setSingleChoiceItems(choices, durations.indexOf(muteDuration.get()), (dialog, which) -> {});
 
 		builder.setPositiveButton(R.string.ok, (dialog, which)->{
 			int selected = ((AlertDialog) dialog).getListView().getCheckedItemPosition();
-			if(selected==0){
-				muteDuration.set(Duration.ZERO);
-			}else if(selected==1){
-				muteDuration.set(Duration.ofMinutes(5));
-			}else if(selected==2){
-				muteDuration.set(Duration.ofMinutes(30));
-			}else if(selected==3){
-				muteDuration.set(Duration.ofHours(1));
-			}else if(selected==4){
-				muteDuration.set(Duration.ofHours(6));
-			}else if(selected==5){
-				muteDuration.set(Duration.ofDays(1));
-			}else if(selected==6){
-				muteDuration.set(Duration.ofDays(3));
-			}else if(selected==7){
-				muteDuration.set(Duration.ofDays(7));
-			}
-			if(selected >= 0 && selected <= 7){
-				button.setText(choices[selected]);
-			} else {
-				Toast.makeText(context, "" + selected, Toast.LENGTH_SHORT).show();
-			}
+			muteDuration.set(durations.get(selected));
+			button.setText(choices[selected]);
 		});
-
-		builder.setNegativeButton(R.string.cancel, ((dialogInterface, i) -> {}));
+		builder.setNegativeButton(R.string.cancel, null);
 
 		return builder;
 	}
