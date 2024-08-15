@@ -1,32 +1,30 @@
-![MoshidonLogo](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png)
-
-# Moshidon, the material you mastodon client! 
+# ![MoshidonLogo](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png) Moshidon, the material you mastodon client! 
 
 > A fork of [megalodon](https://github.com/sk22/megalodon) which is a fork of [official Mastodon Android app](https://github.com/mastodon/mastodon-android) adding important features that are missing in the official app and possibly won’t ever be implemented, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
 
+## Downloads
 
-[![Download latest release](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)
+[![Download latest release](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk)&nbsp;
 
 [![Download nightly release](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20Nightly%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon-nightly/releases/latest/download/moshidon-nightly.apk)
 
+[![Nightly build](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml)
 
 [![Translation status](https://translate.codeberg.org/widgets/moshidon/-/svg-badge.svg)](https://translate.codeberg.org/engage/moshidon/)
 &nbsp;
-[![Nightly build](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml)
 
-<a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="50" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
+<a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="25" alt="Get it on Google Play" src="img/google-play-badge.png"></a>
 &nbsp;
-<a href="https://f-droid.org/pt_BR/packages/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a>
+<a href="https://f-droid.org/pt_BR/packages/org.joinmastodon.android.moshinda"><img height="25" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a>
 &nbsp;
-<a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="50" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
+<a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="25" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
-## Help out the project by donating at: https://github.com/sponsors/LucasGGamerM!
-### We also support LiberaPay at: https://liberapay.com/LucasGGamerM/donate
+## Support the Project
+[Github](https://github.com/sponsors/LucasGGamerM)
+[Liberapay](https://liberapay.com/LucasGGamerM/donate)
+Monero Wallet Key: `4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j`
 
-### You can also donate some Monero through this wallet address as well:
-4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j
-
---- 
+---
 
 ## Key features
 
@@ -60,7 +58,7 @@ Allows you to change theme within the app. Supports Material You, purple, pink, 
 **Allows you to post publicly without having your post show up in trends, hashtags or public timelines (i.e., in the tabs “Local”, “Community” and “Posts”).**
 
 When posting with Unlisted visibility, your posts will still be publicly accessible in your profile. They will also be shown in people’s Home timelines, but only if they follow you or someone they follow reposted/replied to your post.
-  
+
 The Mastodon documentation has some more information about [Unlisted posting](https://docs.joinmastodon.org/user/posting/#unlisted) and [Public timelines](https://docs.joinmastodon.org/user/network/#timelines).
 
 ### **Federated timeline**
@@ -68,7 +66,7 @@ The Mastodon documentation has some more information about [Unlisted posting](ht
 **This allows you to chronologically see all Public posts from people on all other Fediverse neighborhoods your home instance is connected to.**
 
 Despite being one of the main features of federated social media, the Federated timeline wasn’t included in the official Mastodon app – supposedly, because this conflicts with Google’s safety requirements for apps on the Play Store.
-  
+
 That’s one of the reasons why choosing a small, **well-moderated instance is important**. Instance admins and moderators should always make sure to ban abusive users and stop federating with instances who platform them. On well-moderated instances, the Federated timeline can be a welcoming place to meet new people!
 
 ### **Image description viewer**
