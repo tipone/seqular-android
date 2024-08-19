@@ -113,4 +113,5 @@
     <string name="mo_trending_link_read">Ανάγνωση</string>
     <string name="mo_settings_remove_tracking_params_summary">Απομάκρυνση πληροφοριών ανίχνευσης από συνδέσμους</string>
     <string name="mo_settings_remove_tracking_params">Ιδιωτικοί Σύνδεσμοι</string>
+    <string name="mo_personal_note_saved">Η σημείωση αποθηκεύτηκε</string>
 </resources>
