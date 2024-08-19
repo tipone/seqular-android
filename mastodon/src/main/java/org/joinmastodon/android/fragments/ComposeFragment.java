@@ -461,7 +461,8 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 		}
 
 		int typeIndex=contentType.ordinal();
-		contentTypePopup.getMenu().findItem(typeIndex).setChecked(true);
+		if(contentTypePopup.getMenu().findItem(typeIndex)!=null)
+			contentTypePopup.getMenu().findItem(typeIndex).setChecked(true);
 		contentTypeBtn.setSelected(typeIndex != ContentType.UNSPECIFIED.ordinal() && typeIndex != ContentType.PLAIN.ordinal());
 
 		autocompleteViewController=new ComposeAutocompleteViewController(getActivity(), accountID);
