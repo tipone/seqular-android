@@ -47,6 +47,8 @@ import org.joinmastodon.android.ui.utils.TextDrawable;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.EmojiReactionButton;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -69,6 +71,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 	private final boolean hideEmpty, forAnnouncement, playGifs;
 	private final String accountID;
 	private static final float ALPHA_DISABLED=0.55f;
+	private boolean forceShow=false;
 
     public EmojiReactionsStatusDisplayItem(String parentID, BaseStatusListFragment<?> parentFragment, Status status, String accountID, boolean hideEmpty, boolean forAnnouncement) {
 		super(parentID, parentFragment);
@@ -97,6 +100,10 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
     }
 
 	public boolean isHidden(){
+		if(forceShow){
+			forceShow=false;
+			return false;
+		}
 		return status.reactions.isEmpty() && hideEmpty;
 	}
 
@@ -325,11 +332,14 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		}
 
 		public void updateReactions(List<EmojiReaction> reactions){
+			item.status.reactions=new ArrayList<>(item.status.reactions); // I don't know how, but this seemingly fixes a bug
+
+			List<EmojiReaction> toRemove=new ArrayList<>();
 			for(int i=0;i<item.status.reactions.size();i++){
 				EmojiReaction reaction=item.status.reactions.get(i);
 				Optional<EmojiReaction> newReactionOptional=reactions.stream().filter(r->r.name.equals(reaction.name)).findFirst();
 				if(newReactionOptional.isEmpty()){ // deleted reactions
-					adapter.notifyItemRemoved(i);
+					toRemove.add(reaction);
 					continue;
 				}
 
@@ -343,25 +353,39 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 							item.setActionProgressVisible(reactionHolder, true);
 						}
 					}else{
+						item.status.reactions.set(i, newReaction);
 						adapter.notifyItemChanged(i);
 					}
 				}
 			}
+
+			Collections.reverse(toRemove);
+			for(EmojiReaction r:toRemove){
+				int index=item.status.reactions.indexOf(r);
+				item.status.reactions.remove(index);
+				adapter.notifyItemRemoved(index);
+			}
+
 			boolean pendingAddReaction=false;
-			for(EmojiReaction reaction:reactions){
+			for(int i=0;i<reactions.size();i++){
+				EmojiReaction reaction=reactions.get(i);
 				if(item.status.reactions.stream().anyMatch(r->r.name.equals(reaction.name)))
 					continue;
 
 				// new reactions
 				if(reaction.pendingChange){
 					pendingAddReaction=true;
+					item.forceShow=true;
 					continue;
 				}
-				int pos=item.status.reactions.size();
-				item.status.reactions.add(pos, reaction);
-				adapter.notifyItemInserted(pos);
+				boolean previouslyEmpty=item.status.reactions.isEmpty();
+				item.status.reactions.add(i, reaction);
+				if(previouslyEmpty)
+					adapter.notifyItemChanged(i);
+				else
+					adapter.notifyItemInserted(i);
 				RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
-				scroller.setTargetPosition(pos);
+				scroller.setTargetPosition(i);
 				list.getLayoutManager().startSmoothScroll(scroller);
 			}
 			if(pendingAddReaction){

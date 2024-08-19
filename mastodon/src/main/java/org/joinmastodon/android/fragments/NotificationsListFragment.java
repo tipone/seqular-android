@@ -281,7 +281,6 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 						reactions.updateReactions(ev.reactions);
 					}
 				}
-				n.status.getContentStatus().update(ev);
 				AccountSessionManager.get(accountID).getCacheController().updateNotification(n);
 				for(int i=0;i<list.getChildCount();i++){
 					RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));

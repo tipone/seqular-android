@@ -292,7 +292,6 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 							reactions.updateReactions(ev.reactions);
 						}
 					}
-					s.getContentStatus().update(ev);
 					AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
 					for(int i=0;i<list.getChildCount();i++){
 						RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
