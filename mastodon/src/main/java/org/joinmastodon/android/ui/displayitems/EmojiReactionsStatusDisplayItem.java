@@ -277,8 +277,12 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 				resetBtn.run();
 				if(finalExisting==null){
 					int pos=item.status.reactions.size();
+					boolean previouslyEmpty=item.status.reactions.isEmpty();
 					item.status.reactions.add(pos, info!=null ? EmojiReaction.of(info, me) : EmojiReaction.of(emoji, me));
-					adapter.notifyItemRangeInserted(pos, 1);
+					if(previouslyEmpty)
+						adapter.notifyItemChanged(pos);
+					else
+						adapter.notifyItemInserted(pos);
 					RecyclerView.SmoothScroller scroller=new LinearSmoothScroller(list.getContext());
 					scroller.setTargetPosition(pos);
 					list.getLayoutManager().startSmoothScroll(scroller);
