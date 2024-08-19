@@ -82,6 +82,9 @@ public class StatusInteractionController{
 		status.favourited=favorited;
 		if(updateCounters) E.post(new StatusCountersUpdatedEvent(status));
 
+		if(instance.configuration==null || instance.configuration.reactions==null)
+			return;
+
 		String defaultReactionEmojiRaw=instance.configuration.reactions.defaultReaction;
 		if(!instance.isIceshrimp() || defaultReactionEmojiRaw==null)
 			return;
