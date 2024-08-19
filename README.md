@@ -1,6 +1,8 @@
 # ![MoshidonLogo](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png) Moshidon, the material you mastodon client!
 
-> A highly customizable up-to-date fork of [megalodon](https://github.com/sk22/megalodon) adding important features such as a fully federated timeline, unlisted posting, drafts, scheduled posts, bookmarks, and alt text warnings. 
+
+> A fast, highly customizable, up-to-date fork of [megalodon](https://github.com/sk22/megalodon) adding important features such as a fully federated timeline, unlisted posting, drafts, scheduled posts, bookmarks, and alt text warnings. 
+
 
 ## Download Now
 
@@ -11,8 +13,6 @@
 ## Donate
 
 <a href="https://github.com/sponsors/LucasGGamerM">Github</a> | <a href="https://liberapay.com/LucasGGamerM/donate">Liberapay</a> | Monero Wallet Key: `4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j`
-
----
 
 ## Key Features
 
@@ -78,7 +78,6 @@ See all public posts from servers your server federates with and fetch profiles 
 - disable active tab indicator
 - show tab labels in navigation bar
 
----
 
 ## Installation & Releases
 
