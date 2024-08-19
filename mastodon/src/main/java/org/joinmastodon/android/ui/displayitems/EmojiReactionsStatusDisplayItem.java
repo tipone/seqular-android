@@ -165,7 +165,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 		private final ProgressBar progress;
 		private final EmojiReactionsAdapter adapter;
 		private final ListImageLoaderWrapper imgLoader;
-		private int meReactionCount = 0;
+		private int meReactionCount=0;
 		private Instance instance;
 
 		public Holder(Activity activity, ViewGroup parent) {
@@ -519,9 +519,16 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					btn.setClickable(true);
 				}
 				btn.setOnClickListener(e->{
+					EmojiReactionsAdapter adapter = (EmojiReactionsAdapter) getBindingAdapter();
+					Instance instance = adapter.parentHolder.instance;
+					if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0 &&
+							adapter.parentHolder.meReactionCount >= instance.configuration.reactions.maxReactions &&
+							!reaction.me){
+						return;
+					}
+
 					boolean deleting=reaction.me;
 					parent.createRequest(reaction.name, reaction.count, deleting, this, (status)->{
-						EmojiReactionsAdapter adapter = (EmojiReactionsAdapter) getBindingAdapter();
 						for(int i=0; i<parent.status.reactions.size(); i++){
 							EmojiReaction r=parent.status.reactions.get(i);
 							if(!r.name.equals(reaction.name)) continue;
@@ -542,7 +549,6 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 							adapter.parentHolder.line.setVisibility(View.GONE);
 						}
 
-						Instance instance=parent.parentFragment.getInstance().get();
 						if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
 							adapter.parentHolder.updateMeReactionCount(deleting);
 						}
