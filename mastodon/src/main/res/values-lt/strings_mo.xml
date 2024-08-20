@@ -113,4 +113,5 @@
     <string name="import_settings_confirm_body">Visi esami nustatymai ir laiko skalės bus perrašyti! Šio veiksmo atšaukti negalima.</string>
     <string name="import_settings_summary">Importuok anksčiau eksportuotus nustatymus ir laiko skales.</string>
     <string name="mo_error_display_text">Įkeliant šį įrašą kažkas nutiko ne taip. Jei problema išlieka, pranešk apie tai mūsų problemų puslapyje ir nurodyk klaidos informaciją.</string>
+    <string name="mo_personal_note_saved">Išsaugota pastaba</string>
 </resources>
