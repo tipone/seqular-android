@@ -1,0 +1,6 @@
+- Pridėti kalbos parinkiklį
+- Pridėti vertimo funkciją
+- Patobulinti balsavimo apklausose semantiką (akutės ir žymimieji langeliai)
+- Pridėti parinktį, leidžiančią apklausose balsuoti už kelias parinktis
+- Naujas prisijungimo ekranas
+-Riktų taisymai

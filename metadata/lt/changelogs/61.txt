@@ -1,0 +1,5 @@
+- Naujos spalvų temos: „Material You“ ir raudona
+- Nauji tamsiai pilki tonai visose temose
+- Aiškiau užpildyta pasidalinimo piktograma
+- Sąveikos mygtukų animacijos
+- Riktų taisymai (kai kurių pranešimų striga, „Sąrašai su“, numatytoji skelbimo kalba)
