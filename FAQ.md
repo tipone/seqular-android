@@ -8,30 +8,6 @@ Q: Will there ever be a version of Moshidon for iOS?
 
 A: No. As android and iOS apps do not share code, it is incredibly hard to port.
 
-# How To
-
-### Lists & Hashtags
-
-View, edit, and pin lists. Users can be added or removed from lists on their profile page. [ Your Lists icon ]
-
-Follow, pin, and mute hashtags. [ Hashtags you follow icon ]
-[ Example of hashtag page with pin and mute icons highlighted ]
-
-### Follow Other Communities
-
-Easily follow another server's local public posts even if your server does not federate with them by adding it as a Community. Search for the server name and pin it to add it to your Home drop down menu. 
-
-[ Server info page with Local Timeline highlighted ]
-[ Then local timeline with pin button highlighted ]
-
-### Filtered Posts
-
-Edit your filters without leaving the app. Allows you to have filtered posts collapsed with a warning. [ example filtered post ]
-
-### Notifications
-
-Get only specific types of notifications (no more finished polls!), limit who you get notifications from, or group all notifications into one. 
-
 ## Detailed changes
 
 ### Features
