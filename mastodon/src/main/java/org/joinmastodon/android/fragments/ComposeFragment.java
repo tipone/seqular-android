@@ -830,7 +830,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		publishButton=wrap.findViewById(R.id.publish_btn);
 		languageButton=wrap.findViewById(R.id.language_btn);
-		if(instance.isIceshrimp())
+		if(instance.isIceshrimpJs())
 			languageButton.setVisibility(View.GONE);
 		else {
 			languageButton.setOnClickListener(v->showLanguageAlert());

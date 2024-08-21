@@ -26,6 +26,10 @@ public interface HasAccountID {
 		return getInstance().map(Instance::isIceshrimp).orElse(false);
 	}
 
+	default boolean isInstanceIceshrimpJs() {
+		return getInstance().map(Instance::isIceshrimpJs).orElse(false);
+	}
+
     default Optional<Instance> getInstance() {
         return getSession().getInstance();
     }

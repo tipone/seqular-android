@@ -295,7 +295,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					finalExisting.add(me);
 					adapter.notifyItemChanged(item.status.reactions.indexOf(finalExisting));
 				}
-				if(instance.isIceshrimp() && status!=null){
+				if(instance.isIceshrimpJs() && status!=null){
 					item.parentFragment.onFavoriteChanged(status, getItemID());
 					E.post(new StatusCountersUpdatedEvent(status));
 				}
@@ -510,7 +510,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 					btn.setCompoundDrawablesRelative(item.first.placeholder, null, null, null);
 				}
 				btn.setSelected(reaction.me);
-				if(parent.parentFragment.isInstanceIceshrimp() && reaction.name.contains("@")){
+				if(parent.parentFragment.isInstanceIceshrimpJs() && reaction.name.contains("@")){
 					btn.setEnabled(false);
 					btn.setClickable(false);
 					btn.setLongClickable(true);
@@ -552,7 +552,7 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 						if(instance.configuration!=null && instance.configuration.reactions!=null && instance.configuration.reactions.maxReactions!=0){
 							adapter.parentHolder.updateMeReactionCount(deleting);
 						}
-						if(instance.isIceshrimp() && status!=null){
+						if(instance.isIceshrimpJs() && status!=null){
 							parent.parentFragment.onFavoriteChanged(status, adapter.parentHolder.getItemID());
 							E.post(new StatusCountersUpdatedEvent(status));
 						}

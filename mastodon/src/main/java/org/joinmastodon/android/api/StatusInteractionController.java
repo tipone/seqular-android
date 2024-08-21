@@ -64,7 +64,7 @@ public class StatusInteractionController{
 						result.favouritesCount = Math.max(0, status.favouritesCount + (favorited ? 1 : -1));
 						cb.accept(result);
 						if(updateCounters) E.post(new StatusCountersUpdatedEvent(result));
-						if(instance.isIceshrimp()) E.post(new EmojiReactionsUpdatedEvent(status.id, result.reactions, false, null));
+						if(instance.isIceshrimpJs()) E.post(new EmojiReactionsUpdatedEvent(status.id, result.reactions, false, null));
 					}
 
 					@Override
@@ -74,7 +74,7 @@ public class StatusInteractionController{
 						status.favourited=!favorited;
 						cb.accept(status);
 						if(updateCounters) E.post(new StatusCountersUpdatedEvent(status));
-						if(instance.isIceshrimp()) E.post(new EmojiReactionsUpdatedEvent(status.id, status.reactions, false, null));
+						if(instance.isIceshrimpJs()) E.post(new EmojiReactionsUpdatedEvent(status.id, status.reactions, false, null));
 					}
 				})
 				.exec(accountID);
@@ -86,7 +86,7 @@ public class StatusInteractionController{
 			return;
 
 		String defaultReactionEmojiRaw=instance.configuration.reactions.defaultReaction;
-		if(!instance.isIceshrimp() || defaultReactionEmojiRaw==null)
+		if(!instance.isIceshrimpJs() || defaultReactionEmojiRaw==null)
 			return;
 
 		boolean reactionIsCustom=defaultReactionEmojiRaw.startsWith(":");

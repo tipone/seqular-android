@@ -61,7 +61,7 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 				showRepliesItem=new CheckableListItem<>(R.string.sk_settings_show_replies, 0, CheckableListItem.Style.SWITCH, lp.showReplies, R.drawable.ic_fluent_arrow_reply_24_regular, i->toggleCheckableItem(showRepliesItem))
 		));
 
-		if(!isInstanceIceshrimp()) items.add(
+		if(!isInstanceIceshrimpJs()) items.add(
 				0,
 				languageItem=new ListItem<>(getString(R.string.default_post_language), postLanguage!=null ? postLanguage.getDisplayName(getContext()) : null, R.drawable.ic_fluent_local_language_24_regular, this::onDefaultLanguageClick)
 		);
