@@ -45,7 +45,7 @@ A: No. As android and iOS apps do not share code, it is incredibly hard to port.
 
 ### Behavior
 
-* Allow for confirmation before reblogging
+* Ask for confirmation before reblogging
 * Adding a bottom option for the publish button, allowing for easier use on larger screens!
 * [Make back button return to the home tab before exiting the app](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/back-returns-home) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/118))
 * [Always preserve content warnings when replying](https://github.com/mastodon/mastodon-android/compare/master...sk22:megalodon:feature/always-preserve-cw) ([Closes issue](https://github.com/mastodon/mastodon-android/issues/113))
