@@ -208,6 +208,14 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			updateVisibility(item.isHidden(), true);
 			imgLoader.updateImages();
 			adapter.notifyDataSetChanged();
+
+			if(!GlobalUserPreferences.showDividers || item.isHidden())
+				return;
+
+			StatusDisplayItem next=getNextVisibleDisplayItem().orElse(null);
+			if(next!=null && !next.parentID.equals(item.parentID)) next=null;
+			if(next instanceof ExtendedFooterStatusDisplayItem)
+				itemView.setPadding(0, 0, 0, V.dp(12));
         }
 
 		private void updateVisibility(boolean hidden, boolean force){
