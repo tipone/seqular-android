@@ -1,1 +1,1 @@
-Mastodon для Android, но розовый и с большим количеством функций
+Android клиент Mastodon в дизайне Material You и дополнительными функциями

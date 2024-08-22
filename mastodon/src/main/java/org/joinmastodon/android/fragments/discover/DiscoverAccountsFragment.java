@@ -279,8 +279,8 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 				cover.setImageDrawable(image);
 			}else{
 				item.emojiHelper.setImageDrawable(index-2, image);
-				name.invalidate();
-				bio.invalidate();
+				name.setText(name.getText());
+				bio.setText(bio.getText());
 			}
 			if(image instanceof Animatable a && !a.isRunning())
 				a.start();
@@ -311,6 +311,8 @@ public class DiscoverAccountsFragment extends MastodonRecyclerFragment<DiscoverA
 		private void setActionProgressVisible(boolean visible){
 			actionButton.setTextVisible(!visible);
 			actionProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+			if(visible)
+				actionProgress.setIndeterminateTintList(actionButton.getTextColors());
 			actionButton.setClickable(!visible);
 		}
 	}

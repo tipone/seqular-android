@@ -48,7 +48,7 @@ public class SearchViewHelper{
 		searchEdit.setPadding(0, 0, 0, 0);
 		searchEdit.addTextChangedListener(new SimpleTextWatcher(e->{
 			searchEdit.removeCallbacks(debouncer);
-			searchEdit.postDelayed(debouncer, 300);
+			searchEdit.postDelayed(debouncer, 500);
 			boolean newIsEmpty=e.length()==0;
 			if(isEmpty!=newIsEmpty){
 				isEmpty=newIsEmpty;

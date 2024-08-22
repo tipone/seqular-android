@@ -409,4 +409,26 @@
     <string name="sk_timeline_cache_cleared">Memoria cache a cronologiei acasă a fost ștearsă</string>
     <string name="sk_settings_clear_timeline_cache">Ștergeți memoria cache a cronologiei acasă</string>
     <string name="sk_button_mutuals">Prieteni</string>
+    <string name="sk_icon_snowflake">Fulg de nea</string>
+    <string name="sk_private_note_update_failed">Salvarea notei a eșuat</string>
+    <string name="sk_icon_cloud">Nor</string>
+    <string name="sk_delete_note">Ștergeți nota personală</string>
+    <string name="sk_icon_sunset">Apus</string>
+    <string name="sk_confirm_changes">Confirmați schimbările</string>
+    <string name="sk_settings_crash_log_unavailable">Niciunul valabil...încă</string>
+    <string name="sk_private_note_hint">Adăugați o notă personală despre acest profil</string>
+    <string name="sk_icon_water">Apă</string>
+    <string name="sk_icon_sun">Soare</string>
+    <string name="sk_crash_log_copied">Registru crash copiat</string>
+    <string name="sk_add_note">Adăugați notă personală</string>
+    <string name="sk_settings_copy_crash_log">Copiați cel mai nou registru de crash</string>
+    <string name="sk_open_post_preview">Previzualizați postarea</string>
+    <string name="sk_icon_rain">Ploaie</string>
+    <string name="sk_icon_thunderstorm">Furtună</string>
+    <string name="sk_post_preview">Previzualizare</string>
+    <string name="sk_private_note_confirm_delete">Ștergeți nota personală despre %s\?</string>
+    <string name="sk_poll_hide_results">Ascundeți rezultatele</string>
+    <string name="sk_poll_multiple_choice">Alegeri multiple</string>
+    <string name="sk_poll_show_results">Afișați rezultatele</string>
+    <string name="sk_posted">%s a postat</string>
 </resources>

@@ -40,8 +40,8 @@
 	<string name="profile_about">О себе</string>
 	<string name="button_follow">Подписаться</string>
 	<string name="button_following">В подписках</string>
-	<string name="edit_profile">Изменить профиль</string>
-	<string name="share_user">Поделиться профилем</string>
+	<string name="edit_profile">Редактировать профиль</string>
+	<string name="share_user">Поделиться профилем через…</string>
 	<string name="mute_user">Игнорировать %s</string>
 	<string name="unmute_user">Убрать %s из игнорируемых</string>
 	<string name="block_user">Заблокировать %s</string>
@@ -112,19 +112,9 @@
 		<item quantity="other">%,d голосов</item>
 	</plurals>
 	<string name="poll_closed">Завершён</string>
-	<string name="confirm_mute_title">Игнорировать</string>
-	<string name="confirm_mute">Игнорировать %s?</string>
 	<string name="do_mute">Игнорировать</string>
-	<string name="confirm_unmute_title">Не игнорировать</string>
-	<string name="confirm_unmute">Убрать %s из игнорируемых?</string>
 	<string name="do_unmute">Убрать из игнорируемых</string>
-	<string name="confirm_block_title">Заблокировать</string>
-	<string name="confirm_block_domain_title">Заблокировать узел</string>
-	<string name="confirm_block">Заблокировать %s?</string>
 	<string name="do_block">Заблокировать</string>
-	<string name="confirm_unblock_title">Разблокировать</string>
-	<string name="confirm_unblock_domain_title">Разблокировать домен</string>
-	<string name="confirm_unblock">Убрать %s из списка блокировки?</string>
 	<string name="do_unblock">Разблокировать</string>
 	<string name="button_blocked">Заблокирован(а)</string>
 	<string name="action_vote">Проголосовать</string>
@@ -180,27 +170,15 @@
 	<string name="search_communities">Имя сервера или URL</string>
 	<string name="instance_rules_title">Правила сервера</string>
 	<string name="instance_rules_subtitle">Продолжая, вы соглашаетесь соблюдать следующие правила, установленные и применяемые модераторами %s.</string>
-	<string name="signup_title">Создать Аккаунт</string>
+	<string name="signup_title">Создать аккаунт</string>
 	<string name="display_name">Имя</string>
 	<string name="username">Имя пользователя</string>
 	<string name="email">E-mail</string>
 	<string name="password">Пароль</string>
 	<string name="confirm_password">Подтверждение пароля</string>
 	<string name="password_note">Используйте заглавные буквы, числа и специальные символы, чтобы повысить стойкость пароля.</string>
-	<string name="category_academia">Академия</string>
-	<string name="category_activism">Активизм</string>
-	<string name="category_all">Все</string>
-	<string name="category_art">Искусство</string>
-	<string name="category_food">Еда</string>
-	<string name="category_furry">Фурри</string>
-	<string name="category_games">Игры</string>
 	<string name="category_general">Общей тематики</string>
-	<string name="category_journalism">Журнализм</string>
-	<string name="category_lgbt">ЛГБТ</string>
-	<string name="category_music">Музыка</string>
-	<string name="category_regional">Региональные</string>
-	<string name="category_tech">Технологии</string>
-	<string name="confirm_email_title">Проверьте входящие сообщения</string>
+	<string name="confirm_email_title">Проверьте вашу почту</string>
 	<!-- %s is the email address -->
 	<string name="confirm_email_subtitle">Нажмите на ссылку, которую мы вам отправили, чтобы подтвердить %s. Мы подождем здесь.</string>
 	<string name="confirm_email_didnt_get">Не получили ссылку?</string>
@@ -237,7 +215,7 @@
 	<string name="theme_dark">Тёмный</string>
 	<string name="settings_behavior">Поведение</string>
 	<string name="settings_gif">Проигрывать анимированные аватарки и эмодзи</string>
-	<string name="settings_custom_tabs">Использовать браузер в приложении</string>
+	<string name="settings_custom_tabs">Открывать ссылки в</string>
 	<string name="settings_notifications">Уведомления</string>
 	<string name="settings_contribute">Внести вклад в Mastodon</string>
 	<string name="settings_tos">Условия использования</string>
@@ -266,8 +244,8 @@
 	<string name="followed_user">Вы подписались на %s</string>
 	<string name="following_user_requested">Отправлен запрос на подписку %s</string>
 	<string name="open_in_browser">Открыть в браузере</string>
-	<string name="hide_boosts_from_user">Скрыть продвигаемые от %s</string>
-	<string name="show_boosts_from_user">Показать продвигаемые от %s</string>
+	<string name="hide_boosts_from_user">Скрывать продвижения</string>
+	<string name="show_boosts_from_user">Показывать продвижения</string>
 	<string name="signup_reason">Почему вы хотите присоединиться?</string>
 	<string name="signup_reason_note">Это поможет нам рассмотреть вашу заявку.</string>
 	<string name="clear">Очистить</string>
@@ -282,12 +260,13 @@
 	<string name="file_saved">Файл сохранён</string>
 	<string name="downloading">Скачивание…</string>
 	<string name="no_app_to_handle_action">Нет приложения для обработки этого действия</string>
-	<string name="local_timeline">Локальные</string>
+	<string name="local_timeline">Локальная</string>
 	<string name="trending_posts_info_banner">Эти посты набирают популярность в Mastodon.</string>
 	<string name="trending_links_info_banner">Это новости, о которых говорят в Mastodon.</string>
 	<!-- %s is the server domain -->
 	<string name="local_timeline_info_banner">Это все посты от всех пользователей на вашем сервере (%s).</string>
 	<string name="recommended_accounts_info_banner">Вам могут понравиться эти учетные записи, основаные на ваших подписках.</string>
+	<string name="see_new_posts">Новые посты</string>
 	<string name="load_missing_posts">Загрузить недостающие посты</string>
 	<string name="follow_back">Подписаться в ответ</string>
 	<string name="button_follow_pending">В ожидании</string>
@@ -307,18 +286,17 @@
 		<item quantity="other">%,d подписок</item>
 	</plurals>
 	<plurals name="x_favorites">
-		<item quantity="one">%,d избранный</item>
-		<item quantity="few">%,d избранных</item>
-		<item quantity="many">%,d избранных</item>
-		<item quantity="other">%,d избранных</item>
+		<item quantity="one">%,d в избранном</item>
+		<item quantity="few">%,d в избранном</item>
+		<item quantity="many">%,d в избранном</item>
+		<item quantity="other">%,d в избранном</item>
 	</plurals>
 	<plurals name="x_reblogs">
-		<item quantity="one">%,d продвинут</item>
-		<item quantity="few">%,d продвинуты</item>
-		<item quantity="many">%,d продвинуто</item>
-		<item quantity="other">%,d продвинутых</item>
+		<item quantity="one">%,d продвижение</item>
+		<item quantity="few">%,d продвижения</item>
+		<item quantity="many">%,d продвижений</item>
+		<item quantity="other">%,d продвижений</item>
 	</plurals>
-	<string name="timestamp_via_app">%1$s через %2$s</string>
 	<string name="time_now">только что</string>
 	<string name="edit_history">История изменений</string>
 	<string name="last_edit_at_x">Последнее изменение: %s</string>
@@ -358,8 +336,6 @@
 	<string name="file_size_mb">%.2f МБ</string>
 	<string name="file_size_gb">%.2f ГБ</string>
 	<string name="upload_processing">Обработка…</string>
-	<!-- %s is version like 1.2.3 -->
-	<!-- %s is version like 1.2.3 -->
 	<!-- %s is file size -->
 	<string name="download_update">Скачать (%s)</string>
 	<string name="install_update">Установить</string>
@@ -375,8 +351,7 @@
 	<string name="your_favorites">Ваше избранное</string>
 	<string name="login_title">С возвращением</string>
 	<string name="login_subtitle">Войдите на сервер, на котором вы создали свою учётную запись.</string>
-	<string name="server_url">URL-адрес сервера</string>
-	<string name="signup_random_server_explain">Мы выберем сервер на основе вашего языка, если вы продолжите, не сделав выбор.</string>
+	<string name="server_url">Адрес сервера</string>
 	<string name="server_filter_any_language">Любой язык</string>
 	<string name="server_filter_instant_signup">Мгновенная регистрация</string>
 	<string name="server_filter_manual_review">Ручная проверка</string>
@@ -388,14 +363,10 @@
 	<string name="server_filter_region_asia">Азия</string>
 	<string name="server_filter_region_oceania">Океания</string>
 	<string name="not_accepting_new_members">Не принимает новых участников</string>
-	<string name="category_special_interests">Особые интересы</string>
 	<string name="signup_passwords_dont_match">Пароли не совпадают</string>
-	<string name="pick_server_for_me">Выбрать за меня</string>
 	<string name="profile_add_row">Добавить строку</string>
 	<string name="profile_setup">Настройка профиля</string>
 	<string name="profile_setup_subtitle">Вы всегда можете завершить это позже на вкладке Профиль.</string>
-	<string name="profile_setup_explanation">Вы можете добавить до четырех полей профиля для всего, что хотите. Местоположение, ссылки, местоимения — нет предела возможностям.</string>
-	<string name="popular_on_mastodon">Популярно на Mastodon</string>
 	<string name="follow_all">Подписаться на всех</string>
 	<string name="server_rules_disagree">Отклонить</string>
 	<string name="privacy_policy_explanation">TL;DR: Мы ничего не собираем и не обрабатываем.</string>
@@ -406,7 +377,7 @@
 	<string name="sending_follows">Подписка на пользователей…</string>
 	<!-- %1$s is server domain, %2$s is email domain. You can reorder these placeholders to fit your language better. -->
 	<string name="signup_email_domain_blocked">%1$s не позволяет зарегистрироваться от %2$s. Попробуйте другой или &lt;a&gt;выберите другой сервер&lt;/a&gt;.</string>
-	<string name="spoiler_show">Все равно показать</string>
+	<string name="spoiler_show">Всё равно показать</string>
 	<string name="spoiler_hide">Спрятать повторно</string>
 	<string name="poll_multiple_choice">Выберите один или более</string>
 	<string name="save_changes">Сохранить изменения</string>
@@ -454,7 +425,7 @@
 	<string name="what_is_alt_text">Что такое альтернативный текст?</string>
 	<string name="alt_text_help">Альтернативный текст содержит описания изображений для людей с ограничениями и тех, кому нужен дополнительный контекст.\n\nВы можете улучшить доступность и понимание для всех, написав четкий, краткий и объективный альтернативный текст.\n\n<ul><li>Фиксируйте важные элементы</li>\n<li>Описывайте изображение</li>\n<li>Используйте правильную структуру предложений</li>\n<li>Избегайте избыточной информации</li>\n<li>Сосредоточьтесь на основных и ключевых визуальных элементах (таких как диаграммы или карты)</li></ul></string>
 	<string name="edit_post">Изменить пост</string>
-	<string name="no_verified_link">Не подтвержденная ссылка</string>
+	<string name="no_verified_link">Нет подтверждённой ссылки</string>
 	<string name="compose_autocomplete_emoji_empty">Просмотр эмодзи</string>
 	<string name="compose_autocomplete_users_empty">Найдите тех, кого ищете</string>
 	<string name="no_search_results">Ничего не найдено по этому запросу</string>
@@ -477,7 +448,7 @@
 	<string name="report_sent_already_blocked">Вы уже заблокировали этого пользователя, так что вам больше ничего не нужно делать, пока мы просматриваем ваше обращение.</string>
 	<string name="report_personal_already_blocked">Вы уже заблокировали этого пользователя, так что вам больше ничего не нужно делать.\n\nСпасибо, что помогаете сделать Mastodon безопасным для всех!</string>
 	<string name="blocked_user">Заблокировать %s</string>
-	<string name="mark_all_notifications_read">Отметить всё как прочитанное</string>
+	<string name="mark_all_notifications_read">Отметить все как прочитанные</string>
 	<string name="settings_display">Отображение</string>
 	<string name="settings_filters">Фильтры</string>
 	<string name="settings_server_explanation">Обзор, правила, модераторы</string>
@@ -528,25 +499,25 @@
 		<item quantity="one">через %d секунду</item>
 		<item quantity="few">через %d секунд(ы)</item>
 		<item quantity="many">через %d секунд(ы)</item>
-		<item quantity="other">через %d секунд(ы)</item>
+		<item quantity="other">через %d секунд</item>
 	</plurals>
 	<plurals name="in_x_minutes">
 		<item quantity="one">через %d минуту</item>
-		<item quantity="few">через %d минут(ы)</item>
-		<item quantity="many">через %d минут(ы)</item>
-		<item quantity="other">через %d минут(ы)</item>
+		<item quantity="few">через %d минуты</item>
+		<item quantity="many">через %d минут</item>
+		<item quantity="other">через %d минут</item>
 	</plurals>
 	<plurals name="in_x_hours">
 		<item quantity="one">через %d час</item>
-		<item quantity="few">через %d часа(ов)</item>
+		<item quantity="few">через %d часа</item>
 		<item quantity="many">через %d часов</item>
 		<item quantity="other">через %d часов</item>
 	</plurals>
 	<plurals name="x_hours_ago">
 		<item quantity="one">%d час назад</item>
-		<item quantity="few">%d часов(-а) назад</item>
-		<item quantity="many">%d часов(-а) назад</item>
-		<item quantity="other">%d часов(-а) назад</item>
+		<item quantity="few">%d часа назад</item>
+		<item quantity="many">%d часов назад</item>
+		<item quantity="other">%d часов назад</item>
 	</plurals>
 	<string name="alt_text_reminder_title">В материале отсутствует альтернативный текст</string>
 	<plurals name="alt_text_reminder_x_images">
@@ -575,25 +546,25 @@
 	<string name="settings_filter_duration">Продолжительность</string>
 	<string name="settings_filter_muted_words">Игнорируемые слова</string>
 	<string name="settings_filter_context">Игнорировать</string>
-	<string name="settings_filter_show_cw">Показывать предупреждения о содержании</string>
+	<string name="settings_filter_show_cw">Показывать с предупреждением</string>
 	<string name="settings_filter_show_cw_explanation">Показывать посты, которые соответствуют этому фильтру, но с предупреждением о содержании</string>
 	<string name="settings_delete_filter">Удалить фильтр</string>
-	<string name="filter_duration_forever">Всегда</string>
+	<string name="filter_duration_forever">Навсегда</string>
 	<!-- %s is the timestamp ("tomorrow at 12:34") -->
 	<string name="settings_filter_ends">Закончится %s</string>
 	<plurals name="settings_x_muted_words">
 		<item quantity="one">%d игнорируемое слово или фраза</item>
 		<item quantity="few">%d игнорируемых слов(а) или фраз</item>
-		<item quantity="many">%d игнорируемых слов(а) или фраз</item>
+		<item quantity="many">%d игнорируемых слов или фраз</item>
 		<item quantity="other">%d игнорируемых слов(а) или фраз</item>
 	</plurals>
 	<string name="selection_2_options">%1$s и %2$s</string>
 	<string name="selection_3_options">%1$s, %2$s и %3$s</string>
 	<string name="selection_4_or_more">%1$s, %2$s и ещё %3$d</string>
-	<string name="filter_context_home_lists">Главная &amp; списки</string>
+	<string name="filter_context_home_lists">Главная и списки</string>
 	<string name="filter_context_notifications">Уведомления</string>
-	<string name="filter_context_public_timelines">Публичная лента</string>
-	<string name="filter_context_threads_replies">Темы &amp; ответы</string>
+	<string name="filter_context_public_timelines">Публичные ленты</string>
+	<string name="filter_context_threads_replies">Темы и ответы</string>
 	<string name="filter_context_profiles">Профили</string>
 	<string name="settings_filter_title">Название</string>
 	<string name="settings_delete_filter_title">Удалить фильтр “%s”?</string>
@@ -631,7 +602,7 @@
 	<string name="clear_all">Очистить все</string>
 	<string name="search_open_url">Открывать ссылки в Mastodon</string>
 	<string name="posts_matching_hashtag">Посты с “%s”</string>
-	<string name="search_go_to_account">Перейти в %s</string>
+	<string name="search_go_to_account">Перейти к %s</string>
 	<string name="posts_matching_string">Посты с “%s”</string>
 	<string name="accounts_matching_string">Аккаунты с “%s”</string>
 	<!-- Shown in the post header. Please keep it short -->
@@ -661,8 +632,95 @@
 		<item quantity="other">%,d постов сегодня</item>
 	</plurals>
 	<string name="error_playing_video">Ошибка воспроизведения видео</string>
+	<string name="timeline_following">Главная</string>
+	<string name="lists">Списки</string>
+	<string name="followed_hashtags">Хэштеги</string>
+	<string name="manage_lists">Управление списками</string>
+	<string name="manage_hashtags">Управление хэштегами</string>
 	<!-- Screen reader description for the menu on the home timeline screen -->
+	<string name="dropdown_menu">Выпадающее меню</string>
+	<string name="edit_list">Изменить список</string>
+	<string name="list_members">Список участников</string>
+	<string name="delete_list">Удалить список</string>
 	<!-- %s is the name of the list -->
+	<string name="delete_list_confirm">Удалить “%s”?</string>
+	<string name="list_exclusive">Скрыть участников в подписках</string>
+	<string name="list_exclusive_subtitle">Если кто-то есть в этом списке, скройте его в ленте подписок, чтобы его посты не появлялись дважды.</string>
+	<string name="list_name">Название списка</string>
+	<string name="list_show_replies_to">Показывать</string>
+	<string name="list_replies_no_one">Никого</string>
+	<string name="list_replies_members">Участников списка</string>
+	<string name="list_replies_anyone">Любого, на кого я подписан(а)</string>
+	<string name="confirm_remove_list_members">Удалить участников?</string>
+	<string name="remove">Удалить</string>
+	<string name="add_list_member">Добавить участника</string>
+	<string name="search_among_people_you_follow">Искать среди подписок</string>
+	<string name="add_user_to_list_title">Добавить в список</string>
 	<!-- %s is a username -->
-	<string name="see_new_posts">Показать новые</string>
+	<string name="manage_user_lists">Управлять списками с %s</string>
+	<string name="remove_from_list">Удалить из списка</string>
+	<string name="confirm_remove_list_member">Удалить участника?</string>
+	<string name="no_followed_hashtags_title">Следите за интересами по хэштегам</string>
+	<string name="no_followed_hashtags_subtitle">Здесь появятся хэштеги</string>
+	<string name="no_lists_title">Организуйте свою ленту с помощью списков</string>
+	<string name="no_lists_subtitle">Здесь появятся списки</string>
+	<string name="manage_accounts">Добавить или переключить аккаунты</string>
+	<plurals name="x_posts_recently">
+		<item quantity="one">%,d пост недавно</item>
+		<item quantity="few">%,d поста недавно</item>
+		<item quantity="many">%,d постов недавно</item>
+		<item quantity="other">%,d постов недавно</item>
+	</plurals>
+	<string name="create_list">Создать список</string>
+	<string name="step_x_of_y">Шаг %1$d из %2$d</string>
+	<string name="create">Создать</string>
+	<string name="manage_list_members">Управление списоком участников</string>
+	<string name="list_no_members">Участников пока нет</string>
+	<string name="list_find_users">Найти пользователей для добавления</string>
+	<string name="reply_to_user">Ответить %s</string>
+	<string name="posted_at">Пост в %s</string>
+	<string name="non_mutual_sheet_title">Привет, новый контакт!</string>
+	<string name="non_mutual_sheet_text">Похоже, вы собираетесь ответить кому-то, с кем у вас пока не было контакта. Давайте произведем хорошее первое впечатление.</string>
+	<string name="got_it">Понятно</string>
+	<string name="dont_remind_again">Больше не напоминать</string>
+	<!-- %s is a time interval ("5 months") -->
+	<string name="old_post_sheet_title">Этому посту больше чем %s</string>
+	<string name="old_post_sheet_text">Вы все еще можете ответить, но это может быть уже неактуально.</string>
+	<plurals name="x_months">
+		<item quantity="one">%,d месяц</item>
+		<item quantity="few">%,d месяца</item>
+		<item quantity="many">%,d месяцев</item>
+		<item quantity="other">%,d месяцев</item>
+	</plurals>
+	<string name="more_than_two_years">2 года и более</string>
+	<string name="non_mutual_title1">Оставайтесь уважительными и уместными</string>
+	<string name="non_mutual_text1">Убедитесь, что ваш ответ вежлив и по теме.</string>
+	<string name="non_mutual_title2">Примите доброту</string>
+	<string name="non_mutual_text2">Позитивный тон всегда приветствуется.</string>
+	<string name="non_mutual_title3">Будьте открыты</string>
+	<string name="non_mutual_text3">У каждого свой стиль общения. Будьте к этому готовы.</string>
+	<string name="make_profile_discoverable">Сделать мой профиль открытым</string>
+	<string name="discoverability">Открытость</string>
+	<string name="discoverability_help">Когда вы станете открыты для просмотра на Mastodon, ваши посты могут появляться в результатах поиска и в трендах.\n\nВаш профиль может быть предложен людям со схожими с вами интересами.\n\nОткажитесь скрывать свой профиль, если кто-то ищет вас по имени.</string>
+	<string name="app_version_copied">Номер версии скопирован в буфер обмена</string>
+	<string name="onboarding_recommendations_intro">Вы сами формируете свою ленту.
+Чем больше людей на которых вы подписаны, тем активнее и интереснее она будет.</string>
+	<string name="onboarding_recommendations_title">Персонализируйте свою ленту</string>
+	<string name="article_by_author">%s</string>
+	<string name="info">Информация</string>
+	<string name="button_reblogged">Продвинутые</string>
+	<string name="button_favorited">Избранные</string>
+	<string name="bookmarked">В закладках</string>
+	<string name="join_server_x_with_invite">Присоединяйтесь к %s по приглашению</string>
+	<string name="expired_invite_link">Срок действия пригласительной ссылки истёк</string>
+	<string name="expired_clipboard_invite_link_alert">Ссылка приглашения для %1$s в буфере обмена устарела и не может быть использована для регистрации.\n\nВы можете запросить новую ссылку у существующего пользователя. Зарегистрируйтесь через %2$s, или выберите другой сервер для регистрации.</string>
+	<string name="invalid_invite_link">Неверная ссылка приглашения</string>
+	<string name="invalid_clipboard_invite_link_alert">Ссылка приглашения для %1$s в буфере обмена устарела и не может быть использована для регистрации.\n\nВы можете запросить новую ссылку у существующего пользователя. Зарегистрируйтесь через %2$s, или выберите другой сервер для регистрации.</string>
+	<string name="use_invite_link">Использовать пригласительную ссылку</string>
+	<string name="enter_invite_link">Введите пригласительную ссылку</string>
+	<string name="this_invite_is_invalid">Эта пригласительная ссылка невалидна.</string>
+	<string name="this_invite_has_expired">Срок действия этой пригласительной ссылки истек.</string>
+	<string name="invite_link_pasted">Ссылка вставлена из буфера обмена.</string>
+	<string name="need_invite_to_join_server">Чтобы присоединиться к %s, вам нужна пригласительная ссылка от существующего пользователя.</string>
+	<!-- Shown on a button that saves a file, after it was successfully saved -->
 </resources>

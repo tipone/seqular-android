@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments.discover;
 
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.trends.GetTrendingLinks;
+import org.joinmastodon.android.fragments.IsOnTop;
 import org.joinmastodon.android.fragments.ScrollableToTop;
 import org.joinmastodon.android.model.Card;
 import org.joinmastodon.android.model.viewmodel.CardViewModel;
@@ -18,6 +20,8 @@ import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.drawables.BlurhashCrossfadeDrawable;
 import org.joinmastodon.android.ui.utils.DiscoverInfoBannerHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
+import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +30,7 @@ import java.util.stream.Collectors;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.imageloader.ImageLoaderRecyclerAdapter;
@@ -39,7 +44,7 @@ import me.grishka.appkit.utils.SingleViewRecyclerAdapter;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
-public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> implements ScrollableToTop{
+public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> implements ScrollableToTop, IsOnTop, ProvidesAssistContent.ProvidesWebUri{
 	private String accountID;
 	private DiscoverInfoBannerHelper bannerHelper;
 	private MergeRecyclerAdapter mergeAdapter;
@@ -107,6 +112,21 @@ public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> im
 	@Override
 	public void scrollToTop(){
 		smoothScrollRecyclerViewToTop(list);
+	}
+
+	@Override
+	public boolean isOnTop(){
+		return isRecyclerViewOnTop(list);
+	}
+
+	@Override
+	public String getAccountID() {
+		return accountID;
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return isInstanceAkkoma() ? null : base.path("/explore/links").build();
 	}
 
 	private class LinksAdapter extends UsableRecyclerView.Adapter<BaseLinkViewHolder> implements ImageLoaderRecyclerAdapter{
@@ -197,7 +217,16 @@ public class DiscoverNewsFragment extends BaseRecyclerFragment<CardViewModel> im
 
 		@Override
 		public void onClick(){
-			UiUtils.launchWebBrowser(getActivity(), item.url);
+			//TODO: enable timeline for all servers once 4.3.0 is released
+			if(getInstance().isEmpty() ||
+					!getInstance().get().checkVersion(4,3,0)){
+				UiUtils.launchWebBrowser(getActivity(), item.url);
+				return;
+			}
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putParcelable("trendingLink", Parcels.wrap(item));
+			Nav.go(getActivity(), DiscoverTrendingLinkTimelineFragment.class, args);
 		}
 	}
 

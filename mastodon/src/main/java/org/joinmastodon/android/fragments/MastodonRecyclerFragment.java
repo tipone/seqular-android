@@ -2,9 +2,12 @@ package org.joinmastodon.android.fragments;
 
 import android.os.Bundle;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.ui.BetterItemAnimator;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.utils.ElevationOnScrollListener;
 
@@ -44,6 +47,7 @@ public abstract class MastodonRecyclerFragment<T> extends BaseRecyclerFragment<T
 			list.addOnScrollListener(elevationOnScrollListener=new ElevationOnScrollListener((FragmentRootLinearLayout) view, getViewsForElevationEffect()));
 		if(refreshLayout!=null)
 			setRefreshLayoutColors(refreshLayout);
+
 	}
 
 	@Override

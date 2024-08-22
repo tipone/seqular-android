@@ -1,7 +1,5 @@
 package org.joinmastodon.android.api.session;
 
-import static org.unifiedpush.android.connector.UnifiedPush.getDistributor;
-
 import android.app.Activity;
 import android.app.NotificationManager;
 import android.content.ComponentName;
@@ -17,7 +15,7 @@ import android.util.Log;
 
 import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.E;
-import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.ChooseAccountForComposeActivity;
 import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
@@ -64,7 +62,7 @@ import me.grishka.appkit.api.ErrorResponse;
 public class AccountSessionManager{
 	private static final String TAG="AccountSessionManager";
 	public static final String SCOPE="read write follow push";
-	public static final String REDIRECT_URI="megalodon-android-auth://callback";
+	public static final String REDIRECT_URI = getRedirectURI();
 
 	private static final AccountSessionManager instance=new AccountSessionManager();
 
@@ -82,8 +80,20 @@ public class AccountSessionManager{
 		return instance;
 	}
 
+	public static String getRedirectURI() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("moshidon-android-");
+		if (BuildConfig.BUILD_TYPE.equals("debug") || BuildConfig.BUILD_TYPE.equals("nightly")) {
+			builder.append(BuildConfig.BUILD_TYPE);
+			builder.append('-');
+		}
+		builder.append("auth://callback");
+		return builder.toString();
+	}
+
 	private AccountSessionManager(){
 		prefs=MastodonApp.context.getSharedPreferences("account_manager", Context.MODE_PRIVATE);
+		// This file should not be backed up, otherwise the app may start with accounts already logged in. See res/xml/backup_rules.xml
 		File file=new File(MastodonApp.context.getFilesDir(), "accounts.json");
 		if(!file.exists())
 			return;
@@ -204,12 +214,17 @@ public class AccountSessionManager{
 	public void removeAccount(String id){
 		AccountSession session=getAccount(id);
 		session.getCacheController().closeDatabase();
+		session.getCacheController().getListsFile().delete();
 		MastodonApp.context.deleteDatabase(id+".db");
 		MastodonApp.context.getSharedPreferences(id, 0).edit().clear().commit();
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N){
 			MastodonApp.context.deleteSharedPreferences(id);
 		}else{
-			new File(MastodonApp.context.getDir("shared_prefs", Context.MODE_PRIVATE), id+".xml").delete();
+			String dataDir=MastodonApp.context.getApplicationInfo().dataDir;
+			if(dataDir!=null){
+				File prefsDir=new File(dataDir, "shared_prefs");
+				new File(prefsDir, id+".xml").delete();
+			}
 		}
 		sessions.remove(id);
 		if(lastActiveAccountID.equals(id)){
@@ -244,7 +259,7 @@ public class AccountSessionManager{
 								.path("/oauth/authorize")
 								.appendQueryParameter("response_type", "code")
 								.appendQueryParameter("client_id", result.clientId)
-								.appendQueryParameter("redirect_uri", "megalodon-android-auth://callback")
+								.appendQueryParameter("redirect_uri", REDIRECT_URI)
 								.appendQueryParameter("scope", SCOPE)
 								.build();
 
@@ -468,15 +483,19 @@ public class AccountSessionManager{
 		if(Build.VERSION.SDK_INT<26)
 			return;
 		ShortcutManager sm=MastodonApp.context.getSystemService(ShortcutManager.class);
-		if((sm.getDynamicShortcuts().isEmpty() || BuildConfig.DEBUG) && !sessions.isEmpty()){
+
+		Intent intent = new Intent(MastodonApp.context, ChooseAccountForComposeActivity.class)
+				.setAction(Intent.ACTION_CHOOSER)
+				.putExtra("compose", true);
+
+		// This was done so that the old shortcuts get updated to the new implementation.
+		if((sm.getDynamicShortcuts().isEmpty() || sm.getDynamicShortcuts().get(0).getIntent() != intent || BuildConfig.DEBUG ) && !sessions.isEmpty()){
 			// There are no shortcuts, but there are accounts. Add a compose shortcut.
 			ShortcutInfo info=new ShortcutInfo.Builder(MastodonApp.context, "compose")
 					.setActivity(ComponentName.createRelative(MastodonApp.context, MainActivity.class.getName()))
 					.setShortLabel(MastodonApp.context.getString(R.string.new_post))
 					.setIcon(Icon.createWithResource(MastodonApp.context, R.mipmap.ic_shortcut_compose))
-					.setIntent(new Intent(MastodonApp.context, MainActivity.class)
-							.setAction(Intent.ACTION_MAIN)
-							.putExtra("compose", true))
+					.setIntent(intent)
 					.build();
 			sm.setDynamicShortcuts(Collections.singletonList(info));
 		}else if(sessions.isEmpty()){

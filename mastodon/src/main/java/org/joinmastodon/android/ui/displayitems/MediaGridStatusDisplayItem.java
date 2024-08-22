@@ -31,6 +31,7 @@ import org.joinmastodon.android.model.Translation;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.PhotoLayoutHelper;
 import org.joinmastodon.android.ui.drawables.SpoilerStripesDrawable;
+import org.joinmastodon.android.ui.photoviewer.AltTextSheet;
 import org.joinmastodon.android.ui.photoviewer.PhotoViewerHost;
 import org.joinmastodon.android.ui.utils.MediaAttachmentViewController;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -72,8 +73,8 @@ public class MediaGridStatusDisplayItem extends StatusDisplayItem{
 		for(Attachment att:attachments){
 			requests.add(new UrlImageLoaderRequest(switch(att.type){
 				case IMAGE -> att.url;
-				case VIDEO, GIFV -> att.previewUrl != null ? att.previewUrl : att.url;
-				default -> throw new IllegalStateException("Unexpected value: "+att.type);
+				case VIDEO, GIFV -> att.previewUrl == null ? att.url : att.previewUrl;
+				default -> throw new IllegalStateException("Unexpected value: "+att.url);
 			}, 1000, 1000));
 		}
 	}

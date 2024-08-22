@@ -66,12 +66,21 @@ public class HtmlParser{
 						")" +
 					")";
 	public static final Pattern URL_PATTERN=Pattern.compile(VALID_URL_PATTERN_STRING, Pattern.CASE_INSENSITIVE);
+	public static final Pattern INVITE_LINK_PATTERN=Pattern.compile("^https://"+Regex.URL_VALID_DOMAIN+"/invite/[a-z\\d]+$", Pattern.CASE_INSENSITIVE);
 	private static Pattern EMOJI_CODE_PATTERN=Pattern.compile(":([\\w]+):");
 
 	private HtmlParser(){}
 
 	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID){
-		return parse(source, emojis, mentions, tags, accountID, null);
+		return parse(source, emojis, mentions, tags, accountID, null, null);
+	}
+
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Context context){
+		return parse(source, emojis, mentions, tags, accountID, null, context);
+	}
+
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject){
+		return parse(source, emojis, mentions, tags, accountID, parentObject, null);
 	}
 
 	/**
@@ -86,7 +95,7 @@ public class HtmlParser{
 	 * @param emojis Custom emojis that are present in source as <code>:code:</code>
 	 * @return a spanned string
 	 */
-	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Context context){
+	public static SpannableStringBuilder parse(String source, List<Emoji> emojis, List<Mention> mentions, List<Hashtag> tags, String accountID, Object parentObject, Context context){
 		class SpanInfo{
 			public Object span;
 			public int start;
@@ -105,7 +114,7 @@ public class HtmlParser{
 			}
 		}
 
-		Map<String, String> idsByUrl=mentions.stream().distinct().collect(Collectors.toMap(m->m.url, m->m.id));
+		Map<String, String> idsByUrl=mentions.stream().filter(mention -> mention.id != null).collect(Collectors.toMap(m->m.url, m->m.id));
 		// Hashtags in remote posts have remote URLs, these have local URLs so they don't match.
 //		Map<String, String> tagsByUrl=tags.stream().collect(Collectors.toMap(t->t.url, t->t.name));
 		Map<String, Hashtag> tagsByTag=tags.stream().distinct().collect(Collectors.toMap(t->t.name.toLowerCase(), Function.identity()));
@@ -114,13 +123,16 @@ public class HtmlParser{
 		int colorInsert=UiUtils.getThemeColor(context, R.attr.colorM3Success);
 		int colorDelete=UiUtils.getThemeColor(context, R.attr.colorM3Error);
 
+		if(source.endsWith("\n"))
+			source=source.stripTrailing();
+
 		Jsoup.parseBodyFragment(source).body().traverse(new NodeVisitor(){
 			private final ArrayList<SpanInfo> openSpans=new ArrayList<>();
 
 			@Override
 			public void head(@NonNull Node node, int depth){
 				if(node instanceof TextNode textNode){
-					ssb.append(textNode.getWholeText());
+					ssb.append(textNode.text());
 				}else if(node instanceof Element el){
 					switch(el.nodeName()){
 						case "a" -> {
@@ -128,14 +140,12 @@ public class HtmlParser{
 							String href=el.attr("href");
 							LinkSpan.Type linkType;
 							String text=el.text();
-							if(el.hasClass("hashtag")){
-								if(text.startsWith("#")){
-									linkType=LinkSpan.Type.HASHTAG;
-									href=text.substring(1);
-									linkObject=tagsByTag.get(text.substring(1).toLowerCase());
-								}else{
-									linkType=LinkSpan.Type.URL;
-								}
+							if(el.hasClass("hashtag") || text.startsWith("#")){
+								// MOSHIDON: we have slightly refactored this so that the hashtags properly work in akkoma
+								// TODO: upstream this
+								linkType=LinkSpan.Type.HASHTAG;
+								href=text.substring(1);
+								linkObject=tagsByTag.get(text.substring(1).toLowerCase());
 							}else if(el.hasClass("mention")){
 								String id=idsByUrl.get(href);
 								if(id!=null){
@@ -147,7 +157,7 @@ public class HtmlParser{
 							}else{
 								linkType=LinkSpan.Type.URL;
 							}
-							openSpans.add(new SpanInfo(new LinkSpan(href, null, linkType, accountID, linkObject, text), ssb.length(), el));
+							openSpans.add(new SpanInfo(new LinkSpan(href, null, linkType, accountID, linkObject, parentObject, text), ssb.length(), el));
 						}
 						case "br" -> ssb.append('\n');
 						case "span" -> {
@@ -269,8 +279,28 @@ public class HtmlParser{
 	public static String stripAndRemoveInvisibleSpans(String html){
 		Document doc=Jsoup.parseBodyFragment(html);
 		doc.body().select("span.invisible").remove();
-		Cleaner cleaner=new Cleaner(Safelist.none());
-		return cleaner.clean(doc).body().html();
+		Cleaner cleaner=new Cleaner(Safelist.none().addTags("br", "p"));
+		StringBuilder sb=new StringBuilder();
+		cleaner.clean(doc).body().traverse(new NodeVisitor(){
+			@Override
+			public void head(Node node, int depth){
+				if(node instanceof TextNode tn){
+					sb.append(tn.text());
+				}else if(node instanceof Element el){
+					if("br".equals(el.tagName())){
+						sb.append('\n');
+					}
+				}
+			}
+
+			@Override
+			public void tail(Node node, int depth){
+				if(node instanceof Element el && "p".equals(el.tagName()) && el.nextSibling()!=null){
+					sb.append("\n\n");
+				}
+			}
+		});
+		return sb.toString();
 	}
 
 	public static String text(String html) {
@@ -286,18 +316,17 @@ public class HtmlParser{
 			String url=matcher.group(3);
 			if(TextUtils.isEmpty(matcher.group(4)))
 				url="http://"+url;
-			ssb.setSpan(new LinkSpan(url, null, LinkSpan.Type.URL, null, null, null), matcher.start(3), matcher.end(3), 0);
+			ssb.setSpan(new LinkSpan(url, null, LinkSpan.Type.URL, null, null, null, url), matcher.start(3), matcher.end(3), 0);
 		}while(matcher.find()); // Find more URLs
 		return ssb;
 	}
 
 	public static void applyFilterHighlights(Context context, SpannableStringBuilder text, List<FilterResult> filters){
-		if (filters == null) return;
 		int fgColor=UiUtils.getThemeColor(context, R.attr.colorM3Error);
 		int bgColor=UiUtils.getThemeColor(context, R.attr.colorM3ErrorContainer);
 		for(FilterResult filter:filters){
 			if(!filter.filter.isActive())
-				continue;;
+				continue;
 			for(String word:filter.keywordMatches){
 				Matcher matcher=Pattern.compile("\\b"+Pattern.quote(word)+"\\b", Pattern.CASE_INSENSITIVE).matcher(text);
 				while(matcher.find()){

@@ -111,6 +111,9 @@ public class InstanceRulesFragment extends ToolbarFragment implements ProvidesAs
 	protected void onButtonClick(){
 		Bundle args=new Bundle();
 		args.putParcelable("instance", Parcels.wrap(instance));
+		if(getArguments().containsKey("inviteCode")){
+			args.putString("inviteCode", getArguments().getString("inviteCode"));
+		}
 		Nav.goForResult(getActivity(), GoogleMadeMeAddThisFragment.class, args, RULES_REQUEST, this);
 	}
 
@@ -127,7 +130,7 @@ public class InstanceRulesFragment extends ToolbarFragment implements ProvidesAs
 		if(Build.VERSION.SDK_INT>=27){
 			int inset=insets.getSystemWindowInsetBottom();
 			buttonBar.setPadding(0, 0, 0, inset>0 ? Math.max(inset, V.dp(36)) : 0);
-			super.onApplyWindowInsets(insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetRight(), 0));
+			super.onApplyWindowInsets(insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetRight(),  insets.getSystemWindowInsetBottom()));
 		}else{
 			super.onApplyWindowInsets(insets.replaceSystemWindowInsets(insets.getSystemWindowInsetLeft(), insets.getSystemWindowInsetTop(), insets.getSystemWindowInsetRight(), insets.getSystemWindowInsetBottom()));
 		}

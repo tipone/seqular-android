@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 public interface ScrollableToTop{
+//	boolean isScrolledToTop();
+
 	void scrollToTop();
 
 	/**

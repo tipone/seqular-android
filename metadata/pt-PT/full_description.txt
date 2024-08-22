@@ -1,16 +1,16 @@
-Megalodon é uma versão modificada da <a href="https://github.com/mastodon/mastodon-android"> App oficial do Mastodon</a> que adiciona recursos importantes que faltam na app original, tais como, a linha do tempo unificada, publicações não listadas e um visualizador da descrição das imagens.
+Moshidon é uma versão modificada da <a href="https://github.com/mastodon/mastodon-android">aplicação oficial do Mastodon</a> que adiciona recursos importantes que não estão na aplicação oficial, tais como a linha do tempo federada, publicações não listadas e um visualizador de descrição de imagem.
 
 <b>Recursos chave</b>
 
-- <b>Publicação não listada</b>: Publicar sem que a tua publicação apareça nas tendências, hashtags ou em linhas do tempo públicas. 
-- <b>Linha do tempo unificada</b>: Ver todas as publicações de pessoas noutras vizinhanças do Fediverso a que a tua instância nativa está ligada.
--<b>Linhas do tempo personalizadas</b>: Fixa qualquer lista ou hashtag ao teu separador nativo do Megalodon para simplesmente deslizar entre os teus tópicos e pessoas favoritas.
--<b>Rascunhos e publicações agendadas</b>: Permite a preparação de uma publicação e agendar-la para ser automaticamente publicada num tempo determinado.
-- <b>Fixar publicações</b>: Fixa as tuas publicações mais importantes no teu perfil e vê o que os outros têm fixado usando o separador "Fixados".
-- <b>Seguir hashtags</b>: Vê publicações de hashtags específicas diretamente na tua linha do tempo nativa seguindo-os simplesmente.
-- <b>Responder a pedidos para seguir</b>: Aceitar ou rejeitar pedidos para seguir a partir das tuas notificações ou na lista de pedidos para seguir dedicada a isso.
-- <b>Apagar e refazer</b>: O muito adorado recurso que tornou a edição possível sem uma função de editar propriamente dita.
-- <b>Selecionar idioma</b>: Seleciona sem esforço nenhum o idioma para cada publicação que fazes para que os filtros e a tradução funcionem corretamente.
-- <b>Tradução</b>: Traduz facilmente publicações dentro do próprio Megalodon! Funciona apenas se o recurso estiver disponível no Mastodon Web.
-- <b>Indicador da visibilidade de publicação</b>: Ao abrir ou responder a uma públicação um icone de uma mão será apresentado, indicando a visibilidade da publicação.
-- <b>Cor dos temas</b>: Caso não gostes do rosa padrão (o tubarão está a julgar-te silenciosamente), a paleta de cores de tema do Moshidon tratam disso por ti.
+- <b>Muitas cores</b>: Vem com o tema Material You e muitas opções coloridas para os temas!
+- <b>Publicações filtradas</b>: A opção de ter as publicações filtradas mostrarem um aviso!
+- <b>Botão de tradução</b>: Vem com um botão de tradução!
+- <b>Selecionador de idioma Toot</b>: Vem com um selecionador idioma Toot!
+- <b>Publicação não listada</b>: Faz publicações públicas sem ter a tua publicação a aparecer nas tendências, hashtags ou nas linhas do tempo públicas.
+- <b>Linha do tempo federada</b>: Vê todas as publicações de pessoas noutras vizinhanças do Fediverso às quais a tua instância nativa está ligada.
+- <b>Visualizador de descrição de imagem</b>: Verifica rapidamente se uma imagem ou vídeo contém uma descrição.
+- <b>Fixar publicações</b>: Fixa as tuas publicações mais importantes no teu perfil e vê o que outras pessoas fixaram usando o separador "Fixado".
+- <b>Seguir hashtags</b>: Segue e vê as novas publicações de hashtags específicas diretamente na tua linha do tempo nativa.
+- <b>Responder a pedidos para seguir</b>: Aceitar ou rejeitar pedidos para seguir a partir das tuas notificações ou da lista de pedidos para seguir.
+- <b>Apagar e reescrever</b>: O muito adorado recurso que tornou a edição possível sem uma função de edição.
+- <b>Extras</b>: Trás muitos recursos extra para a Interface de Utilizador, tais como ícones de interação nas Notificações e remove muitas chatices com a IU original!

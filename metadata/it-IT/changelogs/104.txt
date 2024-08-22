@@ -1,0 +1,2 @@
+- Puoi ora condividere direttamente dalla schermata immagine (non è più necessario scaricare il media per condividerlo)
+- Tanti piccoli bugfix e miglioramenti

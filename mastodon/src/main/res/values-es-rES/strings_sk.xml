@@ -3,7 +3,7 @@
     <string name="sk_pinned_posts">Anclado</string>
     <string name="sk_delete_and_redraft">Eliminar y editar</string>
     <string name="sk_confirm_delete_and_redraft_title">Eliminar y editar publicación</string>
-    <string name="sk_confirm_delete_and_redraft">¿En serio quieres eliminar y editar esta publicación\?</string>
+    <string name="sk_confirm_delete_and_redraft">¿Seguro que quieres eliminar y editar esta publicación?</string>
     <string name="sk_pin_post">Anclar en el perfil</string>
     <string name="sk_confirm_pin_post_title">Anclar publicación en el perfil</string>
     <string name="sk_confirm_pin_post">¿Quieres anclar la publicación en tu perfil\?</string>
@@ -16,7 +16,7 @@
     <string name="sk_image_description">Descripción de la imagen</string>
     <string name="sk_visibility_unlisted">No listada</string>
     <string name="sk_settings_show_replies">Mostrar respuestas</string>
-    <string name="sk_settings_show_boosts">Mostrar impulsos</string>
+    <string name="sk_settings_show_boosts">Mostrar mejoras</string>
     <string name="sk_settings_load_new_posts">Cargar publicaciones nuevas automáticamente</string>
     <string name="sk_settings_show_interaction_counts">Mostrar recuento de interacciones</string>
     <string name="sk_mark_media_as_sensitive">Marcar contenido como delicado</string>
@@ -40,7 +40,7 @@
     <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
     <string name="sk_notification_type_status">Publicaciones</string>
     <string name="sk_notification_type_posts">Notificaciones de publicación</string>
-    <string name="sk_settings_color_palette">Color del tema</string>
+    <string name="sk_settings_color_palette">Paleta de color</string>
     <string name="sk_color_palette_pink">Rosa</string>
     <string name="sk_color_palette_purple">Violeta</string>
     <string name="sk_color_palette_green">Verde</string>
@@ -265,8 +265,8 @@
     <string name="sk_quoting_user">Citando %s</string>
     <string name="sk_settings_reply_visibility">Visibilidad de la respuesta</string>
     <string name="sk_settings_reply_visibility_all">Todas las respuestas</string>
-    <string name="sk_settings_reply_visibility_following">Responde a mis seguidores</string>
-    <string name="sk_settings_reply_visibility_self">Respondeme</string>
+    <string name="sk_settings_reply_visibility_following">Respuestas a mis seguidores</string>
+    <string name="sk_settings_reply_visibility_self">Respuestas para mí</string>
     <string name="sk_notification_action_replied">Respuesta enviada a %s</string>
     <string name="sk_reply_line_above_avatar">\"En respuesta a\" línea sobre el avatar</string>
     <string name="sk_show_thread">Mostrar hilo</string>
@@ -372,6 +372,7 @@
     <string name="sk_settings_emoji_reactions_in_lists_explanation">Las reacciones con los emoticonos deben mostrarse en las líneas de tiempo. Si esta opción está desactivada, las reacciones con los emoticonos solo se mostrarán al ver un hilo.</string>
     <string name="sk_button_react">Reacciona con un emoticono</string>
     <string name="sk_again_for_system_keyboard">Pulsa de nuevo para el Teclado del sistema</string>
+    <string name="sk_settings_show_new_posts_button">Botón “Mostrar nuevas publicaciones”</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">publicación</item>
         <item quantity="many">publicaciones</item>
@@ -425,4 +426,14 @@
     <string name="sk_icon_rain">Lluvia</string>
     <string name="sk_icon_thunderstorm">Tormenta eléctrica</string>
     <string name="sk_private_note_confirm_delete">¿Borrar la nota personal sobre %s\?</string>
+    <string name="sk_confirm_changes">Confirmar los cambios</string>
+    <string name="sk_settings_crash_log_unavailable">Ninguno disponible... todavía</string>
+    <string name="sk_crash_log_copied">Registro de fallos copiado</string>
+    <string name="sk_settings_copy_crash_log">Copiar el último registro de fallos</string>
+    <string name="sk_open_post_preview">Vista previa</string>
+    <string name="sk_post_preview">Previsualizar</string>
+    <string name="sk_poll_hide_results">Ocultar los resultados</string>
+    <string name="sk_poll_multiple_choice">Varias opciones</string>
+    <string name="sk_poll_show_results">Resultados</string>
+    <string name="sk_posted">%s publicado</string>
 </resources>

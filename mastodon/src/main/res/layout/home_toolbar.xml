@@ -51,7 +51,7 @@
 			android:layout_width="wrap_content"
 			android:layout_height="match_parent"
 			android:text="@string/see_new_posts"
-			android:drawableStart="@drawable/ic_fluent_arrow_up_16_filled"
+			android:drawableStart="@drawable/ic_fluent_arrow_up_24_regular"
 			android:layout_gravity="center"/>
 	</FrameLayout>
 </FrameLayout>

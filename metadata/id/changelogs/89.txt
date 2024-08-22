@@ -1,0 +1,1 @@
+Rilis 89 adalah rilis perbaikan bug, jadi beberapa kerusakan telah diperbaiki serta beberapa pengaturan tidak disimpan.

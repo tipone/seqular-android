@@ -1,16 +1,16 @@
-Megalodon jest zmodyfikowaną wersją <a href="https://github.com/mastodon/mastodon-android">oficjalnej aplikacji Mastodon Android</a>, która dodaje brakujące w niej funkcje, takie jak federacyjna oś czasu, publikowanie w trybie ukrytym, a także wyświetlanie opisów obrazków.
+Moshidon jest zmodyfikowaną wersją <a href="https://github.com/mastodon/mastodon-android">oficjalnej aplikacji Mastodon Android</a>, która dodaje brakujące w niej funkcje, takie jak federacyjna oś czasu, publikowanie w trybie ukrytym, a także wyświetlanie opisów obrazków.
 
 <b>Główne funkcje</b>
 
-- <b>Publikowanie w trybie ukrytym</b>: Publikuj publicznie, równocześnie zapobiegając wyświetlaniu się twojego wpisu w trendach, hashtagach oraz publicznych osiach czasu.
-- <b>Federacyjna oś czasu</b>: Zobacz wszystkie wpisy publiczne na innych instancjach w Fediwersum do których podłączona jest twoja własna instancja.
-- <b>Własne osie czasu</b>: Przypnij jakąkolwiek listę lub hasztag do widoku głównego w Megalodonie, aby szybko i wygodnie przeskakiwać pomiędzy twoimi ulubionymi tematami i ludźmi!
-- <b>Wersje robocze i planowanie czasu publikacji</b>: Przygotuj wpis i zaplanuj jego publikację o określonym czasie.
-- <b>Przypinanie wpisów</b>: Przypnij najważniejsze wpisy do swojego profilu i zobacz co przypięli inni do swoich w zakładce "Przypięte".
-- <b>Obserwuj hashtagi</b>:Zobacz nowe wpisy z konkretnych hashtagów bezpośrednio w swojej głównej osi czasu.
+- <b>Więcej kolorów</b>: Zapewnia wiele kolorowych motywów, w tym motyw zgodny z Material You.
+- <b>Filtrowane posty</b>: filtruj wpisy zawierające ostrzeżenia.
+- <b>Przycisk Tłumacz</b>: dodaje przycisk tłumaczenia wpisów.
+- <b>Wybór języka wpisu</b>: wybierz język swojego wpisu.
+- <b>Publikowanie w trybie ukrytym</b>: Publikuj posty bez wyświetlania ich w trendach, hashtagach lub publicznych osiach czasu.
+- <b>Federacyjna oś czasu</b>: Zobacz wszystkie publiczne wpisy na innych instancjach w Fediwersum, do których podłączona jest Twoja instancja.
+- <b>Przeglądarka opisu obrazu</b>: szybko sprawdź, czy do obrazu lub filmu dołączony jest tekst alternatywny.
+- <b>Przypinanie postów</b>: przypinaj najważniejsze posty do swojego profilu i zobacz, co przypięli inni, korzystając z karty „Przypięte”.
+- <b>Śledź hasztagi</b>: obserwuj nowe posty z określonych hashtagów bezpośrednio na swojej osi czasu, obserwując je.
 - <b>Zarządzanie prośbami o obserwację</b>: Akceptuj bądź odmawiaj na prośby o obserwację twojego konta bezpośrednio w widoku notyfikacji bądź w dedykowanej liście.
-- <b>Usuń wpis i utwórz kopię roboczą</b>: Powszechnie uwielbiana funkcja która zezwoliła na edytowanie wpisów bez istnienia dedykowanej funkcji edycji.
-- <b>Selektor języka</b>: Łatwo wybieraj język dla każdego swojego postu aby filtry i funkcja translacji działała poprawnie.
-- <b>Translacja</b>: Wygodnie sprawdzaj tłumaczenia postów bezpośrednio w Megalodonie! Funkcja zadziała tylko, jeśli translacja jest dostępna również w twoim Mastodon Web.
-- <b>Indykator widoczności wpisu</b>: Po otwarciu wpisu bądź podczas odpowiadania na niego wyświetlona zostanie przydatna ikona informująca o jego widoczności.
-- <b>Motywy kolorystyczne</b>: Jeśli nie podoba ci się domyślny różowy motyw (i chcesz rozczarować rekina), możesz wybrać inny kolor z listy.
+- <b>Usuń wpis i utwórz kopię roboczą</b>: Powszechnie uwielbiana funkcja, która zezwoliła na edytowanie wpisów bez istnienia dedykowanej funkcji edycji.
+- <b>Dodatki</b>: Zawiera wiele dodatkowych funkcji interfejsu użytkownika, takich jak ikony interakcji w powiadomieniach i usuwanie wielu irytacji w oryginalnym interfejsie użytkownika!

@@ -1,5 +1,5 @@
-- Tema warna baru: Material You dan Merah
-- Tanda abu-abu gelap baru untuk semua tema
-- Ikon bagikan lebih jelas
+- Tema warna baru: Material You dan Red
+- Warna abu-abu gelap baru untuk semua tema
+- Ikon peningkatan terisi yang lebih berbeda
 - Animasi untuk tombol interaksi
-- Perbaikan kutu (Mogok pada beberapa kiriman, "Daftar dengan", bahasa kiriman bawaan)
+- Perbaikan bug (Kerusakan pada beberapa postingan, "Daftar dengan", bahasa postingan default)

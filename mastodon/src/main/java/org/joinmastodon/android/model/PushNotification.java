@@ -6,6 +6,7 @@ import com.google.gson.annotations.SerializedName;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.RequiredField;
+import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 import androidx.annotation.StringRes;
@@ -13,7 +14,7 @@ import androidx.annotation.StringRes;
 public class PushNotification extends BaseModel{
 	public String accessToken;
 	public String preferredLocale;
-	public long notificationId;
+	public String notificationId;
 	@RequiredField
 	public Type notificationType;
 	@RequiredField
@@ -23,7 +24,7 @@ public class PushNotification extends BaseModel{
 	@RequiredField
 	public String body;
 
-	public static PushNotification fromNotification(Context context, Notification notification){
+	public static PushNotification fromNotification(Context context, AccountSession account, Notification notification){
 		PushNotification pushNotification = new PushNotification();
 		pushNotification.notificationType = switch(notification.type) {
 			case FOLLOW -> PushNotification.Type.FOLLOW;
@@ -45,6 +46,7 @@ public class PushNotification extends BaseModel{
 			case REBLOG -> R.string.notification_boosted;
 			case FAVORITE -> R.string.user_favorited;
 			case POLL -> R.string.poll_ended;
+			case STATUS -> R.string.sk_posted;
 			case UPDATE -> R.string.sk_post_edited;
 			case SIGN_UP -> R.string.sk_signed_up;
 			case REPORT -> R.string.sk_reported;
@@ -52,8 +54,12 @@ public class PushNotification extends BaseModel{
 		});
 
 		pushNotification.title = UiUtils.generateFormattedString(notificationTitle, notification.account.displayName).toString();
-		pushNotification.icon = notification.status.account.avatarStatic;
-		pushNotification.body = notification.status.getStrippedText();
+		if (notification.status != null) {
+			pushNotification.icon = notification.status.account.avatarStatic;
+			pushNotification.body = notification.status.getStrippedText();
+		} else {
+			pushNotification.icon = account.getDefaultAvatarUrl();
+		}
 		return pushNotification;
 	}
 

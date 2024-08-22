@@ -23,6 +23,8 @@ public class DiscoverInfoBannerHelper{
 	private final BannerType type;
 	private final String accountID;
 	private static EnumSet<BannerType> bannerTypesToShow=EnumSet.noneOf(BannerType.class);
+	private SingleViewRecyclerAdapter bannerAdapter;
+	private boolean added;
 
 	static{
 		for(BannerType t:BannerType.values()){
@@ -41,6 +43,8 @@ public class DiscoverInfoBannerHelper{
 	}
 
 	public void maybeAddBanner(RecyclerView list, MergeRecyclerAdapter adapter){
+		if(added)
+			return;
 		if(bannerTypesToShow.contains(type)){
 			banner=((Activity)list.getContext()).getLayoutInflater().inflate(R.layout.discover_info_banner, list, false);
 			TextView text=banner.findViewById(R.id.banner_text);
@@ -63,13 +67,21 @@ public class DiscoverInfoBannerHelper{
 				case BUBBLE_TIMELINE -> TimelineDefinition.BUBBLE_TIMELINE.getDefaultIcon().iconRes;
 				case POST_NOTIFICATIONS -> TimelineDefinition.POSTS_TIMELINE.getDefaultIcon().iconRes;
 			});
-			adapter.addAdapter(new SingleViewRecyclerAdapter(banner));
+			adapter.addAdapter(0, bannerAdapter=new SingleViewRecyclerAdapter(banner));
+			added=true;
 		}
 	}
 
 	public void onBannerBecameVisible(){
 		getPrefs().edit().putBoolean("bannerHidden_"+type, true).apply();
 		// bannerTypesToShow is not updated here on purpose so the banner keeps showing until the app is relaunched
+	}
+
+	public void removeBanner(MergeRecyclerAdapter adapter){
+		if(bannerAdapter!=null){
+			adapter.removeAdapter(bannerAdapter);
+			added=false;
+		}
 	}
 
 	public static void reset(){

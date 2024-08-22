@@ -115,7 +115,6 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 	public static class Holder extends StatusDisplayItem.Holder<NotificationHeaderStatusDisplayItem> implements ImageLoaderViewHolder{
 		private final ImageView icon, avatar, deleteNotification;
 		private final TextView text, timestamp;
-		private final int selectableItemBackground;
 
 		public Holder(Activity activity, ViewGroup parent){
 			super(activity, R.layout.display_item_notification_header, parent);
@@ -134,9 +133,6 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 			}));
 
 			itemView.setOnClickListener(this::onItemClick);
-			TypedValue outValue = new TypedValue();
-			context.getTheme().resolveAttribute(android.R.attr.selectableItemBackground, outValue, true);
-			selectableItemBackground = outValue.resourceId;
 		}
 
 		@Override
@@ -145,7 +141,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				avatar.setImageDrawable(image);
 			}else{
 				item.emojiHelper.setImageDrawable(index-1, image);
-				text.invalidate();
+				text.setText(text.getText());
 			}
 			if(image instanceof Animatable)
 				((Animatable) image).start();
@@ -183,12 +179,7 @@ public class NotificationHeaderStatusDisplayItem extends StatusDisplayItem{
 				default -> android.R.attr.colorAccent;
 			})));
 			deleteNotification.setVisibility(GlobalUserPreferences.enableDeleteNotifications && item.notification != null ? View.VISIBLE : View.GONE);
-			itemView.setBackgroundResource(item.notification.type != Notification.Type.POLL
-					&& item.notification.type != Notification.Type.REPORT ?
-					selectableItemBackground : 0);
-			itemView.setClickable(item.notification.type != Notification.Type.POLL);
-			itemView.setPaddingRelative(itemView.getPaddingStart(), itemView.getPaddingTop(),
-					GlobalUserPreferences.enableDeleteNotifications ? V.dp(4) : V.dp(16), itemView.getPaddingBottom());
+			itemView.setBackgroundResource(0);
 		}
 
 		public void onItemClick(View v) {

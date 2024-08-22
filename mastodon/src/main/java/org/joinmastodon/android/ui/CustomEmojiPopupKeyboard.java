@@ -113,7 +113,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		List<Emoji> recentEmoji=new ArrayList<>(lp.recentCustomEmoji);
 		if(!recentEmoji.isEmpty())
-			adapter.addAdapter(new SingleCategoryAdapter(recentEmojiCategory=new EmojiCategory(activity.getString(R.string.sk_recently_used), recentEmoji)));
+			adapter.addAdapter(new SingleCategoryAdapter(recentEmojiCategory=new EmojiCategory(activity.getString(R.string.mo_emoji_recent), recentEmoji)));
 
 		for(EmojiCategory category:emojis)
 			adapter.addAdapter(new SingleCategoryAdapter(category));
@@ -168,7 +168,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 					if(start == 0){
 						if(emojiRegex.matcher(s.toString()).find()){
 							imm.hideSoftInputFromWindow(input.getWindowToken(), 0);
-							listener.onEmojiSelected(s.toString().substring(before));
+							listener.onEmojiSelected(s.toString());
 							input.getText().clear();
 						}
 					}
@@ -349,7 +349,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 			ImageView img=(ImageView) itemView;
 			img.setLayoutParams(new RecyclerView.LayoutParams(V.dp(48), V.dp(48)));
 			img.setScaleType(ImageView.ScaleType.FIT_CENTER);
-			int pad=V.dp(12);
+			int pad=V.dp(6);
 			img.setPadding(pad, pad, pad, pad);
 			img.setBackgroundResource(R.drawable.bg_custom_emoji);
 			this.isRecentEmojiCategory=isRecentEmojiCategory;
@@ -375,7 +375,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 		@Override
 		public boolean onLongClick(){
-			if(!isRecentEmojiCategory) return false;
+			if(!isRecentEmojiCategory || requests.size() < getAbsoluteAdapterPosition()-1 || 0 > getAbsoluteAdapterPosition()-1) return false;
 			requests.remove(getAbsoluteAdapterPosition()-1);
 			getBindingAdapter().notifyItemRemoved(getAbsoluteAdapterPosition());
 			getBindingAdapter().notifyItemChanged(0);
@@ -402,7 +402,7 @@ public class CustomEmojiPopupKeyboard extends PopupKeyboard{
 
 	public interface Listener{
 		void onEmojiSelected(Emoji customEmoji);
-		void onEmojiSelected(String emoji);
+		void   onEmojiSelected(String emoji);
 		void onBackspace();
 	}
 }

@@ -13,7 +13,7 @@ import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.ComposeFragment;
-import org.joinmastodon.android.ui.AccountSwitcherSheet;
+import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.jsoup.internal.StringUtil;
 
@@ -42,7 +42,11 @@ public class ExternalShareActivity extends FragmentStackActivity{
 				Toast.makeText(this, R.string.err_not_logged_in, Toast.LENGTH_SHORT).show();
 				finish();
 			} else if (isOpenable || sessions.size() > 1) {
-				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, true, isOpenable);
+				AccountSwitcherSheet sheet = new AccountSwitcherSheet(this, null, R.drawable.ic_fluent_share_28_regular,
+						isOpenable
+								? R.string.sk_external_share_or_open_title
+								: R.string.sk_external_share_title,
+						null, isOpenable);
 				sheet.setOnClick((accountId, open) -> {
 					if (open && text.isPresent()) {
 						BiConsumer<Class<? extends Fragment>, Bundle> callback = (clazz, args) -> {
@@ -82,6 +86,8 @@ public class ExternalShareActivity extends FragmentStackActivity{
 	}
 
 	private void openComposeFragment(String accountID){
+		AccountSession session=AccountSessionManager.get(accountID);
+		UiUtils.setUserPreferredTheme(this, session);
 		getWindow().setBackgroundDrawable(null);
 
 		Intent intent=getIntent();

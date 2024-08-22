@@ -1,0 +1,9 @@
+La versione 82 incorpora molte funzioni dall'upstream, come:
+- Bozze e post programmati
+- Nuova pagina delle impostazioni
+- La possibilità di scegliere il testo del tasto di pubblicazione
+- L'abilità di ridurre le animazioni
+- Un'icona bot per gli account bot! Grazie @FineFindus
+- La traduzione in Tedesco aggiornata! Grazie @dontobi
+- Tante piccole migliorie dell'interfaccia
+- Grandi miglioramenti per l'utilizzo, come interagire tramite un altro account tenendo premuti i tasti azione

@@ -1,5 +1,5 @@
-- Novas cores de tema: Material You e Red
-- Novos tons cinzento escuro para todos os temas
-- Ícone de impulsionar mais chamativo
-- Animações para botões interativos
-- Correções de erros (bloquear em algumas publicações, "Listas com", linguagem pré-definida de publicação
+- Novas cores de temas: Material You e Vermelho
+- Novos tons de cinzento escuro para todos os temas
+- Botão de partilha mais chamativo
+- Animações para botões de interação
+- Correção de erros (Bloquear em algumas publicações, "Listas com", idioma de publicação predefinido)

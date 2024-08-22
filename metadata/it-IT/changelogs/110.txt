@@ -1,0 +1,6 @@
+- L'ultimo crash log è ora salvato e pronto per essere copiato dalla pagina delle impostazioni "Informazioni su Megalodon"
+- Aggiungi e mostra note personali sui profili
+- Le modifiche del testo sono ora evidenziate nella cronologia di modifica
+- Akkoma: i post citati sono mostrati nella timeline; traduzione; anteprima post prima della pubblicazione
+- Segnalibri e I tuoi preferiti aggiunte come timeline pinnabili
+- Vari bugfix

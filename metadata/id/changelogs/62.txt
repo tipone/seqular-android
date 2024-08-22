@@ -1,11 +1,11 @@
-- Tombol Terbitkan dapat diubah
-- Buka tautan Fedimesta dlm aplikasi
-- Klik lama pada tombol boost utk "mengutip" kiriman
-- Salin URL kiriman ketika menekan lama pada tombol bagikan
-- Terapkan penghapusan notifikasi (dinonaktifkan secara bawaan)
-- Ikon tersendiri utk jenis notifikasi berbeda
+- Tombol Publikasikan yang dapat disesuaikan
+- Buka tautan Fediverse di aplikasi
+- Klik lama tombol boost untuk "mengutip" postingan
+- Salin URL kiriman saat menekan lama tombol bagikan
+- Menerapkan penghapusan notifikasi (dinonaktifkan secara default)
+- Ikon khusus untuk berbagai jenis notifikasi
 - Warna abu-abu baru
-- Tambah pengaturan utk menonaktifkan pengusapan antara tab
-- Tambah tautan ke pengaturan akun
-- Saklar menampilkan/menyembunyikan tombol terjemahkan dalam lini masa
-- Banyak perbaikan
+- Tambahkan pengaturan untuk menonaktifkan gesekan antar tab
+- Tambahkan berbagai tautan ke pengaturan akun
+- Beralih untuk menyembunyikan tombol terjemahkan di timeline
+- Perbaikan bug dan penyesuaian

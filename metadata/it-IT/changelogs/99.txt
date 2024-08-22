@@ -1,0 +1,6 @@
+Novità della versione 99:
+- Aggiunte le azioni delle notifiche
+- Aggiunta l'opzione di attivare le risposte silenziose come impostazione predefinita
+- Aggiunta l'opzione di silenziare a tempo
+- Aggiunto badge di notifica se sono presenti notifiche non lette
+- Piccole correzioni e migliorie di utilizzo

@@ -1,1 +1,1 @@
-Mastodon pour Android mais en rose et avec plus de fonctionnalités
+Mastodon pour Android mais en Material You et avec plus de fonctionnalités

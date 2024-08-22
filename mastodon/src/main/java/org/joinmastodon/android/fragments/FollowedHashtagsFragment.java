@@ -72,6 +72,7 @@ public class FollowedHashtagsFragment extends MastodonRecyclerFragment<Hashtag> 
         return new HashtagsAdapter();
     }
 
+
     @Override
     public void scrollToTop() {
         smoothScrollRecyclerViewToTop(list);

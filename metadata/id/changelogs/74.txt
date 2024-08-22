@@ -1,9 +1,9 @@
-- Lini masa dapat disemat dan diurut ulang
-- Dukungan kiriman hanya lokal
-- Penanda untuk teks alternatif yang tidak ada
-- Ditingkatkan penyunting teks alternatif
-- Tajuk di lini masa untuk tagar yang diikuti
-- Kategori notifikasi lebih banyak
-- Ditambahkan kembali pembuka berkas
-- Perintah ketika menyimpan draf yang disunting
-- Opsi untuk menonaktifkan tombol “Lihat kiriman baru”
+- Garis waktu dapat disematkan dan diatur ulang
+- Mendukung postingan khusus lokal
+- Indikator untuk teks alternatif yang hilang
+- Editor teks alternatif yang ditingkatkan
+- Header di timeline untuk hashtag yang diikuti
+- Lebih banyak kategori notifikasi
+- Tambahkan kembali pembuka file
+- Konfirmasi saat menyimpan draf yang telah diedit
+- Pilihan untuk menonaktifkan tombol "Lihat postingan baru".

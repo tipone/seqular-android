@@ -1,8 +1,5 @@
-- Visualizzazione del thread migliorata e più chiara
-- Apri account/post condividendo un sito web con Megalodon
-- Carica lista follower/preferiti/... dall'istanza di origine
-- Miglioramenti della compatibilità per i server non Mastodon
-- Opzione per impostare il tipo di contenuto del post
-- Supporto per la copia dell'URL dalle app recenti sui dispositivi Pixel
-- Rivelazione automatica di CW uguali nei thread
-- Correzioni di bug e miglioramenti dell'interfaccia utente
+Novità della versione 94:
+- Migliorie del comportamento del FAB
+- Cambiamenti minori all'icona del launcher
+- Miglioramenti del comportamento delle notifiche
+- Piccoli bugfix e miglioramenti

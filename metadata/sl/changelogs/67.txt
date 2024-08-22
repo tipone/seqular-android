@@ -1,7 +1,7 @@
 - Zavihek "Domov" z javnimi časovnicami
 - Prikaz obvestil strežnika
 - Besedilo je prilagojeno glede na sistemske nastavitve
-- Izboljšano filtriranje ("Skrij z opozorilom" še ne deluje) @thiagojedi
+– Izboljšano filtriranje ("Skrij z opozorilom" še ne deluje) @thiagojedi
 - Seznam značilnosti upravljanja
 - Odstranite sledilce tako, da jih "mehko" blokirate
 - Onemogočene povezave s fašisti

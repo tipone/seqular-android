@@ -1,0 +1,5 @@
+Novità in v87:
+- Un nuovo layout home da Megalodon, l'abilità di cambiare tra i due è un lavoro in corso
+- Migliore gestione delle notifiche
+- Una nuova icona bot rinnovata
+- Vari miglioramenti minori

@@ -1,0 +1,5 @@
+- Novaj koloraj haŭtoj: Material You kaj Ruĝa
+- Novaj malhelgrizaj tonoj por ĉiuj haŭtoj
+- Pli klara plenigita diskonigi-ikono
+- Animacioj por interagaj butonoj
+- Cimo-korektoj (Kraŝoj en iuj afiŝoj, "Listoj kun", defaŭlta afiŝlingvo)

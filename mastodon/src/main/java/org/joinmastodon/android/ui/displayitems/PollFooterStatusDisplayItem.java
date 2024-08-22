@@ -9,15 +9,18 @@ import android.widget.TextView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
 import org.joinmastodon.android.model.Poll;
+import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
 public class PollFooterStatusDisplayItem extends StatusDisplayItem{
 	public final Poll poll;
 	public boolean resultsVisible=false;
+	public final Status status;
 
-	public PollFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Poll poll){
+	public PollFooterStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, Poll poll, Status status){
 		super(parentID, parentFragment);
 		this.poll=poll;
+		this.status=status;
 	}
 
 	@Override

@@ -17,14 +17,16 @@ public class LinkSpan extends CharacterStyle {
 	private Type type;
 	private String accountID;
 	private Object linkObject;
+	private Object parentObject;
 	private String text;
 
-	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, Object linkObject, String text){
+	public LinkSpan(String link, OnLinkClickListener listener, Type type, String accountID, Object linkObject, Object parentObject, String text){
 		this.listener=listener;
 		this.link=link;
 		this.type=type;
 		this.accountID=accountID;
 		this.linkObject=linkObject;
+		this.parentObject=parentObject;
 		this.text=text;
 	}
 
@@ -50,6 +52,13 @@ public class LinkSpan extends CharacterStyle {
 			}
 			case CUSTOM -> listener.onLinkClick(this);
 		}
+	}
+
+	public void onLongClick(View view) {
+		if(linkObject instanceof Hashtag ht)
+			UiUtils.copyText(view, ht.name);
+		else
+			UiUtils.copyText(view, link);
 	}
 
 	public String getLink(){

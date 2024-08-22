@@ -130,7 +130,7 @@
     <string name="sk_icon_news">Novosti</string>
     <string name="sk_icon_pi">Pi</string>
     <string name="sk_post_edited">uređivano</string>
-    <string name="sk_notification_type_update">uređivane objave</string>
+    <string name="sk_notification_type_update">Uređivane objave</string>
     <string name="sk_attach_file">Priloži datoteku</string>
     <string name="sk_new_reports">Nove prijave</string>
     <string name="sk_collapse">Sažmi</string>
@@ -265,4 +265,5 @@
     <string name="sk_reply_line_above_avatar">Redak \"Odgovor na\" iznad avatara</string>
     <string name="sk_show_thread">Prikaži niz objava</string>
     <string name="sk_compact_reblog_reply_line">Sažeti redak podijeli/odgovori</string>
+    <string name="sk_settings_app_version">Megalodon v%1$s (%2$d)</string>
 </resources>

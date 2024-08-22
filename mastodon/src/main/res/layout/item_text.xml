@@ -39,4 +39,29 @@
         android:src="@drawable/ic_fluent_re_order_dots_vertical_24_regular"
         android:visibility="gone" />
 
+<!--    <ImageView-->
+<!--        android:id="@+id/edit"-->
+<!--        android:layout_width="36dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:layout_marginEnd="6dp"-->
+<!--        android:layout_toStartOf="@id/list_toggle"-->
+<!--        android:background="?android:selectableItemBackgroundBorderless"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/ic_fluent_edit_24_regular"-->
+<!--        android:tint="?android:textColorSecondary" />-->
+
+<!--    <ImageView-->
+<!--        android:id="@+id/delete"-->
+<!--        android:layout_width="36dp"-->
+<!--        android:layout_height="36dp"-->
+<!--        android:layout_marginTop="0dp"-->
+<!--        android:layout_marginEnd="6dp"-->
+<!--        android:layout_toStartOf="@id/edit"-->
+<!--        android:background="?android:selectableItemBackgroundBorderless"-->
+<!--        android:scaleType="center"-->
+<!--        android:src="@drawable/ic_fluent_delete_24_regular"-->
+<!--        android:tint="?android:textColorSecondary" />-->
+
 </LinearLayout>
+

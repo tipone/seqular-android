@@ -23,9 +23,11 @@ import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.Animatable;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -38,6 +40,7 @@ import android.provider.OpenableColumns;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.TextUtils;
+import android.text.style.BulletSpan;
 import android.text.style.TypefaceSpan;
 import android.transition.ChangeBounds;
 import android.transition.ChangeScroll;
@@ -61,14 +64,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.joinmastodon.android.E;
+import org.joinmastodon.android.FileProvider;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.MastodonApp;
 import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.MastodonAPIRequest;
 import org.joinmastodon.android.api.MastodonErrorResponse;
 import org.joinmastodon.android.api.StatusInteractionController;
@@ -76,19 +80,21 @@ import org.joinmastodon.android.api.requests.accounts.SetAccountBlocked;
 import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.accounts.SetAccountMuted;
 import org.joinmastodon.android.api.requests.accounts.SetDomainBlocked;
+import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.accounts.AuthorizeFollowRequest;
 import org.joinmastodon.android.api.requests.accounts.RejectFollowRequest;
 import org.joinmastodon.android.api.requests.instance.GetInstance;
 import org.joinmastodon.android.api.requests.lists.DeleteList;
 import org.joinmastodon.android.api.requests.notifications.DismissNotification;
-import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.DeleteStatus;
 import org.joinmastodon.android.api.requests.statuses.GetStatusByID;
+import org.joinmastodon.android.api.requests.statuses.SetStatusMuted;
 import org.joinmastodon.android.api.requests.statuses.SetStatusPinned;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.StatusMuteChangedEvent;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
 import org.joinmastodon.android.events.FollowRequestHandledEvent;
@@ -108,17 +114,23 @@ import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Relationship;
-import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.SearchResults;
+import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Searchable;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
+import org.joinmastodon.android.ui.Snackbar;
+import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
+import org.joinmastodon.android.ui.sheets.BlockAccountConfirmationSheet;
+import org.joinmastodon.android.ui.sheets.MuteAccountConfirmationSheet;
 import org.joinmastodon.android.ui.text.CustomEmojiSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.utils.Tracking;
 import org.parceler.Parcels;
 
 import java.io.File;
 import java.lang.reflect.Field;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.IDN;
 import java.net.URI;
@@ -140,8 +152,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.BiConsumer;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.BiConsumer;
 import java.util.function.BiPredicate;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -164,6 +177,7 @@ import androidx.viewpager2.widget.ViewPager2;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
+import me.grishka.appkit.imageloader.ImageCache;
 import me.grishka.appkit.imageloader.ViewImageLoader;
 import me.grishka.appkit.imageloader.requests.UrlImageLoaderRequest;
 import me.grishka.appkit.utils.CubicBezierInterpolator;
@@ -183,6 +197,8 @@ public class UiUtils {
 	}
 
 	public static void launchWebBrowser(Context context, String url) {
+		if(GlobalUserPreferences.removeTrackingParams)
+			url=Tracking.removeTrackingParameters(url);
 		try {
 			if (GlobalUserPreferences.useCustomTabs) {
 				new CustomTabsIntent.Builder()
@@ -401,7 +417,6 @@ public class UiUtils {
 		CustomEmojiSpan[] spans = text.getSpans(0, text.length(), CustomEmojiSpan.class);
 		if (spans.length == 0)
 			return;
-		int emojiSize = V.dp(20);
 		Map<Emoji, List<CustomEmojiSpan>> spansByEmoji = Arrays.stream(spans).collect(Collectors.groupingBy(s -> s.emoji));
 		for (Map.Entry<Emoji, List<CustomEmojiSpan>> emoji : spansByEmoji.entrySet()) {
 			ViewImageLoader.load(new ViewImageLoader.Target() {
@@ -412,14 +427,14 @@ public class UiUtils {
 					for (CustomEmojiSpan span : emoji.getValue()) {
 						span.setDrawable(d);
 					}
-					view.invalidate();
+					view.setText(view.getText());
 				}
 
 				@Override
 				public View getView() {
 					return view;
 				}
-			}, null, new UrlImageLoaderRequest(emoji.getKey().url, emojiSize, emojiSize), null, false, true);
+			}, null, new UrlImageLoaderRequest(emoji.getKey().url, 0, V.dp(20)), null, false, true);
 		}
 	}
 
@@ -469,40 +484,61 @@ public class UiUtils {
 	}
 
 	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed) {
+		showConfirmationAlert(context, title, message, confirmButton, icon, onConfirmed, null);
+	}
+
+	public static void showConfirmationAlert(Context context, CharSequence title, CharSequence message, CharSequence confirmButton, int icon, Runnable onConfirmed, Runnable onDenied){
 		new M3AlertDialogBuilder(context)
 				.setTitle(title)
 				.setMessage(message)
-				.setPositiveButton(confirmButton, (dlg, i) -> onConfirmed.run())
-				.setNegativeButton(R.string.cancel, null)
+				.setPositiveButton(confirmButton, (dlg, i)->onConfirmed.run())
+				.setNegativeButton(R.string.cancel, (dialog, which) -> {
+					if (onDenied != null)
+						onDenied.run();
+				})
 				.setIcon(icon)
 				.show();
 	}
 
 	public static void confirmToggleBlockUser(Activity activity, String accountID, Account account, boolean currentlyBlocked, Consumer<Relationship> resultCallback) {
-		showConfirmationAlert(activity, activity.getString(currentlyBlocked ? R.string.confirm_unblock_title : R.string.confirm_block_title),
-				activity.getString(currentlyBlocked ? R.string.confirm_unblock : R.string.confirm_block, account.getDisplayName()),
-				activity.getString(currentlyBlocked ? R.string.do_unblock : R.string.do_block),
-				R.drawable.ic_fluent_person_prohibited_28_regular,
-				() -> {
-					new SetAccountBlocked(account.id, !currentlyBlocked)
-							.setCallback(new Callback<>() {
-								@Override
-								public void onSuccess(Relationship result) {
-									if (activity == null) return;
-									resultCallback.accept(result);
-									if (!currentlyBlocked) {
-										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
-									}
-								}
+		if(!currentlyBlocked){
+			new BlockAccountConfirmationSheet(activity, account, (onSuccess, onError)->{
+				new SetAccountBlocked(account.id, true)
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(Relationship result){
+								resultCallback.accept(result);
+								onSuccess.run();
+								E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
+							}
 
-								@Override
-								public void onError(ErrorResponse error) {
-									error.showToast(activity);
-								}
-							})
-							.wrapProgress(activity, R.string.loading, false)
-							.exec(accountID);
-				});
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(activity);
+								onError.run();
+							}
+						})
+						.exec(accountID);
+			}).show();
+		}else{
+			new SetAccountBlocked(account.id, false)
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Relationship result){
+							resultCallback.accept(result);
+							new Snackbar.Builder(activity)
+									.setText(activity.getString(R.string.unblocked_user_x, account.getDisplayUsername()))
+									.show();
+						}
+
+						@Override
+						public void onError(ErrorResponse error){
+							error.showToast(activity);
+						}
+					})
+					.wrapProgress(activity, R.string.loading, false)
+					.exec(accountID);
+		}
 	}
 
 	public static void confirmSoftBlockUser(Activity activity, String accountID, Account account, Consumer<Relationship> resultCallback) {
@@ -561,69 +597,112 @@ public class UiUtils {
 				});
 	}
 	public static void confirmToggleMuteUser(Context context, String accountID, Account account, boolean currentlyMuted, Consumer<Relationship> resultCallback){
-		View durationView=LayoutInflater.from(context).inflate(R.layout.mute_user_dialog, null);
-		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-		params.setMargins(0, V.dp(-12), 0, 0);
-		durationView.setLayoutParams(params);
-		Button button=durationView.findViewById(R.id.button);
-		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.getDisplayName()));
+		if(!currentlyMuted){
+			//pass a references, so they can be changed inside the confirmation sheet
+			AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+			AtomicBoolean muteNotifications=new AtomicBoolean(true);
+			new MuteAccountConfirmationSheet(context, account, muteDuration, muteNotifications, (onSuccess, onError)->{
+				new SetAccountMuted(account.id, true, muteDuration.get().getSeconds(), muteNotifications.get())
+						.setCallback(new Callback<>(){
+							@Override
+							public void onSuccess(Relationship result){
+								resultCallback.accept(result);
+								onSuccess.run();
+								E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
+							}
 
-		AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(context);
+								onError.run();
+							}
+						})
+						.exec(accountID);
+			}).show();
+		}else{
+			new SetAccountMuted(account.id, false, 0, false)
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Relationship result){
+							resultCallback.accept(result);
+							new Snackbar.Builder(context)
+									.setText(context.getString(R.string.unmuted_user_x, account.getDisplayUsername()))
+									.show();
+						}
 
-		PopupMenu popupMenu=new PopupMenu(context, button, Gravity.CENTER_HORIZONTAL);
-		popupMenu.inflate(R.menu.mute_duration);
-		popupMenu.setOnMenuItemClickListener(item->{
-			int id=item.getItemId();
-			if(id==R.id.duration_indefinite)
-				muteDuration.set(Duration.ZERO);
-			else if(id==R.id.duration_minutes_5){
-				muteDuration.set(Duration.ofMinutes(5));
-			}else if(id==R.id.duration_minutes_30){
-				muteDuration.set(Duration.ofMinutes(30));
-			}else if(id==R.id.duration_hours_1){
-				muteDuration.set(Duration.ofHours(1));
-			}else if(id==R.id.duration_hours_6){
-				muteDuration.set(Duration.ofHours(6));
-			}else if(id==R.id.duration_days_1){
-				muteDuration.set(Duration.ofDays(1));
-			}else if(id==R.id.duration_days_3){
-				muteDuration.set(Duration.ofDays(3));
-			}else if(id==R.id.duration_days_7){
-				muteDuration.set(Duration.ofDays(7));
-			}
-			button.setText(item.getTitle());
-			return true;
-		});
-		button.setOnTouchListener(popupMenu.getDragToOpenListener());
-		button.setOnClickListener(v->popupMenu.show());
-		button.setText(popupMenu.getMenu().getItem(0).getTitle());
+						@Override
+						public void onError(ErrorResponse error){
+							error.showToast(context);
+						}
+					})
+					.wrapProgress(context, R.string.loading, false)
+					.exec(accountID);
+		}
 
-		new M3AlertDialogBuilder(context)
-				.setTitle(context.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
-				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.getDisplayName()) : null)
-				.setView(currentlyMuted ? null : durationView)
-				.setPositiveButton(context.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)->{
-					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())
-							.setCallback(new Callback<>(){
-								@Override
-								public void onSuccess(Relationship result){
-									resultCallback.accept(result);
-									if(!currentlyMuted){
-										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
-									}
-								}
-
-								@Override
-								public void onError(ErrorResponse error){
-									error.showToast(context);
-								}
-							})
-							.wrapProgress(context, R.string.loading, false)
-							.exec(accountID);
-				})
-				.setNegativeButton(R.string.cancel, null)
-				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_0_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
-				.show();
+		// I need to readd the mute thing, so this is gonna stay as a comment for now
+//		View durationView=LayoutInflater.from(context).inflate(R.layout.mute_user_dialog, null);
+//		LinearLayout.LayoutParams params=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+//		params.setMargins(0, V.dp(-12), 0, 0);
+//		durationView.setLayoutParams(params);
+//		Button button=durationView.findViewById(R.id.button);
+//		((TextView) durationView.findViewById(R.id.message)).setText(context.getString(R.string.confirm_mute, account.getDisplayName()));
+//
+//		AtomicReference<Duration> muteDuration=new AtomicReference<>(Duration.ZERO);
+//
+//		PopupMenu popupMenu=new PopupMenu(context, button, Gravity.CENTER_HORIZONTAL);
+//		popupMenu.inflate(R.menu.mute_duration);
+//		popupMenu.setOnMenuItemClickListener(item->{
+//			int id=item.getItemId();
+//			if(id==R.id.duration_indefinite)
+//				muteDuration.set(Duration.ZERO);
+//			else if(id==R.id.duration_minutes_5){
+//				muteDuration.set(Duration.ofMinutes(5));
+//			}else if(id==R.id.duration_minutes_30){
+//				muteDuration.set(Duration.ofMinutes(30));
+//			}else if(id==R.id.duration_hours_1){
+//				muteDuration.set(Duration.ofHours(1));
+//			}else if(id==R.id.duration_hours_6){
+//				muteDuration.set(Duration.ofHours(6));
+//			}else if(id==R.id.duration_days_1){
+//				muteDuration.set(Duration.ofDays(1));
+//			}else if(id==R.id.duration_days_3){
+//				muteDuration.set(Duration.ofDays(3));
+//			}else if(id==R.id.duration_days_7){
+//				muteDuration.set(Duration.ofDays(7));
+//			}
+//			button.setText(item.getTitle());
+//			return true;
+//		});
+//		button.setOnTouchListener(popupMenu.getDragToOpenListener());
+//		button.setOnClickListener(v->popupMenu.show());
+//		button.setText(popupMenu.getMenu().getItem(0).getTitle());
+//
+//		new M3AlertDialogBuilder(context)
+//				.setTitle(context.getString(currentlyMuted ? R.string.confirm_unmute_title : R.string.confirm_mute_title))
+//				.setMessage(currentlyMuted ? context.getString(R.string.confirm_unmute, account.getDisplayName()) : null)
+//				.setView(currentlyMuted ? null : durationView)
+//				.setPositiveButton(context.getString(currentlyMuted ? R.string.do_unmute : R.string.do_mute), (dlg, i)->{
+//					new SetAccountMuted(account.id, !currentlyMuted, muteDuration.get().getSeconds())
+//							.setCallback(new Callback<>(){
+//								@Override
+//								public void onSuccess(Relationship result){
+//									resultCallback.accept(result);
+//									if(!currentlyMuted){
+//										E.post(new RemoveAccountPostsEvent(accountID, account.id, false));
+//									}
+//								}
+//
+//								@Override
+//								public void onError(ErrorResponse error){
+//									error.showToast(context);
+//								}
+//							})
+//							.wrapProgress(context, R.string.loading, false)
+//							.exec(accountID);
+//				})
+//				.setNegativeButton(R.string.cancel, null)
+//				.setIcon(currentlyMuted ? R.drawable.ic_fluent_speaker_2_28_regular : R.drawable.ic_fluent_speaker_off_28_regular)
+//				.show();
 	}
 
 	public static void confirmDeletePost(Activity activity, String accountID, Status status, Consumer<Status> resultCallback, boolean forRedraft) {
@@ -651,6 +730,32 @@ public class UiUtils {
 						})
 						.wrapProgress(activity, R.string.deleting, false)
 						.exec(accountID)
+		);
+	}
+
+	public static void confirmToggleMuteConversation(Activity activity, String accountID, Status status, Runnable resultCallback) {
+		showConfirmationAlert(activity,
+				status.muted ? R.string.mo_unmute_conversation : R.string.mo_mute_conversation,
+				status.muted ? R.string.mo_confirm_to_unmute_conversation : R.string.mo_confirm_to_mute_conversation,
+				status.muted ? R.string.do_unmute : R.string.do_mute,
+				status.muted ? R.drawable.ic_fluent_alert_28_regular : R.drawable.ic_fluent_alert_off_28_regular,
+				() -> new SetStatusMuted(status.id, !status.muted)
+						.setCallback(new Callback<Status>(){
+							@Override
+							public void onSuccess(Status result){
+								resultCallback.run();
+								Toast.makeText(activity, result.muted ? R.string.mo_muted_conversation_successfully : R.string.mo_unmuted_conversation_successfully, Toast.LENGTH_SHORT).show();
+								E.post(new StatusMuteChangedEvent(result));
+							}
+
+							@Override
+							public void onError(ErrorResponse error){
+								error.showToast(activity);
+							}
+						})
+						.wrapProgress(activity, status.muted ? R.string.mo_unmuting : R.string.mo_muting, false)
+						.exec(accountID)
+
 		);
 	}
 
@@ -734,8 +839,9 @@ public class UiUtils {
 				activity.getString(R.string.delete),
 				R.drawable.ic_fluent_delete_28_regular,
 				() -> new DeleteList(listID).setCallback(new Callback<>() {
+
 							@Override
-							public void onSuccess(Object o) {
+							public void onSuccess(Void result){
 								callback.run();
 							}
 
@@ -819,7 +925,7 @@ public class UiUtils {
 						.exec(accountID);
 			};
 			if(relationship.following && GlobalUserPreferences.confirmUnfollow){
-				showConfirmationAlert(activity, null, activity.getString(R.string.unfollow_confirmation, account.getDisplayUsername()), activity.getString(R.string.unfollow), R.drawable.ic_fluent_person_delete_24_regular, action);
+				showConfirmationAlert(activity, activity.getString(R.string.unfollow), activity.getString(R.string.unfollow_confirmation, account.getDisplayUsername()), activity.getString(R.string.unfollow), R.drawable.ic_fluent_person_delete_24_regular, action);
 			}else{
 				action.run();
 			}
@@ -827,17 +933,20 @@ public class UiUtils {
 	}
 
 
-	public static void handleFollowRequest(Activity activity, Account account, String accountID, @Nullable String notificationID, boolean accepted, Relationship relationship, Consumer<Relationship> resultCallback) {
+	public static void handleFollowRequest(Activity activity, Account account, String accountID, @Nullable String notificationID, boolean accepted, Relationship relationship, Consumer<Boolean> progressCallback, Consumer<Relationship> resultCallback) {
+		progressCallback.accept(true);
 		if (accepted) {
 			new AuthorizeFollowRequest(account.id).setCallback(new Callback<>() {
 				@Override
 				public void onSuccess(Relationship rel) {
 					E.post(new FollowRequestHandledEvent(accountID, true, account, rel));
+					progressCallback.accept(false);
 					resultCallback.accept(rel);
 				}
 
 				@Override
 				public void onError(ErrorResponse error) {
+					progressCallback.accept(false);
 					resultCallback.accept(relationship);
 					error.showToast(activity);
 				}
@@ -849,11 +958,13 @@ public class UiUtils {
 					E.post(new FollowRequestHandledEvent(accountID, false, account, rel));
 					if (notificationID != null)
 						E.post(new NotificationDeletedEvent(notificationID));
+					progressCallback.accept(false);
 					resultCallback.accept(rel);
 				}
 
 				@Override
 				public void onError(ErrorResponse error) {
+					progressCallback.accept(false);
 					resultCallback.accept(relationship);
 					error.showToast(activity);
 				}
@@ -965,6 +1076,12 @@ public class UiUtils {
 
 	public static void enablePopupMenuIcons(Context context, PopupMenu menu) {
 		Menu m = menu.getMenu();
+
+		// MOSHIDON disable menu icons on android 14 and higher because of InsetDrawables breaking
+		if (Build.VERSION.SDK_INT >= 34) {
+			return;
+		}
+
 		if (Build.VERSION.SDK_INT >= 29) {
 			menu.setForceShowIcon(true);
 		} else {
@@ -1057,6 +1174,8 @@ public class UiUtils {
 	//
 	// COPIED FROM https://github.com/tuskyapp/Tusky/blob/develop/app/src/main/java/com/keylesspalace/tusky/util/LinkHelper.kt
 	public static boolean looksLikeFediverseUrl(String urlString) {
+		if(urlString == null)
+			return false;
 		URI uri;
 		try {
 			uri = new URI(urlString);
@@ -1090,18 +1209,9 @@ public class UiUtils {
 	}
 
 	public static void pickAccount(Context context, String exceptFor, @StringRes int titleRes, @DrawableRes int iconRes, Consumer<AccountSession> sessionConsumer, Consumer<AlertDialog.Builder> transformDialog) {
-		List<AccountSession> sessions = AccountSessionManager.getInstance().getLoggedInAccounts()
-				.stream().filter(s -> !s.getID().equals(exceptFor)).collect(Collectors.toList());
-
-		AlertDialog.Builder builder = new M3AlertDialogBuilder(context)
-				.setItems(
-						sessions.stream().map(AccountSession::getFullUsername).toArray(String[]::new),
-						(dialog, which) -> sessionConsumer.accept(sessions.get(which))
-				)
-				.setTitle(titleRes == 0 ? R.string.choose_account : titleRes)
-				.setIcon(iconRes);
-		if (transformDialog != null) transformDialog.accept(builder);
-		builder.show();
+		AccountSwitcherSheet sheet = new AccountSwitcherSheet((Activity) context, null, iconRes, titleRes == 0 ? R.string.choose_account : titleRes, exceptFor, false);
+		sheet.setOnClick((accountId, open) ->sessionConsumer.accept(AccountSessionManager.get(accountId)));
+		sheet.show();
 	}
 
 	public static void restartApp() {
@@ -1355,7 +1465,7 @@ public class UiUtils {
 									return;
 								}
 								Optional<Account> account = results.accounts.stream()
-										.filter(a -> uri.equals(Uri.parse(a.url))).findAny();
+										.filter(a -> uri.getPath().contains(a.username)).findAny();
 								if (account.isPresent()) {
 									args.putParcelable("profileAccount", Parcels.wrap(account.get()));
 									go.accept(ProfileFragment.class, args);
@@ -1377,6 +1487,8 @@ public class UiUtils {
 	}
 
 	public static void copyText(View v, String text) {
+		if(GlobalUserPreferences.removeTrackingParams)
+			text=Tracking.cleanUrlsInText(text);
 		Context context = v.getContext();
 		context.getSystemService(ClipboardManager.class).setPrimaryClip(ClipData.newPlainText(null, text));
 		if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU || UiUtils.isMIUI()) { // Android 13+ SystemUI shows its own thing when you put things into the clipboard
@@ -1403,6 +1515,10 @@ public class UiUtils {
 		return !TextUtils.isEmpty(getSystemProperty("ro.build.version.emui"));
 	}
 
+	public static boolean isMagic() {
+		return !TextUtils.isEmpty(getSystemProperty("ro.build.version.magic"));
+	}
+
 	public static int alphaBlendColors(int color1, int color2, float alpha) {
 		float alpha0 = 1f - alpha;
 		int r = Math.round(((color1 >> 16) & 0xFF) * alpha0 + ((color2 >> 16) & 0xFF) * alpha);
@@ -1423,7 +1539,7 @@ public class UiUtils {
 
 	public static boolean pickAccountForCompose(Activity activity, String accountID, Bundle args) {
 		if (AccountSessionManager.getInstance().getLoggedInAccounts().size() > 1) {
-			UiUtils.pickAccount(activity, accountID, 0, 0, session -> {
+			UiUtils.pickAccount(activity, accountID, 0, R.drawable.ic_fluent_compose_28_regular, session -> {
 				args.putString("account", session.getID());
 				Nav.go(activity, ComposeFragment.class, args);
 			}, null);
@@ -1525,17 +1641,6 @@ public class UiUtils {
 		return intent;
 	}
 
-	public static void populateAccountsMenu(String excludeAccountID, Menu menu, Consumer<AccountSession> onClick) {
-		List<AccountSession> sessions=AccountSessionManager.getInstance().getLoggedInAccounts();
-		sessions.stream().filter(s -> !s.getID().equals(excludeAccountID)).forEach(s -> {
-			String username = "@"+s.self.username+"@"+s.domain;
-			menu.add(username).setOnMenuItemClickListener((c) -> {
-				onClick.accept(s);
-				return true;
-			});
-		});
-	}
-
 	public static void showFragmentForNotification(Context context, Notification n, String accountID, Bundle extras) {
 		if (extras == null) extras = new Bundle();
 		extras.putString("account", accountID);
@@ -1607,6 +1712,17 @@ public class UiUtils {
 		return insets;
 	}
 
+	public static void applyBottomInsetToFAB(View fab, WindowInsets insets){
+		int inset;
+		if(Build.VERSION.SDK_INT>=29 && insets.getTappableElementInsets().bottom==0 /*&& wantsOverlaySystemNavigation()*/){
+			int bottomInset=insets.getSystemWindowInsetBottom();
+			inset=bottomInset>0 ? Math.max(V.dp(40), bottomInset) : 0;
+		}else{
+			inset=0;
+		}
+		((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+inset;
+	}
+
 	public static String formatDuration(Context context, int seconds){
 		if(seconds<3600){
 			int minutes=seconds/60;
@@ -1623,10 +1739,48 @@ public class UiUtils {
 		}
 	}
 
-	public static void openSystemShareSheet(Context context, String url){
+	public static Uri getFileProviderUri(Context context, File file){
+		return FileProvider.getUriForFile(context, context.getPackageName()+".fileprovider", file);
+	}
+
+	public static void openSystemShareSheet(Context context, Object obj){
 		Intent intent=new Intent(Intent.ACTION_SEND);
 		intent.setType("text/plain");
+		Account account;
+		String url;
+		String previewTitle;
+
+		if(obj instanceof Account acc){
+			account=acc;
+			url=acc.url;
+			previewTitle=context.getString(R.string.share_sheet_preview_profile, account.displayName);
+		}else if(obj instanceof Status st){
+			account=st.account;
+			url=st.url;
+			String postText=st.getStrippedText();
+			if(TextUtils.isEmpty(postText)){
+				previewTitle=context.getString(R.string.share_sheet_preview_profile, account.displayName);
+			}else{
+				if(postText.length()>100)
+					postText=postText.substring(0, 100)+"...";
+				previewTitle=context.getString(R.string.share_sheet_preview_post, account.displayName, postText);
+			}
+		}else{
+			throw new IllegalArgumentException("Unsupported share object type");
+		}
+
 		intent.putExtra(Intent.EXTRA_TEXT, url);
+		intent.putExtra(Intent.EXTRA_TITLE, previewTitle);
+		ImageCache cache=ImageCache.getInstance(context);
+		try{
+			File ava=cache.getFile(new UrlImageLoaderRequest(account.avatarStatic));
+			if(ava==null || !ava.exists())
+				ava=cache.getFile(new UrlImageLoaderRequest(account.avatar));
+			if(ava!=null && ava.exists()){
+				intent.setClipData(ClipData.newRawUri(null, getFileProviderUri(context, ava)));
+				intent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+			}
+		}catch(IOException ignore){}
 		context.startActivity(Intent.createChooser(intent, context.getString(R.string.share_toot_title)));
 	}
 
@@ -1675,6 +1829,31 @@ public class UiUtils {
 		}
 
 		return text;
+	}
+
+	public static void goToInstanceAboutFragment(String instanceUrl, String accountID ,Context context){
+		try {
+			new GetInstance()
+					.setCallback(new Callback<>(){
+						@Override
+						public void onSuccess(Instance result){
+							Bundle args = new Bundle();
+							args.putParcelable("instance", Parcels.wrap(result));
+							args.putString("account", accountID);
+							Nav.go((Activity) context, SettingsServerFragment.class, args);
+						}
+
+						@Override
+						public void onError(ErrorResponse error){
+							error.showToast(context);
+						}
+					})
+					.wrapProgress((Activity) context, R.string.loading, true)
+					.execRemote(instanceUrl);
+		} catch (NullPointerException ignored) {
+			// maybe the url was malformed?
+			Toast.makeText(context, R.string.error, Toast.LENGTH_SHORT).show();
+		}
 	}
 
 	private static final String[] pronounsUrls= new String[] {
@@ -1773,5 +1952,73 @@ public class UiUtils {
 
 	public static ViewPropertyAnimator opacityOut(View v, float alpha){
 		return v.animate().alpha(alpha).setDuration(300).setInterpolator(CubicBezierInterpolator.DEFAULT);
+	}
+
+	public static void maybeShowTextCopiedToast(Context context){
+		//show toast, android from S_V2 on has built-in popup, as documented in
+		//https://developer.android.com/develop/ui/views/touch-and-input/copy-paste#duplicate-notifications
+		if(Build.VERSION.SDK_INT<=Build.VERSION_CODES.S_V2){
+			Toast.makeText(context, R.string.text_copied, Toast.LENGTH_SHORT).show();
+		}
+	}
+
+	public static boolean needShowClipboardToast(){
+		return Build.VERSION.SDK_INT<=Build.VERSION_CODES.S_V2;
+	}
+
+	public static void setAllPaddings(View view, int paddingDp){
+		int pad=V.dp(paddingDp);
+		view.setPadding(pad, pad, pad, pad);
+	}
+
+	public static ViewGroup.MarginLayoutParams makeLayoutParams(int width, int height, int marginStart, int marginTop, int marginEnd, int marginBottom){
+		ViewGroup.MarginLayoutParams lp=new ViewGroup.MarginLayoutParams(width>0 ? V.dp(width) : width, height>0 ? V.dp(height) : height);
+		lp.topMargin=V.dp(marginTop);
+		lp.bottomMargin=V.dp(marginBottom);
+		lp.setMarginStart(V.dp(marginStart));
+		lp.setMarginEnd(V.dp(marginEnd));
+		return lp;
+	}
+
+	public static CharSequence fixBulletListInString(Context context, @StringRes int res){
+		SpannableStringBuilder msg=new SpannableStringBuilder(context.getText(res));
+		BulletSpan[] spans=msg.getSpans(0, msg.length(), BulletSpan.class);
+		for(BulletSpan span:spans){
+			BulletSpan betterSpan;
+			if(Build.VERSION.SDK_INT<Build.VERSION_CODES.Q)
+				betterSpan=new BulletSpan(V.dp(10), UiUtils.getThemeColor(context, R.attr.colorM3OnSurface));
+			else
+				betterSpan=new BulletSpan(V.dp(10), UiUtils.getThemeColor(context, R.attr.colorM3OnSurface), V.dp(1.5f));
+			msg.setSpan(betterSpan, msg.getSpanStart(span), msg.getSpanEnd(span), msg.getSpanFlags(span));
+			msg.removeSpan(span);
+		}
+		return msg;
+	}
+
+	public static void showProgressForAlertButton(Button button, boolean show){
+		boolean shown=button.getTag(R.id.button_progress_orig_color)!=null;
+		if(shown==show)
+			return;
+		button.setEnabled(!show);
+		if(show){
+			ColorStateList origColor=button.getTextColors();
+			button.setTag(R.id.button_progress_orig_color, origColor);
+			button.setTextColor(0);
+			ProgressBar progressBar=(ProgressBar) LayoutInflater.from(button.getContext()).inflate(R.layout.progress_bar, null);
+			Drawable progress=progressBar.getIndeterminateDrawable().mutate();
+			progress.setTint(getThemeColor(button.getContext(), R.attr.colorM3OnSurface) & 0x60ffffff);
+			if(progress instanceof Animatable a)
+				a.start();
+			LayerDrawable layerList=new LayerDrawable(new Drawable[]{progress});
+			layerList.setLayerGravity(0, Gravity.CENTER);
+			layerList.setLayerSize(0, V.dp(24), V.dp(24));
+			layerList.setBounds(0, 0, button.getWidth(), button.getHeight());
+			button.getOverlay().add(layerList);
+		}else{
+			button.getOverlay().clear();
+			ColorStateList origColor=(ColorStateList) button.getTag(R.id.button_progress_orig_color);
+			button.setTag(R.id.button_progress_orig_color, null);
+			button.setTextColor(origColor);
+		}
 	}
 }

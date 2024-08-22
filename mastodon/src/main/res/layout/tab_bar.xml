@@ -129,7 +129,7 @@
 					android:scaleType="center"
 					android:importantForAccessibility="no"
 					android:tint="@color/tab_bar_icon"
-					android:src="@drawable/ic_fluent_alert_24_selector"/>
+					android:src="@drawable/ic_fluent_alert_24_selector_for_tabbar"/>
 
 				<TextView
 					android:id="@+id/notifications_badge"

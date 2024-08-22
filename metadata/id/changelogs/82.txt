@@ -1,0 +1,9 @@
+Rilis 82 menambahkan banyak fitur dari upstream, seperti:
+- Draf dan posting terjadwal
+- Pengerjaan ulang halaman pengaturan
+- Kemampuan untuk memilih teks tombol terbitkan
+- Kemampuan untuk mengurangi animasi
+- Ikon bot untuk profil akun bot! Terima kasih @FineFindus
+- Dan terjemahan bahasa Jerman yang diperbarui! Terima kasih @dantobi
+- Banyak perbaikan kecil pada UI
+- Peningkatan kegunaan besar, seperti kemampuan untuk menahan tombol tindakan untuk berinteraksi dengan akun lain

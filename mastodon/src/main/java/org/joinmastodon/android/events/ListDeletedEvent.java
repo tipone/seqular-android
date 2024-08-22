@@ -1,9 +1,11 @@
 package org.joinmastodon.android.events;
 
-public class ListDeletedEvent {
-	public final String id;
+public class ListDeletedEvent{
+	public final String accountID;
+	public final String listID;
 
-	public ListDeletedEvent(String id) {
-		this.id = id;
+	public ListDeletedEvent(String accountID, String listID){
+		this.accountID=accountID;
+		this.listID=listID;
 	}
 }

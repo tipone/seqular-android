@@ -467,68 +467,98 @@
 
 			<ImageButton
 				android:id="@+id/btn_media"
-				android:layout_width="48dp"
+				android:layout_width="40dp"
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
-				android:tint="@color/action_bar_icons"
-				android:tintMode="src_in"
 				android:contentDescription="@string/add_media"
 				android:tooltipText="@string/add_media"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:src="@drawable/ic_fluent_image_add_24_regular"/>
 
 			<ImageButton
 				android:id="@+id/btn_poll"
-				android:layout_width="48dp"
+				android:layout_width="40dp"
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
-				android:tint="@color/action_bar_icons"
-				android:tintMode="src_in"
 				android:contentDescription="@string/add_poll"
 				android:tooltipText="@string/add_poll"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:src="@drawable/ic_fluent_poll_24_selector"/>
 
 			<ImageButton
 				android:id="@+id/btn_emoji"
-				android:layout_width="48dp"
+				android:layout_width="40dp"
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
-				android:tint="@color/action_bar_icons"
-				android:tintMode="src_in"
 				android:contentDescription="@string/emoji"
 				android:tooltipText="@string/emoji"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:src="@drawable/ic_fluent_emoji_24_selector"/>
 
 			<ImageButton
 				android:id="@+id/btn_spoiler"
-				android:layout_width="48dp"
+				android:layout_width="40dp"
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
-				android:tint="@color/action_bar_icons"
-				android:tintMode="src_in"
 				android:contentDescription="@string/content_warning"
 				android:tooltipText="@string/content_warning"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:src="@drawable/ic_fluent_chat_warning_24_selector"/>
 
 			<ImageButton
 				android:id="@+id/btn_content_type"
-				android:layout_width="48dp"
+				android:layout_width="40dp"
 				android:layout_height="48dp"
 				android:background="@drawable/bg_icon_button"
 				android:padding="0px"
-				android:tint="@color/action_bar_icons"
-				android:tintMode="src_in"
 				android:contentDescription="@string/sk_content_type"
 				android:tooltipText="@string/sk_content_type"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
 				android:src="@drawable/ic_fluent_text_edit_style_24_selector"/>
+
+			<ImageButton
+				android:id="@+id/drafts_btn"
+				android:layout_width="40dp"
+				android:layout_height="48dp"
+				android:padding="0px"
+				android:layout_marginEnd="6dp"
+				android:drawableStart="@drawable/ic_fluent_clock_24_regular"
+				android:drawableTint="@color/compose_button"
+				android:textColor="?android:textColorSecondary"
+				android:background="@drawable/bg_icon_button"
+				android:visibility="gone"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
+				android:contentDescription="@string/sk_schedule_or_draft"
+				android:tooltipText="@string/sk_schedule_or_draft" />
 
 			<Space
 				android:layout_width="0px"
 				android:layout_height="1px"
 				android:layout_weight="1"/>
+
+			<ImageButton
+				android:id="@+id/btn_more"
+				android:layout_width="24dp"
+				android:layout_height="24dp"
+				android:layout_marginEnd="24dp"
+				android:background="?android:attr/selectableItemBackgroundBorderless"
+				android:padding="0px"
+				android:tint="@color/action_bar_icons"
+				android:tintMode="src_in"
+				android:contentDescription="@string/more_options"
+				android:tooltipText="@string/more_options"
+				android:visibility="gone"
+				android:src="@drawable/ic_fluent_more_vertical_24_regular"/>
 
 			<TextView
 				android:id="@+id/char_counter"
@@ -538,6 +568,25 @@
 				android:textAppearance="@style/m3_label_large"
 				android:textColor="?colorM3OnSurface"
 				tools:text="500"/>
+
+			<ImageButton
+				android:id="@+id/publish"
+				style="@style/Widget.Mastodon.M3.Button.Filled"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:layout_marginEnd="8dp"
+				android:minHeight="48dp"
+				android:minWidth="56dp"
+				android:paddingStart="16dp"
+				android:paddingEnd="16dp"
+				android:drawablePadding="0dp"
+				android:tooltipText="@string/publish"
+				android:contentDescription="@string/publish"
+				android:tint="@color/compose_button"
+				android:tintMode="src_in"
+				android:src="@drawable/ic_fluent_send_24_regular"
+				android:visibility="gone"
+				android:singleLine="true" />
 
 		</LinearLayout>
 	</LinearLayout>

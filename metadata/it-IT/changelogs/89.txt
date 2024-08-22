@@ -1,0 +1,1 @@
+La versione 89 è una versione bugfix, quindi qualche crash è stato risolto e alcune impostazioni ora si salvano correttamente.

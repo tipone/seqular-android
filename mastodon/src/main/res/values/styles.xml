@@ -47,6 +47,7 @@
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
 		<item name="android:actionOverflowButtonStyle">@style/Widget.Mastodon.ActionButton.Overflow</item>
+		<item name="appkitEmptyTextAppearance">@style/empty_text</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark" parent="Theme.AppKit">
@@ -92,6 +93,7 @@
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
 		<item name="android:actionOverflowButtonStyle">@style/Widget.Mastodon.ActionButton.Overflow</item>
+		<item name="appkitEmptyTextAppearance">@style/empty_text</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dark.SplashFragment">
@@ -151,6 +153,7 @@
 		<item name="android:colorBackground">?colorM3OnSurfaceVariant</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="android:textColorAlertDialogListItem">?colorM3OnSurface</item>
 	</style>
 
 	<style name="Theme.Mastodon.Dialog.Alert.Dark" parent="android:Theme.Material.Dialog.Alert">
@@ -165,6 +168,7 @@
 		<item name="android:colorBackground">?colorM3OnSurfaceVariant</item>
 		<item name="android:textColorPrimary">?colorM3OnSurface</item>
 		<item name="android:textColorSecondary">?colorM3OnSurfaceVariant</item>
+		<item name="android:textColorAlertDialogListItem">?colorM3OnSurface</item>
 	</style>
 
 	<style name="Widget.Mastodon.ButtonBarButton" parent="android:Widget.Material.Button.Borderless">
@@ -193,6 +197,18 @@
 	</style>
 	<style name="Widget.Mastodon.M3.Button.Icon">
 		<item name="android:paddingStart">16dp</item>
+	</style>
+
+	<style name="Widget.Mastodon.M3.Button.IconWithLabel">
+		<item name="android:background">@drawable/bg_button_m3_icon_label</item>
+		<item name="android:textColor">@color/button_text_m3_text</item>
+		<item name="android:drawableTint">@color/button_text_m3_text</item>
+		<item name="android:drawablePadding">4dp</item>
+		<item name="android:textSize">11dp</item>
+		<item name="android:paddingLeft">0dp</item>
+		<item name="android:paddingRight">0dp</item>
+		<item name="android:paddingTop">11dp</item>
+		<item name="android:paddingBottom">11dp</item>
 	</style>
 
 	<style name="Widget.Mastodon.M3.Button.Filled">

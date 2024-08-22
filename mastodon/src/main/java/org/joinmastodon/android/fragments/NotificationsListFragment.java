@@ -7,6 +7,10 @@ import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 
 import com.squareup.otto.Subscribe;
@@ -14,6 +18,7 @@ import com.squareup.otto.Subscribe;
 import org.joinmastodon.android.E;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
@@ -39,6 +44,7 @@ import org.parceler.Parcels;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -47,12 +53,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import me.grishka.appkit.api.SimpleCallback;
 import me.grishka.appkit.utils.MergeRecyclerAdapter;
 
-public class NotificationsListFragment extends BaseStatusListFragment<Notification> {
+public class NotificationsListFragment extends BaseStatusListFragment<Notification>{
 	private boolean onlyMentions;
-	private boolean onlyPosts;
 	private String maxID;
 	private boolean reloadingFromCache;
 	private DiscoverInfoBannerHelper bannerHelper;
+	private String unreadMarker, realUnreadMarker;
+	private MenuItem markAllReadItem;
 
 	@Override
 	protected boolean wantsComposeButton() {
@@ -63,13 +70,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		E.register(this);
-		if(savedInstanceState!=null){
-			onlyMentions=savedInstanceState.getBoolean("onlyMentions", false);
-			onlyPosts=savedInstanceState.getBoolean("onlyPosts", false);
-		}
-		if (onlyPosts) {
-			bannerHelper=new DiscoverInfoBannerHelper(DiscoverInfoBannerHelper.BannerType.POST_NOTIFICATIONS, accountID);
-		}
+		onlyMentions=getArguments().getBoolean("onlyMentions", false);
+		setHasOptionsMenu(true);
 	}
 
 	@Override
@@ -81,13 +83,45 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	@Override
 	public void onAttach(Activity activity){
 		super.onAttach(activity);
-		onlyMentions=getArguments().getBoolean("onlyMentions", false);
-		onlyPosts=getArguments().getBoolean("onlyPosts", false);
 		setTitle(R.string.notifications);
 	}
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(Notification n){
+		if(!onlyMentions){
+			switch(n.type){
+				case MENTION -> {
+					if(!getLocalPrefs().notificationFilters.mention)
+						return new ArrayList<>();
+				}
+				case REBLOG -> {
+					if(!getLocalPrefs().notificationFilters.reblog)
+						return new ArrayList<>();
+				}
+				case FAVORITE, REACTION -> {
+					if(!getLocalPrefs().notificationFilters.favourite)
+						return new ArrayList<>();
+				}
+				case FOLLOW, FOLLOW_REQUEST -> {
+					if(!getLocalPrefs().notificationFilters.follow)
+						return new ArrayList<>();
+				}
+				case POLL -> {
+					if(!getLocalPrefs().notificationFilters.poll)
+						return new ArrayList<>();
+				}
+				case UPDATE -> {
+					if(!getLocalPrefs().notificationFilters.update)
+						return new ArrayList<>();
+				}
+				case STATUS -> {
+					if(!getLocalPrefs().notificationFilters.status)
+						return new ArrayList<>();
+				}
+				default -> {}
+			}
+		}
+
 		NotificationHeaderStatusDisplayItem titleItem;
 		Account self=AccountSessionManager.get(accountID).self;
 		if(n.type==Notification.Type.MENTION || n.type==Notification.Type.STATUS
@@ -96,7 +130,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		}else{
 			titleItem=new NotificationHeaderStatusDisplayItem(n.id, this, n, accountID);
 		}
-		if (n.type == Notification.Type.FOLLOW_REQUEST) {
+		if (n.type == Notification.Type.FOLLOW_REQUEST || n.type == Notification.Type.FOLLOW) {
 			ArrayList<StatusDisplayItem> items = new ArrayList<>();
 			items.add(titleItem);
 			items.add(new AccountCardStatusDisplayItem(n.id, this, accountID, n.account, n));
@@ -106,6 +140,8 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 			int flags=titleItem==null ? 0 : (StatusDisplayItem.FLAG_NO_FOOTER | StatusDisplayItem.FLAG_INSET | StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS); // | StatusDisplayItem.FLAG_NO_HEADER);
 			if (GlobalUserPreferences.spectatorMode)
 				flags |= StatusDisplayItem.FLAG_NO_FOOTER;
+			if (!GlobalUserPreferences.showMediaPreview)
+				flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
 			ArrayList<StatusDisplayItem> items=StatusDisplayItem.buildItems(this, n.status, accountID, n, knownAccounts, null, flags);
 			if(titleItem!=null)
 				items.add(0, titleItem);
@@ -130,11 +166,18 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	protected void doLoadData(int offset, int count){
 		AccountSessionManager.getInstance()
 				.getAccount(accountID).getCacheController()
-				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, onlyPosts, refreshing && !reloadingFromCache, new SimpleCallback<>(this){
+				.getNotifications(offset>0 ? maxID : null, count, onlyMentions, false, refreshing && !reloadingFromCache, new SimpleCallback<>(this){
 					@Override
 					public void onSuccess(PaginatedResponse<List<Notification>> result){
 						if(getActivity()==null)
 							return;
+
+						Set<String> needRelationships=result.items.stream()
+								.filter(ntf->ntf.status==null && !relationships.containsKey(ntf.account.id))
+								.map(ntf->ntf.account.id)
+								.collect(Collectors.toSet());
+						loadRelationships(needRelationships);
+
 						maxID=result.maxID;
 						onDataLoaded(result.items.stream().filter(n->n.type!=null).collect(Collectors.toList()), !result.items.isEmpty());
 						if(bannerHelper!=null) bannerHelper.onBannerBecameVisible();
@@ -147,15 +190,23 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	}
 
 	@Override
+	protected void onRelationshipsLoaded(){
+		if(getActivity()==null)
+			return;
+		for(int i=0;i<list.getChildCount();i++){
+			RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+			if(holder instanceof AccountCardStatusDisplayItem.Holder accountHolder)
+				accountHolder.rebind();
+		}
+	}
+
+	@Override
 	protected void onShown(){
 		super.onShown();
-		if(!dataLoading){
-			if(onlyMentions){
-				refresh();
-			}else{
-				reloadingFromCache=true;
-				refresh();
-			}
+		unreadMarker=realUnreadMarker=AccountSessionManager.get(accountID).getLastKnownNotificationsMarker();
+		if(!dataLoading && canRefreshWithoutUpsettingUser()){
+			reloadingFromCache=true;
+			refresh();
 		}
 	}
 
@@ -214,13 +265,6 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		} else {
 			return super.getViewsForElevationEffect();
 		}
-	}
-
-	@Override
-	public void onSaveInstanceState(Bundle outState){
-		super.onSaveInstanceState(outState);
-		outState.putBoolean("onlyMentions", onlyMentions);
-		outState.putBoolean("onlyPosts", onlyPosts);
 	}
 
 	private Notification getNotificationByID(String id){
@@ -331,9 +375,36 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		adapter.notifyItemRangeRemoved(index, lastIndex-index);
 	}
 
+
 	@Override
 	protected boolean needDividerForExtraItem(View child, View bottomSibling, RecyclerView.ViewHolder holder, RecyclerView.ViewHolder siblingHolder){
 		return super.needDividerForExtraItem(child, bottomSibling, holder, siblingHolder) || (siblingHolder!=null && siblingHolder.getAbsoluteAdapterPosition()>=adapter.getItemCount());
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		inflater.inflate(R.menu.notifications, menu);
+		markAllReadItem=menu.findItem(R.id.mark_all_read);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		if(item.getItemId()==R.id.mark_all_read){
+			markAsRead();
+			resetUnreadBackground();
+		}
+		return true;
+	}
+
+	private void markAsRead(){
+		if(data.isEmpty())
+			return;
+		String id=data.get(0).id;
+		if(ObjectIdComparator.INSTANCE.compare(id, realUnreadMarker)>0){
+			new SaveMarkers(null, id).exec(accountID);
+			AccountSessionManager.get(accountID).setNotificationsMarker(id, true);
+			realUnreadMarker=id;
+		}
 	}
 
 	void resetUnreadBackground(){
@@ -347,13 +418,20 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 	public void onRefresh(){
 		super.onRefresh();
 		if (getParentFragment() instanceof NotificationsFragment nf) {
-			if (!onlyMentions && !onlyPosts) nf.markAsRead();
+			if (!onlyMentions) nf.markAsRead();
 			else AccountSessionManager.get(accountID).reloadNotificationsMarker(m->{
 				nf.unreadMarker=nf.realUnreadMarker=m;
 				nf.updateMarkAllReadButton();
 			});
 		}
 		resetUnreadBackground();
+		AccountSessionManager.get(accountID).reloadNotificationsMarker(m->{
+			unreadMarker=realUnreadMarker=m;
+		});
+	}
+
+	private void updateMarkAllReadButton(){
+		markAllReadItem.setEnabled(!data.isEmpty() && realUnreadMarker!=null && !realUnreadMarker.equals(data.get(0).id));
 	}
 
 	@Override
@@ -370,5 +448,21 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		return base.path(isInstanceAkkoma()
 				? "/users/" + getSession().self.username + "/interactions"
 				: "/notifications").build();
+	}
+
+	private boolean canRefreshWithoutUpsettingUser(){
+		// TODO maybe reload notifications the same way we reload the home timelines, i.e. with gaps and stuff
+		if(data.size()<=itemsPerPage)
+			return true;
+		for(int i=list.getChildCount()-1;i>=0;i--){
+			if(list.getChildViewHolder(list.getChildAt(i)) instanceof StatusDisplayItem.Holder<?> itemHolder){
+				String id=itemHolder.getItemID();
+				for(int j=0;j<data.size();j++){
+					if(data.get(j).id.equals(id))
+						return j<itemsPerPage; // Can refresh the list without losing scroll position if it is within the first page
+				}
+			}
+		}
+		return true;
 	}
 }

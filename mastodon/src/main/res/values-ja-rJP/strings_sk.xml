@@ -383,4 +383,22 @@
     <string name="sk_notify_poll_results">投票結果</string>
     <string name="sk_post_contains_media">メディアを含む投稿</string>
     <string name="sk_edit_alt_text">代替テキストを編集</string>
+    <string name="sk_icon_snowflake">雪の結晶</string>
+    <string name="sk_private_note_update_failed">メモの保存に失敗しました</string>
+    <string name="sk_icon_cloud">雲</string>
+    <string name="sk_notification_mention">%s にメンションされました</string>
+    <string name="sk_delete_note">パーソナルメモを削除</string>
+    <string name="sk_icon_sunset">夕焼け</string>
+    <string name="sk_confirm_changes">変更を確認</string>
+    <string name="sk_settings_crash_log_unavailable">まだありません</string>
+    <string name="sk_private_note_hint">このプロフィールに関するメモを追加</string>
+    <string name="sk_icon_water">海</string>
+    <string name="sk_icon_sun">太陽</string>
+    <string name="sk_crash_log_copied">クラッシュログをコピーしました</string>
+    <string name="sk_add_note">パーソナルメモを追加</string>
+    <string name="sk_settings_copy_crash_log">最新のクラッシュログをコピー</string>
+    <string name="sk_icon_rain">雨</string>
+    <string name="sk_icon_thunderstorm">雷雨</string>
+    <string name="sk_open_in_app_failed">アプリで開くことができませんでした</string>
+    <string name="sk_private_note_confirm_delete">%s に関するパーソナルメモを削除しますか？</string>
 </resources>

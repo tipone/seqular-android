@@ -1,0 +1,9 @@
+- Tidslinjer kan fästas och ordnas om
+- Stöd endast-lokala inlägg
+- Indikator för saknade alt-texter
+- Förbättrad alt-textredigerare
+- Rubrik i tidslinjen för följda hashtags
+- Fler meddelandekategorier
+- Lägg tillbaka filöppnare
+- Fråga när du sparar redigerat utkast
+- Alternativ för att inaktivera knappen "Se nya inlägg"

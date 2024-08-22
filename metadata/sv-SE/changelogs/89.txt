@@ -1,0 +1,1 @@
+Release 89 är en buggfix-release, så några krascher har åtgärdats och några inställningar som inte sparas.

@@ -1,0 +1,6 @@
+Nya saker för release nummer 88:
+- Ett förbättrat Fab-beteende
+- Bättre hantering av alt-texter
+- Aktivera endast-lokalt inlägg för instanser som stöder det
+- Fixa några krascher
+- Små förbättringar

@@ -1,0 +1,7 @@
+Novità della versione 85:
+Aggiunto clic prolungato sul tasto di ricerca per far apparire la tastiera
+Anche cliccare il tasto di ricerca quando si è già nella scheda di ricerca fa apparire la tastiera
+Aggiunta icona bot ai post dagli account bot, grazie @FineFindus!
+Migliorata la visibilità dell'icona bot nel profilo account, grazie @FineFindus!
+Aggiornata la traduzione in Tedesco, grazie Dontobi!
+Piccole migliorie dell'UI

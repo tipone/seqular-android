@@ -7,6 +7,7 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +16,13 @@ import android.widget.TextView;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BaseStatusListFragment;
+import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Emoji;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.StatusPrivacy;
+import org.joinmastodon.android.ui.text.AvatarSpan;
 import org.joinmastodon.android.ui.text.HtmlParser;
+import org.joinmastodon.android.ui.text.SpacerSpan;
 import org.joinmastodon.android.ui.utils.CustomEmojiHelper;
 import org.joinmastodon.android.ui.utils.UiUtils;
 
@@ -45,14 +49,23 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 	CharSequence fullText;
 
 	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, Status status) {
-		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, text, status);
+		this(parentID, parentFragment, text, emojis, icon, visibility, handleClick, text, status, null);
 	}
 
-	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText, Status status) {
+	public ReblogOrReplyLineStatusDisplayItem(String parentID, BaseStatusListFragment parentFragment, CharSequence text, List<Emoji> emojis, @DrawableRes int icon, StatusPrivacy visibility, @Nullable View.OnClickListener handleClick, CharSequence fullText, Status status, Account account) {
 		super(parentID, parentFragment);
 		SpannableStringBuilder ssb=new SpannableStringBuilder(text);
 		if(AccountSessionManager.get(parentFragment.getAccountID()).getLocalPreferences().customEmojiInNames)
 			HtmlParser.parseCustomEmoji(ssb, emojis);
+		//this is fine, since the display name is surround by '\u2068' and '\u2069'
+		int nameLoc=account!=null ? text.toString().indexOf(account.getDisplayName()) : -1;
+		if(nameLoc!=-1&&ssb.length()>=nameLoc){
+			//add temp chars for span replacement, length should be the same as the amount of spans replacing below
+			ssb.insert(nameLoc, "   ");
+			ssb.setSpan(new SpacerSpan(15, 20), nameLoc+1, nameLoc+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+			ssb.setSpan(new AvatarSpan(account), nameLoc+1, nameLoc+2, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+			ssb.setSpan(new SpacerSpan(15, 20), nameLoc+2, nameLoc+3, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+		}
 		this.text=ssb;
 		emojiHelper.setText(ssb);
 		this.fullText=fullText;
@@ -139,8 +152,8 @@ public class ReblogOrReplyLineStatusDisplayItem extends StatusDisplayItem{
 			int firstHelperCount=item.emojiHelper.getImageCount();
 			CustomEmojiHelper helper=index<firstHelperCount ? item.emojiHelper : item.extra.emojiHelper;
 			helper.setImageDrawable(firstHelperCount>0 ? index%firstHelperCount : index, image);
-			text.invalidate();
-			extraText.invalidate();
+			text.setText(text.getText());
+			extraText.setText(extraText.getText());
 		}
 
 		@Override

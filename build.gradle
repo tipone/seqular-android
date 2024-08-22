@@ -9,6 +9,7 @@ buildscript {
 				includeModule 'com.github.UnifiedPush', 'android-connector'
 			}
 		}
+		mavenLocal()
 	}
 	dependencies {
 		classpath 'com.android.tools.build:gradle:8.0.0'

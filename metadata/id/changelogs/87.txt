@@ -1,0 +1,5 @@
+Hal-hal baru untuk 87:
+- Tata letak rumah baru dari Megalodon, yang memiliki kemampuan untuk beralih di antara keduanya adalah WIP
+- Penanganan notifikasi yang lebih baik
+- Ikon bot baru yang dirusak
+- Banyak perbaikan kecil

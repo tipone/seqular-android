@@ -1,16 +1,16 @@
-Megalodon adalah versi modifikasi <a href="https://github.com/mastodon/mastodon-android">aplikasi Android Mastodon resmi</a> yang menambahkan fitur penting yang belum ada di aplikasi, seperti lini masa federasi, pengiriman tidak terdaftar, dan penampil deskripsi gambar.
+Moshidon adalah versi modifikasi dari <a href="https://github.com/mastodon/mastodon-android">aplikasi resmi Android Mastodon</a> yang menambahkan fitur-fitur penting yang tidak ada di aplikasi resmi, seperti garis waktu gabungan, postingan tidak terdaftar, dan gambar penampil deskripsi.
 
-<b>Fitur unggulan</b>
+<b>Fitur utama</b>
 
-- <b>Pengiriman tidak terdaftar</b>: Kirim secara publik tanpa memasukkan kiriman Anda dalam tren, tagar, atau lini masa publik.
-- <b>Lini masa federasi</b>: Lihat semua kiriman publik dari orang-orang di semua tetangga Fedimesta lainnya yang instansi rumah Anda terhubung.
-- <b>Lini masa khusus</b>: Sematkan daftar atau tagar apa pun ke tab beranda Megalodon Anda untuk hanya mengusap antara topik dan orang favorit Anda!
-- <b>Draf dan kiriman terjadwal</b>: Memungkinkan untuk menyiapkan kiriman dan menjadwalkannya untuk dikirim secara otomatis pada waktu yang ditentukan.
-- <b>Menyematkan kiriman</b>: Sematkan kiriman penting Anda ke profil Anda dan lihat apa yang telah disematkan oleh orang lain menggunakan tab “Disematkan”.
-- <b>Ikuti tagar</b>: Lihat kiriman baru dari tagar spesifik secara langsung dalam lini masa beranda Anda dengan mengikutinya.
-- <b>Menjawab permintaan pengikut</b>: Tolak atau terima permintaan pengikut dari notifikasi Anda atau daftar permintaan pengikut khusus.
-- <b>Hapus dan draf ulang</b>: Fitur yang banyak disukai yang membuat penyuntingan memungkinkan tanpa fungsi penyuntingan yang asli.
-- <b>Pemilih bahasa</b>: Pilih bahasa untuk setiap kiriman tanpa kesulitan supaya saringan dan terjemahan bekerja dengan benar.
-- <b>Terjemahan</b>: Terjemahkan kiriman dalam Megalodon dengan mudah! Hanya bekerja jika fitur juga tersedia di Mastodon Web Anda.
-- <b>Indikator keterlihatan kiriman</b>: Ketika membuka atau membalas kiriman, sebuah ikon kecil yang menandakan keterlihatan kiriman akan ditampilkan.
-- <b>Tema warna</b>: Jika Anda tidak ingin warna Merah Muda bawaan (hiunya diam-diam menghakimimu), tema warna Moshidon akan menyelesaikan masalah itu.
+- <b>Banyak warna</b>: Menghadirkan materi tema Anda dan banyak pilihan warna-warni untuk tema!
+- <b>Postingan yang difilter!</b>: Kemampuan untuk menampilkan postingan yang difilter dengan peringatan!
+- <b>Tombol Terjemahkan</b>: Membawa tombol terjemahkan!
+- <b>Pemilih bahasa toot</b>: Membawa pemilih bahasa untuk toot!
+- <b>Postingan tidak terdaftar</b>: Posting secara publik tanpa menampilkan postingan Anda di tren, hashtag, atau timeline publik.
+- <b>Garis waktu gabungan</b>: Lihat semua postingan publik dari orang-orang di semua lingkungan Fediverse lain yang terhubung dengan server rumah Anda.
+- <b>Penampil deskripsi gambar</b>: Periksa dengan cepat apakah gambar atau video memiliki teks alternatif yang dilampirkan.
+- <b>Sematkan postingan</b>: Sematkan postingan terpenting ke profil Anda dan lihat apa yang telah disematkan orang lain menggunakan tab “Disematkan”.
+- <b>Ikuti tagar</b>: Lihat postingan baru dari tagar tertentu langsung di lini masa beranda Anda dengan mengikutinya.
+- <b>Menerima permintaan mengikuti</b>: Menerima atau menolak permintaan mengikuti dari notifikasi Anda atau daftar permintaan Ikuti khusus.
+- <b>Hapus dan menyusun ulang</b>: Fitur yang sangat disukai yang memungkinkan pengeditan tanpa fungsi pengeditan sebenarnya.
+- <b>Ekstra</b>: Menghadirkan banyak fitur UI tambahan, seperti ikon interaksi pada Notifikasi dan menghilangkan banyak gangguan pada UI asli!

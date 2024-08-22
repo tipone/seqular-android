@@ -338,7 +338,7 @@
     <string name="sk_search_fediverse">Cari di Fediverse</string>
     <string name="sk_settings_unifiedpush_no_distributor">Tidak ada distributor yang ditemukan</string>
     <string name="sk_settings_display_pronouns_in_threads">Tampilkan kata ganti dalam utas</string>
-    <string name="sk_settings_display_pronouns_in_user_listings">Tampilkan kata gamti dalam daftar pengguna</string>
+    <string name="sk_settings_display_pronouns_in_user_listings">Tampilkan kata ganti dalam daftar pengguna</string>
     <string name="sk_tab_home">Beranda</string>
     <string name="sk_tab_search">Cari</string>
     <string name="sk_tab_notifications">Notifikasi</string>
@@ -406,4 +406,26 @@
     <string name="sk_timeline_cache_cleared">Tembolok lini masa beranda dihapus</string>
     <string name="sk_settings_clear_timeline_cache">Hapus tembolok lini masa beranda</string>
     <string name="sk_button_mutuals">Mutual</string>
+    <string name="sk_poll_hide_results">Sembunyikan hasil</string>
+    <string name="sk_poll_multiple_choice">Pilihan ganda</string>
+    <string name="sk_icon_snowflake">Salju</string>
+    <string name="sk_private_note_update_failed">Gagal menyimpan catatan</string>
+    <string name="sk_icon_cloud">Awan</string>
+    <string name="sk_delete_note">Hapus catatan pribadi</string>
+    <string name="sk_icon_sunset">Matahari terbenam</string>
+    <string name="sk_confirm_changes">Konfirmasi perubahan</string>
+    <string name="sk_settings_crash_log_unavailable">Belum ada yang tersedia…</string>
+    <string name="sk_private_note_hint">Tambahkan catatan pribadi tentang profil ini</string>
+    <string name="sk_icon_water">Air</string>
+    <string name="sk_icon_sun">Matahari</string>
+    <string name="sk_crash_log_copied">Catatan kemogokan disalin</string>
+    <string name="sk_add_note">Tambahkan catatan pribadi</string>
+    <string name="sk_settings_copy_crash_log">Salin catatan kemogokan terkini</string>
+    <string name="sk_poll_show_results">Tampilkan hasil</string>
+    <string name="sk_open_post_preview">Pratinjau kiriman</string>
+    <string name="sk_icon_rain">Hujan</string>
+    <string name="sk_icon_thunderstorm">Guntur</string>
+    <string name="sk_post_preview">Pratinjau</string>
+    <string name="sk_private_note_confirm_delete">Hapus catatan pribadi tentang %s?</string>
+    <string name="sk_posted">%s mengirimkan</string>
 </resources>

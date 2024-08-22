@@ -17,6 +17,7 @@ import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.GetScheduledStatuses;
 import org.joinmastodon.android.events.ScheduledStatusCreatedEvent;
 import org.joinmastodon.android.events.ScheduledStatusDeletedEvent;
+import org.joinmastodon.android.model.Filter;
 import org.joinmastodon.android.model.HeaderPaginationList;
 import org.joinmastodon.android.model.ScheduledStatus;
 import org.joinmastodon.android.model.Status;
@@ -84,7 +85,7 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 
 	@Override
 	protected List<StatusDisplayItem> buildDisplayItems(ScheduledStatus s) {
-		return StatusDisplayItem.buildItems(this, s.toStatus(), accountID, s, knownAccounts, null,
+		return StatusDisplayItem.buildItems(this, s.toFormattedStatus(accountID), accountID, s, knownAccounts, null,
 				StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS |
 						StatusDisplayItem.FLAG_NO_FOOTER |
 						StatusDisplayItem.FLAG_NO_TRANSLATE);
@@ -203,10 +204,7 @@ public class ScheduledStatusListFragment extends BaseStatusListFragment<Schedule
 	public void onApplyWindowInsets(WindowInsets insets){
 		if(contentView!=null){
 			if(Build.VERSION.SDK_INT>=29 && insets.getTappableElementInsets().bottom==0){
-				int insetBottom=insets.getSystemWindowInsetBottom();
-				((ViewGroup.MarginLayoutParams) list.getLayoutParams()).bottomMargin=insetBottom;
-				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+insetBottom;
-				insets=insets.inset(0, 0, 0, insetBottom);
+				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16)+insets.getSystemWindowInsetBottom();
 			}else{
 				((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin=V.dp(16);
 			}

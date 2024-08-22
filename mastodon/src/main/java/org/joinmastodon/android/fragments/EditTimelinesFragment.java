@@ -8,6 +8,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,9 +41,10 @@ import org.joinmastodon.android.api.requests.lists.GetLists;
 import org.joinmastodon.android.api.requests.tags.GetFollowedHashtags;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.CustomLocalTimeline;
+import org.joinmastodon.android.model.FollowList;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.HeaderPaginationList;
-import org.joinmastodon.android.model.ListTimeline;
 import org.joinmastodon.android.model.TimelineDefinition;
 import org.joinmastodon.android.ui.DividerItemDecoration;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
@@ -58,6 +61,7 @@ import java.util.function.Consumer;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.utils.BindableViewHolder;
+import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.UsableRecyclerView;
 
 public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefinition> implements ScrollableToTop{
@@ -67,9 +71,10 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 	private Menu optionsMenu;
 	private boolean updated;
 	private final Map<MenuItem, TimelineDefinition> timelineByMenuItem=new HashMap<>();
-	private final List<ListTimeline> listTimelines=new ArrayList<>();
+	private final List<FollowList> followLists =new ArrayList<>();
 	private final List<Hashtag> hashtags=new ArrayList<>();
 	private MenuItem addHashtagItem;
+    private final List<CustomLocalTimeline> localTimelines = new ArrayList<>();
 
 	public EditTimelinesFragment(){
 		super(10);
@@ -86,8 +91,8 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 
 		new GetLists().setCallback(new Callback<>(){
 			@Override
-			public void onSuccess(List<ListTimeline> result){
-				listTimelines.addAll(result);
+			public void onSuccess(List<FollowList> result){
+				followLists.addAll(result);
 				updateOptionsMenu();
 			}
 
@@ -138,16 +143,20 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 			optionsMenu.performIdentifierAction(R.id.menu_add_timeline, 0);
 			return true;
 		}
-		TimelineDefinition tl=timelineByMenuItem.get(item);
-		if(tl!=null){
-			addTimeline(tl);
-		}else if(item==addHashtagItem){
-			makeTimelineEditor(null, (hashtag)->{
-				if(hashtag!=null) addTimeline(hashtag);
-			}, null);
-		}
-		return true;
-	}
+		if (item.getItemId() == R.id.menu_add_local_timelines) {
+            addNewLocalTimeline();
+            return true;
+        }
+        TimelineDefinition tl = timelineByMenuItem.get(item);
+        if (tl != null) {
+            addTimeline(tl);
+        } else if (item == addHashtagItem) {
+            makeTimelineEditor(null, (hashtag) -> {
+                if (hashtag != null) addTimeline(hashtag);
+            }, null);
+        }
+        return true;
+    }
 
 	private void addTimeline(TimelineDefinition tl){
 		data.add(tl.copy());
@@ -156,11 +165,31 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 		updateOptionsMenu();
 	}
 
-	private void addTimelineToOptions(TimelineDefinition tl, Menu menu){
-		if(data.contains(tl)) return;
-		MenuItem item=addOptionsItem(menu, tl.getTitle(getContext()), tl.getIcon().iconRes);
-		timelineByMenuItem.put(item, tl);
-	}
+	private void addNewLocalTimeline() {
+        FrameLayout inputWrap = new FrameLayout(getContext());
+        EditText input = new EditText(getContext());
+        input.setHint(R.string.sk_example_domain);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_URI);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.setMargins(V.dp(16), V.dp(4), V.dp(16), V.dp(16));
+        input.setLayoutParams(params);
+        inputWrap.addView(input);
+        new M3AlertDialogBuilder(getContext()).setTitle(R.string.mo_add_custom_server_local_timeline).setView(inputWrap)
+                .setPositiveButton(R.string.save, (d, which) -> {
+                    TimelineDefinition tl = TimelineDefinition.ofCustomLocalTimeline(input.getText().toString().trim());
+                    data.add(tl);
+                    saveTimelines();
+                })
+                .setNegativeButton(R.string.cancel, (d, which) -> {
+                })
+                .show();
+    }
+
+    private void addTimelineToOptions(TimelineDefinition tl, Menu menu) {
+        if (data.contains(tl)) return;
+        MenuItem item = addOptionsItem(menu, tl.getTitle(getContext()), tl.getIcon().iconRes);
+        timelineByMenuItem.put(item, tl);
+    }
 
 	private MenuItem addOptionsItem(Menu menu, String name, @DrawableRes int icon){
 		MenuItem item=menu.add(0, View.generateViewId(), Menu.NONE, name);
@@ -184,12 +213,15 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 		SubMenu hashtagsMenu=menu.addSubMenu(R.string.sk_hashtag);
 		hashtagsMenu.getItem().setIcon(R.drawable.ic_fluent_number_symbol_24_regular);
 
-		makeBackItem(timelinesMenu);
-		makeBackItem(listsMenu);
-		makeBackItem(hashtagsMenu);
+		MenuItem addLocalTimelines = menu.add(0, R.id.menu_add_local_timelines, NONE, R.string.local_timeline);
+        addLocalTimelines.setIcon(R.drawable.ic_fluent_add_24_regular);
+
+        makeBackItem(timelinesMenu);
+        makeBackItem(listsMenu);
+        makeBackItem(hashtagsMenu);
 
 		TimelineDefinition.getAllTimelines(accountID).stream().forEach(tl->addTimelineToOptions(tl, timelinesMenu));
-		listTimelines.stream().map(TimelineDefinition::ofList).forEach(tl->addTimelineToOptions(tl, listsMenu));
+		followLists.stream().map(TimelineDefinition::ofList).forEach(tl->addTimelineToOptions(tl, listsMenu));
 		addHashtagItem=addOptionsItem(hashtagsMenu, getContext().getString(R.string.sk_timelines_add), R.drawable.ic_fluent_add_24_regular);
 		hashtags.stream().map(TimelineDefinition::ofHashtag).forEach(tl->addTimelineToOptions(tl, hashtagsMenu));
 
@@ -343,7 +375,7 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 					String name=editText.getText().toString().trim();
 
 					String mainHashtag=tagMain.getText().toString().trim();
-					if(item.getType()==TimelineDefinition.TimelineType.HASHTAG){
+					if(item != null && item.getType()==TimelineDefinition.TimelineType.HASHTAG){
 						tagsAny.chipifyAllUnterminatedTokens();
 						tagsAll.chipifyAllUnterminatedTokens();
 						tagsNone.chipifyAllUnterminatedTokens();
@@ -362,9 +394,9 @@ public class EditTimelinesFragment extends MastodonRecyclerFragment<TimelineDefi
 					TimelineDefinition.Icon icon=TimelineDefinition.Icon.values()[(int) btn.getTag()];
 					tl.setIcon(icon);
 					tl.setTitle(name);
-					if(item.getType()==TimelineDefinition.TimelineType.HASHTAG){
+					if(item == null || item.getType()==TimelineDefinition.TimelineType.HASHTAG){
 						tl.setTagOptions(
-								mainHashtag,
+								TextUtils.isEmpty(mainHashtag) ? name : mainHashtag,
 								tagsAny.getChipValues(),
 								tagsAll.getChipValues(),
 								tagsNone.getChipValues(),

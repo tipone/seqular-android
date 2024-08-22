@@ -1,13 +1,21 @@
 package org.joinmastodon.android;
 
+import static org.joinmastodon.android.fragments.ComposeFragment.CAMERA_PERMISSION_CODE;
+import static org.joinmastodon.android.fragments.ComposeFragment.CAMERA_PIC_REQUEST_CODE;
+
 import android.Manifest;
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.net.Uri;
+import android.net.Uri;
+import android.os.BadParcelableException;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,6 +25,7 @@ import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.TakePictureRequestEvent;
 import org.joinmastodon.android.fragments.ComposeFragment;
 import org.joinmastodon.android.fragments.HomeFragment;
 import org.joinmastodon.android.fragments.ProfileFragment;
@@ -102,8 +111,6 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 				fragment.setArguments(args);
 				showFragmentClearingBackStack(fragment);
 			}
-		}else if(intent.getBooleanExtra("compose", false)){
-			showCompose();
 		}else if(Intent.ACTION_VIEW.equals(intent.getAction())){
 			handleURL(intent.getData(), null);
 		}/*else if(intent.hasExtra(PackageInstaller.EXTRA_STATUS) && GithubSelfUpdater.needSelfUpdating()){
@@ -123,11 +130,11 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 			session=AccountSessionManager.get(accountID);
 		if(session==null || !session.activated)
 			return;
-		openSearchQuery(uri.toString(), session.getID(), R.string.opening_link, false);
+		openSearchQuery(uri.toString(), session.getID(), R.string.opening_link, false, null);
 	}
 
-	public void openSearchQuery(String q, String accountID, int progressText, boolean fromSearch){
-		new GetSearchResults(q, null, true, null, 0, 0)
+	public void openSearchQuery(String q, String accountID, int progressText, boolean fromSearch, GetSearchResults.Type type){
+		new GetSearchResults(q, type, true, null, 0, 0)
 				.setCallback(new Callback<>(){
 					@Override
 					public void onSuccess(SearchResults result){
@@ -178,17 +185,6 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		showFragment(fragment);
 	}
 
-	private void showCompose(){
-		AccountSession session=AccountSessionManager.getInstance().getLastActiveAccount();
-		if(session==null || !session.activated)
-			return;
-		ComposeFragment compose=new ComposeFragment();
-		Bundle composeArgs=new Bundle();
-		composeArgs.putString("account", session.getID());
-		compose.setArguments(composeArgs);
-		showFragment(compose);
-	}
-
 	private void maybeRequestNotificationsPermission(){
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU && checkSelfPermission(Manifest.permission.POST_NOTIFICATIONS)!=PackageManager.PERMISSION_GRANTED){
 			requestPermissions(new String[]{Manifest.permission.POST_NOTIFICATIONS}, 100);
@@ -224,6 +220,24 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 			Fragment fragment=new HomeFragment();
 			fragment.setArguments(args);
 			showFragmentClearingBackStack(fragment);
+		}
+	}
+
+//	@Override
+//	public void onActivityResult(int requestCode, int resultCode, Intent data){
+//		if(requestCode==CAMERA_PIC_REQUEST_CODE && resultCode== Activity.RESULT_OK){
+//			E.post(new TakePictureRequestEvent());
+//		}
+//	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+		if (requestCode == CAMERA_PERMISSION_CODE && (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+			E.post(new TakePictureRequestEvent());
+		} else {
+			Toast.makeText(this, R.string.permission_required, Toast.LENGTH_SHORT);
 		}
 	}
 
@@ -308,10 +322,14 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 			Fragment fragment=session.activated ? new HomeFragment() : new AccountActivationFragment();
 			fragment.setArguments(args);
 			if(fromNotification && hasNotification){
-				Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
-				showFragmentForNotification(notification, session.getID());
-			} else if (intent.getBooleanExtra("compose", false)){
-				showCompose();
+				// Parcelables might not be compatible across app versions so this protects against possible crashes
+				// when a notification was received, then the app was updated, and then the user opened the notification
+				try{
+					Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
+					showFragmentForNotification(notification, session.getID());
+				}catch(BadParcelableException x){
+					Log.w(TAG, x);
+				}
 			} else if (Intent.ACTION_VIEW.equals(intent.getAction())){
 				handleURL(intent.getData(), null);
 			} else {

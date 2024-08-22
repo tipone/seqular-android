@@ -329,10 +329,12 @@
 				android:id="@+id/action_btn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:minHeight="48dp"
-				android:minWidth="56dp"
-				android:singleLine="true"
-				tools:text="@string/follow_back"/>
+				android:layout_gravity="center_vertical"
+				android:paddingHorizontal="10dp"
+				android:minWidth="96dp"
+				android:maxWidth="150dp"
+				style="@style/Widget.Mastodon.M3.Button.Filled"
+				tools:text="Follow back"/>
 
 			<ProgressBar
 				android:id="@+id/action_progress"

@@ -7,6 +7,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
 
+import androidx.annotation.StringRes;
+import android.os.Build;
+
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,6 +27,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.model.Account;
 
 public class GlobalUserPreferences{
 	private static final String TAG="GlobalUserPreferences";
@@ -51,7 +57,6 @@ public class GlobalUserPreferences{
 	public static boolean spectatorMode;
 	public static boolean autoHideFab;
 	public static boolean allowRemoteLoading;
-	public static boolean forwardReportDefault;
 	public static AutoRevealMode autoRevealEqualSpoilers;
 	public static boolean disableM3PillActiveIndicator;
 	public static boolean showNavigationLabels;
@@ -62,9 +67,29 @@ public class GlobalUserPreferences{
 	public static ColorPreference color;
 	public static boolean likeIcon;
 
-	private static SharedPreferences getPrefs(){
+	// MOSHIDON
+	public static boolean showDividers;
+	public static boolean relocatePublishButton;
+	public static boolean defaultToUnlistedReplies;
+	public static boolean doubleTapToSearch;
+	public static boolean doubleTapToSwipe;
+	public static boolean confirmBeforeReblog;
+	public static boolean hapticFeedback;
+	public static boolean replyLineAboveHeader;
+	public static boolean swapBookmarkWithBoostAction;
+	public static boolean mentionRebloggerAutomatically;
+	public static boolean showPostsWithoutAlt;
+	public static boolean showMediaPreview;
+	public static boolean removeTrackingParams;
+
+	public static SharedPreferences getPrefs(){
 		return MastodonApp.context.getSharedPreferences("global", Context.MODE_PRIVATE);
 	}
+
+	private static SharedPreferences getPreReplyPrefs(){
+		return MastodonApp.context.getSharedPreferences("pre_reply_sheets", Context.MODE_PRIVATE);
+	}
+
 
 	public static <T> T fromJson(String json, Type type, T orElse){
 		if(json==null) return orElse;
@@ -111,7 +136,6 @@ public class GlobalUserPreferences{
 		autoHideFab=prefs.getBoolean("autoHideFab", true);
 		allowRemoteLoading=prefs.getBoolean("allowRemoteLoading", true);
 		autoRevealEqualSpoilers=AutoRevealMode.valueOf(prefs.getString("autoRevealEqualSpoilers", AutoRevealMode.THREADS.name()));
-		forwardReportDefault=prefs.getBoolean("forwardReportDefault", true);
 		disableM3PillActiveIndicator=prefs.getBoolean("disableM3PillActiveIndicator", false);
 		showNavigationLabels=prefs.getBoolean("showNavigationLabels", true);
 		displayPronounsInTimelines=prefs.getBoolean("displayPronounsInTimelines", true);
@@ -122,6 +146,25 @@ public class GlobalUserPreferences{
 		underlinedLinks=prefs.getBoolean("underlinedLinks", true);
 		color=ColorPreference.valueOf(prefs.getString("color", MATERIAL3.name()));
 		likeIcon=prefs.getBoolean("likeIcon", false);
+
+		// MOSHIDON
+		uniformNotificationIcon=prefs.getBoolean("uniformNotificationIcon", false);
+		showDividers =prefs.getBoolean("showDividers", false);
+		relocatePublishButton=prefs.getBoolean("relocatePublishButton", true);
+		defaultToUnlistedReplies=prefs.getBoolean("defaultToUnlistedReplies", false);
+		doubleTapToSearch =prefs.getBoolean("doubleTapToSearch", true);
+		doubleTapToSwipe =prefs.getBoolean("doubleTapToSwipe", true);
+		replyLineAboveHeader=prefs.getBoolean("replyLineAboveHeader", true);
+		confirmBeforeReblog=prefs.getBoolean("confirmBeforeReblog", false);
+		hapticFeedback=prefs.getBoolean("hapticFeedback", true);
+		swapBookmarkWithBoostAction=prefs.getBoolean("swapBookmarkWithBoostAction", false);
+		mentionRebloggerAutomatically=prefs.getBoolean("mentionRebloggerAutomatically", false);
+		showPostsWithoutAlt=prefs.getBoolean("showPostsWithoutAlt", true);
+		showMediaPreview=prefs.getBoolean("showMediaPreview", true);
+		removeTrackingParams=prefs.getBoolean("removeTrackingParams", true);
+
+		theme=ThemePreference.values()[prefs.getInt("theme", 0)];
+
 
 		if (prefs.contains("prefixRepliesWithRe")) {
 			prefixReplies = prefs.getBoolean("prefixRepliesWithRe", false)
@@ -168,7 +211,6 @@ public class GlobalUserPreferences{
 				.putBoolean("autoHideFab", autoHideFab)
 				.putBoolean("allowRemoteLoading", allowRemoteLoading)
 				.putString("autoRevealEqualSpoilers", autoRevealEqualSpoilers.name())
-				.putBoolean("forwardReportDefault", forwardReportDefault)
 				.putBoolean("disableM3PillActiveIndicator", disableM3PillActiveIndicator)
 				.putBoolean("showNavigationLabels", showNavigationLabels)
 				.putBoolean("displayPronounsInTimelines", displayPronounsInTimelines)
@@ -179,13 +221,59 @@ public class GlobalUserPreferences{
 				.putBoolean("underlinedLinks", underlinedLinks)
 				.putString("color", color.name())
 				.putBoolean("likeIcon", likeIcon)
+
+				// MOSHIDON
+				.putBoolean("defaultToUnlistedReplies", defaultToUnlistedReplies)
+				.putBoolean("doubleTapToSearch", doubleTapToSearch)
+				.putBoolean("doubleTapToSwipe", doubleTapToSwipe)
+				.putBoolean("replyLineAboveHeader", replyLineAboveHeader)
+				.putBoolean("confirmBeforeReblog", confirmBeforeReblog)
+				.putBoolean("swapBookmarkWithBoostAction", swapBookmarkWithBoostAction)
+				.putBoolean("hapticFeedback", hapticFeedback)
+				.putBoolean("mentionRebloggerAutomatically", mentionRebloggerAutomatically)
+				.putBoolean("showDividers", showDividers)
+				.putBoolean("relocatePublishButton", relocatePublishButton)
+				.putBoolean("enableDeleteNotifications", enableDeleteNotifications)
+				.putBoolean("showPostsWithoutAlt", showPostsWithoutAlt)
+				.putBoolean("showMediaPreview", showMediaPreview)
+				.putBoolean("removeTrackingParams", removeTrackingParams)
+
 				.apply();
+	}
+
+	public static boolean isOptedOutOfPreReplySheet(PreReplySheetType type, Account account, String accountID){
+		if(getPreReplyPrefs().getBoolean("opt_out_"+type, false))
+			return true;
+		if(account==null)
+			return false;
+		String accountKey=account.acct;
+		if(!accountKey.contains("@"))
+			accountKey+="@"+AccountSessionManager.get(accountID).domain;
+		return getPreReplyPrefs().getBoolean("opt_out_"+type+"_"+accountKey.toLowerCase(), false);
+	}
+
+	public static void optOutOfPreReplySheet(PreReplySheetType type, Account account, String accountID){
+		String key;
+		if(account==null){
+			key="opt_out_"+type;
+		}else{
+			String accountKey=account.acct;
+			if(!accountKey.contains("@"))
+				accountKey+="@"+AccountSessionManager.get(accountID).domain;
+			key="opt_out_"+type+"_"+accountKey.toLowerCase();
+		}
+		getPreReplyPrefs().edit().putBoolean(key, true).apply();
 	}
 
 	public enum ThemePreference{
 		AUTO,
 		LIGHT,
 		DARK
+	}
+
+	public enum PreReplySheetType{
+		OLD_POST,
+		NON_MUTUAL
 	}
 
 	public enum AutoRevealMode {
@@ -252,5 +340,4 @@ public class GlobalUserPreferences{
 	}
 
 	//endregion
-
 }

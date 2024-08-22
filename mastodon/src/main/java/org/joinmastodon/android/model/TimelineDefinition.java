@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 
 import org.joinmastodon.android.R;
+import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
 import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.BookmarkedStatusListFragment;
@@ -36,6 +37,7 @@ public class TimelineDefinition {
     private @Nullable String listTitle;
     private boolean listIsExclusive;
 
+    private @Nullable String domain;
     private @Nullable String hashtagName;
     private @Nullable List<String> hashtagAny;
     private @Nullable List<String> hashtagAll;
@@ -50,13 +52,19 @@ public class TimelineDefinition {
         return def;
     }
 
-    public static TimelineDefinition ofList(ListTimeline list) {
+    public static TimelineDefinition ofList(FollowList list) {
         return ofList(list.id, list.title, list.exclusive);
     }
 
     public static TimelineDefinition ofHashtag(String hashtag) {
         TimelineDefinition def = new TimelineDefinition(TimelineType.HASHTAG);
         def.hashtagName = hashtag;
+        return def;
+    }
+
+    public static TimelineDefinition ofCustomLocalTimeline(String domain) {
+        TimelineDefinition def = new TimelineDefinition(TimelineType.CUSTOM_LOCAL_TIMELINE);
+        def.domain = domain;
         return def;
     }
 
@@ -142,6 +150,7 @@ public class TimelineDefinition {
             case BUBBLE -> ctx.getString(R.string.sk_timeline_bubble);
 			case BOOKMARKS -> ctx.getString(R.string.bookmarks);
 			case FAVORITES -> ctx.getString(R.string.your_favorites);
+            case CUSTOM_LOCAL_TIMELINE -> domain;
         };
     }
 
@@ -153,6 +162,7 @@ public class TimelineDefinition {
             case POST_NOTIFICATIONS -> Icon.POST_NOTIFICATIONS;
             case LIST -> listIsExclusive ? Icon.EXCLUSIVE_LIST : Icon.LIST;
             case HASHTAG -> Icon.HASHTAG;
+            case CUSTOM_LOCAL_TIMELINE -> Icon.CUSTOM_LOCAL_TIMELINE;
             case BUBBLE -> Icon.BUBBLE;
 			case BOOKMARKS -> Icon.BOOKMARKS;
 			case FAVORITES -> Icon.FAVORITES;
@@ -168,6 +178,7 @@ public class TimelineDefinition {
             case HASHTAG -> new HashtagTimelineFragment();
             case POST_NOTIFICATIONS -> new NotificationsListFragment();
             case BUBBLE -> new BubbleTimelineFragment();
+            case CUSTOM_LOCAL_TIMELINE -> new CustomLocalTimelineFragment();
 			case BOOKMARKS -> new BookmarkedStatusListFragment();
 			case FAVORITES -> new FavoritedStatusListFragment();
         };
@@ -194,6 +205,7 @@ public class TimelineDefinition {
         TimelineDefinition that = (TimelineDefinition) o;
         if (type != that.type) return false;
         if (type == TimelineType.LIST) return Objects.equals(listId, that.listId);
+        if (type == TimelineType.CUSTOM_LOCAL_TIMELINE) return Objects.equals(domain.toLowerCase(), that.domain.toLowerCase());
         if (type == TimelineType.HASHTAG) {
             if (hashtagName == null && that.hashtagName == null) return true;
             if (hashtagName == null || that.hashtagName == null) return false;
@@ -214,6 +226,7 @@ public class TimelineDefinition {
         def.listTitle = listTitle;
         def.listIsExclusive = listIsExclusive;
         def.hashtagName = hashtagName;
+        def.domain = domain;
         def.hashtagAny = hashtagAny;
         def.hashtagAll = hashtagAll;
         def.hashtagNone = hashtagNone;
@@ -232,6 +245,8 @@ public class TimelineDefinition {
             args.putStringArrayList("any", hashtagAny == null ? new ArrayList<>() : new ArrayList<>(hashtagAny));
             args.putStringArrayList("all", hashtagAll == null ? new ArrayList<>() : new ArrayList<>(hashtagAll));
             args.putStringArrayList("none", hashtagNone == null ? new ArrayList<>() : new ArrayList<>(hashtagNone));
+        } else if (type == TimelineType.CUSTOM_LOCAL_TIMELINE) {
+            args.putString("domain", domain);
         }
         return args;
     }
@@ -244,6 +259,7 @@ public class TimelineDefinition {
 		LIST,
 		HASHTAG,
 		BUBBLE,
+		CUSTOM_LOCAL_TIMELINE,
 
 		// not really timelines, but some people want it, so,,
 		BOOKMARKS,
@@ -320,6 +336,7 @@ public class TimelineDefinition {
 		THUNDERSTORM(R.drawable.ic_fluent_weather_thunderstorm_24_regular, R.string.sk_icon_thunderstorm),
 		RAIN(R.drawable.ic_fluent_weather_rain_24_regular, R.string.sk_icon_rain),
 		SNOWFLAKE(R.drawable.ic_fluent_weather_snowflake_24_regular, R.string.sk_icon_snowflake),
+		GNOME(R.drawable.ic_gnome_logo, R.string.mo_icon_gnome),
 
         HOME(R.drawable.ic_fluent_home_24_regular, R.string.sk_timeline_home, true),
         LOCAL(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
@@ -328,6 +345,7 @@ public class TimelineDefinition {
         LIST(R.drawable.ic_fluent_people_24_regular, R.string.sk_list, true),
         EXCLUSIVE_LIST(R.drawable.ic_fluent_rss_24_regular, R.string.sk_exclusive_list, true),
         HASHTAG(R.drawable.ic_fluent_number_symbol_24_regular, R.string.sk_hashtag, true),
+        CUSTOM_LOCAL_TIMELINE(R.drawable.ic_fluent_people_community_24_regular, R.string.sk_timeline_local, true),
         BUBBLE(R.drawable.ic_fluent_circle_24_regular, R.string.sk_timeline_bubble, true),
 		BOOKMARKS(R.drawable.ic_fluent_bookmark_multiple_24_regular, R.string.bookmarks, true),
 		FAVORITES(R.drawable.ic_fluent_star_24_regular, R.string.your_favorites, true);

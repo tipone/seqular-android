@@ -48,6 +48,8 @@ public class CustomEmojiHelper{
 	}
 
 	public void setImageDrawable(int image, Drawable drawable){
+		if(spans.isEmpty())
+			return;
 		for(CustomEmojiSpan span:spans.get(image)){
 			span.setDrawable(drawable);
 		}

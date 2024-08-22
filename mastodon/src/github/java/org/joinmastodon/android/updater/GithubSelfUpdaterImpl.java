@@ -115,7 +115,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 
 	private void actuallyCheckForUpdates(){
 		Request req=new Request.Builder()
-				.url("https://api.github.com/repos/sk22/megalodon/releases")
+				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases")
 				.build();
 		Call call=MastodonAPIController.getHttpClient().newCall(req);
 		try(Response resp=call.execute()){
@@ -154,7 +154,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 					Log.d(TAG, "actuallyCheckForUpdates: new version: "+version);
 					for(JsonElement el:obj.getAsJsonArray("assets")){
 						JsonObject asset=el.getAsJsonObject();
-						if("megalodon.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
+						if("moshidon.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
 							long size=asset.get("size").getAsLong();
 							String url=asset.get("browser_download_url").getAsString();
 
@@ -211,7 +211,13 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 		if(state==UpdateState.DOWNLOADING)
 			throw new IllegalStateException();
 		DownloadManager dm=MastodonApp.context.getSystemService(DownloadManager.class);
-		MastodonApp.context.registerReceiver(downloadCompletionReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+
+		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.TIRAMISU){
+			MastodonApp.context.registerReceiver(downloadCompletionReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE), Context.RECEIVER_EXPORTED);
+		}else{
+			MastodonApp.context.registerReceiver(downloadCompletionReceiver, new IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE));
+		}
+
 		downloadID=dm.enqueue(
 				new DownloadManager.Request(Uri.parse(getPrefs().getString("apkURL", null)))
 						.setDestinationUri(Uri.fromFile(getUpdateApkFile()))

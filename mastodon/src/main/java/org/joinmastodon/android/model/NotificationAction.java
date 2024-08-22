@@ -2,8 +2,9 @@ package org.joinmastodon.android.model;
 
 public enum NotificationAction {
     FAVORITE,
-    REBLOG,
-    UNDO_REBLOG,
+    BOOST,
+    UNBOOST,
     BOOKMARK,
     REPLY,
+    FOLLOW_BACK
 }

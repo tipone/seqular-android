@@ -1,0 +1,2 @@
+- Compartir directamente desde o visor de imaxes (xa non é preciso ter que descargar a imaxe para compartila)
+- Arranxo de problemas menores e algunha mellora

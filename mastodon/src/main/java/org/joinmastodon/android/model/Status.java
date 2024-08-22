@@ -3,12 +3,15 @@ package org.joinmastodon.android.model;
 import static org.joinmastodon.android.api.MastodonAPIController.gson;
 import static org.joinmastodon.android.api.MastodonAPIController.gsonWithoutDeserializer;
 
+import androidx.annotation.Nullable;
+
 import android.text.TextUtils;
 import android.util.Pair;
 
 import org.joinmastodon.android.api.ObjectValidationException;
 import org.joinmastodon.android.api.RequiredField;
 import org.joinmastodon.android.events.StatusCountersUpdatedEvent;
+import org.joinmastodon.android.events.StatusMuteChangedEvent;
 import org.joinmastodon.android.ui.text.HtmlParser;
 import org.parceler.Parcel;
 
@@ -52,7 +55,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public StatusPrivacy visibility;
 	public boolean sensitive;
 	@RequiredField
-	public String spoilerText;
+	public String spoilerText="";
 	public List<Attachment> mediaAttachments;
 	public Application application;
 	@RequiredField
@@ -75,6 +78,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public Card card;
 	public String language;
 	public String text;
+	@Nullable
+	public Account rebloggedBy;
 	public boolean localOnly;
 
 	public boolean favourited;
@@ -181,6 +186,11 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		return id;
 	}
 
+	@Override
+	public String getAccountID(){
+		return getContentStatus().account.id;
+	}
+
 	public void update(StatusCountersUpdatedEvent ev){
 		favouritesCount=ev.favorites;
 		reblogsCount=ev.reblogs;
@@ -189,6 +199,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 		reblogged=ev.reblogged;
 		bookmarked=ev.bookmarked;
 		pinned=ev.pinned;
+	}
+
+	public void update(StatusMuteChangedEvent ev) {
+		muted=ev.muted;
 	}
 
 	public void update(EmojiReactionsUpdatedEvent ev){
@@ -216,7 +230,10 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	@NonNull
 	@Override
 	public Status clone(){
-		return (Status) super.clone();
+		Status copy=(Status) super.clone();
+		copy.spoilerRevealed=false;
+		copy.translationState=TranslationState.HIDDEN;
+		return copy;
 	}
 
 	public static final Pattern BOTTOM_TEXT_PATTERN = Pattern.compile("(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️)(?:\uD83D\uDC49\uD83D\uDC48(?:[\uD83E\uDEC2\uD83D\uDC96✨\uD83E\uDD7A,]+|❤️))*\uD83D\uDC49\uD83D\uDC48");

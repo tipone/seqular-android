@@ -1,0 +1,6 @@
+- Finalmente: O tan agardado redeseño da interface de usuario de Material 3!
+- As fendas na cronoloxía de inicio permiten escoller se cargas datos máis novos ou máis antigos
+- Para anuncios de servidores e usuario de Akkoma: reacción con emoticonas!
+- Emoticonas recentemente empregadas no selector de emoticonas
+- Os pronomes amósanse agora xunto cos nomes de visualización
+- Moitas correccións de erros e novos erros para que descubras ✨

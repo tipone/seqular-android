@@ -1,18 +1,25 @@
 package org.joinmastodon.android.fragments.settings;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.WindowInsets;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuInflater;
 
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.fragments.CustomLocalTimelineFragment;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
@@ -25,6 +32,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.widget.ViewPager2;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.fragments.AppKitFragment;
 import me.grishka.appkit.utils.V;
 
@@ -127,6 +135,41 @@ public class SettingsServerFragment extends AppKitFragment{
 			case 1 -> rulesFragment;
 			default -> throw new IllegalStateException();
 		};
+	}
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
+		if (instance != null) {
+			inflater.inflate(R.menu.instance_info, menu);
+			UiUtils.enableOptionsMenuIcons(getActivity(), menu);
+			menu.findItem(R.id.share).setTitle(R.string.button_share);
+
+		}
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		int id=item.getItemId();
+		if(id==R.id.share){
+			Intent intent = new Intent(Intent.ACTION_SEND);
+			intent.setType("text/plain");
+			intent.putExtra(Intent.EXTRA_TEXT, instance.normalizedUri);
+			startActivity(Intent.createChooser(intent, item.getTitle()));
+		} else if (id==R.id.open_timeline) {
+			Bundle args=new Bundle();
+			args.putString("account", accountID);
+			args.putString("domain", instance.normalizedUri);
+			Nav.go(getActivity(), CustomLocalTimelineFragment.class, args);
+		} else if (id==R.id.open_in_browser){
+			UiUtils.launchWebBrowser(getActivity(), new Uri.Builder().scheme("https").authority(instance.uri).appendPath("about").build().toString());
+		}
+		return true;
+	}
+
+	@Override
+	public void onAttach(Activity activity){
+		super.onAttach(activity);
+		setHasOptionsMenu(true);
 	}
 
 	@Override

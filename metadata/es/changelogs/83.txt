@@ -1,5 +1,4 @@
-- Me gusta/marcar/responder directamente desde la notificación de Android
-- Encabezados más bonitos y coherentes para reblogs y respuestas en la línea de tiempo.
-- Punto de notificación (que aún no carga las notificaciones)
-- Para las personas de Akkoma: Visibilidad de las respuestas, las respuestas ordenadas, citas, ...
-- Corrección de fallos y pequeños ajustes
+La versión 83 aporta algunas mejoras menores, como:
+- Solución de problemas de bloqueo al hacer clic en las menciones
+- Modificación del icono del bot
+- La adición de un recordatorio para añadir una descripción de la imagen si publica un archivo adjunto permite a las personas con discapacidad visual participar mejor. ¡Gracias @FineFindus!

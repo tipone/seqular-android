@@ -1,7 +1,5 @@
 package org.joinmastodon.android.fragments.settings;
 
-import static org.unifiedpush.android.connector.UnifiedPush.getDistributor;
-
 import android.app.AlertDialog;
 import android.app.NotificationManager;
 import android.content.Intent;
@@ -15,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.BuildConfig;
 import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.PushSubscriptionManager;
@@ -48,6 +47,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	private HideableSingleViewRecyclerAdapter bannerAdapter;
 	private ImageView bannerIcon;
 	private TextView bannerText;
+	private TextView bannerTitle;
 	private Button bannerButton;
 
 	private CheckableListItem<Void> mentionsItem, boostsItem, favoritesItem, followersItem, pollsItem;
@@ -60,6 +60,9 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> uniformIconItem, deleteItem, onlyLatestItem, unifiedPushItem;
 	private CheckableListItem<Void> postsItem, updateItem;
 
+	// MOSHIDON
+	private CheckableListItem<Void> swapBookmarkWithReblogItem;
+
 	private AccountLocalPreferences lp;
 
 	@Override
@@ -69,7 +72,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		lp=AccountSessionManager.get(accountID).getLocalPreferences();
 
 		getPushSubscription();
-		useUnifiedPush=!getDistributor(getContext()).isEmpty();
+		useUnifiedPush=!UnifiedPush.getDistributor(getContext()).isEmpty();
 
 		onDataLoaded(List.of(
 				pauseItem=new CheckableListItem<>(getString(R.string.pause_all_notifications), getPauseItemSubtitle(), CheckableListItem.Style.SWITCH, false, R.drawable.ic_fluent_alert_snooze_24_regular, i->onPauseNotificationsClick(false)),
@@ -83,7 +86,8 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 				updateItem=new CheckableListItem<>(R.string.sk_notification_type_update, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.update, R.drawable.ic_fluent_history_24_regular, i->toggleCheckableItem(updateItem)),
 				postsItem=new CheckableListItem<>(R.string.sk_notification_type_posts, 0, CheckableListItem.Style.CHECKBOX, pushSubscription.alerts.status, R.drawable.ic_fluent_chat_24_regular, i->toggleCheckableItem(postsItem), true),
 
-				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, i->toggleCheckableItem(uniformIconItem)),
+				uniformIconItem=new CheckableListItem<>(R.string.sk_settings_uniform_icon_for_notifications, R.string.mo_setting_uniform_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.uniformNotificationIcon, R.drawable.ic_ntf_logo, i->toggleCheckableItem(uniformIconItem)),
+				swapBookmarkWithReblogItem=new CheckableListItem<>(R.string.mo_swap_bookmark_with_reblog, R.string.mo_swap_bookmark_with_reblog_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.swapBookmarkWithBoostAction, R.drawable.ic_boost, i->toggleCheckableItem(swapBookmarkWithReblogItem)),
 				deleteItem=new CheckableListItem<>(R.string.sk_settings_enable_delete_notifications, 0, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enableDeleteNotifications, R.drawable.ic_fluent_mail_inbox_dismiss_24_regular, i->toggleCheckableItem(deleteItem)),
 				onlyLatestItem=new CheckableListItem<>(R.string.sk_settings_single_notification, 0, CheckableListItem.Style.SWITCH, lp.keepOnlyLatestNotification, R.drawable.ic_fluent_convert_range_24_regular, i->toggleCheckableItem(onlyLatestItem), true),
 				unifiedPushItem=new CheckableListItem<>(R.string.sk_settings_unifiedpush, 0, CheckableListItem.Style.SWITCH, useUnifiedPush, R.drawable.ic_fluent_alert_arrow_up_24_regular, i->onUnifiedPushClick(), true)
@@ -116,6 +120,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 				|| pollsItem.checked!=ps.alerts.poll;
 		GlobalUserPreferences.uniformNotificationIcon=uniformIconItem.checked;
 		GlobalUserPreferences.enableDeleteNotifications=deleteItem.checked;
+		GlobalUserPreferences.swapBookmarkWithBoostAction=swapBookmarkWithReblogItem.checked;
 		GlobalUserPreferences.save();
 		lp.keepOnlyLatestNotification=onlyLatestItem.checked;
 		lp.save();
@@ -153,6 +158,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	@Override
 	protected RecyclerView.Adapter<?> getAdapter(){
 		View banner=getActivity().getLayoutInflater().inflate(R.layout.item_settings_banner, list, false);
+		bannerTitle=banner.findViewById(R.id.title);
 		bannerText=banner.findViewById(R.id.text);
 		bannerIcon=banner.findViewById(R.id.icon);
 		bannerButton=banner.findViewById(R.id.button);
@@ -160,12 +166,6 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 		bannerAdapter.setVisible(false);
 		banner.findViewById(R.id.button2).setVisibility(View.GONE);
 		banner.findViewById(R.id.title).setVisibility(View.GONE);
-		((RelativeLayout.LayoutParams) bannerText.getLayoutParams())
-				.setMargins(0, V.dp(4), 0, 0);
-		((RelativeLayout.LayoutParams) bannerIcon.getLayoutParams())
-				.addRule(RelativeLayout.CENTER_VERTICAL);
-		RelativeLayout.LayoutParams buttonParams = (RelativeLayout.LayoutParams) bannerButton.getLayoutParams();
-		buttonParams.setMargins(buttonParams.leftMargin, V.dp(-8), buttonParams.rightMargin, V.dp(-12));
 
 		mergeAdapter=new MergeRecyclerAdapter();
 		mergeAdapter.addAdapter(bannerAdapter);
@@ -316,6 +316,20 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 			bannerText.setText(R.string.notifications_disabled_in_system);
 			bannerButton.setText(R.string.open_system_notification_settings);
 			bannerButton.setOnClickListener(v->openSystemNotificationSettings());
+		}else if(BuildConfig.BUILD_TYPE.equals("fdroidRelease") && UnifiedPush.getDistributor(getContext()).isEmpty()){
+			bannerAdapter.setVisible(true);
+			bannerIcon.setImageResource(R.drawable.ic_fluent_warning_24_filled);
+			bannerTitle.setVisibility(View.VISIBLE);
+			bannerTitle.setText(R.string.mo_settings_unifiedpush_warning);
+			if(UnifiedPush.getDistributors(getContext(), new ArrayList<>()).isEmpty()) {
+				bannerText.setText(R.string.mo_settings_unifiedpush_warning_no_distributors);
+				bannerButton.setText(R.string.info);
+				bannerButton.setOnClickListener(v->UiUtils.launchWebBrowser(getContext(), "https://unifiedpush.org/"));
+			} else {
+				bannerText.setText(R.string.mo_settings_unifiedpush_warning_disabled);
+				bannerButton.setText(R.string.mo_settings_unifiedpush_enable);
+				bannerButton.setOnClickListener(v->onUnifiedPushClick());
+			}
 		}else if(pauseTime>System.currentTimeMillis()){
 			bannerAdapter.setVisible(true);
 			bannerIcon.setImageResource(R.drawable.ic_fluent_alert_snooze_24_regular);
@@ -328,7 +342,7 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 	}
 
 	private void onUnifiedPushClick(){
-		if(getDistributor(getContext()).isEmpty()){
+		if(UnifiedPush.getDistributor(getContext()).isEmpty()){
 			List<String> distributors = UnifiedPush.getDistributors(getContext(), new ArrayList<>());
 			showUnifiedPushRegisterDialog(distributors);
 			return;
@@ -363,5 +377,10 @@ public class SettingsNotificationsFragment extends BaseSettingsFragment<Void>{
 					unifiedPushItem.toggle();
 					rebindItem(unifiedPushItem);
 				}).setOnCancelListener(d->rebindItem(unifiedPushItem)).show();
+	}
+
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path("/settings/preferences/notifications").build();
 	}
 }

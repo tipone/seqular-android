@@ -77,19 +77,9 @@
 		<item quantity="other">%d wussan i d-yeqqimen</item>
 	</plurals>
 	<string name="poll_closed">Ifukk</string>
-	<string name="confirm_mute_title">Sgugem amiḍan</string>
-	<string name="confirm_mute">Sentem asgugem i %s</string>
 	<string name="do_mute">Sgugem</string>
-	<string name="confirm_unmute_title">Kkes asgugem i umiḍan</string>
-	<string name="confirm_unmute">Sentem tukksa n usgugem i %s</string>
 	<string name="do_unmute">Kkes asgugem</string>
-	<string name="confirm_block_title">Sewḥel amiḍan</string>
-	<string name="confirm_block_domain_title">Sewḥel taɣult</string>
-	<string name="confirm_block">Sentem asewḥel n %s</string>
 	<string name="do_block">Sewḥel</string>
-	<string name="confirm_unblock_title">Kkes asewḥel i umiḍan</string>
-	<string name="confirm_unblock_domain_title">Serreḥ i taγult</string>
-	<string name="confirm_unblock">Sentem tukksa n usgugem i %s</string>
 	<string name="do_unblock">Serreḥ</string>
 	<string name="button_blocked">Yettusewḥel</string>
 	<string name="action_vote">Fren</string>
@@ -132,19 +122,7 @@
 	<string name="password">Awal uffir</string>
 	<string name="confirm_password">Sentem awal uffir</string>
 	<string name="password_note">Seddu isekkilen imeqqranen, isekkilen imaẓlayen d wuṭṭunen i useǧhed ugar n wawal-ik•im uffir.</string>
-	<string name="category_academia">Akadimi</string>
-	<string name="category_activism">Tinuɣmest</string>
-	<string name="category_all">Akk</string>
-	<string name="category_art">Taẓuri</string>
-	<string name="category_food">Učči</string>
-	<string name="category_furry">S taḍut</string>
-	<string name="category_games">Uraren</string>
 	<string name="category_general">Amatu</string>
-	<string name="category_journalism">Taɣamsa</string>
-	<string name="category_lgbt">LGBT</string>
-	<string name="category_music">Aẓawan</string>
-	<string name="category_regional">Amnaḍan</string>
-	<string name="category_tech">Atiknikan</string>
 	<!-- %s is the email address -->
 	<string name="resend">Ales tuzna</string>
 	<string name="open_email_app">Ldi asnas n yimayl</string>
@@ -208,7 +186,6 @@
 	<string name="button_follow_pending">Yettraǧu</string>
 	<string name="follows_you">Yeṭṭafaṛ-ik·em-id</string>
 	<!-- translators: %,d is a valid placeholder, it formats the number with locale-dependent grouping separators -->
-	<string name="timestamp_via_app">%1$s s %2$s</string>
 	<string name="time_now">tura</string>
 	<string name="time_just_now">tura kan</string>
 	<string name="edit">Ẓreg</string>
@@ -246,5 +223,5 @@
 	<!-- Screen reader description for the menu on the home timeline screen -->
 	<!-- %s is the name of the list -->
 	<!-- %s is a username -->
-	<string name="see_new_posts">Ẓer tissufaɣ timaynutin</string>
+	<!-- %s is a time interval ("5 months") -->
 </resources>

@@ -1,6 +1,5 @@
 package org.joinmastodon.android.fragments.settings;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -18,7 +17,7 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.viewmodel.ListItem;
-import org.joinmastodon.android.ui.AccountSwitcherSheet;
+import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.utils.HideableSingleViewRecyclerAdapter;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -59,7 +58,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 				new ListItem<>(R.string.settings_privacy, 0, R.drawable.ic_fluent_shield_24_regular, this::onPrivacyClick),
 				new ListItem<>(R.string.settings_notifications, 0, R.drawable.ic_fluent_alert_24_regular, this::onNotificationsClick),
 				new ListItem<>(R.string.sk_settings_instance, 0, R.drawable.ic_fluent_server_24_regular, this::onInstanceClick),
-				new ListItem<>(getString(R.string.about_app, getString(R.string.sk_app_name)), null, R.drawable.ic_fluent_info_24_regular, this::onAboutClick, null, 0, true),
+				new ListItem<>(getString(R.string.about_app, getString(R.string.mo_app_name)), null, R.drawable.ic_fluent_info_24_regular, this::onAboutClick, null, 0, true),
 				new ListItem<>(R.string.manage_accounts, 0, R.drawable.ic_fluent_person_swap_24_regular, this::onManageAccountsClick),
 				new ListItem<>(R.string.log_out, 0, R.drawable.ic_fluent_sign_out_24_regular, this::onLogOutClick, R.attr.colorM3Error, false)
 		));
@@ -166,6 +165,7 @@ public class SettingsMainFragment extends BaseSettingsFragment<Void>{
 	private void onLogOutClick(ListItem<?> item_){
 		AccountSession session=AccountSessionManager.getInstance().getAccount(accountID);
 		new M3AlertDialogBuilder(getActivity())
+				.setTitle(R.string.log_out)
 				.setMessage(getString(R.string.confirm_log_out, session.getFullUsername()))
 				.setPositiveButton(R.string.log_out, (dialog, which)->account.logOut(getActivity(), ()->{
 					loggedOut=true;

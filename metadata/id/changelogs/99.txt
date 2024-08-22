@@ -1,0 +1,6 @@
+Hal-hal baru untuk rilis 99:
+- Tambahkan tindakan notifikasi
+- Tambahkan opsi untuk mengaktifkan balasan tidak terdaftar secara default
+- Tambahkan pengatur waktu bisu
+- Tambahkan lencana notifikasi jika ada notifikasi yang belum dibaca
+- Perbaikan bug kecil dan peningkatan kegunaan

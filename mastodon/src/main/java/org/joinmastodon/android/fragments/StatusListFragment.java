@@ -12,6 +12,7 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.api.CacheController;
 import org.joinmastodon.android.api.session.AccountLocalPreferences;
 import org.joinmastodon.android.api.session.AccountSessionManager;
+import org.joinmastodon.android.events.StatusMuteChangedEvent;
 import org.joinmastodon.android.events.EmojiReactionsUpdatedEvent;
 import org.joinmastodon.android.events.PollUpdatedEvent;
 import org.joinmastodon.android.events.ReblogDeletedEvent;
@@ -25,9 +26,11 @@ import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.ui.displayitems.EmojiReactionsStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.ExtendedFooterStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.FooterStatusDisplayItem;
+import org.joinmastodon.android.ui.displayitems.HeaderStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.GapStatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.StatusDisplayItem;
 import org.joinmastodon.android.ui.displayitems.TextStatusDisplayItem;
+import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
@@ -56,7 +59,11 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 			flags |= StatusDisplayItem.FLAG_NO_EMOJI_REACTIONS;
 		if(GlobalUserPreferences.translateButtonOpenedOnly)
 			flags |= StatusDisplayItem.FLAG_NO_TRANSLATE;
-		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, getFilterContext(), isMainThreadStatus ? 0 : flags);
+		if(!GlobalUserPreferences.showMediaPreview)
+			flags |= StatusDisplayItem.FLAG_NO_MEDIA_PREVIEW;
+		/* MOSHIDON: we make the filterContext null in the main status in the thread fragment, so that the main status is never filtered (because you just clicked on it).
+		This also restores old behavior that got lost to time and changes in the filter system	*/
+		return StatusDisplayItem.buildItems(this, s, accountID, s, knownAccounts, isMainThreadStatus ? null : getFilterContext(), isMainThreadStatus ? 0 : flags);
 	}
 
 	protected abstract FilterContext getFilterContext();
@@ -85,6 +92,18 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 	public void onItemClick(String id){
 		Status status=getContentStatusByID(id);
 		if(status==null || status.preview) return;
+		if(status.isRemote){
+			UiUtils.lookupStatus(getContext(), status, accountID, null, status1 -> {
+				status1.filterRevealed = true;
+				Bundle args=new Bundle();
+				args.putString("account", accountID);
+				args.putParcelable("status", Parcels.wrap(status1));
+				if(status1.inReplyToAccountId!=null && knownAccounts.containsKey(status1.inReplyToAccountId))
+					args.putParcelable("inReplyToAccount", Parcels.wrap(knownAccounts.get(status1.inReplyToAccountId)));
+				Nav.go(getActivity(), ThreadFragment.class, args);
+			});
+			return;
+		}
 		status.filterRevealed=true;
 		Bundle args=new Bundle();
 		args.putString("account", accountID);
@@ -270,6 +289,28 @@ public abstract class StatusListFragment extends BaseStatusListFragment<Status> 
 							footer.rebind();
 						}else if(holder instanceof ExtendedFooterStatusDisplayItem.Holder footer && footer.getItem().status==s.getContentStatus()){
 							footer.rebind();
+						}
+					}
+				}
+			}
+			for(Status s:preloadedData){
+				if(s.getContentStatus().id.equals(ev.id)){
+					s.getContentStatus().update(ev);
+					AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
+				}
+			}
+		}
+
+		@Subscribe
+		public void onStatusMuteChaged(StatusMuteChangedEvent ev){
+			for(Status s:data){
+				if(s.getContentStatus().id.equals(ev.id)){
+					s.getContentStatus().update(ev);
+					AccountSessionManager.get(accountID).getCacheController().updateStatus(s);
+					for(int i=0;i<list.getChildCount();i++){
+						RecyclerView.ViewHolder holder=list.getChildViewHolder(list.getChildAt(i));
+						if(holder instanceof HeaderStatusDisplayItem.Holder header && header.getItem().status==s.getContentStatus()){
+							header.rebind();
 						}
 					}
 				}

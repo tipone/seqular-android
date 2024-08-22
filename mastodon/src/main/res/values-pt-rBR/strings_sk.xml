@@ -247,7 +247,7 @@
     <string name="sk_filtered">Filtrado: %s</string>
     <string name="sk_expand">Mostrar mais</string>
     <string name="sk_unfinished_attachments_message">Alguns anexos ainda não foram enviados.</string>
-    <string name="sk_unfinished_attachments">Corrigir anexos\?</string>
+    <string name="sk_unfinished_attachments">Anexos sendo enviados</string>
     <string name="sk_settings_glitch_mode_explanation">Habilite isso se sua instância inicial for executada no Glitch. Não é necessário para Hometown ou Akkoma.</string>
     <string name="sk_collapse">Mostrar menos</string>
     <string name="sk_settings_prefix_reply_cw_with_re">Prefixe com “Aviso de conteúdo” ao responder</string>
@@ -322,7 +322,7 @@
     <string name="sk_icon_beaker">Béquer</string>
     <string name="sk_icon_doctor">Doutor</string>
     <string name="sk_edit_timeline_tag_main">Postagens contendo hashtag…</string>
-    <string name="sk_edit_timeline_tags_explanation">Observe que o servidor lida com essas operações. A combinação deles pode não ser suportada.</string>
+    <string name="sk_edit_timeline_tags_explanation">Observe que o servidor trata essas operações. A combinação delas pode não ser suportada.</string>
     <string name="sk_gif_badge">GIF</string>
     <string name="sk_advanced_options_show">Mostrar opções avançadas</string>
     <string name="sk_advanced_options_hide">Ocultar opções avançadas</string>
@@ -342,7 +342,7 @@
     <string name="sk_mute_label">Duração</string>
     <string name="sk_button_react">Reaja com emoji</string>
     <string name="sk_enter_emoji_toast">Por favor, digite um emoji</string>
-    <string name="sk_enter_emoji_hint">Digite para reagir com um emoji</string>
+    <string name="sk_enter_emoji_hint">Digite um emoji ou pesquise</string>
     <string name="sk_again_for_system_keyboard">Toque novamente para Teclado do Sistema</string>
     <string name="sk_duration_minutes_5">5 minutos</string>
     <string name="sk_duration_minutes_30">30 minutos</string>
@@ -353,7 +353,7 @@
     <string name="sk_duration_days_7">7 dias</string>
     <string name="sk_duration_indefinite">Indeterminado</string>
     <string name="sk_settings_emoji_reactions">Ativar reações emoji</string>
-    <string name="sk_settings_emoji_reactions_explanation">Exibe reações emoji nas publicações e permite interagir com elas. Algumas versões modificadas do Mastodon suportam isso, mas o Mastodon não.</string>
+    <string name="sk_settings_emoji_reactions_explanation">Exibe reações emoji nas publicações e permite adicionar as suas. Vários servidores do Fediverso suportam isso, mas o Mastodon não.</string>
     <string name="sk_settings_unifiedpush_choose">Escolha um distribuidor</string>
     <string name="sk_settings_unifiedpush_no_distributor_body">Você precisa instalar um distribuidor para que as notificações UnifiedPush funcionem. Para obter mais informações, visite https://unifiedpush.org/</string>
     <string name="sk_settings_continues_playback">Sobreposição de áudio</string>
@@ -375,21 +375,76 @@
     <string name="sk_settings_show_emoji_reactions">Mostrar reações com emojis nas linhas do tempo</string>
     <string name="sk_settings_show_emoji_reactions_always">Sempre mostrar o botão adicionar</string>
     <string name="sk_search_suicide_title">Caso você precise de ajuda…</string>
-    <string name="sk_disable_pill_shaped_active_indicator">Desativar indicador de guia ativa em forma de comprimido</string>
+    <string name="sk_disable_pill_shaped_active_indicator">Desativar o indicador de aba ativa em forma de pílula</string>
     <string name="sk_tab_home">Início</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Mostrar nomes das guias na barra de navegação</string>
     <string name="sk_load_missing_posts_below">Carregar publicações mais antigas</string>
     <string name="sk_do_not_show_again">Não mostrar novamente</string>
     <string name="sk_search_suicide_hotlines">Encontre uma linha de apoio</string>
-    <string name="sk_trending_links_info_banner">Estas são as notícias mais comentadas em seu servidor.</string>
+    <string name="sk_trending_links_info_banner">Essas notícias estão sendo comentadas em todo o Fediverso..</string>
     <string name="sk_post_contains_media">A publicação contém mídia</string>
     <string name="sk_load_missing_posts_above">Carregar publicações mais recentes</string>
     <string name="sk_search_suicide_message">Se você está procurando um sinal para não se matar, aqui está. Por favor, caso esteja deprimido e/ou tendo pensamentos suicidas, considere entrar em contato com uma linha de apoio para prevenção do suicídio.</string>
     <string name="sk_suicide_helplines_url">https://findahelpline.com/br</string>
-    <string name="sk_trending_posts_info_banner">Essas são as publicações que estão ganhando força no seu servidor.</string>
+    <string name="sk_trending_posts_info_banner">Essas postagens estão ganhando força no Fediverse.</string>
     <plurals name="sk_posts_count_label">
         <item quantity="one">publicação</item>
         <item quantity="many">publicações</item>
         <item quantity="other">publicações</item>
     </plurals>
+    <string name="sk_icon_water">Água</string>
+    <string name="sk_icon_sun">Sol</string>
+    <string name="sk_icon_sunset">Pôr do sol</string>
+    <string name="sk_icon_cloud">Nuvem</string>
+    <string name="sk_icon_rain">Chuva</string>
+    <string name="sk_icon_snowflake">Floco de neve</string>
+    <string name="sk_settings_color_palette_default">Default (%s)</string>
+    <string name="sk_icon_thunderstorm">Tempestade</string>
+    <string name="sk_settings_like_icon">Use um coração como ícone de favorito</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="one">%d segundo</item>
+        <item quantity="many">%d segundos</item>
+        <item quantity="other"/>
+    </plurals>
+    <string name="sk_settings_clear_timeline_cache">Limpar cache da linha do tempo inicial</string>
+    <string name="sk_private_note_update_failed">Falha ao salvar nota</string>
+    <string name="sk_delete_note">Excluir nota pessoal</string>
+    <string name="sk_add_note">Adicionar nota pessoal</string>
+    <string name="sk_poll_multiple_choice">Escolhas múltiplas</string>
+    <string name="sk_poll_show_results">Mostrar resultados</string>
+    <string name="sk_poll_hide_results">Ocultar resultados</string>
+    <string name="sk_crash_log_copied">Registro de falhas copiado</string>
+    <string name="sk_settings_copy_crash_log">Copiar o último registro de falhas</string>
+    <string name="sk_settings_default_visibility">Visibilidade de postagem padrão</string>
+    <string name="sk_button_mutuals">Mútuos</string>
+    <string name="sk_blocked_accounts">Contas bloqueadas</string>
+    <plurals name="sk_time_minutes">
+        <item quantity="one">%d minuto</item>
+        <item quantity="many">%d minutos</item>
+        <item quantity="other"/>
+    </plurals>
+    <plurals name="sk_time_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="many">%d horas</item>
+        <item quantity="other"/>
+    </plurals>
+    <plurals name="sk_time_days">
+        <item quantity="one">%d dia</item>
+        <item quantity="many">%d dias</item>
+        <item quantity="other"/>
+    </plurals>
+    <string name="sk_muted_accounts">Contas silenciadas</string>
+    <string name="sk_recently_used">Usado recentemente</string>
+    <string name="sk_settings_underlined_links">Links sublinhados</string>
+    <string name="sk_set_as_default">Definir como padrão</string>
+    <string name="sk_edit_alt_text">Editar texto alternativo</string>
+    <string name="sk_confirm_changes">Confirmar alterações</string>
+    <string name="sk_timeline_cache_cleared">Cache da linha do tempo inicial limpa</string>
+    <string name="sk_settings_lock_account">Aprovar manualmente novos seguidores</string>
+    <string name="sk_private_note_hint">Adicione uma nota pessoal sobre este perfil</string>
+    <string name="sk_private_note_confirm_delete">Excluir nota pessoal sobre %s?</string>
+    <string name="sk_settings_crash_log_unavailable">Nenhum disponível... ainda</string>
+    <string name="sk_open_post_preview">Pré-visualizar postagem</string>
+    <string name="sk_post_preview">Pré-visualizar</string>
+    <string name="sk_posted">%s postou</string>
 </resources>

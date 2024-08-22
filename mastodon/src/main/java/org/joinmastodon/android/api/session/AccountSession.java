@@ -21,11 +21,13 @@ import org.joinmastodon.android.api.requests.markers.SaveMarkers;
 import org.joinmastodon.android.api.requests.oauth.RevokeOauthToken;
 import org.joinmastodon.android.events.NotificationsMarkerUpdatedEvent;
 import org.joinmastodon.android.model.Account;
+import org.joinmastodon.android.model.AltTextFilter;
 import org.joinmastodon.android.model.Application;
 import org.joinmastodon.android.model.FilterAction;
 import org.joinmastodon.android.model.FilterContext;
 import org.joinmastodon.android.model.FilterResult;
 import org.joinmastodon.android.model.Instance;
+import org.joinmastodon.android.model.FollowList;
 import org.joinmastodon.android.model.LegacyFilter;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushSubscription;
@@ -34,7 +36,9 @@ import org.joinmastodon.android.model.TimelineMarkers;
 import org.joinmastodon.android.model.Token;
 import org.joinmastodon.android.utils.ObjectIdComparator;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -70,6 +74,7 @@ public class AccountSession{
 	private transient SharedPreferences prefs;
 	private transient boolean preferencesNeedSaving;
 	private transient AccountLocalPreferences localPreferences;
+	private transient List<FollowList> lists;
 
 	AccountSession(Token token, Account self, Application app, String domain, boolean activated, AccountActivationInfo activationInfo){
 		this.token=token;
@@ -310,8 +315,11 @@ public class AccountSession{
 			return true;
 		// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
 		if(getLocalPreferences().serverSideFiltersSupported){
+			// Moshidon: this code path in CustomLocalTimelines makes the app crash, so this check is here
+			if (s.filtered == null)
+				return false;
 			for(FilterResult filter : s.filtered){
-				if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE)
+				if(filter.filter.isActive() && filter.filter.filterAction==FilterAction.HIDE && filter.filter.context.contains(context))
 					return true;
 			}
 		}else if(wordFilters!=null){
@@ -321,6 +329,21 @@ public class AccountSession{
 			}
 		}
 		return false;
+	}
+
+	public List<FilterResult> getClientSideFilters(Status status) {
+		List<FilterResult> filters = new ArrayList<>();
+
+		// filter post that have no alt text
+		// it only applies when activated in the settings
+		AltTextFilter altTextFilter=new AltTextFilter(FilterAction.WARN, EnumSet.allOf(FilterContext.class));
+		if(altTextFilter.matches(status)){
+			FilterResult filterResult=new FilterResult();
+			filterResult.filter=altTextFilter;
+			filterResult.keywordMatches=List.of();
+			filters.add(filterResult);
+		}
+		return filters;
 	}
 
 	public void updateAccountInfo(){
@@ -342,5 +365,13 @@ public class AccountSession{
 		return getInstance()
 				.map(instance->"https://"+domain+(instance.isAkkoma() ? "/images/avi.png" : "/avatars/original/missing.png"))
 				.orElse("");
+	}
+
+	public boolean isNotificationsMentionsOnly(){
+		return getRawLocalPreferences().getBoolean("notificationsMentionsOnly", false);
+	}
+
+	public void setNotificationsMentionsOnly(boolean mentionsOnly){
+		getRawLocalPreferences().edit().putBoolean("notificationsMentionsOnly", mentionsOnly).apply();
 	}
 }

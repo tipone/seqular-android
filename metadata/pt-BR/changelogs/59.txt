@@ -1,6 +1,6 @@
-- Adicionado o seletor de idioma
-- Adicionada a função de tradução
-- Melhorada a semântica para votação em enquetes (botões de opção e caixas de seleção)
-- Adicionada a opção que permite a votação de várias opções nas enquetes
+- Adiciona seletor de idiomas
+- Adiciona funcionalidade de tradução
+- Melhora a semântica de votar em enquetes (botões exclusivos e inclusivos)
+- Adiciona opção para permitir votar em multiplas opções nas enquetes
 - Nova tela de login
-- Correções de bugs
+- Correção de bugs

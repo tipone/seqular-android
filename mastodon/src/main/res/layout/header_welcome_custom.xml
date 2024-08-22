@@ -21,7 +21,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="16dp"
-		android:text="@string/sk_welcome_text" />
+		android:text="@string/mo_welcome_text" />
 
 	<View
 		android:layout_width="match_parent"

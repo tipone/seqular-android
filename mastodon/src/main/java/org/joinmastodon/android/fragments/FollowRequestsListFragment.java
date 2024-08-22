@@ -297,8 +297,8 @@ public class FollowRequestsListFragment extends MastodonRecyclerFragment<FollowR
 				cover.setImageDrawable(image);
 			}else{
 				item.emojiHelper.setImageDrawable(index-2, image);
-				name.invalidate();
-				bio.invalidate();
+				name.setText(name.getText());
+				bio.setText(bio.getText());
 			}
 			if(image instanceof Animatable a && !a.isRunning())
 				a.start();
@@ -319,7 +319,18 @@ public class FollowRequestsListFragment extends MastodonRecyclerFragment<FollowR
 
 		private void onFollowRequestButtonClick(View v) {
 			itemView.setHasTransientState(true);
-			UiUtils.handleFollowRequest((Activity) v.getContext(), item.account, accountID, null, v == acceptButton, relationship, rel -> {
+			UiUtils.handleFollowRequest((Activity) v.getContext(), item.account, accountID, null, v == acceptButton, relationship, (Boolean visible) -> {
+				if(v==acceptButton){
+					acceptButton.setTextVisible(!visible);
+					acceptProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+					acceptButton.setClickable(!visible);
+				}else{
+					rejectButton.setTextVisible(!visible);
+					rejectProgress.setVisibility(visible ? View.VISIBLE : View.GONE);
+					rejectButton.setClickable(!visible);
+				}
+				itemView.setHasTransientState(false);
+			}, rel -> {
 				if(getContext()==null) return;
 				itemView.setHasTransientState(false);
 				relationships.put(item.account.id, rel);

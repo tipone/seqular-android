@@ -1,0 +1,1 @@
+Lägger nu till en valfri växel för att få publiceringsknappen till en mer nåbar position! Det är standard nu!

@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 	<item
+		android:id="@+id/filter_notifications"
+		android:icon="@drawable/ic_fluent_filter_24_regular"
+		android:showAsAction="always"
+		android:visible="false"
+		android:title="@string/mo_filter_notifications" />
+	<item
 		android:id="@+id/follow_requests"
 		android:icon="@drawable/ic_follow_requests_24_badged"
 		android:showAsAction="always"

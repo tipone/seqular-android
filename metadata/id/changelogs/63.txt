@@ -1,6 +1,6 @@
-- Opsi untuk membagikan dengan keterlihatan khusus pada klik lama
-- Tampilkan keterlihatan pembagian sendiri
-- Ditambahkan daftar tagar yang diikuti
-- Klik lama pada tautan untuk menyalinnya
-- Opsi untuk membuka kiriman dengan akun lain
+- Pilihan untuk membagikan ulang dengan visibilitas spesifik pada klik panjang
+- Tampilkan visibilitas reblog sendiri
+- Tambahkan daftar hashtag yang diikuti
+- Klik panjang untuk menyalin tautan
+- Pilihan untuk membuka postingan dengan akun lain
 - Perbaikan kutu dan perubahan kecil

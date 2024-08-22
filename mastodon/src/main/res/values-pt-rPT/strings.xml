@@ -87,19 +87,9 @@
 		<item quantity="other">%,d votos</item>
 	</plurals>
 	<string name="poll_closed">Fechado</string>
-	<string name="confirm_mute_title">Silenciar Conta</string>
-	<string name="confirm_mute">Confirme para silenciar %s</string>
 	<string name="do_mute">Silenciar</string>
-	<string name="confirm_unmute_title">Desativar Silêncio</string>
-	<string name="confirm_unmute">Confirme para desativar silêncio para %s</string>
 	<string name="do_unmute">Desativar silêncio</string>
-	<string name="confirm_block_title">Bloquear Conta</string>
-	<string name="confirm_block_domain_title">Bloquear Domínio</string>
-	<string name="confirm_block">Confirme para bloquear %s</string>
 	<string name="do_block">Bloquear</string>
-	<string name="confirm_unblock_title">Desbloquear Conta</string>
-	<string name="confirm_unblock_domain_title">Desbloquear Domínio</string>
-	<string name="confirm_unblock">Confirme para desbloquear %s</string>
 	<string name="do_unblock">Desbloquear</string>
 	<string name="button_blocked">Bloqueado</string>
 	<string name="action_vote">Votar</string>
@@ -137,19 +127,7 @@
 	<string name="unfollow">Deixar de seguir</string>
 	<string name="back">Voltar</string>
 	<string name="password_note">Inclua letras maiúsculas, caracteres especiais e números para aumentar a força da sua senha.</string>
-	<string name="category_academia">Academia</string>
-	<string name="category_activism">Ativismo</string>
-	<string name="category_all">Tudo</string>
-	<string name="category_art">Arte</string>
-	<string name="category_food">Comida</string>
-	<string name="category_furry">Fofo</string>
-	<string name="category_games">Jogos</string>
 	<string name="category_general">Geral</string>
-	<string name="category_journalism">Jornalismo</string>
-	<string name="category_lgbt">LGBT</string>
-	<string name="category_music">Música</string>
-	<string name="category_regional">Regional</string>
-	<string name="category_tech">Tecnologia</string>
 	<!-- %s is the email address -->
 	<string name="resend">Reenviar</string>
 	<string name="open_email_app">Abrir aplicação de e-mail</string>
@@ -198,7 +176,6 @@
 		<item quantity="one">%,d favorito</item>
 		<item quantity="other">%,d favoritos</item>
 	</plurals>
-	<string name="timestamp_via_app">%1$s via %2$s</string>
 	<string name="time_now">agora</string>
 	<string name="edit_history">Editar histórico</string>
 	<string name="last_edit_at_x">Última edição: %s</string>
@@ -238,5 +215,5 @@
 	<!-- Screen reader description for the menu on the home timeline screen -->
 	<!-- %s is the name of the list -->
 	<!-- %s is a username -->
-	<string name="see_new_posts">Ver novas publicações</string>
+	<!-- %s is a time interval ("5 months") -->
 </resources>

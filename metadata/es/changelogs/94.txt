@@ -1,8 +1,5 @@
-- Visualización de hilos mejorada y más clara
-- Abre cuentas/publicaciones compartiendo una web con Megalodon
-- Carga seguidores, favoritos etc. desde la instancia de origen
-- Mejoras de compatibilidad con servidores no-Mastodon
-- Opción para configurar el tipo de contenido en las publicaciones
-- Soporte para copiar una URL desde la vista de Apps recientes en dispositivos Pixel
-- Se muestran los Avisos de Contenido iguales automáticamente en hilos
-- Corrección de errores y mejoras en la interfaz
+Novedades de la versión 94:
+- Mejoras en el comportamiento del botón flotante
+- Cambios menores en el icono del lanzador
+- Mejoras en el comportamiento de las notificaciones
+- Mejoras y correcciones menores

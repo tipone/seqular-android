@@ -12,6 +12,7 @@ import org.joinmastodon.android.ui.utils.BlurHashDecoder;
 import org.joinmastodon.android.ui.utils.BlurHashDrawable;
 import org.parceler.Parcel;
 
+import java.time.Instant;
 import java.util.List;
 
 @Parcel
@@ -35,11 +36,14 @@ public class Card extends BaseModel{
 	public String embedUrl;
 	public String blurhash;
 	public List<History> history;
+	public Instant publishedAt;
 
 	public transient Drawable blurhashPlaceholder;
 
 	@Override
 	public void postprocess() throws ObjectValidationException{
+		if(type==null)
+			type=Type.LINK;
 		super.postprocess();
 		if(blurhash!=null){
 			Bitmap placeholder=BlurHashDecoder.decode(blurhash, 16, 16);
@@ -72,6 +76,7 @@ public class Card extends BaseModel{
 				", embedUrl='"+embedUrl+'\''+
 				", blurhash='"+blurhash+'\''+
 				", history="+history+
+				", publishedAt="+publishedAt+
 				'}';
 	}
 

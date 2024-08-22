@@ -142,8 +142,8 @@ public class CustomWelcomeFragment extends InstanceCatalogFragment {
 		headerView.findViewById(R.id.unread_indicator).setVisibility(View.GONE);
 		headerView.findViewById(R.id.separator).setVisibility(View.GONE);
 		headerView.findViewById(R.id.time).setVisibility(View.GONE);
-		((TextView) headerView.findViewById(R.id.username)).setText(R.string.sk_app_username);
-		((TextView) headerView.findViewById(R.id.name)).setText(R.string.sk_app_name);
+		((TextView) headerView.findViewById(R.id.username)).setText(R.string.mo_app_username);
+		((TextView) headerView.findViewById(R.id.name)).setText(R.string.mo_app_name);
 		((ImageView) headerView.findViewById(R.id.avatar)).setImageDrawable(getActivity().getDrawable(R.mipmap.ic_launcher));
 		((FragmentStackActivity) getActivity()).invalidateSystemBarColors(this);
 

@@ -31,10 +31,11 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.NotificationsMarkerUpdatedEvent;
 import org.joinmastodon.android.events.StatusDisplaySettingsChangedEvent;
 import org.joinmastodon.android.fragments.discover.DiscoverFragment;
+import org.joinmastodon.android.fragments.onboarding.OnboardingFollowSuggestionsFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
-import org.joinmastodon.android.ui.AccountSwitcherSheet;
+import org.joinmastodon.android.ui.sheets.AccountSwitcherSheet;
 import org.joinmastodon.android.ui.OutlineProviders;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.TabBar;
@@ -46,6 +47,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.grishka.appkit.FragmentStackActivity;
+import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.fragments.AppKitFragment;
@@ -75,7 +77,7 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		accountID=getArguments().getString("account");
-		setTitle(R.string.sk_app_name);
+		setTitle(R.string.mo_app_name);
 
 		if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.N)
 			setRetainInstance(true);
@@ -159,6 +161,8 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 		notificationsBadge=tabBar.findViewById(R.id.notifications_badge);
 		notificationsBadge.setVisibility(View.GONE);
 
+		tabBar.selectTab(currentTab);
+
 		if(savedInstanceState==null){
 			getChildFragmentManager().beginTransaction()
 					.add(me.grishka.appkit.R.id.fragment_wrap, homeTabFragment)
@@ -180,7 +184,6 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 				});
 			}
 		}
-		tabBar.selectTab(currentTab);
 
 		return content;
 	}
@@ -260,8 +263,11 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 
 	private void onTabSelected(@IdRes int tab){
 		Fragment newFragment=fragmentForTab(tab);
-		if(tab==currentTab && newFragment instanceof ScrollableToTop scrollable) {
-			scrollable.scrollToTop();
+		if(tab==currentTab){
+			if (tab == R.id.tab_search && GlobalUserPreferences.doubleTapToSearch)
+				discoverFragment.openSearch();
+			else if(newFragment instanceof ScrollableToTop scrollable)
+				scrollable.scrollToTop();
 			return;
 		}
 		getChildFragmentManager().beginTransaction().hide(fragmentForTab(currentTab)).show(newFragment).commit();
@@ -296,9 +302,12 @@ public class HomeFragment extends AppKitFragment implements OnBackPressedListene
 			}
 			new AccountSwitcherSheet(getActivity(), this).show();
 			return true;
-		} else if(tab==R.id.tab_search){
-			tabBar.selectTab(R.id.tab_search);
-			onTabSelected(R.id.tab_search);
+		}
+		if(tab==R.id.tab_search){
+			if(currentTab!=R.id.tab_search){
+				onTabSelected(R.id.tab_search);
+				tabBar.selectTab(R.id.tab_search);
+			}
 			discoverFragment.openSearch();
 			return true;
 		}

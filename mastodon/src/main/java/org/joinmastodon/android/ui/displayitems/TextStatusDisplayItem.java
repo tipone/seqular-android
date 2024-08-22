@@ -24,7 +24,10 @@ import org.joinmastodon.android.ui.utils.UiUtils;
 import org.joinmastodon.android.ui.views.LinkedTextView;
 
 import java.util.Locale;
+import java.util.regex.Pattern;
 
+import me.grishka.appkit.api.Callback;
+import me.grishka.appkit.api.ErrorResponse;
 import me.grishka.appkit.imageloader.ImageLoaderViewHolder;
 import me.grishka.appkit.imageloader.MovieDrawable;
 import me.grishka.appkit.imageloader.requests.ImageLoaderRequest;
@@ -65,7 +68,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 
 	public void setTranslatedText(String text){
 		Status statusForContent=status.getContentStatus();
-		translatedText=HtmlParser.parse(text, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, parentFragment.getAccountID());
+		translatedText=HtmlParser.parse(text, statusForContent.emojis, statusForContent.mentions, statusForContent.tags, parentFragment.getAccountID(), statusForContent);
 		translationEmojiHelper.setText(translatedText);
 	}
 
@@ -98,7 +101,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			float textCollapsedHeight=activity.getResources().getDimension(R.dimen.text_collapsed_height);
 			collapseParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) textCollapsedHeight);
 			wrapParams=new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-			readMore.setOnClickListener(v -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
+			readMore.setOnClickListener(v -> item.parentFragment.onToggleExpanded(item.status, item.isForQuote, getItemID()));
 		}
 
 		@Override
@@ -152,7 +155,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 			if (GlobalUserPreferences.collapseLongPosts && !item.status.textExpandable) {
 				boolean tooBig = text.getMeasuredHeight() > textMaxHeight;
 				boolean expandable = tooBig && !item.status.hasSpoiler();
-				item.parentFragment.onEnableExpandable(Holder.this, expandable);
+				item.parentFragment.onEnableExpandable(Holder.this, expandable, item.isForQuote);
 			}
 
 			boolean expandButtonShown=item.status.textExpandable && !item.status.textExpanded;
@@ -170,7 +173,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void setImage(int index, Drawable image){
 			getEmojiHelper().setImageDrawable(index, image);
-			text.invalidate();
+			text.setText(text.getText());
 			if(image instanceof Animatable){
 				((Animatable) image).start();
 				if(image instanceof MovieDrawable)
@@ -181,7 +184,7 @@ public class TextStatusDisplayItem extends StatusDisplayItem{
 		@Override
 		public void clearImage(int index){
 			getEmojiHelper().setImageDrawable(index, null);
-			text.invalidate();
+			text.setText(text.getText());
 		}
 
 		private CustomEmojiHelper getEmojiHelper(){

@@ -14,11 +14,16 @@ import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.model.ContentType;
 import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.Emoji;
+import org.joinmastodon.android.model.PushSubscription;
 import org.joinmastodon.android.model.Instance;
 import org.joinmastodon.android.model.TimelineDefinition;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 public class AccountLocalPreferences{
@@ -47,10 +52,17 @@ public class AccountLocalPreferences{
 	public ShowEmojiReactions showEmojiReactions;
 	public ColorPreference color;
 	public ArrayList<Emoji> recentCustomEmoji;
+	public boolean preReplySheet;
 
 	private final static Type recentLanguagesType=new TypeToken<ArrayList<String>>() {}.getType();
 	private final static Type timelinesType=new TypeToken<ArrayList<TimelineDefinition>>() {}.getType();
 	private final static Type recentCustomEmojiType=new TypeToken<ArrayList<Emoji>>() {}.getType();
+
+	// MOSHIDON
+//	private final static Type recentEmojisType = new TypeToken<Map<String, Integer>>() {}.getType();
+//	public Map<String, Integer> recentEmojis;
+	private final static Type notificationFiltersType = new TypeToken<PushSubscription.Alerts>() {}.getType();
+	public PushSubscription.Alerts notificationFilters;
 
 	public AccountLocalPreferences(SharedPreferences prefs, AccountSession session){
 		this.prefs=prefs;
@@ -59,6 +71,7 @@ public class AccountLocalPreferences{
 		revealCWs=prefs.getBoolean("revealCWs", false);
 		hideSensitiveMedia=prefs.getBoolean("hideSensitive", true);
 		serverSideFiltersSupported=prefs.getBoolean("serverSideFilters", false);
+//		preReplySheet=prefs.getBoolean("preReplySheet", false);
 
 		// MEGALODON
 		Optional<Instance> instance=session.getInstance();
@@ -78,6 +91,10 @@ public class AccountLocalPreferences{
 		showEmojiReactions=ShowEmojiReactions.valueOf(prefs.getString("showEmojiReactions", ShowEmojiReactions.HIDE_EMPTY.name()));
 		color=prefs.contains("color") ? ColorPreference.valueOf(prefs.getString("color", null)) : null;
 		recentCustomEmoji=fromJson(prefs.getString("recentCustomEmoji", null), recentCustomEmojiType, new ArrayList<>());
+
+		// MOSHIDON
+//		recentEmojis=fromJson(prefs.getString("recentEmojis", "{}"), recentEmojisType, new HashMap<>());
+		notificationFilters=fromJson(prefs.getString("notificationFilters", gson.toJson(PushSubscription.Alerts.ofAll())), notificationFiltersType, PushSubscription.Alerts.ofAll());
 	}
 
 	public long getNotificationsPauseEndTime(){
@@ -100,6 +117,9 @@ public class AccountLocalPreferences{
 				.putBoolean("hideSensitive", hideSensitiveMedia)
 				.putBoolean("serverSideFilters", serverSideFiltersSupported)
 
+				//TODO figure this stuff out
+//				.putBoolean("preReplySheet", preReplySheet)
+
 				// MEGALODON
 				.putBoolean("showReplies", showReplies)
 				.putBoolean("showBoosts", showBoosts)
@@ -117,18 +137,24 @@ public class AccountLocalPreferences{
 				.putString("showEmojiReactions", showEmojiReactions.name())
 				.putString("color", color!=null ? color.name() : null)
 				.putString("recentCustomEmoji", gson.toJson(recentCustomEmoji))
+
+				// MOSHIDON
+//				.putString("recentEmojis", gson.toJson(recentEmojis))
+				.putString("notificationFilters", gson.toJson(notificationFilters))
 				.apply();
 	}
 
 	public enum ColorPreference{
 		MATERIAL3,
-		PINK,
 		PURPLE,
+		PINK,
 		GREEN,
 		BLUE,
 		BROWN,
 		RED,
-		YELLOW;
+		YELLOW,
+		NORD,
+		WHITE;
 
 		public @StringRes int getName() {
 			return switch(this){
@@ -140,6 +166,8 @@ public class AccountLocalPreferences{
 				case BROWN -> R.string.sk_color_palette_brown;
 				case RED -> R.string.sk_color_palette_red;
 				case YELLOW -> R.string.sk_color_palette_yellow;
+				case NORD -> R.string.mo_color_palette_nord;
+				case WHITE -> R.string.mo_color_palette_black_and_white;
 			};
 		}
 	}

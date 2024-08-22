@@ -1,6 +1,8 @@
 package org.joinmastodon.android;
 
-import static org.joinmastodon.android.GlobalUserPreferences.PrefixRepliesMode.*;
+import static org.joinmastodon.android.GlobalUserPreferences.PrefixRepliesMode.ALWAYS;
+import static org.joinmastodon.android.GlobalUserPreferences.PrefixRepliesMode.TO_OTHERS;
+import static org.joinmastodon.android.GlobalUserPreferences.getPrefs;
 
 import android.app.Notification;
 import android.app.NotificationChannel;
@@ -12,12 +14,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.opengl.Visibility;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
 import org.joinmastodon.android.api.MastodonAPIController;
+import org.joinmastodon.android.api.requests.accounts.SetAccountFollowed;
 import org.joinmastodon.android.api.requests.notifications.GetNotificationByID;
 import org.joinmastodon.android.api.requests.statuses.CreateStatus;
 import org.joinmastodon.android.api.requests.statuses.SetStatusBookmarked;
@@ -31,6 +35,7 @@ import org.joinmastodon.android.model.NotificationAction;
 import org.joinmastodon.android.model.Preferences;
 import org.joinmastodon.android.model.PushNotification;
 import org.joinmastodon.android.model.Status;
+import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.model.StatusPrivacy;
 import org.joinmastodon.android.ui.utils.UiUtils;
 import org.parceler.Parcels;
@@ -96,7 +101,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 						}
 						String accountID=account.getID();
 						PushNotification pn=AccountSessionManager.getInstance().getAccount(accountID).getPushSubscriptionManager().decryptNotification(k, p, s);
-						new GetNotificationByID(pn.notificationId+"")
+						new GetNotificationByID(pn.notificationId)
 								.setCallback(new Callback<>(){
 									@Override
 									public void onSuccess(org.joinmastodon.android.model.Notification result){
@@ -128,7 +133,11 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 
 			if(intent.hasExtra("notification")){
 				org.joinmastodon.android.model.Notification notification=Parcels.unwrap(intent.getParcelableExtra("notification"));
-				String statusID=notification.status.id;
+
+				String statusID = null;
+				if(notification != null && notification.status != null)
+					statusID=notification.status.id;
+
 				if (statusID != null) {
 					AccountSessionManager accountSessionManager = AccountSessionManager.getInstance();
 					Preferences preferences = accountSessionManager.getAccount(accountID).preferences;
@@ -136,9 +145,10 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 					switch (NotificationAction.values()[intent.getIntExtra("notificationAction", 0)]) {
 						case FAVORITE -> new SetStatusFavorited(statusID, true).exec(accountID);
 						case BOOKMARK -> new SetStatusBookmarked(statusID, true).exec(accountID);
-						case REBLOG -> new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
-						case UNDO_REBLOG -> new SetStatusReblogged(notification.status.id, false, preferences.postingDefaultVisibility).exec(accountID);
+						case BOOST -> new SetStatusReblogged(notification.status.id, true, preferences.postingDefaultVisibility).exec(accountID);
+						case UNBOOST -> new SetStatusReblogged(notification.status.id, false, preferences.postingDefaultVisibility).exec(accountID);
 						case REPLY -> handleReplyAction(context, accountID, intent, notification, notificationId, preferences);
+						case FOLLOW_BACK -> new SetAccountFollowed(notification.account.id, true, true, false).exec(accountID);
 						default -> Log.w(TAG, "onReceive: Failed to get NotificationAction");
 					}
 				}
@@ -148,9 +158,9 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		}
 	}
 
-	public void notifyUnifiedPush(Context context, String accountID, org.joinmastodon.android.model.Notification notification) {
+	public void notifyUnifiedPush(Context context, AccountSession account, org.joinmastodon.android.model.Notification notification) {
 		// push notifications are only created from the official push notification, so we create a fake from by transforming the notification
-		PushNotificationReceiver.this.notify(context, PushNotification.fromNotification(context, notification), accountID, notification);
+		PushNotificationReceiver.this.notify(context, PushNotification.fromNotification(context, account, notification), account.getID(), notification);
 	}
 
 	private void notify(Context context, PushNotification pn, String accountID, org.joinmastodon.android.model.Notification notification){
@@ -205,8 +215,8 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 				.setShowWhen(true)
 				.setCategory(Notification.CATEGORY_SOCIAL)
 				.setAutoCancel(true)
-				.setLights(UiUtils.getThemeColor(context, android.R.attr.colorAccent), 500, 1000)
-				.setColor(UiUtils.getThemeColor(context, android.R.attr.colorAccent));
+				.setLights(context.getColor(R.color.primary_700), 500, 1000)
+				.setColor(context.getColor(R.color.shortcut_icon_background));
 
 		if (!GlobalUserPreferences.uniformNotificationIcon) {
 			builder.setSmallIcon(switch (pn.notificationType) {
@@ -252,14 +262,23 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 						builder.addAction(buildReplyAction(context, id, accountID, notification));
 					}
 					builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_favorite), NotificationAction.FAVORITE));
-					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
-					if(notification.status.visibility != StatusPrivacy.DIRECT) {
-						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_reblog), NotificationAction.REBLOG));
+					if(GlobalUserPreferences.swapBookmarkWithBoostAction){
+						if(notification.status.visibility != StatusPrivacy.DIRECT) {
+							builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.button_reblog), NotificationAction.BOOST));
+						}else{
+							// This is just so there is a bookmark action if you cannot reblog the toot
+							builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
+						}
+					} else {
+						builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.add_bookmark), NotificationAction.BOOKMARK));
 					}
 				}
 				case UPDATE -> {
 					if(notification.status.reblogged)
-						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_undo_reblog), NotificationAction.UNDO_REBLOG));
+						builder.addAction(buildNotificationAction(context, id, accountID, notification,  context.getString(R.string.sk_undo_reblog), NotificationAction.UNBOOST));
+				}
+				case FOLLOW -> {
+					builder.addAction(buildNotificationAction(context, id, accountID, notification, context.getString(R.string.follow_back), NotificationAction.FOLLOW_BACK));
 				}
 			}
 		}
@@ -323,7 +342,7 @@ public class PushNotificationReceiver extends BroadcastReceiver{
 		CreateStatus.Request req=new CreateStatus.Request();
 		req.status = initialText + input.toString();
 		req.language = notification.status.language;
-		req.visibility = notification.status.visibility;
+		req.visibility = (notification.status.visibility == StatusPrivacy.PUBLIC && GlobalUserPreferences.defaultToUnlistedReplies ? StatusPrivacy.UNLISTED : notification.status.visibility);
 		req.inReplyToId = notification.status.id;
 
 		if (notification.status.hasSpoiler() &&

@@ -1,1 +1,1 @@
-Mastodon для Android, але рожевий і з більшою кількістю функцій
+Mastodon для Android, але має більше функцій і дизайн Material You

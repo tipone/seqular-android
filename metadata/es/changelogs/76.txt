@@ -1,5 +1,5 @@
-- Filtros mejorados, incluida la compatibilidad con la opción "Ocultar con advertencia"
-- Página de perfil rediseñada con los metadatos directamente debajo de la biografía.
+- Filtros mejorados, incluida la compatibilidad con "Ocultar con advertencia"
+- Página de perfil rediseñada con metadatos directamente debajo de la biografía.
 - Función de contraer/expandir para mensajes muy largos.
 - Opción de anteponer automáticamente el prefijo "re:" a los mensajes de respuesta.
 - Opción de ocultar los botones de interacción en la línea de tiempo

@@ -90,19 +90,9 @@
 		<item quantity="other">%,d stemmer</item>
 	</plurals>
 	<string name="poll_closed">Lukket</string>
-	<string name="confirm_mute_title">Tavsgør konto</string>
-	<string name="confirm_mute">Bekræft tavsgørelse af %s</string>
 	<string name="do_mute">Tavsgør</string>
-	<string name="confirm_unmute_title">Vis konto igen</string>
-	<string name="confirm_unmute">Bekræft, at %s ikke længere er tavsgjort</string>
 	<string name="do_unmute">Ophæv tavsgørelse</string>
-	<string name="confirm_block_title">Blokér konto</string>
-	<string name="confirm_block_domain_title">Blokér domæne</string>
-	<string name="confirm_block">Bekræft blokering af %s</string>
 	<string name="do_block">Blokér</string>
-	<string name="confirm_unblock_title">Afblokér konto</string>
-	<string name="confirm_unblock_domain_title">Afblokér domæne</string>
-	<string name="confirm_unblock">Bekræft afblokeringen af %s</string>
 	<string name="do_unblock">Afblokér</string>
 	<string name="button_blocked">Blokeret</string>
 	<string name="action_vote">Stem</string>
@@ -163,19 +153,7 @@
 	<string name="password">Adgangskode</string>
 	<string name="confirm_password">Bekræft adgangskode</string>
 	<string name="password_note">Benyt majuskler, specialtegn og tal for at øge adgangskodens styrke.</string>
-	<string name="category_academia">Forskning og højere uddannelser</string>
-	<string name="category_activism">Aktivisme</string>
-	<string name="category_all">Alt</string>
-	<string name="category_art">Kunst</string>
-	<string name="category_food">Mad</string>
-	<string name="category_furry">Pelsdyr</string>
-	<string name="category_games">Spil</string>
 	<string name="category_general">Generelt</string>
-	<string name="category_journalism">Journalistik</string>
-	<string name="category_lgbt">LGBT</string>
-	<string name="category_music">Musik</string>
-	<string name="category_regional">Regionalt</string>
-	<string name="category_tech">Teknologi</string>
 	<string name="confirm_email_title">Tjek din indbakke</string>
 	<!-- %s is the email address -->
 	<string name="confirm_email_subtitle">Tryk på det modtage link for at bekræfte %s. Vi venter her så længe.</string>
@@ -284,7 +262,6 @@
 		<item quantity="one">%,d fremhævning</item>
 		<item quantity="other">%,d fremhævninger</item>
 	</plurals>
-	<string name="timestamp_via_app">%1$s via %2$s</string>
 	<string name="time_now">nu</string>
 	<string name="edit_history">Rediger historik</string>
 	<string name="last_edit_at_x">Senest ændret: %s</string>
@@ -356,7 +333,6 @@
 	<string name="profile_add_row">Tilføj række</string>
 	<string name="profile_setup">Profilopsætning</string>
 	<string name="profile_setup_subtitle">Du kan altid afslutte dette senere i fanen Profil.</string>
-	<string name="profile_setup_explanation">Du kan tilføje op til fire profilfelter til lige, hvad du ønsker. Placering, links, pronomener — du bestemmer.</string>
 	<string name="popular_on_mastodon">Populært på Mastodon</string>
 	<string name="follow_all">Følg alle</string>
 	<string name="server_rules_disagree">Ikke enig</string>
@@ -507,5 +483,5 @@
 	<!-- Screen reader description for the menu on the home timeline screen -->
 	<!-- %s is the name of the list -->
 	<!-- %s is a username -->
-	<string name="see_new_posts">Se nye indlæg</string>
+	<!-- %s is a time interval ("5 months") -->
 </resources>

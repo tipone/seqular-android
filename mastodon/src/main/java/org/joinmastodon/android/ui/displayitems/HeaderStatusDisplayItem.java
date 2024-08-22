@@ -38,6 +38,7 @@ import org.joinmastodon.android.fragments.ThreadFragment;
 import org.joinmastodon.android.fragments.report.ReportReasonChoiceFragment;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.Announcement;
+import org.joinmastodon.android.model.Mention;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.Relationship;
 import org.joinmastodon.android.model.ScheduledStatus;
@@ -56,6 +57,7 @@ import java.time.format.FormatStyle;
 import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.function.Consumer;
 
 import androidx.annotation.LayoutRes;
@@ -173,11 +175,11 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					fragment.removeNotification(item.notification);
 				}
 			}));
-			collapseBtn.setOnClickListener(l -> item.parentFragment.onToggleExpanded(item.status, getItemID()));
+			collapseBtn.setOnClickListener(l -> item.parentFragment.onToggleExpanded(item.status, item.isForQuote, getItemID()));
 
 			optionsMenu=new PopupMenu(activity, more);
 			optionsMenu.inflate(R.menu.post);
-			if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI())
+			if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.P && !UiUtils.isEMUI() && !UiUtils.isMagic())
 				optionsMenu.getMenu().setGroupDividerEnabled(true);
 			optionsMenu.setOnMenuItemClickListener(menuItem->{
 				Account account=item.user;
@@ -246,6 +248,8 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					UiUtils.confirmPinPost(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, !item.status.pinned, s->{});
 				}else if(id==R.id.mute){
 					UiUtils.confirmToggleMuteUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.muting, r->{});
+				}else if (id==R.id.mute_conversation || id==R.id.unmute_conversation) {
+					UiUtils.confirmToggleMuteConversation(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), item.status, ()->{});
 				}else if(id==R.id.block){
 					UiUtils.confirmToggleBlockUser(item.parentFragment.getActivity(), item.parentFragment.getAccountID(), account, relationship!=null && relationship.blocking, r->{});
 				}else if(id==R.id.report){
@@ -285,7 +289,11 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 					args.putString("profileDisplayUsername", account.getDisplayUsername());
 					Nav.go(item.parentFragment.getActivity(), ListsFragment.class, args);
 				}else if(id==R.id.share){
-					UiUtils.openSystemShareSheet(activity, item.status.url);
+					UiUtils.openSystemShareSheet(activity, item.status);
+				}else if(id==R.id.open_with_account){
+					UiUtils.pickAccount(item.parentFragment.getActivity(), item.accountID, R.string.sk_open_with_account, R.drawable.ic_fluent_person_swap_24_regular, session ->UiUtils.openURL(
+							item.parentFragment.getActivity(), session.getID(), item.status.url, false
+					), null);
 				}
 				return true;
 			});
@@ -414,7 +422,7 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 		public void setImage(int index, Drawable drawable){
 			if(index>0){
 				item.emojiHelper.setImageDrawable(index-1, drawable);
-				name.invalidate();
+				name.setText(name.getText());
 			}else{
 				avatar.setImageDrawable(drawable);
 			}
@@ -439,6 +447,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 				return;
 			}
 			Bundle args=new Bundle();
+			if(item.status != null && item.status.isRemote){
+				UiUtils.lookupAccount(v.getContext(), item.status.account, item.accountID, null, account -> {
+					args.putString("account", item.accountID);
+					args.putParcelable("profileAccount", Parcels.wrap(account));
+					Nav.go(item.parentFragment.getActivity(), ProfileFragment.class, args);
+				});
+				return;
+			}
 			args.putString("account", item.accountID);
 			args.putParcelable("profileAccount", Parcels.wrap(item.user));
 			Nav.go(item.parentFragment.getActivity(), ProfileFragment.class, args);
@@ -477,17 +493,6 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			Account account=item.user;
 			Menu menu=optionsMenu.getMenu();
 
-			MenuItem openWithAccounts = menu.findItem(R.id.open_with_account);
-			SubMenu accountsMenu = openWithAccounts != null ? openWithAccounts.getSubMenu() : null;
-			if (hasMultipleAccounts && accountsMenu != null) {
-				openWithAccounts.setVisible(true);
-				accountsMenu.clear();
-				UiUtils.populateAccountsMenu(item.accountID, accountsMenu, s-> UiUtils.openURL(
-						item.parentFragment.getActivity(), s.getID(), item.status.url, false
-				));
-			} else if (openWithAccounts != null) {
-				openWithAccounts.setVisible(false);
-			}
 
 			String username = account.getShortUsername();
 			boolean isOwnPost=AccountSessionManager.getInstance().isSelf(item.parentFragment.getAccountID(), account);
@@ -498,6 +503,14 @@ public class HeaderStatusDisplayItem extends StatusDisplayItem{
 			menu.findItem(R.id.delete_and_redraft).setVisible(!isPostScheduled && item.status!=null && isOwnPost);
 			menu.findItem(R.id.pin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && !item.status.pinned);
 			menu.findItem(R.id.unpin).setVisible(!isPostScheduled && item.status!=null && isOwnPost && item.status.pinned);
+			menu.findItem(R.id.mute_conversation).setVisible((item.status!=null && !item.status.muted && !isPostScheduled) && (isOwnPost || item.status.mentions.stream().anyMatch(m->{
+				if(m==null)
+					return false;
+				return AccountSessionManager.get(item.parentFragment.getAccountID()).self.id.equals(m.id) ||
+						AccountSessionManager.get(item.parentFragment.getAccountID()).self.getFullyQualifiedName().equals(m.username) ||
+						AccountSessionManager.get(item.parentFragment.getAccountID()).self.acct.equals(m.acct);
+			})));
+			menu.findItem(R.id.unmute_conversation).setVisible(item.status!=null && item.status.muted);
 			menu.findItem(R.id.open_in_browser).setVisible(!isPostScheduled && item.status!=null);
 			menu.findItem(R.id.copy_link).setVisible(!isPostScheduled && item.status!=null);
 			MenuItem blockDomain=menu.findItem(R.id.block_domain);

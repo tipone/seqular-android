@@ -2,6 +2,7 @@ package org.joinmastodon.android.fragments.discover;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.app.assist.AssistContent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -13,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.joinmastodon.android.GlobalUserPreferences;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.fragments.IsOnTop;
@@ -24,6 +26,7 @@ import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
 import org.joinmastodon.android.ui.utils.UiUtils;
+import org.joinmastodon.android.utils.ProvidesAssistContent;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,7 +41,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.fragments.OnBackPressedListener;
 import me.grishka.appkit.utils.V;
 
-public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, IsOnTop {
+public class DiscoverFragment extends AppKitFragment implements ScrollableToTop, OnBackPressedListener, IsOnTop, ProvidesAssistContent{
 	private static final int QUERY_RESULT=937;
 
 	private TabLayout tabLayout;
@@ -88,8 +91,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
-				case 0 -> R.id.discover_hashtags;
-				case 1 -> R.id.discover_posts;
+				case 0 -> R.id.discover_posts;
+				case 1 -> R.id.discover_hashtags;
 				case 2 -> isIceshrimp ? R.id.discover_users : R.id.discover_news;
 				case 3 -> R.id.discover_users;
 				default -> throw new IllegalStateException("Unexpected value: "+i);
@@ -134,8 +137,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 
 			FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 			transaction
-				.add(R.id.discover_hashtags, hashtagsFragment)
-				.add(R.id.discover_posts, postsFragment);
+				.add(R.id.discover_posts, postsFragment)
+				.add(R.id.discover_hashtags, hashtagsFragment);
 			if(!isIceshrimp)
 				transaction.add(R.id.discover_news, newsFragment);
 			transaction
@@ -147,8 +150,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			@Override
 			public void onConfigureTab(@NonNull TabLayout.Tab tab, int position){
 				tab.setText(switch(position){
-					case 0 -> R.string.hashtags;
-					case 1 -> R.string.posts;
+					case 0 -> R.string.posts;
+					case 1 -> R.string.hashtags;
 					case 2 -> isIceshrimp ? R.string.for_you : R.string.news;
 					case 3 -> R.string.for_you;
 					default -> throw new IllegalStateException("Unexpected value: "+position);
@@ -219,6 +222,11 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 	@Override
 	public void scrollToTop(){
 		if(!searchActive){
+			if (((IsOnTop)getFragmentForPage(pager.getCurrentItem())).isOnTop() && GlobalUserPreferences.doubleTapToSwipe){
+				int nextPage=(pager.getCurrentItem()+1)%tabViews.length;
+				pager.setCurrentItem(nextPage, true);
+				return;
+			}
 			((ScrollableToTop)getFragmentForPage(pager.getCurrentItem())).scrollToTop();
 		}else{
 			searchFragment.scrollToTop();
@@ -263,8 +271,8 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 
 	private Fragment getFragmentForPage(int page){
 		return switch(page){
-			case 0 -> hashtagsFragment;
-			case 1 -> postsFragment;
+			case 0 -> postsFragment;
+			case 1 -> hashtagsFragment;
 			case 2 -> isIceshrimp ? accountsFragment : newsFragment;
 			case 3 -> accountsFragment;
 			default -> throw new IllegalStateException("Unexpected value: "+page);
@@ -294,6 +302,13 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			searchFragment.setQuery(currentQuery, type);
 			searchText.setText(currentQuery);
 		}
+	}
+
+	@Override
+	public void onProvideAssistContent(AssistContent assistContent) {
+		callFragmentToProvideAssistContent(searchActive
+				? searchFragment
+				: getFragmentForPage(pager.getCurrentItem()), assistContent);
 	}
 
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{

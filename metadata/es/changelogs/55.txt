@@ -1,4 +1,0 @@
-- Corrige la representación errónea de etiquetas HTML y activa el formato Markdown
-- Inicializa el <a href="https://translate.codeberg.org/projects/megalodon">proyecto de traducción vía Weblate</a>
-- Añade un alternador para la cronología federada
-- Las versiones 52-54 fueron ajustes menores para una versión para Google Play

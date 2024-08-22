@@ -46,4 +46,8 @@ public class Hashtag extends BaseModel implements DisplayItemsParent{
 	public int hashCode(){
 		return name.hashCode();
 	}
+
+	public int getWeekPosts(){
+		return history.stream().mapToInt(h->h.uses).sum();
+	}
 }

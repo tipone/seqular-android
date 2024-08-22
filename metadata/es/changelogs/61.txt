@@ -1,4 +1,4 @@
-- Nuevos temas de colores: Material You y Rojo
+- Nuevos temas de color: Material You y Rojo
 - Nuevos tonos grises oscuros para todos los temas
 - Icono de impulso relleno más distintivo
 - Animaciones para los botones de interacción

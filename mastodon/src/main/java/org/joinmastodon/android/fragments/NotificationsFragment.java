@@ -3,6 +3,7 @@ package org.joinmastodon.android.fragments;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -14,10 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager2.widget.ViewPager2;
 
 import com.squareup.otto.Subscribe;
 
@@ -31,6 +28,8 @@ import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.events.FollowRequestHandledEvent;
 import org.joinmastodon.android.model.Account;
 import org.joinmastodon.android.model.HeaderPaginationList;
+import org.joinmastodon.android.model.PushSubscription;
+import org.joinmastodon.android.ui.M3AlertDialogBuilder;
 import org.joinmastodon.android.ui.SimpleViewHolder;
 import org.joinmastodon.android.ui.tabs.TabLayout;
 import org.joinmastodon.android.ui.tabs.TabLayoutMediator;
@@ -39,6 +38,11 @@ import org.joinmastodon.android.utils.ElevationOnScrollListener;
 import org.joinmastodon.android.utils.ObjectIdComparator;
 import org.joinmastodon.android.utils.ProvidesAssistContent;
 
+import java.util.Arrays;
+
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.widget.ViewPager2;
 import me.grishka.appkit.Nav;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
@@ -46,7 +50,7 @@ import me.grishka.appkit.fragments.BaseRecyclerFragment;
 import me.grishka.appkit.utils.V;
 import me.grishka.appkit.views.FragmentRootLinearLayout;
 
-public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, ProvidesAssistContent, HasElevationOnScrollListener {
+public class NotificationsFragment extends MastodonToolbarFragment implements ScrollableToTop, ProvidesAssistContent, HasElevationOnScrollListener, HasAccountID {
 
 	TabLayout tabLayout;
 	private ViewPager2 pager;
@@ -54,7 +58,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	private View tabsDivider;
 	private TabLayoutMediator tabLayoutMediator;
 	String unreadMarker, realUnreadMarker;
-	private MenuItem markAllReadItem;
+	private MenuItem markAllReadItem, filterItem;
 	private NotificationsListFragment allNotificationsFragment, mentionsFragment;
 	private ElevationOnScrollListener elevationOnScrollListener;
 
@@ -92,9 +96,10 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater){
 		inflater.inflate(R.menu.notifications, menu);
 		menu.findItem(R.id.clear_notifications).setVisible(GlobalUserPreferences.enableDeleteNotifications);
+		filterItem=menu.findItem(R.id.filter_notifications).setVisible(true);
 		markAllReadItem=menu.findItem(R.id.mark_all_read);
 		updateMarkAllReadButton();
-		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.follow_requests, R.id.mark_all_read);
+		UiUtils.enableOptionsMenuIcons(getActivity(), menu, R.id.follow_requests, R.id.mark_all_read, R.id.filter_notifications);
 	}
 
 	@Override
@@ -117,8 +122,58 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 				nlf.resetUnreadBackground();
 			}
 			return true;
+		} else if (item.getItemId() == R.id.filter_notifications) {
+			Context ctx = getToolbarContext();
+			String[] listItems = {
+					ctx.getString(R.string.notification_type_mentions_and_replies),
+					ctx.getString(R.string.notification_type_reblog),
+					ctx.getString(R.string.notification_type_favorite),
+					ctx.getString(R.string.notification_type_follow),
+					ctx.getString(R.string.notification_type_poll),
+					ctx.getString(R.string.sk_notification_type_update),
+					ctx.getString(R.string.sk_notification_type_posts)
+			};
+
+			boolean[] checkedItems = {
+					getLocalPrefs().notificationFilters.mention,
+					getLocalPrefs().notificationFilters.reblog,
+					getLocalPrefs().notificationFilters.favourite,
+					getLocalPrefs().notificationFilters.follow,
+					getLocalPrefs().notificationFilters.poll,
+					getLocalPrefs().notificationFilters.update,
+					getLocalPrefs().notificationFilters.status,
+			};
+
+			M3AlertDialogBuilder dialogBuilder = new M3AlertDialogBuilder(ctx);
+			dialogBuilder.setTitle(R.string.sk_settings_filters);
+			dialogBuilder.setMultiChoiceItems(listItems, checkedItems, (dialog, which, isChecked) ->checkedItems[which] = isChecked);
+
+			dialogBuilder.setPositiveButton(R.string.save, (d, which) -> {
+				saveFilters(checkedItems);
+				this.allNotificationsFragment.reload();
+			}).setNeutralButton(R.string.mo_notification_filter_reset, (d, which) -> {
+				Arrays.fill(checkedItems, true);
+				saveFilters(checkedItems);
+				this.allNotificationsFragment.reload();
+			}).setNegativeButton(R.string.cancel, (d, which) -> {});
+
+			dialogBuilder.create().show();
+
+			return true;
 		}
 		return false;
+	}
+
+	private void saveFilters(boolean[] checkedItems) {
+		PushSubscription.Alerts filter = getLocalPrefs().notificationFilters;
+		filter.mention = checkedItems[0];
+		filter.reblog = checkedItems[1];
+		filter.favourite = checkedItems[2];
+		filter.follow = checkedItems[3];
+		filter.poll = checkedItems[4];
+		filter.update = checkedItems[5];
+		filter.status = checkedItems[6];
+		getLocalPrefs().save();
 	}
 
 	void markAsRead(){
@@ -184,6 +239,7 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 			public void onPageSelected(int position){
 				if (elevationOnScrollListener != null && getCurrentFragment() instanceof IsOnTop f)
 					elevationOnScrollListener.handleScroll(getContext(), f.isOnTop());
+				filterItem.setVisible(position==0);
 				if(position==0)
 					return;
 				Fragment _page=getFragmentForPage(position);
@@ -270,8 +326,14 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 
 	@Override
 	public void scrollToTop(){
+		if (getFragmentForPage(pager.getCurrentItem()).isOnTop() && GlobalUserPreferences.doubleTapToSwipe) {
+			int nextPage = (pager.getCurrentItem() + 1) % tabViews.length;
+			pager.setCurrentItem(nextPage, true);
+			return;
+		}
 		getFragmentForPage(pager.getCurrentItem()).scrollToTop();
 	}
+
 
 	public void loadData(){
 		refreshFollowRequestsBadge();
@@ -301,6 +363,11 @@ public class NotificationsFragment extends MastodonToolbarFragment implements Sc
 	@Override
 	public void onProvideAssistContent(AssistContent assistContent) {
 		callFragmentToProvideAssistContent(getFragmentForPage(pager.getCurrentItem()), assistContent);
+	}
+
+	@Override
+	public String getAccountID(){
+		return accountID;
 	}
 
 	private class DiscoverPagerAdapter extends RecyclerView.Adapter<SimpleViewHolder>{

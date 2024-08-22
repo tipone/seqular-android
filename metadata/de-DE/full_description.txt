@@ -1,16 +1,15 @@
-Megalodon ist eine modifizierte Version der <a href="https://github.com/mastodon/mastodon-android">offiziellen Mastodon-Android-App</a> mit vielen Features, die in der offiziellen App fehlen, z.B. die föderierte Timeline, ungelistete Beiträge posten und die Möglichkeit, Bildbeschreibungen anzuzeigen.
+Moshidon ist eine veränderte Version der <a href="https://github.com/mastodon/mastodon-android">offiziellen Mastodon-Android-App</a>, die wichtige Funktionen ergänzt, die in der offiziellen App fehlen, wie z. B. eine föderierte Timeline, ungelistetes Veröffentlichen und die Möglichkeit Bildbeschreibungen zu sehen.
 
-<b>Die wichtigsten Features</b>
+<b>Wichtigste Funktionen</b>
 
-- <b>Ungelistet posten</b>: Öffentlich posten, ohne dass der Beitrag in Trends, Hashtags oder öffentlichen Timelines angezeigt wird.
-- <b>Föderierte Timeline</b>: Alle öffentlichen Beiträge aller anderen Fediverse-Nachbarschaften, mit denen deine Heim-Instanz verbunden ist.
-- <b>Eigene Timelines</b>: Pinne beliebige Listen und Hashtags an deinen Home-Tab an, um zu deinen Lieblingsthemen einfach rüber wischen zu können.
-- <b>Entwürfe und geplante Beiträge</b>: Ermöglicht das Vorbereiten eines Posts und das Planen des automatischen Versands zu einem bestimmten Zeitpunkt.
-- <b>Beiträge anpinnen</b>: Pinne deine wichtigsten Beiträge an dein Profil an und sieh im “Angepinnt”-Tab nach, was andere User_innen angepinnt haben.
-- <b>Hashtags folgen</b>: Bringt neue Beiträge bestimmter Hashtags direkt in deine Home-Timeline.
-- <b>Folgeanfragen beantworten</b>: Folgeanfragen lassen sich nun direkt über die Benachrichtigungen-Liste oder über die Folgeanfragen-Liste akzeptieren oder ablehnen.
-- <b>Beiträge löschen und neu erstellen</b>: Das beliebte Feature, dass das Bearbeiten von Beiträgen ohne tatsächliche Bearbeit-Funktion möglich gemacht hat.
-- <b>Sprachauswahl</b>: Wähle mühelos die Sprache für jeden deiner Beiträge, damit diese richtig gefiltert und übersetzt werden können.
-- <b>Übersetzung</b>: Beiträge können nun direkt in Megalodon übersetzt werden – aber nur, wenn deine Instanz dies auch unterstützt.
-- <b>Sichtbarkeits-Indikator</b>: Beim Öffnen oder Antworten auf einen Beitrag zeigt ein Symbol die Sichtbarkeit des Beitrags an.
-- <b>Farb-Schemata</b>: Wem das Standard-Pink nicht gefällt (der Hai verurteilt dich stillschweigend), dem verschaffen die Farb-Schemata von Moshidon Abhilfe.
+- <b>große Farbauswahl</b>: Material You und viele weitere Farbschemata!
+- <b>Übersetzungsfunktion</b>: Eine Schaltfläche, um Beiträge zu übersetzen!
+- <b>Beitrags-Sprachauswahl</b>: Eine Schaltfläche, um die Sprache deines Beitrags auszuwählen!
+- <b>Ungelistetes Veröffentlichen</b>: Poste öffentlich, ohne dass deine Beiträge in Trends, Hashtags oder auf öffentlichen Timelines erscheinen.
+- <b>Föderierte Timeline</b>: Sieh alle öffentlichen Beiträge von allen Fediverse-Servern, mit denen deine Instanz verbunden ist.
+- <b>Bildbeschreibungen</b>: Sieh auf einen Blick, ob ein Bild oder ein Video einen Alternativtext hat.
+- <b>Posts anpinnen</b>: Pinne deine wichtigsten Beiträge auf der Profilseite an und finde Pins von anderen Nutzern im „Angepinnt“-Tab.
+- <b>Hashtags folgen</b>: Sieh Posts mit bestimmten Hashtags direkt auf deiner Startseite durch einfaches Folgen
+- <b>Follower-Anfragen beantworten</b>: Bestätige oder lehne Follower-Anfragen direkt in Benachrichtigungen oder auf der separaten Follower-Anfrageliste ab.
+- <b>Löschen und Neuverfassen</b>: Die beliebte Funktion, die das Bearbeiten von Beiträgen ohne eigentliche Bearbeitungsfunktion möglich gemacht hat.
+- <b>Extras</b>: Viele Anpassungen der Nutzeroberfläche, wie z. B. Interaktionssymbole in Benachrichtigungen und die Entfernung von vielen Unstimmigkeiten beim ursprünglichen Design!

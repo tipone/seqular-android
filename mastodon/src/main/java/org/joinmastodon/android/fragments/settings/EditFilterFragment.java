@@ -1,6 +1,7 @@
 package org.joinmastodon.android.fragments.settings;
 
 import android.app.AlertDialog;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.view.Menu;
@@ -68,6 +69,10 @@ public class EditFilterFragment extends BaseSettingsFragment<Void> implements On
 	public void onCreate(Bundle savedInstanceState){
 		super.onCreate(savedInstanceState);
 		filter=Parcels.unwrap(getArguments().getParcelable("filter"));
+		ArrayList<Parcelable> words=getArguments().getParcelableArrayList("words");
+		if (words != null) {
+				words.stream().map(p->(FilterKeyword)Parcels.unwrap(p)).forEach(keywords::add);
+		}
 		setTitle(filter==null ? R.string.settings_add_filter : R.string.settings_edit_filter);
 		onDataLoaded(List.of(
 				durationItem=new ListItem<>(R.string.settings_filter_duration, 0, this::onDurationClick),
@@ -324,5 +329,9 @@ public class EditFilterFragment extends BaseSettingsFragment<Void> implements On
 			return true;
 		}
 		return false;
+	}
+	@Override
+	public Uri getWebUri(Uri.Builder base) {
+		return base.path(filter == null ? "/filters/new" : "/filters/"+ filter.id + "/edit").build();
 	}
 }

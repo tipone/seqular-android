@@ -7,5 +7,5 @@ dependencyResolutionManagement {
 		maven { url 'https://jitpack.io' }
 	}
 }
-rootProject.name = "Megalodon"
+rootProject.name = "Moshidon"
 include ':mastodon'

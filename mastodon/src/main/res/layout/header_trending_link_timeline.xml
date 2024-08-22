@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:paddingHorizontal="16dp"
+	android:paddingBottom="8dp">
+
+	<TextView
+		android:id="@+id/title"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_toStartOf="@id/button_wrap"
+		android:layout_marginEnd="8dp"
+		android:textAppearance="@style/m3_headline_small"
+		android:textColor="?colorM3OnSurface"
+		android:maxLines="3"
+		android:ellipsize="end"
+		android:minHeight="48dp"
+		android:gravity="center_vertical"
+		tools:text="Microsoft Chose Profit Over Security"/>
+
+	<FrameLayout
+		android:id="@+id/button_wrap"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_alignTop="@id/title"
+		android:layout_alignBottom="@id/title"
+		android:layout_alignParentEnd="true">
+
+		<Button
+			android:id="@+id/profile_action_btn"
+			android:layout_width="wrap_content"
+			android:layout_height="48dp"
+			android:layout_gravity="center"
+			style="@style/Widget.Mastodon.M3.Button.Filled"
+			android:paddingHorizontal="16dp"
+			android:text="@string/mo_trending_link_read"
+			tools:text="@string/mark_all_notifications_read" />
+	</FrameLayout>
+
+	<TextView
+		android:id="@+id/subtitle"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_below="@id/title"
+		android:layout_marginTop="4dp"
+		android:textAppearance="@style/m3_label_large"
+		android:textColor="?colorM3OnSurfaceVariant"
+		tools:text="@string/article_by_author"/>
+
+</RelativeLayout>

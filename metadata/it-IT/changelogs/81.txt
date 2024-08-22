@@ -1,0 +1,2 @@
+Risolto un bug per cui il tasto "Pubblica" rimaneva tagliato su DPI bassi o lingue più lunghe. È ora un'icona quando è nella modalità raggiungibile!
+Piccole migliorie all'anteprima del changelog

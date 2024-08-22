@@ -1,5 +1,4 @@
-- Favorisieren/Lesezeichen/Antworten direkt über Android-Benachrichtigungen
-- Verbesserte Kopfzeilen für Reblogs und Antworten in der Timeline
-- Benachrichtigungs-Punkt (Benachrichtigungen werden aktuell noch nicht automatisch nachgeladen)
-- Für Akkoma-Benutzer_innen: Antwort-Sichtbarkeit, sortierte Thread-Antworten, Zitate, …
-- Crashes behoben und kleinere Verbesserungen
+Version 83 bringt kleinere Verbesserungen, wie:
+- App-Abstürze beim Interagieren mit Erwähnungen
+- Überarbeitung des Bot-Symbols
+- eine Erinnerung, dass eine Bildbeschreibung hinzugefügt werden sollte, um Menschen mit visuellen Schwierigkeiten zu unterstützen. Danke @FineFindus!

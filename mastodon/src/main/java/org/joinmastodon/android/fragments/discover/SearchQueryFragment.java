@@ -10,6 +10,7 @@ import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -26,6 +27,7 @@ import android.widget.Toast;
 import android.widget.Toolbar;
 
 import org.joinmastodon.android.GlobalUserPreferences;
+import org.joinmastodon.android.MainActivity;
 import org.joinmastodon.android.R;
 import org.joinmastodon.android.api.requests.search.GetSearchResults;
 import org.joinmastodon.android.api.session.AccountSessionManager;
@@ -127,7 +129,11 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 					.setCallback(new SimpleCallback<>(this){
 						@Override
 						public void onSuccess(SearchResults result){
-							onDataLoaded(Stream.of(result.hashtags.stream().map(SearchResult::new), result.accounts.stream().map(SearchResult::new))
+							onDataLoaded(Stream
+									.of(
+											result.hashtags.stream().filter(hashtag -> !hashtag.name.isEmpty()).map(SearchResult::new),
+											result.accounts.stream().map(SearchResult::new)
+									)
 									.flatMap(Function.identity())
 									.map(sr->{
 										SearchResultViewModel vm=new SearchResultViewModel(sr, accountID, false);
@@ -430,7 +436,7 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 	}
 
 	private void onOpenURLClick(ListItem<?> item_){
-		UiUtils.openURL(getContext(), accountID, searchViewHelper.getQuery(), false);
+		((MainActivity)getActivity()).handleURL(Uri.parse(searchViewHelper.getQuery()), accountID);
 	}
 
 	private void onGoToHashtagClick(ListItem<?> item_){
@@ -477,6 +483,8 @@ public class SearchQueryFragment extends MastodonRecyclerFragment<SearchResultVi
 	}
 
 	private void deliverResult(String query, SearchResult.Type typeFilter){
+		if(query.isEmpty())
+			return;
 		Bundle res=new Bundle();
 		res.putString("query", query);
 		if(typeFilter!=null)

@@ -35,7 +35,7 @@
 	<string name="button_follow">跟隨</string>
 	<string name="button_following">正在跟隨</string>
 	<string name="edit_profile">編輯個人檔案</string>
-	<string name="share_user">分享個人檔案</string>
+	<string name="share_user">分享個人檔案方式...</string>
 	<string name="mute_user">靜音 %s</string>
 	<string name="unmute_user">取消靜音 %s</string>
 	<string name="block_user">封鎖 %s</string>
@@ -79,19 +79,9 @@
 		<item quantity="other">%,d 票</item>
 	</plurals>
 	<string name="poll_closed">已關閉</string>
-	<string name="confirm_mute_title">靜音帳號</string>
-	<string name="confirm_mute">確認將 %s 靜音</string>
 	<string name="do_mute">靜音</string>
-	<string name="confirm_unmute_title">取消靜音帳號</string>
-	<string name="confirm_unmute">確認將 %s 取消靜音</string>
 	<string name="do_unmute">取消靜音</string>
-	<string name="confirm_block_title">封鎖帳號</string>
-	<string name="confirm_block_domain_title">封鎖網域</string>
-	<string name="confirm_block">確認將 %s 封鎖</string>
 	<string name="do_block">封鎖</string>
-	<string name="confirm_unblock_title">解除封鎖帳號</string>
-	<string name="confirm_unblock_domain_title">解除封鎖網域</string>
-	<string name="confirm_unblock">確認將 %s 解除封鎖</string>
 	<string name="do_unblock">解除封鎖</string>
 	<string name="button_blocked">已封鎖</string>
 	<string name="action_vote">投票</string>
@@ -150,21 +140,9 @@
 	<string name="email">電子郵件地址</string>
 	<string name="password">密碼</string>
 	<string name="confirm_password">確認密碼</string>
-	<string name="password_note">包含大寫、特殊字元、以及數字來提升您的密碼強度。</string>
-	<string name="category_academia">學術</string>
-	<string name="category_activism">社會運動</string>
-	<string name="category_all">全部</string>
-	<string name="category_art">藝術</string>
-	<string name="category_food">食物</string>
-	<string name="category_furry">毛茸茸</string>
-	<string name="category_games">遊戲</string>
+	<string name="password_note">包含大寫、特殊字元、以及數字以提升您的密碼強度。</string>
 	<string name="category_general">一般</string>
-	<string name="category_journalism">新聞記者</string>
-	<string name="category_lgbt">LGBT</string>
-	<string name="category_music">音樂</string>
-	<string name="category_regional">區域性</string>
-	<string name="category_tech">科技</string>
-	<string name="confirm_email_title">請檢查您的收件夾</string>
+	<string name="confirm_email_title">請檢查您的收件匣</string>
 	<!-- %s is the email address -->
 	<string name="confirm_email_subtitle">請點擊我們寄給您連結以驗證 %s。我們將於此稍候。</string>
 	<string name="confirm_email_didnt_get">無法取得連結嗎？</string>
@@ -198,7 +176,7 @@
 	<string name="theme_dark">深色</string>
 	<string name="settings_behavior">行為</string>
 	<string name="settings_gif">播放動畫大頭貼與表情符號</string>
-	<string name="settings_custom_tabs">使用應用程式內建瀏覽器</string>
+	<string name="settings_custom_tabs">開啟連結於</string>
 	<string name="settings_notifications">通知</string>
 	<string name="settings_contribute">貢獻 Mastodon</string>
 	<string name="settings_tos">服務條款</string>
@@ -226,9 +204,9 @@
 	<string name="unfollowed_user">取消跟隨 %s</string>
 	<string name="followed_user">您現在開始跟隨 %s</string>
 	<string name="following_user_requested">要求跟隨 %s</string>
-	<string name="open_in_browser">在瀏覽器中開啟</string>
-	<string name="hide_boosts_from_user">隱藏來自 %s 的轉嘟</string>
-	<string name="show_boosts_from_user">顯示來自 %s 的轉嘟</string>
+	<string name="open_in_browser">於瀏覽器中開啟</string>
+	<string name="hide_boosts_from_user">隱藏轉嘟</string>
+	<string name="show_boosts_from_user">顯示轉嘟</string>
 	<string name="signup_reason">為什麼想要加入呢？</string>
 	<string name="signup_reason_note">這會協助我們審核您的申請。</string>
 	<string name="clear">清除</string>
@@ -268,7 +246,6 @@
 	<plurals name="x_reblogs">
 		<item quantity="other">%,d 轉嘟</item>
 	</plurals>
-	<string name="timestamp_via_app">%1$s 透過 %2$s</string>
 	<string name="time_now">剛剛</string>
 	<string name="edit_history">編輯記錄</string>
 	<string name="last_edit_at_x">上次編輯於 %s</string>
@@ -302,8 +279,6 @@
 	<string name="file_size_mb">%.2f MB</string>
 	<string name="file_size_gb">%.2f GB</string>
 	<string name="upload_processing">處理中...</string>
-	<!-- %s is version like 1.2.3 -->
-	<!-- %s is version like 1.2.3 -->
 	<!-- %s is file size -->
 	<string name="download_update">下載 (%s)</string>
 	<string name="install_update">安裝</string>
@@ -320,7 +295,6 @@
 	<string name="login_title">歡迎回來</string>
 	<string name="login_subtitle">以您建立帳號之伺服器登入。</string>
 	<string name="server_url">伺服器 URL</string>
-	<string name="signup_random_server_explain">如果您不選擇而繼續的話，我們將透過您的語言設定替您選擇一台伺服器。</string>
 	<string name="server_filter_any_language">任何語言</string>
 	<string name="server_filter_instant_signup">立即註冊</string>
 	<string name="server_filter_manual_review">手動審核</string>
@@ -334,12 +308,9 @@
 	<string name="not_accepting_new_members">目前暫不開放新成員</string>
 	<string name="category_special_interests">特別興趣</string>
 	<string name="signup_passwords_dont_match">密碼不一致</string>
-	<string name="pick_server_for_me">請替我選擇</string>
 	<string name="profile_add_row">新增</string>
 	<string name="profile_setup">個人檔案設定</string>
 	<string name="profile_setup_subtitle">您隨時能稍候於個人檔案頁面完成此設定。</string>
-	<string name="profile_setup_explanation">您至多能於個人檔案替任何您想要的內容新增四個欄位。地點、連結、稱謂 — 想像力是您的超能力！</string>
-	<string name="popular_on_mastodon">Mastodon 上之流行內容</string>
 	<string name="follow_all">跟隨所有</string>
 	<string name="server_rules_disagree">不同意</string>
 	<string name="privacy_policy_explanation">TL;DR：我們不蒐集或處理任何資料。</string>
@@ -396,7 +367,7 @@
 	<string name="alt_text">ALT 說明文字</string>
 	<string name="help">幫助</string>
 	<string name="what_is_alt_text">什麼是 ALT 說明文字？</string>
-	<string name="alt_text_help">ALT 說明文字為視覺障礙者、低網路頻寬或尋求額外上下文語境的人們提供圖片描述。\n\n您可以透過撰寫清晰、簡潔及客觀的說明文字以替所有人改善無障礙特性與協助理解。\n\n<ul><li>掌握幾個重要元素</li>\n<li>替圖片提供文字摘要</li>\n<li>使用常規行文結構</li>\n<li>避免冗贅資訊</li>\n<li>聚焦於趨勢和複雜視覺中之關鍵（如圖表或地圖）</li></ul></string>
+	<string name="alt_text_help">ALT 說明文字為視覺障礙者、低網路頻寬或尋求額外上下文語境的人們提供圖片描述。\n\n您可以透過撰寫清晰、簡潔及客觀的說明文字以替所有人改善無障礙特性與協助理解。\n\n<ul><li>掌握幾個重要元素</li>\n<li>替圖片提供文字摘要</li>\n<li>使用常規行文結構</li>\n<li>避免冗贅資訊</li>\n<li>聚焦於趨勢與複雜視覺中之關鍵（如圖表或地圖）</li></ul></string>
 	<string name="edit_post">編輯嘟文</string>
 	<string name="no_verified_link">無已驗證連結</string>
 	<string name="compose_autocomplete_emoji_empty">瀏覽 emoji</string>
@@ -572,8 +543,6 @@
 	<string name="timeline_following">首頁</string>
 	<string name="lists">列表</string>
 	<string name="followed_hashtags">已跟隨主題標籤</string>
-	<string name="no_lists">您尚未建立任何列表。</string>
-	<string name="no_followed_hashtags">您尚未跟隨任何主題標籤。</string>
 	<string name="manage_lists">管理列表</string>
 	<string name="manage_hashtags">管理主題標籤</string>
 	<!-- Screen reader description for the menu on the home timeline screen -->
@@ -594,15 +563,15 @@
 	<string name="remove">移除</string>
 	<string name="add_list_member">新增成員</string>
 	<string name="search_among_people_you_follow">搜尋您跟隨的使用者</string>
-	<string name="add_user_to_list">新增至列表...</string>
+	<string name="add_user_to_list">自列表中新增或移除...</string>
 	<string name="add_user_to_list_title">新增至列表</string>
 	<!-- %s is a username -->
 	<string name="manage_user_lists">管理包含 %s 之列表</string>
-	<string name="remove_from_list">從列表中移除</string>
+	<string name="remove_from_list">自列表中移除</string>
 	<string name="confirm_remove_list_member">移除此成員？</string>
 	<string name="no_followed_hashtags_title">跟隨主題標籤以跟上興趣主題</string>
 	<string name="no_followed_hashtags_subtitle">已跟隨的主題標籤將顯示於此</string>
-	<string name="no_lists_title">藉由列表以整理您的首頁河道</string>
+	<string name="no_lists_title">藉由列表以整理您的首頁時間軸</string>
 	<string name="no_lists_subtitle">您的將出現於此</string>
 	<string name="manage_accounts">新增或切換帳號</string>
 	<plurals name="x_posts_recently">
@@ -614,4 +583,99 @@
 	<string name="manage_list_members">管理列表成員</string>
 	<string name="list_no_members">尚無成員</string>
 	<string name="list_find_users">尋找欲新增之使用者</string>
+	<string name="reply_to_user">回覆 %s</string>
+	<string name="posted_at">於 %s 發嘟</string>
+	<string name="non_mutual_sheet_title">歡迎，新朋友！</string>
+	<string name="non_mutual_sheet_text">您似乎正在似乎正在回覆沒有互相跟隨的帳號。讓我們建立個美好的第一印象。</string>
+	<string name="got_it">了解</string>
+	<string name="dont_remind_again">不要再提醒我</string>
+	<!-- %s is a time interval ("5 months") -->
+	<string name="old_post_sheet_title">此嘟文已有 %s 的歷史了</string>
+	<string name="old_post_sheet_text">您仍可繼續回覆，但可能不再引起任何波瀾。</string>
+	<plurals name="x_months">
+		<item quantity="other">%,d 個月</item>
+	</plurals>
+	<string name="more_than_two_years">超過兩年</string>
+	<string name="non_mutual_title1">請保持禮貌並且不偏離主題</string>
+	<string name="non_mutual_text1">請確保您的回覆彬彬有禮且切合主題。</string>
+	<string name="non_mutual_title2">請保持語氣親切得體</string>
+	<string name="non_mutual_text2">積極正面的語氣總是值得讚賞的。</string>
+	<string name="non_mutual_title3">請保持思想開放</string>
+	<string name="non_mutual_text3">每個人的談話風格總是獨一無二的。請做好適應的準備。</string>
+	<string name="make_profile_discoverable">使我的個人檔案可以被找到</string>
+	<string name="discoverability">可發現性</string>
+	<string name="discoverability_help">當您於 Mastodon 上選擇加入可發現性時，您的嘟文可能會出現於搜尋結果與趨勢中。\n\n您的個人檔案可能會被推薦給與您志趣相投的人。\n\n即使選擇退出，當其他人以帳號搜尋您時仍將顯示您的個人檔案。</string>
+	<string name="app_version_copied">版本號碼已複製到剪貼簿</string>
+	<string name="onboarding_recommendations_intro">您決定自己的首頁時間軸。
+若您跟隨越多人，首頁時間軸將會越活躍且有趣。</string>
+	<string name="onboarding_recommendations_title">客製化您的首頁時間軸</string>
+	<string name="article_by_author">來自 %s</string>
+	<string name="info">關於</string>
+	<string name="button_reblogged">已轉嘟</string>
+	<string name="button_favorited">已加入最愛</string>
+	<string name="bookmarked">已加入書籤</string>
+	<string name="join_server_x_with_invite">透過邀請加入 %s</string>
+	<string name="expired_invite_link">已過期邀請連結</string>
+	<string name="expired_clipboard_invite_link_alert">您剪貼簿中 %1$s 之邀請連結已過期且無法用於註冊。\n\n您可以透過既有使用者請求新的連結，透過 %2$s 註冊，或者於其他伺服器註冊。</string>
+	<string name="invalid_invite_link">無效的邀請連結</string>
+	<string name="invalid_clipboard_invite_link_alert">您剪貼簿中 %1$s 之邀請連結是無效的且無法用於註冊。\n\n您可以透過既有使用者請求新的連結，透過 %2$s 註冊，或者於其他伺服器註冊。</string>
+	<string name="use_invite_link">使用邀請連結</string>
+	<string name="enter_invite_link">輸入邀請連結</string>
+	<string name="this_invite_is_invalid">此邀請連結是無效的。</string>
+	<string name="this_invite_has_expired">此邀請連結已過期。</string>
+	<string name="invite_link_pasted">已由剪貼簿貼上連結。</string>
+	<string name="need_invite_to_join_server">您需要一份由既有使用者取得之邀請連結以加入 %s。</string>
+	<string name="mute_user_confirm_title">是否靜音該使用者？</string>
+	<string name="user_wont_know_muted">他們不會知道他們已被靜音。</string>
+	<string name="user_can_still_see_your_posts">他們仍可讀取您的嘟文，但您不會見到他們的。</string>
+	<string name="you_wont_see_user_mentions">您不會見到提及他們的嘟文。</string>
+	<string name="user_can_mention_and_follow_you">他們仍可提及或跟隨您，但您不會見到他們。</string>
+	<string name="unmuted_user_x">取消靜音 %s</string>
+	<string name="block_user_confirm_title">是否封鎖該使用者？</string>
+	<string name="user_can_see_blocked">他們能見到他們已被封鎖。</string>
+	<string name="user_cant_see_each_other_posts">他們不可讀取您的嘟文，且您不會見到他們的。</string>
+	<string name="user_cant_mention_or_follow_you">他們不可提及或跟隨您。</string>
+	<string name="unblocked_user_x">解除封鎖 %s</string>
+	<string name="block_domain_confirm_title">是否封鎖該網域？</string>
+	<string name="do_block_server">封鎖伺服器</string>
+	<string name="block_user_x_instead">改為封鎖 %s</string>
+	<string name="users_cant_see_blocked">您不會見到來自此伺服器使用者之任何嘟文或通知。</string>
+	<string name="you_wont_see_server_posts">您不會見到來自此伺服器使用者之任何嘟文。</string>
+	<string name="server_followers_will_be_removed">您來自此伺服器之跟隨者將被移除。</string>
+	<string name="server_cant_mention_or_follow_you">來自此伺服器之使用者將無法跟隨您。</string>
+	<string name="server_can_interact_with_older">來自此伺服器之使用者能與您以往的嘟文互動。</string>
+	<string name="unblocked_domain_x">解除封鎖網域 %s</string>
+	<string name="handle_help_title">什麼是帳號 (@handle) ？</string>
+	<string name="handle_title">他們的帳號</string>
+	<string name="handle_username_explanation">他們於他們的伺服器中獨一無二的識別。於不同的伺服器上可能找到具有相同帳號的使用者。</string>
+	<string name="handle_title_own">您的帳號</string>
+	<string name="handle_username_explanation_own">您於您的伺服器中獨一無二的識別。於不同的伺服器上可能找到具有相同帳號的使用者。</string>
+	<string name="server">伺服器</string>
+	<string name="handle_server_explanation">他們數位世界的家，他們所有的嘟文都在這裡。</string>
+	<string name="handle_explanation">由於帳號 (@handle) 能說明某人是誰以及他們來自何方，您能於 &lt;a&gt;支援 ActivityPub 的平臺&lt;/a&gt; 之社群網路上與人們互動。</string>
+	<string name="handle_server_explanation_own">您數位世界的家，您所有的嘟文都在這裡。不喜歡這台伺服器嗎？您能隨時搬家至其他伺服器並且仍保有您的跟隨者。</string>
+	<string name="handle_explanation_own">由於帳號 (@handle) 能說明您是誰以及您來自何方，人們能於 &lt;a&gt;支援 ActivityPub 的平臺&lt;/a&gt; 之社群網路上與您互動。</string>
+	<string name="what_is_activitypub_title">什麼是 ActivityPub？</string>
+	<string name="what_is_activitypub">ActivityPub 像是 Mastodon 與其他社群網路溝通的語言。\n\n它能讓您不只於 Mastodon 且與其他社群網路的人們互動。</string>
+	<string name="handle_copied">帳號 (@handle) 已複製至剪貼簿。</string>
+	<string name="qr_code">QR code</string>
+	<string name="scan_qr_code">掃描 QR code</string>
+	<!-- Shown on a button that saves a file, after it was successfully saved -->
+	<string name="saved">已儲存</string>
+	<string name="image_saved">圖片已儲存。</string>
+	<string name="video_saved">影片已儲存。</string>
+	<string name="view_file">檢視</string>
+	<string name="share_sheet_preview_profile">%s 於 Mastodon</string>
+	<string name="share_sheet_preview_post">%1$s 於 Mastodon：「%2$s」</string>
+	<string name="copy_profile_link">複製個人檔案連結</string>
+	<string name="in_app_browser">應用程式內建瀏覽器</string>
+	<string name="system_browser">系統瀏覽器</string>
+	<string name="add_muted_word_short">新增靜音文字</string>
+	<string name="tab_home">首頁</string>
+	<string name="tab_search">探索</string>
+	<string name="tab_profile">個人檔案</string>
+	<string name="pin_post">釘選至個人檔案頁面</string>
+	<string name="unpin_post">自個人檔案頁面取消釘選</string>
+	<string name="post_pinned">該嘟文已被釘選</string>
+	<string name="post_unpinned">該嘟文已被取消釘選</string>
 </resources>

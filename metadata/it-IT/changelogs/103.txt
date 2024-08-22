@@ -1,0 +1,9 @@
+- Puoi ora filtrare le notifiche nella loro scheda tramite il tasto "Filtra notifiche".
+- Migliorie per akkoma: traduzioni, messaggi citati ora mostrati correttamente e possibilità di anteprima del post prima di pubblicarlo (grazie Megalodon!)
+- Impostazioni privacy ora disponibili in app
+- Opzione per disattivare sottolineatura link
+- È ora possibile usare un cuore come icona dei preferiti
+- Puoi copiare i crash log nel caso sia necessario inviare un bug report
+- Aggiunte Segnalibri e I tuoi preferiti come timeline fissabili (Grazie Megalodon!)
+- Puoi confrontare i post modificati e i loro originali nella cronologia di modifica (Grazie @FineFindus!)
+- Tanti piccoli bugfix

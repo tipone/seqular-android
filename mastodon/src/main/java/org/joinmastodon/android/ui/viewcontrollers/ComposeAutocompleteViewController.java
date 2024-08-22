@@ -192,7 +192,13 @@ public class ComposeAutocompleteViewController{
 			Hashtag tag=new Hashtag();
 			tag.name=lastText.substring(1);
 			hashtags.add(tag);
-			UiUtils.updateList(oldList, hashtags, list, hashtagsAdapter, (t1, t2)->t1.name.equals(t2.name));
+			UiUtils.updateList(oldList, hashtags, list, hashtagsAdapter, (t1, t2)->{
+				if(t1 != null && t2 != null)
+					return t1.name.equals(t2.name);
+				else {
+					return false;
+				}
+			});
 
 			list.postDelayed(hashtagsDebouncer, 300);
 		}else if(mode==Mode.EMOJIS){
@@ -278,7 +284,7 @@ public class ComposeAutocompleteViewController{
 					@Override
 					public void onSuccess(SearchResults result){
 						currentRequest=null;
-						if(result.hashtags.isEmpty() || (result.hashtags.size()==1 && result.hashtags.get(0).name.equals(lastText.substring(1))))
+						if(result.hashtags.isEmpty() || (result.hashtags.size()==1 && result.hashtags.get(0).name.equals(lastText.substring(1))) || mode!=Mode.HASHTAGS)
 							return;
 						List<Hashtag> oldList=hashtags;
 						hashtags=result.hashtags;

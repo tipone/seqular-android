@@ -39,7 +39,7 @@ public class AudioStatusDisplayItem extends StatusDisplayItem{
 		super(parentID, parentFragment);
 		this.status=status;
 		this.attachment=attachment;
-		imageRequest=new UrlImageLoaderRequest(TextUtils.isEmpty(attachment.previewUrl) ? status.account.avatarStatic : attachment.previewUrl, V.dp(100), V.dp(100));
+		imageRequest=new UrlImageLoaderRequest(TextUtils.isEmpty(attachment.previewUrl) ? (status.account != null ? status.account.avatarStatic : "") : attachment.previewUrl, V.dp(100), V.dp(100));
 	}
 
 	@Override
