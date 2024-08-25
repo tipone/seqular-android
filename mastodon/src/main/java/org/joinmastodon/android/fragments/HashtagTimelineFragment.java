@@ -34,6 +34,7 @@ import org.joinmastodon.android.model.FilterKeyword;
 import org.joinmastodon.android.model.Hashtag;
 import org.joinmastodon.android.model.Status;
 import org.joinmastodon.android.model.TimelineDefinition;
+import org.joinmastodon.android.ui.Snackbar;
 import org.joinmastodon.android.ui.sheets.MuteHashtagConfirmationSheet;
 import org.joinmastodon.android.ui.text.SpacerSpan;
 import org.joinmastodon.android.ui.utils.UiUtils;
@@ -131,6 +132,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 			}).exec(accountID);
 		}).show();
 	}
+
 	private void unmuteHashtag() {
 		//safe to get, this only called if filter is present
 		new DeleteFilter(filter.get().id).setCallback(new Callback<>(){
@@ -138,6 +140,9 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 			public void onSuccess(Void result){
 				filter=Optional.empty();
 				updateMuteState(false);
+				new Snackbar.Builder(getContext())
+						.setText(getContext().getString(R.string.unmuted_user_x, '#'+hashtagName))
+						.show();
 			}
 
 			@Override
