@@ -919,18 +919,17 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 
 		languageButton = wrap.findViewById(R.id.language_btn);
+		languageButton.setOnClickListener(v->showLanguageAlert());
+		languageButton.setOnLongClickListener(v->{
+			if(!getLocalPrefs().bottomEncoding){
+				getLocalPrefs().bottomEncoding=true;
+				getLocalPrefs().save();
+			}
+			return false;
+		});
 		if(instance.isIceshrimpJs())
-			languageButton.setVisibility(View.GONE);
-		else {
-			languageButton.setOnClickListener(v->showLanguageAlert());
-			languageButton.setOnLongClickListener(v->{
-				if(!getLocalPrefs().bottomEncoding){
-					getLocalPrefs().bottomEncoding=true;
-					getLocalPrefs().save();
-				}
-				return false;
-			});
-		}
+			languageButton.setVisibility(View.GONE); // hide language selector on Iceshrimp-JS because the feature is not supported
+
 		if (!GlobalUserPreferences.relocatePublishButton)
 			publishButton.post(()->publishButton.setMinimumWidth(publishButton.getWidth()));
 
