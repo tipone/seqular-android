@@ -154,10 +154,12 @@ public class Instance extends BaseModel{
 		return version.contains("compatible; Pixelfed");
 	}
 
+	// For both Iceshrimp-JS and Iceshrimp.NET
 	public boolean isIceshrimp() {
 		return version.contains("compatible; Iceshrimp");
 	}
 
+	// Only for Iceshrimp-JS
 	public boolean isIceshrimpJs() {
 		return version.contains("compatible; Iceshrimp "); // Iceshrimp.NET will not have a space immediately after
 	}
