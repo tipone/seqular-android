@@ -87,13 +87,13 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		disableDiscover=instance.map(Instance::isAkkoma).orElse(false);
 		isIceshrimp=instance.map(Instance::isIceshrimp).orElse(false);
 
-		tabViews=new FrameLayout[isIceshrimp ? 3 : 4];
+		tabViews=new FrameLayout[isIceshrimp ? 3 : 4]; // reduce array size on Iceshrimp to hide news feed because it's unsupported and always returns an empty list
 		for(int i=0;i<tabViews.length;i++){
 			FrameLayout tabView=new FrameLayout(getActivity());
 			tabView.setId(switch(i){
 				case 0 -> R.id.discover_posts;
 				case 1 -> R.id.discover_hashtags;
-				case 2 -> isIceshrimp ? R.id.discover_users : R.id.discover_news;
+				case 2 -> isIceshrimp ? R.id.discover_users : R.id.discover_news; // skip unsupported news discovery on Iceshrimp
 				case 3 -> R.id.discover_users;
 				default -> throw new IllegalStateException("Unexpected value: "+i);
 			});
@@ -139,7 +139,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 			transaction
 				.add(R.id.discover_posts, postsFragment)
 				.add(R.id.discover_hashtags, hashtagsFragment);
-			if(!isIceshrimp)
+			if(!isIceshrimp) // skip unsupported news discovery on Iceshrimp
 				transaction.add(R.id.discover_news, newsFragment);
 			transaction
 				.add(R.id.discover_users, accountsFragment)
@@ -152,7 +152,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 				tab.setText(switch(position){
 					case 0 -> R.string.posts;
 					case 1 -> R.string.hashtags;
-					case 2 -> isIceshrimp ? R.string.for_you : R.string.news;
+					case 2 -> isIceshrimp ? R.string.for_you : R.string.news; // skip unsupported news discovery on Iceshrimp
 					case 3 -> R.string.for_you;
 					default -> throw new IllegalStateException("Unexpected value: "+position);
 				});
@@ -273,7 +273,7 @@ public class DiscoverFragment extends AppKitFragment implements ScrollableToTop,
 		return switch(page){
 			case 0 -> postsFragment;
 			case 1 -> hashtagsFragment;
-			case 2 -> isIceshrimp ? accountsFragment : newsFragment;
+			case 2 -> isIceshrimp ? accountsFragment : newsFragment; // skip unsupported news discovery on Iceshrimp
 			case 3 -> accountsFragment;
 			default -> throw new IllegalStateException("Unexpected value: "+page);
 		};
