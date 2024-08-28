@@ -274,21 +274,21 @@ public abstract class StatusDisplayItem{
 				contentItems=items;
 			}
 
-		if(statusForContent.quote!=null) {
-			int quoteInlineIndex=statusForContent.content.lastIndexOf("<span class=\"quote-inline\"><br/><br/>RE:");
-			if(quoteInlineIndex==-1)
-				quoteInlineIndex=statusForContent.content.lastIndexOf("<span class=\"quote-inline\"><br><br>RE:");
-			if(quoteInlineIndex!=-1)
-				statusForContent.content=statusForContent.content.substring(0, quoteInlineIndex);
-			else {
-				// hide non-official quote patters
-				Matcher matcher=QUOTE_MENTION_PATTERN.matcher(status.content);
-				if(matcher.find()){
-					String quoteMention=matcher.group();
-					statusForContent.content=statusForContent.content.replace(quoteMention, "");
+			if(statusForContent.quote!=null) {
+				int quoteInlineIndex=statusForContent.content.lastIndexOf("<span class=\"quote-inline\"><br/><br/>RE:");
+				if(quoteInlineIndex==-1)
+					quoteInlineIndex=statusForContent.content.lastIndexOf("<span class=\"quote-inline\"><br><br>RE:");
+				if(quoteInlineIndex!=-1)
+					statusForContent.content=statusForContent.content.substring(0, quoteInlineIndex);
+				else {
+					// hide non-official quote patters
+					Matcher matcher=QUOTE_MENTION_PATTERN.matcher(status.content);
+					if(matcher.find()){
+						String quoteMention=matcher.group();
+						statusForContent.content=statusForContent.content.replace(quoteMention, "");
+					}
 				}
 			}
-		}
 
 			boolean hasSpoiler=!TextUtils.isEmpty(statusForContent.spoilerText);
 			if(!TextUtils.isEmpty(statusForContent.content)){
