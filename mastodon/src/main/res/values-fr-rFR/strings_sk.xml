@@ -414,4 +414,14 @@
     <string name="sk_settings_lock_account">Approuver manuellement les nouveaux·elles abonné·e·s</string>
     <string name="sk_timeline_cache_cleared">Cache du fil d\'accueil vidé</string>
     <string name="sk_button_mutuals">Suivi mutuel</string>
+    <string name="sk_icon_water">Eau</string>
+    <string name="sk_icon_sunset">Crépuscule</string>
+    <string name="sk_icon_cloud">Nuage</string>
+    <string name="sk_icon_rain">Pluie</string>
+    <string name="sk_posted">%s a publié</string>
+    <string name="sk_confirm_changes">Confirmer les changements</string>
+    <string name="sk_icon_sun">Soleil</string>
+    <string name="sk_icon_snowflake">Flocon de neige</string>
+    <string name="sk_private_note_update_failed">Échec de la sauvegarde de la note</string>
+    <string name="sk_private_note_hint">Ajouter une note personnelle à propos du profil</string>
 </resources>
