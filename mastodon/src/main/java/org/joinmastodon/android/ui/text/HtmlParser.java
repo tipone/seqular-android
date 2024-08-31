@@ -140,7 +140,7 @@ public class HtmlParser{
 							String href=el.attr("href");
 							LinkSpan.Type linkType;
 							String text=el.text();
-							if(el.hasClass("hashtag") || text.startsWith("#")){
+							if(!TextUtils.isEmpty(text) && (el.hasClass("hashtag") || text.startsWith("#"))){
 								// MOSHIDON: we have slightly refactored this so that the hashtags properly work in akkoma
 								// TODO: upstream this
 								linkType=LinkSpan.Type.HASHTAG;
