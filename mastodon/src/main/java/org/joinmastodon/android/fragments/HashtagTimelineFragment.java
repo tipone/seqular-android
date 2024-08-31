@@ -105,6 +105,11 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		muteMenuItem.setIcon(newMute ? R.drawable.ic_fluent_speaker_2_24_regular : R.drawable.ic_fluent_speaker_off_24_regular);
 	}
 
+	private void updateFollowState(boolean following) {
+		followMenuItem.setTitle(getString(following ? R.string.unfollow_user : R.string.follow_user, "#"+hashtagName));
+		followMenuItem.setIcon(following ? R.drawable.ic_fluent_person_delete_24_filled : R.drawable.ic_fluent_person_add_24_regular);
+	}
+
 	private void showMuteDialog(boolean mute) {
 		UiUtils.showConfirmationAlert(getContext(),
 										   mute ? R.string.mo_unmute_hashtag : R.string.mo_mute_hashtag,
@@ -147,8 +152,6 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 			}
 		}).exec(accountID);
 	}
-
-
 
 	@Override
 	protected TimelineDefinition makeTimelineDefinition() {
@@ -292,6 +295,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		followMenuItem=optionsMenu.findItem(R.id.follow_hashtag);
 		pinMenuItem=optionsMenu.findItem(R.id.pin);
 		followMenuItem.setVisible(toolbarContentVisible);
+		updateFollowState(hashtag.following);
 //		pinMenuItem.setShowAsAction(toolbarContentVisible ? MenuItem.SHOW_AS_ACTION_NEVER : MenuItem.SHOW_AS_ACTION_ALWAYS);
 		super.updatePinButton(pinMenuItem);
 
@@ -388,8 +392,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 		followButton.setTextVisible(true);
 		followProgress.setVisibility(View.GONE);
 		if(followMenuItem!=null){
-			followMenuItem.setTitle(getString(hashtag.following ? R.string.unfollow_user : R.string.follow_user, "#"+hashtagName));
-			followMenuItem.setIcon(hashtag.following ? R.drawable.ic_fluent_person_delete_24_filled : R.drawable.ic_fluent_person_add_24_regular);
+			updateFollowState(hashtag.following);
 		}
 		if(muteMenuItem!=null){
 			muteMenuItem.setTitle(getString(filter.isPresent() ? R.string.unmute_user : R.string.mute_user, "#" + hashtag));
@@ -429,6 +432,7 @@ public class HashtagTimelineFragment extends PinnableStatusListFragment{
 							return;
 						hashtag=result;
 						updateHeader();
+						updateFollowState(result.following);
 						followRequestRunning=false;
 					}
 
