@@ -40,6 +40,16 @@ public class ErrorStatusDisplayItem extends StatusDisplayItem{
 		}
 
 		@Override
+		public void onClick(){
+			// explicitly do nothing when clicked
+		}
+
+		@Override
+		public boolean isEnabled(){
+			return false;
+		}
+
+		@Override
 		public void onBind(ErrorStatusDisplayItem item) {
 			openInBrowserButton.setEnabled(item.status!=null && item.status.url!=null);
 		}
