@@ -304,4 +304,12 @@
     <string name="sk_icon_recycle_bin">Zakarrontzia</string>
     <string name="sk_trending_links_info_banner">Hauek dira zure zerbitzarian komentatzen ari diren albisteak</string>
     <string name="sk_add_timeline_tag_error_empty">Traola ezin da hutsik egon</string>
+    <string name="sk_icon_sun">Eguzkia</string>
+    <string name="sk_icon_sunset">Ilunabarra</string>
+    <string name="sk_icon_cloud">Lainoa</string>
+    <string name="sk_icon_rain">Euria</string>
+    <string name="sk_icon_snowflake">Elur maluta</string>
+    <string name="sk_gif_badge">GIF</string>
+    <string name="sk_posted">%s(a)k argitaratua</string>
+    <string name="sk_icon_thunderstorm">Ekaitza</string>
 </resources>
