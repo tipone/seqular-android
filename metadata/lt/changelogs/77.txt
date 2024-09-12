@@ -1,0 +1,4 @@
+- Ilgai paspausti sekimo mygtuką, kad būtų galima sekti profilius iš kitos paskyros
+- Galimybė atidaryti profilius kitoje paskyroje
+- Automatiškai slėpti kūrimo mygtuką, kai slinkimas žemyn laiko skalėje
+- Pataisyti strigimą atidarant serverio administratoriaus profilius
