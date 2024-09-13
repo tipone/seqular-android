@@ -424,4 +424,12 @@
     <string name="sk_icon_snowflake">Flocon de neige</string>
     <string name="sk_private_note_update_failed">Échec de la sauvegarde de la note</string>
     <string name="sk_private_note_hint">Ajouter une note personnelle à propos du profil</string>
+    <string name="sk_private_note_confirm_delete">Effacer la note personnelle à propos de %s ?</string>
+    <string name="sk_delete_note">Supprimer la note personnelle</string>
+    <string name="sk_add_note">Ajouter une note personnelle</string>
+    <string name="sk_open_post_preview">Prévisualisation du message</string>
+    <string name="sk_poll_hide_results">Cacher les résultats</string>
+    <string name="sk_poll_show_results">Afficher les résultats</string>
+    <string name="sk_post_preview">Prévisualisation</string>
+    <string name="sk_poll_multiple_choice">Choix multiple</string>
 </resources>
