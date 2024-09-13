@@ -94,4 +94,15 @@
     <string name="mo_swap_bookmark_with_reblog">استبدال إجراء الإضافة إلى الفواصل المرجعية بإعادة النشر</string>
     <string name="mo_setting_haptic_feedback_summary">اهتز عند التفاعل مع المنشورات</string>
     <string name="mo_notification_filter_reset">إعادة التعيين إلى الإفتراضية</string>
+    <string name="mo_instance_view_info">إظهار معلومات الخادم</string>
+    <string name="mo_settings_remove_tracking_params">روابط ذات خصوصية</string>
+    <string name="mo_personal_note_saved">تم حفظ الملاحظة</string>
+    <string name="mo_settings_unifiedpush_enable">تمكين</string>
+    <string name="import_settings_failed">فشل في استيراد الإعدادات</string>
+    <string name="export_settings_share">تصدير الإعدادات</string>
+    <string name="export_settings_fail">فشل في تصدير الإعدادات</string>
+    <string name="export_settings_title">تصدير الإعدادات</string>
+    <string name="import_settings_title">استيراد الإعدادات</string>
+    <string name="mo_error_display_copy_error_details">نسخ التفاصيل</string>
+    <string name="mo_trending_link_read">قراءة</string>
 </resources>
