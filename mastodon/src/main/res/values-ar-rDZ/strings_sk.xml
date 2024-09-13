@@ -170,4 +170,23 @@
     <string name="sk_icon_microscope">مجهر</string>
     <string name="sk_delete_notification_confirm_action">احذف الإشعار</string>
     <string name="sk_notification_mention">أشار إليك %s</string>
+    <string name="sk_settings_show_interaction_counts">إظهار عدد التفاعلات</string>
+    <string name="sk_timeline_bubble">فقاعة</string>
+    <string name="sk_do_remove_follower">حذف</string>
+    <string name="sk_remove">حذف</string>
+    <string name="sk_icon_bot">آلي</string>
+    <string name="sk_icon_location">الموضع</string>
+    <string name="sk_icon_laugh">ضحك</string>
+    <string name="sk_icon_code">شفرة</string>
+    <string name="sk_icon_bug">حشرة</string>
+    <string name="sk_icon_pizza">بيتزا</string>
+    <string name="sk_icon_gavel">مطرقة</string>
+    <string name="sk_icon_feed">موجز حي</string>
+    <string name="sk_icon_diamond">ألماس</string>
+    <string name="sk_icon_umbrella">مطارية</string>
+    <string name="sk_icon_water">ماء</string>
+    <string name="sk_icon_sun">شمس</string>
+    <string name="sk_icon_sunset">شروق الشمس</string>
+    <string name="sk_icon_cloud">سحاب</string>
+    <string name="sk_icon_rain">مطر</string>
 </resources>
