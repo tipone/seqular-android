@@ -118,4 +118,5 @@
     <string name="export_settings_fail">Échec de l\'export des paramètres</string>
     <string name="export_settings_title">Export des paramètres</string>
     <string name="mo_settings_unifiedpush_warning">UnifiedPush n\'est pas activé</string>
+    <string name="mo_personal_note_saved">La note a été enregistrée</string>
 </resources>
