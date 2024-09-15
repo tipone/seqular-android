@@ -7,7 +7,7 @@
 - <b>Vertimo mygtukas</b>: suteikia vertimo mygtuką!
 - <b>Įrašo kalbos parinkiklis</b>: suteikia įrašo kalbos parinkiklį!
 - <b>Neįtrauktas į sąrašą skelbimas</b>: skelbk viešai, nerodant savo įrašo tendencijose, saitažodžiuose ar viešose laiko skalėse.
-- <b>Federacinė laiko skalė</b>: žiūrėk visus viešus žmonių įrašus iš visų kitų Fediverso apylinkių, prie kurių prijungta tavo pagrindinis serveris.
+- <b>Federacinė laiko skalė</b>: žiūrėk visus viešus žmonių įrašus iš visų kitų fediverso apylinkių, prie kurių prijungta tavo pagrindinis serveris.
 - <b>Vaizdo aprašymo žiūryklė</b>: sparčiai patikrink, ar prie vaizdo ar vaizdo įrašo yra pridėtas jo alternatyvusis tekstas.
 - <b>Pranešimų prisegimas</b>: prisek svarbiausius įrašus prie savo profilio ir žiūrėk, ką kiti prisegė, naudojant skirtuku Prisegta.
 - <b>Sekti saitažodžius</b>: žiūrėk naujus įrašus iš konkrečių saitažodžių tiesiai savo pagrindinėje laiko skalėje, sekant juos.
