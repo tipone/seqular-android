@@ -24,7 +24,7 @@
     <string name="sk_federated_timeline">Federacija</string>
     <string name="sk_federated_timeline_info_banner">Tai – naujausi įrašai, kuriuos paskelbė žmonės tavo federacijoje.</string>
     <string name="sk_bubble_timeline_info_banner">Tai – naujausi įrašai iš tinklo, kuriuos kuruoja tavo serverio administratoriai.</string>
-    <string name="sk_trending_links_info_banner">Tai – naujienų istorijos, kurios kalbamoms visoje Fediversijoje.</string>
+    <string name="sk_trending_links_info_banner">Tai – naujienų istorijos, kurios kalbamoms visoje fediversijoje.</string>
     <string name="sk_update_available">„Megalodon“ %s paruoštas atsisiųsti.</string>
     <string name="sk_check_for_update">Tikrinti, ar yra naujinimas</string>
     <string name="sk_list_timelines">Sąrašai</string>
@@ -69,7 +69,7 @@
     <string name="sk_settings_translate_only_opened">Versti tik atvirus įrašus</string>
     <string name="sk_settings_translation_availability_note_available">%s palaiko vertimą!</string>
     <string name="sk_settings_translation_availability_note_unavailable">%s atrodo, kad nepalaiko vertimo.</string>
-    <string name="sk_loading_fediverse_resource_title">Ieškoma Fediversijoje</string>
+    <string name="sk_loading_fediverse_resource_title">Ieškoma fediversijoje</string>
     <string name="sk_loading_resource_on_instance_title">Ieškoma serveryje %s</string>
     <string name="sk_undo_reblog">Atšaukti pasidalinimą</string>
     <string name="sk_quote_post">Skelbti apie tai</string>
@@ -153,7 +153,7 @@
     <string name="sk_compose_draft">Įrašas bus išsaugotas kaip juodraštis.</string>
     <string name="sk_private_note_update_failed">Nepavyko išsaugoti pastabos.</string>
     <string name="sk_schedule">Planuoti</string>
-    <string name="sk_trending_posts_info_banner">Tai – įrašai, kurie šiuo metu sulaukia vis daugiau dėmesio Fediversijoje.</string>
+    <string name="sk_trending_posts_info_banner">Tai – įrašai, kurie šiuo metu sulaukia vis daugiau dėmesio fediversijoje.</string>
     <string name="sk_schedule_or_draft">Planuoti arba išsaugoti kaip juodraštį</string>
     <string name="sk_notify_update">Redaguoja pasidalintą įrašą</string>
     <string name="sk_external_share_title">Bendrinti su paskyra</string>
@@ -335,7 +335,7 @@
     <string name="sk_settings_instance">Serveris</string>
     <string name="sk_disable_pill_shaped_active_indicator">Išjungti piliulės formos aktyvaus skirtuko indikatorių</string>
     <string name="sk_settings_true_black">Juodos spalvos režimas</string>
-    <string name="sk_search_fediverse">Ieškoti Fediversą</string>
+    <string name="sk_search_fediverse">Ieškoti fediversą</string>
     <string name="sk_settings_display_pronouns_in_timelines">Rodyti įvardžius laiko skalėje</string>
     <string name="sk_settings_display_pronouns_in_threads">Rodyti įvardžius gijose</string>
     <string name="sk_settings_display_pronouns_in_user_listings">Rodyti įvardžius naudotojų sąrašuose</string>
@@ -442,5 +442,5 @@
     <string name="sk_settings_like_icon">Naudoti širdelę kaip mėgstamą piktogramą</string>
     <string name="sk_settings_prefix_replies_always">Atsakant į bet kurį</string>
     <string name="sk_settings_show_labels_in_navigation_bar">Rodyti skirtukų etiketes naršymo juostoje</string>
-    <string name="sk_settings_emoji_reactions_explanation">Rodo jaustukų reakcijas įrašams ir leidžia pridėti savo. Įvairūs Fediverso serveriai tai palaiko, bet įprastas „Mastodon“ – ne.</string>
+    <string name="sk_settings_emoji_reactions_explanation">Rodo jaustukų reakcijas įrašams ir leidžia pridėti savo. Įvairūs fediverso serveriai tai palaiko, bet įprastas „Mastodon“ – ne.</string>
 </resources>
