@@ -407,4 +407,11 @@
     <string name="sk_edit_alt_text">대체 텍스트 편집</string>
     <string name="sk_settings_unifiedpush">UnifiedPush 사용</string>
     <string name="sk_pronouns_label">인칭 대명사</string>
+    <string name="sk_icon_water">물</string>
+    <string name="sk_icon_sun">태양</string>
+    <string name="sk_icon_sunset">일몰</string>
+    <string name="sk_icon_cloud">구름</string>
+    <string name="sk_icon_thunderstorm">번개구름</string>
+    <string name="sk_icon_rain">비</string>
+    <string name="sk_icon_snowflake">눈꽃</string>
 </resources>
