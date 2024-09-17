@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_color_palette_black_and_white">黑白</string>
 </resources>
