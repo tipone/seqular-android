@@ -1,1 +1,1 @@
-Mastodon for Android，但它是粉色的並且具有更多功能
+Mastodon for Android，但它使用 material you 主題並且具有更多功能
