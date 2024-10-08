@@ -94,4 +94,26 @@
     <string name="mo_setting_haptic_feedback_summary">Bergetar ketika berinteraksi dengan kiriman</string>
     <string name="mo_confirm_to_mute_hashtag">Apakah Anda yakin ingin membisukan tagar ini\?</string>
     <string name="mo_notification_filter_reset">Atur ulang ke bawaan</string>
+    <string name="mo_settings_remove_tracking_params">Tautan Pribadi</string>
+    <string name="mo_error_display_text">Ada yang salah saat memuat kiriman ini. Jika masalah terus berlanjut, silakan laporkan di laman Isu serta dengan detail kesalahan.</string>
+    <string name="mo_settings_remove_tracking_params_summary">Hilangkan informasi pelacak dari tautan</string>
+    <string name="mo_instance_view_info">Tampilkan Info Server</string>
+    <string name="mo_mute_notifications">Sembunyikan notifikasi dari pengguna ini?</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush tidak diaktifkan</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Tidak ada distributor UnifiedPush yang terpasang. Anda tidak akan menerima notifikasi.</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush tidak diaktifkan. Anda tidak akan menerima notifikasi.</string>
+    <string name="mo_settings_unifiedpush_enable">Aktifkan</string>
+    <string name="import_settings_confirm">Konfirmasi mengimpor pengaturan?</string>
+    <string name="import_settings_confirm_body">Semua pengaturan dan lini masa saat ini akan ditimpa! Ini tidak dapat diurungkan.</string>
+    <string name="import_settings_failed">Gagal mengimpor pengaturan</string>
+    <string name="export_settings_share">Pengaturan Pengeksporan</string>
+    <string name="export_settings_fail">Gagal mengekspor pengaturan</string>
+    <string name="export_settings_summary">Ekspor semua pengaturan dan lini masa dari semua akun yang masuk</string>
+    <string name="import_settings_title">Impor pengaturan</string>
+    <string name="export_settings_title">Ekspor pengaturan</string>
+    <string name="mo_personal_note_saved">Catatan disimpan</string>
+    <string name="import_settings_summary">Impor pengaturan dan lini masa yang sebelumnya diekspor</string>
+    <string name="mo_error_display_title">Gagal menampilkan kiriman</string>
+    <string name="mo_error_display_copy_error_details">Salin detail</string>
+    <string name="mo_trending_link_read">Baca</string>
 </resources>
