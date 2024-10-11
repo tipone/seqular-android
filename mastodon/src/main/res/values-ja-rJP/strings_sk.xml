@@ -401,4 +401,31 @@
     <string name="sk_icon_thunderstorm">雷雨</string>
     <string name="sk_open_in_app_failed">アプリで開くことができませんでした</string>
     <string name="sk_private_note_confirm_delete">%s に関するパーソナルメモを削除しますか？</string>
+    <string name="sk_settings_reply_visibility_following">フォローしている人への返信</string>
+    <string name="sk_trending_links_info_banner">これらのニュース記事はフェディバース全体で話題になっています。</string>
+    <string name="sk_alt_text_missing">少なくとも1つの添付ファイルに説明が含まれていません。</string>
+    <string name="sk_posted">%s が投稿しました</string>
+    <string name="sk_settings_local_only_explanation">この機能が動作するためには、あなたのホームインスタンスがローカル専用投稿をサポートしている必要があります。ほとんどの修正されたMastodonのバージョンはこれをサポートしていますが、Mastodonはサポートしていません。</string>
+    <string name="sk_reacted">%s がリアクションしました</string>
+    <string name="sk_settings_prefix_reply_cw_with_re">返信する際は、CWを「re:」で始めてください</string>
+    <string name="sk_content_type_unspecified">指定されていません</string>
+    <string name="sk_external_share_or_open_title">アカウントで共有または開く</string>
+    <string name="sk_settings_prefix_replies_always">誰にでも</string>
+    <string name="sk_settings_prefix_replies_never">無効にする</string>
+    <string name="sk_settings_forward_report_default">「報告を転送」スイッチのデフォルト</string>
+    <plurals name="sk_users_reacted_with">
+        <item quantity="other">%1$,d人のユーザーが%2$sで反応しました</item>
+    </plurals>
+    <string name="sk_search_suicide_message">もし自殺を考えているなら、これはあなたに対するメッセージです。辛い時は、お住いの地域の自殺防止ホットラインに連絡することを考えてみてください。</string>
+    <string name="sk_open_post_preview">投稿のプレビュー</string>
+    <string name="sk_poll_multiple_choice">複数の選択肢</string>
+    <string name="sk_poll_show_results">結果を表示</string>
+    <string name="sk_poll_hide_results">結果を隠す</string>
+    <string name="sk_settings_content_types_explanation">投稿を作成する際に、Markdownのようなコンテンツタイプを設定できるようにします。ただし、すべてのインスタンスがこれをサポートしているわけではないことに注意してください。</string>
+    <string name="sk_reply_line_above_avatar">アバターの上の「返信先」行</string>
+    <string name="sk_settings_prefix_replies_to_others">他の人への返信のみ</string>
+    <string name="sk_reacted_with">%1$s が %2$s でリアクションしました</string>
+    <string name="sk_settings_default_content_type_explanation">これにより、新しい投稿を作成する際にコンテンツタイプを事前に選択でき、「投稿設定」で設定された値を上書きすることができます。</string>
+    <string name="sk_edit_timeline_tags_explanation">これらの操作はサーバーによって処理されることに注意してください。これらを組み合わせることはサポートされていない可能性があります。</string>
+    <string name="sk_post_preview">プレビュー</string>
 </resources>
