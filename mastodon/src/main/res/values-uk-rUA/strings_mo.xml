@@ -34,7 +34,7 @@
     <string name="mo_download_latest_nightly_release">Встановити останній нічний реліз</string>
     <string name="mo_notification_action_replied">Успішно надіслано відповідь на публікацію від %s</string>
     <string name="mo_change_default_reply_visibility_to_unlisted">За замовчуванням відповідати як «Прихований»</string>
-    <string name="mo_composer_behavior">Поведінка екрану створення публікації</string>
+    <string name="mo_composer_behavior">Поведінка екрана створення публікації</string>
     <string name="mo_miscellaneous_settings">Інші Налаштування</string>
     <string name="mo_duration_minutes_5">5 хвилин</string>
     <string name="mo_disable_double_tap_to_swipe_between_tabs">Вимкнути подвійне тицяння для перемикання між вкладками</string>
