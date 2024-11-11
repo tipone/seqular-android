@@ -1,0 +1,4 @@
+- Ceartaítear logáil isteach Pixelfed
+- Ceartúcháin tuairteanna iomadúla
+
+Le haghaidh changelog iomlán, féach https://github.com/LucasGGamerM/moshidon/releases/tag/2.3.0%2Bfork.107.moshinda

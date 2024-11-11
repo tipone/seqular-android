@@ -1,0 +1,6 @@
+- Scagairí feabhsaithe, lena n-áirítear “Folaigh le rabhadh” -comhoiriúnacht
+- Leathanach próifíle athdheartha le meiteashonraí díreach faoi bhun an bhio
+- Laghdaigh/leathnaigh an fheidhm do phoist an-fhada
+- Rogha chun CWanna a réamhshocrú go huathoibríoch le “re:”
+- Rogha chun cnaipí idirghníomhaíochta a cheilt san amlíne
+- Ceartúcháin, tweaks agus feabhsuithe éagsúla

@@ -1,0 +1,11 @@
+- Customizable Foilsigh cnaipe
+- Oscail naisc Fediverse san aip
+- Cnaipe treisithe fada-cliceáil chun postáil a "luaigh".
+- Cóipeáil URL an phoist agus an cnaipe roinnte á bhrú agat le fada
+- Cuir fógraí scriosta i bhfeidhm (díchumasaithe de réir réamhshocraithe)
+- Deilbhíní tiomnaithe do chineálacha éagsúla fógraí
+- Dathanna liath nua
+- Cuir socrú leis chun swiping idir cluaisíní a dhíchumasú
+- Cuir naisc éagsúla le socruithe cuntais
+- Scoránaigh chun an cnaipe aistrithe a thaispeáint / a chur i bhfolach san amlíne
+- Ceartúcháin agus tweaks

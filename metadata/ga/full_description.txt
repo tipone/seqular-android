@@ -1,0 +1,16 @@
+Is leagan modhnaithe é Moshidon den <a href="https://github.com/mastodon/mastodon-android">aip oifigiúil Mastodon Android</a> a chuireann gnéithe tábhachtacha in easnamh san aip oifigiúil, mar shampla an aip chónaidhme amlíne, postáil neamhliostaithe agus breathnóir cur síos ar íomhá.
+
+<b>Eochairghnéithe</b>
+
+- <b>Go leor dathanna</b>: Tugann sé ábhar leat agus go leor roghanna ildaite le haghaidh téamaí!
+- <b>Postálacha scagtha!</b>: Léirítear an cumas chun postálacha scagtha a bheith agat le rabhadh!
+- <b>Cnaipe Aistrigh</b>: Beir leat cnaipe aistrithe!
+- <b>Roghnóir teanga fiacail</b>: Tugann sé seo roghnóir teanga fiacail!
+- <b>Postáil neamhliostaithe</b>: Postáil go poiblí gan do phostáil a thaispeáint i dtreochtaí, hashtags nó amlínte poiblí.
+- <b>Amlíne chónaidhme</b>: Féach ar gach postáil phoiblí ó dhaoine ar gach comharsanacht Chónaidhme eile a bhfuil do chás baile nasctha léi.
+- <b>Amharcóir cur síos ar an íomhá</b>: Seiceáil go tapa an bhfuil téacs alt ceangailte d'íomhá nó d'fhíseán.
+- <b>Postálacha a phionnáil</b>: Pinn do phostálacha is tábhachtaí le do phróifíl agus féach cad atá pinn ag daoine eile ag baint úsáide as an táb “Pionnáilte”.
+- <b>Lean hashtags</b>: Féach ar phoist nua ó hashtags ar leith go díreach i d'amlíne baile trí iad a leanúint.
+- <b>Iarrataí leantacha a fhreagairt</b>: Glac le nó diúltaigh iarratais leantacha ó d'fhógraí nó ón liosta iarrataí ar leith Lean.
+- <b>Scrios agus athdhréachtú</b>: An ghné a bhfuil an-tóir air a d'fhág gur féidir eagarthóireacht a dhéanamh gan feidhm eagarthóireachta iarbhír.
+- <b> Extras</b>: Tugann sé go leor gnéithe breise Chomhéadain, mar dheilbhíní idirghníomhaíochta ar na Fógraí agus baintear go leor trioblóidí leis an Chomhéadain bhunaidh!
