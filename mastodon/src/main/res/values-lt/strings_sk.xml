@@ -3,12 +3,12 @@
     <string name="sk_pinned_posts">Prisegta</string>
     <string name="sk_confirm_pin_post_title">Prisegti įrašą prie profilio</string>
     <string name="sk_confirm_unpin_post_title">Atsegti įrašą iš profilio</string>
-    <string name="sk_confirm_pin_post">Ar nori prisegti šį įrašą prie savo profilio?</string>
-    <string name="sk_confirm_delete_and_redraft">Ar tikrai nori ištrinti ir iš naujo parengti šį įrašą?</string>
+    <string name="sk_confirm_pin_post">Ar norite prisegti šį įrašą prie savo profilio?</string>
+    <string name="sk_confirm_delete_and_redraft">Ar tikrai norite ištrinti ir iš naujo parengti šį įrašą?</string>
     <string name="sk_pin_post">Prisegti prie profilio</string>
     <string name="sk_pinning">Prisegimas įrašas…</string>
     <string name="sk_unpin_post">Atsegti iš profilio</string>
-    <string name="sk_confirm_unpin_post">Ar tikrai nori atsegti šį įrašą?</string>
+    <string name="sk_confirm_unpin_post">Ar tikrai norite atsegti šį įrašą?</string>
     <string name="sk_unpinning">Atsegimas įrašas…</string>
     <string name="sk_image_description">Vaizdo aprašymas</string>
     <string name="sk_settings_show_replies">Rodyti atsakymus</string>
@@ -22,8 +22,8 @@
     <string name="sk_mark_media_as_sensitive">Žymėti mediją kaip jautrią</string>
     <string name="sk_user_post_notifications_on">Įjungta įrašų pranešimai naudotojui %s</string>
     <string name="sk_federated_timeline">Federacija</string>
-    <string name="sk_federated_timeline_info_banner">Tai – naujausi įrašai, kuriuos paskelbė žmonės tavo federacijoje.</string>
-    <string name="sk_bubble_timeline_info_banner">Tai – naujausi įrašai iš tinklo, kuriuos kuruoja tavo serverio administratoriai.</string>
+    <string name="sk_federated_timeline_info_banner">Tai – naujausi įrašai, kuriuos paskelbė asmenys jūsų federacijoje.</string>
+    <string name="sk_bubble_timeline_info_banner">Tai – naujausi įrašai iš tinklo, kuriuos kuruoja jūsų serverio administratoriai.</string>
     <string name="sk_trending_links_info_banner">Tai – naujienų istorijos, kurios kalbamoms visoje fediversijoje.</string>
     <string name="sk_update_available">„Megalodon“ %s paruoštas atsisiųsti.</string>
     <string name="sk_check_for_update">Tikrinti, ar yra naujinimas</string>
@@ -125,7 +125,7 @@
     <string name="sk_resource_not_found">Išteklių nepavyko rasti.</string>
     <string name="sk_bookmarked_as">Pridėta kaip %s</string>
     <string name="sk_save_draft_message">Ar nori išsaugoti šio juodraščio pakeitimus, ar paskelbti jį dabar?</string>
-    <string name="sk_settings_continues_playback_summary">Leisk toliau leisti jau leidžiamą mediją, uždengiant naująjį įrašo peržiūrą.</string>
+    <string name="sk_settings_continues_playback_summary">Leiskite toliau leisti jau leidžiamą mediją, uždengiant naująjį įrašo peržiūrą.</string>
     <string name="sk_settings_show_boosts">Rodyti pasidalinimus</string>
     <string name="sk_reject_follow_request">Atmesti sekimo prašymą</string>
     <string name="sk_color_palette_red">Raudona</string>
