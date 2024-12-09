@@ -125,7 +125,7 @@
     <string name="sk_resource_not_found">Išteklių nepavyko rasti.</string>
     <string name="sk_bookmarked_as">Pridėta kaip %s</string>
     <string name="sk_save_draft_message">Ar nori išsaugoti šio juodraščio pakeitimus, ar paskelbti jį dabar?</string>
-    <string name="sk_settings_continues_playback_summary">Leiskite toliau leisti jau leidžiamą mediją, uždengiant naująjį įrašo peržiūrą.</string>
+    <string name="sk_settings_continues_playback_summary">Leiskite toliau paleisti jau leidžiamą mediją, uždengiant naująjį įrašo peržiūrą.</string>
     <string name="sk_settings_show_boosts">Rodyti pasidalinimus</string>
     <string name="sk_reject_follow_request">Atmesti sekimo prašymą</string>
     <string name="sk_color_palette_red">Raudona</string>
