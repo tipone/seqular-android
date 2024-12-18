@@ -1,1 +1,1 @@
-Mastodon for Android，但它使用 material you 主題並且具有更多功能
+Android 專用的乳齒象，不過它採用 Material You 設計語言並且具有更多功能
