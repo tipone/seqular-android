@@ -448,4 +448,5 @@
     <string name="sk_add_timeline_tag_error_empty">Hashtag nie może być pusty</string>
     <string name="sk_list_exclusive_switch_explanation">Członkowie listy na wyłączność nie będą wyświetlani na głównej osi czasu — jeśli Twoja instancja ją obsługuje.</string>
     <string name="sk_icon_beaker">Szkło laboratoryjne</string>
+    <string name="sk_posted">Nowy wpis %s</string>
 </resources>
