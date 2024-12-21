@@ -107,4 +107,13 @@
     <string name="import_settings_failed">Import ustawień się nie powiódł</string>
     <string name="export_settings_fail">Nie udało się wyeksportować ustawień</string>
     <string name="mo_error_display_title">Nie udało się wyświetlić wpisu</string>
+    <string name="mo_settings_remove_tracking_params_summary">Usuń z linków parametry służące do śledzenia użytkoników</string>
+    <string name="mo_settings_remove_tracking_params">Linki bez parametrów śledzących</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Nie zainstalowano UnifiedPush Distributors. Nie możliwe będzie otrzymywanie powiadomień.</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush nie jest włączone. Niemożliwe będzie otrzymywanie powiadomień.</string>
+    <string name="import_settings_confirm_body">Wszystkie obecne ustawienia i osie czasu zostaną nadpisane! Nie można tego cofnąć.</string>
+    <string name="import_settings_summary">Importuj wcześniej wyeksportowane ustawienia i osie czasu</string>
+    <string name="mo_personal_note_saved">Zapisano notatkę</string>
+    <string name="export_settings_summary">Eksportuj wszystkie ustawienia i osie czasu z zalogowanych kont</string>
+    <string name="mo_error_display_text">Wystąpił błąd podczas ładowania tego wpisu. Jeżeli problem się powtarza prosimy zgłosić go na naszej stronie Zgłoszeń wraz z infomacjami o błędzie.</string>
 </resources>
