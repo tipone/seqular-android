@@ -25,7 +25,7 @@ public class EmojiReactionButton extends ProgressBarButton {
 	public boolean onTouchEvent(MotionEvent event) {
 		// allow long click even if button is disabled
 		int action=event.getAction();
-		if(action==MotionEvent.ACTION_DOWN)
+		if(action==MotionEvent.ACTION_DOWN && !isEnabled())
 			handler.postDelayed(this::performLongClick, ViewConfiguration.getLongPressTimeout());
 		if(action==MotionEvent.ACTION_UP)
 			handler.removeCallbacksAndMessages(null);
