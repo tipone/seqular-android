@@ -216,6 +216,8 @@ public class EmojiReactionsStatusDisplayItem extends StatusDisplayItem {
 			if(next!=null && !next.parentID.equals(item.parentID)) next=null;
 			if(next instanceof ExtendedFooterStatusDisplayItem)
 				itemView.setPadding(0, 0, 0, V.dp(12));
+			else
+				itemView.setPadding(0, 0, 0, 0);
         }
 
 		private void updateVisibility(boolean hidden, boolean force){
