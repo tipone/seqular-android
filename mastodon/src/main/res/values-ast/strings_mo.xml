@@ -63,4 +63,18 @@
     <string name="mo_settings_unifiedpush_enable">Habilitar</string>
     <string name="mo_blocked_accounts">Cuentes bloquiaes</string>
     <string name="mo_settings_remove_tracking_params">Enllaces privaos</string>
+    <string name="mo_add_custom_server_local_timeline">Amestar la cronoloxía llocal d\'otru sirvidor</string>
+    <string name="mo_notification_action_replied">Respondisti al artículu de %s</string>
+    <string name="mo_change_default_reply_visibility_to_unlisted">Responder como \'Non llistáu\' por defeutu</string>
+    <string name="mo_notification_management_settings">Xestionar avisos</string>
+    <string name="mo_composer_behavior">Comportamientu del editor</string>
+    <string name="mo_load_remote_followers">Cargar los siguíos y siguidores del perfil remotu</string>
+    <string name="export_settings_title">Esportar axustes</string>
+    <string name="import_settings_title">Importar axustes</string>
+    <string name="mo_error_display_title">Nun se pudo amosar l\'artículu</string>
+    <string name="mo_error_display_copy_error_details">Copiar detalles</string>
+    <string name="import_settings_confirm">¿Confirmes la importación de los axustes?</string>
+    <string name="export_settings_share">Esportar Axustes</string>
+    <string name="export_settings_fail">Nun se pudieron esportar los axustes</string>
+    <string name="import_settings_failed">Nun se pudieron importar los axustes</string>
 </resources>
