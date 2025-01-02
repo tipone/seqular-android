@@ -1,0 +1,9 @@
+* Importazione/esportazione impostazioni (richiede login)
+* Visualizzazione URL post come citazioni
+* Evidenziazione filtri
+* Avviso se UnifiedPush è disabilitato su FDroid
+* Ripristino posizione precedente pulsanti Scarica/Condividi in visualizzatore immagini
+* Mostra link di tendenza in timeline (se supportato dal server)
+* Nuova opzione per rimuovere parametri di tracciamento da URL
+* Possibilità di selezionare account in creazione post dal launcher
+* Miglioramenti e correzioni di bug
