@@ -166,17 +166,21 @@ public class PushSubscriptionManager{
 
 			//work-around for adding the randomAccountId
 			String newEndpoint = endpoint;
-			if (endpoint.startsWith("https://app.joinmastodon.org/relay-to/fcm/"))
-				newEndpoint += pushAccountID;
+			Boolean standard = true;
+			if (endpoint.startsWith("https://app.joinmastodon.org/relay-to/fcm/")){
+				newEndpoint+=pushAccountID;
+				standard = false;
+			}
 
-			registerAccountForPush(subscription, newEndpoint, encodedPublicKey, encodedAuthKey);
+			registerAccountForPush(subscription, standard, newEndpoint, encodedPublicKey, encodedAuthKey);
 		});
 	}
 
-	public void registerAccountForPush(PushSubscription subscription, String endpoint, String p256dh, String auth){
+	public void registerAccountForPush(PushSubscription subscription, Boolean standard, String endpoint, String p256dh, String auth){
 		MastodonAPIController.runInBackground(()->{
 			Log.d(TAG, "registerAccountForPush: started for "+accountID);
 			new RegisterForPushNotifications(endpoint,
+					standard,
 					p256dh,
 					auth,
 					subscription==null ? PushSubscription.Alerts.ofAll() : subscription.alerts,
