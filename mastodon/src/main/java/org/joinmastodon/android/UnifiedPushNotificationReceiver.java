@@ -9,10 +9,14 @@ import org.joinmastodon.android.api.session.AccountSession;
 import org.joinmastodon.android.api.session.AccountSessionManager;
 import org.joinmastodon.android.model.Notification;
 import org.joinmastodon.android.model.PaginatedResponse;
+import org.unifiedpush.android.connector.FailedReason;
 import org.unifiedpush.android.connector.MessagingReceiver;
+import org.unifiedpush.android.connector.data.PushEndpoint;
+import org.unifiedpush.android.connector.data.PushMessage;
 
 import java.util.List;
 
+import kotlin.text.Charsets;
 import me.grishka.appkit.api.Callback;
 import me.grishka.appkit.api.ErrorResponse;
 
@@ -24,16 +28,16 @@ public class UnifiedPushNotificationReceiver extends MessagingReceiver{
 	}
 
 	@Override
-	public void onNewEndpoint(@NotNull Context context, @NotNull String endpoint, @NotNull String instance) {
+	public void onNewEndpoint(@NotNull Context context, @NotNull PushEndpoint endpoint, @NotNull String instance) {
 		// Called when a new endpoint be used for sending push messages
-		Log.d(TAG, "onNewEndpoint: New Endpoint " + endpoint + " for "+ instance);
+		Log.d(TAG, "onNewEndpoint: New Endpoint " + endpoint.getUrl() + " for "+ instance);
 		AccountSession account = AccountSessionManager.getInstance().tryGetAccount(instance);
 		if (account != null)
-			account.getPushSubscriptionManager().registerAccountForPush(null, endpoint);
+			account.getPushSubscriptionManager().registerAccountForPush(null, endpoint.getUrl());
 	}
 
 	@Override
-	public void onRegistrationFailed(@NotNull Context context, @NotNull String instance) {
+	public void onRegistrationFailed(@NotNull Context context, @NotNull FailedReason reason, @NotNull String instance) {
 		// called when the registration is not possible, eg. no network
 		Log.d(TAG, "onRegistrationFailed: " + instance);
 		//re-register for gcm
@@ -53,7 +57,8 @@ public class UnifiedPushNotificationReceiver extends MessagingReceiver{
 	}
 
 	@Override
-	public void onMessage(@NotNull Context context, @NotNull byte[] message, @NotNull String instance) {
+	public void onMessage(@NotNull Context context, @NotNull PushMessage message, @NotNull String instance) {
+		Log.d(TAG, "New message for " + instance);
 		// Called when a new message is received. The message contains the full POST body of the push message
 		AccountSession account = AccountSessionManager.getInstance().tryGetAccount(instance);
 

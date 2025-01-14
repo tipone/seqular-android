@@ -127,12 +127,12 @@ public class AccountSessionManager{
 		MastodonAPIController.runInBackground(()->writeInstanceInfoFile(wrapper, instance.uri));
 
 		updateMoreInstanceInfo(instance, instance.uri);
-		if (!UnifiedPush.getDistributor(context).isEmpty()) {
-			UnifiedPush.registerApp(
+		if (UnifiedPush.getAckDistributor(context) != null) {
+			UnifiedPush.register(
 					context,
 					session.getID(),
-					new ArrayList<>(),
-					context.getPackageName()
+					null,
+					null
 			);
 		} else if(PushSubscriptionManager.arePushNotificationsAvailable()){
 			session.getPushSubscriptionManager().registerAccountForPush(null);
