@@ -27,6 +27,8 @@ public class RegisterForPushNotifications extends MastodonAPIRequest<PushSubscri
 
 		private static class Subscription{
 			public String endpoint;
+			// Use standard push notifications if available
+			public Boolean standard = true;
 			public Keys keys=new Keys();
 		}
 

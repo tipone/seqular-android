@@ -169,9 +169,16 @@ public class PushSubscriptionManager{
 			if (endpoint.startsWith("https://app.joinmastodon.org/relay-to/fcm/"))
 				newEndpoint += pushAccountID;
 
-			new RegisterForPushNotifications(newEndpoint,
-					encodedPublicKey,
-					encodedAuthKey,
+			registerAccountForPush(subscription, newEndpoint, encodedPublicKey, encodedAuthKey);
+		});
+	}
+
+	public void registerAccountForPush(PushSubscription subscription, String endpoint, String p256dh, String auth){
+		MastodonAPIController.runInBackground(()->{
+			Log.d(TAG, "registerAccountForPush: started for "+accountID);
+			new RegisterForPushNotifications(endpoint,
+					p256dh,
+					auth,
 					subscription==null ? PushSubscription.Alerts.ofAll() : subscription.alerts,
 					subscription==null ? PushSubscription.Policy.ALL : subscription.policy)
 					.setCallback(new Callback<>(){
