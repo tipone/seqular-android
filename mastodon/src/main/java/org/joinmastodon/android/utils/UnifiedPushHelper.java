@@ -33,7 +33,7 @@ public class UnifiedPushHelper {
 					context,
 					accountSession.getID(),
 					null,
-					null
+					accountSession.app.vapidKey.replaceAll("=","")
 			);
 		}
 	}

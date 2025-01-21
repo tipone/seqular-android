@@ -133,7 +133,7 @@ public class AccountSessionManager{
 					context,
 					session.getID(),
 					null,
-					null
+					session.app.vapidKey.replaceAll("=","")
 			);
 		} else if(PushSubscriptionManager.arePushNotificationsAvailable()){
 			session.getPushSubscriptionManager().registerAccountForPush(null);
