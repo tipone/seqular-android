@@ -242,8 +242,8 @@ public class Instance extends BaseModel{
 	public static class PollsConfiguration{
 		public int maxOptions;
 		public int maxCharactersPerOption;
-		public int minExpiration;
-		public int maxExpiration;
+		public long minExpiration;
+		public long maxExpiration;
 	}
 
 	@Parcel
