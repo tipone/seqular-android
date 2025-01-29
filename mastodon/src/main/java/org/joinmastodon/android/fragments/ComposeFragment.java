@@ -1057,7 +1057,7 @@ public class ComposeFragment extends MastodonToolbarFragment implements OnBackPr
 
 		if(publishButton==null)
 			return;
-		publishButton.setEnabled((!isInstancePixelfed() || !mediaViewController.isEmpty()) && (trimmedCharCount>0 || !mediaViewController.isEmpty()) && charCount<=charLimit && mediaViewController.getNonDoneAttachmentCount()==0 && (pollViewController.isEmpty() || pollViewController.getNonEmptyOptionsCount()>1));
+		publishButton.setEnabled(((!isInstancePixelfed() || replyTo != null) || !mediaViewController.isEmpty()) && (trimmedCharCount>0 || !mediaViewController.isEmpty()) && charCount<=charLimit && mediaViewController.getNonDoneAttachmentCount()==0 && (pollViewController.isEmpty() || pollViewController.getNonEmptyOptionsCount()>1));
 	}
 
 	private void onCustomEmojiClick(Emoji emoji){
