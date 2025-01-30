@@ -1,0 +1,9 @@
+- Kini Anda dapat memfilter notifikasi yang ditampilkan di tab notifikasi langsung dari tombol 'Filter notifikasi'
+- Peningkatan untuk akkoma: terjemahan, posting yang dikutip kini akan ditampilkan dengan benar, dan kemampuan untuk melihat pratinjau posting sebelum dipublikasikan (Terima kasih Megalodon!)
+- Pengaturan Jangkauan dan Privasi kini tersedia di aplikasi
+- Opsi untuk menonaktifkan tautan yang digarisbawahi
+- Menggunakan Hati sebagai ikon favorit kini memungkinkan
+- Kini Anda dapat menyalin log kerusakan jika perlu mengajukan laporan bug
+- Menambahkan Bookmark dan Favorit sebagai linimasa yang dapat disematkan (Terima kasih Megalodon!)
+- Kini Anda dapat melihat perbedaan antara posting yang diedit dan asli dalam riwayat suntingan (Terima kasih @FineFindus!)
+- Banyak perbaikan bug kecil

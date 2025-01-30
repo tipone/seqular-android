@@ -1,0 +1,3 @@
+- Menggabungkan hulu (2.3.0)
+- Menambahkan pengambilan jarak jauh untuk riwayat status
+- Memperbaiki sejumlah bug

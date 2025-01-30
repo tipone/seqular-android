@@ -1,0 +1,9 @@
+* Pengaturan impor dan ekspor (hanya untuk akun yang login)
+* Render URL posting seolah-olah merupakan posting kutipan yang sebenarnya
+* Lihat sorotan filter
+* Peringatkan jika UnifiedPush dinonaktifkan di fdroid
+* Letakkan tombol downloadshare pada penampil gambar di tempat sebelumnya
+* Lihat garis waktu ke tautan yang sedang tren (server harus mendukungnya)
+* Tambahkan opsi untuk menghapus parameter pelacakan url
+* Anda sekarang dapat memilih akun saat meluncurkan compose dari menu peluncur
+* Banyak perbaikan bug dan peningkatan kecil
