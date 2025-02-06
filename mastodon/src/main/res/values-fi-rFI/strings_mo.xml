@@ -1,4 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
+    <string name="mo_relocate_publish_button">Siirrä julkaisupainike uudelleen</string>
+    <string name="mo_color_palette_nord">Nord</string>
+    <string name="mo_color_palette_black_and_white">Mustavalkoinen</string>
+    <string name="mo_enable_dividers">Näytä postin jakajat</string>
 </resources>
