@@ -1,0 +1,9 @@
+- Voit nyt suodattaa ilmoitusvälilehdellä näkyvät ilmoitukset suoraan Suodata ilmoitukset -painikkeesta
+- Parannuksia Akkomalle: käännökset, lainatut viestit näkyvät nyt oikein ja mahdollisuus esikatsella viestejä ennen julkaisua (kiitettävää Megalodon!)
+- Tavoittavuus- ja tietosuoja-asetukset ovat nyt saatavilla sovelluksessa
+- Mahdollisuus poistaa alleviivatut linkit käytöstä
+- Sydämen käyttäminen suosikkikuvakkeena on nyt mahdollista
+- Voit nyt kopioida kaatumislokeja siltä varalta, että sinun on tehtävä virheilmoitus
+- Lisätty: kirjanmerkit ja suosikkisi kiinnitettävinä aikajanaina (kiitettävää Megalodon!)
+- Näet nyt eron muokattujen ja alkuperäisten postitettujen postien välillä muokkaushistoriassa (kiitettävää @FineFindus!)
+- Paljon pieniä viankorjauksia
