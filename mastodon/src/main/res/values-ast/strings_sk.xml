@@ -25,7 +25,7 @@
     <string name="sk_poll_show_results">Amosar resultaos</string>
     <string name="sk_announcements">Anuncios</string>
     <string name="sk_your_lists">Les tos llistes</string>
-    <string name="sk_confirm_unpin_post">¿Tas seguru que quies desapegar esti artículu?</string>
+    <string name="sk_confirm_unpin_post">¿De xuru que quies desapegar esti artículu?</string>
     <string name="sk_create">Crear</string>
     <string name="sk_pinned_posts">Fixáu</string>
     <string name="sk_delete_and_redraft">Desaniciar y reeditar</string>
@@ -88,7 +88,7 @@
     <string name="sk_settings_translation_availability_note_unavailable">%s paez que nun almite traducción.</string>
     <string name="sk_undo_reblog">Desfaer impulsu</string>
     <string name="sk_clear_all_notifications">Desaniciar tolos avisos</string>
-    <string name="sk_clear_all_notifications_confirm">¿Tas seguru que quies desaniciar tolos avisos?</string>
+    <string name="sk_clear_all_notifications_confirm">¿De xuru que quies desaniciar tolos avisos?</string>
     <string name="sk_loading_fediverse_resource_title">Buscando nel Fediversu</string>
     <string name="sk_loading_resource_on_instance_title">Buscando en %s</string>
     <string name="sk_settings_publish_button_text_title">Personalizar el testu del botón d\'Espublizar</string>
@@ -106,8 +106,8 @@
     <string name="sk_draft">Borrador</string>
     <string name="sk_schedule">Programar</string>
     <string name="sk_confirm_delete_draft_title">Desaniciar borrador</string>
-    <string name="sk_confirm_delete_draft">¿Tas seguru que quies desaniciar esti borrador?</string>
-    <string name="sk_confirm_delete_scheduled_post">¿Tas seguru que quies desaniciar esti artículu programáu?</string>
+    <string name="sk_confirm_delete_draft">¿De xuru que quies desaniciar esti borrador?</string>
+    <string name="sk_confirm_delete_scheduled_post">¿De xuru que quies desaniciar esti artículu programáu?</string>
     <string name="sk_draft_or_schedule">Borrador o programar</string>
     <string name="sk_compose_scheduled">Programáu para</string>
     <string name="sk_draft_saved">Borrador guardáu</string>
@@ -124,7 +124,7 @@
     <string name="sk_list_replies_policy_followed">usuarios siguíos</string>
     <string name="sk_list_replies_policy_none">nengunu</string>
     <string name="sk_delete_list">Desaniciar llista</string>
-    <string name="sk_delete_list_confirm">¿Tas seguru que quies desaniciar la llista “%s”?</string>
+    <string name="sk_delete_list_confirm">¿De xuru que quies desaniciar la llista “%s”?</string>
     <string name="sk_edit_list_title">Editar llista</string>
     <string name="sk_timeline_local">Llocal</string>
     <string name="sk_timeline_federated">Federada</string>
@@ -295,7 +295,7 @@
     <string name="sk_open_post_preview">Vista previa del artículu</string>
     <string name="sk_post_preview">Vista previa</string>
     <string name="sk_app_name">Megalodon</string>
-    <string name="sk_confirm_delete_and_redraft">¿Tas seguru que quies desaniciar y reeditar esti artículu?</string>
+    <string name="sk_confirm_delete_and_redraft">¿De xuru que quies desaniciar y reeditar esti artículu?</string>
     <string name="sk_confirm_pin_post_title">Fixar l\'artículu nel perfil</string>
     <string name="sk_color_palette_blue">Azul</string>
     <string name="sk_translated_using">Traducíu usando %s</string>
@@ -311,7 +311,7 @@
     <string name="sk_hashtag">Etiqueta</string>
     <string name="sk_icon_image">Semeya</string>
     <string name="sk_available_languages">Llingües disponibles</string>
-    <string name="sk_confirm_clear_recent_languages">¿Tas seguro que quies desaniciar les llingües usaes apocayá?</string>
+    <string name="sk_confirm_clear_recent_languages">¿De xuru que quies desaniciar les llingües usaes apocayá?</string>
     <string name="sk_icon_coffee">Café</string>
     <string name="sk_icon_color_palette">Paleta de colores</string>
     <string name="sk_clear_all_notifications_confirm_action">Desaniciar tou</string>
@@ -323,7 +323,7 @@
     <string name="sk_pinned_timeline">Fixáu a aniciu</string>
     <string name="sk_icon_headphones">Auriculares</string>
     <string name="sk_save_draft_message">¿Quies guardar los tos cambios nesti borrador o espublizalo agora?</string>
-    <string name="sk_delete_notification_confirm">¿Tas seguru que quies desaniciar esti avisu?</string>
+    <string name="sk_delete_notification_confirm">¿De xuru que quies desaniciar esti avisu?</string>
     <string name="sk_already_bookmarked">Yá ta metíu en marcadores</string>
     <string name="sk_compose_no_draft">Nun guardar borrador</string>
     <string name="sk_remove_follower">Desaniciar como siguidor</string>
