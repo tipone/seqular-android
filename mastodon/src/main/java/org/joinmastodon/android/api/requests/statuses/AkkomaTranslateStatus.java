@@ -5,7 +5,6 @@ import org.joinmastodon.android.model.AkkomaTranslation;
 
 public class AkkomaTranslateStatus extends MastodonAPIRequest<AkkomaTranslation>{
 	public AkkomaTranslateStatus(String id, String lang){
-		super(HttpMethod.GET, "/statuses/"+id+"/translations/"+lang.toUpperCase(), AkkomaTranslation.class);
+		super(HttpMethod.GET, "/statuses/"+id+"/translations/"+lang.toLowerCase(), AkkomaTranslation.class);
 	}
 }
-
