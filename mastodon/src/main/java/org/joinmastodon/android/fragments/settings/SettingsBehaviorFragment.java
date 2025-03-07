@@ -203,7 +203,6 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 	@Override
 	protected void onHidden(){
 		super.onHidden();
-		GlobalUserPreferences.playGifs=playGifsItem.checked;
 		GlobalUserPreferences.overlayMedia=overlayMediaItem.checked;
 		GlobalUserPreferences.altTextReminders=altTextItem.checked;
 		GlobalUserPreferences.confirmUnfollow=confirmUnfollowItem.checked;
@@ -215,13 +214,14 @@ public class SettingsBehaviorFragment extends BaseSettingsFragment<Void> impleme
 		GlobalUserPreferences.mentionRebloggerAutomatically=mentionRebloggerAutomaticallyItem.checked;
 		GlobalUserPreferences.hapticFeedback=hapticFeedbackItem.checked;
 		GlobalUserPreferences.showPostsWithoutAlt=showPostsWithoutAltItem.checked;
-		GlobalUserPreferences.save();
 		AccountLocalPreferences lp=getLocalPrefs();
 		boolean restartPlease=lp.showBoosts!=showBoostsItem.checked
-				|| lp.showReplies!=showRepliesItem.checked;
+				|| lp.showReplies!=showRepliesItem.checked || GlobalUserPreferences.playGifs!=playGifsItem.checked;
 		lp.showBoosts=showBoostsItem.checked;
 		lp.showReplies=showRepliesItem.checked;
+		GlobalUserPreferences.playGifs=playGifsItem.checked;
 		lp.save();
+		GlobalUserPreferences.save();
 		if(newPostLanguage!=null){
 			AccountSession s=AccountSessionManager.get(accountID);
 			if(s.preferences==null)
