@@ -1183,6 +1183,10 @@ public class UiUtils {
 			return false;
 		}
 
+		// Akkoma somehow makes this necessary, because youtube links look like posts. And because it may trigger too many requests.
+		if (uri.getHost().toLowerCase().contains("youtube.com") || uri.getHost().toLowerCase().contains("youtu.be"))
+			return false;
+
 		if (uri.getQuery() != null || uri.getFragment() != null || uri.getPath() == null)
 			return false;
 
