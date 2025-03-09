@@ -96,4 +96,22 @@
     <string name="mo_trending_link_read">Legi</string>
     <string name="mo_error_display_copy_error_details">Kopii informojn</string>
     <string name="mo_settings_unifiedpush_enable">Ebligi</string>
+    <string name="mo_settings_remove_tracking_params">Malpublikaj Ligiloj</string>
+    <string name="import_settings_failed">Malsukcesis importi agordojn</string>
+    <string name="export_settings_share">Eksporti agordojn</string>
+    <string name="export_settings_fail">Malsukcesis eksporti agordojn</string>
+    <string name="export_settings_title">Eksportu agordojn</string>
+    <string name="export_settings_summary">Eksporti la agordojn kaj templinioj de ĉiuj ensalutitaj kontoj</string>
+    <string name="mo_settings_remove_tracking_params_summary">Foru gvitidintan informacion el ligiloj</string>
+    <string name="mo_personal_note_saved">Noto savita</string>
+    <string name="import_settings_confirm_body">Ĉiu nunaj agordoj kaj templinioj estos anstataŭitaj! Ĉi tiu ago ne povas malfarita.</string>
+    <string name="mo_settings_unifiedpush_warning">UnifiedPush ne estas ŝaltita</string>
+    <string name="mo_settings_unifiedpush_warning_no_distributors">Neniom da instalitaj distribuantoj de UnifiedPush. Vi ne recivos iajn sciigojn.</string>
+    <string name="mo_mute_notifications">Ĉu malmontru sciigojn de ĉi tiu uzanto?</string>
+    <string name="import_settings_confirm">Ĉu akceptu importi agordojn?</string>
+    <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush ne estas ŝaltita. Vi ne recivos iajn sciigojn.</string>
+    <string name="import_settings_title">Importi agordojn</string>
+    <string name="import_settings_summary">Importi antaŭitajn eksportitajn agordojn kaj templiniojn</string>
+    <string name="mo_error_display_title">Malsukcesis montri afiŝon</string>
+    <string name="mo_error_display_text">Io malsukcesis dum ŝarĝas ĉi tiun afiŝon. Se la problemo daŭras, bonvole raportu ĝin en nia paĝo de Issues kune kun la detalojn.</string>
 </resources>
