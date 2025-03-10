@@ -47,7 +47,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 	private CheckableListItem<Void> pronounsInUserListingsItem, pronounsInTimelinesItem, pronounsInThreadsItem;
 
 	// MOSHIDON
-	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem, enableDoubleTapToSearchItem, showMediaPreviewItem;
+	private  CheckableListItem<Void> enableDoubleTapToSwipeItem, relocatePublishButtonItem, showPostDividersItem, enableDoubleTapToSearchItem, showMediaPreviewItem, enhanceTextSizeItem;
 
 	private AccountLocalPreferences lp;
 
@@ -62,6 +62,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 				colorItem=new ListItem<>(getString(R.string.sk_settings_color_palette), getColorPaletteValue(), R.drawable.ic_fluent_color_24_regular, this::onColorClick),
 				trueBlackModeItem=new CheckableListItem<>(R.string.sk_settings_true_black, R.string.mo_setting_true_black_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.trueBlackTheme, R.drawable.ic_fluent_dark_theme_24_regular, i->onTrueBlackModeClick(), true),
 				publishTextItem=new ListItem<>(getString(R.string.sk_settings_publish_button_text), getPublishButtonText(), R.drawable.ic_fluent_send_24_regular, this::onPublishTextClick),
+				enhanceTextSizeItem=new CheckableListItem<>(R.string.mo_settings_enhance_text_size, R.string.mo_settings_enhance_text_size_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.enhanceTextSize, R.drawable.ic_fluent_text_more_24_regular, i->onEnhanceTextSizeClick()),
 				autoRevealCWsItem=new ListItem<>(R.string.sk_settings_auto_reveal_equal_spoilers, getAutoRevealSpoilersText(), R.drawable.ic_fluent_eye_24_regular, this::onAutoRevealSpoilersClick),
 				relocatePublishButtonItem=new CheckableListItem<>(R.string.mo_relocate_publish_button, R.string.mo_setting_relocate_publish_summary, CheckableListItem.Style.SWITCH, GlobalUserPreferences.relocatePublishButton, R.drawable.ic_fluent_arrow_autofit_down_24_regular, i->toggleCheckableItem(relocatePublishButtonItem)),
 				revealCWsItem=new CheckableListItem<>(R.string.sk_settings_always_reveal_content_warnings, 0, CheckableListItem.Style.SWITCH, lp.revealCWs, R.drawable.ic_fluent_chat_warning_24_regular, i->toggleCheckableItem(revealCWsItem)),
@@ -141,6 +142,7 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		GlobalUserPreferences.displayPronounsInThreads=pronounsInThreadsItem.checked;
 		GlobalUserPreferences.displayPronounsInUserListings=pronounsInUserListingsItem.checked;
 		GlobalUserPreferences.showMediaPreview=showMediaPreviewItem.checked;
+		GlobalUserPreferences.enhanceTextSize=enhanceTextSizeItem.checked;
 		GlobalUserPreferences.save();
 		if(restartPlease) restartActivityToApplyNewTheme();
 		else E.post(new StatusDisplaySettingsChangedEvent(accountID));
@@ -180,6 +182,11 @@ public class SettingsDisplayFragment extends BaseSettingsFragment<Void>{
 		boolean prev=GlobalUserPreferences.trueBlackTheme;
 		GlobalUserPreferences.trueBlackTheme=trueBlackModeItem.checked;
 		maybeApplyNewThemeRightNow(null, null, prev);
+	}
+
+	private void onEnhanceTextSizeClick(){
+		toggleCheckableItem(enhanceTextSizeItem);
+		restartActivityToApplyNewTheme();
 	}
 
 	private void onAppearanceClick(ListItem<?> item_){

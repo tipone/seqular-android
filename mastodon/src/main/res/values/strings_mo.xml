@@ -120,6 +120,8 @@
 	<string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush is not enabled. You will not receive any notifications.</string>
 	<string name="mo_settings_unifiedpush_enable">Enable</string>
 	<string name="mo_settings_remove_tracking_params">Private Links</string>
+	<string name="mo_settings_enhance_text_size">Enhance text size</string>
+	<string name="mo_settings_enhance_text_size_summary">Makes the app\'s text bigger</string>
 
 	<!--	Temporary Strings. They exist in strings_sk.xml, but are not available on Megalodon's weblate-->
 	<string name="mo_muted_accounts">Muted accounts</string>

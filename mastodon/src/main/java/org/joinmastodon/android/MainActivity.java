@@ -7,8 +7,10 @@ import android.Manifest;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.assist.AssistContent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.net.Uri;
@@ -16,7 +18,9 @@ import android.os.BadParcelableException;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.Toast;
@@ -337,5 +341,27 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 				maybeRequestNotificationsPermission();
 			}
 		}
+	}
+
+	@Override
+	protected void attachBaseContext(Context base) {
+		if (!GlobalUserPreferences.enhanceTextSize) {
+			super.attachBaseContext(base);
+			return;
+		}
+
+		final Configuration override = new Configuration(base.getResources().getConfiguration());
+		// How much we change the app's density;
+		final int densityDelta = 100;
+
+		// TODO: FIXME: whenever we apply our custom scaling, the switches in the settings appear stretched. I don't know why, but it is what it is.
+		override.screenWidthDp = Math.round(override.densityDpi*((float) override.screenWidthDp/(override.densityDpi+densityDelta)));
+		override.screenHeightDp = Math.round(override.densityDpi*((float) override.screenHeightDp/(override.densityDpi+densityDelta)));
+		override.smallestScreenWidthDp = Math.round(override.densityDpi*((float) override.smallestScreenWidthDp/(override.densityDpi+densityDelta)));
+
+		override.densityDpi = override.densityDpi+densityDelta;
+		final Context newBase = base.createConfigurationContext(override);
+
+		super.attachBaseContext(newBase);
 	}
 }
