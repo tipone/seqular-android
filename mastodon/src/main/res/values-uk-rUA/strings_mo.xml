@@ -117,4 +117,6 @@
     <string name="mo_unmute_hashtag">Розблокувати хештег</string>
     <string name="mo_confirm_to_unmute_hashtag">Ви впевнені що хочете розблокувати цей хештег?</string>
     <string name="mo_personal_note_saved">Нотатку збережено</string>
+    <string name="mo_settings_enhance_text_size">Збільшити розмір шрифту</string>
+    <string name="mo_settings_enhance_text_size_summary">Збільшити розмір шрифту в додатку</string>
 </resources>
