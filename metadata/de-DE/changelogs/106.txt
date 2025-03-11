@@ -1,0 +1,9 @@
+* Export-Einstellungen importieren (nur für angemeldete Konten)
+* URLs von Beiträgen so wiedergeben, als wären sie tatsächliche Zitatbeiträge
+* Filter-Highlights anzeigen
+* Warnung, wenn UnifiedPush auf fdroid deaktiviert ist
+* Die Schaltflächen zum Herunterladen/Freigeben auf dem Bildbetrachter sind wieder an ihren alten Platz.
+* Timelines zu trendenden Links anzeigen (Server muss dies unterstützen)
+* Option zum Entfernen der Tracking-Parameter von URLs hinzugefügt.
+* Sie können jetzt ein Konto auswählen, wenn Sie „Verfassen“ über ein Startmenü starten
+* Viele kleinere Fehlerbehebungen und Verbesserungen

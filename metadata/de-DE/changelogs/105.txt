@@ -1,0 +1,3 @@
+- vorherige Neuentwicklungen hinzugefügt (2.3.0)
+- Fernabruf für die Statushistorie hinzugefügt
+- Eine Reihe von Fehlern behoben
