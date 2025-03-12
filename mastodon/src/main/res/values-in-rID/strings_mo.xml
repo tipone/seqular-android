@@ -116,4 +116,6 @@
     <string name="mo_error_display_title">Gagal menampilkan kiriman</string>
     <string name="mo_error_display_copy_error_details">Salin detail</string>
     <string name="mo_trending_link_read">Baca</string>
+    <string name="mo_settings_enhance_text_size">Tingkatkan ukuran teks</string>
+    <string name="mo_settings_enhance_text_size_summary">Membuat teks aplikasi lebih besar</string>
 </resources>
