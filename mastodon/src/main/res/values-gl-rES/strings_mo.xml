@@ -115,4 +115,6 @@
     <string name="mo_settings_remove_tracking_params">Ligazóns privadas</string>
     <string name="mo_settings_remove_tracking_params_summary">Retirar os parámetros de rastrexo das ligazóns</string>
     <string name="mo_personal_note_saved">Gardouse a nota</string>
+    <string name="mo_settings_enhance_text_size_summary">Aumenta o tamaño do texto da app</string>
+    <string name="mo_settings_enhance_text_size">Mellorar tamaño do texto</string>
 </resources>
