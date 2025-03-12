@@ -117,4 +117,6 @@
     <string name="mo_error_display_copy_error_details">复制详情</string>
     <string name="mo_trending_link_read">阅读</string>
     <string name="mo_personal_note_saved">备注已保存</string>
+    <string name="mo_settings_enhance_text_size">增大文本大小</string>
+    <string name="mo_settings_enhance_text_size_summary">使应用的文本更大</string>
 </resources>
