@@ -351,15 +351,9 @@ public class MainActivity extends FragmentStackActivity implements ProvidesAssis
 		}
 
 		final Configuration override = new Configuration(base.getResources().getConfiguration());
-		// How much we change the app's density;
-		final int densityDelta = 100;
 
-		// TODO: FIXME: whenever we apply our custom scaling, the switches in the settings appear stretched. I don't know why, but it is what it is.
-		override.screenWidthDp = Math.round(override.densityDpi*((float) override.screenWidthDp/(override.densityDpi+densityDelta)));
-		override.screenHeightDp = Math.round(override.densityDpi*((float) override.screenHeightDp/(override.densityDpi+densityDelta)));
-		override.smallestScreenWidthDp = Math.round(override.densityDpi*((float) override.smallestScreenWidthDp/(override.densityDpi+densityDelta)));
-
-		override.densityDpi = override.densityDpi+densityDelta;
+		// This is the font multiplier, which should be multiplied by, because the system settings also play a role here
+		override.fontScale *= 1.15f;
 		final Context newBase = base.createConfigurationContext(override);
 
 		super.attachBaseContext(newBase);
