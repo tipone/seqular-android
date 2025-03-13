@@ -29,29 +29,21 @@ public class UnifiedPushHelper {
 
 	public static void registerAllAccounts(@NonNull Context context) {
 		for (AccountSession accountSession : AccountSessionManager.getInstance().getLoggedInAccounts()){
-			try {
-				UnifiedPush.register(
-						context,
-						accountSession.getID(),
-						null,
-						accountSession.app.vapidKey.replaceAll("=","")
-				);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			UnifiedPush.register(
+					context,
+					accountSession.getID(),
+					null,
+					accountSession.app.vapidKey.replaceAll("=","")
+			);
 		}
 	}
 
 	public static void unregisterAllAccounts(@NonNull Context context) {
 		for (AccountSession accountSession : AccountSessionManager.getInstance().getLoggedInAccounts()){
-			try {
-				UnifiedPush.unregister(
-					context,
-					accountSession.getID()
-				);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			UnifiedPush.unregister(
+				context,
+				accountSession.getID()
+			);
 			// use FCM again
 			accountSession.getPushSubscriptionManager().registerAccountForPush(null);
 		}
