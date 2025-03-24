@@ -1,0 +1,11 @@
+Bu yeni sürüm şunlarla birlikte geliyor:
+- Upstream'den tamamen güncellenmiş yeni Material 3 tasarımı
+- UnifiedPush bildirim desteği (Teşekkürler @FineFindus!)
+- Engellemeler ve sessize almalar artık profilinizden görülebilir
+- Artık hashtag'leri doğrudan hashtag görünümünden sessize alabilirsiniz
+- Emoji tepkileri artık bunu destekleyen örneklerde bir şey (Teşekkürler @sk22!)
+- Uygulamada filtreleri düzenleme de artık bir şey (Teşekkürler upstream)
+- Artık medya önizlemelerini zaman çizelgelerinden gizleyebilirsiniz
+- Yeni Siyah ve Beyaz tema eklendi
+- Konuşmaları sessize alma artık mümkün
+- Birçok küçük düzeltme ve iyileştirme

@@ -1,0 +1,9 @@
+- Artık bildirim sekmesinde gösterilen bildirimleri doğrudan 'Bildirimleri filtrele' düğmesinden filtreleyebilirsiniz
+- akkoma için iyileştirmeler: çeviriler, alıntılanan gönderiler artık doğru şekilde görüntülenecek ve gönderileri yayınlamadan önce önizleme olanağı (Teşekkürler Megalodon!)
+- Erişim ve Gizlilik ayarları artık uygulamada mevcut
+- Altı çizili bağlantıları devre dışı bırakma seçeneği
+- Favori simgesi olarak Kalp kullanmak artık mümkün
+- Artık bir hata raporu göndermeniz gerekirse çökme günlüklerini kopyalayabilirsiniz
+- Sabitlenebilir zaman çizelgeleri olarak Yer İşaretleri ve Favorileriniz eklendi (Teşekkürler Megalodon!)
+- Artık düzenleme geçmişinde düzenlenen ve orijinal gönderiler arasındaki farkı görebilirsiniz (Teşekkürler @FineFindus!)
+- Birçok küçük hata düzeltmesi

@@ -1,0 +1,27 @@
+Moshidon, resmi uygulamada eksik olan önemli özellikleri ekleyen <a href="https://github.com/mastodon/mastodon-android">resmi Mastodon Android uygulamasının</a> değiştirilmiş bir sürümüdür; örneğin, birleşik zaman çizelgesi, listelenmemiş gönderi ve resim açıklaması görüntüleyicisi.
+
+<b>Temel özellikler</b>
+
+- <b>Birçok renk</b>: Temanıza uygun materyal ve temalar için birçok renkli seçenek sunar!
+
+- <b>Filtrelenmiş gönderiler!</b>: Filtrelenmiş gönderilerin bir uyarı ile gösterilmesini sağlama yeteneği!
+
+- <b>Çevir düğmesi</b>: Bir çeviri düğmesi sunar!
+
+- <b>Toot dil seçici</b>: Bir toot dil seçici sunar!
+
+- <b>Listelenmemiş gönderi</b>: Gönderinizin trendlerde, hashtag'lerde veya genel zaman çizelgelerinde görünmeden herkese açık olarak gönderi paylaşın.
+
+ - <b>Federasyon zaman çizelgesi</b>: Ev örneğinizin bağlı olduğu diğer tüm Fediverse mahallelerindeki kişilerin tüm herkese açık gönderilerini görün.
+
+- <b>Görüntü açıklaması görüntüleyicisi</b>: Bir görüntü veya videoya eklenmiş bir alternatif metin olup olmadığını hızlıca kontrol edin.
+
+- <b>Gönderileri sabitleme</b>: En önemli gönderilerinizi profilinize sabitleyin ve "Sabitlendi" sekmesini kullanarak başkalarının neleri sabitlediğini görün.
+
+- <b>Hashtag'leri takip edin</b>: Belirli hashtag'lerden gelen yeni gönderileri doğrudan onları takip ederek ev zaman çizelgenizde görün.
+
+- <b>Takip isteklerini yanıtlama</b>: Bildirimlerinizden veya özel Takip istekleri listesinden takip isteklerini kabul edin veya reddedin.
+
+- <b>Silme ve yeniden taslak oluşturma</b>: Gerçek bir düzenleme işlevi olmadan düzenlemeyi mümkün kılan çok sevilen özellik.
+
+ - <b>Ekstralar</b>: Bildirimlerdeki etkileşim simgeleri ve orijinal kullanıcı arayüzündeki birçok can sıkıcı şeyin kaldırılması gibi birçok ekstra kullanıcı arayüzü özelliği getiriyor!
