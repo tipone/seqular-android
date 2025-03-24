@@ -2,4 +2,25 @@
 <resources>
     <string name="sk_app_name">Megalodon</string>
     <string name="sk_pinned_posts">Sabitlenmiş</string>
+    <string name="sk_delete_and_redraft">Sil ve yeniden taslak oluştur</string>
+    <string name="sk_confirm_delete_and_redraft_title">Gönderiyi sil ve yeniden taslak oluştur</string>
+    <string name="sk_confirm_delete_and_redraft">Bu yazıyı silmek ve yeniden taslak olarak hazırlamak istediğinizden emin misiniz?</string>
+    <string name="sk_pin_post">Profile sabitle</string>
+    <string name="sk_confirm_pin_post_title">Gönderiyi profile sabitle</string>
+    <string name="sk_confirm_pin_post">Bu gönderiyi profilinize sabitlemek ister misiniz?</string>
+    <string name="sk_pinning">Gönderi sabitleniyor…</string>
+    <string name="sk_unpin_post">Profilden sabitlemeyi kaldır</string>
+    <string name="sk_confirm_unpin_post">Bu gönderiyi geri almak istediğinizden emin misiniz?</string>
+    <string name="sk_unpinning">Gönderi sabitlemesini kaldırıyor…</string>
+    <string name="sk_image_description">Resim açıklaması</string>
+    <string name="sk_visibility_unlisted">Listelenmemiş</string>
+    <string name="sk_settings_show_replies">Cevapları göster</string>
+    <string name="sk_settings_continues_playback">Ses katmanı</string>
+    <string name="sk_quoting_user">Alıntı %s</string>
+    <string name="sk_settings_reply_visibility">Cevap görünürlüğü</string>
+    <string name="sk_settings_reply_visibility_all">Tüm yanıtlar</string>
+    <string name="sk_settings_reply_visibility_following">Takip ettiklerime yanıtlar</string>
+    <string name="sk_settings_reply_visibility_self">Bana verilen yanıtlar</string>
+    <string name="sk_settings_continues_playback_summary">Zaten oynatılan medyanın oynatılmaya devam etmesine ve yeni oynatmanın üst üste gelmesine izin verin</string>
+    <string name="sk_confirm_unpin_post_title">Gönderiyi profilden kaldır</string>
 </resources>
