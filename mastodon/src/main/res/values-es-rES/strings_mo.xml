@@ -119,4 +119,6 @@
     <string name="mo_settings_remove_tracking_params">Enlaces Privados</string>
     <string name="mo_settings_remove_tracking_params_summary">Eliminar información de rastreo de los enlaces</string>
     <string name="mo_personal_note_saved">Nota guardada</string>
+    <string name="mo_settings_enhance_text_size">Aumentar tamaño del texto</string>
+    <string name="mo_settings_enhance_text_size_summary">Agranda el texto de la app</string>
 </resources>
