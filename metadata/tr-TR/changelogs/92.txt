@@ -1,0 +1,4 @@
+92. sürüm için yeni şeyler:
+- Daha iyi filtreler
+- Yeni profil sayfası düzeni
+- Bir sürü küçük ayarlama ve iyileştirme

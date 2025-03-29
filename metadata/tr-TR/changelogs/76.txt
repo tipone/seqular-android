@@ -1,0 +1,6 @@
+- "Uyarı ile gizle" uyumluluğu dahil olmak üzere geliştirilmiş filtreler
+- Biyografinin hemen altında meta verilerle yeniden tasarlanmış profil sayfası
+- Çok uzun gönderiler için daraltma/genişletme işlevi
+- Yanıt CW'lerine otomatik olarak "re:" öneki ekleme seçeneği
+- Zaman çizelgesinde etkileşim düğmelerini gizleme seçeneği
+- Çeşitli hata düzeltmeleri, ince ayarlar ve iyileştirmeler

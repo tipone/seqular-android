@@ -1,0 +1,4 @@
+Sürüm 97 şunları ekler:
+- Yeni Özel Yerel Zaman Çizelgeleri özelliği. Zaman çizelgeleri ekle menüsünden erişilebilir
+
+- Küçük düzeltmeler ve iyileştirmeler

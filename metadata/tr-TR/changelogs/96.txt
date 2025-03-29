@@ -1,0 +1,3 @@
+96 için yeni şeyler:
+- Zaman çizelgelerinde diğer sunucuların yerel zaman çizelgelerine sahip olma yeteneğinin iyileştirilmesi
+- Küçük düzeltmeler ve iyileştirmeler

@@ -1,0 +1,2 @@
+- Bir grup çökme düzeltildi
+- Küçük hata düzeltmeleri ve iyileştirmeler

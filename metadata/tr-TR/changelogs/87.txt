@@ -1,0 +1,5 @@
+87 için yeni şeyler:
+- Megalodon'dan yeni bir ev düzeni, aralarında geçiş yapma yeteneği WIP
+- Bildirimlerin daha iyi işlenmesi
+- Yeni bir harap bot simgesi
+- Bir sürü küçük iyileştirme

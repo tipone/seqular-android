@@ -1,0 +1,6 @@
+99. sürüm için yeni şeyler:
+- Bildirim eylemleri ekle
+- Listelenmemiş yanıtları varsayılan olarak etkinleştirme seçeneği ekle
+- Sessize alma zamanlayıcısı ekle
+- Okunmamış bildirimler varsa bildirim rozeti ekle
+- Küçük hata düzeltmeleri ve kullanılabilirlik iyileştirmeleri

@@ -1,0 +1,3 @@
+Sürüm 84, aşağıdakiler gibi birkaç hatayı düzeltiyor:
+- Giriş geri araması çalışmıyor
+- Almanca çeviri güncelleniyor. Teşekkürler @DanTobi!

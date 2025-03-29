@@ -1,0 +1,4 @@
+Sürüm 83, aşağıdakiler gibi bazı küçük iyileştirmeler getiriyor:
+- Bahsetmelere tıklandığında oluşan çökme sorunlarının düzeltilmesi
+- Bot simgesinin yeniden düzenlenmesi
+- Bir ek gönderdiğinizde bir resim açıklaması eklemeniz için bir hatırlatıcı eklenmesi, görme engelli kişilerin daha iyi katılımını sağlar. Teşekkürler @FineFindus!

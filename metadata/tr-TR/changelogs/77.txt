@@ -1,0 +1,4 @@
+- Diğer hesaptan profilleri takip etmek için takip düğmesine uzun basın
+- Diğer hesaptaki profilleri açma seçeneği
+- Zaman çizelgesinde aşağı doğru kaydırırken otomatik olarak oluştur düğmesini gizle
+- Sunucu yöneticisinin profillerini açarken oluşan çökmeyi düzeltin

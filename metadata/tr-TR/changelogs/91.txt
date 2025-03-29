@@ -1,0 +1,5 @@
+91. sürüm için yeni şeyler:
+- Filtrelenmiş gönderilerin uyarıyla gösterilmesi yeteneği
+- Dahil edilen otomatik güncelleyici düzeltildi
+- Filtreleme sistemindeki birkaç çökme düzeltildi
+- Yaşam kalitesinde küçük iyileştirmeler

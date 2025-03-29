@@ -1,0 +1,3 @@
+95 için yeni şeyler:
+- Zaman çizelgelerinde diğer sunucuların yerel zaman çizelgelerine sahip olma yeteneğinin eklenmesi
+- Küçük düzeltmeler ve iyileştirmeler

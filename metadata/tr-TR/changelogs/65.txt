@@ -1,0 +1,10 @@
+- Taslaklar ve zamanlanmış gönderiler
+- Cevap verirken orijinal gönderiyi görüntüle
+- Mastodon 4.0 uyumlu filtreler (henüz "uyarı ile gizle" işlevi yok)
+- Diğer oturum açmış hesaplardan gönderilerle etkileşim kurmak için uzun tıklama (cevaplama, destekleme, beğenme, yer imi)
+- Tüm menülerde simgeler
+- Raporları iletmek için geçiş
+- "Bunun hakkında gönderi paylaş" işlevi kullanıldığında bahsetme ekle
+- Ayrı simgeler yerine tek tip bildirim simgesi kullanma seçeneği
+- Ayarlardan uygulama içi kurallar listesine erişme seçeneği
+- Hata düzeltmeleri

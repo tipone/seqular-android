@@ -1,0 +1,6 @@
+88 numaralı sürüm için yeni şeyler:
+- İyileştirilmiş bir Fab davranışı
+- Alt metinlerde daha iyi kullanım
+- Bunu destekleyen örnekler için yalnızca yerel gönderiyi etkinleştir
+- Bazı çökmeleri düzelt
+- Küçük iyileştirmeler

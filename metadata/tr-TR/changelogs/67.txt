@@ -1,0 +1,10 @@
+- Genel zaman çizelgeleriyle yeni ana sayfa sekmesi
+- Sunucu duyurularını görüntüle
+- Metin sistem ayarlarına göre ölçeklendirildi
+- @thiagojedi tarafından geliştirilmiş filtreleme (hayır, "Uyarı ile gizle" henüz çalışmıyor)
+- Liste yönetim özellikleri
+- Yumuşak engellemeyle takipçileri kaldırın
+- Faşistlerle bağlantılara izin vermeyin
+- Akkoma örneğine bağlanıldığında yüklenmeyen görselleri düzeltin
+- Hata düzeltmeleri ve kullanıcı arayüzü ince ayarları
+- @LucasGGamerM tarafından güncelleyiciye değişiklik günlüğü eklendi

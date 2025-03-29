@@ -1,0 +1,11 @@
+- Özelleştirilebilir Yayınla düğmesi
+- Uygulamada Fediverse bağlantılarını açın
+- Bir gönderiyi "alıntılamak" için uzun tıklamalı güçlendirme düğmesi
+- Paylaş düğmesine uzun basıldığında gönderi URL'sini kopyala
+- Bildirimleri silmeyi uygula (varsayılan olarak devre dışıdır)
+- Farklı bildirim türleri için özel simgeler
+- Yeni gri renkler
+- Sekmeler arasında kaydırmayı devre dışı bırakmak için ayar ekle
+- Hesap ayarlarına çeşitli bağlantılar ekle
+- Zaman çizelgesinde çeviri düğmesini gösterme/gizleme için geçiş
+- Hata düzeltmeleri ve ince ayarlar

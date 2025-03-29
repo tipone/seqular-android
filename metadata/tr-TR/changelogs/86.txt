@@ -1,0 +1,4 @@
+86. sürümdeki yenilikler:
+- Bildirimleri yığınlama yeteneği, yani: birden fazla bildirime sahip olma;
+- Duyuruların tanıtımı;
+- Birçok küçük kullanıcı arayüzü düzeltmesi.

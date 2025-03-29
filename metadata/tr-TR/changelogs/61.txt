@@ -1,0 +1,5 @@
+- Yeni renk temaları: Material You ve Red
+- Tüm temalar için yeni koyu gri tonları
+- Daha belirgin doldurulmuş güçlendirme simgesi
+- Etkileşim düğmeleri için animasyonlar
+- Hata düzeltmeleri (Bazı gönderilerde çökme, "Listeler ile", varsayılan gönderi dili)
