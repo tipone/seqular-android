@@ -40,7 +40,7 @@
     <string name="mo_download_latest_nightly_release">下载最新的每日版</string>
     <string name="mo_load_remote_followers">加载外站账户的关注和粉丝</string>
     <string name="mo_mention_reblogger_automatically">自动在回复中提及转发帖子的账户</string>
-    <string name="mo_swap_bookmark_with_reblog">交换转贴与收藏的位置</string>
+    <string name="mo_swap_bookmark_with_reblog">交换转帖与收藏的位置</string>
     <string name="mo_confirm_unfollow_title">取消关注</string>
     <string name="mo_confirm_unfollow">确认取消关注 %s</string>
     <string name="mo_instance_admin">管理者</string>
@@ -73,7 +73,7 @@
     <string name="mo_unmute_hashtag">取消禁用话题标签通知</string>
     <string name="mo_haptic_feedback">震动反馈</string>
     <string name="mo_show_media_preview">在时间线中显示媒体文件预览</string>
-    <string name="mo_settings_show_posts_without_alt">显示含有缺少 alt 文本的媒体的贴文</string>
+    <string name="mo_settings_show_posts_without_alt">显示含有缺少 alt 文本的媒体的帖文</string>
     <string name="mo_muted_accounts">已静音的账户</string>
     <string name="mo_camera_not_available">没有可用的摄像头！</string>
     <string name="mo_unmuted_conversation_successfully">已成功取消禁用对话通知</string>
@@ -81,7 +81,7 @@
     <string name="mo_confirm_to_unmute_hashtag">您确定要取消禁用此话题标签的通知吗？</string>
     <string name="mo_blocked_accounts">已屏蔽的账户</string>
     <string name="mo_color_palette_black_and_white">黑白</string>
-    <string name="mo_settings_show_posts_without_alt_summary">贴文将从所有时间线中隐藏，但可在对话和通知中显示</string>
+    <string name="mo_settings_show_posts_without_alt_summary">帖文将从所有时间线中隐藏，但可在对话和通知中显示</string>
     <string name="mo_confirm_to_mute_conversation">您确定要禁用此对话的通知吗？</string>
     <string name="mo_muted_conversation_successfully">已成功禁用对话通知</string>
     <string name="mo_unmute_conversation">取消禁用对话通知</string>
@@ -91,7 +91,7 @@
     <string name="mo_muting">禁用通知…</string>
     <string name="mo_unmuting">取消禁用通知…</string>
     <string name="mo_double_tap_to_search">双击以打开搜索</string>
-    <string name="mo_setting_haptic_feedback_summary">在与贴文交互时震动</string>
+    <string name="mo_setting_haptic_feedback_summary">在与帖文交互时振动</string>
     <string name="mo_confirm_to_mute_hashtag">您确定要禁用此话题标签的通知吗？</string>
     <string name="mo_filter_notifications">过滤通知</string>
     <string name="mo_notification_filter_reset">重置为默认值</string>
@@ -119,4 +119,7 @@
     <string name="mo_personal_note_saved">备注已保存</string>
     <string name="mo_settings_enhance_text_size">增大文本大小</string>
     <string name="mo_settings_enhance_text_size_summary">使应用的文本更大</string>
+    <string name="mo_mute_hashtag_explanation_search">您仍然可以在其他时间线上或通过搜索找到带有此话题标签的帖文。</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">您将不会在您的主页时间线中看到提及此话题标签的帖文。</string>
+    <string name="mo_mute_hashtag_explanation_discreet">其他用户不会得知‌您已经禁用了此话题标签的通知。</string>
 </resources>
