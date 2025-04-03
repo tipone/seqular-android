@@ -119,4 +119,7 @@
     <string name="mo_personal_note_saved">Нотатку збережено</string>
     <string name="mo_settings_enhance_text_size">Збільшити розмір шрифту</string>
     <string name="mo_settings_enhance_text_size_summary">Збільшити розмір шрифту в додатку</string>
+    <string name="mo_mute_hashtag_explanation_search">Дописи з цим хештегом будуть доступні в інших стрічках або за допомогою пошуку.</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">Ви не будете бачити дописів з цим хештегом у своїй домашній стрічці.</string>
+    <string name="mo_mute_hashtag_explanation_discreet">Інші не знатимуть, що ви заблокували цей хештег.</string>
 </resources>
