@@ -117,4 +117,7 @@
     <string name="mo_personal_note_saved">Gardouse a nota</string>
     <string name="mo_settings_enhance_text_size_summary">Aumenta o tamaño do texto da app</string>
     <string name="mo_settings_enhance_text_size">Mellorar tamaño do texto</string>
+    <string name="mo_mute_hashtag_explanation_discreet">As outras persoas non saberás que acalaches este cancelo.</string>
+    <string name="mo_mute_hashtag_explanation_search">Poderás seguir atopando publicacións con este cancelo noutras cronoloxías ou nas buscas.</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">Non verás na cronoloxía de Inicio as publicacións que mencionen este cancelo.</string>
 </resources>
