@@ -110,7 +110,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 
 	private void actuallyCheckForUpdates(){
 		Request req=new Request.Builder()
-				.url("https://api.github.com/repos/LucasGGamerM/moshidon-nightly/releases")
+				.url("https://api.github.com/repos/LucasGGamerM/seqular-nightly/releases")
 				.build();
 		Call call=MastodonAPIController.getHttpClient().newCall(req);
 		try(Response resp=call.execute()){
@@ -127,7 +127,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 					Log.d(TAG, "actuallyCheckForUpdates: new version: "+version);
 					for(JsonElement el:obj.getAsJsonArray("assets")){
 						JsonObject asset=el.getAsJsonObject();
-						if("moshidon-nightly.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
+						if("seqular-nightly.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
 							long size=asset.get("size").getAsLong();
 							String url=asset.get("browser_download_url").getAsString();
 

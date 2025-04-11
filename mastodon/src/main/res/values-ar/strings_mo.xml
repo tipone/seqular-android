@@ -2,7 +2,7 @@
 <resources>
     <string name="mo_color_palette_black_and_white">أبيض وأسود</string>
     <string name="mo_personal_note">إضافة ملاحظة إلى هذا الملف التعريفي</string>
-    <string name="mo_settings_contribute">ساهم في موشيدون Moshidon</string>
+    <string name="mo_settings_contribute">ساهم في موشيدون Seqular</string>
     <string name="mo_update_available">موشيدون %s متوفّر للتنزيل.</string>
     <string name="mo_update_ready">تم تنزيل موشيدون %s وهو جاهز للتنصيب.</string>
     <string name="mo_confirm_unfollow_title">إلغاء متابعة الحساب</string>
@@ -30,7 +30,7 @@
     <string name="mo_instance_info_open_timeline">الخيط المحلي</string>
     <string name="mo_severity_silence">مكتومة</string>
     <string name="mo_severity_suspend">محجوبة</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_instance_info_moderated_servers">خوادم تحت الإشراف</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_emoji_recent">المُستخدَمة حديثًا</string>

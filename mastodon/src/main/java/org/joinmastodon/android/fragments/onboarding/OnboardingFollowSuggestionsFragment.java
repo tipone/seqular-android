@@ -84,7 +84,7 @@ public class OnboardingFollowSuggestionsFragment extends BaseAccountListFragment
 
 	@Override
 	protected RecyclerView.Adapter<?> getAdapter(){
-//		Unused in Moshidon
+//		Unused in Seqular
 //		TextView introText=new TextView(getActivity());
 //		introText.setTextAppearance(R.style.m3_body_large);
 //		introText.setTextColor(UiUtils.getThemeColor(getActivity(), R.attr.colorM3OnSurface));

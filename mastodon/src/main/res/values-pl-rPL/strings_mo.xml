@@ -6,8 +6,8 @@
     <string name="mo_personal_note">Dodaj notatkę do tego profilu</string>
     <string name="mo_personal_note_confirm">Zatwierdź zmiany w notatce</string>
     <string name="mo_personal_note_update_failed">Nie udało się zapisać notatki</string>
-    <string name="mo_update_available">Moshidon %s jest gotowy do pobrania.</string>
-    <string name="mo_update_ready">Moshidon %s jest już pobrany i gotowy do instalacji.</string>
+    <string name="mo_update_available">Seqular %s jest gotowy do pobrania.</string>
+    <string name="mo_update_ready">Seqular %s jest już pobrany i gotowy do instalacji.</string>
     <string name="mo_no_image_desc_title">Brak opisu obrazka</string>
     <string name="mo_emoji_recent">Ostatnio używane</string>
     <string name="mo_clear_recent_emoji">Wyczyść ostatnio używane emoji</string>
@@ -15,7 +15,7 @@
     <string name="mo_fab_compose">Stwórz</string>
     <string name="mo_sending_error">Błąd przy publikowaniu</string>
     <string name="mo_welcome_text">Aby rozpocząć, wpisz domenę swojej instancji poniżej.</string>
-    <string name="mo_settings_contribute">Wspomóż rozwój Moshidon</string>
+    <string name="mo_settings_contribute">Wspomóż rozwój Seqular</string>
     <string name="mo_no_image_desc">Dołączone obrazy nie mają opisu. Proszę rozważyć dodanie opisów, aby umożliwić osobom niedowidzącym ich odczytanie.</string>
     <string name="mo_disable_dividers">Wyłącz dzielenie postów</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Wyłącz opcję Przenoszenia przycisku publikacji aby umożliwić dostosowywanie</string>

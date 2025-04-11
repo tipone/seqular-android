@@ -17,7 +17,7 @@
     <string name="mo_relocate_publish_button">Mover botão de publicar</string>
     <string name="mo_welcome_text">Para começar, insere o nome da tua instância nativa abaixo.</string>
     <string name="mo_personal_note">Adicionar nota a este perfil</string>
-    <string name="mo_settings_contribute">Contribuir para o Moshidon</string>
+    <string name="mo_settings_contribute">Contribuir para o Seqular</string>
     <string name="mo_no_image_desc_title">Sem descrição de imagem</string>
     <string name="mo_filtered">Filtrado: %s</string>
     <string name="mo_poll_option_add">Adicionar nova opção ao inquérito</string>
@@ -27,8 +27,8 @@
     <string name="mo_hide_compose_button_while_scrolling_setting">Esconder o botão escrever enquanto desloca</string>
     <string name="mo_personal_note_confirm">Confirmar alterações à nota</string>
     <string name="mo_personal_note_update_failed">Erro ao guardar a nota</string>
-    <string name="mo_update_available">Moshidon %s está pronto a descarregar.</string>
-    <string name="mo_update_ready">Moshidon %s descarregado e pronto a instalar.</string>
+    <string name="mo_update_available">Seqular %s está pronto a descarregar.</string>
+    <string name="mo_update_ready">Seqular %s descarregado e pronto a instalar.</string>
     <string name="mo_no_image_desc">As imagens incluídas não têm descrição. Considera adicionar uma para permitir que pessoas deficientes visuais possam participar.</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Desativar a função Realocar do botão de publicação, para permitir personalização</string>
     <string name="mo_disable_reminder_to_add_alt_text">Desativar lembrete para adicionar descrição de imagem</string>

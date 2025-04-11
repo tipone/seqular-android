@@ -10,9 +10,9 @@
     <string name="mo_personal_note">Додати нотатку до цього профілю</string>
     <string name="mo_personal_note_confirm">Підтвердити зміни</string>
     <string name="mo_personal_note_update_failed">Не вдалося зберегти нотатку</string>
-    <string name="mo_settings_contribute">Допомогти у розробці Moshidon</string>
-    <string name="mo_update_available">Moshidon %s готовий до завантаження.</string>
-    <string name="mo_update_ready">Moshidon %s готовий до встановлення.</string>
+    <string name="mo_settings_contribute">Допомогти у розробці Seqular</string>
+    <string name="mo_update_available">Seqular %s готовий до завантаження.</string>
+    <string name="mo_update_ready">Seqular %s готовий до встановлення.</string>
     <string name="mo_no_image_desc_title">Немає опису зображення</string>
     <string name="mo_emoji_recent">Нещодавні</string>
     <string name="mo_clear_recent_emoji">Очистити нещодавні емоджі</string>

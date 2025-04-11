@@ -90,7 +90,7 @@
 			android:background="@drawable/bg_button_borderless_rounded"
 			android:backgroundTint="?colorM3Secondary"
 			android:gravity="center_vertical"
-			tools:text="Moshidon dfjklafjdsalkfjdslakfjdsaklfjdslak"/>
+			tools:text="Seqular dfjklafjdsalkfjdslakfjdsaklfjdslak"/>
 
 	</org.joinmastodon.android.ui.views.WrappingLinearLayout>
 

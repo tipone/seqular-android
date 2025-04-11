@@ -26,7 +26,7 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 		addRow(R.drawable.ic_fluent_mention_24_regular, R.string.you_wont_see_user_mentions);
 		addRow(R.drawable.ic_fluent_arrow_reply_24_regular, R.string.user_can_mention_and_follow_you);
 
-		// add mute notifications toggle (Moshidon)
+		// add mute notifications toggle (Seqular)
 		M3Switch m3Switch=new M3Switch(getContext());
 		m3Switch.setClickable(true);
 		m3Switch.setChecked(muteNotifications.get());
@@ -34,7 +34,7 @@ public class MuteAccountConfirmationSheet extends AccountRestrictionConfirmation
 		m3Switch.setOnClickListener(view -> muteNotifications.set(m3Switch.isSelected()));
 		addRow(R.drawable.ic_fluent_alert_off_24_regular, R.string.mo_mute_notifications, m3Switch);
 
-		// add mute duration (Moshidon)
+		// add mute duration (Seqular)
 		addDurationRow(context, muteDuration);
 	}
 }

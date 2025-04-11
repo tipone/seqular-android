@@ -137,6 +137,9 @@ public class CustomWelcomeFragment extends InstanceCatalogFragment {
 		searchEdit=headerView.findViewById(R.id.search_edit);
 		searchEdit.setOnEditorActionListener(this::onSearchEnterPressed);
 
+		searchEdit.removeCallbacks(searchDebouncer);
+		searchEdit.postDelayed(searchDebouncer, 300);
+
 		headerView.findViewById(R.id.more).setVisibility(View.GONE);
 		headerView.findViewById(R.id.visibility).setVisibility(View.GONE);
 		headerView.findViewById(R.id.unread_indicator).setVisibility(View.GONE);

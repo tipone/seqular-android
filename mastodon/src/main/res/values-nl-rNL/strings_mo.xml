@@ -4,9 +4,9 @@
     <string name="mo_personal_note">Voeg een opmerking toe over dit account</string>
     <string name="mo_personal_note_confirm">Bevestig de wijzigingen van de opmerking</string>
     <string name="mo_personal_note_update_failed">Bewaren van opmerking mislukt</string>
-    <string name="mo_settings_contribute">Bijdragen aan Moshidon</string>
-    <string name="mo_update_ready">Moshidon %s is gedownload en gereed voor installatie.</string>
-    <string name="mo_update_available">Moshidon %s staat gereed om te downloaden.</string>
+    <string name="mo_settings_contribute">Bijdragen aan Seqular</string>
+    <string name="mo_update_ready">Seqular %s is gedownload en gereed voor installatie.</string>
+    <string name="mo_update_available">Seqular %s staat gereed om te downloaden.</string>
     <string name="mo_no_image_desc_title">Geen beschrijving bij afbeelding</string>
     <string name="mo_emoji_recent">Recent gebruikt</string>
     <string name="mo_poll_option_add">Voeg een nieuwe peilingkeuze toe</string>
@@ -71,7 +71,7 @@
     <string name="mo_color_palette_black_and_white">Zwart Wit</string>
     <string name="mo_setting_haptic_feedback_summary">Bij interactie met berichten laten trillen</string>
     <string name="mo_camera_not_available">Geen camera beschikbaar!</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_settings_show_posts_without_alt">Toon mediaberichten zonder alt-tekst</string>
     <string name="mo_settings_show_posts_without_alt_summary">Berichten worden op alle tijdlijnen verborgen, maar kunnen zichtbaar zijn in gesprekken en meldingen</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>

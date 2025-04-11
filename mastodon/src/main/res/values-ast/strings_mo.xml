@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mo_hide_compose_button_while_scrolling_setting">Ancultar el botón d\'escritura mientres te desplaces</string>
-    <string name="mo_settings_contribute">Contribuyir a Moshidon</string>
+    <string name="mo_settings_contribute">Contribuyir a Seqular</string>
     <string name="mo_instance_status">Estáu</string>
     <string name="mo_mute_label">Duración:</string>
     <string name="mo_share_open_url">Abrir na aplicación</string>
@@ -20,8 +20,8 @@
     <string name="mo_personal_note">Amestar una nota sobre esti perfil</string>
     <string name="mo_personal_note_saved">Nota guardada</string>
     <string name="mo_personal_note_confirm">Confirmar los cambeos a la nota</string>
-    <string name="mo_update_available">Moshidon %s ta llistu pa descargar.</string>
-    <string name="mo_update_ready">Moshidon %s ta descargáu y llistu pa instalar.</string>
+    <string name="mo_update_available">Seqular %s ta llistu pa descargar.</string>
+    <string name="mo_update_ready">Seqular %s ta descargáu y llistu pa instalar.</string>
     <string name="mo_no_image_desc_title">Ensin descripción de la semeya</string>
     <string name="mo_disable_reminder_to_add_alt_text">Desactivar el recordatoriu pa amestar el testu alternativu</string>
     <string name="mo_personal_note_update_failed">Fallu al guardar la nota</string>

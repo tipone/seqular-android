@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_app_name" translatable="false">Moshidon</string>
+    <string name="mo_app_name" translatable="false">Seqular</string>
     <string name="mo_color_palette_nord">Nord</string>
-    <string name="mo_app_username" translatable="false">\@moshidon</string>
+    <string name="mo_app_username" translatable="false">\@seqular</string>
     <string name="mo_disable_dividers">Beitrags-Trennlinien deaktivieren</string>
     <string name="mo_relocate_publish_button">Veröffentlichen-Schaltfläche verschieben</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Veröffentlichen Schaltfläche beim scrollen ausblenden</string>
-    <string name="mo_welcome_text">Moshidon sagt Hi! Gib den Domain-Namen deiner Heimat-Instanz unten ein.</string>
+    <string name="mo_welcome_text">Seqular sagt Hi! Gib den Domain-Namen deiner Heimat-Instanz unten ein.</string>
     <!--    Setting this as non-translatable as it simply doesnt change with language-->
-    <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
+    <string name="mo_settings_app_version" translatable="false">Seqular v%1$s (%2$d)</string>
     <string name="mo_personal_note">Notiz zu diesem Profil hinzufügen</string>
     <string name="mo_personal_note_confirm">Änderungen der Notiz bestätigen</string>
     <string name="mo_personal_note_update_failed">Speichern der Notiz ist fehlgeschlagen</string>
-    <string name="mo_settings_contribute">Zu Moshidon beitragen</string>
-    <string name="mo_update_available">Moshidon %s ist bereit zum herunterladen.</string>
-    <string name="mo_update_ready">Moshidon %s ist heruntergeladen und bereit zur Installation.</string>
+    <string name="mo_settings_contribute">Zu Seqular beitragen</string>
+    <string name="mo_update_available">Seqular %s ist bereit zum herunterladen.</string>
+    <string name="mo_update_ready">Seqular %s ist heruntergeladen und bereit zur Installation.</string>
     <string name="mo_no_image_desc_title">Keine Bildbeschreibung</string>
     <string name="mo_no_image_desc">Die enthaltenen Bilder haben keine Beschreibung. Bitte füge eine Beschreibung hinzu, damit auch sehbehinderte Personen teilnehmen können.</string>
     <string name="mo_emoji_recent">Kürzlich verwendet</string>

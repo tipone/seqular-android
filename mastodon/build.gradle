@@ -11,8 +11,8 @@ java {
 android {
 	compileSdk 33
 	defaultConfig {
-		manifestPlaceholders = [oAuthScheme:"moshidon-android-auth"]
-		archivesBaseName = "moshidon"
+		manifestPlaceholders = [oAuthScheme:"seqular-android-auth"]
+		archivesBaseName = "seqular"
 		applicationId "org.joinmastodon.android.moshinda"
 		minSdk 23
 		targetSdk 34
@@ -85,7 +85,7 @@ android {
 			debuggable true
 			versionNameSuffix '-debug'
 			applicationIdSuffix '.debug'
-			manifestPlaceholders = [oAuthScheme:"moshidon-android-debug-auth"]
+			manifestPlaceholders = [oAuthScheme:"seqular-android-debug-auth"]
 		}
 		githubRelease{
 			initWith release
@@ -101,7 +101,7 @@ android {
 			applicationIdSuffix '.nightly'
 
 			signingConfig signingConfigs.nightly
-			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
+			manifestPlaceholders = [oAuthScheme:"seqular-android-nightly-auth"]
 		}
 		playRelease{
 			initWith release

@@ -26,7 +26,7 @@ public class MastodonApp extends Application{
 		params.diskCacheSize=100*1024*1024;
 		params.maxMemoryCacheSize=Integer.MAX_VALUE;
 		ImageCache.setParams(params);
-		NetworkUtils.setUserAgent("MoshidonAndroid/"+BuildConfig.VERSION_NAME);
+		NetworkUtils.setUserAgent("SeqularAndroid/"+BuildConfig.VERSION_NAME);
 
 		if (UnifiedPushHelper.isUnifiedPushEnabled(this)){
 			UnifiedPushHelper.registerAllAccounts(this);

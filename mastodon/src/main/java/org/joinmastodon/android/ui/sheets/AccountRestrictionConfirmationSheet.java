@@ -116,7 +116,7 @@ public abstract class AccountRestrictionConfirmationSheet extends BottomSheet{
 	}
 
 	public void addDurationRow(@NonNull Context context, AtomicReference<Duration> muteDuration) {
-		//Moshidon: add row to choose a duration, e.g. for muting accounts
+		//Seqular: add row to choose a duration, e.g. for muting accounts
 		Button muteDurationBtn=new Button(getContext());
 		muteDurationBtn.setOnClickListener(v->getMuteDurationDialog(context, muteDuration, muteDurationBtn).show());
 		muteDurationBtn.setText(R.string.sk_duration_indefinite);

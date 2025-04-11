@@ -5,9 +5,9 @@
     <string name="mo_instance_admin">Διαχειρίζεται από</string>
     <string name="mo_instance_contact">Επικοινωνία</string>
     <string name="mo_personal_note_update_failed">Αποτυχία αποθήκευσης σημείωσης</string>
-    <string name="mo_settings_contribute">Συνείσφερε στο Moshidon</string>
-    <string name="mo_update_available">Το Moshidon %s είναι έτοιμο για λήψη.</string>
-    <string name="mo_update_ready">Το Moshidon %s έχει κατέβει και είναι έτοιμο για εγκατάσταση.</string>
+    <string name="mo_settings_contribute">Συνείσφερε στο Seqular</string>
+    <string name="mo_update_available">Το Seqular %s είναι έτοιμο για λήψη.</string>
+    <string name="mo_update_ready">Το Seqular %s έχει κατέβει και είναι έτοιμο για εγκατάσταση.</string>
     <string name="mo_no_image_desc_title">Χωρίς περιγραφή εικόνας</string>
     <string name="mo_no_image_desc">Οι εικόνες όυ περιλαμβάνονται δεν έχουν περιγραφή. Παρακαλώ σκέψου να προσθέσεις μία ώστε, να επιτρέψεις στα άτομα με προβλήματα όρασης να συμμετάσχουν.</string>
     <string name="mo_emoji_recent">Χρησιμοποιήθηκε πρόσφατα</string>

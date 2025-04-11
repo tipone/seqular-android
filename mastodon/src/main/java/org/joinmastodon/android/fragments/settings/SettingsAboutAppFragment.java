@@ -165,7 +165,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 		// The magic will happen on the onActivityResult Method
 		Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
 		intent.setType("application/json");
-		intent.putExtra(Intent.EXTRA_TITLE,"moshidon-exported-settings.json");
+		intent.putExtra(Intent.EXTRA_TITLE,"seqular-exported-settings.json");
 		startActivityForResult(intent, EXPORT_RESULT);
 	}
 
@@ -285,7 +285,7 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 					jsonObject.add(accountSession.self.id, accountPrefs);
 				}
 
-				File file = new File(getContext().getCacheDir(), "moshidon-exported-settings.json");
+				File file = new File(getContext().getCacheDir(), "seqular-exported-settings.json");
 				FileWriter writer = new FileWriter(file);
 				writer.write(jsonObject.toString());
 				writer.flush();

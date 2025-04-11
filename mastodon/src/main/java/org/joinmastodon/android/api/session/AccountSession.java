@@ -315,7 +315,7 @@ public class AccountSession{
 			return true;
 		// Even with server-side filters, clients are expected to remove statuses that match a filter that hides them
 		if(getLocalPreferences().serverSideFiltersSupported){
-			// Moshidon: this code path in CustomLocalTimelines makes the app crash, so this check is here
+			// Seqular: this code path in CustomLocalTimelines makes the app crash, so this check is here
 			if (s.filtered == null)
 				return false;
 			for(FilterResult filter : s.filtered){

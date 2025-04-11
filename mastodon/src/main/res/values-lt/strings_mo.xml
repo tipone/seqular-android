@@ -8,8 +8,8 @@
     <string name="mo_personal_note">Pridėti pastabą apie šį profilį</string>
     <string name="mo_personal_note_confirm">Patvirtinti pastabos pakeitimus</string>
     <string name="mo_personal_note_update_failed">Nepavyko išsaugoti pastabos.</string>
-    <string name="mo_settings_contribute">Prisidėti prie „Moshidon“</string>
-    <string name="mo_update_available">„Moshidon“ %s paruoštas atsisiųsti.</string>
+    <string name="mo_settings_contribute">Prisidėti prie „Seqular“</string>
+    <string name="mo_update_available">„Seqular“ %s paruoštas atsisiųsti.</string>
     <string name="mo_no_image_desc_title">Nėra vaizdo aprašymas</string>
     <string name="mo_emoji_recent">Neseniai naudoti</string>
     <string name="mo_clear_recent_emoji">Valyti neseniai naudotą jaustuką</string>
@@ -61,7 +61,7 @@
     <string name="mo_enable_dividers">Rodyti įrašų skriestuvus</string>
     <string name="mo_add_custom_server_local_timeline">Pridėti pasirinktinio serverio vietinę laiko skalę</string>
     <string name="mo_mute_conversation">Nutildyti pokalbį</string>
-    <string name="mo_update_ready">„Moshidon“ %s atsisiųstas ir paruoštas įdiegti.</string>
+    <string name="mo_update_ready">„Seqular“ %s atsisiųstas ir paruoštas įdiegti.</string>
     <string name="mo_no_image_desc">Pridėti vaizdai neturi aprašymo. Apsvarstyk galimybę pridėti aprašymą, kad jame galėtų dalyvauti regos negalią turintys žmonės.</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Išjunk perkėlimo skelbimo mygtuko funkciją, kad būtų galima tinkinti</string>
     <string name="mo_duration_days_3">3 dienoms</string>

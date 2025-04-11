@@ -8,9 +8,9 @@
     <string name="mo_emoji_recent">Son kullanılan</string>
     <string name="mo_personal_note_confirm">Not değişikliklerini onayla</string>
     <string name="mo_personal_note_update_failed">Not kaydedilemedi</string>
-    <string name="mo_settings_contribute">Moshidon\'a katkıda bulun</string>
-    <string name="mo_update_available">Moshidon %s indirilmeye hazır.</string>
-    <string name="mo_update_ready">Moshidon %s indirildi ve yüklenmeye hazır.</string>
+    <string name="mo_settings_contribute">Seqular\'a katkıda bulun</string>
+    <string name="mo_update_available">Seqular %s indirilmeye hazır.</string>
+    <string name="mo_update_ready">Seqular %s indirildi ve yüklenmeye hazır.</string>
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_disable_reminder_to_add_alt_text">Fotoğraflara açıklama yazısı ekleme hatırlatıcısını devre dışı bırak</string>
     <string name="mo_filtered">Filtrelenen: %s</string>

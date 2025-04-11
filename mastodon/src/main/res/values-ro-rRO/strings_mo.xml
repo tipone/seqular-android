@@ -9,9 +9,9 @@
     <string name="mo_personal_note_update_failed">Salvarea notei a eșuat</string>
     <string name="mo_personal_note_confirm">Confirmați modificările notei</string>
     <string name="mo_personal_note">Adăugați o notă despre acest profil</string>
-    <string name="mo_settings_contribute">Contribuiți la Moshidon</string>
-    <string name="mo_update_available">Moshidon %s este gata pentru a fi descărcat.</string>
-    <string name="mo_update_ready">Moshidon %s este descărcat și gata pentru a fi instalat.</string>
+    <string name="mo_settings_contribute">Contribuiți la Seqular</string>
+    <string name="mo_update_available">Seqular %s este gata pentru a fi descărcat.</string>
+    <string name="mo_update_ready">Seqular %s este descărcat și gata pentru a fi instalat.</string>
     <string name="mo_no_image_desc">Imaginile incluse nu au o descriere. Vă rugăm să luați în considerare adăugarea unuia, pentru a permite participarea persoanelor cu deficiențe de vedere.</string>
     <string name="mo_emoji_recent">Recent utilizate</string>
     <string name="mo_clear_recent_emoji">Ștergeți emoji-urile folosite recent</string>
@@ -73,7 +73,7 @@
     <string name="mo_color_palette_black_and_white">Negru și alb</string>
     <string name="mo_settings_show_posts_without_alt_summary">Postările vor fi ascunse în toate cronologiile, dar pot fi dezvăluite în discuții și notificări</string>
     <string name="mo_settings_show_posts_without_alt">Afișați postările media cu text alternativ lipsă</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_unmute_hashtag">Neamuțiți hashtag</string>
     <string name="mo_show_media_preview">Afișați previzualizarea media în cronologii</string>
