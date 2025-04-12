@@ -82,8 +82,8 @@ public class SettingsAboutAppFragment extends BaseSettingsFragment<Void> impleme
 				? DateTimeFormatter.ofLocalizedDateTime(FormatStyle.LONG, FormatStyle.SHORT).withZone(ZoneId.systemDefault()).format(Instant.ofEpochMilli(crashLogFile.lastModified()))
 				: getString(R.string.sk_settings_crash_log_unavailable);
 		List<ListItem<Void>> items=new ArrayList<>(List.of(
-				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_donate_url))),
-				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.mo_repo_url))),
+				new ListItem<>(R.string.sk_settings_donate, 0, R.drawable.ic_fluent_heart_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.donate_url))),
+				new ListItem<>(R.string.mo_settings_contribute, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.repo_url))),
 				new ListItem<>(R.string.settings_tos, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), "https://"+session.domain+"/terms")),
 				new ListItem<>(R.string.settings_privacy_policy, 0, R.drawable.ic_fluent_open_24_regular, i->UiUtils.launchWebBrowser(getActivity(), getString(R.string.privacy_policy_url)), 0, true),
 				exportItem=new ListItem<>(R.string.export_settings_title, R.string.export_settings_summary, R.drawable.ic_fluent_arrow_export_24_filled, this::onExportClick),
