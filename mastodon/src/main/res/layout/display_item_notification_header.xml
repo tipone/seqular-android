@@ -29,7 +29,7 @@
 			android:layout_height="32dp"
 			android:layout_marginStart="12dp"/>
 
-		<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+		<net.seqular.network.ui.views.HeaderSubtitleLinearLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content">
 
@@ -66,7 +66,7 @@
 				android:maxLines="1"
 				tools:text="42m ago"/>
 
-		</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+		</net.seqular.network.ui.views.HeaderSubtitleLinearLayout>
 
 	</LinearLayout>
 

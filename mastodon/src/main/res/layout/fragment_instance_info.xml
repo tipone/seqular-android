@@ -15,7 +15,7 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false">
 
-            <org.joinmastodon.android.ui.views.CoverImageView
+            <net.seqular.network.ui.views.CoverImageView
                 android:id="@+id/cover"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
@@ -41,7 +41,7 @@
                     tools:text="floss.social" />
 
 
-                <org.joinmastodon.android.ui.views.UntouchableScrollView
+                <net.seqular.network.ui.views.UntouchableScrollView
                     android:id="@+id/text_scroll_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
                     android:requiresFadingEdge="vertical"
                     android:scrollbars="none">
 
-                    <org.joinmastodon.android.ui.views.LinkedTextView
+                    <net.seqular.network.ui.views.LinkedTextView
                         android:id="@+id/description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
                         android:textAppearance="@style/m3_body_large"
                         android:textSize="16sp" />
 
-                </org.joinmastodon.android.ui.views.UntouchableScrollView>
+                </net.seqular.network.ui.views.UntouchableScrollView>
 
                 <Button
                     android:id="@+id/read_more"

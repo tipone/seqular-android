@@ -7,7 +7,7 @@
 	android:divider="@drawable/divider_inset_16dp"
 	android:showDividers="middle">
 
-	<org.joinmastodon.android.ui.views.WrappingLinearLayout
+	<net.seqular.network.ui.views.WrappingLinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="16dp"
@@ -92,7 +92,7 @@
 			android:gravity="center_vertical"
 			tools:text="Seqular dfjklafjdsalkfjdslakfjdsaklfjdslak"/>
 
-	</org.joinmastodon.android.ui.views.WrappingLinearLayout>
+	</net.seqular.network.ui.views.WrappingLinearLayout>
 
 	<TextView
 		android:id="@+id/edit_history"
@@ -109,7 +109,7 @@
 		android:drawableTint="?colorM3OnSurfaceVariant"
 		tools:text="Last edit bla bla"/>
 
-	<org.joinmastodon.android.ui.views.WrappingLinearLayout
+	<net.seqular.network.ui.views.WrappingLinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingHorizontal="8dp"
@@ -156,6 +156,6 @@
 			android:drawableTint="?colorM3OnSurfaceVariant"
 			tools:text="123 favorites"/>
 
-	</org.joinmastodon.android.ui.views.WrappingLinearLayout>
+	</net.seqular.network.ui.views.WrappingLinearLayout>
 
 </LinearLayout>

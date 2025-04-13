@@ -7,7 +7,7 @@
 	android:paddingTop="8dp"
 	android:paddingHorizontal="8dp">
 
-	<org.joinmastodon.android.ui.views.CheckableLinearLayout
+	<net.seqular.network.ui.views.CheckableLinearLayout
 		android:id="@+id/multiple_choice"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
@@ -42,9 +42,9 @@
 				android:focusable="false"
 				android:duplicateParentState="true"/>
 		</FrameLayout>
-	</org.joinmastodon.android.ui.views.CheckableLinearLayout>
+	</net.seqular.network.ui.views.CheckableLinearLayout>
 
-	<org.joinmastodon.android.ui.views.CheckableLinearLayout
+	<net.seqular.network.ui.views.CheckableLinearLayout
 		android:id="@+id/single_choice"
 		android:layout_width="0dp"
 		android:layout_height="wrap_content"
@@ -79,6 +79,6 @@
 				android:focusable="false"
 				android:duplicateParentState="true"/>
 		</FrameLayout>
-	</org.joinmastodon.android.ui.views.CheckableLinearLayout>
+	</net.seqular.network.ui.views.CheckableLinearLayout>
 
 </LinearLayout>

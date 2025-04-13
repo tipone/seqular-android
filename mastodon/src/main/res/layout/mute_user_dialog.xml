@@ -15,7 +15,7 @@
 		android:text="@string/confirm_mute"
 		android:textSize="16sp"/>
 
-	<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+	<net.seqular.network.ui.views.AutoOrientationLinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layoutDirection="locale">
@@ -43,5 +43,5 @@
 			android:textColor="?android:textColorPrimary"
 			android:textSize="16sp" />
 
-	</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+	</net.seqular.network.ui.views.AutoOrientationLinearLayout>
 </LinearLayout>

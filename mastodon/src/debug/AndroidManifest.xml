@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
-	package="org.joinmastodon.android">
+	package="net.seqular.network">
 
 	<uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
@@ -17,7 +17,7 @@
 		<!--		</receiver>-->
 		<provider
 			android:authorities="${applicationId}.self_update_provider"
-			android:name=".updater.SelfUpdateContentProvider"
+			android:name="net.seqular.network.updater.SelfUpdateContentProvider"
 			android:grantUriPermissions="true"
 			android:exported="false"/>
 	</application>

@@ -19,7 +19,7 @@
 		android:layout_marginEnd="4dp"
 		tools:text="Field title"/>
 
-	<org.joinmastodon.android.ui.views.LinkedTextView
+	<net.seqular.network.ui.views.LinkedTextView
 		android:id="@+id/value"
 		android:layout_width="0dp"
 		android:layout_weight="2"

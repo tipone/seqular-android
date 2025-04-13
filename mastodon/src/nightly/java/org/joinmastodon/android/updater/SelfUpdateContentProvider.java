@@ -1,4 +1,4 @@
-package org.joinmastodon.android.updater;
+package net.seqular.network.updater;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
