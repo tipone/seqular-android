@@ -19,6 +19,8 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+#gecici test
+-dontwarn android.app.BroadcastOptions
 
 # Keep all model classes as they're used with gson and their names are shown in errors
 -keep public class net.seqular.network.model.**{
