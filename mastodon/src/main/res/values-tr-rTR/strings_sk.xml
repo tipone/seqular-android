@@ -95,7 +95,7 @@
     <string name="sk_loading_resource_on_instance_title">%s üzerinde arıyorum</string>
     <string name="sk_undo_reblog">Geri alma güçlendirmesi</string>
     <string name="sk_reblog_with_visibility">Görünürlüğü artırın</string>
-    <string name="sk_quote_post">Bu konuda gönderi yapın</string>
+    <string name="sk_quote_post">Bu konuda gönderi oluşturun</string>
     <string name="sk_hashtags_you_follow">Takip ettiğiniz etiketler</string>
     <string name="sk_copy_link_to_post">Bağlantıyı gönderiye kopyala</string>
     <string name="sk_open_with_account">Başka bir hesapla aç</string>
@@ -286,7 +286,7 @@
     <string name="sk_settings_glitch_instance">Glitch sadece yerel mod</string>
     <string name="sk_settings_glitch_mode_explanation">Ev örneğiniz Glitch\'te çalışıyorsa bunu etkinleştirin. Hometown veya Akkoma için gerekli değildir.</string>
     <string name="sk_signed_up">Kaydoldu</string>
-    <string name="sk_reported">rapor edildi</string>
+    <string name="sk_reported">Rapor Bildirdi</string>
     <string name="sk_reacted_with">%1$s %2$s ile tepki verdi</string>
     <string name="sk_reacted">%s tepki verdi</string>
     <string name="sk_sign_ups">Kayıt yaptıran kullanıcılar</string>
