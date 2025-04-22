@@ -2,7 +2,7 @@
 <resources>
     <string name="mo_personal_note">Thêm ghi chú về hồ sơ này</string>
     <string name="mo_personal_note_update_failed">Lưu ghi chú thất bại</string>
-    <string name="mo_settings_contribute">Đóng góp vào Moshidon</string>
+    <string name="mo_settings_contribute">Đóng góp vào Seqular</string>
     <string name="mo_personal_note_confirm">Xác nhận thay đổi về ghi chú</string>
     <string name="mo_share_open_url">Mở trong ứng dụng</string>
     <string name="mo_clear_recent_emoji">Xóa hết biểu tượng sử dụng gần đây</string>
@@ -18,8 +18,8 @@
     <string name="mo_instance_info_open_timeline">Dòng thời gian địa phương</string>
     <string name="mo_severity_silence">Im lặng</string>
     <string name="mo_severity_suspend">Chặn</string>
-    <string name="mo_update_available">Moshidon %s đã sẵn sàng để tải.</string>
-    <string name="mo_update_ready">Moshidon %s đã tải xong và sẵn sàng cài đặt.</string>
+    <string name="mo_update_available">Seqular %s đã sẵn sàng để tải.</string>
+    <string name="mo_update_ready">Seqular %s đã tải xong và sẵn sàng cài đặt.</string>
     <string name="mo_no_image_desc_title">Không có miêu tả hình ảnh</string>
     <string name="mo_no_image_desc">Những hình ảnh đã thêm không có miêu tả. Vui lòng xem xét thêm miêu tả, để những người khiếm thị cùng tham gia.</string>
     <string name="mo_emoji_recent">Sử dụng gần đây</string>

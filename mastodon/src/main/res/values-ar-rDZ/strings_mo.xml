@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="mo_setting_uniform_summary">استخدم أيقونة التطبيق في كافة الإشعارات</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_load_remote_followers">تحميل الملفات التعريفية البعيدة للمتابِعين والمتابَعين</string>
     <string name="mo_download_latest_nightly_release">تنزيل آخر إصدار ليلي</string>
@@ -10,7 +10,7 @@
     <string name="mo_personal_note">إضافة ملاحظة حول الملف التعريفي هذا</string>
     <string name="mo_personal_note_confirm">تأكيد التغييرات التي طرأت على الملاحظة</string>
     <string name="mo_personal_note_update_failed">فشل حفظ الملاحظة</string>
-    <string name="mo_settings_contribute">المساهمة على Moshidon</string>
+    <string name="mo_settings_contribute">المساهمة على Seqular</string>
     <string name="mo_update_available">موشيدون %s متوفر للتنزيل.</string>
     <string name="mo_update_ready">تم تنزيل موشيدون %s وهو جاهز للتنصيب.</string>
     <string name="mo_no_image_desc_title">ليس للصورة وصف</string>

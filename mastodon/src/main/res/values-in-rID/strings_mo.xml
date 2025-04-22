@@ -2,9 +2,9 @@
 <resources>
     <string name="mo_personal_note_confirm">Konfirmasi perubahan ke catatan</string>
     <string name="mo_personal_note_update_failed">Gagal menyimpan catatan</string>
-    <string name="mo_settings_contribute">Berkontribusi ke Moshidon</string>
-    <string name="mo_update_available">Moshidon %s siap untuk diunduh.</string>
-    <string name="mo_update_ready">Moshidon %s telah diunduh dan siap untuk dipasang.</string>
+    <string name="mo_settings_contribute">Berkontribusi ke Seqular</string>
+    <string name="mo_update_available">Seqular %s siap untuk diunduh.</string>
+    <string name="mo_update_ready">Seqular %s telah diunduh dan siap untuk dipasang.</string>
     <string name="mo_no_image_desc_title">Tidak ada deskripsi gambar</string>
     <string name="mo_no_image_desc">Gambar yang disertakan belum memiliki deskripsi. Pertimbangkan untuk menambahkannya, supaya orang-orang buta dapat berpartisipasi.</string>
     <string name="mo_emoji_recent">Terakhir digunakan</string>

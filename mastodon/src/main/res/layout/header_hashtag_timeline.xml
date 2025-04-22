@@ -28,7 +28,7 @@
 		android:layout_alignBottom="@id/title"
 		android:layout_alignParentEnd="true">
 
-		<org.joinmastodon.android.ui.views.ProgressBarButton
+		<net.seqular.network.ui.views.ProgressBarButton
 			android:id="@+id/profile_action_btn"
 			android:layout_width="wrap_content"
 			android:layout_height="48dp"

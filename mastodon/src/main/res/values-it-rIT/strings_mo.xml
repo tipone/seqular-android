@@ -6,7 +6,7 @@
     <string name="mo_setting_interaction_count_summary">Mostra quante persone hanno interagito con un post nella timeline</string>
     <string name="mo_enable_dividers">Mostra divisore tra i post</string>
     <string name="mo_instance_admin">Amministrata da</string>
-    <string name="mo_update_available">Moshidon %s è pronto per essere scaricato.</string>
+    <string name="mo_update_available">Seqular %s è pronto per essere scaricato.</string>
     <string name="mo_instance_registration">Registrazione</string>
     <string name="mo_no_image_desc">Le immagini incluse non hanno una descrizione. Si prega di considerare la possibilità di aggiungerne una, per consentire alle persone ipovedenti di partecipare.</string>
     <string name="mo_setting_play_gif_summary">Riproduci automaticamente le GIF di avatar e emoji</string>
@@ -24,8 +24,8 @@
     <string name="mo_welcome_text">Per iniziare, inserisci il nome di dominio dell\'istanza a cui sei iscritto.</string>
     <string name="mo_personal_note_confirm">Conferma le modifiche alla nota</string>
     <string name="mo_personal_note_update_failed">Impossibile salvare la nota</string>
-    <string name="mo_settings_contribute">Contribuisci a Moshidon</string>
-    <string name="mo_update_ready">Moshidon %s è stato scaricato ed è pronto per l\'installazione.</string>
+    <string name="mo_settings_contribute">Contribuisci a Seqular</string>
+    <string name="mo_update_ready">Seqular %s è stato scaricato ed è pronto per l\'installazione.</string>
     <string name="mo_no_image_desc_title">Nessuna descrizione dell\'immagine</string>
     <string name="mo_clear_recent_emoji">Cancella le emoji usate di recente</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Disattiva \"Riposiziona il pulsante di pubblicazione\" per consentire la personalizzazione</string>

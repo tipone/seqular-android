@@ -39,7 +39,7 @@
 		android:tint="?colorM3DarkOnSurface"
 		android:background="?android:actionBarItemBackground"/>
 
-	<org.joinmastodon.android.ui.views.NestableScrollView
+	<net.seqular.network.ui.views.NestableScrollView
 		android:id="@+id/alt_text_scroller"
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
@@ -74,6 +74,6 @@
 
 		</LinearLayout>
 
-	</org.joinmastodon.android.ui.views.NestableScrollView>
+	</net.seqular.network.ui.views.NestableScrollView>
 
 </FrameLayout>

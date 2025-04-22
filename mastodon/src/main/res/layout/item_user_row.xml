@@ -27,7 +27,7 @@
         android:layout_marginTop="18dp"
         android:layout_marginStart="-8dp">
 
-        <org.joinmastodon.android.ui.views.ProgressBarButton
+        <net.seqular.network.ui.views.ProgressBarButton
             android:id="@+id/action_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

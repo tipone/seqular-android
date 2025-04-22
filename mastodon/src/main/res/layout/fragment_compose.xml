@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.joinmastodon.android.ui.views.SizeListenerLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<net.seqular.network.ui.views.SizeListenerLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:orientation="vertical"
@@ -83,7 +83,7 @@
 						android:layout_alignParentTop="true"
 						android:layout_marginEnd="12dp" />
 
-					<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+					<net.seqular.network.ui.views.HeaderSubtitleLinearLayout
 						android:id="@+id/name_wrap"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -115,7 +115,7 @@
 							android:textColor="?colorM3OnSurface"
 							tools:text="@string/sk_inline_local_only" />
 
-					</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+					</net.seqular.network.ui.views.HeaderSubtitleLinearLayout>
 
 					<TextView
 						android:id="@+id/self_username"
@@ -150,7 +150,7 @@
 
 				</RelativeLayout>
 
-				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+				<net.seqular.network.ui.views.FloatingHintEditTextLayout
 					android:id="@+id/content_warning_wrap"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -182,14 +182,14 @@
 						android:textColor="?colorM3OnSurface"
 						android:background="@null"
 						android:maxLines="3"/>
-				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+				</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
 				<FrameLayout
 					android:id="@+id/toot_text_wrap"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content">
 
-					<org.joinmastodon.android.ui.views.ComposeEditText
+					<net.seqular.network.ui.views.ComposeEditText
 						android:id="@+id/toot_text"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -325,7 +325,7 @@
 						</LinearLayout>
 
 					</LinearLayout>
-					<org.joinmastodon.android.ui.views.ReorderableLinearLayout
+					<net.seqular.network.ui.views.ReorderableLinearLayout
 						android:id="@+id/poll_options"
 						android:layout_width="match_parent"
 						android:layout_height="wrap_content"
@@ -346,7 +346,7 @@
 						android:background="@drawable/poof"/>
 				</RelativeLayout>
 
-				<org.joinmastodon.android.ui.views.HorizontalScrollViewThatRespectsMatchParent
+				<net.seqular.network.ui.views.HorizontalScrollViewThatRespectsMatchParent
 					android:id="@+id/attachments_scroller"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -354,7 +354,7 @@
 					android:scrollbars="none"
 					android:clipChildren="false"
 					android:visibility="gone">
-					<org.joinmastodon.android.ui.views.ReorderableLinearLayout
+					<net.seqular.network.ui.views.ReorderableLinearLayout
 						android:id="@+id/attachments"
 						android:layout_width="wrap_content"
 						android:layout_height="300dp"
@@ -362,7 +362,7 @@
 						android:showDividers="middle"
 						android:clipToPadding="false"
 						android:paddingHorizontal="16dp"/>
-				</org.joinmastodon.android.ui.views.HorizontalScrollViewThatRespectsMatchParent>
+				</net.seqular.network.ui.views.HorizontalScrollViewThatRespectsMatchParent>
 
 				<Button
 					style="@style/Widget.Mastodon.M3.Button.Tonal.Icon"
@@ -393,7 +393,7 @@
 		android:minHeight="48dp"
 		android:paddingVertical="6dp">
 
-		<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+		<net.seqular.network.ui.views.AutoOrientationLinearLayout
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="wrap_content">
@@ -425,7 +425,7 @@
 				android:drawableTint="?android:textColorSecondary"
 				tools:text="Dec 12, 2021, 12:42 PM"/>
 
-		</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+		</net.seqular.network.ui.views.AutoOrientationLinearLayout>
 
 		<ImageButton
 			android:id="@+id/schedule_draft_dismiss"
@@ -592,4 +592,4 @@
 		</LinearLayout>
 	</LinearLayout>
 
-</org.joinmastodon.android.ui.views.SizeListenerLinearLayout>
+</net.seqular.network.ui.views.SizeListenerLinearLayout>

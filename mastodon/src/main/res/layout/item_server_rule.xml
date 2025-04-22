@@ -23,7 +23,7 @@
 		android:includeFontPadding="false"
 		tools:text="1"/>
 
-	<org.joinmastodon.android.ui.views.LinkedTextView
+	<net.seqular.network.ui.views.LinkedTextView
 		android:id="@+id/text"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"

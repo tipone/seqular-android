@@ -10,13 +10,13 @@
 		android:layout_width="match_parent"
 		android:layout_height="match_parent">
 
-		<org.joinmastodon.android.ui.views.NestedRecyclerScrollView
+		<net.seqular.network.ui.views.NestedRecyclerScrollView
 			android:id="@+id/scroller"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:nestedScrollingEnabled="true">
 
-			<org.joinmastodon.android.ui.views.CustomDrawingOrderLinearLayout
+			<net.seqular.network.ui.views.CustomDrawingOrderLinearLayout
 				android:id="@+id/scrollable_content"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content">
 
-					<org.joinmastodon.android.ui.views.CoverImageView
+					<net.seqular.network.ui.views.CoverImageView
 						android:id="@+id/cover"
 						android:layout_width="match_parent"
 						android:layout_height="144dp"
@@ -90,7 +90,7 @@
 							android:layout_marginTop="16dp"
 							android:layout_marginEnd="4dp">
 
-							<org.joinmastodon.android.ui.views.ProgressBarButton
+							<net.seqular.network.ui.views.ProgressBarButton
 								android:id="@+id/notify_btn"
 								android:layout_width="48dp"
 								android:layout_height="48dp"
@@ -120,7 +120,7 @@
 							android:layout_marginStart="4dp"
 							android:layout_marginEnd="16dp">
 
-							<org.joinmastodon.android.ui.views.ProgressBarButton
+							<net.seqular.network.ui.views.ProgressBarButton
 								android:id="@+id/profile_action_btn"
 								android:layout_width="wrap_content"
 								android:layout_height="wrap_content"
@@ -144,7 +144,7 @@
 
 				</RelativeLayout>
 
-				<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+				<net.seqular.network.ui.views.AutoOrientationLinearLayout
 					android:id="@+id/name_wrap"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -169,7 +169,7 @@
 						android:orientation="horizontal"
 						android:visibility="gone" />
 
-				</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+				</net.seqular.network.ui.views.AutoOrientationLinearLayout>
 
 				<LinearLayout
 					android:id="@+id/username_wrap"
@@ -231,7 +231,7 @@
 						android:src="@drawable/ic_fluent_bot_20_filled" />
 				</LinearLayout>
 
-				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+				<net.seqular.network.ui.views.FloatingHintEditTextLayout
 					android:id="@+id/note_edit_wrap"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -254,9 +254,9 @@
 						android:inputType="text|textMultiLine|textCapSentences"
 						android:hint="@string/mo_personal_note"
 						tools:ignore="RtlSymmetry" />
-				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+				</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
-				<org.joinmastodon.android.ui.views.LinkedTextView
+				<net.seqular.network.ui.views.LinkedTextView
 					android:id="@+id/bio"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -267,7 +267,7 @@
 					android:textSize="16sp"
 					tools:text="Founder, CEO and lead developer @Mastodon, Germany." />
 
-				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+				<net.seqular.network.ui.views.FloatingHintEditTextLayout
 					android:id="@+id/name_edit_wrap"
 					android:layout_width="match_parent"
 					android:layout_height="80dp"
@@ -289,9 +289,9 @@
 						android:inputType="textPersonName|textCapWords"
 						android:padding="16dp"
 						tools:text="Eugen" />
-				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+				</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
-				<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+				<net.seqular.network.ui.views.FloatingHintEditTextLayout
 					android:id="@+id/bio_edit_wrap"
 					android:layout_width="match_parent"
 					android:layout_height="wrap_content"
@@ -316,7 +316,7 @@
 						android:inputType="textMultiLine|textCapSentences"
 						android:padding="16dp"
 						tools:text="Founder, CEO and lead developer @Mastodon, Germany." />
-				</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+				</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
 				<View
 					android:layout_width="match_parent"
@@ -421,7 +421,7 @@
 					</LinearLayout>
 				</LinearLayout>
 
-				<org.joinmastodon.android.ui.tabs.TabLayout
+				<net.seqular.network.ui.tabs.TabLayout
 					android:id="@+id/tabbar"
 					android:layout_width="match_parent"
 					android:layout_height="48dp"
@@ -452,8 +452,8 @@
 						android:background="?colorM3SurfaceVariant"/>
 
 				</FrameLayout>
-			</org.joinmastodon.android.ui.views.CustomDrawingOrderLinearLayout>
-		</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
+			</net.seqular.network.ui.views.CustomDrawingOrderLinearLayout>
+		</net.seqular.network.ui.views.NestedRecyclerScrollView>
 
 		<include layout="@layout/compose_fab" />
 

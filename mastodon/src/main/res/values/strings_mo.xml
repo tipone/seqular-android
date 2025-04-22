@@ -1,27 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_app_name" translatable="false">Moshidon</string>
-    <string name="mo_app_name_debug" translatable="false">Moshidon Debug</string>
-    <string name="mo_app_name_nightly" translatable="false">Moshidon Nightly</string>
+    <string name="mo_app_name" translatable="false">Seqular</string>
+    <string name="mo_app_name_debug" translatable="false">Seqular Debug</string>
+    <string name="mo_app_name_nightly" translatable="false">Seqular Nightly</string>
 
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_color_palette_black_and_white">Black and White</string>
-    <string name="mo_app_username" translatable="false">\@moshidon</string>
+    <string name="mo_app_username" translatable="false">\@seqular</string>
     <string name="mo_enable_dividers">Show post dividers</string>
     <string name="mo_relocate_publish_button">Relocate publish button</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Hide compose button while scrolling</string>
     <string name="mo_welcome_text">To get started, please enter your home instance’s domain name below.</string>
 
     <!--    Setting this as non-translatable as it simply doesn't change with language-->
-    <string name="mo_settings_app_version" translatable="false">Moshidon v%1$s (%2$d)</string>
+    <string name="mo_settings_app_version" translatable="false">Seqular v%1$s (%2$d)</string>
 
     <string name="mo_personal_note">Add a note about this profile</string>
 	<string name="mo_personal_note_saved">Note saved</string>
     <string name="mo_personal_note_confirm">Confirm changes to note</string>
     <string name="mo_personal_note_update_failed">Failed to save note</string>
-    <string name="mo_settings_contribute">Contribute to Moshidon</string>
-    <string name="mo_update_available">Moshidon %s is ready to download.</string>
-    <string name="mo_update_ready">Moshidon %s is downloaded and ready to install.</string>
+    <string name="mo_settings_contribute">Contribute to Seqular</string>
+    <string name="mo_update_available">Seqular %s is ready to download.</string>
+    <string name="mo_update_ready">Seqular %s is downloaded and ready to install.</string>
     <string name="mo_no_image_desc_title">No Image description</string>
     <string name="mo_no_image_desc">The included images have no description. Please consider adding one, to allow visually impaired people to participate.</string>
     <string name="mo_emoji_recent">Recently used</string>
@@ -84,7 +84,7 @@
     <string name="mo_severity_suspend">Blocked</string>
 	<string name="mo_filter_notifications">Filter notifications</string>
 
-	<string name="mo_repo_url" translatable="false">https://github.com/LucasGGamerM/moshidon</string>
+	<string name="mo_repo_url" translatable="false">https://github.com/LucasGGamerM/seqular</string>
 	<string name="mo_donate_url" translatable="false">https://github.com/sponsors/LucasGGamerM</string>
 
 <!--    Settings summaries-->

@@ -6,13 +6,13 @@
 	android:layout_height="match_parent"
 	android:background="?android:windowBackground">
 
-	<org.joinmastodon.android.ui.views.NestedRecyclerScrollView
+	<net.seqular.network.ui.views.NestedRecyclerScrollView
 		android:id="@+id/scroller"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
 		app:takePriorityOverChildViews="true"
 		android:fillViewport="true">
-		<org.joinmastodon.android.ui.views.TopBarsScrollAwayLinearLayout
+		<net.seqular.network.ui.views.TopBarsScrollAwayLinearLayout
 			android:layout_width="match_parent"
 			android:layout_height="match_parent"
 			android:orientation="vertical">
@@ -36,7 +36,7 @@
 				android:layout_height="match_parent"
 				android:orientation="vertical">
 
-				<org.joinmastodon.android.ui.tabs.TabLayout
+				<net.seqular.network.ui.tabs.TabLayout
 					android:id="@+id/tabbar"
 					android:layout_width="match_parent"
 					android:layout_height="48dp"
@@ -60,7 +60,7 @@
 
 			</LinearLayout>
 
-		</org.joinmastodon.android.ui.views.TopBarsScrollAwayLinearLayout>
-	</org.joinmastodon.android.ui.views.NestedRecyclerScrollView>
+		</net.seqular.network.ui.views.TopBarsScrollAwayLinearLayout>
+	</net.seqular.network.ui.views.NestedRecyclerScrollView>
 
 </me.grishka.appkit.views.FragmentRootLinearLayout>

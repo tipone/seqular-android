@@ -24,7 +24,7 @@
     <string name="mo_confirm_to_unmute_conversation">Ĉu vi certas, ke vi volas malsilentigi ĉi tiun konversacion\?</string>
     <string name="mo_share_open_url">Malfermi en aplikaĵo</string>
     <string name="mo_mute_label">Daŭro:</string>
-    <string name="mo_update_available">Moshidon %s estas preta por elŝuti.</string>
+    <string name="mo_update_available">Seqular %s estas preta por elŝuti.</string>
     <string name="mo_confirm_to_unmute_hashtag">Ĉu vi certas, ke vi volas malsilentigi ĉi tiun haketetikedon\?</string>
     <string name="mo_instance_info_open_timeline">Loka templinio</string>
     <string name="mo_welcome_text">Por komenci, bonvolu enigi la domajnan nomon de via hejma instanco sube.</string>
@@ -36,7 +36,7 @@
     <string name="mo_open_camera">Foti</string>
     <string name="mo_blocked_accounts">Blokitaj kontoj</string>
     <string name="mo_no_image_desc_title">Neniu Bilda priskribo</string>
-    <string name="mo_update_ready">Moshidon %s estas elŝutita kaj preta por instali.</string>
+    <string name="mo_update_ready">Seqular %s estas elŝutita kaj preta por instali.</string>
     <string name="mo_notification_action_replied">Sukcese respondis al la afiŝo de %s</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Malŝaltu la agordon \"Reloki la afîsado-butonon\" por permesi personigon</string>
     <string name="mo_setting_default_reply_privacy_summary">Respondoj estos forigitaj el malkovraj funkcioj</string>
@@ -59,7 +59,7 @@
     <string name="mo_unmute_conversation">Malsilentigi konversacion</string>
     <string name="mo_duration_days_1">1 tago</string>
     <string name="mo_mute_conversation">Silentigi konversacion</string>
-    <string name="mo_settings_contribute">Kontribui al Moshidon</string>
+    <string name="mo_settings_contribute">Kontribui al Seqular</string>
     <string name="mo_recent_emoji_cleared">Lastatempa emoĵion forigis</string>
     <string name="mo_instance_registration_approval">Aprobo necesas</string>
     <string name="mo_setting_play_gif_summary">Aŭtomate ludi GIF-ojn en avataroj kaj emoĝioj</string>

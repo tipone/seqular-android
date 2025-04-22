@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <org.joinmastodon.android.ui.views.MaxWidthFrameLayout
+    <net.seqular.network.ui.views.MaxWidthFrameLayout
         android:id="@+id/inner"
         android:layout_marginBottom="16dp"
 		android:layout_marginHorizontal="16dp"
@@ -54,5 +54,5 @@
                     tools:text="example.com"/>
             </LinearLayout>
         </LinearLayout>
-    </org.joinmastodon.android.ui.views.MaxWidthFrameLayout>
+    </net.seqular.network.ui.views.MaxWidthFrameLayout>
 </FrameLayout>

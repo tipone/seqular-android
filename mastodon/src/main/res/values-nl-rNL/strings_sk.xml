@@ -20,14 +20,14 @@
     <string name="sk_settings_show_boosts">Boosts weergeven</string>
     <string name="sk_settings_load_new_posts">Automatisch nieuwe berichten laden</string>
     <string name="sk_settings_show_interaction_counts">Aantal interacties weergeven</string>
-    <string name="sk_settings_app_version">Moshidon v%1$s (%2$d)</string>
+    <string name="sk_settings_app_version">Seqular v%1$s (%2$d)</string>
     <string name="sk_mark_media_as_sensitive">Markeer media als gevoelig</string>
     <string name="sk_user_post_notifications_on">Berichtmeldingen aangezet voor %s</string>
     <string name="sk_user_post_notifications_off">Berichtmeldingen uitgezet voor %s</string>
     <string name="sk_federated_timeline">Globaal</string>
     <string name="sk_federated_timeline_info_banner">Dit zijn de meest recente berichten van mensen in het voor jou zichtbare deel van de fediverse.</string>
-    <string name="sk_update_available">Moshidon %s is klaar om te downloaden.</string>
-    <string name="sk_update_ready">Moshidon %s is gedownload en klaar om te installeren.</string>
+    <string name="sk_update_available">Seqular %s is klaar om te downloaden.</string>
+    <string name="sk_update_ready">Seqular %s is gedownload en klaar om te installeren.</string>
     <string name="sk_check_for_update">Op update controleren</string>
     <string name="sk_no_update_available">Geen update beschikbaar</string>
     <string name="sk_list_timelines">Lijsten</string>

@@ -9,7 +9,7 @@
 	android:outlineProvider="bounds"
 	android:clipChildren="false">
 
-	<org.joinmastodon.android.ui.views.TabBar
+	<net.seqular.network.ui.views.TabBar
 		android:id="@+id/tabbar"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -214,6 +214,6 @@
 
 		</LinearLayout>
 
-	</org.joinmastodon.android.ui.views.TabBar>
+	</net.seqular.network.ui.views.TabBar>
 
 </FrameLayout>

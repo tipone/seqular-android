@@ -4,8 +4,8 @@
     <string name="mo_welcome_text">Para comezar escribe o nome de dominio da instancia da túa conta.</string>
     <string name="mo_personal_note_confirm">Confirma os cambios na nota</string>
     <string name="mo_personal_note_update_failed">Non se gardou a nota</string>
-    <string name="mo_settings_contribute">Contribúe a Moshidon</string>
-    <string name="mo_update_available">Moshidon %s está lista para descarga.</string>
+    <string name="mo_settings_contribute">Contribúe a Seqular</string>
+    <string name="mo_update_available">Seqular %s está lista para descarga.</string>
     <string name="mo_no_image_desc_title">Sen descrición para a imaxe</string>
     <string name="mo_emoji_recent">Usados recentemente</string>
     <string name="mo_clear_recent_emoji">Limpar lista emojis recentes</string>
@@ -17,7 +17,7 @@
     <string name="mo_disable_dividers">Desactivar divisores de publicación</string>
     <string name="mo_relocate_publish_button">Mover o botón de publicar</string>
     <string name="mo_personal_note">Engade unha nota para este perfil</string>
-    <string name="mo_update_ready">Moshidon %s foi descargada e lista para instalar.</string>
+    <string name="mo_update_ready">Seqular %s foi descargada e lista para instalar.</string>
     <string name="mo_no_image_desc">As imaxes incluídas non teñen descrición. Por favor, considera engadila para axudar ás persoas con dificultades visuais.</string>
     <string name="mo_filtered">Filtrados: %s</string>
     <string name="mo_setting_uniform_summary">Usar a icona da app para todas as notificacións</string>

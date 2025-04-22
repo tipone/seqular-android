@@ -12,8 +12,8 @@
     <string name="mo_personal_note">Добавить заметку об этом профиле</string>
     <string name="mo_personal_note_confirm">Подтвердите изменения в заметке</string>
     <string name="mo_personal_note_update_failed">Не удалось сохранить заметку</string>
-    <string name="mo_settings_contribute">Внесите свой вклад в Moshidon</string>
-    <string name="mo_update_ready">Moshidon %s загружен и готов к установке.</string>
+    <string name="mo_settings_contribute">Внесите свой вклад в Seqular</string>
+    <string name="mo_update_ready">Seqular %s загружен и готов к установке.</string>
     <string name="mo_color_palette_nord">Север</string>
     <string name="mo_relocate_publish_button">Переместить кнопку публикации</string>
     <string name="mo_hide_compose_button_while_scrolling_setting">Скрыть кнопку создания во время прокрутки</string>
@@ -26,7 +26,7 @@
     <string name="mo_download_latest_nightly_release">Скачать последний ночной выпуск</string>
     <string name="mo_notification_management_settings">Управление уведомлениями</string>
     <string name="mo_welcome_text">Чтобы начать, пожалуйста, введите ниже доменное имя вашего инстанса Mastodon.</string>
-    <string name="mo_update_available">Moshidon %s готов к загрузке.</string>
+    <string name="mo_update_available">Seqular %s готов к загрузке.</string>
     <string name="mo_mention_reblogger_automatically">Автоматическое упоминание аккаунта, сделавшего реблог сообщения, в ответах</string>
     <string name="mo_no_image_desc_title">Отсутствует описание изображения</string>
     <string name="mo_confirm_unfollow_title">Отписаться от аккаунта</string>

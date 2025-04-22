@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.joinmastodon.android.ui.views.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<net.seqular.network.ui.views.CustomScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
 				android:alpha="0.6"
 				tools:text="@string/handle_title"/>
 
-			<org.joinmastodon.android.ui.views.RippleAnimationTextView
+			<net.seqular.network.ui.views.RippleAnimationTextView
 				android:id="@+id/handle"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -155,7 +155,7 @@
 
 		</RelativeLayout>
 
-		<org.joinmastodon.android.ui.views.LinkedTextView
+		<net.seqular.network.ui.views.LinkedTextView
 			android:id="@+id/handle_explanation"
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -184,4 +184,4 @@
 			android:text="@string/mo_instance_view_info"/>
 
 	</LinearLayout>
-</org.joinmastodon.android.ui.views.CustomScrollView>
+</net.seqular.network.ui.views.CustomScrollView>

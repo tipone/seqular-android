@@ -4,8 +4,8 @@
     <string name="mo_notification_audience_settings">Lucht Féachana Fógraí</string>
     <string name="mo_color_palette_nord">Nord</string>
     <string name="mo_color_palette_black_and_white">Dubh agus Bán</string>
-    <string name="mo_update_available">Tá Moshidon %s réidh le híoslódáil.</string>
-    <string name="mo_update_ready">Tá Moshidon %s íosluchtaithe agus réidh le suiteáil.</string>
+    <string name="mo_update_available">Tá Seqular %s réidh le híoslódáil.</string>
+    <string name="mo_update_ready">Tá Seqular %s íosluchtaithe agus réidh le suiteáil.</string>
     <string name="mo_fab_compose">Cum</string>
     <string name="mo_instance_admin">Arna riar ag</string>
     <string name="mo_instance_status">Stádas</string>
@@ -78,7 +78,7 @@
     <string name="mo_settings_unifiedpush_enable">Cumasaigh</string>
     <string name="import_settings_confirm">Deimhnigh na socruithe a iompórtáil?</string>
     <string name="mo_personal_note_update_failed">Theip ar shábháil an nóta</string>
-    <string name="mo_settings_contribute">Cur le Moshidon</string>
+    <string name="mo_settings_contribute">Cur le Seqular</string>
     <string name="mo_clear_recent_emoji">Glan emoji a úsáideadh le déanaí</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Díchumasaigh an cnaipe Foilsithe Athlonnaigh chun oiriúnú a cheadú</string>
     <string name="mo_muted_conversation_successfully">D\'éirigh le balbhú an chomhrá</string>

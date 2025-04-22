@@ -9,9 +9,9 @@
     <string name="mo_personal_note">添加关于此账户的备注</string>
     <string name="mo_personal_note_confirm">确认更改备注</string>
     <string name="mo_personal_note_update_failed">保存备注失败</string>
-    <string name="mo_settings_contribute">为Moshidon做出贡献</string>
-    <string name="mo_update_available">Moshidon %s 已准备好下载。</string>
-    <string name="mo_update_ready">Moshidon %s 已下载并准备安装。</string>
+    <string name="mo_settings_contribute">为Seqular做出贡献</string>
+    <string name="mo_update_available">Seqular %s 已准备好下载。</string>
+    <string name="mo_update_ready">Seqular %s 已下载并准备安装。</string>
     <string name="mo_no_image_desc_title">无图片描述</string>
     <string name="mo_no_image_desc">包含的图像没有描述。请考虑添加描述，以便让视障人士参与。</string>
     <string name="mo_clear_recent_emoji">清除最近使用的emoji</string>

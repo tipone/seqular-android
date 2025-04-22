@@ -8,9 +8,9 @@
     <string name="mo_personal_note">Adicionar nota sobre este perfil</string>
     <string name="mo_personal_note_confirm">Confirmar mudanças na nota</string>
     <string name="mo_personal_note_update_failed">Falha em salvar nota</string>
-    <string name="mo_settings_contribute">Contribua para o Moshidon</string>
-    <string name="mo_update_available">Moshidon %s está pronto para baixar.</string>
-    <string name="mo_update_ready">Moshidon %s está baixado e pronto para instalar.</string>
+    <string name="mo_settings_contribute">Contribua para o Seqular</string>
+    <string name="mo_update_available">Seqular %s está pronto para baixar.</string>
+    <string name="mo_update_ready">Seqular %s está baixado e pronto para instalar.</string>
     <string name="mo_no_image_desc_title">Nenhuma descrição de imagem</string>
     <string name="mo_no_image_desc">As imagens incluídas não possuem descrição. Por favor considere adicionar uma, para permitir que as pessoas visualmente deficientes participem.</string>
     <string name="mo_emoji_recent">Usado recentemente</string>
@@ -73,7 +73,7 @@
     <string name="mo_camera_not_available">Nenhuma camera disponível!</string>
     <string name="mo_color_palette_black_and_white">Preto e Branco</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrar ao interagir com publicações</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_settings_show_posts_without_alt_summary">Postagens serão escondidas nas linhas do tempo, mas podem ser reveladas em fios e notificações</string>
     <string name="mo_settings_show_posts_without_alt">Mostrar postagens de mídia sem texto de descrição</string>

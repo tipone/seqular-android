@@ -18,7 +18,7 @@
 			android:orientation="vertical"
 			android:clipChildren="false">
 
-			<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+			<net.seqular.network.ui.views.FloatingHintEditTextLayout
 				android:id="@+id/display_name_wrap"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -51,9 +51,9 @@
 					android:backgroundTint="?colorM3OnSurfaceVariant"
 					android:background="@drawable/ic_fluent_person_24_regular"/>
 
-			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+			</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
-			<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+			<net.seqular.network.ui.views.FloatingHintEditTextLayout
 				android:id="@+id/username_wrap"
 				android:layout_width="match_parent"
 				android:layout_height="80dp"
@@ -91,9 +91,9 @@
 					android:textColor="?colorM3OnSurface"
 					tools:text="\@mastodon.social"/>
 
-			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+			</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
-			<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+			<net.seqular.network.ui.views.FloatingHintEditTextLayout
 				android:id="@+id/email_wrap"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -126,9 +126,9 @@
 					android:backgroundTint="?colorM3OnSurfaceVariant"
 					android:background="@drawable/ic_fluent_mail_24_regular"/>
 
-			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+			</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
-			<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+			<net.seqular.network.ui.views.FloatingHintEditTextLayout
 				android:id="@+id/password_wrap"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -162,9 +162,9 @@
 					android:backgroundTint="?colorM3OnSurfaceVariant"
 					android:background="@drawable/ic_fluent_password_24_regular"/>
 
-			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+			</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
-			<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+			<net.seqular.network.ui.views.FloatingHintEditTextLayout
 				android:id="@+id/password_confirm_wrap"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -189,7 +189,7 @@
 					android:fontFamily="sans-serif"
 					android:hint="@string/confirm_password"/>
 
-			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+			</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
 			<TextView
 				android:layout_width="match_parent"
@@ -204,7 +204,7 @@
 				android:text="@string/password_note"/>
 
 
-			<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+			<net.seqular.network.ui.views.FloatingHintEditTextLayout
 				android:id="@+id/reason_wrap"
 				android:layout_width="match_parent"
 				android:layout_height="wrap_content"
@@ -227,7 +227,7 @@
 					android:inputType="textCapSentences|textMultiLine"
 					android:hint="@string/signup_reason"/>
 
-			</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+			</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
 			<TextView
 				android:id="@+id/reason_explain"

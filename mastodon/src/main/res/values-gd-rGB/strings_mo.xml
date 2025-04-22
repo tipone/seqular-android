@@ -49,9 +49,9 @@
     <string name="mo_personal_note">Cuir nòta ris mun phròifil seo</string>
     <string name="mo_personal_note_confirm">Dearbh an t-atharrachadh air an nòta</string>
     <string name="mo_personal_note_update_failed">Dh’fhàillig le sàbhaladh an nòta</string>
-    <string name="mo_settings_contribute">Cuidich le leasachadh Moshidon</string>
-    <string name="mo_update_available">Tha Moshidon %s deiseil ri luchdadh a-nuas.</string>
-    <string name="mo_update_ready">Chaidh Moshidon %s a luchdadh a-nuas is tha e deiseil ri stàladh.</string>
+    <string name="mo_settings_contribute">Cuidich le leasachadh Seqular</string>
+    <string name="mo_update_available">Tha Seqular %s deiseil ri luchdadh a-nuas.</string>
+    <string name="mo_update_ready">Chaidh Seqular %s a luchdadh a-nuas is tha e deiseil ri stàladh.</string>
     <string name="mo_no_image_desc_title">Chan eil tuairisgeul aig an deilbh</string>
     <string name="mo_no_image_desc">Chan eil tuairisgeul aig na dealbhan a ghabh thu a-staigh. Saoil an cuir thu fear ris ach an urrainn dhan fheadhainn air a bheil cion-lèirsinne pàirt a ghabhail\?</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Cuir à comas “Cuir putan an fhoillseachaidh am badeigin eile” airson gnàthachadh</string>

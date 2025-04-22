@@ -106,7 +106,7 @@
 		android:layout_marginTop="16dp"
 		android:layout_marginEnd="12dp" />
 
-	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+	<net.seqular.network.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/name_wrap"
 		app:firstFraction="60%"
 		android:layout_width="match_parent"
@@ -139,9 +139,9 @@
 			android:textColor="?colorM3OnSurface"
 			tools:text="boosted your cat picture" />
 
-	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+	</net.seqular.network.ui.views.HeaderSubtitleLinearLayout>
 
-	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+	<net.seqular.network.ui.views.HeaderSubtitleLinearLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:id="@+id/time_and_username"
@@ -197,6 +197,6 @@
 			android:textColor="?colorM3OnSurfaceVariant"
 			tools:text="9h ago"/>
 
-	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+	</net.seqular.network.ui.views.HeaderSubtitleLinearLayout>
 
 </RelativeLayout>

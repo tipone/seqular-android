@@ -1,8 +1,27 @@
-# ![MoshidonLogo](mastodon/src/main/res/mipmap-xhdpi/ic_launcher_round.png) Moshidon, the material you mastodon client!
+![SeqularLogo](http://seqular.net/images/seqular-logo.png) 
+# A Social Network without Place or Nation.
 
+### Seqular is a friendly fork from [moshidon](https://github.com/LucasGGamerM/moshidon) project.
 
-> A fast, highly customizable, up-to-date fork of [megalodon](https://github.com/sk22/megalodon) adding important features such as a fully federated timeline, unlisted posting, drafts, scheduled posts, bookmarks, and alt text warnings. 
+> A fast, highly customizable, up-to-date fork of [moshidon](https://github.com/LucasGGamerM/moshidon) adding important features such as a fully federated timeline, unlisted posting, drafts, scheduled posts, bookmarks, and alt text warnings.
 
+## If you want to Donate Mohshidon Project(Not Secular.net!!!) you can use the link below
+
+<a href="https://github.com/sponsors/LucasGGamerM">Github Sponsors</a> | <a href="https://liberapay.com/LucasGGamerM/donate">Liberapay</a> | Monero Wallet Key: `4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j`
+
+# Welcome to the Open Source Planet, Earthling!!
+If you are tired of worthless content, bot accounts and algorithms that always treat you unfairly on conventional social media, you are in the right place.
+
+# [Log in](https://network.seqular.net/auth/sign_in)
+
+If you don't have an account yet, visit our [sign up](https://network.seqular.net/auth/sign_up) page.
+## What is Seqular?
+
+* [Seqular](https://seqular.net) is a social networking platform based in Turkey.
+* Seqular is the best social network to publish and promote your own business, products, art or music!!
+* Seqular is completely open source.
+* No spam, junk content, ads, bots or biased algorithms.
+* No fees! Seqular is completely free. And always will be. No trap accounts like Enterprise, Premium, Official!
 
 ## Download Now
 
@@ -10,9 +29,6 @@
 
 [![GitHub Release Download](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk) [![Translation status](https://translate.codeberg.org/widgets/moshidon/-/svg-badge.svg)](https://translate.codeberg.org/engage/moshidon/) [![GitHub Nightly Download](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20Nightly%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon-nightly/releases/latest/download/moshidon-nightly.apk) [![GitHub Nightly Build Download](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml) 
 
-## Donate
-
-<a href="https://github.com/sponsors/LucasGGamerM">Github Sponsors</a> | <a href="https://liberapay.com/LucasGGamerM/donate">Liberapay</a> | Monero Wallet Key: `4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j`
 
 ## Key Features
 
@@ -97,11 +113,14 @@ As this app is using Java 17 features, you need JDK 17 or newer to build it. Oth
 
 This project is released under the [GPL-3 License](./LICENSE).
 
-## Contact & Support
 
-**<a rel="me" href="https://floss.social/@moshidon">@moshidon@floss.social</a>**
+| Contact & Support |
+| ----- | 
+|[Seqular Network](https://seqular.net) is a social network project based in Türkiye.|
+|You can get support from [destek](mailto:destek@seqular.net) e-mail adress.|
+|You can follow us at [Seqular Official Account](https://network.seqular.net/@destek). [Seqular](http://seqular.net)(mastodon) account.|
+|Owner: [Knixus Technologies](https://network.seqular.net/@knixus)|
 
-[Official Matrix Chatroom](https://matrix.to/#/#moshidon:floss.social) 
 
 [F.A.Q](FAQ.md)
 

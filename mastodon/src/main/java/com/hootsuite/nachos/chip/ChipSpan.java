@@ -15,7 +15,7 @@ import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import org.joinmastodon.android.R;
+import net.seqular.network.R;
 
 /**
  * A Span that displays text and an optional icon inside of a material design chip. The chip's dimensions, colors etc. can be extensively customized

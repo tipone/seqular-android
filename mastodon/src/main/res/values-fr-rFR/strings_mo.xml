@@ -20,9 +20,9 @@
     <string name="mo_welcome_text">Pour commencer, veuillez saisir le nom de domaine de votre instance ci-dessous.</string>
     <string name="mo_personal_note">Ajouter une note à propos de ce profil</string>
     <string name="mo_personal_note_confirm">Confirmer les modifications de la note</string>
-    <string name="mo_settings_contribute">Contribuer à Moshidon</string>
-    <string name="mo_update_available">Moshidon %s est prêt à télécharger.</string>
-    <string name="mo_update_ready">Moshidon %s est téléchargé et est prêt à être installé.</string>
+    <string name="mo_settings_contribute">Contribuer à Seqular</string>
+    <string name="mo_update_available">Seqular %s est prêt à télécharger.</string>
+    <string name="mo_update_ready">Seqular %s est téléchargé et est prêt à être installé.</string>
     <string name="mo_no_image_desc_title">Aucune description de l\'image</string>
     <string name="mo_emoji_recent">Utilisé récemment</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Désactiver « Déplacer le bouton publier » pour permettre la personnalisation</string>
@@ -56,7 +56,7 @@
     <string name="mo_setting_reduced_motion_summary">Désactiver les animations des interactions</string>
     <string name="mo_load_remote_followers">Charger les abonné·e·s et les abonnements distant·e·s</string>
     <string name="mo_severity_suspend">Bloqué·e</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_setting_play_gif_summary">Animer les émojis et les GIFs des avatars</string>
     <string name="mo_setting_haptic_feedback_summary">Vibrer lors de l’interaction avec les publications</string>

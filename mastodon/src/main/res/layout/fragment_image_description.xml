@@ -11,7 +11,7 @@
 		android:layout_height="0dp"
 		android:layout_weight="1">
 
-		<org.joinmastodon.android.ui.views.MaxWidthFrameLayout
+		<net.seqular.network.ui.views.MaxWidthFrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_gravity="center_horizontal"
@@ -25,7 +25,7 @@
 				android:importantForAccessibility="no"
 				tools:src="#0f0"/>
 
-		</org.joinmastodon.android.ui.views.MaxWidthFrameLayout>
+		</net.seqular.network.ui.views.MaxWidthFrameLayout>
 
 	</ScrollView>
 
@@ -35,7 +35,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content">
 
-		<org.joinmastodon.android.ui.views.FloatingHintEditTextLayout
+		<net.seqular.network.ui.views.FloatingHintEditTextLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
 			android:layout_marginTop="16dp"
@@ -60,7 +60,7 @@
 				android:gravity="top"
 				android:hint="@string/alt_text"/>
 
-		</org.joinmastodon.android.ui.views.FloatingHintEditTextLayout>
+		</net.seqular.network.ui.views.FloatingHintEditTextLayout>
 
 	</LinearLayout>
 

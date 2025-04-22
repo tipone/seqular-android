@@ -11,13 +11,14 @@ java {
 android {
 	compileSdk 33
 	defaultConfig {
-		manifestPlaceholders = [oAuthScheme:"moshidon-android-auth"]
-		archivesBaseName = "moshidon"
-		applicationId "org.joinmastodon.android.moshinda"
+		manifestPlaceholders = [oAuthScheme:"seqular-android-auth"]
+		archivesBaseName = "seqular"
+		applicationId 'net.seqular.network'
 		minSdk 23
 		targetSdk 34
-		versionCode 108
-		versionName "2.3.0+fork.108.moshinda"
+		versionCode 109
+		versionName "2.3.1+fork.109.sqfirstly"
+		setProperty("archivesBaseName", archivesBaseName + "-" + versionName)
 		testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         resourceConfigurations += ['ar-rSA', 'ar-rDZ', 'be-rBY', 'bn-rBD', 'bs-rBA', 'ca-rES', 'cs-rCZ', 'da-rDK', 'de-rDE', 'el-rGR', 'es-rES', 'eu-rES', 'fa-rIR', 'fi-rFI', 'fil-rPH', 'fr-rFR', 'ga-rIE', 'gd-rGB', 'gl-rES', 'hi-rIN', 'hr-rHR', 'hu-rHU', 'hy-rAM', 'ig-rNG', 'in-rID', 'is-rIS', 'it-rIT', 'iw-rIL', 'ja-rJP', 'kab', 'ko-rKR', 'my-rMM', 'nl-rNL', 'no-rNO', 'oc-rFR', 'pl-rPL', 'pt-rBR', 'pt-rPT', 'ro-rRO', 'ru-rRU', 'si-rLK', 'sl-rSI', 'sv-rSE', 'th-rTH', 'tr-rTR', 'uk-rUA', 'ur-rIN', 'vi-rVN', 'zh-rCN', 'zh-rTW']
     }
@@ -31,7 +32,29 @@ android {
 
 	signingConfigs {
 		nightly{
-			storeFile = file("keystore/nightly_keystore.jks")
+			storeFile = file("/home/kansu/seqular-key-store")
+			storePassword System.getenv("SIGNING_STORE_PASSWORD")
+			if (storePassword == null) {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				storePassword = properties.getProperty('SIGNING_STORE_PASSWORD')
+			}
+			keyAlias System.getenv("SIGNING_KEY_ALIAS")
+			if (keyAlias == null) {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				keyAlias = properties.getProperty('SIGNING_KEY_ALIAS')
+			}
+			keyPassword System.getenv("SIGNING_KEY_PASSWORD")
+			if (keyPassword == null) {
+				Properties properties = new Properties()
+				properties.load(project.rootProject.file('local.properties').newDataInputStream())
+				keyPassword = properties.getProperty('SIGNING_KEY_PASSWORD')
+			}
+		}
+
+		release{
+			storeFile file('/home/kansu/seqular-key-store')
 			storePassword System.getenv("SIGNING_STORE_PASSWORD")
 			if (storePassword == null) {
 				Properties properties = new Properties()
@@ -80,12 +103,13 @@ android {
 			minifyEnabled true
 			shrinkResources true
 			proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+			signingConfig signingConfigs.release
 		}
 		debug{
 			debuggable true
 			versionNameSuffix '-debug'
 			applicationIdSuffix '.debug'
-			manifestPlaceholders = [oAuthScheme:"moshidon-android-debug-auth"]
+			manifestPlaceholders = [oAuthScheme:"seqular-android-debug-auth"]
 		}
 		githubRelease{
 			initWith release
@@ -101,7 +125,7 @@ android {
 			applicationIdSuffix '.nightly'
 
 			signingConfig signingConfigs.nightly
-			manifestPlaceholders = [oAuthScheme:"moshidon-android-nightly-auth"]
+			manifestPlaceholders = [oAuthScheme:"seqular-android-nightly-auth"]
 		}
 		playRelease{
 			initWith release
@@ -134,7 +158,7 @@ android {
 			setRoot "src/debug"
 		}
 	}
-	namespace 'org.joinmastodon.android'
+	namespace 'net.seqular.network'
 	lint {
 		abortOnError false
 		checkReleaseBuilds false

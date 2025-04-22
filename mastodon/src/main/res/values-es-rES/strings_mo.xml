@@ -8,8 +8,8 @@
     <string name="mo_personal_note">Añade una nota privada sobre el perfil</string>
     <string name="mo_personal_note_confirm">Confirmar cambios en la nota</string>
     <string name="mo_personal_note_update_failed">Fallo al guardar la nota</string>
-    <string name="mo_update_available">Moshidon %s se puede descargar.</string>
-    <string name="mo_update_ready">Moshidon %s se ha descargado y se puede instalar.</string>
+    <string name="mo_update_available">Seqular %s se puede descargar.</string>
+    <string name="mo_update_ready">Seqular %s se ha descargado y se puede instalar.</string>
     <string name="mo_no_image_desc_title">Sin descripción de imagen</string>
     <string name="mo_emoji_recent">Usados recientemente</string>
     <string name="mo_clear_recent_emoji">Borrar emojis usados recientemente</string>
@@ -17,7 +17,7 @@
     <string name="mo_poll_option_add">Añadir nueva opción en la encuesta</string>
     <string name="mo_fab_compose">Redactar</string>
     <string name="mo_sending_error">Error al publicar</string>
-    <string name="mo_settings_contribute">Contribuir en Moshidon</string>
+    <string name="mo_settings_contribute">Contribuir en Seqular</string>
     <string name="mo_no_image_desc">Las imágenes incluidas no tienen descripción. Por favor, piénsate añadir una para permitir a las personas con discapacidad participar.</string>
     <string name="mo_filtered">Filtrado: %s</string>
     <string name="mo_disable_reminder_to_add_alt_text">Desactivar recordatorio para añadir descripción</string>
@@ -76,7 +76,7 @@
     <string name="mo_color_palette_black_and_white">Blanco y Negro</string>
     <string name="mo_donate_url">https://github.com/sponsors/LucasGGamerM</string>
     <string name="mo_settings_show_posts_without_alt">Mostrar las publicaciones con multimedia que carece de un texto alternativo</string>
-    <string name="mo_repo_url">https://github.com/LucasGGamerM/moshidon</string>
+    <string name="mo_repo_url">https://github.com/LucasGGamerM/seqular</string>
     <string name="mo_settings_show_posts_without_alt_summary">Las publicaciones estarán ocultas en todas las cronologías, pero se pueden mostrar en los hilos y las notificaciones</string>
     <string name="mo_show_media_preview">Mostrar previsualización de multimedia en la cronología</string>
     <string name="mo_recent_emoji_cleared">Emojis recientes eliminados</string>

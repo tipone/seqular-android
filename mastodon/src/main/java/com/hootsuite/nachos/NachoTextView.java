@@ -43,7 +43,7 @@ import com.hootsuite.nachos.validator.ChipifyingNachoValidator;
 import com.hootsuite.nachos.validator.IllegalCharacterIdentifier;
 import com.hootsuite.nachos.validator.NachoValidator;
 
-import org.joinmastodon.android.R;
+import net.seqular.network.R;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -36,7 +36,7 @@
 				android:src="@drawable/ic_fluent_add_24_filled" />
 		</FrameLayout>
 
-		<org.joinmastodon.android.ui.views.EmojiReactionsRecyclerView
+		<net.seqular.network.ui.views.EmojiReactionsRecyclerView
 			android:id="@+id/list"
 			android:layout_width="0dp"
 			android:layout_weight="1"

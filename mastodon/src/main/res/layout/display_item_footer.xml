@@ -5,7 +5,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content">
 
-	<org.joinmastodon.android.ui.views.MaxWidthFrameLayout
+	<net.seqular.network.ui.views.MaxWidthFrameLayout
 		android:maxWidth="600sp"
 		app:defaultWidth="450sp"
 		android:layout_width="match_parent"
@@ -188,6 +188,6 @@
 
 		</GridLayout>
 
-	</org.joinmastodon.android.ui.views.MaxWidthFrameLayout>
+	</net.seqular.network.ui.views.MaxWidthFrameLayout>
 
 </FrameLayout>

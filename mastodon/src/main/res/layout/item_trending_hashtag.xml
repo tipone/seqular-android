@@ -7,7 +7,7 @@
 	android:paddingRight="16dp"
 	android:paddingTop="14dp">
 
-	<org.joinmastodon.android.ui.views.HashtagChartView
+	<net.seqular.network.ui.views.HashtagChartView
 		android:id="@+id/chart"
 		android:layout_width="66dp"
 		android:layout_height="36dp"

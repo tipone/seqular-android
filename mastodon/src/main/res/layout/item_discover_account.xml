@@ -43,7 +43,7 @@
 	</FrameLayout>
 
 
-	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+	<net.seqular.network.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/name_wrap"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -89,7 +89,7 @@
 			android:textColor="?colorM3OnSurface"
 			tools:text="boosted your cat picture" />
 
-	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+	</net.seqular.network.ui.views.HeaderSubtitleLinearLayout>
 
 	<TextView
 		android:id="@+id/username"
@@ -123,7 +123,7 @@
 		android:layout_below="@id/bio"
 		android:orientation="horizontal">
 
-		<org.joinmastodon.android.ui.views.AutoOrientationLinearLayout
+		<net.seqular.network.ui.views.AutoOrientationLinearLayout
 			android:layout_width="0dp"
 			android:layout_weight="1"
 			android:layout_height="wrap_content"
@@ -239,7 +239,7 @@
 
 			</LinearLayout>
 
-		</org.joinmastodon.android.ui.views.AutoOrientationLinearLayout>
+		</net.seqular.network.ui.views.AutoOrientationLinearLayout>
 
 		<FrameLayout
 			android:id="@+id/reject_btn_wrap"
@@ -252,7 +252,7 @@
 			android:paddingBottom="10dp"
 			android:visibility="gone">
 
-			<org.joinmastodon.android.ui.views.ProgressBarButton
+			<net.seqular.network.ui.views.ProgressBarButton
 				android:id="@+id/reject_btn"
 				style="@style/Widget.Mastodon.M3.Button.Text"
 				android:layout_width="wrap_content"
@@ -289,7 +289,7 @@
 			android:paddingBottom="10dp"
 			android:visibility="gone">
 
-			<org.joinmastodon.android.ui.views.ProgressBarButton
+			<net.seqular.network.ui.views.ProgressBarButton
 				android:id="@+id/accept_btn"
 				style="@style/Widget.Mastodon.M3.Button.Filled"
 				android:layout_width="wrap_content"
@@ -325,7 +325,7 @@
 			android:paddingBottom="10dp"
 			android:clipToPadding="false">
 
-			<org.joinmastodon.android.ui.views.ProgressBarButton
+			<net.seqular.network.ui.views.ProgressBarButton
 				android:id="@+id/action_btn"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"

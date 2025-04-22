@@ -1,4 +1,4 @@
-package org.joinmastodon.android.updater;
+package net.seqular.network.updater;
 
 import android.app.Activity;
 import android.app.DownloadManager;
@@ -19,13 +19,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import org.joinmastodon.android.BuildConfig;
-import org.joinmastodon.android.E;
-import org.joinmastodon.android.GlobalUserPreferences;
-import org.joinmastodon.android.MastodonApp;
-import org.joinmastodon.android.R;
-import org.joinmastodon.android.api.MastodonAPIController;
-import org.joinmastodon.android.events.SelfUpdateStateChangedEvent;
+import net.seqular.network.BuildConfig;
+import net.seqular.network.E;
+import net.seqular.network.GlobalUserPreferences;
+import net.seqular.network.MastodonApp;
+import net.seqular.network.R;
+import net.seqular.network.api.MastodonAPIController;
+import net.seqular.network.events.SelfUpdateStateChangedEvent;
 
 import java.io.File;
 import java.time.Instant;
@@ -115,7 +115,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 
 	private void actuallyCheckForUpdates(){
 		Request req=new Request.Builder()
-				.url("https://api.github.com/repos/LucasGGamerM/moshidon/releases")
+				.url("https://api.github.com/repos/LucasGGamerM/seqular/releases")
 				.build();
 		Call call=MastodonAPIController.getHttpClient().newCall(req);
 		try(Response resp=call.execute()){
@@ -154,7 +154,7 @@ public class GithubSelfUpdaterImpl extends GithubSelfUpdater{
 					Log.d(TAG, "actuallyCheckForUpdates: new version: "+version);
 					for(JsonElement el:obj.getAsJsonArray("assets")){
 						JsonObject asset=el.getAsJsonObject();
-						if("moshidon.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
+						if("seqular.apk".equals(asset.get("name").getAsString()) && "application/vnd.android.package-archive".equals(asset.get("content_type").getAsString()) && "uploaded".equals(asset.get("state").getAsString())){
 							long size=asset.get("size").getAsLong();
 							String url=asset.get("browser_download_url").getAsString();
 

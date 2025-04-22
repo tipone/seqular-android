@@ -19,5 +19,5 @@ dependencyResolutionManagement {
 		}
 	}
 }
-rootProject.name = "Moshidon"
+rootProject.name = "Seqular Network"
 include ':mastodon'

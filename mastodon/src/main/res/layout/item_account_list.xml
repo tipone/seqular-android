@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<org.joinmastodon.android.ui.views.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<net.seqular.network.ui.views.CheckableRelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="wrap_content"
@@ -15,7 +15,7 @@
 		android:importantForAccessibility="no"
 		tools:src="#0f0"/>
 
-	<org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout
+	<net.seqular.network.ui.views.HeaderSubtitleLinearLayout
 		android:id="@+id/line1"
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -62,7 +62,7 @@
 			android:tint="?colorM3Secondary"
 			android:src="@drawable/ic_fluent_bot_16_filled" />
 
-	</org.joinmastodon.android.ui.views.HeaderSubtitleLinearLayout>
+	</net.seqular.network.ui.views.HeaderSubtitleLinearLayout>
 
 	<LinearLayout
 		android:id="@+id/line2"
@@ -108,7 +108,7 @@
 		android:layout_marginStart="12dp"
 		android:layout_marginEnd="16dp">
 
-		<org.joinmastodon.android.ui.views.ProgressBarButton
+		<net.seqular.network.ui.views.ProgressBarButton
 			android:id="@+id/button"
 			android:layout_width="wrap_content"
 			android:layout_height="48dp"
@@ -173,4 +173,4 @@
 		android:layout_alignParentLeft="true"
 		android:layout_marginLeft="-16dp"/>
 
-</org.joinmastodon.android.ui.views.CheckableRelativeLayout>
+</net.seqular.network.ui.views.CheckableRelativeLayout>
