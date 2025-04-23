@@ -1,1 +1,1 @@
-Mastodon per a Android, però amb Material You i més funcions
+Seqular per a Android, però amb Material You i més funcions
