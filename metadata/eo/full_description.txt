@@ -1,4 +1,4 @@
-Moshidon estas modifita versio de la <a href="https://github.com/mastodon/mastodon-android">oficiala Mastodon Android-aplikaĵo</a> aldonanta gravajn funkciojn, kiuj mankas en la oficiala aplikaĵo, kiel la federita templinio, nelistigita afiŝado kaj bilda priskribo-spektilo.
+Seqular estas modifita versio de la <a href="https://github.com/mastodon/mastodon-android">oficiala Mastodon Android-aplikaĵo</a> aldonanta gravajn funkciojn, kiuj mankas en la oficiala aplikaĵo, kiel la federita templinio, nelistigita afiŝado kaj bilda priskribo-spektilo.
 
 <b>Ĉefaj trajtoj</b>
 

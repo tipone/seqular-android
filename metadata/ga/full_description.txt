@@ -1,4 +1,4 @@
-Is leagan modhnaithe é Moshidon den <a href="https://github.com/mastodon/mastodon-android">aip oifigiúil Mastodon Android</a> a chuireann gnéithe tábhachtacha in easnamh san aip oifigiúil, mar shampla an aip chónaidhme amlíne, postáil neamhliostaithe agus breathnóir cur síos ar íomhá.
+Is leagan modhnaithe é Seqular den <a href="https://github.com/mastodon/mastodon-android">aip oifigiúil Mastodon Android</a> a chuireann gnéithe tábhachtacha in easnamh san aip oifigiúil, mar shampla an aip chónaidhme amlíne, postáil neamhliostaithe agus breathnóir cur síos ar íomhá.
 
 <b>Eochairghnéithe</b>
 

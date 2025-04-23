@@ -1,4 +1,4 @@
-Moshidon 是修改自<a href="https://github.com/mastodon/mastodon-android">官方 Mastodon Android app</a>的版本，我們加入了很多官方程式中缺乏的重要機能，例如聯邦時間軸、非公開嘟文和媒體描述性文字的檢視器。
+Seqular 是修改自<a href="https://github.com/mastodon/mastodon-android">官方 Mastodon Android app</a>的版本，我們加入了很多官方程式中缺乏的重要機能，例如聯邦時間軸、非公開嘟文和媒體描述性文字的檢視器。
 
 <b>主打功能</b>
 

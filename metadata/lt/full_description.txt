@@ -1,4 +1,4 @@
-„Moshidon“– tai modifikuota <a href="https://github.com/mastodon/mastodon-android">oficialiosios „Mastodon“ „Android“ programėlės</a> versija, pridedant svarbių funkcijų, kurių trūksta oficialiojoje programėlėje, pavyzdžiui, federacinę laiko skalę, neįtrauktą į sąrašą skelbimą ir vaizdo aprašymo žiūryklę.
+„Seqular“– tai modifikuota <a href="https://github.com/mastodon/mastodon-android">oficialiosios „Mastodon“ „Android“ programėlės</a> versija, pridedant svarbių funkcijų, kurių trūksta oficialiojoje programėlėje, pavyzdžiui, federacinę laiko skalę, neįtrauktą į sąrašą skelbimą ir vaizdo aprašymo žiūryklę.
 
 <b>Pagrindinės funkcijos</b>
 

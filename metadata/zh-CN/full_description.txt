@@ -1,4 +1,4 @@
-Moshidon 是<a href="https://github.com/mastodon/mastodon-android">官方 Mastodon Android 应用</a>的修改版本，添加了官方应用中缺少的重要功能，例如跨站时间线、不公开发帖和图像描述查看器。
+Seqular 是<a href="https://github.com/mastodon/mastodon-android">官方 Mastodon Android 应用</a>的修改版本，添加了官方应用中缺少的重要功能，例如跨站时间线、不公开发帖和图像描述查看器。
 
 <b>主要特点</b>
 

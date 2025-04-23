@@ -13,4 +13,4 @@ Megalodon este o versiune modificată a <a href="https://github.com/mastodon/mas
 - <b>Selector de limbă</b>: Selectați fără durere limbajul pentru fiecare postare pe care o faceți, astfel încât filtrele și traducerea să funcționeze corect.
 - <b>Traducere</b>: Traduceți cu ușurință postările chiar în Megalodon! Funcționează numai dacă funcția este disponibilă și pe versiunea web al dvs. de Mastodon.
 - <b>Indicator de vizibilitate a postului</b>: Când deschideți sau răspundeți la o postare, va fi afișată o pictogramă la îndemână care indică vizibilitatea postării.
-- <b>Teme de culoare</b>: În cazul în care nu vă place culoarea implicită roz (rechinul vă judecă în tăcere), temele de culoare ale lui Moshidon vă acoperă!
+- <b>Teme de culoare</b>: În cazul în care nu vă place culoarea implicită roz (rechinul vă judecă în tăcere), temele de culoare ale lui Seqular vă acoperă!

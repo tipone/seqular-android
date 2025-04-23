@@ -1,4 +1,4 @@
-Seqular ist eine veränderte Version der <a href="https://github.com/LucasGGamerM/moshidon">Moshidon-Android-App</a>, die wichtige Funktionen ergänzt, die in der offiziellen App fehlen, wie z. B. eine föderierte Timeline, ungelistetes Veröffentlichen und die Möglichkeit Bildbeschreibungen zu sehen.
+Seqular ist eine veränderte Version der <a href="https://github.com/LucasGGamerM/moshidon">Moshidon-Andorid-App</a>, die wichtige Funktionen ergänzt, die in der offiziellen App fehlen, wie z. B. eine föderierte Timeline, ungelistetes Veröffentlichen und die Möglichkeit Bildbeschreibungen zu sehen.
 
 <b>Wichtigste Funktionen</b>
 

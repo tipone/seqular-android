@@ -1,4 +1,4 @@
-Moshidon är en modifierad version av den <a href="https://github.com/mastodon/mastodon-android">officiella Mastodon Android-appen</a> som lägger till viktiga funktioner som saknas i den officiella appen, till exempel den federerade appen tidslinje, olistat inlägg och en bildbeskrivningsvisare.
+Seqular är en modifierad version av den <a href="https://github.com/mastodon/mastodon-android">officiella Mastodon Android-appen</a> som lägger till viktiga funktioner som saknas i den officiella appen, till exempel den federerade appen tidslinje, olistat inlägg och en bildbeskrivningsvisare.
 
 <b>Nyckelfunktioner</b>
 

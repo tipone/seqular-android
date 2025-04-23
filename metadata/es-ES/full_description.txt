@@ -1,4 +1,4 @@
-Moshidon es una versión modificada de la <a href="https://github.com/mastodon/mastodon-android">aplicación oficial de Mastodon para Android</a>, que agrega características importantes que faltan en la aplicación oficial, como una línea de tiempo conjunta , no Publicación pública y visor de descripción de imágenes.
+Seqular es una versión modificada de la <a href="https://github.com/mastodon/mastodon-android">aplicación oficial de Mastodon para Android</a>, que agrega características importantes que faltan en la aplicación oficial, como una línea de tiempo conjunta , no Publicación pública y visor de descripción de imágenes.
 
 <b>Características clave</b>
 
