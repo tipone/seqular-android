@@ -1,6 +1,0 @@
-- Sprachauswahl hinzugefügt
-- Übersetz-Funktion hinzugefügt
-- Semantik bei Umfragen verbessert (Radio-Buttons, Checkboxen)
-- Mehrfachauswahl als Option bei Umfragen
-- Neuer Anmelde-Bildschirm
-- Fehlerbehebungen

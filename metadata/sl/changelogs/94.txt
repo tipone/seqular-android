@@ -1,8 +1,0 @@
-- Izboljšan, jasnejši pogled tem
-- Odprite račune/objave z deljenjem spletne strani z Megalodonom
-- Naloži sezname sledilcev/priljubljenih/… iz originalne instance
-- Izboljšave združljivosti za strežnike, ki niso Mastodon-ovi
-- Možnost nastavitve vrste vsebine objave
-- Podpora za kopiranje URL-jev iz "nedavnih aplikacij" v napravah Pixel
-- Samodejno razkrij enake CW-je v temah
-- Popravki napak in izboljšave uporabniškega vmesnika

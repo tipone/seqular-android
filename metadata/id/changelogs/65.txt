@@ -1,6 +1,6 @@
 - Draf dan posting terjadwal
 - Tampilkan postingan asli saat membalas
-- Filter yang kompatibel dengan Mastodon 4.0 (belum ada fungsi "sembunyikan dengan peringatan")
+- Filter yang kompatibel dengan Moshidon 4.0 (belum ada fungsi "sembunyikan dengan peringatan")
 - Klik panjang untuk berinteraksi dengan postingan (balas, tingkatkan, sukai, bookmark) dari akun lain yang masuk
 - Ikon di semua menu
 - Beralih untuk meneruskan laporan

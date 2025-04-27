@@ -1,4 +1,0 @@
-New things for release 92:
-- Better filters
-- New profile page layout
-- A bunch of minor tweaks and improvements

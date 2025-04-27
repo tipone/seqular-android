@@ -1,5 +1,0 @@
-- Curtir/marcar/responder diretamente na aba de notificação
-- Cabeçalhos mais bonitos e consistentes para reblogs e respostas na linha do tempo
-- Ponto de notificação (que ainda não carrega as notificações)
-- Para usuários do Akkoma: Visibilidade de resposta, respostas de tópicos classificados, citações, …
-- Correções de falhas e pequenos ajustes

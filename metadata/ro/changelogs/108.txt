@@ -1,6 +1,0 @@
-- În sfârșit: Mult-așteptatul re-design UI Material 3!
-- Spatiile din cronologia acasă iți oferă alegerea de a încărca date mai vechi sau mai noi
-- Pentru anunțuri server și utilizatori Akkoma: Reacții emoji!
-- Emoji recent utilizat în emoji picker
-- Pronumele sunt acum vizibile lângă numele utilizatorilor
-- Multe greșeli reparate și greșeli noi pe care să le descoperi ✨

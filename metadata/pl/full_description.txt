@@ -1,4 +1,4 @@
-Seqular jest zmodyfikowaną wersją <a href="https://github.com/mastodon/mastodon-android">oficjalnej aplikacji Mastodon Android</a>, która dodaje brakujące w niej funkcje, takie jak federacyjna oś czasu, publikowanie w trybie ukrytym, a także wyświetlanie opisów obrazków.
+Seqular jest zmodyfikowaną wersją <a href="https://github.com/LucasGGamerM/moshidon">oficjalnej aplikacji Moshidon Android</a>, która dodaje brakujące w niej funkcje, takie jak federacyjna oś czasu, publikowanie w trybie ukrytym, a także wyświetlanie opisów obrazków.
 
 <b>Główne funkcje</b>
 

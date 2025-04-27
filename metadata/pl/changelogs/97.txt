@@ -1,3 +1,0 @@
-Wydanie 97 dodaje:
-- Nowa funkcja własnych, lokalnych osi czasu. Jest ona dostępna w menu dodawania osi czasu.
-- Drobne poprawki i ulepszenia

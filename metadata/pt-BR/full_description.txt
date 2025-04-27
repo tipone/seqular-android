@@ -1,4 +1,4 @@
-Seqular é uma versão modificada do <a href="https://github.com/mastodon/mastodon-android">aplicativo Android oficial do Mastodon</a> adicionando recursos importantes que estão faltando no aplicativo oficial, como o federado linha do tempo, postagem não listada e um visualizador de descrição de imagem.
+Seqular é uma versão modificada do <a href="https://github.com/LucasGGamerM/moshidon">aplicativo Android oficial do Moshidon</a> adicionando recursos importantes que estão faltando no aplicativo oficial, como o federado linha do tempo, postagem não listada e um visualizador de descrição de imagem.
 
 <b>Principais recursos</b>
 

@@ -1,4 +1,0 @@
-Neue Dinge für Version 92:
-- Bessere Filter
-- Neues Layout der Profilseite
-- Eine Reihe kleinerer Optimierungen und Verbesserungen

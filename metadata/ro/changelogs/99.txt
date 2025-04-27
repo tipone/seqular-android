@@ -1,6 +1,0 @@
-Lucruri noi pentru versiunea 99:
-- Adăugare acțiuni de notificare
-- Adăugare opțiune pentru a activa răspunsurile nelistate în mod implicit
-- Adăugare cronometru amuțire
-- Adăugare ecuson de notificare dacă există notificări necitite
-- Rezolvarea problemelor minore și îmbunătățiri de utilizare

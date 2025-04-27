@@ -1,6 +1,0 @@
-- Opción para seleccionar la visibilidad manteniendo presionado el botón de reblog
-- Ahora se muestra la visibilidad de los reblogs propios.
-- Lista agregada de hashtags seguidos
-- Mantenga presionado a la izquierda para copiarlos
-- Opción de abrir publicaciones con otra cuenta
-- Corrección de errores y ajustes menores

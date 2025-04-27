@@ -1,9 +1,0 @@
-- Visiškai pertvarkytas nustatymų fragmen.
-- Į kompon. fragmentą pridėta nauja kameros šaukinys
-- Pataisyta daug „Calckey“ strikčių
-- Daug patobulinimų „Akkoma“ / „Pleroma“
-- Daug filtrų elgsenos patobulinimų
-- Naujas pertvarkytas paskyr. lapas
-- Pridėti galimybę keisti įrašo tur. stilių (papras. tekstas, „Markdown“ ir t. t.) serveriuose, kurios tai palaiko
-- Pridėti galimybę peržiūrėti ser. inform. palie. naudo. vardą bet kurio profil. viduje
-- Daugybė, daugybė smulkių pataisymų ir patobulinimų

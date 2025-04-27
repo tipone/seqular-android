@@ -1,5 +1,0 @@
-Noi lucruri pentru versiunea 94:
-- Îmbunătățiri la comportamentul FAB-ului
-- Schimbări minore la iconița din lansator
-- Îmbunătățiri la comportamentul notificărilor
-- Corecții de probleme minore și îmbunătățiri

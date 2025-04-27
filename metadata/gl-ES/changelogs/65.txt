@@ -1,6 +1,6 @@
 -Esbozos e publicacións planificadas
 -Amosar mensaxes orixinais ao responder
--Filtros compatíbeis con Mastodon 4.0 (non hai todavía función de "oculta con aviso")
+-Filtros compatíbeis con Moshidon 4.0 (non hai todavía función de "oculta con aviso")
 -Manter pulsado para interactuar coas publicacións (responder, impulsar, gustar, engadir a marcador) desde otras contas rexistradas
 -Iconas en todos os menús
 -Alternar para reenviar denuncias

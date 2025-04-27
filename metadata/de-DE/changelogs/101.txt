@@ -1,9 +1,0 @@
-- Völlig neu gestaltetes Einstellungsfragment
-- Neue Kamera-Verknüpfung hinzugefügt
-- Behebt viele Abstürze auf Calckey
-- Viele Verbesserungen an Akkoma/Pleroma
-- Viele Verbesserungen am Verhalten der Filter
-- Neu gestaltete Profilansicht
-- Neue Option zum Ändern des Beitragsstils hinzugefügt (Unterstützung der Serverinstanz vorausgesetzt)
-- Möglichkeit hinzugefügt, die Serverinformationen einer Person durch Antippen ihres Benutzernamens anzuzeigen
-- Viele kleine Korrekturen und Verbesserungen

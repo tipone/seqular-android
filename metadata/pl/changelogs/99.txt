@@ -1,6 +1,0 @@
-Nowości w wydaniu 99:
-- Dodanie akcji powiadomień
-- Dodano opcję domyślnego włączania odpowiedzi spoza listy
-- Dodanie opcji czasowego wyciszenia
-- Dodanie plakietki powiadomienia, jeśli są nieprzeczytane powiadomienia
-- Drobne poprawki błędów i ulepszenia użyteczności

@@ -1,4 +1,4 @@
-Seqularは、<a href="https://github.com/mastodon/mastodon-android">公式のMastodon Androidアプリ</a>の改良版で、公式アプリにはない重要な機能を追加しています。これには、連合タイムライン、未収載投稿、画像説明ビューアなどが含まれます。
+Seqularは、<a href="https://github.com/LucasGGamerM/moshidon">公式のMoshidon Androidアプリ</a>の改良版で、公式アプリにはない重要な機能を追加しています。これには、連合タイムライン、未収載投稿、画像説明ビューアなどが含まれます。
 
 <b>主な機能</b>
 

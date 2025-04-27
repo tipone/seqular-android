@@ -1,3 +1,0 @@
-New things for 95:
-- Adding the ability to have other server's local timelines in the timelines
-- Minor fixes and improvements

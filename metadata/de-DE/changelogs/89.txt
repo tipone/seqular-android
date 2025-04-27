@@ -1,1 +1,0 @@
-Version 89 behebt Fehler beim Speichern von Einstellungen und verbessert die Stabilität.

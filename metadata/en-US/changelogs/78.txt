@@ -1,1 +1,0 @@
-Removing the toot dividers on the main timeline! Its also configurable.

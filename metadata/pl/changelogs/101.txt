@@ -1,9 +1,0 @@
-- Całkowicie przeprojektowany widok ustawień
-- Dodano nowy skrót do kamery do widoku tworzenia
-- Naprawiono wiele awarii w Calckey
-- Wiele ulepszeń Akkoma/Pleroma
-- Wiele ulepszeń w zachowaniu filtrów
-- Nowy, przeprojektowany widok konta
-- Dodano opcję zmiany stylu treści postu (zwykły tekst, markdown itp.) w instancjach, które go obsługują
-- Dodano możliwość przeglądania informacji o serwerze poprzez dotknięcie nazwy użytkownika w dowolnym profilu
-- Wiele, wiele drobnych poprawek i ulepszeń

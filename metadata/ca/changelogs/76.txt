@@ -1,6 +1,0 @@
-- Filtres millorats, inclosa la compatibilitat «Amaga amb un avís»
-- Pàgina de perfil redissenyada amb metadades directament a sota de la bio
-- Funció de replegar/expandir a les publicacions molt llargues
-- Opció que afegeix el prefix «re:» a les respostes d'avisos de contingut
-- Opció d’amagar els botons d’interacció en la línia de temps
-- Diverses correccions, retocs i millores

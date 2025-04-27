@@ -1,3 +1,0 @@
-Novedades versión 95:
-- Se añade la posibilidad de tener las líneas de tiempo locales de otros servidores en las líneas de tiempo
-- Pequeñas correcciones y mejoras

@@ -1,4 +1,0 @@
-- Corrigir a má renderização de tags de HTML e permitir a renderização de formatação Markdown
-- Inicializar <a href="https://translate.codeberg.org/projects/megalodon">projeto de tradução Weblate</a>
-- Adicionar botão de ligar e desligar para a linha do tempo unificada
-- As versões 52-54 foram pequenos ajustes para a publicação na Google Play

@@ -1,1 +1,0 @@
-Release 89 is a bug fix release, so a few crashes have been fixed as well as a few settings not being saved.

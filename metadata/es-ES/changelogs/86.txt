@@ -1,4 +1,0 @@
-Novedades de la versión 86:
-- Opción de apilar notificaciones, es decir, tener varias notificaciones;
-- Se incluyen los Anuncios de la instancia;
-- Varias correcciones de interfaz.

@@ -1,5 +1,0 @@
-New things for 87:
-- A new home layout from Megalodon, having the ability to switch between them is WIP
-- Better handling of notifications
-- A new ravamped bot icon
-- A bunch of minor improvements

@@ -1,3 +1,0 @@
-Versión 84 corrige algunos errores, tales como:
-- El callback de login no funciona
-- Actualización de la traducción al alemán. ¡Gracias @DanTobi!

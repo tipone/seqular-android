@@ -1,3 +1,0 @@
-Release 97 adds:
-- New Custom Local Timelines feature. It can be accessed on the add timelines menu
-- Minor fixes and improvements

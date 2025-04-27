@@ -1,7 +1,0 @@
-Neuerungen in Version 85:
-- Langes Gedrückthalten der Suchtaste bringt die Tastatur hervor
-- Drücken der Suchtaste bringt auch im Suchen-Tab die Tastatur hervor
-- Ein Bot-Symbol wird nun für Posts von Bot-Accounts angezeigt, Danke @FineFindus!
-- Verbesserte Sichtbarkeit des Bot-Symbols auf Bot-Profilen, Danke @FineFindus!
-- Aktualisierte Deutschübersetzung, Danke @Dontobi!
-- Kleinere Fehler wurden behoben

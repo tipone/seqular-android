@@ -1,3 +1,0 @@
-Novedades versión 96:
-- Mejora de la capacidad de tener líneas de tiempo locales de otros servidores en las líneas de tiempo.
-- Correcciones y mejoras menores

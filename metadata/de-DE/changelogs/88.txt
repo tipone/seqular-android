@@ -1,6 +1,0 @@
-Neue Dinge für die Version Nummer 88:
-- Ein verbessertes Fab-Verhalten
-- Bessere Behandlung von Bildbeschreibungen
-- Aktivieren des lokalen Postings für Instanzen, die es unterstützen
-- Behebung einiger Abstürze
-- Kleinere Verbesserungen

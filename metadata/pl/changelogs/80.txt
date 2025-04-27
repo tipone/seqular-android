@@ -1,1 +1,0 @@
-Dodano opcjonalny przełącznik umożliwiający ustawienie przycisku publikowania w bardziej dostępnej pozycji!

@@ -1,9 +1,0 @@
-- Sie können nun Benachrichtigungen, die auf der Registerkarte "Benachrichtigungen" angezeigt werden, direkt über die Schaltfläche "Benachrichtigungen filtern" filtern
-- Verbesserungen für akkoma: Übersetzungen, zitierte Beiträge werden jetzt korrekt angezeigt, und die Möglichkeit, Beiträge vor der Veröffentlichung in der Vorschau anzuzeigen (Danke Megalodon!)
-- Einstellungen für Reichweite und Datenschutz jetzt in der App verfügbar
-- Option zur Deaktivierung unterstrichener Links
-- Die Verwendung eines Herzens als Favoritensymbol ist jetzt möglich
-- Sie können jetzt Absturzprotokolle kopieren, falls Sie einen Fehlerbericht einreichen müssen
-- Lesezeichen und Favoriten als pinnbare Zeitleisten hinzugefügt (Danke Megalodon!)
-- Man kann nun den Unterschied zwischen dem bearbeiteten und dem ursprünglichen Beitrag in der Bearbeitungshistorie sehen (Danke @FineFindus!)
-- Viele kleine Fehlerkorrekturen

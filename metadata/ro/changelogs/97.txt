@@ -1,3 +1,0 @@
-Versiunea 97 adaugă:
-- Noua funcție a Cronologiilor Locale Personalizate. Poate fi accesat în meniul Adăugare Cronologie
-- Corecții și îmbunătățiri minore

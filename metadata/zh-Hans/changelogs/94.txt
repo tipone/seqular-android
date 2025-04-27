@@ -1,8 +1,0 @@
-- 改进后更清晰的主题视图
-- 通过共享网站到 Megalodon 打开账户/帖子
-- 从源实例加载追随者/收藏夹/......列表
-- 改进非Mastodon服务器的兼容性
-- 设置帖子内容类型的选项
-- 支持从 Pixel 设备上的 "Recent" 应用程序复制 URL
-- Auto-reveal equal CWs in threads
-- 错误修复和用户界面改进

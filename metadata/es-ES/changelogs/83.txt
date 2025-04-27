@@ -1,4 +1,0 @@
-La versión 83 trae algunas mejoras menores, por ejemplo:
-- Arregla los cierres al pulsar en menciones
-- Remodela el icono de los bots
-- Incorpora un recordatorio para añadir descripción de imagen para favorecer la inclusión de las personas con discapacidad. ¡Gracias @FineFindus!

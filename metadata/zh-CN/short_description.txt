@@ -1,1 +1,1 @@
-面向 Mastodon 的 Android 客户端，适配 Material You 并且提供更多功能
+面向 Moshidon 的 Android 客户端，适配 Material You 并且提供更多功能

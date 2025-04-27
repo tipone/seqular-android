@@ -1,4 +1,0 @@
-- Preparar ficheiros para publicar no F-Droid
-- Corrigir o atualizador automático
-- Voltar a adicionar ícones monocromáticos nos ícones de lançamento 
-- Substituir ícones errados e não listados no rodapé expandido

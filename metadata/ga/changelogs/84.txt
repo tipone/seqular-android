@@ -1,3 +1,0 @@
-Réitíonn Release 84 cúpla fabht, mar shampla:
-- Callback logáil isteach nach bhfuil ag obair
-- Aistriúchán Gearmáinise á nuashonrú. Go raibh maith agat @DanTobi!

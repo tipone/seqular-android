@@ -1,9 +1,0 @@
-- Puedes filtrar las notificaciones en la pestaña de notificaciones con el botón "Filtrar notificaciones".
-- Mejoras para akkoma: traducciones, las publicaciones citadas ahora se muestran correctamente y puedes previsualizar los mensajes antes de publicarlos (¡Gracias Megalodon!)
-- Ajustes de alcance y privacidad ahora disponibles en la aplicación
-- Opción para desactivar los enlaces subrayados
-- Ahora es posible utilizar un corazón como icono favorito
-- Ahora puedes copiar los registros de fallos en caso de que necesites enviar un informe de errores
-- Añadidos Marcadores y Tus favoritos como líneas de tiempo ancladas(¡Gracias Megalodon!)
-- Ahora puedes ver la diferencia entre los mensajes editados y los originales en el historial de edición (¡Gracias @FineFindus!)
-- Muchas pequeñas correcciones de errores

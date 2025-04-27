@@ -1,6 +1,0 @@
-New things for release 99:
-- Add notification actions
-- Add option to enable unlisted replies by default
-- Add mute timer
-- Add notification badge if there are unread notifications
-- Minor bugfixes and usability improvements

@@ -1,9 +1,0 @@
-- Blúire suímh athdhearadh go hiomlán
-- aicearra ceamara nua curtha leis an blúire Cumadóireachta
-- Ceartaítear go leor tuairteanna ar Calckey
-- Go leor feabhsuithe ar Akkoma/Pleroma
-- Go leor feabhsuithe ar iompar scagairí
-- Bileog Cuntais nua athdheartha
-- Cuir leis an rogha stíl ábhar an phoist a athrú (Gnáth-théacs, marcáil síos, srl) ar chásanna a thacaíonn leis
-- Cuir leis an gcumas féachaint ar fhaisnéis an fhreastalaí trí chliceáil ar a n-ainm úsáideora taobh istigh de phróifíl aon duine
-- Go leor, go leor ceartúcháin agus feabhsuithe beaga

@@ -1,4 +1,0 @@
-Wydanie 83 wprowadza kilka drobnych usprawnień, takich jak:
-- Naprawiono awarie podczas klikania wzmianek
-- Przeprojektowana ikona bota
-- Dodanie przypomnienia o dodaniu opisu obrazu, jeśli publikujesz załącznik, aby ułatwić korzystanie osobom niedowidzącym. Dzięki @FineFindus!

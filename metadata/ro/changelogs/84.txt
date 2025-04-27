@@ -1,3 +1,0 @@
-Versiunea 84 rezolvă multe probleme, precum:
-- Callback-ul de la login nu funcționează
-- Actualizări la traducerea în limba germană. Mulțumim @DanTobi!

@@ -1,6 +1,0 @@
-Lucruri noi pentru versiunea 88:
-- Un comportament Fab îmbunătățit
-- O mai bună manipulare a textelor alternative
-- Activarea postării locale doar pentru instanțele care o suportă
-- Remedierea unor crash-uri
-- Mici îmbunătățiri

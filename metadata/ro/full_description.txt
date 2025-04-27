@@ -1,4 +1,4 @@
-Megalodon este o versiune modificată a <a href="https://github.com/mastodon/mastodon-android">aplicației oficiale Mastodon Android</a> adăugând funcții importante ce lipsesc în aplicația oficială, precum cronologia federată, postările nelistate și un vizualizator al descrierii imaginii.
+Megalodon este o versiune modificată a <a href="https://github.com/LucasGGamerM/moshidon">aplicației oficiale Moshidon Android</a> adăugând funcții importante ce lipsesc în aplicația oficială, precum cronologia federată, postările nelistate și un vizualizator al descrierii imaginii.
 
 <b>Caracteristici cheie</b>
 
@@ -11,6 +11,6 @@ Megalodon este o versiune modificată a <a href="https://github.com/mastodon/mas
 - <b>Răspunsuri la solicitări de urmărire</b>: Acceptați sau declinați cererilor de urmărire de la notificările dvs. sau din lista de solicitări dedicate.
 - <b>Ștergeți și re-schițați</b>: Caracteristica mult-iubită care a făcut posibilă editarea fără o funcție de editare reală.
 - <b>Selector de limbă</b>: Selectați fără durere limbajul pentru fiecare postare pe care o faceți, astfel încât filtrele și traducerea să funcționeze corect.
-- <b>Traducere</b>: Traduceți cu ușurință postările chiar în Megalodon! Funcționează numai dacă funcția este disponibilă și pe versiunea web al dvs. de Mastodon.
+- <b>Traducere</b>: Traduceți cu ușurință postările chiar în Megalodon! Funcționează numai dacă funcția este disponibilă și pe versiunea web al dvs. de Moshidon.
 - <b>Indicator de vizibilitate a postului</b>: Când deschideți sau răspundeți la o postare, va fi afișată o pictogramă la îndemână care indică vizibilitatea postării.
 - <b>Teme de culoare</b>: În cazul în care nu vă place culoarea implicită roz (rechinul vă judecă în tăcere), temele de culoare ale lui Seqular vă acoperă!

@@ -1,6 +1,0 @@
-- Ultimul raport crash este ținut și gata pentru a fi copiat din pagina de setări "Despre Megalodon"
-- Adăugați și vedeți note personale pe profile
-- Modificările textului sunt acum evidențiate în istoricul de editare
-- Akkoma: Postările citate sunt acum vizibile în cronologie; traduceri; previzualizați postările înainte de publicare
-- Puteți acum fixa ca și cronologii favoritele dvs. și marcajele
-- Greșeli variate reparate

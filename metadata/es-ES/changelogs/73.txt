@@ -1,9 +1,0 @@
-- Las cronologías pueden ser ancladas y reordenadas
-- Soporte para publicaciones locales
-- Indicador de ausencia de texto alternativo
-- Editor de textos alternativos mejorado
-- Encabezado en la cronología para hashtags que sigues
-- Más categorías de notificaciones
-- Soporte para selector de archivos nuevo
-- Aviso cuando se guarda un borrador
-- Opción para desactivar el botón "Ver nuevas publicaciones"

@@ -1,6 +1,0 @@
-- Filtros aprimorados, incluindo compatibilidade com "Ocultar com aviso"
-- Página de perfil redesenhada com metadados diretamente abaixo da biografia
-- Função Recolher/expandir para postagens muito longas
-- Opção para prefixar automaticamente as respostas CWs com “re:”
-- Opção para ocultar botões de interação na linha do tempo
-- Várias correções de bugs, ajustes e melhorias

@@ -1,8 +1,0 @@
-- Vista millorada i més clara dels fils
-- Obre comptes o publicacions compartint un lloc web a Megalodon
-- Carrega els llistats de seguidors, preferits… des de la instància d’origen
-- Millores de compatibilitat per a servidors que no són de Mastodon
-- Opció per establir el tipus de contingut a les publicacions
-- Suport per a copiar URL de les aplicacions recents en dispositius Pixel
-- Mostra automàticament els mateixos avisos de contingut als fils
-- Correcció d'errors i millores de la interfície

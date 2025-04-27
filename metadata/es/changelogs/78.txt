@@ -1,1 +1,0 @@
-Eliminación de los divisores de puntas en la línea de tiempo principal. También es configurable.

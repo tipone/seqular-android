@@ -1,0 +1,3 @@
+- Forked from Moshidon Project.
+- Deleted all blocked servers in blocks.txt file. Because we couldn't understand why a Fediverse Client needed such a block.
+- Fixed Push Notifications.

@@ -1,1 +1,0 @@
-Un comutator opțional a fost adăugat pentru a aduce butonul de publicare la o poziție mai accesibilă! Este implicit acum!

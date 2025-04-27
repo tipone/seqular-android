@@ -1,5 +1,0 @@
-Novedades de la versión 87:
-- el nuevo diseño de la casa de Megalodon; cambiar funciones entre diseños es un trabajo en progreso
-- mejor manejo de las notificaciones
-- un ícono de bot cambiado
-- muchas mejoras menores

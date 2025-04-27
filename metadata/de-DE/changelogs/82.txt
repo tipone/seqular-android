@@ -1,9 +1,0 @@
-Mit Version 82 werden viele Features von Megalodon hinzugefügt:
-- Entwurfsfunktion und geplantes Posten
-- Überarbeitung der Einstellungsseite
-- die Möglichkeit die Veröffentlichen-Schaltfläche umzubenennen
-- die Möglichkeit Animationen zu reduzieren
-- ein Symbol für Bot-Profile! Danke @FineFindus
-- Aktualisierung der Deutschübersetzung! Danke @dontobi
-- kleinere Verbesserungen der Oberfläche
-- größere Verbesserungen, wie das Gedrückhalten von Schaltflächen um mit anderen Profilen zu interagieren

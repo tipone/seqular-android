@@ -1,1 +1,0 @@
-Versiunea 89 este o versiune de remediere a erorilor, astfel încât au fost remediate câteva crash-uri, precum și câteva setări care nu au fost salvate.

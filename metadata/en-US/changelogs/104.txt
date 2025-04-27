@@ -1,2 +1,0 @@
-- Enabled sharing directly from the image viewer (No need to download the media to share it anymore)
-- Many minor bugfixes and improvements

@@ -1,1 +1,0 @@
-Pašalinamos pagrindinės laiko skalės įrašų skirtukai! Jį taip pat galima konfigūruoti.

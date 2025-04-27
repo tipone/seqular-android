@@ -1,4 +1,0 @@
-Cambios de la versión 92:
-- Filtros mejorados
-- Nueva distribución de las páginas de perfil
-- Pequeños ajustes y mejoras

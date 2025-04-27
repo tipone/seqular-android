@@ -1,7 +1,0 @@
-New stuff that comes with Release 85:
-Adding long click search button to bring up the keyboard
-Clicking the search button when already in search tab also brings up keyboard
-Bringing up a bot icon to toots from bot accounts, Thanks @FineFindus!
-Improving visibility of bot icon inside account profile, Thanks @FineFindus!
-Updating german translation, Thanks @Dontobi!
-Fixing minor UI issues

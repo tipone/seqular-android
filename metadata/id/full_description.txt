@@ -1,4 +1,4 @@
-Seqular adalah versi modifikasi dari <a href="https://github.com/mastodon/mastodon-android">aplikasi resmi Android Mastodon</a> yang menambahkan fitur-fitur penting yang tidak ada di aplikasi resmi, seperti garis waktu gabungan, postingan tidak terdaftar, dan gambar penampil deskripsi.
+Seqular adalah versi modifikasi dari <a href="https://github.com/LucasGGamerM/moshidon">aplikasi resmi Android Moshidon</a> yang menambahkan fitur-fitur penting yang tidak ada di aplikasi resmi, seperti garis waktu gabungan, postingan tidak terdaftar, dan gambar penampil deskripsi.
 
 <b>Fitur utama</b>
 

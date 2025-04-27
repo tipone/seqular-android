@@ -1,9 +1,0 @@
-La versión 82 añade muchas características del código fuente, como por ejemplo:
-- Borradores y publicaciones programadas
-- Cambios en la página de ajustes
-- Opción para cambiar el texto del botón de publicación
-- Opción para reducir animaciones
-- ¡Un icono para las cuentas de bots! Gracias a @FineFindus
-- ¡Traducción al alemán actualizada! Gracias a @dantobi
-- Varias mejoras menores de la interfaz
-- Mejoras de usabilidad, como la opción de mantener pulsado para interactuar con otra cuenta

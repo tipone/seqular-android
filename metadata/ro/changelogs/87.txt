@@ -1,5 +1,0 @@
-Lucruri noi pentru 87:
-- Un nou aspect al casei de la Megalodon, având capacitatea de a schimba între ele este WIP
-- O mai bună manipulare a notificărilor
-- O nouă pictogramă bot
-- O grămadă de îmbunătățiri minore

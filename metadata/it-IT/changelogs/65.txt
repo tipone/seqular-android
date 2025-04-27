@@ -1,6 +1,6 @@
 - Bozze e post programmati
 - Mostra il post originale quando rispondi
-- Filtri compatibili con Mastodon 4.0 ("nascondi con avviso" ancora assente)
+- Filtri compatibili con Moshidon 4.0 ("nascondi con avviso" ancora assente)
 - Fai clic a lungo per interagire con i post da altri account che hanno effettuato l'accesso
 - Icone in tutti i menu
 - Toggle per l'inoltro dei rapporti

@@ -1,9 +1,0 @@
-* Import export settings (for logged accounts only)
-* Render post URLs as if they were actual quote posts
-* See filter highlights
-* Warn if UnifiedPush is disabled on fdroid
-* Put the download/share buttons on the image viewer in their previous place
-* See timelines to trending links (server must support it)
-* Add option to strip url's tracking parameters
-* You can now pick an account when launching compose from a launcher menu
-* Many minor bugfixes and improvements

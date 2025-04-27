@@ -1,3 +1,0 @@
-Nowości na 95:
-- Dodanie możliwości wyświetlania lokalnych osi czasu z innych serwerów we własnych osiach czasu
-- Drobne poprawki i ulepszenia

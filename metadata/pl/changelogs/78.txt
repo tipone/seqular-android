@@ -1,1 +1,0 @@
-Usunięcie podziałów wpisów na głównej osi czasu! Można je również konfigurować.

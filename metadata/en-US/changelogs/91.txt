@@ -1,5 +1,0 @@
-New things for release 91:
-- The ability to have filtered posts show with a warning
-- Fixed included auto updater
-- Fixed a few crashes with the filtering system
-- Minor quality of life improvements

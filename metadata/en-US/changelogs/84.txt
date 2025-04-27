@@ -1,3 +1,0 @@
-Release 84 fixes a few bugs, such as:
-- Login callback not working
-- Updating german translation. Thanks @DanTobi!

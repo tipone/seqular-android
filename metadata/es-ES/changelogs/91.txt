@@ -1,5 +1,0 @@
-Cambios de la versión 91:
-- Implementada la funcionalidad de mostrar publicaciones filtradas con una advertencia
-- Corrección del actualizador propio de la app
-- Solucionados algunos errores con el sistema de filtros
-- Mejoras menores (pero no son cosa menor)

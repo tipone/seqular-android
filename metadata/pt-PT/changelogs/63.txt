@@ -1,6 +1,0 @@
-- Opção de clique longo para partilhar com uma visibilidade específica
-- Mostrar visibilidade nas próprias partilhas
-- Adicionar lista de hashtags seguidas
-- Clique longo para copiar links
-- Opção de abrir as publicações com outra conta
-- Correção de erros e falhas menores

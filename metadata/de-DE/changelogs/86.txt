@@ -1,4 +1,0 @@
-Neues in Version 86:
-- Benachrichtigungen stapeln, d. h. mehrere Benachrichtigungen gleichzeitig anzeigen
-- Ankündigungen
-- viele kleinere Fehler wurden behoben.

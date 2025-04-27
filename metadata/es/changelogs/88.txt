@@ -1,6 +1,0 @@
-Novedades para la versión número 88:
-- Comportamiento FAB mejorado
-- Mejor manejo de las descripciones de las imágenes.
-- Habilite la publicación local para instancias que lo admitan
-- Se corrigieron algunos bloqueos
-- Pequeñas mejoras

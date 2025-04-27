@@ -1,2 +1,0 @@
-Se arregla un problema con el botón de publicación, que aparecía cortado en pantallas con resoluciones bajas o con textos largos. ¡Ahora es un icono cuando se coloca en la parte de abajo!
-Pequeños arreglos a la visualización de cambios de versión

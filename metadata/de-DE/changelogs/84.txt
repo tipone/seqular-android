@@ -1,3 +1,0 @@
-Version 84 behebt ein paar Fehler, wie z. B.:
-- Fehler beim Login-Callback
-- Aktualisierte Deutschübersetzung. Danke @DonTobi!

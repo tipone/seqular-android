@@ -1,6 +1,0 @@
-- Tornar possível a abertura da publicação original enquanto se responde (clicando na linha "Em resposta a...")
-- Unificar alterações e correções de erros
-- Remover o código inutilizado da "App Center"
-- Adicionar publicação sem linha do tempo unificada para a Play Store
-- Adicionar redireção personalizada para inicio de sessão mais fácil.
-- Alterar o link de contribuições

@@ -1,4 +1,0 @@
-New things for release 86:
-- Ability to stack notifications, ie: having multiple notifications;
-- Introducing Announcements;
-- Many minor UI fixes.

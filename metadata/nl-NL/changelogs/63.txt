@@ -1,6 +1,0 @@
-- Option to reblog with specific visibility on long-click
-- Show visibility of own reblogs
-- Add list of followed hashtags
-- Long-click to copy links
-- Option to open posts with other account
-- Bugfixes and minor tweaks

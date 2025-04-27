@@ -1,2 +1,0 @@
-Arreglando el botón de publicar que se cortaba en DPIs bajos o en idiomas largos. Ahora es un icono cuando está en estado accesible.
-Correcciones menores en la vista previa del registro de cambios

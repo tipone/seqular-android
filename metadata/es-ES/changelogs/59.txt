@@ -1,6 +1,0 @@
-- Añadir selector de idioma
-- Añadir función de traducción
-- Mejorar la semántica para votar en las encuestas (botones de radio y casillas de verificación)
-- Añadir la opción de permitir la votación de múltiples opciones en las encuestas
-- Nueva pantalla de inicio de sesión
-- Corrección de errores

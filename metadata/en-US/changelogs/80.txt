@@ -1,1 +1,0 @@
-Now adding an optional toggle for bringing the publish button to a more reachable position! It's the default now!

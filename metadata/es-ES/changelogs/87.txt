@@ -1,5 +1,0 @@
-Novedades de la versión 87:
-- Nueva navegación de inicio heredada de Megalodon, todavía estamos trabajando ello.
-- Mejor gestión de las notificaciones
-- Nuevo icono para los bots
-- Un puñado de mejoras menores

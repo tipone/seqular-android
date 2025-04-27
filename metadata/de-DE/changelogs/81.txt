@@ -1,2 +1,0 @@
-Fehlerbehebung bei der Veröffentlichen-Schaltfläche im Fall von niedrigen Displayauflösungen oder Sprachen mit langen Wörtern. Die Schaltfläche ist jetzt ein Symbol, wenn sie an einer erreichbareren Position platziert ist!
-Kleinere Verbesserungen bei der App-Aktualisierungsnachricht

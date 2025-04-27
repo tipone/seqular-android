@@ -1,5 +1,0 @@
-Neue Dinge für 94:
-- Verbesserungen am Verhalten des Fabs
-- Geringfügige Änderungen am Launchersymbol
-- Verbesserungen des Benachrichtigungsverhaltens
-- Kleinere Fehlerbehebungen und Verbesserungen

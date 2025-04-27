@@ -1,6 +1,0 @@
-- Adicionar selecionador de idioma
-- Adicionar função de traduzir
-- Melhorar a semântica para inquéritos (botões rádio e caixas de confirmação)
-- Adicionar opção para permitir votar em mais do que uma opção nos inquéritos
-- Novo ecrã de início de sessão
-- Correções de erros

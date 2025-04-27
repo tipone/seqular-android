@@ -1,6 +1,0 @@
-- Aldonita lingvoselektilon
-- Aldonita tradukan funkcion
-- Plibonigita semantikon por voĉdoni pri balotoj (radiobutonoj kaj markobutonoj)
-- Aldonita opcion por permesi voĉdoni por multoblaj elektoj en balotoj
-- Nova ensaluta ekrano
-- Cimo-korektoj

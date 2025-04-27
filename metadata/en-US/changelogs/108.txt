@@ -1,2 +1,0 @@
-- Fixed a bunch of crashes
-- Small bug fixes and improvements

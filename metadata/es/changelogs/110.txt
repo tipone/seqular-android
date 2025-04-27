@@ -1,6 +1,0 @@
-- Ahora se guarda el último registro de fallos y está listo para copiarse desde la página de configuración "Acerca de Megalodon".
-- Añadir y mostrar notas personales en los perfiles
-- Las modificaciones de texto ahora se resaltan en el historial de edición
-- Akkoma: Los mensajes citados se muestran en la línea de tiempo; traducción; vista previa de los mensajes antes de publicarlos
-- Añadidos marcadores y tus favoritos como líneas de tiempo pinnables
-- Varios errores corregidos

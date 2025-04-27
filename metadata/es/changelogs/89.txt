@@ -1,1 +1,0 @@
-La versión 89 es una versión de corrección de errores, por lo que se corrigieron algunos bloqueos y algunas configuraciones no guardadas.

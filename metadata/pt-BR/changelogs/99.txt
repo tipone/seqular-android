@@ -1,6 +1,0 @@
-Novidades para a versão 99:
-- Adicionado ações de notificação
-- Adicionado opção para ativar respostas não listadas por padrão
-- Adicionado silenciar temporário
-- Adicionado um selo de notificação se houver notificações não lidas
-- Pequenas correções de bugs e melhorias de usabilidade

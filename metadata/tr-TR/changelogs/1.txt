@@ -1,0 +1,3 @@
+- Moshidon Projesinden Fork edildi.
+- blocks.txt dosyasındaki engellenen tüm sunucular silindi. Çünkü bir Fediverse Client'ının neden böyle bir engellemeye ihtiyaç duyduğunu anlayamadık.
+- Push Notifications düzeltildi.

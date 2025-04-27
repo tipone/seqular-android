@@ -1,4 +1,0 @@
-Lucruri noi pentru versiunea 92:
-- Filtre mai bune
-- Nou aspect pentru pagina de profil
-- O grămadă de modificări și îmbunătățiri minore

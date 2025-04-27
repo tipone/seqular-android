@@ -1,5 +1,0 @@
-- Novas cores de temas: Material You e Vermelho
-- Novos tons de cinzento escuro para todos os temas
-- Botão de partilha mais chamativo
-- Animações para botões de interação
-- Correção de erros (Bloquear em algumas publicações, "Listas com", idioma de publicação predefinido)

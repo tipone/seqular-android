@@ -1,6 +1,0 @@
-- Najnowszy raport awarii jest teraz przechowywany i gotowy do skopiowania ze strony "O Megalodonie" w Ustawieniach.
-- Dodawanie i wyświetlanie osobistych notatek na profilach
-- Modyfikacje tekstu są teraz podświetlane w historii edycji
-- Akkoma: Cytowane posty są wyświetlane na osi czasu; tłumaczenie; podgląd postów przed publikacją
-- Dodano Zakładki i Ulubione jako możliwe do przypięcia osie czasu
-- Różne poprawki błędów

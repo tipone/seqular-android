@@ -1,6 +1,0 @@
-- Endlich: Das lang erwartete Material-3-UI-Redesign!
-- Bei Lücken in der Start-Timeline kann man nun auswählen, ob neuere oder ältere Beiträge nachgeladen werden sollen
-- Für Server-Ankündigungen und Akkoma-User*innen: Emoji-Reaktionen!
-- Zuletzt verwendete Emoji in der Emoji-Auswahl
-- Pronomen werden nun neben Anzeigenamen angezeigt
-- Viele Fehlerbehebungen und neue Fehler, die ihr nun entdecken dürft ✨

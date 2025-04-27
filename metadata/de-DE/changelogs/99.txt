@@ -1,6 +1,0 @@
-Neue Dinge für Version 99:
-- Hinzufügen von Benachrichtigungsaktionen
-- Option hinzugefügen, um nicht aufgelistete Antworten zu aktivieren
-- Stummschaltungstimer hinzufügen
-- Benachrichtigungs-Badge hinzufügen, wenn es ungelesene Benachrichtigungen gibt
-- Kleinere Fehlerbehebungen und Verbesserungen der Benutzerfreundlichkeit

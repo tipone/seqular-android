@@ -1,3 +1,0 @@
-- Fusionado al código (2.3.0)
-- Se agregó recuperación remota para el historial de estado.
-- Corregidos unos cuantos fallos

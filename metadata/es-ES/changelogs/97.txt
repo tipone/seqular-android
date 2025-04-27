@@ -1,3 +1,0 @@
-La versión 97 añade:
-- Nueva función de líneas de tiempo locales personalizadas. Se puede acceder a ella en el menú de añadir líneas de tiempo
-- Pequeñas correcciones y mejoras

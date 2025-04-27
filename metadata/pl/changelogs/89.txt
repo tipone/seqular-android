@@ -1,1 +1,0 @@
-Wydanie 89 to wydanie z poprawkami błędów. Naprawiono kilka awarii, a także kilka ustawień, które nie były zapisywane.

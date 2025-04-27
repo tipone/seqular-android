@@ -1,5 +1,0 @@
-- Nuevos esquemas de color: Material You y Rojo
-- Nuevos tonos gris oscuro para todos los esquemas
-- Icono de impulso ahora más distinguible
-- Animaciones para botones de interacción.
-- Corrección de errores (bloqueo en algunas publicaciones, "listas de", idioma predeterminado para nuevas publicaciones)

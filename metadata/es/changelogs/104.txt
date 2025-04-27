@@ -1,2 +1,0 @@
-- Se ha permitido compartir directamente desde el visor de imágenes (ya no es necesario descargar los medios para compartirlos)
-- Muchas mejoras y correcciones de errores menores

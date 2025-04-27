@@ -1,5 +1,0 @@
-Kaj je novega v različici 87:
-- nova Megalodon postavitev domače strani; preklapljanje funkcij med postavitvami je v teku
-- boljše ravnanje z obvestili
-- spremenjena ikona bota
-- veliko manjših izboljšav

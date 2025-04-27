@@ -1,6 +1,0 @@
-Nuevas características de la versión 88:
-- Mejor comportamiento del botón flotante
-- Mejor manejo de los textos alternativos
-- Soporte para publicaciones sólo locales en instancias que lo soportan
-- Se arreglan algunos cierres inesperados
-- Pequeñas mejoras

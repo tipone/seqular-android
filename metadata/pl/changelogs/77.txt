@@ -1,4 +1,0 @@
-- Długie naciśnięcie przycisku "obserwacji" teraz pozwoli ci obserwować profile z innego konta
-- Opcja otwierania profili innym kontem
-- Automatyczne ukrywanie przycisku pisania nowego posta podczas przewijania w dół osi czasu
-- Naprawiono crash podczas otwierania profili administratora serwera

@@ -1,1 +1,0 @@
-Elimina els divisors de tuts en la línia de temps principals! També es pot configurar.

@@ -1,16 +1,27 @@
-Seqular is a modified version of the <a href="https://github.com/LucasGGamerM/moshidon">Moshidon Android app</a> adding important features that are missing in the official app, such as the federated timeline, unlisted posting and an image description viewer.
+<a href="https://seqular.net/">Seqular</a> A Social Network without Place or Nation.
 
-<b>Key features</b>
+<b><a href="https://seqular.net/about/">About Seqular:</a></b>
 
-- <b>Many colors</b>: Brings material you theme and many colorful options for themes!
-- <b>Filtered posts!</b>: The ability to have filtered posts show with a warning!
-- <b>Translate button</b>: Brings a translate button!
-- <b>Toot language picker</b>: Brings in a toot language picker!
-- <b>Unlisted posting</b>: Post publicly without having your post show up in trends, hashtags or public timelines.
-- <b>Federated timeline</b>: See all public posts from people on all other Fediverse neighborhoods your home instance is connected to.
-- <b>Image description viewer</b>: Quickly check whether an image or video has an alt text attached to it.
-- <b>Pinning posts</b>: Pin your most important posts to your profile and see what others have pinned using the “Pinned“ tab.
-- <b>Follow hashtags</b>: See new posts from specific hashtags directly in your home timeline by following them.
-- <b>Answering follow requests</b>: Accept or decline follow requests from your notifications or the dedicated Follow requests list.
-- <b>Delete and re-draft</b>: The much-loved feature that made editing possible without an actual editing function.
-- <b>Extras</b>: Brings many extra UI features, such as interaction icons on the Notifications and removing many annoyances with the original UI!
+- <b>To promote your business, company or store</b>
+- <b>To announce the products you sell.</b>
+- <b>To announce your union, professional chamber, association, cooperative.</b>
+- <b>To find sponsor for your university club's for activities.</b>
+- <b>To spread the views of your political party.</b>
+- <b>To to discuss your ideas</b>
+- <b>To meet your colleagues.</b>
+- <b>To get accurate information about current events and news</b>
+- <b>To simply scroll up and look at the pictures.</b>
+- <b>To pass the time while waiting at the bus stop.</b>
+- <b>To find a good dentist</b>
+- <b>Just for fun</b>
+
+<b>Long story short..</b>
+
+- <b>To use your mobile phone battery in a useful way.</b>
+- <b>and to be able to do many different things</b>
+
+We recommend you to become a member of Seqular.
+
+Best Regards,
+
+<b>Seqular..</b>

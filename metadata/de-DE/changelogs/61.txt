@@ -1,5 +1,0 @@
-- Neue Farbschemata: Material You und Rot
-- Neue dunkle Grautöne für alle Schemata
-- Boost-Symbol nun besser auseinanderhaltbar
-- Animationen für Interaktions-Buttons
-- Fehlerbehebungen (Absturz bei manchen Posts, "Listen mit", Standard-Sprache für neue Beiträge)

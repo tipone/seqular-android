@@ -1,9 +1,0 @@
-- You can now filter notifications shown in the notification tab directly from the 'Filter notifications' button
-- Improvements for akkoma: translations, quoted posts will now be displayed correctly, and the ability to preview posts before publishing (Thanks Megalodon!)
-- Reach and Privacy settings now available in app
-- Option to disable underlined links
-- Using a Heart as a favorite icon is now possible
-- You can now copy crash logs in case you need to file a bug report
-- Added Bookmarks and Your favorites as pinnable timelines (Thanks Megalodon!)
-- You can now see the difference between the edited and original posts in the edit history (Thanks @FineFindus!)
-- Many small bug fixes

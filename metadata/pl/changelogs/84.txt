@@ -1,3 +1,0 @@
-Wydanie 84 naprawia kilka błędów, takich jak:
-- Niedziałające wywołanie zwrotne logowania
-- Aktualizacja niemieckiego tłumaczenia. Dzięki @DanTobi!

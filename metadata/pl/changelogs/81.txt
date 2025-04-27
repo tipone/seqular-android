@@ -1,2 +1,0 @@
-- Naprawiono przycinanie przycisku publikowania przy niskim DPI lub dłuższych językach. Pojawia się jako ikona, gdy możliwy do kliknięcia
-- Drobne poprawki w podglądzie dziennika zmian

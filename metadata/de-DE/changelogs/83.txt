@@ -1,4 +1,0 @@
-Version 83 bringt kleinere Verbesserungen, wie:
-- App-Abstürze beim Interagieren mit Erwähnungen
-- Überarbeitung des Bot-Symbols
-- eine Erinnerung, dass eine Bildbeschreibung hinzugefügt werden sollte, um Menschen mit visuellen Schwierigkeiten zu unterstützen. Danke @FineFindus!

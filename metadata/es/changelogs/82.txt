@@ -1,9 +1,0 @@
-La versión 82 agrega muchas funciones a Megalodon:
-- Función borrador y publicación programada.
-- Revisión de la página de configuración
-- la posibilidad de cambiar el nombre del botón de publicación
-- la posibilidad de reducir las animaciones
-- ¡un icono para perfiles de bot! Gracias @FineFindus
-- ¡Actualización de la traducción al alemán! Gracias @dontobi
-- mejoras menores en la interfaz
-- mejoras importantes como mantener presionados los botones para interactuar con otros perfiles

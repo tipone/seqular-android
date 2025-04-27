@@ -1,8 +1,0 @@
-- Visualização de thread melhorada e mais clara
-- Abra contas/postagens compartilhando um site para o Megalodon
-- Carregar seguidores/favoritos/… listagens da instância de origem
-- Melhorias de compatibilidade para servidores não-Mastodon
-- Opção para definir o tipo de conteúdo da publicação
-- Suporte para copiar URL de aplicativos recentes em dispositivos Pixel
-- Revelação automática de CWs iguais em threads
-- Correções de bugs e melhorias na interface do usuário

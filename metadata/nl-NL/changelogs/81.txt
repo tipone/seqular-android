@@ -1,2 +1,0 @@
-Fixing publish button being cut of on low DPIs or on longer languages. Its now an icon when its on the reachable state!
-Minor fixes to the changelog preview

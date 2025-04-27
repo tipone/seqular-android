@@ -1,5 +1,0 @@
-- Feu m'agrada/afegiu als marcadors/responeu directament des de la notificació
-- Capçaleres més boniques i coherents per a les republicacions i respostes en la línia de temps
-- Punt de notificació (que encara no carrega les notificacions)
-- Per als usuaris d'Akkoma: Visibilitat de les respostes, respostes ordenades als fils, citar…
-- S'han arreglat alguns errors i retocs menors

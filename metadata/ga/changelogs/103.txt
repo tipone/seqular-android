@@ -1,9 +1,0 @@
-- Is féidir leat fógraí a thaispeántar sa chluaisín fógraí a scagadh go díreach ón gcnaipe 'Filter Notices'
-- Feabhsuithe le haghaidh akkoma: taispeánfar aistriúcháin, postálacha luaite i gceart anois, agus an cumas chun postálacha a réamhamharc roimh fhoilsiú (Go raibh maith agat Megalodon!)
-- Socruithe Rochtana agus Príobháideachta ar fáil anois san aip
-- Rogha chun naisc a bhfuil líne fúthu a dhíchumasú
-- Is féidir anois Croí a úsáid mar dheilbhín is fearr leat
-- Is féidir leat logaí tuairteála a chóipeáil anois ar eagla go mbeidh ort tuairisc fhabht a chomhdú
-- Leabharmharcanna Curtha leis agus Na cinn is ansa leat mar línte ama inphionála (Go raibh maith agat Megalodon!)
-- Is féidir leat a fheiceáil anois an difríocht idir na postálacha curtha in eagar agus na bunphoist sa stair eagarthóireachta (Go raibh maith agat @FineFindus!)
-- Go leor ceartúcháin ar fhabhtanna beaga

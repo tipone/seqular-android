@@ -1,6 +1,0 @@
-- Personalizar a cor to tema por @LucasGGamerM
-- Novo texto "megalodon" do logótipo submetido por @LucasGGamerM
-- Melhor pesquisa de emojis enquanto se escreve
-- Votação ajustada (mostrar o próprio voto, mostrar sempre o botão de votar, não cortar respostas longas)
-- Adicionar configuração de notificações push para notificações de publicação
-- Correção de erros

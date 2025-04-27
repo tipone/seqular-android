@@ -1,9 +1,0 @@
-* Impor. ir ekspor. nustat. (tik prisijung. paskyroms)
-* Atvaiz. įrašų URL adres. taip, tarsi jie būtų tikri cita. įrašai
-* Žr. filtro akcentus
-* Įspėti, jei „UnifiedPush“ išjungtas per „F-Droid“
-* Įd. atsisiun. / bendrin. myg. vaizdų žiūryklėje į ankstesnę vietą
-* Žr. laiko skales prie tenden. nuorodų (serve. turi tai palaikyti)
-* Prid. parinktį, kad būtų galima pašal. URL sekimo parametr.
-* Dabar galima pasirin. paskyrą palei. rengyklę iš paleid. meniu
-* Daug smulkių rik. taisym. ir patobul.

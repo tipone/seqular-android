@@ -1,6 +1,0 @@
-Nauji dalykai 99 leidimui:
-- Pridėti pranešimų veiksmus
-- Pridėti parinktį, leidžiančią pagal numatytuosius nustatymus įjungti neįtrauktus į sąrašą atsakymus
-- Pridėti nutildymo laikmatį
-- Pridėti pranešimo ženklelį, jei yra neperskaitytų pranešimų
-- Nedideli klaidų pataisymai ir naudojimo patogumo patobulinimai

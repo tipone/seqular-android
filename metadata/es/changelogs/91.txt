@@ -1,5 +1,0 @@
-Novedades de la versión 91:
-- La capacidad de tener mensajes filtrados se muestran con una advertencia
-- Arreglado el actualizador automático incluido
-- Corregidos algunos fallos con el sistema de filtrado
-- Mejoras menores

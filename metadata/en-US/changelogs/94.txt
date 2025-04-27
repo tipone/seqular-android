@@ -1,5 +1,0 @@
-New things for 94:
-- Improvements on the fab behavior
-- Minor changes to the launcher icon
-- Improvements on the notification behavior
-- Minor bugfixes and improvements

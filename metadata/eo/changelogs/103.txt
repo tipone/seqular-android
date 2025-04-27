@@ -1,6 +1,0 @@
-- Oni nun povas filtri sciigojn, kiuj estas montritaj en la langeto de sciigoj direkte per la "Filtru sciigojn" butono
-- Plibonigaĵoj de akkoma: transdukoj, cititiaj afiŝoj nun montros ĝuste, kaj la ebleco antaŭvidi afiŝoj antaŭ eldonadas.
-- Agordoj por privateco nun haveblas en la aplikaĵo
-- Opcio malŝaltigi substrekitajn ligilojn
-- La steluma ikono nun povas esti koro
-- Oni nun povas kopii rekordoj de

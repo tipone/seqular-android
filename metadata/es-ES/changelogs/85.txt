@@ -1,7 +1,0 @@
-Cosas nuevas en esta versión 85:
-Añadida pulsación prolongada en el icono de búsqueda para abrir el teclado
-Pulsar el botón de búsqueda cuando estás en esa pestaña también abre el teclado
-Se incluye un icono de bots en los toots de cuentas de bots. ¡Gracias @FineFindus!
-Se mejora la visibilidad del icono de bot en el perfil de los usuarios. ¡Gracias @FineFindus!
-Traducción al alemán actualizada, ¡gracias a @Dontobi!
-Solución de problemas menores de interfaz

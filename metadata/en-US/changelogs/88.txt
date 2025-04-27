@@ -1,6 +1,0 @@
-New things for release number 88:
-- An improved Fab behavior
-- Better handling on alt texts
-- Enable local-only posting for instances that support it
-- Fix some crashes
-- Minor improvements

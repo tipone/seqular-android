@@ -1,3 +1,0 @@
-Nauji dalykai 95 leidimui:
-- Pridėta galimybė laiko skalėse turėti kitų serverių vietines laiko skales
-- Smulkūs pataisymai ir patobulinimai

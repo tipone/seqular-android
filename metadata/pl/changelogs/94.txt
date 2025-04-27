@@ -1,5 +1,0 @@
-Nowości na rok 94:
-- Ulepszenia w zachowaniu pływającej ikony
-- Drobne zmiany ikony aplikacji
-- Ulepszenia w działaniu powiadomień
-- Drobne poprawki błędów i ulepszenia

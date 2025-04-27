@@ -1,9 +1,0 @@
-- Tute restrukturita agorda fragmento
-- Nova fotila ŝparvojo aldonita al la Komponado-Fragmento
-- Solvas multajn kraŝojn ĉe Calckey
-- Multaj plibonigoj al Akkoma/Pleroma
-- Multaj plibonigoj al filtrila konduto
-- Nova restrukturita konto-folio
-- Aldonita la opcion ŝanĝi afiŝon-enhavan stilon (klara teksto, remarkigo, ktp) ĉe instancoj kiuj subtenas ĝin
-- Aldonita la kapablon vidi ies servilinformojn premante sian uzantnomon ene de iu ajn profilo
-- Multaj, multaj malgrandaj korektoj kaj plibonigoj

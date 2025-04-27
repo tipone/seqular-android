@@ -1,6 +1,0 @@
-- Nareszcie: Długo oczekiwane przeprojektowanie interfejsu w duchu Material 3!
-- Luki na głównej osi czasu pozwalają teraz wybrać, czy załadować nowsze, czy starsze dane
-- Dotyczy ogłoszeń serwera oraz użytkowników Akkomy: Reakcje w formie emoji!
-- Ostatnio używane emoji w selektorze emoji
-- Zaimki są teraz wyświetlane obok wyświetlanych nazw
-- Wiele poprawek i nowych błędów do odkrycia ✨

@@ -1,3 +1,0 @@
-Lucruri noi pentru 95:
-- Adăugarea abilității de a avea cronologiile locale ale altor servere în cronologii
-- Corecții și îmbunătățiri minore

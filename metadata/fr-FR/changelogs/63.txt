@@ -1,6 +1,0 @@
-- Possibilité de reposter avec une visibilité spécifique sur clic long
-- Afficher la visibilité de ses propres reposts
-- Ajout d'une liste de hashtags suivis
-- Cliquer longuement pour copier les liens
-- Possibilité d'ouvrir des messages avec un autre compte
-- Corrections de bugs et ajustements mineurs

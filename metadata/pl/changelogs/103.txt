@@ -1,9 +1,0 @@
-- Filtrowanie powiadomienia bezpośrednio w zakładce
-- Akkoma: Tłumaczenia; cytowane posty na osi czasu; podgląd postów przed publikacją (dzięki Megalodon!).
-- Ustawienia zasięgu i prywatności są teraz dostępne
-- Opcja wyłączenia podkreślonych linków
-- Serce jako ikona ulubionych
-- Kopiowanie dzienników awarii
-- Dodano Zakładki i Ulubione jako możliwe do przypięcia osie czasu (dzięki Megalodon!).
-- Różnice między wersjami widoczne w historii (Dzięki @FineFindus!)
-- Różne poprawki błędów

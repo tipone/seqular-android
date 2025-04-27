@@ -1,4 +1,0 @@
-- 修复 Pixelfed 登录
-- 修复大量崩溃问题
-
-如需完整更新日志，请参阅 https://github.com/LucasGGamerM/moshidon/releases/tag/2.3.0%2Bfork.107.moshinda

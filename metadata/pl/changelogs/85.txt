@@ -1,7 +1,0 @@
-Nowości wprowadzone w wersji 85:
-Dodanie przycisku wyszukiwania (dłuższe kliknięcie wywołuje klawiaturę)
-Kliknięcie przycisku wyszukiwania na karcie wyszukiwania powoduje również wyświetlenie klawiatury.
-Dodanie ikony bota do tootów z kont botów, dzięki @FineFindus!
-Poprawa widoczności ikony bota w profilu konta, dzięki @FineFindus!
-Aktualizacja niemieckiego tłumaczenia, dzięki @Dontobi!
-Naprawa drobnych błędów interfejsu użytkownika

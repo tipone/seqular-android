@@ -1,1 +1,0 @@
-¡Ahora agregando un interruptor opcional para llevar el botón de publicación a una posición más accesible! ¡Es el valor predeterminado ahora!

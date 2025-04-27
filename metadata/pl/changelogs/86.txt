@@ -1,4 +1,0 @@
-Nowości w wydaniu 86:
-- Możliwość układania powiadomień w stosy, tj. posiadania wielu powiadomień;
-- Wprowadzenie ogłoszeń;
-- Wiele drobnych poprawek interfejsu użytkownika.

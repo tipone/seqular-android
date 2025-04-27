@@ -1,9 +1,0 @@
-Release 82 adds a lot of features from upstream, such as:
-- Drafts and scheduled posts
-- A settings page rework
-- The ability to choose the publish button text
-- The ability to reduce animations
-- A bot icon for bot account profiles! Thanks @FineFindus
-- And updated German translation! Thanks @dantobi
-- A lot of minor UI improvements
-- Major usability improvements, as the ability to hold action buttons to interact with another account

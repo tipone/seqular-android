@@ -1,2 +1,0 @@
-Corectarea butonului de publicare care se întrerupe la DPI-uri mici sau la limbi mai lungi. Acum este o pictogramă atunci când se află în starea accesibilă!
-Corecții minore la previzualizarea jurnalului de modificări

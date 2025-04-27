@@ -1,2 +1,0 @@
-- Teilen direkt aus dem Bildbetrachter aktiviert (Es ist nicht mehr nötig, die Datei zuerst runter zu laden)
-- Viele kleinere Bugfixes und Verbesserungen

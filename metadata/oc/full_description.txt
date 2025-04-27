@@ -1,4 +1,4 @@
-Megalodon is a modified version of the <a href="https://github.com/mastodon/mastodon-android">official Mastodon Android app</a> adding important features that are missing in the official app, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
+Megalodon is a modified version of the <a href="https://github.com/LucasGGamerM/moshidon">official Moshidon Android app</a> adding important features that are missing in the official app, such as the federated timeline, unlisted posting, bookmarks and an image description viewer.
 
 <b>Key features</b>
 

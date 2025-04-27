@@ -1,6 +1,0 @@
-Nowości w wydaniu numer 88:
-- Ulepszone zachowanie pływającej ikony
-- Lepsza obsługa tekstów alternatywnych
-- Włączenie lokalne publikowani dla instancji, które to obsługują
-- Naprawiono niektóre awarie
-- Drobne ulepszenia

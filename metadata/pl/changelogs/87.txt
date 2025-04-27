@@ -1,5 +1,0 @@
-Nowości na 87:
-- Nowy układ strony domowej znany z Megalodona (WIP: możliwość przełączania się między nimi)
-- Lepsza obsługa powiadomień
-- Nowa, lepsza ikona bota
-- Kilka mniejszych usprawnień

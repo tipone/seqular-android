@@ -1,6 +1,0 @@
-- Por fin: El tan esperado rediseño de la interfaz Material 3.
-- Los huecos en la línea temporal de inicio ahora permiten elegir si se cargan datos más recientes o más antiguos
-- Para los anuncios del servidor y los usuarios de Akkoma: ¡Reacciones emoji!
-- Emoji usados recientemente en el selector de emoji
-- Los pronombres se muestran ahora junto a los nombres para mostrar
-- Un montón de correcciones de errores y nuevos errores para que usted descubra ✨

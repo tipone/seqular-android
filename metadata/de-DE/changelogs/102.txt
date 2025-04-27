@@ -1,9 +1,0 @@
-Diese neue Version kommt mit den folgenden Änderungen:
-- Neues, komplett aktualisiertes Material 3 Design von Upstream
-- Unterstützung für UnifiedPush-Benachrichtigungen (Danke @FineFindus!)
-- Sperrungen und Stummschaltungen sind jetzt in deinem Profil sichtbar
-- Hashtags können jetzt direkt in der Hashtag-Ansicht stummgeschaltet werden
-- Emoji-Reaktionen sind jetzt auf Instanzen möglich, die sie unterstützen (Danke @sk22!)
-- Das Bearbeiten von Filtern in der App ist jetzt auch möglich (Danke an Upstream)
-- Medienvorschauen können jetzt in Timelines ausgeblendet werden
-- Neues Schwarz-Weiß-Thema hinzugefügt

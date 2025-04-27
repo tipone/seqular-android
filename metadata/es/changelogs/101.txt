@@ -1,9 +1,0 @@
-- Ajustes completamente rediseñados
-- Nuevo atajo de cámara al redactar publicación
-- Corrección de reinicios en Calckey
-- Varias mejoras con Akkoma/Pleroma
-- Mejoras en el comportamiento de los filtros
-- Nuevo diseño del selector de cuentas
-- Nueva opción para cambiar el contenido de publicación (texto plano, markdown, etc) en instancias que lo soporten
-- Nueva opción para ver información del servidor pulsando en el usuario de cualquier perfil
-- Multitud de mejoras y pequeñas correcciones

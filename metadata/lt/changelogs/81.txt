@@ -1,2 +1,0 @@
-Ištaisytas skelbimo mygtuko nukirpimas esant mažam DPI arba ilgesnėms kalboms. Dabar jo piktograma rodoma, kai jis yra pasiekiamoje būsenoje!
-Nedideli pakeitimų sąrašo peržiūros pataisymai.

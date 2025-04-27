@@ -1,5 +1,0 @@
-Neues in Version 87:
-- das neues Home Layout von Megalodon; die Funktionen zwischen den Layouts zu wechseln ist in Arbeit
-- bessere Handhabe von Benachrichtigungen
-- ein verändertes Bot-Symbol
-- viele kleinere Verbesserungen

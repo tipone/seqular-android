@@ -1,5 +1,0 @@
-Lucruri noi pentru versiunea 91:
-- Capacitatea de a avea postări filtrate este afișat cu un avertisment
-- Rezolvarea actualizatorului automat inclus
-- Rezolvarea unor crash-uri cu sistemul de filtrare
-- Îmbunătățiri minore QoL

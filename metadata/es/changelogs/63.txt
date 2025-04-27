@@ -1,6 +1,0 @@
-- Pulsación larga opcional para elegir la visibilidad de retweets específicos
-- Mostrar visibilidad de retweets propios
-- Agregar lista de etiquetas seguidas
-- Mantenga presionado para copiar el enlace
-- Opción agregada para abrir publicaciones con otra cuenta
-- Corrección de errores y ajuste fino del programa

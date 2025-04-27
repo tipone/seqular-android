@@ -1,1 +1,0 @@
-Eliminarea divizoarelor de toot-uri pe cronologia principala! Este și configurabil.

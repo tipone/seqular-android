@@ -1,3 +1,0 @@
-La versión 84 arregla algunos errores, por ejemplo:
-- Errores en el inicio de sesión 
-- Traducción al alemán actualizada. ¡Gracias @DanTobi!

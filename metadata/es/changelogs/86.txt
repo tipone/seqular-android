@@ -1,4 +1,0 @@
-Novedades para la versión 86:
-- Posibilidad de apilar notificaciones, es decir, tener varias notificaciones;
-- Introducción de anuncios;
-- Muchas correcciones menores de la interfaz de usuario.

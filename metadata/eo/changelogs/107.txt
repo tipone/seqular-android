@@ -1,4 +1,0 @@
-- Riparas ensalutado de Pixelfed
-- Riparas multaj kraŝoj
-
-Por tuta ŝanĝlisto, vidu https://github.com/LucasGGamerM/moshidon/releases/tag/2.3.0%2Bfork.107.moshinda

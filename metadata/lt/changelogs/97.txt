@@ -1,3 +1,0 @@
-97 leidimas pridėta:
-- Nauja funkcija Pasirinktinės vietinės laiko skalės. Ją galima pasiekti meniu Pridėti laiko skales
-- Nedideli pataisymai ir patobulinimai

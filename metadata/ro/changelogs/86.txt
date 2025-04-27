@@ -1,4 +1,0 @@
-Lucruri noi pentru versiunea 86:
-- Abilitatea de a stiva notificări, adică: având notificări multiple;
-- Introducerea anunțurilor;
-- Multe corecții UI minore.

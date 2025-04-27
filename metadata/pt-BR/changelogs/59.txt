@@ -1,6 +1,0 @@
-- Adiciona seletor de idiomas
-- Adiciona funcionalidade de tradução
-- Melhora a semântica de votar em enquetes (botões exclusivos e inclusivos)
-- Adiciona opção para permitir votar em multiplas opções nas enquetes
-- Nova tela de login
-- Correção de bugs

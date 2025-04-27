@@ -1,4 +1,0 @@
-La versión 83 aporta algunas mejoras menores, como:
-- Solución de problemas de bloqueo al hacer clic en las menciones
-- Modificación del icono del bot
-- La adición de un recordatorio para añadir una descripción de la imagen si publica un archivo adjunto permite a las personas con discapacidad visual participar mejor. ¡Gracias @FineFindus!

@@ -1,4 +1,0 @@
-- رندر شکسته تگ های HTML را برطرف کنید و قالب بندی Markdown رندر را فعال کنید
-- <a href="https://translate.codeberg.org/projects/megalodon">پروژه ترجمه Weblate</a> راه‌اندازی
-- اضافه کردن ضامن برای جدول زمانی فدریتد
-- نسخه های 52-54 تنظیمات کوچکی برای انتشار در Google Play بودند

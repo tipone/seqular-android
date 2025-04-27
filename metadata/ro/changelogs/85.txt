@@ -1,7 +1,0 @@
-Noi lucruri care vin cu Versiunea 85:
-Adăugarea butonului de căutare cu clic lung pentru a afișa tastatura
-Făcând clic pe butonul de căutare atunci când este deja în fila Căutare afișează tastatura
-Aducerea unei pictograme bot la toots din conturile bot, Mulțumiri @FineFindus!
-Îmbunătățirea vizibilității pictogramei bot în profilul contului, Mulțumiri @FineFindus!
-Actualizarea traducerii germane, Mulțumiri @Dontobi!
-Remedierea problemelor UI minore

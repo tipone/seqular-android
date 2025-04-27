@@ -1,5 +1,0 @@
-Neue Dinge für Version 91:
-- Die Möglichkeit, gefilterte Beiträge mit einer Warnung anzeigen zu lassen
-- Der enthaltene Auto-Updater wurde korrigiert
-- Einige Abstürze mit dem Filtersystem behoben
-- Kleinere Verbesserungen

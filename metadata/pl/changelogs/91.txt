@@ -1,5 +1,0 @@
-Nowości w wydaniu 91:
-- Możliwość wyświetlania przefiltrowanych postów z ostrzeżeniem
-- Naprawiono dołączony automatyczny aktualizator
-- Naprawiono kilka awarii systemu filtrowania.
-- Drobne ulepszenia jakości życia

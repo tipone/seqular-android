@@ -1,9 +1,0 @@
-Versiunea 82 adaugă multe funcții din upstream, precum:
-- Schițe și postări programate
-- Pagina setări reproiectată
-- Abilitatea de a alege textul butonului de publicare
-- Abilitatea de a reduce animațiile
-- Iconiță bot pentru pozele de profil ale roboților! Mulțumim @FineFindus
-- Traducere actualizată în limba germană! Mulțumim @dantobi
-- Îmbunătățiri mici pentru UI
-- Îmbunătățiri majore de utilizare, precum abilitatea de a ține butoanele de acțiune pentru a interacționa cu un alt cont

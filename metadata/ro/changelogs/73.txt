@@ -1,9 +1,0 @@
-- Cronologiile pot fi fixate și rearanjate
-- Suport postări strict-locale
-- Indicator pentru text alternativ lipsă
-- Editor text alternativ îmbunătățit
-- Antet în cronologie pentru hashtag-uri urmărite
-- Mai multe categorii pentru notificări
-- Re-adăugat deschizătorul de fișiere
-- Îndemn la salvarea ciornelor editate
-- Opțiune pentru a dezactiva butonul 'Vedeți postările noi'

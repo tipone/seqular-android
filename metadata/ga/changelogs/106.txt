@@ -1,9 +1,0 @@
-* Socruithe easpórtála a allmhairiú (do chuntais logáilte amháin)
-* Rindreáil URLanna post amhail is dá mba phoist athfhriotail iarbhír iad
-* Féach buaicphointí an scagaire
-* Tabhair rabhadh má tá UnifiedPush díchumasaithe ar fdroid
-* Cuir na cnaipí íoslódála/roinne ar an amharcóir íomhá san áit a chuaigh rompu
-* Féach ar na hamlínte do naisc threochta (caithfidh an freastalaí tacú leis)
-* Rogha a chur le paraiméadair rianaithe url stiall
-* Is féidir leat cuntas a phiocadh anois agus cumadóireacht á sheoladh agat ó roghchlár tosaitheoir
-* Go leor mioncheartúcháin agus feabhsuithe

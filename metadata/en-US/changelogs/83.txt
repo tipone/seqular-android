@@ -1,4 +1,0 @@
-Release 83 brings some minor improvements, such as:
-- Fixing crashing issues when clicking mentions
-- Reworking the bot icon
-- Adding a reminder to add an image description if you post an attachment allow visually impaired people to better participate. Thanks @FineFindus!

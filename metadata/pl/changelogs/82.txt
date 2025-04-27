@@ -1,9 +1,0 @@
-Wydanie 82 dodaje wiele funkcji z wersji upstream, takich jak:
-- Wersje robocze i zaplanowane posty
-- Przeprojektowane ustawienia
-- Możliwość wyboru tekstu przycisku publikowania
-- Możliwość redukcji animacji
-- Ikona bota dla profili kont botów! Dzięki @FineFindus
-- I zaktualizowane tłumaczenie na język niemiecki! Dzięki @dantobi
-- Wiele drobnych ulepszeń interfejsu użytkownika
-- Spore ulepszenia użyteczności, takie jak możliwość przytrzymania przycisków akcji w celu interakcji z innym kontem

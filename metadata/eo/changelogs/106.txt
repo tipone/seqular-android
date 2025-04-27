@@ -1,9 +1,0 @@
-* Agordoj por Importo kaj Exporto (por ensalutitaj kontoj nure)
-* Montru URLoj de afiŝoj ke realaj citafiŝoj
-* Montru surstrekitajn filtrojn
-* Avertu se UnifiedPush malŝaltita en F-Droid
-* Metu la elŝuti/kunhavi butonojn en la bildvidilo ensiaj antaŭe lokoj
-* Vidu templinioj de furoraj ligiloj (servilo devas subteni ĝin)
-* Aldoni opcion fori la gvatadaj parametroj de ligilo
-* Oni povas nun selekti konton kiam lanĉas compose el lanĉmenuo
-* Multaj malpligravaj cimriparoj kaj plibonigaĵoj

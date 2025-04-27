@@ -1,6 +1,0 @@
-- Das neueste Absturzprotokoll wird gespeichert und kann auf der "Über Megalodon"-Einstellungs-Seite kopiert werden
-- Auf Profilen können nun private Notizen angezeigt und erstellt werden
-- Text-Änderungen werden im Bearbeitungs-Verlauf nun hervorgehoben
-- Akkoma: Zitierte Beiträge werden nun in der Timeline angezeigt; Übersetzungen; Vorschau für Beiträge vorm Veröffentlichen
-- Lesezeichen und Deine Favoriten gibt es nun als anpinnbare Timelines
-- Diverse Fehlerbehebungen

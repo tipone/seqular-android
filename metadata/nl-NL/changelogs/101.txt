@@ -1,9 +1,0 @@
-- Completely redesigned settings fragment
-- New camera shortcut added to the Composition fragment
-- Fixes many crashes on Calckey
-- Many improvements to Akkoma/Pleroma
-- Many improvements to filters behavior
-- New redesigned Account sheet
-- Add the option to change post content style (Plain text, markdown, etc) on instances that support it
-- Add the ability to view one's server info by tapping on their username inside of anyone's profile
-- Many, many small fixes and improvements

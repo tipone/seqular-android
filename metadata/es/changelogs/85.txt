@@ -1,7 +1,0 @@
-Novedades que vienen con la versión 85:
-Agregar botón de búsqueda de clic largo para que aparezca el teclado
-Al hacer clic en el botón de búsqueda cuando ya está en la pestaña de búsqueda, también aparece el teclado
-Mostrando un ícono de bot en las cuentas de bot, ¡gracias @FineFindus!
-Mejorando la visibilidad del icono del bot dentro del perfil de la cuenta. ¡Gracias @FineFindus!
-Actualizando la traducción al alemán, ¡Gracias @Dontobi!
-Solucionar problemas menores de la interfaz de usuario

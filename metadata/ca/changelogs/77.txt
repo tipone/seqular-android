@@ -1,4 +1,0 @@
-- Feu una pulsació llarga al botó de seguiment per a seguir els perfils en un altre compte
-- Opció d’obrir perfils en un altre compte
-- Amaga automàticament el botó de redacció en desplaçar-se per la línia de temps
-- S'ha arreglat un error en obrir els perfils d'administrador del servidor
