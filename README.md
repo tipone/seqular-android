@@ -31,11 +31,13 @@ If you don't have an account yet, visit our [sign up](https://network.seqular.ne
 
 
 ## Key Features
+<img src="metadata/tr-TR/images/phoneScreenshots/1.png" alt="1.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/2.png" alt="2.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/3.png" alt="3.png" width="200"/>
 
-[ screenshot of full timeline in default colour scheme ] 
-[ screenshot of full timeline in an alt colour scheme ]
-[ screenshot of profile page ]
-[ screenshot of compose post window ]
+<img src="metadata/tr-TR/images/phoneScreenshots/4.png" alt="4.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/5.png" alt="5.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/6.png" alt="6.png" width="200"/>
+
+<img src="metadata/tr-TR/images/phoneScreenshots/7.png" alt="7.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/8.png" alt="8.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/9.png" alt="9.png" width="200"/>
+
+
 
 ### Flexible Timelines
 
