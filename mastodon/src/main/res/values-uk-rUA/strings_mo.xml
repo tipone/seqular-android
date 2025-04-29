@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_welcome_text">Щоб розпочати, будь ласка, введіть адресу вашого екземпляру нижче.</string>
+    <string name="mo_welcome_text">Щоб розпочати, будь ласка, введіть адресу вашого екземпляра нижче.</string>
     <string name="mo_no_image_desc">Зображення не мають опису. Ви можете додати його, щоб люди із вадами зору могли зрозуміти, яке забарвлення в котика.</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Вимкніть переміщення кнопки «Опублікувати» для кастомізації</string>
     <string name="mo_color_palette_nord">Nord</string>
