@@ -1,0 +1,2 @@
+- versionCode'unun bazen neden olduğu uygulama çökmesi düzeltildi.
+	Bu hata bir blocking issue sorunuydu. Bu nedenle acilen yeni bir sürüm yayınlamak zorunda kaldık.
