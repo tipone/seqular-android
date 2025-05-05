@@ -5,10 +5,6 @@
 
 > A fast, highly customizable, up-to-date fork of [moshidon](https://github.com/LucasGGamerM/moshidon) adding important features such as a fully federated timeline, unlisted posting, drafts, scheduled posts, bookmarks, and alt text warnings.
 
-## If you want to Donate Mohshidon Project(Not Secular.net!!!) you can use the link below
-
-<a href="https://github.com/sponsors/LucasGGamerM">Github Sponsors</a> | <a href="https://liberapay.com/LucasGGamerM/donate">Liberapay</a> | Monero Wallet Key: `4886mdarcyB6Yf8Qc6vDJBK1fz6ibHFLZUmHb4GZZz9yLGNhcG3XC64e5UZ8dVQYTLZb82W6P9WhteowW4STJEec97Gf22j`
-
 # Welcome to the Open Source Planet, Earthling!!
 If you are tired of worthless content, bot accounts and algorithms that always treat you unfairly on conventional social media, you are in the right place.
 
@@ -24,11 +20,9 @@ If you don't have an account yet, visit our [sign up](https://network.seqular.ne
 * No fees! Seqular is completely free. And always will be. No trap accounts like Enterprise, Premium, Official!
 
 ## Download Now
+<a href="https://f-droid.org/en/packages/net.seqular.network"><img height="35" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a> <a href="https://f-droid.org/en/packages/net.seqular.network/"><img height="35" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
 
-<a href="https://play.google.com/store/apps/details?id=org.joinmastodon.android.moshinda"><img height="35" alt="Get it on Google Play" src="img/google-play-badge.png"></a> <a href="https://f-droid.org/pt_BR/packages/org.joinmastodon.android.moshinda"><img height="35" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a> <a href="https://apt.izzysoft.de/fdroid/index/apk/org.joinmastodon.android.moshinda"><img height="35" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
-
-[![GitHub Release Download](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk) [![Translation status](https://translate.codeberg.org/widgets/moshidon/-/svg-badge.svg)](https://translate.codeberg.org/engage/moshidon/) [![GitHub Nightly Download](https://img.shields.io/badge/dynamic/json?color=282C37&label=Download%20Nightly%20APK&query=%24.tag_name&url=https%3A%2F%2Fapi.github.com%2Frepos%2FLucasGGamerM%2Fmoshidon%2Freleases%2Flatest&style=for-the-badge)](https://github.com/LucasGGamerM/moshidon-nightly/releases/latest/download/moshidon-nightly.apk) [![GitHub Nightly Build Download](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml/badge.svg)](https://github.com/LucasGGamerM/moshidon/actions/workflows/nightly-builds.yml) 
-
+[Latest Release](https://github.com/tipone/seqular-android/releases/latest)
 
 ## Key Features
 <img src="metadata/tr-TR/images/phoneScreenshots/1.png" alt="1.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/2.png" alt="2.png" width="200"/><img src="metadata/tr-TR/images/phoneScreenshots/3.png" alt="3.png" width="200"/>
@@ -95,13 +89,10 @@ See all public posts from servers your server federates with and fetch profiles 
 
 ## Installation & Releases
 
-Moshidon is available on GitHub, Google Play, F-Droid, and the IzzyOnDroid repo. All sources provide the same ` moshidon.apk ` stable release. Older releases are available on the [Releases](https://github.com/LucasGGamerM/moshidon/releases) page. 
+Moshidon is available on GitHub, F-Droid, and the IzzyOnDroid repo. All sources provide the same ` seqular.apk ` stable release. Older releases are available on the [Releases](https://github.com/tipone/seqular-android/releases) page. 
 
 ### How to Install from GitHub
-[Download the latest stable release from Github](https://github.com/LucasGGamerM/moshidon/releases/latest/download/moshidon.apk) and open it. You might have to accept installing APK files from your browser. Moshidon will automatically check for new updates available on GitHub and offer to download and install them within the app. You can also manually press “Check for updates” at the bottom of the settings page.
-
-### Nightly Version
-All ` moshidon-night.apk ` nightly builds can be downloaded on the [Nightly Releases](https://github.com/LucasGGamerM/moshidon-nightly/releases) page. This is an unstable version with an integrated updater for development and testing purposes. If you find any bugs with it, please file a bug report on our [Issues](https://github.com/LucasGGamerM/moshidon/issues) page.
+[Download the latest stable release from Github](https://github.com/tipone/seqular-android/releases/download/2.3.1-109/seqular-2.3.1-109-release.apk) and open it. You might have to accept installing APK files from your browser. Moshidon will automatically check for new updates available on GitHub and offer to download and install them within the app. You can also manually press “Check for updates” at the bottom of the settings page.
 
 ## Building & Contributing
 
@@ -126,5 +117,5 @@ This project is released under the [GPL-3 License](./LICENSE).
 
 [F.A.Q](FAQ.md)
 
-[Moshidon Roadmap](https://github.com/users/LucasGGamerM/projects/1)
+[Seqular Roadmap](https://github.com/users/tipone/projects/1/views/1)
 
