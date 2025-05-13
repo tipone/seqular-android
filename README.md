@@ -13,14 +13,19 @@ If you are tired of worthless content, bot accounts and algorithms that always t
 If you don't have an account yet, visit our [sign up](https://network.seqular.net/auth/sign_up) page.
 ## What is Seqular?
 
-* [Seqular](https://seqular.net) is a social networking platform based in Turkey.
+* [Seqular](https://seqular.net) is a community that is founded by a group of free and open source code developers in Türkiye.
+* We are strictly committed to the [Free Software](https://www.gnu.org/) and open source philosophy and the policies of the [Fediverse](https://en.wikipedia.org/wiki/Fediverse).
+* We believe it's important that Seqular never be a company, but instead remain a non-commercial community and we promise to always remain so.
+* [Seqular Server Source](https://github.com/tipone/seqular-network) || [Seqular Android App Source](https://github.com/tipone/seqular-android)
 * Seqular is the best social network to publish and promote your own business, products, art or music!!
 * Seqular is completely open source.
 * No spam, junk content, ads, bots or biased algorithms.
 * No fees! Seqular is completely free. And always will be. No trap accounts like Enterprise, Premium, Official!
 
 ## Download Now
-<a href="https://f-droid.org/en/packages/net.seqular.network"><img height="35" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a> <a href="https://f-droid.org/en/packages/net.seqular.network/"><img height="35" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
+<a href="https://f-droid.org/en/packages/net.seqular.network"><img height="35" alt="Get it on F-Droid" src="img/f-droid-badge.png"></a> <a href="https://apt.izzysoft.de/fdroid/index/apk/net.seqular.network"><img height="35" alt="Get it on IzzyOnDroid" src="img/izzy-badge.png"></a>
+
+[Direct Download APK](https://github.com/tipone/seqular-android/releases/download/2.3.1-109/seqular-2.3.1-109-release.apk)
 
 [Latest Release](https://github.com/tipone/seqular-android/releases/latest)
 
@@ -112,7 +117,7 @@ This project is released under the [GPL-3 License](./LICENSE).
 |[Seqular Network](https://seqular.net) is a social network project based in Türkiye.|
 |You can get support from [destek](mailto:destek@seqular.net) e-mail adress.|
 |You can follow us at [Seqular Official Account](https://network.seqular.net/@destek). [Seqular](http://seqular.net)(mastodon) account.|
-|Owner: [Knixus Technologies](https://network.seqular.net/@knixus)|
+|Sponsor: [Knixus Technologies](https://network.seqular.net/@knixus)|
 
 
 [F.A.Q](FAQ.md)
