@@ -1,6 +1,23 @@
 <a href="https://seqular.net/">Seqular</a> Türkiye'nin Yersiz ve Milsiz Sosyal Network'ü.
 
-<b><a href="https://seqular.net/about/">Seqular Hakkında:</a></b>
+Seqular. <a href="https://github.com/LucasGGamerM/moshidon/">Moshidon Android App</a> 'dan fork edilmiş bir uygulamdır.
+
+Seqular, Seqular Özgür Yazılım topluluğu tarafından geliştirilen tamamen özgür yazılım ve açık kaynak kod bir uygulamadır. (GPL-3.0)
+
+<a href="https://github.com/tipone/seqular-android">Seqular Kaynak Kod</a>
+
+<b><a href="https://seqular.net/#seqular-nedir">Seqular Nedir?:</a></b>
+
+- Seqular, Türkiye’de özgür ve açık kaynak kodlu yazılım geliştiren bir grup geliştiricinin kurduğu bir topluluktur.
+- Özgür Yazılım ve açık kaynak felsefesine ve Fediverse politikalarına sıkı sıkıya bağlıyız.
+- Seqular’ın asla bir şirket olmamasının, bunun yerine ticari olmayan bir topluluk olarak kalmasının önemli olduğuna inanıyoruz ve her zaman öyle kalacağımıza söz veriyoruz.
+- Seqular; kendi işinizi, ürünlerinizi, sanatınızı veya müziğinizi yayınlamak, duyurmak için kullanabileceğiniz en iyi sosyal ağdır!!
+- Seqular tamamen açık kaynak koddur.
+- Spam, çer çöp içerik, reklam, bot ve ya taraf tutan algoritmalar yok.
+- Ücret yok! Seqular tamamen ücretsizdir. Ve her zaman öyle kalacaktır. Enterprise, premium, official benzeri tuzak hesap yok!
+
+
+<b><a href="https://seqular.net/about/">Seqular İle Neler Yapabilirsiniz?:</a></b>
 
 - İşinizi, şirketinizi, mağazanızı tanıtmak için
 - Ürettiğiniz ya da sattığınız ürünleri duyurmak için.
@@ -9,11 +26,11 @@
 - Siyasi partinizin görüşlerini yaymak için.
 - Fikirlerinizi palyaşmak için.
 - Meslektaşlarınızla tanışmak için.
-- Gündemdekiler, haberler ile ilgili doğru bilgi sahibi olmak için</b>
-- Sadece ekranı yukarı kaydırıp resimlere bakmak için.</b>
-- Durakta otobüs beklerken zaman geçirmek için.</b>
-- İyi bir dişçi bulmak için</b>
-- Sadece eğlenmek için</b>
+- Gündemdekiler, haberler ile ilgili doğru bilgi sahibi olmak için
+- Sadece ekranı yukarı kaydırıp resimlere bakmak için.
+- Durakta otobüs beklerken zaman geçirmek için.
+- İyi bir dişçi bulmak için.
+- Sadece eğlenmek için
 
 - <b>Uzun lafın kısası..- <b>
 

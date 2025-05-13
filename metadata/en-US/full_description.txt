@@ -1,24 +1,43 @@
 <a href="https://seqular.net/">Seqular</a> A Social Network without Place or Nation.
 
-<b><a href="https://seqular.net/about/">About Seqular:</a></b>
+Seqular is a modified version of the <a href="https://github.com/LucasGGamerM/moshidon/">Moshidon Android app</a>
 
-- <b>To promote your business, company or store</b>
-- <b>To announce the products you sell.</b>
-- <b>To announce your union, professional chamber, association, cooperative.</b>
-- <b>To find sponsor for your university club's for activities.</b>
-- <b>To spread the views of your political party.</b>
-- <b>To to discuss your ideas</b>
-- <b>To meet your colleagues.</b>
-- <b>To get accurate information about current events and news</b>
-- <b>To simply scroll up and look at the pictures.</b>
-- <b>To pass the time while waiting at the bus stop.</b>
-- <b>To find a good dentist</b>
-- <b>Just for fun</b>
+Seqular is totally Free Software and open source, a community maintained application (GPL-3.0)
+
+<a href="https://github.com/tipone/seqular-android">Seqular Source</a>
+
+
+<b><a href="https://seqular.net/en/#what-is-seqular">What is Seqular?:</a></b>
+
+- Seqular is a community that is founded by a group of free and open source code developers in Türkiye.
+- We are strictly committed to the Free Software and open source philosophy and the policies of the Fediverse.
+- We believe it’s important that Seqular never be a company, but instead remain a non-commercial community and we promise to always remain so.
+- Seqular is the best social network to publish and promote your own business, products, art or music!!
+- Seqular is completely open source.
+- No spam, junk content, ads, bots or biased algorithms.
+- No fees! Seqular is completely free. And always will be. No trap accounts like Enterprise, Premium, Official!
+
+
+
+<b><a href="https://seqular.net/about/">What can do with Seqular?:</a></b>
+
+- To promote your business, company or store
+- To announce the products you sell.
+- To announce your union, professional chamber, association, cooperative.
+- To find sponsor for your university club's for activities.
+- To spread the views of your political party.
+- To to discuss your ideas
+- To meet your colleagues.
+- To get accurate information about current events and news
+- To simply scroll up and look at the pictures.
+- To pass the time while waiting at the bus stop.
+- To find a good dentist
+- Just for fun
 
 <b>Long story short..</b>
 
-- <b>To use your mobile phone battery in a useful way.</b>
-- <b>and to be able to do many different things</b>
+- To use your mobile phone battery in a useful way.
+- and to be able to do many different things
 
 We recommend you to become a member of Seqular.
 
