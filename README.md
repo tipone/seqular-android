@@ -103,7 +103,9 @@ This project is released under the [GPL-3 License](./LICENSE).
 
 [Official Matrix Chatroom](https://matrix.to/#/#moshidon:floss.social) 
 
-[F.A.Q](FAQ.md)
+[F.A.Q.](FAQ.md)
+
+[Moshidon's CSAE policy](CSAE-POLICY.md)
 
 [Moshidon Roadmap](https://github.com/users/LucasGGamerM/projects/1)
 
