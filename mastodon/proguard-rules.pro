@@ -33,6 +33,9 @@
 # i don't know how proguard works
 -keep class org.joinmastodon.android.** { *; }
 
+# i still don't know how proguard works
+-dontwarn android.app.BroadcastOptions
+
 # Keep all enums for debugging purposes
 -keepnames public enum * {
 	*;
