@@ -184,7 +184,7 @@ public abstract class StatusDisplayItem{
 			ScheduledStatus scheduledStatus=parentObject instanceof ScheduledStatus s ? s : null;
 
 			// Check if account is null. This should never happen, but it seems to do in latest versions of glitch-soc
-			if (scheduledStatus == null && status.account == null || (status.reblog != null && status.reblog.account == null) || (status.quote != null) && status.quote.account == null) {
+			if (scheduledStatus == null && status.account == null || (status.reblog != null && status.reblog.account == null) || (status.quote != null && status.quote.account == null)) {
 				throw new Exception("status " + status.url + " has null account field");
 			}
 
