@@ -125,7 +125,7 @@ public class NotificationsListFragment extends BaseStatusListFragment<Notificati
 		NotificationHeaderStatusDisplayItem titleItem;
 		Account self=AccountSessionManager.get(accountID).self;
 		if(n.type==Notification.Type.MENTION || n.type==Notification.Type.STATUS
-				|| (n.type==Notification.Type.REBLOG && !n.status.account.id.equals(self.id))){ // Iceshrimp quote
+				|| (n.type==Notification.Type.REBLOG && n.status.account != null && !n.status.account.id.equals(self.id))){ // Iceshrimp quote
 			titleItem=null;
 		}else{
 			titleItem=new NotificationHeaderStatusDisplayItem(n.id, this, n, accountID);
