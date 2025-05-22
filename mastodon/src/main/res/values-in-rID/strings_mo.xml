@@ -116,4 +116,9 @@
     <string name="mo_error_display_title">Gagal menampilkan kiriman</string>
     <string name="mo_error_display_copy_error_details">Salin detail</string>
     <string name="mo_trending_link_read">Baca</string>
+    <string name="mo_settings_enhance_text_size">Tingkatkan ukuran teks</string>
+    <string name="mo_settings_enhance_text_size_summary">Membuat teks aplikasi lebih besar</string>
+    <string name="mo_mute_hashtag_explanation_search">Anda masih dapat mencari kiriman dengan tagar ini di lini masa lain atau melalui pencarian.</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">Anda tidak akan melihat kiriman menyebutkan tagar ini dalam lini masa Beranda Anda.</string>
+    <string name="mo_mute_hashtag_explanation_discreet">Orang lain tidak akan tahu bahwa Anda membisukan tagar ini.</string>
 </resources>

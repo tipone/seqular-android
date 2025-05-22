@@ -104,4 +104,7 @@
     <string name="export_settings_fail">Не удалось экспортировать настройка</string>
     <string name="export_settings_title">Экспортировать настройки</string>
     <string name="import_settings_title">Импортировать настройки</string>
+    <string name="mo_settings_enhance_text_size">Крупнее текст</string>
+    <string name="mo_settings_enhance_text_size_summary">Крупнее текст приложения</string>
+    <string name="mo_personal_note_saved">Заметка сохранена</string>
 </resources>

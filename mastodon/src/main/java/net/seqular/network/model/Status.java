@@ -47,7 +47,7 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public String uri;
 //	@RequiredField // sometimes null on calckey
 	public Instant createdAt;
-	@RequiredField
+//	@RequiredField // sometimes null? Gonna make sure to check everytime. TODO: make account field required again
 	public Account account;
 //	@RequiredField
 	public String content;
@@ -62,8 +62,8 @@ public class Status extends BaseModel implements DisplayItemsParent, Searchable{
 	public List<Mention> mentions;
 	@RequiredField
 	public List<Hashtag> tags;
-	@RequiredField
-	public List<Emoji> emojis;
+//	@RequiredField // sometimes null on glitch-soc? TODO: make this field required again
+	public List<Emoji> emojis = new ArrayList<>();
 	public long reblogsCount;
 	public long favouritesCount;
 	public long repliesCount;

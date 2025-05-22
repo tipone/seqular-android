@@ -122,4 +122,6 @@
     <string name="export_settings_fail">Exportieren der Einstellungen fehlgeschlagen</string>
     <string name="export_settings_title">Einstellungen exportieren</string>
     <string name="mo_personal_note_saved">Notiz gespeichert</string>
+    <string name="mo_settings_enhance_text_size_summary">Macht den Text der App größer</string>
+    <string name="mo_settings_enhance_text_size">Textgröße verändern</string>
 </resources>

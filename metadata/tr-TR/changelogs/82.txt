@@ -1,0 +1,9 @@
+Sürüm 82, aşağıdakiler gibi birçok özelliği yukarı akıştan ekliyor:
+- Taslaklar ve zamanlanmış gönderiler
+- Ayarlar sayfası yeniden çalışması
+- Yayınla düğmesi metnini seçme yeteneği
+- Animasyonları azaltma yeteneği
+- Bot hesap profilleri için bir bot simgesi! Teşekkürler @FineFindus
+- Ve güncellenmiş Almanca çeviri! Teşekkürler @dantobi
+- Birçok küçük kullanıcı arayüzü iyileştirmesi
+- Başka bir hesapla etkileşim kurmak için eylem düğmelerini basılı tutma yeteneği gibi önemli kullanılabilirlik iyileştirmeleri

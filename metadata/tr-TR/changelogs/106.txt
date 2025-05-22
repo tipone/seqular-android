@@ -1,0 +1,9 @@
+* İçe aktarma ayarlarını dışa aktar (sadece oturum açmış hesaplar için)
+* Gönderi URL'lerini gerçek alıntı gönderileriymiş gibi göster
+* Filtre vurgularını gör
+* UnifiedPush fdroid'de devre dışıysa uyar
+* Resim görüntüleyicisindeki indirme/paylaşma düğmelerini önceki yerlerine koy
+* Trend olan bağlantıların zaman çizelgelerini gör (sunucu bunu desteklemelidir)
+* URL'lerin izleme parametrelerini kaldırma seçeneği ekle
+* Artık başlatıcı menüsünden oluştur'u başlatırken bir hesap seçebilirsiniz
+* Birçok küçük hata düzeltmesi ve iyileştirme

@@ -14,7 +14,7 @@
     <string name="mo_emoji_recent">Usados recientemente</string>
     <string name="mo_clear_recent_emoji">Borrar emojis usados recientemente</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Desactiva \"Recolocar botón de publicación\" para poder personalizar</string>
-    <string name="mo_poll_option_add">Añadir nueva opción en la encuesta</string>
+    <string name="mo_poll_option_add">Añadir opción en la encuesta</string>
     <string name="mo_fab_compose">Redactar</string>
     <string name="mo_sending_error">Error al publicar</string>
     <string name="mo_settings_contribute">Contribuir en Seqular</string>
@@ -70,7 +70,7 @@
     <string name="mo_setting_relocate_publish_summary">Mueve el botón de publicación a la barra inferior</string>
     <string name="mo_swap_bookmark_with_reblog_summary">Añade un marcador o impulsa publicaciones desde la notificación</string>
     <string name="mo_open_camera">Hacer foto</string>
-    <string name="mo_camera_not_available">¡No hay cámara disponible!</string>
+    <string name="mo_camera_not_available">¡No detecto la cámara!</string>
     <string name="mo_setting_haptic_feedback_summary">Vibra cuando interactúas con publicaciones</string>
     <string name="mo_haptic_feedback">Vibración</string>
     <string name="mo_color_palette_black_and_white">Blanco y Negro</string>
@@ -81,7 +81,7 @@
     <string name="mo_show_media_preview">Mostrar previsualización de multimedia en la cronología</string>
     <string name="mo_recent_emoji_cleared">Emojis recientes eliminados</string>
     <string name="mo_double_tap_to_search">Doble toque para abrir la búsqueda</string>
-    <string name="mo_unmuted_conversation_successfully">Conversación sin silencio</string>
+    <string name="mo_unmuted_conversation_successfully">Conversación no silenciada</string>
     <string name="mo_confirm_to_unmute_conversation">¿Quieres dejar de silenciar esta conversación\?</string>
     <string name="mo_confirm_to_mute_conversation">¿Quieres silenciar esta conversación\?</string>
     <string name="mo_muted_conversation_successfully">Conversación silenciada correctamente</string>
@@ -102,12 +102,12 @@
     <string name="mo_settings_unifiedpush_warning">UnifiedPush no habilitado</string>
     <string name="mo_settings_unifiedpush_warning_disabled">UnifiedPush no está habilitado. No recibirás ninguna notificación.</string>
     <string name="export_settings_share">Exportar ajustes</string>
-    <string name="mo_error_display_text">Algo salió mal al cargar esta publicación. Si el problema persiste, infórmelo en nuestra página de Problemas junto con los detalles del error.</string>
+    <string name="mo_error_display_text">Algo salió mal al cargar esta publicación. Si el problema continúa, infórmanos en nuestra página de soporte junto con los detalles del error.</string>
     <string name="import_settings_summary">Importar configuraciones y líneas de tiempo previamente exportadas</string>
     <string name="mo_settings_unifiedpush_warning_no_distributors">No hay distribuidores de UnifiedPush instalados. No recibirás ninguna notificación.</string>
     <string name="mo_settings_unifiedpush_enable">Permitir</string>
     <string name="import_settings_confirm">¿Confirmar para importar la configuración?</string>
-    <string name="import_settings_confirm_body">¡Se sobrescribirán todas las configuraciones y líneas de tiempo actuales! Esta acción no se puede deshacer.</string>
+    <string name="import_settings_confirm_body">¡Se sobrescribirán todas las configuraciones y cronologías actuales! Esta acción no se puede deshacer.</string>
     <string name="import_settings_failed">No se pudo importar la configuración</string>
     <string name="export_settings_fail">No se pudo exportar la configuración</string>
     <string name="export_settings_title">Exportar ajustes</string>
@@ -119,4 +119,9 @@
     <string name="mo_settings_remove_tracking_params">Enlaces Privados</string>
     <string name="mo_settings_remove_tracking_params_summary">Eliminar información de rastreo de los enlaces</string>
     <string name="mo_personal_note_saved">Nota guardada</string>
+    <string name="mo_settings_enhance_text_size">Aumentar tamaño del texto</string>
+    <string name="mo_settings_enhance_text_size_summary">Agranda el texto de la app</string>
+    <string name="mo_mute_hashtag_explanation_discreet">Los demás no sabrán que has silenciado esta etiqueta.</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">No verás publicaciones con esta etiqueta en tu Inicio.</string>
+    <string name="mo_mute_hashtag_explanation_search">Todavía verás publicaciones con esta etiqueta buscándolas o en otras cronologías.</string>
 </resources>

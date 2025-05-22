@@ -1,0 +1,9 @@
+- Zaman çizelgeleri sabitlenebilir ve yeniden düzenlenebilir
+- Yalnızca yerel gönderileri destekleyin
+- Eksik alternatif metinler için gösterge
+- İyileştirilmiş alternatif metin düzenleyici
+- Takip edilen hashtag'ler için zaman çizelgesinde başlık
+- Daha fazla bildirim kategorisi
+- Dosya açıcıyı geri ekleyin
+- Düzenlenen taslağı kaydederken istem
+- "Yeni gönderileri gör" düğmesini devre dışı bırakma seçeneği

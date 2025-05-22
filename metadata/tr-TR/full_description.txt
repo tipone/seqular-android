@@ -1,3 +1,5 @@
+
+<<<<<<< HEAD
 <a href="https://seqular.net/">Seqular</a> Türkiye'nin Yersiz ve Milsiz Sosyal Network'ü.
 
 Seqular. <a href="https://github.com/LucasGGamerM/moshidon/">Moshidon Android App</a> 'dan fork edilmiş bir uygulamdır.

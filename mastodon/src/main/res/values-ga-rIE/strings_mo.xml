@@ -114,4 +114,9 @@
     <string name="mo_trending_link_read">Léigh</string>
     <string name="import_settings_title">Socruithe a allmhairiú</string>
     <string name="import_settings_summary">Iompórtáil socruithe agus amlínte a easpórtáladh roimhe seo</string>
+    <string name="mo_settings_enhance_text_size">Feabhsaigh méid an téacs</string>
+    <string name="mo_settings_enhance_text_size_summary">Déanann sé téacs na haipe níos mó</string>
+    <string name="mo_mute_hashtag_explanation_discreet">Ní bheidh a fhios ag daoine eile go bhfuil an hashchlib seo balbhaithe agat.</string>
+    <string name="mo_mute_hashtag_explanation_search">Is féidir leat postálacha leis an hashchlib seo a fháil fós ar línte ama eile nó trí chuardach.</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">Ní fheicfidh tú postálacha a luann an hashchlib seo i d\'amlíne Baile.</string>
 </resources>

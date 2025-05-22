@@ -1,0 +1,9 @@
+- Tamamen yeniden tasarlanmış ayarlar parçası
+- Kompozisyon parçasına yeni kamera kısayolu eklendi
+- Calckey'deki birçok çökme düzeltildi
+- Akkoma/Pleroma'da birçok iyileştirme
+- Filtre davranışında birçok iyileştirme
+- Yeni yeniden tasarlanmış Hesap sayfası
+- Bunu destekleyen örneklerde gönderi içerik stilini (Düz metin, markdown, vb.) değiştirme seçeneği eklendi
+- Herhangi birinin profilindeki kullanıcı adına dokunarak sunucu bilgilerini görüntüleme yeteneği eklendi
+- Birçok, birçok küçük düzeltme ve iyileştirme

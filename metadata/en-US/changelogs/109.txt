@@ -1,3 +1,2 @@
 - fixed crash app sometimes caused by versionCode.
 	This bug was a blocking issue. Therefore, we had to publish a new release urgently.
-

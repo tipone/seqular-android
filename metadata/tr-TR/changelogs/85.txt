@@ -1,0 +1,7 @@
+Sürüm 85 ile gelen yeni şeyler:
+Klavyeyi açmak için uzun tıklama arama düğmesi ekleme
+Zaten arama sekmesindeyken arama düğmesine tıklamak da klavyeyi açar
+Bot hesaplarından gelen seslere bir bot simgesi getirme, Teşekkürler @FineFindus!
+Hesap profilindeki bot simgesinin görünürlüğünü iyileştirme, Teşekkürler @FineFindus!
+Almanca çeviriyi güncelleme, Teşekkürler @Dontobi!
+Küçük kullanıcı arayüzü sorunlarını düzeltme

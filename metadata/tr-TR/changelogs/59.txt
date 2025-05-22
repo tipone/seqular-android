@@ -1,0 +1,6 @@
+- Dil seçici ekle
+- Çeviri işlevi ekle
+- Anketlerde oylama için semantiği iyileştir (radyo düğmeleri ve onay kutuları)
+- Anketlerde birden fazla seçeneğe oy vermeye izin verme seçeneği ekle
+- Yeni giriş ekranı
+- Hata düzeltmeleri

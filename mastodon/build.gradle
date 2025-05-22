@@ -139,7 +139,7 @@ android {
 		}
 		fdroidRelease {
 			initWith release
-			vcsInfo.include false
+			vcsInfo.include true
 			// The F-droid build system doesn't like this at all for some reason.
 //			versionNameSuffix '-fdroid'
 //			signingConfig signingConfigs.release

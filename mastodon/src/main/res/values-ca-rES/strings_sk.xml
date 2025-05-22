@@ -375,4 +375,55 @@
         <item quantity="one">publicació</item>
         <item quantity="other">publicacions</item>
     </plurals>
+    <string name="sk_trending_links_info_banner">Aquestes notícies s\'estan comentant per tot el Fedivers.</string>
+    <string name="sk_icon_sunset">Foscant</string>
+    <string name="sk_icon_cloud">Núvol</string>
+    <string name="sk_icon_water">Aigua</string>
+    <string name="sk_icon_sun">Sol</string>
+    <string name="sk_icon_thunderstorm">Tempesta</string>
+    <string name="sk_icon_rain">Pluja</string>
+    <string name="sk_icon_snowflake">Floc de neu</string>
+    <string name="sk_posted">%s publicat/s</string>
+    <string name="sk_settings_show_emoji_reactions">Mostrar reaccions d\'emoji a la línia de temps</string>
+    <string name="sk_settings_show_emoji_reactions_hide_empty">Ocultar reaccions d\'emoji buides</string>
+    <string name="sk_settings_show_emoji_reactions_only_opened">Només quan s\'obri la publicació</string>
+    <string name="sk_suicide_search_terms">Suïcidi</string>
+    <string name="sk_search_suicide_title">Si estàs sofrint…</string>
+    <string name="sk_search_suicide_hotlines">Trobar una línia d\'ajuda</string>
+    <string name="sk_do_not_show_again">No tornar a mostrar</string>
+    <string name="sk_suicide_helplines_url">https://findahelpline.com</string>
+    <string name="sk_post_contains_media">La publicació conté contingut multimedia</string>
+    <string name="sk_load_missing_posts_below">Carregar publicacions més antigues</string>
+    <plurals name="sk_time_seconds">
+        <item quantity="one">%d segon</item>
+        <item quantity="many">%d segons</item>
+        <item quantity="other">%d segons</item>
+    </plurals>
+    <plurals name="sk_time_minutes">
+        <item quantity="one">%d minut</item>
+        <item quantity="many">%d minuts</item>
+        <item quantity="other">%d minuts</item>
+    </plurals>
+    <plurals name="sk_time_hours">
+        <item quantity="one">%d hora</item>
+        <item quantity="many">%d hores</item>
+        <item quantity="other">%d hores</item>
+    </plurals>
+    <plurals name="sk_time_days">
+        <item quantity="one">%d dia</item>
+        <item quantity="many">%d díes</item>
+        <item quantity="other">%d díes</item>
+    </plurals>
+    <string name="sk_muted_accounts">Comptes silenciats</string>
+    <string name="sk_blocked_accounts">Comptes bloquejats</string>
+    <string name="sk_settings_like_icon">Utilitzar un cor com a icona de favorit</string>
+    <string name="sk_recently_used">Utilitzat recentment</string>
+    <string name="sk_settings_underlined_links">Enllaços subratllats</string>
+    <string name="sk_set_as_default">Posar per defecte</string>
+    <string name="sk_edit_alt_text">Editar text alternatiu</string>
+    <string name="sk_settings_color_palette_default">Per defecte (%s)</string>
+    <string name="sk_search_suicide_message">Si estàs buscant una senyal per a no suicidar-te, ací està. Per favor, planteja\'t cridar a una línia d\'ajuda de prevenció del suïcidi si estàs sofrint.</string>
+    <string name="sk_load_missing_posts_above">Carregar publicacions més recents</string>
+    <string name="sk_trending_posts_info_banner">Aquestes publicacions estan guanyant popularitat en el Fedivers.</string>
+    <string name="sk_settings_show_emoji_reactions_always">Mostrar sempre el botó d\'afegir</string>
 </resources>

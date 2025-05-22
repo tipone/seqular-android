@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="mo_welcome_text">Щоб розпочати, будь ласка, введіть адресу вашого екземпляру нижче.</string>
+    <string name="mo_welcome_text">Щоб розпочати, будь ласка, введіть адресу вашого екземпляра нижче.</string>
     <string name="mo_no_image_desc">Зображення не мають опису. Ви можете додати його, щоб люди із вадами зору могли зрозуміти, яке забарвлення в котика.</string>
     <string name="mo_disable_relocate_publish_button_to_enable_customization">Вимкніть переміщення кнопки «Опублікувати» для кастомізації</string>
     <string name="mo_color_palette_nord">Nord</string>
@@ -103,18 +103,23 @@
     <string name="mo_error_display_title">Не вдалося відобразити публікацію</string>
     <string name="mo_error_display_text">Щось пішло не так під час завантаження цього повідомлення. Якщо проблема не зникне, будь ласка, повідомте про неї на нашій сторінці «Issues» (Проблеми), вказавши деталі помилки.</string>
     <string name="mo_mute_conversation">Заблокувати розмову</string>
-    <string name="mo_confirm_to_mute_conversation">Ви впевнені що хочете заблокувати цю розмову?</string>
+    <string name="mo_confirm_to_mute_conversation">Ви впевнені, що хочете заблокувати цю розмову?</string>
     <string name="mo_settings_remove_tracking_params_summary">Видаліть інформацію про відстеження з посилань</string>
     <string name="mo_settings_remove_tracking_params">Приватні посилання</string>
-    <string name="mo_confirm_to_mute_hashtag">Ви впевнені що хочете заблокувати цей хештег?</string>
+    <string name="mo_confirm_to_mute_hashtag">Ви впевнені, що хочете заблокувати цей хештег?</string>
     <string name="mo_muted_conversation_successfully">Розмову успішно приглушено</string>
     <string name="mo_unmuted_conversation_successfully">Розмову успішно розблоковано</string>
     <string name="mo_muting">Приглушення…</string>
     <string name="mo_unmuting">Розглушення…</string>
     <string name="mo_unmute_conversation">Розблокувати розмову</string>
-    <string name="mo_confirm_to_unmute_conversation">Ви впевнені що хочете розблокувати цю розмову?</string>
+    <string name="mo_confirm_to_unmute_conversation">Ви впевнені, що хочете розблокувати цю розмову?</string>
     <string name="mo_mute_hashtag">Заблокувати хештег</string>
     <string name="mo_unmute_hashtag">Розблокувати хештег</string>
-    <string name="mo_confirm_to_unmute_hashtag">Ви впевнені що хочете розблокувати цей хештег?</string>
+    <string name="mo_confirm_to_unmute_hashtag">Ви впевнені, що хочете розблокувати цей хештег?</string>
     <string name="mo_personal_note_saved">Нотатку збережено</string>
+    <string name="mo_settings_enhance_text_size">Збільшити розмір шрифту</string>
+    <string name="mo_settings_enhance_text_size_summary">Збільшити розмір шрифту в додатку</string>
+    <string name="mo_mute_hashtag_explanation_search">Дописи з цим хештегом будуть доступні в інших стрічках або за допомогою пошуку.</string>
+    <string name="mo_mute_hashtag_explanation_muted_home">Ви не будете бачити дописів з цим хештегом у своїй домашній стрічці.</string>
+    <string name="mo_mute_hashtag_explanation_discreet">Інші не знатимуть, що ви заблокували цей хештег.</string>
 </resources>

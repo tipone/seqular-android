@@ -120,7 +120,9 @@ This project is released under the [GPL-3 License](./LICENSE).
 |Sponsor: [Knixus Technologies](https://network.seqular.net/@knixus)|
 
 
-[F.A.Q](FAQ.md)
+[F.A.Q.](FAQ.md)
+
+[Moshidon's CSAE policy](CSAE-POLICY.md)
 
 [Seqular Roadmap](https://github.com/users/tipone/projects/1/views/1)
 

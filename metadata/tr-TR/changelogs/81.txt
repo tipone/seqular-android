@@ -1,0 +1,2 @@
+Yayınla düğmesinin düşük DPI'larda veya daha uzun dillerde kesilmesi düzeltildi. Artık ulaşılabilir durumda olduğunda bir simge!
+Değişiklik günlüğü önizlemesinde küçük düzeltmeler

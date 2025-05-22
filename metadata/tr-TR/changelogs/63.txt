@@ -1,0 +1,6 @@
+- Uzun tıklamayla belirli görünürlükle yeniden bloglama seçeneği
+- Kendi yeniden bloglamalarınızın görünürlüğünü göster
+- Takip edilen hashtag'lerin listesini ekle
+- Bağlantıları kopyalamak için uzun tıklama
+- Gönderileri başka bir hesapla açma seçeneği
+- Hata düzeltmeleri ve küçük ayarlamalar
